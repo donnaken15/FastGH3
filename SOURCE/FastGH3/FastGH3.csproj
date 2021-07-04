@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{123C0E48-6F74-4CDC-8F5A-42E516B505EE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FastGH3</RootNamespace>
+    <AssemblyName>FastGH3</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>default</LangVersion>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>note.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Final|AnyCPU'">
+    <OutputPath>bin\Final\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>FastGH3.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BinaryEndianReader.cs" />
+    <Compile Include="BinaryEndianWriter.cs" />
+    <Compile Include="ChartEdit\beatType.cs" />
+    <Compile Include="ChartEdit\Chart.cs" />
+    <Compile Include="ChartEdit\EventsSection.cs" />
+    <Compile Include="ChartEdit\EventsSectionEntry.cs" />
+    <Compile Include="ChartEdit\EventType.cs" />
+    <Compile Include="ChartEdit\GameProps.cs" />
+    <Compile Include="ChartEdit\Globals.cs" />
+    <Compile Include="ChartEdit\IChartWriter.cs" />
+    <Compile Include="ChartEdit\Ini.cs" />
+    <Compile Include="ChartEdit\KeyValue.cs" />
+    <Compile Include="ChartEdit\Note.cs" />
+    <Compile Include="ChartEdit\NoteProp.cs" />
+    <Compile Include="ChartEdit\NoteTrack.cs" />
+    <Compile Include="ChartEdit\NoteTracks.cs" />
+    <Compile Include="ChartEdit\NoteType.cs" />
+    <Compile Include="ChartEdit\OffsetTransformer.cs" />
+    <Compile Include="ChartEdit\Optimizer.cs" />
+    <Compile Include="ChartEdit\QbArrayWriter.cs" />
+    <Compile Include="ChartEdit\QbcNote.cs" />
+    <Compile Include="ChartEdit\QbcNoteTrack.cs" />
+    <Compile Include="ChartEdit\SongSection.cs" />
+    <Compile Include="ChartEdit\SongSectionEntry.cs" />
+    <Compile Include="ChartEdit\SpecialProp.cs" />
+    <Compile Include="ChartEdit\SyncTrackEntry.cs" />
+    <Compile Include="ChartEdit\SyncTrackSection.cs" />
+    <Compile Include="ChartEdit\SyncType.cs" />
+    <Compile Include="ChartEdit\TrackProps.cs" />
+    <Compile Include="ChartEdit\TrackPropsList.cs" />
+    <Compile Include="colorpreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="colorpreview.Designer.cs">
+      <DependentUpon>colorpreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="dllman.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="dllman.Designer.cs">
+      <DependentUpon>dllman.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExtensionAttribute.cs" />
+    <Compile Include="Queenbee\Pak\PakDbgQbKey.cs" />
+    <Compile Include="Queenbee\Pak\PakEditor.cs" />
+    <Compile Include="Queenbee\Pak\PakFormat.cs" />
+    <Compile Include="Queenbee\Pak\PakFormatType.cs" />
+    <Compile Include="Queenbee\Pak\PakHeaderFlags.cs" />
+    <Compile Include="Queenbee\Pak\PakHeaderItem.cs" />
+    <Compile Include="Queenbee\Pak\PakItemType.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Queenbee\Qb\base\EditableAttribute.cs" />
+    <Compile Include="Queenbee\Qb\base\GenericQbItem.cs" />
+    <Compile Include="Queenbee\Qb\base\QbItemBase.cs" />
+    <Compile Include="Queenbee\Qb\base\QbItemType.cs" />
+    <Compile Include="Queenbee\Qb\Lzss.cs" />
+    <Compile Include="Queenbee\Qb\QbFile.cs" />
+    <Compile Include="Queenbee\Qb\QbItemArray.cs" />
+    <Compile Include="Queenbee\Qb\QbItemFloat.cs" />
+    <Compile Include="Queenbee\Qb\QbItemFloats.cs" />
+    <Compile Include="Queenbee\Qb\QbItemFloatsArray.cs" />
+    <Compile Include="Queenbee\Qb\QbItemInteger.cs" />
+    <Compile Include="Queenbee\Qb\QbItemQbKey.cs" />
+    <Compile Include="Queenbee\Qb\QbItemScript.cs" />
+    <Compile Include="Queenbee\Qb\QbItemString.cs" />
+    <Compile Include="Queenbee\Qb\QbItemStruct.cs" />
+    <Compile Include="Queenbee\Qb\QbItemStructArray.cs" />
+    <Compile Include="Queenbee\Qb\QbItemUnknown.cs" />
+    <Compile Include="Queenbee\Qb\QbKey.cs" />
+    <Compile Include="Queenbee\Qb\ScriptString.cs" />
+    <Compile Include="settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="settings.Designer.cs">
+      <DependentUpon>settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="songcache.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="songcache.Designer.cs">
+      <DependentUpon>songcache.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SubstringExtensions.cs" />
+    <Compile Include="Queenbee\Zlib\Adler32.cs" />
+    <Compile Include="Queenbee\Zlib\Deflate.cs" />
+    <Compile Include="Queenbee\Zlib\InfBlocks.cs" />
+    <Compile Include="Queenbee\Zlib\InfCodes.cs" />
+    <Compile Include="Queenbee\Zlib\Inflate.cs" />
+    <Compile Include="Queenbee\Zlib\InfTree.cs" />
+    <Compile Include="Queenbee\Zlib\JZlib.cs" />
+    <Compile Include="Queenbee\Zlib\StaticTree.cs" />
+    <Compile Include="Queenbee\Zlib\SupportClass.cs" />
+    <Compile Include="Queenbee\Zlib\Tree.cs" />
+    <Compile Include="Queenbee\Zlib\ZlibStream.cs" />
+    <Compile Include="Queenbee\Zlib\ZStream.cs" />
+    <Compile Include="WZK64.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="note.ico" />
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+    <None Include="legend" />
+    <None Include="Resources\game.png" />
+    <Content Include="Queenbee\Zlib\license.txt" />
+    <Content Include="Queenbee\Zlib\zlib.net.csproj" />
+    <Content Include="Queenbee\Zlib\zlib.net.sln" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="colorpreview.resx">
+      <DependentUpon>colorpreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="dllman.resx">
+      <DependentUpon>dllman.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="settings.resx">
+      <DependentUpon>settings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="songcache.resx">
+      <DependentUpon>songcache.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>:#copy "C:\Windows\fastgh3\launcher\fastgh3\bin\release\fastgh3.exe" "E:\FastGH3 Builds\fastgh3_0.7\windows\fastgh3\fastgh3.exe"
+:#copy "C:\Windows\fastgh3\launcher\fastgh3\bin\release\fastgh3.exe" "C:\windows\fastgh3\fastgh3.exe"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

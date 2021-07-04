@@ -1,0 +1,1 @@
+start "" "%USERPROFILE%\AppData\Local\Aspyr\FastGH3\AspyrConfig.xml"

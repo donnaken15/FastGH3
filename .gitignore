@@ -1,0 +1,31 @@
+JUNK
+TOOLS
+* - Copy*
+* (*)*
+*.bak
+*.bak.*
+*.exp
+*.iobj
+*.ipdb
+*.lib
+*.pdb
+*.obj
+*.tlog
+*.log
+PLUGINS/disabled
+PLUGINS/disabled3
+DATA/CACHE
+*_*.idb
+bin/
+obj/
+*.ini
+Release/
+PLUGINS/_log.txt
+.suo
+*.opensdf
+*.sdf
+__FINAL/
+game.idb
+*.UserDbg
+fastgh3_1.0.exe
+FastGH3.exe.config
