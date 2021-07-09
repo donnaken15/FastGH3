@@ -197,7 +197,6 @@
     <Content Include="note.ico" />
     <None Include="app.config" />
     <None Include="app.manifest" />
-    <None Include="legend" />
     <None Include="Resources\game.png" />
     <Content Include="Queenbee\Zlib\license.txt" />
     <Content Include="Queenbee\Zlib\zlib.net.csproj" />

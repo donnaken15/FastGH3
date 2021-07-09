@@ -11,7 +11,7 @@ namespace FastGH3
         public dllman()
         {
             InitializeComponent();
-            Height += new DirectoryInfo(folder + "\\PLUGINS").GetFiles("*.dll", SearchOption.AllDirectories).Length * 13;
+            Height += new DirectoryInfo(folder + "\\PLUGINS").GetFiles("*.dll", SearchOption.AllDirectories).Length * 9;
             dllrefresh();
         }
 

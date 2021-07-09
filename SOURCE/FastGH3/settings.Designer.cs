@@ -47,12 +47,15 @@ namespace FastGH3
             this.viewsongcache = new System.Windows.Forms.Button();
             this.verboselog = new System.Windows.Forms.CheckBox();
             this.regfix = new System.Windows.Forms.Button();
+            this.nostartupmsg = new System.Windows.Forms.CheckBox();
+            this.preserveLog = new System.Windows.Forms.CheckBox();
             this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
             this.speedlabel = new System.Windows.Forms.Label();
             this.maxnoteslbl = new System.Windows.Forms.Label();
             this.instlabel = new System.Windows.Forms.Label();
             this.miscsettings = new System.Windows.Forms.CheckedListBox();
-            this.nostartupmsg = new System.Windows.Forms.CheckBox();
+            this.dbgmnu = new System.Windows.Forms.CheckBox();
+            this.keymode = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
@@ -63,7 +66,7 @@ namespace FastGH3
             this.ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ok.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.ok.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ok.Location = new System.Drawing.Point(241, 199);
+            this.ok.Location = new System.Drawing.Point(241, 237);
             this.ok.Name = "ok";
             this.ok.Size = new System.Drawing.Size(29, 23);
             this.ok.TabIndex = 0;
@@ -91,7 +94,7 @@ namespace FastGH3
             this.res.Name = "res";
             this.res.Size = new System.Drawing.Size(84, 21);
             this.res.TabIndex = 2;
-            this.tooltip.SetToolTip(this.res, resources.GetString("res.ToolTip"));
+            this.tooltip.SetToolTip(this.res, "This allows you to change the window size of the game.");
             this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
             // 
             // hypers
@@ -148,10 +151,9 @@ namespace FastGH3
             // 
             // importonly
             // 
-            this.importonly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.importonly.AutoSize = true;
             this.importonly.Enabled = false;
-            this.importonly.Location = new System.Drawing.Point(168, 228);
+            this.importonly.Location = new System.Drawing.Point(156, 312);
             this.importonly.Name = "importonly";
             this.importonly.Size = new System.Drawing.Size(103, 17);
             this.importonly.TabIndex = 7;
@@ -168,7 +170,7 @@ namespace FastGH3
             this.creditlink.AutoSize = true;
             this.creditlink.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.creditlink.LinkColor = System.Drawing.Color.Black;
-            this.creditlink.Location = new System.Drawing.Point(12, 212);
+            this.creditlink.Location = new System.Drawing.Point(12, 250);
             this.creditlink.Name = "creditlink";
             this.creditlink.Size = new System.Drawing.Size(39, 13);
             this.creditlink.TabIndex = 8;
@@ -197,7 +199,7 @@ namespace FastGH3
             this.scrshmode.AutoSize = true;
             this.scrshmode.Enabled = false;
             this.scrshmode.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.scrshmode.Location = new System.Drawing.Point(155, 176);
+            this.scrshmode.Location = new System.Drawing.Point(127, 376);
             this.scrshmode.Name = "scrshmode";
             this.scrshmode.Size = new System.Drawing.Size(115, 18);
             this.scrshmode.TabIndex = 9;
@@ -212,7 +214,7 @@ namespace FastGH3
             this.nostatsonend.AutoSize = true;
             this.nostatsonend.Enabled = false;
             this.nostatsonend.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.nostatsonend.Location = new System.Drawing.Point(156, 200);
+            this.nostatsonend.Location = new System.Drawing.Point(91, 288);
             this.nostatsonend.Name = "nostatsonend";
             this.nostatsonend.Size = new System.Drawing.Size(107, 18);
             this.nostatsonend.TabIndex = 10;
@@ -277,8 +279,9 @@ namespace FastGH3
             // nofailviewer
             // 
             this.nofailviewer.AutoSize = true;
+            this.nofailviewer.Enabled = false;
             this.nofailviewer.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.nofailviewer.Location = new System.Drawing.Point(4, 109);
+            this.nofailviewer.Location = new System.Drawing.Point(102, 352);
             this.nofailviewer.Name = "nofailviewer";
             this.nofailviewer.Size = new System.Drawing.Size(122, 18);
             this.nofailviewer.TabIndex = 16;
@@ -286,22 +289,20 @@ namespace FastGH3
             this.tooltip.SetToolTip(this.nofailviewer, "Alternative no fail mode. However, the \r\nRock Meter can go down but at the lowest" +
         "\r\nhealth, the needle will stop and not change\r\nfor the rest of the song.");
             this.nofailviewer.UseVisualStyleBackColor = true;
+            this.nofailviewer.Visible = false;
             this.nofailviewer.CheckedChanged += new System.EventHandler(this.nofailviewer_CheckedChanged);
             // 
             // vsyncswitch
             // 
             this.vsyncswitch.AutoSize = true;
-            this.vsyncswitch.Enabled = false;
             this.vsyncswitch.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.vsyncswitch.Location = new System.Drawing.Point(147, 176);
+            this.vsyncswitch.Location = new System.Drawing.Point(4, 162);
             this.vsyncswitch.Name = "vsyncswitch";
             this.vsyncswitch.Size = new System.Drawing.Size(99, 18);
             this.vsyncswitch.TabIndex = 15;
             this.vsyncswitch.Text = "Disable Vsync";
-            this.tooltip.SetToolTip(this.vsyncswitch, "Get unlimited FPS. A new window however may\r\nappear but it\'s the program required" +
-        " to disable Vsync.");
+            this.tooltip.SetToolTip(this.vsyncswitch, "Get unlimited FPS.");
             this.vsyncswitch.UseVisualStyleBackColor = true;
-            this.vsyncswitch.Visible = false;
             this.vsyncswitch.CheckedChanged += new System.EventHandler(this.vsyncswitch_CheckedChanged);
             // 
             // maxnotes
@@ -354,7 +355,7 @@ namespace FastGH3
             // pluginmanage
             // 
             this.pluginmanage.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.pluginmanage.Location = new System.Drawing.Point(156, 109);
+            this.pluginmanage.Location = new System.Drawing.Point(156, 138);
             this.pluginmanage.Name = "pluginmanage";
             this.pluginmanage.Size = new System.Drawing.Size(124, 23);
             this.pluginmanage.TabIndex = 23;
@@ -367,7 +368,7 @@ namespace FastGH3
             // 
             this.songcaching.AutoSize = true;
             this.songcaching.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.songcaching.Location = new System.Drawing.Point(4, 126);
+            this.songcaching.Location = new System.Drawing.Point(4, 109);
             this.songcaching.Name = "songcaching";
             this.songcaching.Size = new System.Drawing.Size(99, 18);
             this.songcaching.TabIndex = 24;
@@ -379,22 +380,20 @@ namespace FastGH3
             // 
             // viewsongcache
             // 
-            this.viewsongcache.Enabled = false;
-            this.viewsongcache.Location = new System.Drawing.Point(152, 164);
+            this.viewsongcache.Location = new System.Drawing.Point(156, 109);
             this.viewsongcache.Name = "viewsongcache";
             this.viewsongcache.Size = new System.Drawing.Size(124, 23);
             this.viewsongcache.TabIndex = 25;
             this.viewsongcache.Text = "Song Cache";
             this.tooltip.SetToolTip(this.viewsongcache, "View song cache files.");
             this.viewsongcache.UseVisualStyleBackColor = true;
-            this.viewsongcache.Visible = false;
             this.viewsongcache.Click += new System.EventHandler(this.viewsongcache_Click);
             // 
             // verboselog
             // 
             this.verboselog.AutoSize = true;
             this.verboselog.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.verboselog.Location = new System.Drawing.Point(4, 144);
+            this.verboselog.Location = new System.Drawing.Point(4, 127);
             this.verboselog.Name = "verboselog";
             this.verboselog.Size = new System.Drawing.Size(112, 18);
             this.verboselog.TabIndex = 26;
@@ -406,7 +405,7 @@ namespace FastGH3
             // regfix
             // 
             this.regfix.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.regfix.Location = new System.Drawing.Point(156, 139);
+            this.regfix.Location = new System.Drawing.Point(156, 167);
             this.regfix.Name = "regfix";
             this.regfix.Size = new System.Drawing.Size(124, 23);
             this.regfix.TabIndex = 27;
@@ -415,6 +414,33 @@ namespace FastGH3
         "nd\r\nin addition reconfigure file association.");
             this.regfix.UseVisualStyleBackColor = true;
             this.regfix.Click += new System.EventHandler(this.regfixrun);
+            // 
+            // nostartupmsg
+            // 
+            this.nostartupmsg.AutoSize = true;
+            this.nostartupmsg.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.nostartupmsg.Location = new System.Drawing.Point(4, 144);
+            this.nostartupmsg.Name = "nostartupmsg";
+            this.nostartupmsg.Size = new System.Drawing.Size(126, 18);
+            this.nostartupmsg.TabIndex = 16;
+            this.nostartupmsg.Text = "No startup message";
+            this.tooltip.SetToolTip(this.nostartupmsg, "If turned on when opening the application by itself, the program will immediately" +
+        " ask for a file.");
+            this.nostartupmsg.UseVisualStyleBackColor = true;
+            this.nostartupmsg.CheckedChanged += new System.EventHandler(this.nostartupmsg_CheckedChanged);
+            // 
+            // preserveLog
+            // 
+            this.preserveLog.AutoSize = true;
+            this.preserveLog.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.preserveLog.Location = new System.Drawing.Point(4, 180);
+            this.preserveLog.Name = "preserveLog";
+            this.preserveLog.Size = new System.Drawing.Size(91, 18);
+            this.preserveLog.TabIndex = 10;
+            this.preserveLog.Text = "Preserve log";
+            this.tooltip.SetToolTip(this.preserveLog, "If enabled, the program will wait for a keypress to exit.");
+            this.preserveLog.UseVisualStyleBackColor = true;
+            this.preserveLog.CheckedChanged += new System.EventHandler(this.nostatsonend_CheckedChanged);
             // 
             // backgroundcolordiag
             // 
@@ -453,42 +479,54 @@ namespace FastGH3
             // 
             // miscsettings
             // 
-            this.miscsettings.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.miscsettings.Enabled = false;
             this.miscsettings.FormattingEnabled = true;
             this.miscsettings.Items.AddRange(new object[] {
-            "Screenshot mode",
-            "No fail (viewercam)",
-            "No stats on end",
             "Song caching",
-            "Disable vsync",
+            "No stats on end",
+            "Disable Vsync",
             "Verbose logging",
             "No startup message",
-            "Save replays",
             "Press start to play",
             "Lefty flip"});
-            this.miscsettings.Location = new System.Drawing.Point(35, 228);
+            this.miscsettings.Location = new System.Drawing.Point(210, 261);
             this.miscsettings.Name = "miscsettings";
-            this.miscsettings.Size = new System.Drawing.Size(127, 154);
+            this.miscsettings.Size = new System.Drawing.Size(127, 109);
             this.miscsettings.TabIndex = 30;
             this.miscsettings.Visible = false;
             // 
-            // nostartupmsg
+            // dbgmnu
             // 
-            this.nostartupmsg.AutoSize = true;
-            this.nostartupmsg.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.nostartupmsg.Location = new System.Drawing.Point(4, 161);
-            this.nostartupmsg.Name = "nostartupmsg";
-            this.nostartupmsg.Size = new System.Drawing.Size(126, 18);
-            this.nostartupmsg.TabIndex = 16;
-            this.nostartupmsg.Text = "No startup message";
-            this.nostartupmsg.UseVisualStyleBackColor = true;
-            this.nostartupmsg.CheckedChanged += new System.EventHandler(this.nostartupmsg_CheckedChanged);
+            this.dbgmnu.AutoSize = true;
+            this.dbgmnu.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.dbgmnu.Location = new System.Drawing.Point(4, 198);
+            this.dbgmnu.Name = "dbgmnu";
+            this.dbgmnu.Size = new System.Drawing.Size(93, 18);
+            this.dbgmnu.TabIndex = 10;
+            this.dbgmnu.Text = "Debug menu";
+            this.tooltip.SetToolTip(this.dbgmnu, "Enable built-in debug menu.\r\nWARNING: Don\'t use venue-type functions.");
+            this.dbgmnu.UseVisualStyleBackColor = true;
+            this.dbgmnu.CheckedChanged += new System.EventHandler(this.dbgmnu_CheckedChanged);
+            // 
+            // keymode
+            // 
+            this.keymode.AutoSize = true;
+            this.keymode.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.keymode.Location = new System.Drawing.Point(4, 217);
+            this.keymode.Name = "keymode";
+            this.keymode.Size = new System.Drawing.Size(106, 18);
+            this.keymode.TabIndex = 10;
+            this.keymode.Text = "Keyboard mode";
+            this.tooltip.SetToolTip(this.keymode, "Enable to fix key input not working without going through certain menus, or detec" +
+        "ting a controller you don\'t want it to.\r\nMay require pressing green twice.");
+            this.keymode.UseVisualStyleBackColor = true;
+            this.keymode.CheckedChanged += new System.EventHandler(this.keymode_CheckedChanged);
             // 
             // settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 234);
+            this.ClientSize = new System.Drawing.Size(282, 272);
             this.Controls.Add(this.miscsettings);
             this.Controls.Add(this.regfix);
             this.Controls.Add(this.verboselog);
@@ -507,6 +545,9 @@ namespace FastGH3
             this.Controls.Add(this.speedlabel);
             this.Controls.Add(this.colorpanel);
             this.Controls.Add(this.setbgcolor);
+            this.Controls.Add(this.keymode);
+            this.Controls.Add(this.dbgmnu);
+            this.Controls.Add(this.preserveLog);
             this.Controls.Add(this.nostatsonend);
             this.Controls.Add(this.scrshmode);
             this.Controls.Add(this.creditlink);
@@ -573,5 +614,8 @@ namespace FastGH3
         private Button regfix;
         private CheckedListBox miscsettings;
         private CheckBox nostartupmsg;
+        private CheckBox preserveLog;
+        private CheckBox dbgmnu;
+        private CheckBox keymode;
     }
 }

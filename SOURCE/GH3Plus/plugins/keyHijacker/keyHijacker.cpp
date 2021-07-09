@@ -1,3 +1,6 @@
+
+#define scrolltime_mod
+
 #include "keyHijacker.h"
 #include "resource.h"
 #include "core\Patcher.h"
@@ -7,6 +10,9 @@
 #include <mmsystem.h>
 #include <string>
 #include <cstdio>
+#ifdef scrolltime_mod
+#include <cmath>
+#endif
 #pragma comment(lib,"Winmm.lib")
 
 static const LPVOID changeDetour = (LPVOID)0x00538EF0;
@@ -17,6 +23,10 @@ static uint32_t changeSpeedStruct[] = { 0x00010000, 0xCDCDCDCD,
 static uint32_t changePitchStruct[] = { 0x00010000, 0xCDCDCDCD,
     0x00001B00, 0xFD2C9E38, 0x3370A847, 0xCDCDCDCD,
     0x00000500, 0xD8604126, 0x3F800000, 0x00000000 };
+#endif
+
+#ifdef scrolltime_mod
+static const LPVOID scrollTimeDetour = (LPVOID)0x00538FF9;
 #endif
 
 static float g_hackedSpeed = 1.0f;
@@ -216,6 +226,29 @@ _declspec(naked) void checkKeysNaked()
     }
 }
 
+#ifdef scrolltime_mod
+_declspec(naked) void changeScrollTimeNaked()
+{
+	static const uint32_t returnAddress = 0x00538FFE;
+	static const uint32_t callAddress = 0x00478A40;
+	static uint32_t tmpQbKey = 0x0;
+	_asm
+	{
+		mov		tmpQbKey, eax;
+		call	callAddress;
+		cmp		tmpQbKey, KEY_SCROLL_TIME;
+		jne		EXIT;
+
+		fld[esp + 0x14];
+		fmul	g_hackedSpeed;
+		fstp[esp + 0x14];
+
+	EXIT:
+		jmp		returnAddress;
+	}
+}
+#endif
+
 void ApplyHack()
 {
     // set up pointers within the changeX structs
@@ -227,4 +260,7 @@ void ApplyHack()
 
     g_patcher.WriteJmp(changeDetour, &changeOverrideNaked);
     g_patcher.WriteJmp(gameFrameDetour, &checkKeysNaked);
+#ifdef scrolltime_mod
+	g_patcher.WriteJmp(scrollTimeDetour, &changeScrollTimeNaked);
+#endif
 }

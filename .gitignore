@@ -25,7 +25,12 @@ PLUGINS/_log.txt
 *.opensdf
 *.sdf
 __FINAL/
+__FINAL.zip
+__build.bat
+__BUILDS
 game.idb
 *.UserDbg
 fastgh3_1.0.exe
 FastGH3.exe.config
+currentsong.txt
+SOURCE/QbScripts/syntaxref/*.qbscript

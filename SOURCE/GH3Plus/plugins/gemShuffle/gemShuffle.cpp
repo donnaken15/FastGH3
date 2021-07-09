@@ -1,3 +1,6 @@
+
+#define opennote_mod
+
 #include "core\Patcher.h"
 #include "gh3\GH3Keys.h"
 #include "gh3\GH3GlobalAddresses.h"
@@ -10,6 +13,10 @@ static void * const fruityDetour = (void *)0x00432887; //0x004327D2; // 0x004327
 static void * const overstrumDetour1 = (void *)0x004320F0; //overstrum
 
 static uint32_t g_randomIndex;
+
+#ifdef opennote_mod
+static uint32_t openNoteIndex = 5;
+#endif
 
 static GH3P::Patcher g_patcher = GH3P::Patcher(__FILE__);
 
@@ -24,11 +31,17 @@ __declspec (naked) void fruityNaked()
 
 	__asm
 	{
+#ifdef opennote_mod
+		cmp		eax, openNoteIndex;
+		je		EXIT;
+#endif
 		pushad;
 		call	randomizeIndex;
 		popad;
 		mov		eax, g_randomIndex;
-
+#ifdef opennote_mod
+		EXIT:
+#endif
 		test    ecx, ecx
 		movss	[esp + 34h], xmm0
 

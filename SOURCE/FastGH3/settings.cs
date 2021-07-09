@@ -17,11 +17,11 @@ namespace FastGH3
         
         [DllImport("USER32.DLL", CharSet = CharSet.Unicode)]
         public static extern IntPtr FindWindow(string lpClassName,
-        string lpWindowName);
+                string lpWindowName);
 
         [DllImport("user32.dll")]
         public static extern UInt32 SendMessage
-    (IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
+                (IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
 
         static internal bool IsAdmin()
         {
@@ -48,10 +48,11 @@ namespace FastGH3
 
         private static bool disableEvents = false, filesafe;
 
-        private static QbFile guitarqb, hudqb;
+        private static QbFile guitarqb, hudqb;//, bootqb;
         private static QbItemStruct player1;
         private static QbItemQbKey curdiff, curdiff2, p1part;
-        private static QbItemInteger hyperspeed, backcolrgb, viewmode;
+        private static QbItemInteger hyperspeed, btncheats,
+            backcolrgb, viewmode, autostart;
         private static QbItemFloat speedf;
         private static QbKey[] diffCRCs = {
             QbKey.Create(0xB69D6568), QbKey.Create(0x398CBA48),
@@ -111,11 +112,13 @@ namespace FastGH3
 
         public settings()
         {
-            ini.Load("settings.ini");
+            if (File.Exists("settings.ini"))
+                ini.Load("settings.ini");
             pakformat = new PakFormat(folder + pak + "qb.pak.xen", folder + pak + "qb.pab.xen", "", PakFormatType.PC, false);
             qbedit = new PakEditor(pakformat, false);
-            guitarqb = qbedit.ReadQbFile("E34DCB0C");
-            hudqb = qbedit.ReadQbFile("41A8CF91");//scripts\\guitar\\guitar.qb
+            guitarqb = qbedit.ReadQbFile("E34DCB0C");//scripts\\guitar\\guitar.qb
+            hudqb = qbedit.ReadQbFile("41A8CF91");
+            //bootqb = qbedit.ReadQbFile("56628B8A");
             //new QbFile(folder + pak + "song.qb", pakformat);
             disableEvents = true;
             //qbpak = File.ReadAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen");
@@ -127,8 +130,17 @@ namespace FastGH3
             InitializeComponent();
             SetForegroundWindow(Handle);
             AddShieldToButton(regfix);
-            hypers.Value = Convert.ToInt32(ini.GetKeyValue("Player","Hyperspeed","0"));
-            speed.Value = Convert.ToDecimal(ini.GetKeyValue("Player","Speed","1.000")) * 100;
+            //hypers.Value = Convert.ToInt32(ini.GetKeyValue("Player","Hyperspeed","0"));
+            hyperspeed = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0xFD6B13B4), false);
+            hypers.Value = hyperspeed.Values[0];
+
+            btncheats = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0x2AF92804), false);
+            dbgmnu.Checked = btncheats.Values[0] == 1;
+            autostart = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0x32025D94), false);
+            keymode.Checked = autostart.Values[0] == 0;
+            //speed.Value = Convert.ToDecimal(ini.GetKeyValue("Player","Speed","100"));
+            speedf = (QbItemFloat)guitarqb.FindItem(QbKey.Create(0x16D91BC1), false);
+            speed.Value = Convert.ToDecimal(speedf.Values[0] * 100);
             scrshmode.Checked = ini.GetKeyValue("Misc","ScrshMode","0") != "0";
             verboselog.Checked = (ini.GetKeyValue("Misc", "VerboseLog","0") == "1");
             backgroundcolordiag.Color = backcolor;
@@ -136,7 +148,7 @@ namespace FastGH3
             nofailviewer.Checked = ini.GetKeyValue("Misc", "NofailViewer", "0") != "0";
             vsyncswitch.Checked = ini.GetKeyValue("Misc", "VSync", "1") == "0";
             songcaching.Checked = ini.GetKeyValue("Misc", "SongCaching", "1") == "1";
-            nostartupmsg.Checked = ini.GetKeyValue("Misc", "NoStartupMsg", "1") == "1";
+            nostartupmsg.Checked = ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1";
             foreach (Size sz in resz)
             {
                 res.Items.Add(sz.Width.ToString() + "x" + sz.Height.ToString());
@@ -275,25 +287,35 @@ namespace FastGH3
         private void creditlink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Console.Clear();
-            Console.WriteLine(@"Credits:
-
-Developed by
-donnaken15
-
-Additional help by
-ExileLord
-Nanook
-adituv
-
-Images and sounds by
-Activision
-RedOctane
-NeverSoft
-Aspyr
-
-Coding assistance by
-Stackoverflow users,");
-            Console.Write("MSDN, and .NET Perls");
+            Console.WriteLine(
+@"adituv            - QbScript reverse engineering,
+                    compiler/decompiler, vsync flame fix,
+                    built in QB decompiler
+ExileLord         - GH3+ and executable reverse engineering,
+                    mods, GHTCP patching, IDA stuff, hacksawed
+                    ChartEdit/Chart-to-PAK classes and conversion tools,
+                    progress in IDA beyond Oct 2016 that he accidentally
+                    shared in his videos and streams that might've benefitted
+                    in finding more things
+donnaken15        - other QbScript hacking, mod creation and setup,
+                    game optimization, main program and automation
+maxkiller         - original GHTCP + texture explorer
+Nanook            - QueenBee + Parser
+raphaelgoulart    - mid2chart
+GameZelda         - original modding and game data R.E.
+aluigi            - FSBExt, and other cool off-project extraction tools
+HATRED            - better No-CD/SecuROM fix than BATTERY
+No1mann           \
+Invo              \
+Leff              \
+ScoreHero forums
+and many others   - Miscellaneous things / help
+SoX  devs         - SoX, decoder
+LAME devs         - LAME, faster encoder
+Activision        \
+RedOctane         \
+Neversoft         \
+Aspyr             - Original game, images, sounds, copyright");
         }
 
         private void hypers_ValueChanged(object sender, EventArgs e)
@@ -335,7 +357,6 @@ Stackoverflow users,");
                             hypers.Value = hypers.Value;
                             break;
                     }*/
-                hyperspeed = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0xFD6B13B4), false);
                 hyperspeed.Values[0] = Convert.ToInt32(hypers.Value);
                 saveQb();
                 hypers.Enabled = true;
@@ -344,8 +365,8 @@ Stackoverflow users,");
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailviewer.Enabled = true;
-                ini.SetKeyValue("Player", "Hyperspeed", hypers.Value.ToString());
-                ini.Save("settings.ini");
+                //ini.SetKeyValue("Player", "Hyperspeed", hypers.Value.ToString());
+                //ini.Save("settings.ini");
                 //File.WriteAllText(folder + "\\CONFIGS\\hyperspeed", Convert.ToString(hypers.Value));
                 ResumeLayout();
             }
@@ -664,6 +685,104 @@ Stackoverflow users,");
             ini.Save("settings.ini");
         }
 
+        private void keymode_CheckedChanged(object sender, EventArgs e)
+        {
+            if (disableEvents == false)
+            {
+                SuspendLayout();
+                hypers.Enabled = false;
+                diff.Enabled = false;
+                setbgcolor.Enabled = false;
+                scrshmode.Enabled = false;
+                nostatsonend.Enabled = false;
+                nofailviewer.Enabled = false;
+                /*for (int i = 64; i < qbpak.Length; i++)
+                    if (qbpak[i] == 0x16 &&
+                        qbpak[i + 1] == 0xD9 &&
+                        qbpak[i + 2] == 0x1B &&
+                        qbpak[i + 3] == 0xC1 &&
+                        qbpak[i + 4] == 0xE3 &&
+                        qbpak[i + 5] == 0x4D &&
+                        qbpak[i + 6] == 0xCB &&
+                        qbpak[i + 7] == 0x0C)
+                    {
+                        for (int j = 0; j < 4; j++)
+                            qbpak[i + 8 + j] = BitConverter.GetBytes((float)speed.Value/100)[3-j];
+                        filesafe = true;
+                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
+                        break;
+                    }
+                if (!filesafe)
+                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
+                    {
+                        case DialogResult.Abort:
+                            Application.Exit();
+                            break;
+                        case DialogResult.Retry:
+                            backgroundcolordiag.ShowDialog();
+                            break;
+                    }*/
+                autostart.Values[0] = keymode.Checked ? 0 : 1;
+                saveQb();
+                hypers.Enabled = true;
+                diff.Enabled = true;
+                setbgcolor.Enabled = true;
+                scrshmode.Enabled = true;
+                nostatsonend.Enabled = true;
+                nofailviewer.Enabled = true;
+                //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
+            }
+        }
+
+        private void dbgmnu_CheckedChanged(object sender, EventArgs e)
+        {
+            if (disableEvents == false)
+            {
+                SuspendLayout();
+                hypers.Enabled = false;
+                diff.Enabled = false;
+                setbgcolor.Enabled = false;
+                scrshmode.Enabled = false;
+                nostatsonend.Enabled = false;
+                nofailviewer.Enabled = false;
+                /*for (int i = 64; i < qbpak.Length; i++)
+                    if (qbpak[i] == 0x16 &&
+                        qbpak[i + 1] == 0xD9 &&
+                        qbpak[i + 2] == 0x1B &&
+                        qbpak[i + 3] == 0xC1 &&
+                        qbpak[i + 4] == 0xE3 &&
+                        qbpak[i + 5] == 0x4D &&
+                        qbpak[i + 6] == 0xCB &&
+                        qbpak[i + 7] == 0x0C)
+                    {
+                        for (int j = 0; j < 4; j++)
+                            qbpak[i + 8 + j] = BitConverter.GetBytes((float)speed.Value/100)[3-j];
+                        filesafe = true;
+                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
+                        break;
+                    }
+                if (!filesafe)
+                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
+                    {
+                        case DialogResult.Abort:
+                            Application.Exit();
+                            break;
+                        case DialogResult.Retry:
+                            backgroundcolordiag.ShowDialog();
+                            break;
+                    }*/
+                btncheats.Values[0] = dbgmnu.Checked ? 1 : 0;
+                saveQb();
+                hypers.Enabled = true;
+                diff.Enabled = true;
+                setbgcolor.Enabled = true;
+                scrshmode.Enabled = true;
+                nostatsonend.Enabled = true;
+                nofailviewer.Enabled = true;
+                //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
+            }
+        }
+
         private void regfixrun(object sender, EventArgs e)
         {
             if (IsAdmin())
@@ -721,14 +840,14 @@ Stackoverflow users,");
                             backgroundcolordiag.ShowDialog();
                             break;
                     }*/
+                speedf.Values[0] = float.Parse((speed.Value / 100).ToString());
+                saveQb();
                 hypers.Enabled = true;
                 diff.Enabled = true;
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailviewer.Enabled = true;
-                ini.SetKeyValue("Player", "Speed", (speed.Value / 100).ToString());
-                ini.Save("settings.ini");
                 //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
             }
         }
@@ -781,36 +900,10 @@ Stackoverflow users,");
 
         private void replaygame_Click(object sender, EventArgs e)
         {
-            /*try
-            {
-                Process.GetProcessesByName("dxwnd")[0].Kill();
-            }
-            catch { }
-            Process dxwnd = new Process();
-            dxwnd.StartInfo.FileName = folder + "\\WINDOWED\\dxwnd.exe";
-            dxwnd.StartInfo.WorkingDirectory = folder + "\\WINDOWED\\";
-            dxwnd.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;
-            dxwnd.StartInfo.Arguments = "/q";*/
             Process gh3 = new Process();
             gh3.StartInfo.WorkingDirectory = folder + "\\";
-            if (ini.GetKeyValue("Misc","VSync","1") == "0")
-            {
-                //dxwnd.Start();
-                gh3.StartInfo.FileName = "C:\\Program Files\\3da\\3DAnalyze.exe";
-                gh3.StartInfo.Arguments = "/EXE=" + Environment.CurrentDirectory + "\\gh3.exe";
-            }
-            else
-            {
-                /*gh3.StartInfo.FileName = folder + "\\WINDOWED\\dxwnd.exe";
-                gh3.StartInfo.Arguments = "/q";
-                gh3.StartInfo.WorkingDirectory = folder + "\\WINDOWED";
-                gh3.StartInfo.WindowStyle = ProcessWindowStyle.Minimized;*/
-                gh3.StartInfo.FileName = folder + "\\game.exe";
-            }
+            gh3.StartInfo.FileName = folder + "\\game.exe";
             gh3.Start();
-            Thread.Sleep(2500);
-            if (gh3.StartInfo.FileName == "C:\\Program Files\\3da\\3DAnalyze.exe")
-                gh3.Kill();
         }
 
         private void part_SelectedIndexChanged(object sender, EventArgs e)

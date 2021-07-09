@@ -107,6 +107,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\gh3\BinaryTree.h" />
+    <ClInclude Include="..\gh3\GH3CodeConstants.h" />
+    <ClInclude Include="..\gh3\GH3Functions.h" />
+    <ClInclude Include="..\gh3\GH3GlobalAddresses.h" />
     <ClInclude Include="..\gh3\GlobalMap.h" />
     <ClInclude Include="..\gh3\malloc.h" />
     <ClInclude Include="..\gh3\QbArray.h" />

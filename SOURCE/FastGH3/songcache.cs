@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -6,25 +7,97 @@ namespace FastGH3
 {
     public partial class songcache : Form
     {
+        public string folder = Path.GetDirectoryName(Application.ExecutablePath) + "\\DATA\\CACHE\\";
+
+        public IniFile i = new IniFile();
+
         public songcache()
         {
             InitializeComponent();
-            foreach (FileInfo file in new DirectoryInfo(Environment.CurrentDirectory + "\\DATA\\CACHE\\").GetFiles("*.pak", SearchOption.AllDirectories))
+            i.Load(folder + ".db.ini");
+            DataGridViewRow newRow;
+            int pushinteger = 0;
+            foreach (IniFile.IniSection s in i.Sections)
             {
-                cache.Rows.Add(file.Name.Replace(".pak", ""), "", "DSX", calcSizeUnit(new FileInfo(file.FullName).Length + new FileInfo(file.FullName.Replace(".pak", ".fsb")).Length), File.ReadAllText(Environment.CurrentDirectory + "\\DATA\\CACHE\\.db.txt").IndexOf(file.ToString().Replace(".pak", "")));
-                Height += 22;
+                if (File.Exists(folder + s.Name) &&
+                    File.Exists(folder + i.GetKeyValue(s.Name,
+                        "Audio", new string('0', 16))))
+                {
+                    newRow = new DataGridViewRow();
+                    newRow.CreateCells(cache,
+                        s.Name, // icon
+                        i.GetKeyValue(s.Name, "Author", "Unknown"),
+                        i.GetKeyValue(s.Name, "Title", "Untitled"),
+                        FileSize(new FileInfo(folder + s.Name).Length +
+                                new FileInfo(folder + i.GetKeyValue(s.Name,
+                                            "Audio", new string('0', 16))).Length),
+                        i.GetKeyValue(s.Name, "Length", "00:00"),
+                        "Play"
+                        );
+                    cache.Rows.Add(newRow);
+                    if (Height < 500)
+                        Height += 22;
+                }
             }
         }
 
-        string calcSizeUnit(long size)
+        char[] bUnits = " KMGT".ToCharArray();
+        uint bThousand = 1024; // based *ibibytes
+
+        public string FileSize(long length)
         {
-            if (size > 1073741824)
-                return Math.Round(size / (float)1073741824, 2).ToString() + "GB";
-            if (size > 1048576)
-                return Math.Round(size / (float)1048576, 2).ToString() + "MB";
-            if (size > 1024)
-                return Math.Round(size / (float)1024, 2).ToString() + "KB";
-            return size.ToString() + "B";
+            float newSize = length;
+            byte bUnit = 0;
+            while (newSize >= bThousand && bUnit < bUnits.Length - 1)
+            {
+                bUnit++;
+                newSize /= bThousand;
+            }
+            if (bUnit == 0)
+                return newSize.ToString("0").PadLeft(4) + " bytes";
+            else
+                return newSize.ToString("0.00 ").PadLeft(7) + bUnits[bUnit] + 'B';
+        }
+
+        private void runGameWithCache(DataGridViewCellEventArgs e)
+        {
+            IniFile.IniSection cs = i.GetSection((string)cache.Rows[e.RowIndex].Cells[0].Value);
+            File.Copy(folder + cs.Name, folder + "..\\PAK\\song.pak.xen", true);
+            File.Copy(folder + cs.GetKey("Audio").Value, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
+            Process.Start(folder + "..\\..\\game.exe");
+        }
+
+        private void cacheClick0(object sender, DataGridViewCellEventArgs e)
+        {
+            switch (e.ColumnIndex)
+            {
+                case 5:
+                    runGameWithCache(e);
+                    break;
+            }
+        }
+
+        private void cacheDblClick(object sender, DataGridViewCellEventArgs e)
+        {
+            runGameWithCache(e);
+        }
+
+        private void cacheDelete1(object sender, EventArgs e)
+        {
+            foreach (DataGridViewRow d in cache.SelectedRows)
+            {
+                IniFile.IniSection s = i.GetSection(d.Cells[0].Value.ToString());
+                File.Delete(folder + s.Name);
+                File.Delete(folder + s.GetKey("Audio").Value);
+                i.RemoveSection(s.Name);
+                i.Save(folder + ".db.ini");
+                cache.Rows.Remove(d);
+            }
+        }
+
+        private void cacheRgtclick(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            deleteTool.Enabled = cache.SelectedRows.Count > 0;
         }
     }
 }

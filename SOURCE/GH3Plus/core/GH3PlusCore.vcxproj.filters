@@ -104,5 +104,14 @@
     <ClInclude Include="..\gh3\malloc.h">
       <Filter>Header Files\GH3</Filter>
     </ClInclude>
+    <ClInclude Include="..\gh3\GH3CodeConstants.h">
+      <Filter>Header Files\GH3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gh3\GH3GlobalAddresses.h">
+      <Filter>Header Files\GH3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\gh3\GH3Functions.h">
+      <Filter>Header Files\GH3</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

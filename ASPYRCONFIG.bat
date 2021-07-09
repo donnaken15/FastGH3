@@ -1,1 +1,1 @@
-start "" "%USERPROFILE%\AppData\Local\Aspyr\FastGH3\AspyrConfig.xml"
+start "" notepad "%USERPROFILE%\AppData\Local\Aspyr\FastGH3\AspyrConfig.xml"
