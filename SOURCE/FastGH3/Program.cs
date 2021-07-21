@@ -310,7 +310,8 @@ namespace FastGH3
                                             audiostreams[0] = chartinfo.Value;
                                         }
                                     }
-                                    verboseline(chartinfo.Key + " file found");
+                                    if (File.Exists(audiostreams[0]))
+                                        verboseline(chartinfo.Key + " file found");
                                     break;
                                 case "GuitarStream":
                                     try
@@ -328,7 +329,8 @@ namespace FastGH3
                                             audiostreams[1] = chartinfo.Value;
                                         }
                                     }
-                                    verboseline(chartinfo.Key + " file found");
+                                    if (File.Exists(audiostreams[1]))
+                                        verboseline(chartinfo.Key + " file found");
                                     break;
                                 case "BassStream":
                                     try
@@ -346,7 +348,8 @@ namespace FastGH3
                                             audiostreams[2] = chartinfo.Value;
                                         }
                                     }
-                                    verboseline(chartinfo.Key + " file found");
+                                    if (File.Exists(audiostreams[2]))
+                                        verboseline(chartinfo.Key + " file found");
                                     break;
                             }
                         }
@@ -366,6 +369,21 @@ namespace FastGH3
                                     }
                                 }
                         }
+                        audstnames = new string[] { "lead", "bass" };
+                        for (int i = 0; i < 2; i++)
+                        {
+                            if (!File.Exists(audiostreams[i + 1]))
+                                for (int j = 0; j < 3; j++)
+                                {
+                                    audtmpstr = chartfolder + audstnames[i] + '.' + audextnames[j];
+                                    if (File.Exists(audtmpstr))
+                                    {
+                                        verboseline("Found FOF structure files / " + audstnames[i]);
+                                        audiostreams[i + 1] = audtmpstr;
+                                        break;
+                                    }
+                                }
+                        }
                         for (int i = 0; i < 3; i++)
                         {
                             if (!File.Exists(audiostreams[0]))
@@ -379,7 +397,36 @@ namespace FastGH3
                                 }
                             }
                         }
-                        if (!File.Exists(audiostreams[0]))
+                        bool notjust3trax = false;
+                        List<string> nj3ts = new List<string>();
+                        verboseline("Checking if extra audio exists");
+                        for (int j = 0; j < 3; j++)
+                        {
+                            for (int i = 1; i < 9; i++)
+                            {
+                                audtmpstr = chartfolder + "drums_" + i + '.' + audextnames[j];
+                                if (File.Exists(audtmpstr))
+                                {
+                                    verboseline("Found isolated drums audio (" + i + ')');
+                                    notjust3trax = true;
+                                    nj3ts.Add(audtmpstr);
+                                    break;
+                                }
+                            }
+                            audtmpstr = chartfolder + "vocals." + audextnames[j];
+                            if (File.Exists(audtmpstr))
+                            {
+                                verboseline("Found isolated vocals audio");
+                                notjust3trax = true;
+                                nj3ts.Add(audtmpstr);
+                                break;
+                            }
+                        }
+                        verboseline("Current selected audio streams are:");
+                        foreach (string a in audiostreams)
+                            verboseline(a);
+                        //nj3ts += '"' + folder + music + "\\TOOLS\\mergetmp.ogg" + '"';
+                        if (!File.Exists(audiostreams[0]) && !notjust3trax)
                         {
                             verboseline("Failed to get main song file, asking user what the game should do");
                             DialogResult audiolost, playsilent = DialogResult.No, searchaudioresult = DialogResult.Cancel;
@@ -460,6 +507,12 @@ namespace FastGH3
                                         File.ReadAllBytes(audiostreams[i])
                                 );
                             }
+                            for (int i = 0; i < nj3ts.Count; i++)
+                            {
+                                audhash ^= WZK64.Create(
+                                        File.ReadAllBytes(nj3ts[i])
+                                );
+                            }
                             foreach (string f in cacheList)
                             {
                                 if (f == audhash.ToString("X16"))
@@ -469,22 +522,42 @@ namespace FastGH3
                                 }
                             }
                         }
+                        Process addaud = new Process();
                         Process fsbbuild = new Process();
                         if (!audCache)
                         {
                             Console.WriteLine("Audio is not cached.");
+                            if (notjust3trax)
+                            {
+                                verboseline("Creating audio merger...");
+                                addaud.StartInfo.FileName = folder + music + "\\TOOLS\\sox.exe";
+                                addaud.StartInfo.CreateNoWindow = true;
+                                addaud.StartInfo.UseShellExecute = true;
+                                addaud.StartInfo.Arguments = "-m";
+                                foreach (string a in nj3ts)
+                                {
+                                    addaud.StartInfo.Arguments += " \"" + a + '"';
+                                }
+                                addaud.StartInfo.Arguments += " \"" + audiostreams[0] + '"';
+                                addaud.StartInfo.Arguments += " \"" + folder + music + "\\TOOLS\\mergetmp.ogg\"  --norm=-0.1";
+                                addaud.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
+                                addaud.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                                addaud.Start();
+                                addaud.WaitForExit();
+                                audiostreams[0] = folder + music + "\\TOOLS\\mergetmp.ogg";
+                            }
+
                             verboseline("Creating encoder process...");
                             fsbbuild.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuild.bat";
                             fsbbuild.StartInfo.CreateNoWindow = true;
                             fsbbuild.StartInfo.UseShellExecute = true;
-                            fsbbuild.StartInfo.Arguments = "";
                             fsbbuild.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
                             fsbbuild.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                             verboseline("Starting FSB building...");
                             fsbbuild.StartInfo.Arguments =
                                 audiostreams[0].EncloseWithQuoteMarks() + ' ' + audiostreams[1].EncloseWithQuoteMarks() + ' ' + audiostreams[2].EncloseWithQuoteMarks() + ' ' +
                                 (folder + music + "\\TOOLS\\blank.mp3").EncloseWithQuoteMarks() + ' ' + (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks();
-                            //find program to merge audios including vocals_%d and drums_%d into one file
+                            verboseline(fsbbuild.StartInfo.Arguments);
                             fsbbuild.Start();
                         }
                         else

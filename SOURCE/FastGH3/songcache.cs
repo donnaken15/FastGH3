@@ -14,29 +14,31 @@ namespace FastGH3
         public songcache()
         {
             InitializeComponent();
-            i.Load(folder + ".db.ini");
-            DataGridViewRow newRow;
-            int pushinteger = 0;
-            foreach (IniFile.IniSection s in i.Sections)
+            if (File.Exists(folder + ".db.ini"))
             {
-                if (File.Exists(folder + s.Name) &&
-                    File.Exists(folder + i.GetKeyValue(s.Name,
-                        "Audio", new string('0', 16))))
+                i.Load(folder + ".db.ini");
+                DataGridViewRow newRow;
+                foreach (IniFile.IniSection s in i.Sections)
                 {
-                    newRow = new DataGridViewRow();
-                    newRow.CreateCells(cache,
-                        s.Name, // icon
-                        i.GetKeyValue(s.Name, "Author", "Unknown"),
-                        i.GetKeyValue(s.Name, "Title", "Untitled"),
-                        FileSize(new FileInfo(folder + s.Name).Length +
-                                new FileInfo(folder + i.GetKeyValue(s.Name,
-                                            "Audio", new string('0', 16))).Length),
-                        i.GetKeyValue(s.Name, "Length", "00:00"),
-                        "Play"
-                        );
-                    cache.Rows.Add(newRow);
-                    if (Height < 500)
-                        Height += 22;
+                    if (File.Exists(folder + s.Name) &&
+                        File.Exists(folder + i.GetKeyValue(s.Name,
+                            "Audio", new string('0', 16))))
+                    {
+                        newRow = new DataGridViewRow();
+                        newRow.CreateCells(cache,
+                            s.Name, // icon
+                            i.GetKeyValue(s.Name, "Author", "Unknown"),
+                            i.GetKeyValue(s.Name, "Title", "Untitled"),
+                            FileSize(new FileInfo(folder + s.Name).Length +
+                                    new FileInfo(folder + i.GetKeyValue(s.Name,
+                                                "Audio", new string('0', 16))).Length),
+                            i.GetKeyValue(s.Name, "Length", "00:00"),
+                            "Play"
+                            );
+                        cache.Rows.Add(newRow);
+                        if (Height < 500)
+                            Height += 22;
+                    }
                 }
             }
         }
