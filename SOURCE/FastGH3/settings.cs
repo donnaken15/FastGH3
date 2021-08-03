@@ -149,6 +149,7 @@ namespace FastGH3
             vsyncswitch.Checked = ini.GetKeyValue("Misc", "VSync", "1") == "0";
             songcaching.Checked = ini.GetKeyValue("Misc", "SongCaching", "1") == "1";
             nostartupmsg.Checked = ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1";
+            preserveLog.Checked = ini.GetKeyValue("Misc", "PreserveLog", "0") == "1";
             foreach (Size sz in resz)
             {
                 res.Items.Add(sz.Width.ToString() + "x" + sz.Height.ToString());
@@ -288,34 +289,34 @@ namespace FastGH3
         {
             Console.Clear();
             Console.WriteLine(
-@"adituv            - QbScript reverse engineering,
-                    compiler/decompiler, vsync flame fix,
-                    built in QB decompiler
-ExileLord         - GH3+ and executable reverse engineering,
-                    mods, GHTCP patching, IDA stuff, hacksawed
-                    ChartEdit/Chart-to-PAK classes and conversion tools,
-                    progress in IDA beyond Oct 2016 that he accidentally
-                    shared in his videos and streams that might've benefitted
-                    in finding more things
-donnaken15        - other QbScript hacking, mod creation and setup,
-                    game optimization, main program and automation
-maxkiller         - original GHTCP + texture explorer
-Nanook            - QueenBee + Parser
-raphaelgoulart    - mid2chart
-GameZelda         - original modding and game data R.E.
-aluigi            - FSBExt, and other cool off-project extraction tools
-HATRED            - better No-CD/SecuROM fix than BATTERY
-No1mann           \
-Invo              \
-Leff              \
+@"adituv           - QbScript reverse engineering,
+                   compiler/decompiler, vsync flame fix,
+                   built in QB decompiler
+ExileLord        - GH3+ and executable reverse engineering,
+                   mods, GHTCP patching, IDA stuff, hacksawed
+                   ChartEdit/Chart-to-PAK classes and conversion tools,
+                   progress in IDA beyond Oct 2016 that he accidentally
+                   shared in his videos and streams that might've benefitted
+                   in finding more things
+donnaken15       - other QbScript hacking, mod creation and setup,
+                   game optimization, main program and automation
+maxkiller        - original GHTCP + texture explorer
+Nanook           - QueenBee + Parser
+raphaelgoulart   - mid2chart
+GameZelda        - original modding and game data R.E.
+aluigi           - FSBExt, and other cool off-project extraction tools
+HATRED           - better No-CD/SecuROM fix than BATTERY
+No1mann          \
+Invo             \
+Leff             \
 ScoreHero forums
-and many others   - Miscellaneous things / help
-SoX  devs         - SoX, decoder
-LAME devs         - LAME, faster encoder
-Activision        \
-RedOctane         \
-Neversoft         \
-Aspyr             - Original game, images, sounds, copyright");
+and many others  - Miscellaneous things / help
+SoX  devs        - SoX, decoder
+LAME devs        - LAME, faster encoder
+Activision       \
+RedOctane        \
+Neversoft        \
+Aspyr            - Original game, images, sounds, copyright");
         }
 
         private void hypers_ValueChanged(object sender, EventArgs e)
@@ -974,6 +975,12 @@ Aspyr             - Original game, images, sounds, copyright");
                 //else
                     //File.WriteAllText(folder + "\\CONFIGS\\part", "bass");
             }
+        }
+        
+        void preservelog_CheckedChanged(object sender, EventArgs e)
+        {
+            ini.SetKeyValue("Misc", "PreserveLog", (preserveLog.Checked ? "1" : "0"));
+            ini.Save("settings.ini");
         }
     }
 }

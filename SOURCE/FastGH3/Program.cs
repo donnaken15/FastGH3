@@ -410,7 +410,6 @@ namespace FastGH3
                                     verboseline("Found isolated drums audio (" + i + ')');
                                     notjust3trax = true;
                                     nj3ts.Add(audtmpstr);
-                                    break;
                                 }
                             }
                             audtmpstr = chartfolder + "vocals." + audextnames[j];

@@ -34,3 +34,5 @@ fastgh3_1.0.exe
 FastGH3.exe.config
 currentsong.txt
 SOURCE/QbScripts/syntaxref/*.qbscript
+Debug/
+output.txt
