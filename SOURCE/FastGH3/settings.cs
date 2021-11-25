@@ -23,36 +23,19 @@ namespace FastGH3
         public static extern UInt32 SendMessage
                 (IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
 
-        static internal bool IsAdmin()
-        {
-            WindowsIdentity id = WindowsIdentity.GetCurrent();
-            WindowsPrincipal p = new WindowsPrincipal(id);
-            return p.IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
-        static internal void AddShieldToButton(Button b)
-        {
-            b.FlatStyle = FlatStyle.System;
-            //SendMessage(b.Handle, BCM_SETSHIELD, 0, 0xFFFFFFFF);
-            SendMessage(b.Handle, BCM_SETSHIELD, IntPtr.Zero, (IntPtr)0);
-        }
-
-        internal const int BCM_FIRST = 0x1600; //Normal button
-        internal const int BCM_SETSHIELD = (BCM_FIRST + 0x000C); //Elevated button
-
         private static string xmlpath = Environment.GetEnvironmentVariable("USERPROFILE") + "\\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml",
-            xml = File.ReadAllText(xmlpath), pak = "\\DATA\\PAK\\";
+            xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<r>\n<s id=\"Video.Width\">1024</s>\n<s id=\"Video.Height\">768</s>\n<s id=\"Options.GraphicsQuality\">1</s>\n<s id=\"Options.Crowd\">0</s>\n<s id=\"Options.Physics\">0</s>\n<s id=\"Options.Flares\">0</s>\n<s id=\"Options.FrontRowCamera\">1</s>\n<s id=\"AudioLagReminderShown\">1</s>\n<s id=\"Sound.SongSkew\">-0.1</s>\n</r>\n", pak = "\\DATA\\PAK\\";
 
         private static string[] bgcol, diffs = { "Easy", "Medium", "Hard", "Expert" };
         private static Color backcolor;
 
         private static bool disableEvents = false, filesafe;
 
-        private static QbFile guitarqb, hudqb;//, bootqb;
+        private static QbFile guitarqb, hudqb, crowdqb;//, bootqb;
         private static QbItemStruct player1;
         private static QbItemQbKey curdiff, curdiff2, p1part;
         private static QbItemInteger hyperspeed, btncheats,
-            backcolrgb, viewmode, autostart;
+            backcolrgb, viewmode, autostart, nofailv;
         private static QbItemFloat speedf;
         private static QbKey[] diffCRCs = {
             QbKey.Create(0xB69D6568), QbKey.Create(0x398CBA48),
@@ -104,6 +87,41 @@ namespace FastGH3
             }
         }
 
+        static TimeSpan time
+        {
+            get
+            {
+                return DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime();
+            }
+        }
+
+        static string timems
+        {
+            get
+            {
+                return "<" + (time.TotalMilliseconds / 1000).ToString("0.000") + ">";
+            }
+        }
+        
+        public static bool verboselog2;
+
+        static void verbose(object text)
+        {
+            if (verboselog2)
+            {
+                Console.Write(text);
+            }
+        }
+
+        static void verboseline(object text)
+        {
+            if (verboselog2)
+            {
+                Console.Write(timems);
+                Console.WriteLine(text);
+            }
+        }
+
         private void saveQb()
         {
             guitarqb.AlignPointers();
@@ -114,26 +132,45 @@ namespace FastGH3
         {
             if (File.Exists("settings.ini"))
                 ini.Load("settings.ini");
+            verboselog2 = ini.GetKeyValue("Misc", "VerboseLog", "0") == "1";
+            verboseline("Loading QBs...");
             pakformat = new PakFormat(folder + pak + "qb.pak.xen", folder + pak + "qb.pab.xen", "", PakFormatType.PC, false);
             qbedit = new PakEditor(pakformat, false);
             guitarqb = qbedit.ReadQbFile("E34DCB0C");//scripts\\guitar\\guitar.qb
             hudqb = qbedit.ReadQbFile("41A8CF91");
+            crowdqb = qbedit.ReadQbFile("341A488B"); // scripts\guitar\guitar_crowd.qb
             //bootqb = qbedit.ReadQbFile("56628B8A");
             //new QbFile(folder + pak + "song.qb", pakformat);
             disableEvents = true;
             //qbpak = File.ReadAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen");
-            File.Open(xmlpath, FileMode.OpenOrCreate).Close();
+            if (File.Exists(xmlpath))
+            {
+                File.Open(xmlpath, FileMode.OpenOrCreate).Close();
+                xml = File.ReadAllText(xmlpath);
+            }
             Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
-            bgcol = (ini.GetKeyValue("Misc","BGColor","0,0,0").Split(",".ToCharArray()));
-            backcolor = Color.FromArgb(255, Convert.ToByte(bgcol[0]), Convert.ToByte(bgcol[1]), Convert.ToByte(bgcol[2]));
+            //bgcol = (ini.GetKeyValue("Misc","BGColor","0,0,0").Split(",".ToCharArray()));
+            //backcolor = Color.FromArgb(255, Convert.ToByte(bgcol[0]), Convert.ToByte(bgcol[1]), Convert.ToByte(bgcol[2]));
+            backcolrgb = (QbItemInteger)
+            hudqb.FindItem(QbKey.Create(0x32DBFA3E), false)
+                .FindItem(QbKey.Create(0xBBB5F8A2), false)
+                .Items[0].Items[1].FindItem(QbKey.Create(0x3F6BCDBA), false).Items[0];
+            backcolor = Color.FromArgb(255,
+                backcolrgb.Values[0],
+                backcolrgb.Values[1],
+                backcolrgb.Values[2]);
+            //.FindItem(QbKey.Create("elements"), false).GetItems();
+            //MessageBox.Show(backcolrgb.Values.Length.ToString());
             DialogResult = DialogResult.OK;
             InitializeComponent();
             SetForegroundWindow(Handle);
-            AddShieldToButton(regfix);
+            //colorpanel.BackColor = backcolor;
             //hypers.Value = Convert.ToInt32(ini.GetKeyValue("Player","Hyperspeed","0"));
             hyperspeed = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0xFD6B13B4), false);
             hypers.Value = hyperspeed.Values[0];
-
+            //341A488B
+            nofailv = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0x3E5FD611), false);
+            nofailcb.Checked = nofailv.Values[0] == 1;
             btncheats = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0x2AF92804), false);
             dbgmnu.Checked = btncheats.Values[0] == 1;
             autostart = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0x32025D94), false);
@@ -141,11 +178,12 @@ namespace FastGH3
             //speed.Value = Convert.ToDecimal(ini.GetKeyValue("Player","Speed","100"));
             speedf = (QbItemFloat)guitarqb.FindItem(QbKey.Create(0x16D91BC1), false);
             speed.Value = Convert.ToDecimal(speedf.Values[0] * 100);
+            verboseline("Reading settings...");
             scrshmode.Checked = ini.GetKeyValue("Misc","ScrshMode","0") != "0";
-            verboselog.Checked = (ini.GetKeyValue("Misc", "VerboseLog","0") == "1");
+            verboselog.Checked = verboselog2;
             backgroundcolordiag.Color = backcolor;
             colorpanel.BackColor = backcolor;
-            nofailviewer.Checked = ini.GetKeyValue("Misc", "NofailViewer", "0") != "0";
+            //nofailcb.Checked = ini.GetKeyValue("Misc", "Nofail", "0") != "0";
             vsyncswitch.Checked = ini.GetKeyValue("Misc", "VSync", "1") == "0";
             songcaching.Checked = ini.GetKeyValue("Misc", "SongCaching", "1") == "1";
             nostartupmsg.Checked = ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1";
@@ -188,7 +226,7 @@ namespace FastGH3
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 0; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x20 &&
                         qbpak[i + 1] == 0x0D &&
@@ -270,7 +308,7 @@ namespace FastGH3
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
                 ResumeLayout();
             }
         }
@@ -299,7 +337,8 @@ ExileLord        - GH3+ and executable reverse engineering,
                    shared in his videos and streams that might've benefitted
                    in finding more things
 donnaken15       - other QbScript hacking, mod creation and setup,
-                   game optimization, main program and automation
+                   game optimization, main program and automation,
+                   logger plugin
 maxkiller        - original GHTCP + texture explorer
 Nanook           - QueenBee + Parser
 raphaelgoulart   - mid2chart
@@ -329,7 +368,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 0; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x20 &&
                         qbpak[i + 1] == 0x01 &&
@@ -365,7 +404,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
                 //ini.SetKeyValue("Player", "Hyperspeed", hypers.Value.ToString());
                 //ini.Save("settings.ini");
                 //File.WriteAllText(folder + "\\CONFIGS\\hyperspeed", Convert.ToString(hypers.Value));
@@ -383,7 +422,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 64; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x7D &&
                         qbpak[i + 1] == 0x99 &&
@@ -443,10 +482,6 @@ Aspyr            - Original game, images, sounds, copyright");
                             backgroundcolordiag.ShowDialog();
                             break;
                     }*/
-                backcolrgb = (QbItemInteger)
-                hudqb.FindItem(QbKey.Create(0x32DBFA3E), false)
-                    .FindItem(QbKey.Create(0xBBB5F8A2), false)
-                    .Items[0].Items[1].FindItem(QbKey.Create(0x3F6BCDBA), false).Items[0];
                     //.FindItem(QbKey.Create("elements"), false).GetItems();
                 //MessageBox.Show(backcolrgb.Values.Length.ToString());
                 backcolrgb.Values[0] = backgroundcolordiag.Color.R;
@@ -460,9 +495,9 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
-                ini.SetKeyValue("Misc", "BGColor", backgroundcolordiag.Color.R + "," +
-                    backgroundcolordiag.Color.G + "," + backgroundcolordiag.Color.B);
+                nofailcb.Enabled = true;
+                //ini.SetKeyValue("Misc", "BGColor", backgroundcolordiag.Color.R + "," +
+                //    backgroundcolordiag.Color.G + "," + backgroundcolordiag.Color.B);
                 ini.Save("settings.ini");
                 ResumeLayout();
                 colorpanel.BackColor = backgroundcolordiag.Color;
@@ -501,7 +536,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 64; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x00 &&
                         qbpak[i + 1] == 0x20 &&
@@ -544,7 +579,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
                 ini.SetKeyValue("Misc", "ScrshMode", (scrshmode.Checked ? "1" : "0"));
                 ini.Save("settings.ini");
                 //File.WriteAllText(folder + "\\CONFIGS\\scrshmode", scrshmode.Checked.ToString());
@@ -562,7 +597,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 64; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x01 &&
                         qbpak[i + 1] == 0xA4 &&
@@ -608,7 +643,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
                 ini.SetKeyValue("Misc", "NoStatsOnEnd", (nostatsonend.Checked ? "1" : "0"));
                 ini.Save("settings.ini");
                 //File.WriteAllText(folder + "\\CONFIGS\\nostatsonend", nostatsonend.Checked.ToString());
@@ -618,7 +653,12 @@ Aspyr            - Original game, images, sounds, copyright");
 
         private void Colorpanel_MouseDoubleClick()
         {
-            new colorpreview().ShowDialog();
+            new colorpreview(colorpanel.BackColor).ShowDialog();
+        }
+
+        private void colorpanel_Click(object sender, EventArgs e)
+        {
+            new colorpreview(colorpanel.BackColor).ShowDialog();
         }
 
         private void vsyncswitch_CheckedChanged(object sender, EventArgs e)
@@ -638,7 +678,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 64; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x13 &&
                         qbpak[i + 1] == 0xFD &&
@@ -672,7 +712,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
                 ini.SetKeyValue("Misc", "NofailViewer", (nofailviewer.Checked ? "1" : "0"));
                 ini.Save("settings.ini");
                 //File.WriteAllText(folder + "\\CONFIGS\\nofailviewer", nofailviewer.Checked.ToString());
@@ -686,6 +726,37 @@ Aspyr            - Original game, images, sounds, copyright");
             ini.Save("settings.ini");
         }
 
+        private void ctmpb_Click(object sender, EventArgs e)
+        {
+            string tmpf = Path.GetTempPath();
+            string[] tmpds = Directory.GetDirectories(tmpf, "Z.TMP.FGH3$*", SearchOption.TopDirectoryOnly);
+            string[] tmpfs = Directory.GetFiles(tmpf, "*.tmp.fsp", SearchOption.TopDirectoryOnly);
+            foreach (string folder in tmpds)
+            {
+                //string[] whycs = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
+                //foreach (string whycs2 in whycs)
+                //{
+                    //File.Delete(whycs2);
+                //}
+                Directory.Delete(folder, true);
+            }
+            foreach (string file in tmpfs)
+            {
+                File.Delete(file);
+            }
+        }
+
+        // this wont work after focusing control
+        private void keydownreacts(object sender, KeyEventArgs e)
+        {
+            //base.OnKeyDown(e);
+
+            if (e.KeyCode == Keys.Escape)
+            {
+                Application.Exit();
+            }
+        }
+
         private void keymode_CheckedChanged(object sender, EventArgs e)
         {
             if (disableEvents == false)
@@ -696,7 +767,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 64; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x16 &&
                         qbpak[i + 1] == 0xD9 &&
@@ -730,7 +801,79 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
+                //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
+            }
+        }
+
+        private void nofail_CheckedChanged(object sender, EventArgs e)
+        {
+            if (disableEvents == false)
+            {
+                SuspendLayout();
+                hypers.Enabled = false;
+                diff.Enabled = false;
+                setbgcolor.Enabled = false;
+                scrshmode.Enabled = false;
+                nostatsonend.Enabled = false;
+                nofailcb.Enabled = false;
+                /*for (int i = 64; i < qbpak.Length; i++)
+                    if (qbpak[i] == 0x16 &&
+                        qbpak[i + 1] == 0xD9 &&
+                        qbpak[i + 2] == 0x1B &&
+                        qbpak[i + 3] == 0xC1 &&
+                        qbpak[i + 4] == 0xE3 &&
+                        qbpak[i + 5] == 0x4D &&
+                        qbpak[i + 6] == 0xCB &&
+                        qbpak[i + 7] == 0x0C)
+                    {
+                        for (int j = 0; j < 4; j++)
+                            qbpak[i + 8 + j] = BitConverter.GetBytes((float)speed.Value/100)[3-j];
+                        filesafe = true;
+                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
+                        break;
+                    }
+                if (!filesafe)
+                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
+                    {
+                        case DialogResult.Abort:
+                            Application.Exit();
+                            break;
+                        case DialogResult.Retry:
+                            backgroundcolordiag.ShowDialog();
+                            break;
+                    }*/
+                nofailv.Values[0] = nofailcb.Checked ? 1 : 0;
+                //saveQb();
+                int[] zoffs = { 20, 21 };
+                int _invert = nofailcb.Checked ? 1 : -1;
+                QbItemBase togglenofailgfx =
+                hudqb.FindItem(QbKey.Create(0x32DBFA3E), false)
+                    .FindItem(QbKey.Create(0xBBB5F8A2), false)
+                    .Items[0];//.Items[23].FindItem(QbKey.Create("zoff"), false).Items[0];
+
+                /*backcolrgb = (QbItemInteger)
+                hudqb.FindItem(QbKey.Create(0x32DBFA3E), false)
+                    .FindItem(QbKey.Create(0xBBB5F8A2), false)
+                    .Items[0].Items[14].FindItem(QbKey.Create(0x3F6BCDBA), false).Items[0];*/
+                QbItemInteger thiscodesucks =
+                (QbItemInteger)
+                    (togglenofailgfx.Items[13].FindItem(QbKey.Create(0x0EC4E44A), false));
+                QbItemInteger thiscodesucks2 =
+                (QbItemInteger)
+                    (togglenofailgfx.Items[14].FindItem(QbKey.Create(0x0EC4E44A), false));
+                thiscodesucks.Values[0]  = zoffs[0] * _invert;
+                thiscodesucks2.Values[0] = zoffs[1] * _invert;/**/
+                //.FindItem(QbKey.Create("elements"), false).GetItems();
+                hudqb.AlignPointers();
+                qbedit.ReplaceFile("scripts\\guitar\\guitar_hud_2d_career.qb", hudqb);
+                saveQb();
+                hypers.Enabled = true;
+                diff.Enabled = true;
+                setbgcolor.Enabled = true;
+                scrshmode.Enabled = true;
+                nostatsonend.Enabled = true;
+                nofailcb.Enabled = true;
                 //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
             }
         }
@@ -745,7 +888,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 64; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x16 &&
                         qbpak[i + 1] == 0xD9 &&
@@ -779,29 +922,9 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
                 //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
             }
-        }
-
-        private void regfixrun(object sender, EventArgs e)
-        {
-            if (IsAdmin())
-            {
-                Process regbat = new Process();
-                regbat.StartInfo.FileName = folder + "\\register.bat";
-                //regbat.StartInfo.CreateNoWindow = true;
-                regbat.StartInfo.UseShellExecute = true;
-                regbat.StartInfo.WorkingDirectory = folder + "\\TOOLS\\fsb\\";
-                //regbat.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                regbat.StartInfo.Verb = "runas";
-                regbat.Start();
-            }
-        }
-
-        private void colorpanel_Click(object sender, EventArgs e)
-        {
-            new colorpreview().ShowDialog();
         }
 
         private void speed_ValueChanged(object sender, EventArgs e)
@@ -814,7 +937,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 64; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x16 &&
                         qbpak[i + 1] == 0xD9 &&
@@ -848,7 +971,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
                 //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
             }
         }
@@ -917,7 +1040,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = false;
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
-                nofailviewer.Enabled = false;
+                nofailcb.Enabled = false;
                 /*for (int i = 0; i < qbpak.Length; i++)
                     if (qbpak[i] == 0x00 &&
                         qbpak[i + 1] == 0x8D &&
@@ -967,7 +1090,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
-                nofailviewer.Enabled = true;
+                nofailcb.Enabled = true;
                 ini.SetKeyValue("Player", "Part", part.SelectedIndex.ToString());
                 ini.Save("settings.ini");
                 //if (part.SelectedIndex == 0)

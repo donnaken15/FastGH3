@@ -63,9 +63,9 @@ namespace FastGH3.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap fastgh3_transparent {
+        internal static System.Drawing.Bitmap colorprev {
             get {
-                object obj = ResourceManager.GetObject("fastgh3_transparent", resourceCulture);
+                object obj = ResourceManager.GetObject("colorprev", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

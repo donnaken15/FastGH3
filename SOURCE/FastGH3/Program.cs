@@ -29,12 +29,12 @@ namespace FastGH3
         { "212262DF", "7F2FC9BC", "32BDB4A9", "44819DD0", "CB09D855", "2E7DDC38",
             "71AA8EF7", "347C8050", "195F3B95", "7E1B28BC", "9D0C5D0C", "AF1E8BC1",
             "F51E3E9F", "5CD97CE0", "CCB6F94A", "9CF00B70" };
-        public static bool verboselog;
+        static bool verboselog;
         public static OpenFileDialog openchart = new OpenFileDialog() {
             AddExtension = true,
             CheckFileExists = true,
             CheckPathExists = true,
-            Filter = "All chart types|*.mid;*.chart|FastGH3 Song Package|*.fsp;*.zip|Any type|*.*",
+            Filter = "Any supported files|*.chart;*.mid;*.fsp;*.zip;*.pak.xen|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip|Any type|*.*",
             RestoreDirectory = true,
             Title = "Select chart"
         };
@@ -105,7 +105,7 @@ namespace FastGH3
             }
         }
 
-        static void verbose(object text)
+        public static void verbose(object text)
         {
             if (verboselog)
             {
@@ -113,7 +113,7 @@ namespace FastGH3
             }
         }
 
-        static void verboseline(object text)
+        public static void verboseline(object text)
         {
             if (verboselog)
             {
@@ -157,6 +157,24 @@ namespace FastGH3
         [STAThread]
         static void Main(string[] args)
         {
+            Process[] multiinstcheck = Process.GetProcessesByName("fastgh3");
+            //MessageBox.Show(multiinstcheck.Length.ToString());
+            int multiinstcheckn = 0;
+            if (multiinstcheck.Length > 1)
+                foreach (Process fgh3 in multiinstcheck)
+                {
+                    //MessageBox.Show(fgh3.MainModule.FileName);
+                    if (fgh3.MainModule.FileName == Application.ExecutablePath)
+                    {
+                        multiinstcheckn++;
+                        if (multiinstcheckn > 1)
+                        {
+                            MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
+                            break;
+                        }
+                    }
+                }
             Console.Title = title;
             folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
             if (File.Exists(folder + "settings.ini"))
@@ -211,29 +229,32 @@ namespace FastGH3
                     new settings().ShowDialog();
                 }
                 else if (args[0] == "dl" && (args[1] != "" || args[1] != null))
-				{
-					Console.WriteLine(title + " by donnaken15");
-					Console.WriteLine("Downloading song package...");
+                {
+                    Console.WriteLine(title + " by donnaken15");
+                    Console.WriteLine("Downloading song package...");
                     try
-					{
-					    WebClient fsp = new WebClient();
-					    Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
+                    {
+                        WebClient fsp = new WebClient();
+                        fsp.Proxy = null;
+                        fsp.Headers.Add("user-agent", "Anything");
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00); // why .NET 4
+                        Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
                         string tmpFn = Path.GetTempFileName() + ".fsp", tmpFl = Path.GetTempPath();
                         fsp.OpenRead(fsplink);
-                        if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > (1024 * 1024) * 32)
+                        if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > (1024 * 1024) * 9)
                         {
                             if (MessageBox.Show("This song package is a larger file than usual. Do you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                 Application.Exit();
                         }
-						fsp.DownloadFile(fsplink, tmpFn);
+                        fsp.DownloadFile(fsplink, tmpFn);
                         Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
                     }
-					catch (Exception ex)
-					{
-						Console.Write("ERROR! :(\n" + ex.Message);
+                    catch (Exception ex)
+                    {
+                        Console.Write("ERROR! :(\n" + ex.Message);
                         Console.ReadKey();
-					}
-				}
+                    }
+                }
                 else if (File.Exists(args[0]))
                 {
                     Console.WriteLine(title + " by donnaken15");
@@ -246,10 +267,24 @@ namespace FastGH3
                         mid2chart.StartInfo = new ProcessStartInfo()
                         {
                             FileName = folder + "\\mid2chart.exe",
-                            Arguments = paksongmid.EncloseWithQuoteMarks() + " -k",
-                            CreateNoWindow = false,
-                            WindowStyle = ProcessWindowStyle.Hidden
+                            Arguments = paksongmid.EncloseWithQuoteMarks() + " -k -u"
                         };
+                        Console.WriteLine(verboselog);
+                        // Why won't this work
+                        if (!verboselog)
+                        {
+                            mid2chart.StartInfo.CreateNoWindow = true;
+                            mid2chart.StartInfo.UseShellExecute = true;
+                            mid2chart.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                        }
+                        else
+                        {
+                            mid2chart.StartInfo.UseShellExecute = false;
+                            mid2chart.StartInfo.RedirectStandardError = true;
+                            mid2chart.StartInfo.RedirectStandardOutput = true;
+                            mid2chart.ErrorDataReceived += (sendingProcess, errorLine) => Console.WriteLine(errorLine.Data);
+                            mid2chart.OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
+                        }
                         if (Path.GetFileName(args[0]).EndsWith(chartext))
                         {
                             verboseline("Detected chart file. ");
@@ -266,6 +301,9 @@ namespace FastGH3
                             File.Copy(args[0], paksongmid, true);
                             mid2chart.Start();
                             mid2chart.WaitForExit();
+                            //Console.WriteLine(folder + "\\mid2chart.exe " + paksongmid.EncloseWithQuoteMarks() + " -k");
+                            //Console.WriteLine(mid2chart.ExitCode);
+                            //Console.ReadKey();
                         }
                         Console.WriteLine("Reading file.");
                         if (cacheEnabled)
@@ -284,12 +322,24 @@ namespace FastGH3
                         File.Delete(folder + pak + "song.mid");
                         File.Delete(folder + pak + "song.chart");
                         File.Delete(folder + pak + "song (Dummy).chart");
-                        Directory.SetCurrentDirectory(Path.GetDirectoryName(args[0]));
+                        bool relfile = false;
+                        try
+                        {
+                            Directory.SetCurrentDirectory(Path.GetDirectoryName(args[0]));
+                        }
+                        catch
+                        {
+                            relfile = true;
+                            Directory.SetCurrentDirectory(Path.GetPathRoot(args[0]));
+                            //Console.WriteLine(Path.GetPathRoot(args[0]));
+                        }
                         #region ENCODE SONGS
                         Console.WriteLine("Encoding song.");
                         verboseline("Getting song, guitar, and rhythm files.");
                         string[] audiostreams = { "", "", "" };
-                        string audtmpstr = "", chartfolder = Path.GetDirectoryName(args[0]) + '\\';
+                        string audtmpstr = "", chartfolder = /*Path.GetDirectoryName(args[0]) + '\\';
+                        if (relfile) chartfolder =*/ Directory.GetCurrentDirectory() + '\\';
+                        // optimize this maybe
                         foreach (SongSectionEntry chartinfo in chart.Song)
                         {
                             switch (chartinfo.Key)
@@ -355,6 +405,20 @@ namespace FastGH3
                         }
                         string[] audstnames = { "song", "guitar", "rhythm" },
                             audextnames = { "ogg", "mp3", "wav" };
+                        //bool grandlb = false;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (!File.Exists(audiostreams[0]))
+                            {
+                                audtmpstr = chartfolder + Path.GetFileNameWithoutExtension(args[0]) + '.' + audextnames[i];
+                                if (File.Exists(audtmpstr))
+                                {
+                                    verboseline("Found audio with the chart name");
+                                    audiostreams[0] = audtmpstr;
+                                    break;
+                                }
+                            }
+                        }
                         for (int i = 0; i < 3; i++)
                         {
                             if (!File.Exists(audiostreams[i]))
@@ -369,6 +433,7 @@ namespace FastGH3
                                     }
                                 }
                         }
+                        // TODO: allow NJ3T routine even when song.ogg exists
                         audstnames = new string[] { "lead", "bass" };
                         for (int i = 0; i < 2; i++)
                         {
@@ -384,20 +449,7 @@ namespace FastGH3
                                     }
                                 }
                         }
-                        for (int i = 0; i < 3; i++)
-                        {
-                            if (!File.Exists(audiostreams[0]))
-                            {
-                                audtmpstr = chartfolder + Path.GetFileNameWithoutExtension(args[0]) + '.' + audextnames[i];
-                                if (File.Exists(audtmpstr))
-                                {
-                                    verboseline("Found audio with the chart name");
-                                    audiostreams[0] = audtmpstr;
-                                    break;
-                                }
-                            }
-                        }
-                        bool notjust3trax = false;
+                        bool notjust3trax = false; // nj3ts.Count smh
                         List<string> nj3ts = new List<string>();
                         verboseline("Checking if extra audio exists");
                         for (int j = 0; j < 3; j++)
@@ -421,6 +473,26 @@ namespace FastGH3
                                 break;
                             }
                         }
+                        audstnames = new string[] { "drums", "vocals", "keys", "song" };
+                        for (int i = 0; i < 4; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                audtmpstr = chartfolder + audstnames[i] + '.' + audextnames[j];
+                                if (File.Exists(audtmpstr))
+                                {
+                                    verboseline("Found FOF structure files / " + audstnames[i]);
+                                    if (i != 3)
+                                    {
+                                        notjust3trax = true;
+                                    }
+                                    nj3ts.Add(audtmpstr);
+                                    break;
+                                }
+                            }
+                        }
+                        //if (nj3ts.Count > 0)
+                            //notjust3trax = true;
                         verboseline("Current selected audio streams are:");
                         foreach (string a in audiostreams)
                             verboseline(a);
@@ -429,10 +501,13 @@ namespace FastGH3
                         {
                             verboseline("Failed to get main song file, asking user what the game should do");
                             DialogResult audiolost, playsilent = DialogResult.No, searchaudioresult = DialogResult.Cancel;
-                            OpenFileDialog searchaudio = new OpenFileDialog() {
-                                CheckFileExists = true, CheckPathExists = true,
+                            OpenFileDialog searchaudio = new OpenFileDialog()
+                            {
+                                CheckFileExists = true,
+                                CheckPathExists = true,
                                 InitialDirectory = Path.GetDirectoryName(args[0]),
-                                Filter = "Audio files|*.mp3;*.wav;*.ogg|Any type|*.*" };
+                                Filter = "Audio files|*.mp3;*.wav;*.ogg|Any type|*.*"
+                            };
                             do
                             {
                                 audiolost = MessageBox.Show("No song audio can be found.\nDo you want to search for it?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
@@ -502,16 +577,18 @@ namespace FastGH3
                             chartCache = isCached(charthash);
                             for (int i = 0; i < 3; i++)
                             {
-                                audhash ^= WZK64.Create(
-                                        File.ReadAllBytes(audiostreams[i])
-                                );
+                                //if ((!notjust3trax) || (notjust3trax && i != 0))
+                                    audhash ^= WZK64.Create(
+                                            File.ReadAllBytes(audiostreams[i])
+                                    );
                             }
-                            for (int i = 0; i < nj3ts.Count; i++)
-                            {
-                                audhash ^= WZK64.Create(
-                                        File.ReadAllBytes(nj3ts[i])
-                                );
-                            }
+                            if (notjust3trax)
+                                for (int i = 0; i < nj3ts.Count; i++)
+                                {
+                                    audhash ^= WZK64.Create(
+                                            File.ReadAllBytes(nj3ts[i])
+                                    );
+                                }
                             foreach (string f in cacheList)
                             {
                                 if (f == audhash.ToString("X16"))
@@ -523,41 +600,144 @@ namespace FastGH3
                         }
                         Process addaud = new Process();
                         Process fsbbuild = new Process();
+                        Process[] fsbbuild2 = new Process[3];
+                        Process fsbbuild3 = new Process();
+                        bool MTFSB = true;
+                        //if (cacheEnabled)
                         if (!audCache)
                         {
                             Console.WriteLine("Audio is not cached.");
                             if (notjust3trax)
                             {
-                                verboseline("Creating audio merger...");
+                                Console.WriteLine("Found more than three audio tracks, merging.");
                                 addaud.StartInfo.FileName = folder + music + "\\TOOLS\\sox.exe";
-                                addaud.StartInfo.CreateNoWindow = true;
-                                addaud.StartInfo.UseShellExecute = true;
+                                if (!verboselog)
+                                {
+                                    addaud.StartInfo.CreateNoWindow = true;
+                                    addaud.StartInfo.UseShellExecute = true;
+                                    addaud.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                                }
+                                else
+                                {
+                                    addaud.StartInfo.UseShellExecute = false;
+                                    addaud.StartInfo.RedirectStandardError = true;
+                                    addaud.StartInfo.RedirectStandardOutput = true;
+                                    addaud.ErrorDataReceived += (sendingProcess, errorLine) => Console.WriteLine(errorLine.Data);
+                                    addaud.OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
+                                }
                                 addaud.StartInfo.Arguments = "-m";
                                 foreach (string a in nj3ts)
                                 {
                                     addaud.StartInfo.Arguments += " \"" + a + '"';
                                 }
-                                addaud.StartInfo.Arguments += " \"" + audiostreams[0] + '"';
-                                addaud.StartInfo.Arguments += " \"" + folder + music + "\\TOOLS\\mergetmp.ogg\"  --norm=-0.1";
+                                //addaud.StartInfo.Arguments += " \"" + audiostreams[0] + '"';
+                                addaud.StartInfo.Arguments += " \"" + folder + music + "\\TOOLS\\mergetmp.wav\" -S --multi-threaded --norm=-0.1";// -c 2 -r 44100 -C 128
+                                //verboseline(addaud.StartInfo.Arguments);
                                 addaud.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
-                                addaud.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                                 addaud.Start();
-                                addaud.WaitForExit();
-                                audiostreams[0] = folder + music + "\\TOOLS\\mergetmp.ogg";
+                                if (verboselog)
+                                {
+                                    addaud.BeginErrorReadLine();
+                                    addaud.BeginOutputReadLine();
+                                }
+                                if (!addaud.HasExited) // <-- lol
+                                {
+                                    //Console.WriteLine("Waiting for extra track merging to finish.");
+                                    addaud.WaitForExit();
+                                }
+                                audiostreams[0] = folder + music + "\\TOOLS\\mergetmp.wav";
+                                //fsbbuild.StartInfo.FileName += '2';
                             }
-
                             verboseline("Creating encoder process...");
-                            fsbbuild.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuild.bat";
-                            fsbbuild.StartInfo.CreateNoWindow = true;
-                            fsbbuild.StartInfo.UseShellExecute = true;
-                            fsbbuild.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
-                            fsbbuild.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                            if (!MTFSB)
+                            {
+                                fsbbuild.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuild.bat";
+                                if (!verboselog)
+                                {
+                                    fsbbuild.StartInfo.CreateNoWindow = true;
+                                    fsbbuild.StartInfo.UseShellExecute = true;
+                                    fsbbuild.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                                }
+                                else
+                                {
+                                    fsbbuild.StartInfo.UseShellExecute = false;
+                                    fsbbuild.StartInfo.RedirectStandardError = true;
+                                    fsbbuild.StartInfo.RedirectStandardOutput = true;
+                                    fsbbuild.ErrorDataReceived += (sendingProcess, errorLine) => Console.WriteLine(errorLine.Data);
+                                    fsbbuild.OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
+                                }
+                                fsbbuild.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
+                            }
+                            else
+                            {
+                                Directory.CreateDirectory(folder + music + "\\TOOLS\\fsbtmp");
+                                File.Copy(folder + music + "\\TOOLS\\blank.mp3", folder + music + "\\TOOLS\\fsbtmp\\fastgh3_preview.mp3", true);
+                                string[] fsbnames = { "song", "guitar", "rhythm" };
+                                for (int i = 0; i < fsbbuild2.Length; i++)
+                                {
+                                    fsbbuild2[i] = new Process();
+                                    fsbbuild2[i].StartInfo = new ProcessStartInfo()
+                                    {
+                                        FileName = folder + music + "\\TOOLS\\c128ks.bat",
+                                        Arguments = audiostreams[i].EncloseWithQuoteMarks() + " \"" + folder + music + "\\TOOLS\\fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"",
+                                        CreateNoWindow = true,
+                                        UseShellExecute = true,
+                                        WindowStyle = ProcessWindowStyle.Hidden
+                                    };
+                                    if (verboselog)
+                                    {
+                                        fsbbuild2[i].StartInfo.UseShellExecute = false;
+                                        fsbbuild2[i].StartInfo.RedirectStandardError = true;
+                                        fsbbuild2[i].StartInfo.RedirectStandardOutput = true;
+                                        fsbbuild2[i].ErrorDataReceived += (sendingProcess, errorLine) => Console.WriteLine(errorLine.Data);
+                                        fsbbuild2[i].OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
+                                    }
+                                }
+                                fsbbuild3.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuildnoenc.bat";
+                                if (!verboselog)
+                                {
+                                    fsbbuild3.StartInfo.CreateNoWindow = true;
+                                    fsbbuild3.StartInfo.UseShellExecute = true;
+                                    fsbbuild3.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                                }
+                                else
+                                {
+                                    fsbbuild3.StartInfo.UseShellExecute = false;
+                                    fsbbuild3.StartInfo.RedirectStandardError = true;
+                                    fsbbuild3.StartInfo.RedirectStandardOutput = true;
+                                    fsbbuild3.ErrorDataReceived += (sendingProcess, errorLine) => Console.WriteLine(errorLine.Data);
+                                    fsbbuild3.OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
+                                }
+                                fsbbuild3.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
+                            }
                             verboseline("Starting FSB building...");
-                            fsbbuild.StartInfo.Arguments =
+                            if (!MTFSB)
+                            {
+                                fsbbuild.StartInfo.Arguments =
                                 audiostreams[0].EncloseWithQuoteMarks() + ' ' + audiostreams[1].EncloseWithQuoteMarks() + ' ' + audiostreams[2].EncloseWithQuoteMarks() + ' ' +
                                 (folder + music + "\\TOOLS\\blank.mp3").EncloseWithQuoteMarks() + ' ' + (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks();
-                            verboseline(fsbbuild.StartInfo.Arguments);
-                            fsbbuild.Start();
+                                //verboseline(fsbbuild.StartInfo.Arguments);
+                                fsbbuild.Start();
+                                if (verboselog)
+                                {
+                                    fsbbuild.BeginErrorReadLine();
+                                    fsbbuild.BeginOutputReadLine();
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < fsbbuild2.Length; i++)
+                                {
+                                    fsbbuild2[i].Start();
+                                    if (verboselog)
+                                    {
+                                        fsbbuild2[i].BeginErrorReadLine();
+                                        fsbbuild2[i].BeginOutputReadLine();
+                                    }
+                                }
+                                fsbbuild3.StartInfo.Arguments =
+                                    (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks();
+                            }
                         }
                         else
                         {
@@ -597,8 +777,6 @@ namespace FastGH3
                             QbFile songdata = new QbFile(folder + pak + "song.qb", pakformat);
                             #region BUILD ENTIRE QB FILE
                             #region GUITAR VALUES
-                            // DO ALL THIS IN LOOPS FREAKING AUTIST WHO SHOULD HANG THEIRSELVES
-                            // WTF IS ALL THIS YOU DISGRACE
                             verboseline("Creating note arrays...");
                             QbItemBase array_easy = new QbItemArray(songdata);
                             QbItemBase array_medium = new QbItemArray(songdata);
@@ -616,8 +794,47 @@ namespace FastGH3
                             array_medium.ItemQbKey = QbKey.Create(0xDE2FC9CC);
                             array_hard.ItemQbKey = QbKey.Create(0x61CC9578);
                             array_expert.ItemQbKey = QbKey.Create(0x57471F39);
-                            int test;
                             OffsetTransformer OT = new OffsetTransformer(chart);
+                            List<Note> spTmp = new List<Note>();
+                            Note spLast = new Note(), noteLast = new Note();
+                            int spTmp3 = 0, spTmp2 = 0;
+                            List<int> spPnc = new List<int>();
+                            foreach (Note a in chart.NoteTracks["ExpertSingle"])
+                            {
+                                if (a.Type == NoteType.Regular && spLast != null)
+                                {
+                                    //Console.WriteLine(spTmp3);
+                                    noteLast = a;
+                                    spTmp3 = noteLast.Offset;
+                                    if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
+                                    {
+                                        //Console.WriteLine(spTmp3 + " >= " + spLast.Offset + " && " + spTmp3 + " < " + spLast.OffsetEnd);
+                                        //Console.WriteLine(a.OffsetMilliseconds(OT));
+                                        spTmp2++;
+                                    }
+                                    else
+                                    {
+                                        if (spTmp2 > 0)
+                                        {
+                                            spPnc.Add(spTmp2);
+                                            spTmp2 = 0;
+                                        }
+                                    }
+                                }
+                                if (a.Type == NoteType.Special && a.SpecialFlag == 2)
+                                {
+                                    spTmp.Add(a);
+                                    spLast = a;
+                                    spTmp3 = noteLast.Offset;
+                                    if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
+                                    {
+                                        spTmp2++;
+                                    }
+                                }
+                            }
+                            //for (int i = 0; i < spPnc.Count; i++)
+                                //Console.WriteLine(spPnc[i]);
+                            int test;
                             int delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
                             QbcNoteTrack tmp;
                             try
@@ -740,11 +957,8 @@ namespace FastGH3
                             array_medium_star.AddItem(array_medium_array);
                             array_hard_star.AddItem(array_hard_array);
                             array_expert_star.AddItem(array_expert_array);
-                            List<Note> spTmp = new List<Note>();
                             QbItemInteger star_expert;
-                            foreach (Note a in chart.NoteTracks["ExpertSingle"])
-                                if (a.Type == NoteType.Special && a.SpecialFlag == 2)
-                                    spTmp.Add(a);
+                            int spPnc2 = 0;
                             if (spTmp.Count != 0)
                                 foreach (Note a in spTmp)
                                 {
@@ -752,8 +966,9 @@ namespace FastGH3
                                     star_expert.Create(QbItemType.ArrayInteger, 3);
                                     star_expert.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
                                     star_expert.Values[1] = (int)Math.Round(OT.GetTime(a.Length) * 1000);
-                                    star_expert.Values[2] = 10;
+                                    star_expert.Values[2] = spPnc[spPnc2];
                                     array_expert_array.AddItem(star_expert);
+                                    spPnc2++;
                                 }
                             else
                             {
@@ -761,6 +976,7 @@ namespace FastGH3
                                 star_expert.Create(QbItemType.ArrayInteger, 1);
                                 array_expert_array.AddItem(star_expert);
                             }
+                            // STILL MAKE THIS IN LOOPS 2ND REMINDER AJE(IQE)(JQARGYJ)(!#{?P>:$!>":!$^
                             songdata.AddItem(array_expert_star);
                             verboseline("Creating powerup arrays...");
                             QbItemBase array_easy_battle = new QbItemArray(songdata);
@@ -790,7 +1006,7 @@ namespace FastGH3
                             battle_easy.Create(QbItemType.ArrayInteger, 1);
                             battle_medium.Create(QbItemType.ArrayInteger, 1);
                             battle_hard.Create(QbItemType.ArrayInteger, 1);
-                            battle_expert.Create(QbItemType.ArrayInteger, 1);
+                            //battle_expert.Create(QbItemType.ArrayInteger, 1);
                             verboseline("Adding powerup arrays to QB...");
                             songdata.AddItem(array_easy_battle);
                             songdata.AddItem(array_medium_battle);
@@ -800,6 +1016,26 @@ namespace FastGH3
                             array_medium_battle.AddItem(array_medium_battle_array);
                             array_hard_battle.AddItem(array_hard_battle_array);
                             array_expert_battle.AddItem(array_expert_battle_array);
+                            List<Note> bpTmp = new List<Note>();
+                            foreach (Note a in chart.NoteTracks["ExpertSingle"])
+                                if (a.Type == NoteType.Special && a.SpecialFlag == 3)
+                                    spTmp.Add(a);
+                            if (spTmp.Count != 0)
+                                foreach (Note a in spTmp)
+                                {
+                                    //battle_expert = new QbItemInteger(songdata);
+                                    battle_expert.Create(QbItemType.ArrayInteger, 3);
+                                    battle_expert.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
+                                    battle_expert.Values[1] = (int)Math.Round(OT.GetTime(a.Length) * 1000);
+                                    battle_expert.Values[2] = 10;
+                                    //array_expert_battle_array.AddItem(battle_expert);
+                                }
+                            else
+                            {
+                                //battle_expert = new QbItemInteger(songdata);
+                                battle_expert.Create(QbItemType.ArrayInteger, 1);
+                                //array_expert_battle_array.AddItem(battle_expert);
+                            }
                             array_easy_battle_array.AddItem(battle_easy);
                             array_medium_battle_array.AddItem(battle_medium);
                             array_hard_battle_array.AddItem(battle_hard);
@@ -1390,7 +1626,7 @@ namespace FastGH3
                             songyear.ItemQbKey = QbKey.Create("year");
                             songtitle.Strings[0] = songini.GetKeyValue("song", "name", "Untitled").Trim();
                             songauthr.Strings[0] = songini.GetKeyValue("song", "artist", "Unknown").Trim();
-                            songalbum.Strings[0] = songini.GetKeyValue("song", "album", "Undefined").Trim();
+                            songalbum.Strings[0] = songini.GetKeyValue("song", "album", "Unknown").Trim();
                             songyear.Strings[0] = songini.GetKeyValue("song", "year", "2021").Trim();
                             foreach (SongSectionEntry s in chart.Song)
                             {
@@ -1415,9 +1651,9 @@ namespace FastGH3
                             Console.WriteLine("Compiling PAK.");
                             buildsong.ReplaceFile("E15310CD", songdata);// folder + pak + "song.qb");
                             File.Delete(folder + pak + "song.qb");
-                            Console.WriteLine("Writing PAK to cache.");
                             if (cacheEnabled)
                             {
+                                Console.WriteLine("Writing PAK to cache.");
                                 File.Copy(
                                     folder + "\\DATA\\PAK\\song.pak.xen",
                                     folder + "\\DATA\\CACHE\\" + charthash.ToString("X16"), true);
@@ -1435,20 +1671,52 @@ namespace FastGH3
                                 folder + "\\DATA\\PAK\\song.pak.xen", true);
                         }
                         if (!audCache)
-                            if (!fsbbuild.HasExited)
+                        {
+                            if (!MTFSB)
                             {
-                                Console.WriteLine("Waiting for song encoding to finish.");
-                                fsbbuild.WaitForExit();
-                                if (cacheEnabled)
+                                if (!fsbbuild.HasExited)
                                 {
-                                    Console.WriteLine("Writing audio to cache.");
-                                    File.Copy(
-                                        folder + "\\DATA\\MUSIC\\fastgh3.fsb.xen",
-                                        folder + "\\DATA\\CACHE\\" + audhash.ToString("X16"), true);
-                                    cache.SetKeyValue(charthash.ToString("X16"), "Audio", audhash.ToString("X16"));
-                                    cache.Save(folder + dataf + "CACHE\\.db.ini");
+                                    Console.WriteLine("Waiting for song encoding to finish.");
+                                    fsbbuild.WaitForExit();
+                                    if (cacheEnabled)
+                                    {
+                                        Console.WriteLine("Writing audio to cache.");
+                                        File.Copy(
+                                            folder + "\\DATA\\MUSIC\\fastgh3.fsb.xen",
+                                            folder + "\\DATA\\CACHE\\" + audhash.ToString("X16"), true);
+                                        cache.SetKeyValue(charthash.ToString("X16"), "Audio", audhash.ToString("X16"));
+                                        cache.Save(folder + dataf + "CACHE\\.db.ini");
+                                    }
                                 }
                             }
+                            else
+                            {
+                                Console.WriteLine("Waiting for song encoding to finish.");
+                                for (int i = 0; i < fsbbuild2.Length; i++)
+                                    if (!fsbbuild2[i].HasExited)
+                                        fsbbuild2[i].WaitForExit();
+                                /*if (!addaud.HasExited)
+                                {
+                                    Console.WriteLine("Waiting for extra track merging to finish.");
+                                    addaud.WaitForExit();
+                                }*/
+                                fsbbuild3.Start();
+                                fsbbuild3.WaitForExit();
+                                {
+                                    if (cacheEnabled)
+                                    {
+                                        Console.WriteLine("Writing audio to cache.");
+                                        File.Copy(
+                                            folder + "\\DATA\\MUSIC\\fastgh3.fsb.xen",
+                                            folder + "\\DATA\\CACHE\\" + audhash.ToString("X16"), true);
+                                        cache.SetKeyValue(charthash.ToString("X16"), "Audio", audhash.ToString("X16"));
+                                        cache.Save(folder + dataf + "CACHE\\.db.ini");
+                                    }
+                                }
+                            }
+                            if (File.Exists(folder + "\\DATA\\MUSIC\\TOOLS\\mergetmp.wav"))
+                                File.Delete(folder + "\\DATA\\MUSIC\\TOOLS\\mergetmp.wav");
+                        }
                         //verboseline("Cleaning up...");
                         disallowGameStartup();
                         Console.WriteLine("Speeding up.");
@@ -1485,12 +1753,13 @@ namespace FastGH3
                     }
                     else if (File.Exists(args[0]) && (args[0].EndsWith(".fsp") || args[0].EndsWith(".zip")))
                     {
-                        Console.WriteLine("FastGH3 by donnaken15");
+                        //Console.WriteLine("FastGH3 by donnaken15");
                         Console.WriteLine("Detected song package.");
                         string tmpf = Path.GetTempPath() + "\\Z.TMP.FGH3$" + new Random().Next(0x100000, 0xFFFFFF).ToString("X5") + '\\',
                             selectedtorun = "";
                         Directory.CreateDirectory(tmpf);
                         bool compiled = false;
+                        List<string> multichartcheck = new List<string>();
                         using (ZipFile file = ZipFile.Read(args[0]))
                         {
                             file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
@@ -1500,8 +1769,10 @@ namespace FastGH3
                                     data.FileName.EndsWith(".pak.xen"))
                                 {
                                     data.Extract(tmpf);
+                                    // do something with this moving when multiple files exist or whatever
                                     File.Delete(folder + pak + "song.pak.xen");
                                     File.Move(tmpf + data.FileName, folder + pak + "song.pak.xen");
+                                    multichartcheck.Add(data.FileName);
                                     compiled = true;
                                 }
                                 if (data.FileName.EndsWith(".fsb") ||
@@ -1516,6 +1787,7 @@ namespace FastGH3
                                 {
                                     data.Extract(tmpf);
                                     // replace this
+                                    multichartcheck.Add(data.FileName);
                                     selectedtorun = tmpf + data.FileName;
                                 }
                                 if (data.FileName.EndsWith(".ogg") ||
@@ -1526,26 +1798,110 @@ namespace FastGH3
                                 }
                             }
                         }
-                        if (compiled)
+                        bool cancel = false;
+                        fspmultichart askchoose = new fspmultichart(multichartcheck.ToArray());
+                        if (multichartcheck.Count > 1)
                         {
-                            Console.WriteLine("Speeding up.");
-                            verboseline("Creating GH3 process...");
-                            Process gh3 = new Process();
-                            gh3.StartInfo.WorkingDirectory = folder;
-                            gh3.StartInfo.FileName = folder + "\\game.exe";
-                            // dont do this lol
-                            if (settings.GetKeyValue("Player", "MaxNotes", "0") == "1")
-                                settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
-                            settings.Save(folder + "settings.ini");
-                            Console.WriteLine("Ready, go!");
-                            gh3.Start();
+                            askchoose.ShowDialog();
+                            if (File.Exists(tmpf + askchoose.chosen) && askchoose.DialogResult == DialogResult.OK)
+                            {
+                                selectedtorun = tmpf + askchoose.chosen;
+                                compiled = !Path.GetFileName(askchoose.chosen).EndsWith(".chart") &&
+                                            !Path.GetFileName(askchoose.chosen).EndsWith(".mid");
+                            }
+                            cancel = askchoose.DialogResult == DialogResult.Cancel;
                         }
-                        else
+                        if (!cancel)
+                            if (compiled)
+                            {
+                                Console.WriteLine("Speeding up.");
+                                verboseline("Creating GH3 process...");
+                                Process gh3 = new Process();
+                                gh3.StartInfo.WorkingDirectory = folder;
+                                gh3.StartInfo.FileName = folder + "\\game.exe";
+                                // dont do this lol
+                                if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
+                                    settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
+                                settings.Save(folder + "settings.ini");
+                                Console.WriteLine("Ready, go!");
+                                gh3.Start();
+                            }
+                            else
+                            {
+                                Process.Start(Application.ExecutablePath, selectedtorun.EncloseWithQuoteMarks());
+                            }
+                    }
+                    else if ((args[0].EndsWith(".pak") || args[0].EndsWith(".pak.xen")))
+                    {
+                        //Console.WriteLine("FastGH3 by donnaken15");
+                        Console.WriteLine("Detected song PAK.");
+                        PakFormat fmt = new PakFormat(args[0], "", "", PakFormatType.PC);
+                        PakEditor pak = new PakEditor(fmt);
+                        QbFile qb = pak.ReadQbFile(pak.QbFilenames[0]); //auto guess song paks have 1 qb file, except official ones.....
+                        if (qb.Items[1].QbItemType == QbItemType.SectionArray)
                         {
-                            Process.Start(Application.ExecutablePath, selectedtorun.EncloseWithQuoteMarks());
+                            if (qb.Items[1].Items[0].QbItemType == QbItemType.ArrayInteger)
+                            {
+                                string[] sectdiffs = {
+                                    "_easy",
+                                    "_medium",
+                                    "_hard",
+                                    "_expert",
+                                };
+                                string[] sectlines = {
+                                    "_star",
+                                    "_starbattlemode",
+                                    "_hard",
+                                    "_expert",
+                                };
+                                string[] sectparts = {
+                                    "",
+                                    "_rhythm",
+                                    "_guitarcoop",
+                                    "_rhythmcoop",
+                                };
+                                string[] sectmisc = {
+                                    "_faceoffp1",
+                                    "_faceoffp2",
+                                    "_bossbattlep1",
+                                    "_bossbattlep2",
+                                    "_timesig",
+                                    "_fretbars",
+                                    "_markers",
+                                };
+                                string[] sectmisc2 = {
+                                    "_scripts",
+                                    "_anim",
+                                    "_triggers",
+                                    "_cameras",
+                                    "_lightshow",
+                                    "_crowd",
+                                    "_drums",
+                                    "_performance",
+                                };
+                                string songprefix = "_song";
+                                string notesuffix = "_notes";
+                                int currentItem = 0;
+                                qb.Items[1].ItemQbKey = QbKey.Create("fastgh3_easy");
+                                qb.Items[2].ItemQbKey = QbKey.Create("fastgh3_medium");
+                                qb.Items[3].ItemQbKey = QbKey.Create("fastgh3_hard");
+                                qb.Items[4].ItemQbKey = QbKey.Create("fastgh3_easy");
+                                Console.WriteLine("Speeding up.");
+                                verboseline("Creating GH3 process...");
+                                Process gh3 = new Process();
+                                gh3.StartInfo.WorkingDirectory = folder;
+                                gh3.StartInfo.FileName = folder + "\\game.exe";
+                                // dont do this lol
+                                if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
+                                    settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
+                                settings.Save(folder + "settings.ini");
+                                Console.WriteLine("Ready, go!");
+                                //gh3.Start();
+                            }
                         }
                     }
                 }
+                else Console.WriteLine("That file does not exist.");
                 GC.Collect();
             }
         }

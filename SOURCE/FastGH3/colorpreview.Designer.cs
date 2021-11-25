@@ -28,15 +28,12 @@ namespace FastGH3
             // 
             // game
             // 
-            IniFile ini = new IniFile();
-            ini.Load("settings.ini");
-            string[] bgcol = (ini.GetKeyValue("Misc", "BGColor", "0,0,0").Split(",".ToCharArray()));
-            this.game.BackColor = Color.FromArgb(255, int.Parse(bgcol[0]), int.Parse(bgcol[1]), int.Parse(bgcol[2]));
             this.game.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.game.Image = global::FastGH3.Properties.Resources.fastgh3_transparent;
+            this.game.Image = global::FastGH3.Properties.Resources.colorprev;
             this.game.Location = new System.Drawing.Point(0, 0);
             this.game.Name = "game";
-            this.game.Size = new System.Drawing.Size(805, 600);
+            this.game.Size = new System.Drawing.Size(791, 592);
+            this.game.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.game.TabIndex = 0;
             this.game.TabStop = false;
             // 
@@ -44,9 +41,8 @@ namespace FastGH3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(805, 600);
+            this.ClientSize = new System.Drawing.Size(791, 592);
             this.Controls.Add(this.game);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;

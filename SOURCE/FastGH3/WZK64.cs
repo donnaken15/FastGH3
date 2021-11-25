@@ -28,7 +28,7 @@ namespace FastGH3
 			{
 				hash ^= (((ulong)((ulong)data[i] << 56) >> ((i%8)*8)));
 			}
-			hash ^= ((ulong)data.Length * 0x343659454C534557);
+			hash ^= ((ulong)data.Length * 0x343659454C534557); // backwards baseval
 			return hash;
 		}
 	}

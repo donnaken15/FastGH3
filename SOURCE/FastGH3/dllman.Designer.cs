@@ -35,13 +35,14 @@
             this.dlloff = new System.Windows.Forms.CheckBox();
             this.dllref = new System.Windows.Forms.Button();
             this.dllopen = new System.Windows.Forms.OpenFileDialog();
+            this.gh3plog = new System.Windows.Forms.TextBox();
+            this.gh3ploglabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // dlllist
             // 
-            this.dlllist.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dlllist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dlllist.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dlllist.FormattingEnabled = true;
             this.dlllist.IntegralHeight = false;
@@ -50,7 +51,7 @@
             this.dlllist.Name = "dlllist";
             this.dlllist.ScrollAlwaysVisible = true;
             this.dlllist.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.dlllist.Size = new System.Drawing.Size(212, 100);
+            this.dlllist.Size = new System.Drawing.Size(181, 93);
             this.dlllist.TabIndex = 0;
             this.dlllist.SelectedIndexChanged += new System.EventHandler(this.dllselectlist);
             // 
@@ -59,7 +60,7 @@
             this.dlladd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dlladd.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.dlladd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dlladd.Location = new System.Drawing.Point(13, 119);
+            this.dlladd.Location = new System.Drawing.Point(13, 112);
             this.dlladd.Name = "dlladd";
             this.dlladd.Size = new System.Drawing.Size(22, 23);
             this.dlladd.TabIndex = 1;
@@ -73,7 +74,7 @@
             this.dllrem.Enabled = false;
             this.dllrem.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.dllrem.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dllrem.Location = new System.Drawing.Point(41, 119);
+            this.dllrem.Location = new System.Drawing.Point(41, 112);
             this.dllrem.Name = "dllrem";
             this.dllrem.Size = new System.Drawing.Size(22, 23);
             this.dllrem.TabIndex = 2;
@@ -87,7 +88,7 @@
             this.dlloff.AutoSize = true;
             this.dlloff.Enabled = false;
             this.dlloff.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.dlloff.Location = new System.Drawing.Point(69, 122);
+            this.dlloff.Location = new System.Drawing.Point(69, 115);
             this.dlloff.Name = "dlloff";
             this.dlloff.Size = new System.Drawing.Size(80, 18);
             this.dlloff.TabIndex = 3;
@@ -97,10 +98,10 @@
             // 
             // dllref
             // 
-            this.dllref.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.dllref.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.dllref.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.dllref.Font = new System.Drawing.Font("MS Gothic", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dllref.Location = new System.Drawing.Point(201, 119);
+            this.dllref.Location = new System.Drawing.Point(170, 112);
             this.dllref.Name = "dllref";
             this.dllref.Size = new System.Drawing.Size(24, 23);
             this.dllref.TabIndex = 4;
@@ -110,16 +111,44 @@
             // 
             // dllopen
             // 
-            this.dllopen.Filter = "GH3+ Plugin / Dynamic Link Library|*.dll";
+            this.dllopen.AutoUpgradeEnabled = false;
+            this.dllopen.Filter = "GH3+ Plugin / Dynamic Link Library (*.dll)|*.dll";
             this.dllopen.Multiselect = true;
             this.dllopen.RestoreDirectory = true;
             this.dllopen.FileOk += new System.ComponentModel.CancelEventHandler(this.dllselected);
+            // 
+            // gh3plog
+            // 
+            this.gh3plog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gh3plog.BackColor = System.Drawing.SystemColors.Window;
+            this.gh3plog.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gh3plog.Location = new System.Drawing.Point(200, 28);
+            this.gh3plog.Multiline = true;
+            this.gh3plog.Name = "gh3plog";
+            this.gh3plog.ReadOnly = true;
+            this.gh3plog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.gh3plog.Size = new System.Drawing.Size(229, 78);
+            this.gh3plog.TabIndex = 5;
+            this.gh3plog.WordWrap = false;
+            // 
+            // gh3ploglabel
+            // 
+            this.gh3ploglabel.AutoSize = true;
+            this.gh3ploglabel.Location = new System.Drawing.Point(201, 13);
+            this.gh3ploglabel.Name = "gh3ploglabel";
+            this.gh3ploglabel.Size = new System.Drawing.Size(166, 13);
+            this.gh3ploglabel.TabIndex = 6;
+            this.gh3ploglabel.Text = "Guitar Hero III+ Log: (last session)";
             // 
             // dllman
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(237, 154);
+            this.ClientSize = new System.Drawing.Size(441, 147);
+            this.Controls.Add(this.gh3plog);
+            this.Controls.Add(this.gh3ploglabel);
             this.Controls.Add(this.dllref);
             this.Controls.Add(this.dlloff);
             this.Controls.Add(this.dllrem);
@@ -142,5 +171,7 @@
         private System.Windows.Forms.CheckBox dlloff;
         private System.Windows.Forms.Button dllref;
         private System.Windows.Forms.OpenFileDialog dllopen;
+        private System.Windows.Forms.TextBox gh3plog;
+        private System.Windows.Forms.Label gh3ploglabel;
     }
 }

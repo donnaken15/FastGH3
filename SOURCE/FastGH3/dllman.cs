@@ -58,6 +58,8 @@ namespace FastGH3
                     dlllist.Items.Add("(*)"+file);
             }
             catch { }
+            if (File.Exists(folder + "\\PLUGINS\\_log.txt"))
+                gh3plog.Text = File.ReadAllText(folder + "\\PLUGINS\\_log.txt").Replace("Loaded: plugins\\","");
         }
 
         private void dllselectlist(object sender, EventArgs e)

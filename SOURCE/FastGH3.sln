@@ -5,35 +5,35 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GH3+", "GH3+", "{F3FC9BC7-6E8D-4520-8A7D-DDDC391453EE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "GH3Plus\core\GH3PlusCore.vcxproj", "{3ECB28CB-CDCA-4193-B4BF-1F7EC67C9E03}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "GH3Plus\src\core\GH3PlusCore.vcxproj", "{3ECB28CB-CDCA-4193-B4BF-1F7EC67C9E03}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{E44AC199-1849-4F8C-BD1F-56D331D966C9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AlwaysDoubleNotes", "GH3Plus\plugins\alwaysDoubleNotes\AlwaysDoubleNotes.vcxproj", "{5F7C4B1C-C85B-46E9-8171-D6B2FAE90A14}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AlwaysDoubleNotes", "GH3Plus\src\plugins\alwaysDoubleNotes\AlwaysDoubleNotes.vcxproj", "{5F7C4B1C-C85B-46E9-8171-D6B2FAE90A14}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForceStrumNotes", "GH3Plus\plugins\forceStrumNotes\ForceStrumNotes.vcxproj", "{6CF035F3-C8E4-40AD-A992-D07C31BA79FC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForceStrumNotes", "GH3Plus\src\plugins\forceStrumNotes\ForceStrumNotes.vcxproj", "{6CF035F3-C8E4-40AD-A992-D07C31BA79FC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForceTapNotes", "GH3Plus\plugins\forceTapNotes\ForceTapNotes.vcxproj", "{32615C85-50B5-48DB-B611-C8046783FB9B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ForceTapNotes", "GH3Plus\src\plugins\forceTapNotes\ForceTapNotes.vcxproj", "{32615C85-50B5-48DB-B611-C8046783FB9B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GemShuffle", "GH3Plus\plugins\gemShuffle\GemShuffle.vcxproj", "{4D606C3E-242C-4413-87C5-155D35824206}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GemShuffle", "GH3Plus\src\plugins\gemShuffle\GemShuffle.vcxproj", "{4D606C3E-242C-4413-87C5-155D35824206}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KeyHijacker", "GH3Plus\plugins\keyHijacker\KeyHijacker.vcxproj", "{252C9FE0-3AF1-42D4-BA15-CBC4C26176A8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KeyHijacker", "GH3Plus\src\plugins\keyHijacker\KeyHijacker.vcxproj", "{252C9FE0-3AF1-42D4-BA15-CBC4C26176A8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirrorMode", "GH3Plus\plugins\mirrorMode\MirrorMode.vcxproj", "{E32B6D2D-E3D7-4B20-BDA6-953EECC50247}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MirrorMode", "GH3Plus\src\plugins\mirrorMode\MirrorMode.vcxproj", "{E32B6D2D-E3D7-4B20-BDA6-953EECC50247}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NoteLimitFix", "GH3Plus\plugins\noteLimit\NoteLimitFix.vcxproj", "{AD3A956F-41C3-4493-9C88-8A000167BE8D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NoteLimitFix", "GH3Plus\src\plugins\noteLimit\NoteLimitFix.vcxproj", "{AD3A956F-41C3-4493-9C88-8A000167BE8D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SongLimitFix", "GH3Plus\plugins\songLimit\SongLimitFix.vcxproj", "{9A18518C-38BF-48CA-88F8-206DEAE220FD}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SongLimitFix", "GH3Plus\src\plugins\songLimit\SongLimitFix.vcxproj", "{9A18518C-38BF-48CA-88F8-206DEAE220FD}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TapHopoChord", "GH3Plus\plugins\tapHopoChord\TapHopoChord.vcxproj", "{ECC8A22B-8DA2-4D50-9679-0DA29AC7D4FF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TapHopoChord", "GH3Plus\src\plugins\tapHopoChord\TapHopoChord.vcxproj", "{ECC8A22B-8DA2-4D50-9679-0DA29AC7D4FF}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureHelper", "GH3Plus\plugins\textureHelper\TextureHelper.vcxproj", "{7033409A-E1C1-4759-A519-F508EBFF1114}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureHelper", "GH3Plus\src\plugins\textureHelper\TextureHelper.vcxproj", "{7033409A-E1C1-4759-A519-F508EBFF1114}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TiltFix", "GH3Plus\plugins\tiltFix\TiltFix.vcxproj", "{8F562B97-5D1F-4E3C-9447-E01604AF9662}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TiltFix", "GH3Plus\src\plugins\tiltFix\TiltFix.vcxproj", "{8F562B97-5D1F-4E3C-9447-E01604AF9662}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WhammyFix", "GH3Plus\plugins\whammyFix\WhammyFix.vcxproj", "{3F3D0ABE-56CE-47CE-AFC4-D069E0CDE09A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WhammyFix", "GH3Plus\src\plugins\whammyFix\WhammyFix.vcxproj", "{3F3D0ABE-56CE-47CE-AFC4-D069E0CDE09A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FastGH3", "GH3Plus\plugins\FastGH3\FastGH3.vcxproj", "{90B360C3-5D52-4906-8E92-19846F36DB23}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FastGH3", "GH3Plus\src\plugins\FastGH3\FastGH3.vcxproj", "{90B360C3-5D52-4906-8E92-19846F36DB23}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{E9ECE84B-7EB9-4B4E-BACD-D9FD396CD886}"
 	ProjectSection(SolutionItems) = preProject
@@ -42,7 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{E9ECE84B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastGH3", "FastGH3\FastGH3.csproj", "{123C0E48-6F74-4CDC-8F5A-42E516B505EE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Logger", "GH3Plus\plugins\Logger\Logger.vcxproj", "{DCC91457-E7AF-4750-BA62-23F1B6177C57}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Logger", "GH3Plus\src\plugins\Logger\Logger.vcxproj", "{DCC91457-E7AF-4750-BA62-23F1B6177C57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

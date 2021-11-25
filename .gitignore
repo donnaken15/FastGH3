@@ -1,5 +1,7 @@
 JUNK
-./TOOLS/
+JUNK3
+/TOOLS
+/TOOLS/*
 * - Copy*
 * (*)*
 *.bak
@@ -24,7 +26,7 @@ PLUGINS/_log.txt
 .suo
 *.opensdf
 *.sdf
-__FINAL/
+__FINAL*/
 __FINAL.zip
 __build.bat
 __BUILDS
@@ -36,3 +38,11 @@ currentsong.txt
 SOURCE/QbScripts/syntaxref/*.qbscript
 Debug/
 output.txt
+__REDIST
+__TEXTEST
+.useless
+*.id*
+*.nam
+*.til
+_FGH3 TOOLS.lnk
+DATA/PAK/tmp.pak.xen
