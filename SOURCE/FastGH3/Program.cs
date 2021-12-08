@@ -234,19 +234,37 @@ namespace FastGH3
                     Console.WriteLine("Downloading song package...");
                     try
                     {
+                        Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
+                        string urlCache = cache.GetKeyValue("URL" + WZK64.Create(fsplink.AbsolutePath).ToString("X16"), "File", "");
+                        string tmpFn = "null";
+                        if (urlCache != "")
+                        {
+                            Console.WriteLine("Found already downloaded file.");
+                            tmpFn = urlCache;
+                            goto skipToGame;
+                        }
                         WebClient fsp = new WebClient();
                         fsp.Proxy = null;
                         fsp.Headers.Add("user-agent", "Anything");
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00); // why .NET 4
-                        Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
-                        string tmpFn = Path.GetTempFileName() + ".fsp", tmpFl = Path.GetTempPath();
+                        tmpFn = Path.GetTempFileName();
+                        string tmpFl = Path.GetTempPath();
                         fsp.OpenRead(fsplink);
                         if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > (1024 * 1024) * 9)
                         {
                             if (MessageBox.Show("This song package is a larger file than usual. Do you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                                 Application.Exit();
                         }
+                        //if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
+                        //settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
                         fsp.DownloadFile(fsplink, tmpFn);
+                        File.Move(tmpFn, tmpFn + ".fsp");
+                        //Directory.CreateDirectory(tmpFl + "\\Z.TMP.FGH3$WEB");
+                        tmpFn += ".fsp";
+                        Console.WriteLine("Writing link to cache...");
+                        cache.SetKeyValue("URL"+WZK64.Create(fsplink.AbsolutePath).ToString("X16"), "File"/*WZK64.Create(File.ReadAllBytes(tmpFn)).ToString("X16")*/, tmpFn.ToString());
+                        cache.Save(folder + dataf + "CACHE\\.db.ini");
+                        skipToGame:
                         Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
                     }
                     catch (Exception ex)
@@ -1649,7 +1667,7 @@ namespace FastGH3
                             verboseline("Writing song.qb...");
                             //songdata.Write(folder + pak + "song.qb");
                             Console.WriteLine("Compiling PAK.");
-                            buildsong.ReplaceFile("E15310CD", songdata);// folder + pak + "song.qb");
+                            buildsong.ReplaceFile("E15310CD", songdata);// folder + pak + "song.qb"); // songs\fastgh3.mid.qb
                             File.Delete(folder + pak + "song.qb");
                             if (cacheEnabled)
                             {

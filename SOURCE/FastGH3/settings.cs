@@ -744,6 +744,26 @@ Aspyr            - Original game, images, sounds, copyright");
             {
                 File.Delete(file);
             }
+            if (File.Exists(folder + "\\DATA\\CACHE\\.db.ini"))
+            {
+                IniFile cache = new IniFile();
+                cache.Load(folder + "\\DATA\\CACHE\\.db.ini");
+                int sectCount = 0;
+                string[] stupidEnumerasdaewrhygio = new string[cache.Sections.Count];
+                foreach (IniFile.IniSection sect in cache.Sections)
+                {
+                    if (sect.Name.StartsWith("URL"))
+                    {
+                        stupidEnumerasdaewrhygio[sectCount] = sect.Name;
+                        sectCount++;
+                    }
+                }
+                for (int i = 0; i < sectCount; i++)
+                {
+                    cache.RemoveSection(stupidEnumerasdaewrhygio[i]);
+                    cache.Save(folder + "\\DATA\\CACHE\\.db.ini");
+                }
+            }
         }
 
         // this wont work after focusing control

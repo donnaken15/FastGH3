@@ -50,13 +50,13 @@ namespace FastGH3
             this.preserveLog = new System.Windows.Forms.CheckBox();
             this.dbgmnu = new System.Windows.Forms.CheckBox();
             this.keymode = new System.Windows.Forms.CheckBox();
+            this.ctmpb = new System.Windows.Forms.Button();
             this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
             this.speedlabel = new System.Windows.Forms.Label();
             this.maxnoteslbl = new System.Windows.Forms.Label();
             this.instlabel = new System.Windows.Forms.Label();
             this.miscsettings = new System.Windows.Forms.CheckedListBox();
             this.nofailcb = new System.Windows.Forms.CheckBox();
-            this.ctmpb = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
@@ -459,6 +459,20 @@ namespace FastGH3
             this.keymode.UseVisualStyleBackColor = true;
             this.keymode.CheckedChanged += new System.EventHandler(this.keymode_CheckedChanged);
             // 
+            // ctmpb
+            // 
+            this.ctmpb.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.ctmpb.Location = new System.Drawing.Point(156, 167);
+            this.ctmpb.Name = "ctmpb";
+            this.ctmpb.Size = new System.Drawing.Size(124, 23);
+            this.ctmpb.TabIndex = 31;
+            this.ctmpb.Text = "Clean Temp Files";
+            this.tooltip.SetToolTip(this.ctmpb, "Clean files from downloading and extracting Song Packages.\r\nWarning: Reuse of the" +
+        "se files will require downloading and\r\nextracting them again, some of which can " +
+        "take a bit of time.");
+            this.ctmpb.UseVisualStyleBackColor = true;
+            this.ctmpb.Click += new System.EventHandler(this.ctmpb_Click);
+            // 
             // backgroundcolordiag
             // 
             this.backgroundcolordiag.AnyColor = true;
@@ -523,18 +537,6 @@ namespace FastGH3
             this.nofailcb.Text = "No fail";
             this.nofailcb.UseVisualStyleBackColor = true;
             this.nofailcb.CheckedChanged += new System.EventHandler(this.nofail_CheckedChanged);
-            // 
-            // ctmpb
-            // 
-            this.ctmpb.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ctmpb.Location = new System.Drawing.Point(156, 167);
-            this.ctmpb.Name = "ctmpb";
-            this.ctmpb.Size = new System.Drawing.Size(124, 23);
-            this.ctmpb.TabIndex = 31;
-            this.ctmpb.Text = "Clean Temp Files";
-            this.tooltip.SetToolTip(this.ctmpb, "Clean temp files from downloading and extracting Song Packages.");
-            this.ctmpb.UseVisualStyleBackColor = true;
-            this.ctmpb.Click += new System.EventHandler(this.ctmpb_Click);
             // 
             // settings
             // 

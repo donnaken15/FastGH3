@@ -1,0 +1,25 @@
+[LineNumbers]
+
+[Checksums]
+0xba9af773 scripts\guitar\guitar_solo.qb
+0xf0fffbee solo
+0x868bc002 soloend
+0xa9bb6473 solo_ui_create
+0xbe48b1f0 solo_ui_update
+0x164b00fc solo_ui_end
+0xfae00963 last_solo_hits
+0x68caa814 last_solo_total
+0x4f892144 solo_active
+0x3728404f solo_bonus_pts
+0x1f36184a note_count
+0x059a17bf solotxt1
+0x424056ad perf
+0x74888bdf perf_text
+0x23bc5091 num
+0xd6f51fb8 num1
+0x4ffc4e02 num2
+0x6722b533 d
+0xcd66c8ae score
+0xff0db407 textname
+0xc4745838 text
+
