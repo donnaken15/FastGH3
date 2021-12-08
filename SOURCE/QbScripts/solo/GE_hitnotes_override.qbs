@@ -1,12 +1,28 @@
 script() {
-if (*solo_active == 1)
+
+if ((*%player_status.text) == 'p1')
 {
-	num = (*last_solo_hits + 1);
-	change(last_solo_hits = %num);
-	SpawnScriptNow({
-		qbkey $00000000 = solo_ui_update;
-		struct params = {};
-	});
+	player = 1;
+}
+elseif ((*%player_status.text) == 'p2')
+{
+	player = 2;
+}
+FormatText(checksumName=sa_p, 'solo_active_p%d', d = %player);
+if (*%sa_p == 1)
+{
+	if (%player == 1)
+	{
+		num = (*last_solo_hits_p1 + 1);
+		change(last_solo_hits_p1 = %num);
+		solo_ui_update(player=%player);
+	}
+	elseif (%player == 2)
+	{
+		num = (*last_solo_hits_p2 + 1);
+		change(last_solo_hits_p2 = %num);
+		solo_ui_update(player=%player);
+	}
 }
 if (GuitarEvent_HitNotes_CFunc())
 {

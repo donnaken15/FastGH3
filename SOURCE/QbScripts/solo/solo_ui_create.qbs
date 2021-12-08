@@ -1,14 +1,18 @@
-script() {
+script({
+	int player = 1;
+}) {
 
-num = ((100 / *last_solo_hits) * *last_solo_total);
+num = ((100 / *last_solo_hits_p1) * *last_solo_total_p1);
 FormatText(textname=text, '%d\\%', d = %num);
-if (screenelementexists({id: solotxt1})) {
-	destroyscreenelement({id: solotxt1});
+FormatText(checksumname=solotxt, 'solotxt%d', d = %player);
+FormatText(checksumname=gemcont, 'gem_containerp%d', d = %player);
+if (screenelementexists({id: solotxt})) {
+	destroyscreenelement({id: solotxt});
 }
 createscreenelement({
 	type: textelement,
-	parent: gem_containerp1,
-	id: solotxt1,
+	parent: %gemcont,
+	id: %solotxt,
 	font: fontgrid_title_gh3,
 	scale: 0.9,
 	rgba: [255,255,255,255],
