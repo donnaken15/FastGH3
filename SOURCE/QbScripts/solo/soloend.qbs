@@ -20,7 +20,7 @@ repeat(*current_num_players)
 			change(structurename=player1_status,score = %num);
 			num1 = *last_solo_hits_p1;
 			num2 = *last_solo_total_p1;
-			SpawnScriptNow(solo_ui_end,params={player:1,num1:%num1,num2:%num2});
+			SpawnScriptNow(solo_ui_end,params={player:1});
 			change(last_solo_hits_p1 = 0);
 			change(last_solo_total_p1 = note_count);
 		}
@@ -31,7 +31,7 @@ repeat(*current_num_players)
 			change(structurename=player2_status,score = %num);
 			num1 = *last_solo_hits_p2;
 			num2 = *last_solo_total_p2;
-			SpawnScriptNow(solo_ui_end,params={player:2,num1:%num1,num2:%num2});
+			SpawnScriptNow(solo_ui_end,params={player:2});
 			change(last_solo_hits_p2 = 0);
 			change(last_solo_total_p2 = note_count);
 		}

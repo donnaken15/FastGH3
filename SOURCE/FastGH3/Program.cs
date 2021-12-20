@@ -787,7 +787,14 @@ namespace FastGH3
                             verboseline("Creating PakFormat and PakEditor from song.pak");
                             Console.WriteLine("Opening song pak.");
                             PakFormat pakformat = new PakFormat(folder + pak + "song.pak.xen", "", "", PakFormatType.PC);
-                            PakEditor buildsong = new PakEditor(pakformat, false);
+                            PakEditor buildsong;
+                            try {
+                                buildsong = new PakEditor(pakformat, false);
+                            }
+                            catch
+                            {
+                                verboseline("dbg.pak.xen can go kill itself");
+                            }
                             Console.WriteLine("Compiling chart.");
                             verboseline("Creating QbFile using PakFormat");
                             File.WriteAllBytes(folder + pak + "song.qb", qbnew);
@@ -1667,7 +1674,13 @@ namespace FastGH3
                             verboseline("Writing song.qb...");
                             //songdata.Write(folder + pak + "song.qb");
                             Console.WriteLine("Compiling PAK.");
-                            buildsong.ReplaceFile("E15310CD", songdata);// folder + pak + "song.qb"); // songs\fastgh3.mid.qb
+                            try {
+                                buildsong.ReplaceFile("songs\fastgh3.mid.qb", songdata);// folder + pak + "song.qb"); // songs\fastgh3.mid.qb
+                            }
+                            catch
+                            {
+                                buildsong.AddFile(songdata, "songs\fastgh3.mid.qb", QbKey.Create(".qb"), false);
+                            }
                             File.Delete(folder + pak + "song.qb");
                             if (cacheEnabled)
                             {

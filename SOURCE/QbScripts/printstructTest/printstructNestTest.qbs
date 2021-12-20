@@ -23,5 +23,13 @@ printstruct({
 	qbkey platform = Xenon;
 	//qbkey bunch_of_keys = [true, false, none, name, GotParam, Seconds, Wait, CompositeObjectExists];
 	int bot_play = 1;
+	/*map a_map = {
+		$00000000: 456,
+		id: 'XYZ',
+		params: {
+			$00000000: AddToLookup,
+			$00000000: 'The quick brown fox jumped over the big lazy dog.'
+		}
+	};*/
 });
 }

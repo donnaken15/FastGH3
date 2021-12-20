@@ -1,12 +1,50 @@
-script() {
+script({
+	int player = 1;
+}) {
 
+player_device = (*last_start_pressed_device);
+if (*player1_device == %player_device)
+{
+	player = 1;
+}
+else
+{
+	player = 2;
+}
 enable_pause();
+safe_create_gh3_pause_menu();
+kill_start_key_binding();
+
+printf('paused');
+// rewrite from controller_unplugged
+/*if (*playing_song == 1)
+{
+	if (!GameIsPaused())
+	{
+		ui_flow_manager_respond_to_action({
+			qbkey action = pause_game;
+		});
+	}
+}
+if (!GameIsPaused())
+{
+	gh3_start_pressed({
+		qbkey $00000000 = no_back;
+	});
+}*/
 
 /*new_menu({
-	QbKey scrollid = fastgh3_pause_smenu;
-	QbKey vmenuid = fastgh3_pause_menu;
-	Vector2 menu_pos = (120.0, 224.0);
-	QbKey _ = text_left;
+	scrollid: fastgh3_pause_smenu,
+	vmenuid: fastgh3_pause_menu,
+	menu_pos: (120.0, 224.0),
+	event_handlers: [
+		{ pad_back, ui_flow_manager_respond_to_action,
+			params: { action: go_back }
+		}
+	],
+	spacing: -65,
+	use_backdrop: ( 0 ),
+	exclusive_device: %player_device
 });*/
 
 createscreenelement({
@@ -16,7 +54,7 @@ createscreenelement({
 	just: [left, top],
 	dims: (600.0, 700.0),
     pos: (120.0, 224.0)
-});
+});/**/
 
 createscreenelement({
 	type: vmenu,
@@ -52,8 +90,8 @@ createscreenelement({
 	shadow_rgba: [0,0,0,255]
 });
 
-// why is this breaking and not destroying
-//add_user_control_helper("SELECT", button = green, z = 100);
+// why is this breaking
+//add_user_control_helper('SELECT', button = green, z = 100);
 
 createscreenelement({
 	type: textelement,
@@ -63,7 +101,7 @@ createscreenelement({
 	scale: 0.8,
 	rgba: [210,210,210,250],
 	text: "RESUME",
-	just: [center, center],
+	just: [left, center],
 	z_priority: 100,
 	shadow_offs: (3.0, 3.0),
 	shadow_rgba: [0,0,0,255],
@@ -86,7 +124,7 @@ createscreenelement({
 	scale: 0.8,
 	rgba: [210,210,210,250],
 	text: "RESTART",
-	just: [center, center],
+	just: [left, center],
 	z_priority: 100,
 	shadow_offs: (3.0, 3.0),
 	shadow_rgba: [0,0,0,255],
@@ -109,7 +147,7 @@ createscreenelement({
 	scale: 0.8,
 	rgba: [210,210,210,250],
 	text: "DIFFICULTY",
-	just: [center, center],
+	just: [left, center],
 	z_priority: 100,
 	shadow_offs: (3.0, 3.0),
 	shadow_rgba: [0,0,0,255],
@@ -132,7 +170,7 @@ createscreenelement({
 	scale: 0.8,
 	rgba: [210,210,210,250],
 	text: "PRACTICE",
-	just: [center, center],
+	just: [left, center],
 	z_priority: 100,
 	shadow_offs: (3.0, 3.0),
 	shadow_rgba: [0,0,0,255],
@@ -155,7 +193,7 @@ createscreenelement({
 	scale: 0.8,
 	rgba: [210,210,210,250],
 	text: "OPTIONS",
-	just: [center, center],
+	just: [left, center],
 	z_priority: 100,
 	shadow_offs: (3.0, 3.0),
 	shadow_rgba: [0,0,0,255],
@@ -178,7 +216,7 @@ createscreenelement({
 	scale: 0.8,
 	rgba: [210,210,210,250],
 	text: "EXIT",
-	just: [center, center],
+	just: [left, center],
 	z_priority: 100,
 	shadow_offs: (3.0, 3.0),
 	shadow_rgba: [0,0,0,255],
