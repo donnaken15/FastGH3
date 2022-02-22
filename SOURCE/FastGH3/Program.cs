@@ -794,6 +794,7 @@ namespace FastGH3
                             catch
                             {
                                 verboseline("dbg.pak.xen can go kill itself");
+                                buildsong = new PakEditor(pakformat, false);
                             }
                             Console.WriteLine("Compiling chart.");
                             verboseline("Creating QbFile using PakFormat");
@@ -987,13 +988,19 @@ namespace FastGH3
                             if (spTmp.Count != 0)
                                 foreach (Note a in spTmp)
                                 {
-                                    star_expert = new QbItemInteger(songdata);
-                                    star_expert.Create(QbItemType.ArrayInteger, 3);
-                                    star_expert.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
-                                    star_expert.Values[1] = (int)Math.Round(OT.GetTime(a.Length) * 1000);
-                                    star_expert.Values[2] = spPnc[spPnc2];
-                                    array_expert_array.AddItem(star_expert);
-                                    spPnc2++;
+                                    try {
+                                        star_expert = new QbItemInteger(songdata);
+                                        star_expert.Create(QbItemType.ArrayInteger, 3);
+                                        star_expert.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
+                                        star_expert.Values[1] = (int)Math.Round(OT.GetTime(a.Length) * 1000);
+                                        star_expert.Values[2] = spPnc[spPnc2];
+                                        array_expert_array.AddItem(star_expert);
+                                        spPnc2++;
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("/!\\ Error adding a starpower phrase, if this message appears more than once, there may be a problem");
+                                    }
                                 }
                             else
                             {

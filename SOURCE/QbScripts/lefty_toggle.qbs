@@ -1,4 +1,6 @@
-script() {
+script({
+	qbkey player_status = player1_status;
+}) {
 
 leftt = 1;
 if(*%player_status.lefthanded_gems == 1)

@@ -1,5 +1,6 @@
 JUNK
 JUNK3
+/__QDB
 /TOOLS
 /TOOLS/*
 * - Copy*
@@ -44,6 +45,7 @@ __TEXTEST
 *.id*
 *.nam
 *.til
-_FGH3 TOOLS.lnk
 DATA/PAK/tmp.pak.xen
 *.fsp
+*.lnk
+PLUGINS/QDBhook.dll
