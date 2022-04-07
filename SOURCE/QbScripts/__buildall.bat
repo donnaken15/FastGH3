@@ -3,4 +3,5 @@
 del *.qbscript
 FOR %%Q IN (*.qbs) DO ( echo %%Q & qbc %%Q %%Qcript )
 del *.qbscriptcript*
+copy .useless\blank.qbScript .
 pause

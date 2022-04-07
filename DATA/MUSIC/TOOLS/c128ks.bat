@@ -9,4 +9,5 @@ goto :EOF
 :out
 "%~dp0sox" %1 -c 2 -r 44100 -S --multi-threaded -t wav - | "%~dp0lame" --cbr -b 128 --resample 44100 -m j - %2
 :# WHY IS SOX SLOW AT IT'S OWN GAME -C 128
+:# i bet songlist_editor did this faster somehow
 goto :EOF

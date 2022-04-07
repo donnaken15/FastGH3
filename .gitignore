@@ -1,4 +1,5 @@
 JUNK
+JUNK*
 JUNK3
 /__QDB
 /TOOLS
@@ -30,6 +31,7 @@ PLUGINS/_log.txt
 __FINAL*/
 __FINAL.zip
 __build.bat
+__copyall.bat
 __BUILDS
 game.idb
 *.UserDbg
@@ -49,3 +51,4 @@ DATA/PAK/tmp.pak.xen
 *.fsp
 *.lnk
 PLUGINS/QDBhook.dll
+\!*

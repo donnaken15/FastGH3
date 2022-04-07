@@ -312,6 +312,7 @@ namespace FastGH3
                             Path.GetFileName(args[0]).EndsWith(midext + 'i'))
                         {
                             verboseline("Detected midi file.");
+                            verboseline("Converting to chart...");
                             // why isnt this working
                             //mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
                             //Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
@@ -528,7 +529,9 @@ namespace FastGH3
                             };
                             do
                             {
-                                audiolost = MessageBox.Show("No song audio can be found.\nDo you want to search for it?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                                audiolost = MessageBox.Show("No song audio can be found.\nDo you want to search for it?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+                                if (audiolost == DialogResult.Cancel)
+                                    Application.Exit();
                                 if (audiolost == DialogResult.Yes)
                                 {
                                     searchaudioresult = searchaudio.ShowDialog();
@@ -669,6 +672,7 @@ namespace FastGH3
                             verboseline("Creating encoder process...");
                             if (!MTFSB)
                             {
+                                verboseline("Synchronous mode set");
                                 fsbbuild.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuild.bat";
                                 if (!verboselog)
                                 {
@@ -688,6 +692,7 @@ namespace FastGH3
                             }
                             else
                             {
+                                verboseline("Asynchronous mode set");
                                 Directory.CreateDirectory(folder + music + "\\TOOLS\\fsbtmp");
                                 File.Copy(folder + music + "\\TOOLS\\blank.mp3", folder + music + "\\TOOLS\\fsbtmp\\fastgh3_preview.mp3", true);
                                 string[] fsbnames = { "song", "guitar", "rhythm" };
@@ -793,8 +798,17 @@ namespace FastGH3
                             }
                             catch
                             {
-                                verboseline("dbg.pak.xen can go kill itself");
-                                buildsong = new PakEditor(pakformat, false);
+                                try
+                                {
+                                    verboseline("dbg.pak.xen can go kill itself");
+                                    buildsong = new PakEditor(pakformat, false);
+                                }
+                                catch
+                                {
+                                    verboseline("i'm %#@!?ng done");
+                                    File.Move(folder + pak + "dbg.pak.xen", folder + pak + "dbg.pak.xen.bak");
+                                    buildsong = new PakEditor(pakformat, false);
+                                }
                             }
                             Console.WriteLine("Compiling chart.");
                             verboseline("Creating QbFile using PakFormat");
@@ -803,152 +817,184 @@ namespace FastGH3
                             QbFile songdata = new QbFile(folder + pak + "song.qb", pakformat);
                             #region BUILD ENTIRE QB FILE
                             #region GUITAR VALUES
+
                             verboseline("Creating note arrays...");
-                            QbItemBase array_easy = new QbItemArray(songdata);
-                            QbItemBase array_medium = new QbItemArray(songdata);
-                            QbItemBase array_hard = new QbItemArray(songdata);
-                            QbItemBase array_expert = new QbItemArray(songdata);
-                            array_easy.Create(QbItemType.SectionArray);
-                            array_medium.Create(QbItemType.SectionArray);
-                            array_hard.Create(QbItemType.SectionArray);
-                            array_expert.Create(QbItemType.SectionArray);
-                            QbItemInteger notes_easy = new QbItemInteger(songdata);
-                            QbItemInteger notes_medium = new QbItemInteger(songdata);
-                            QbItemInteger notes_hard = new QbItemInteger(songdata);
-                            QbItemInteger notes_expert = new QbItemInteger(songdata);
-                            array_easy.ItemQbKey = QbKey.Create(0xE9BB103D);
-                            array_medium.ItemQbKey = QbKey.Create(0xDE2FC9CC);
-                            array_hard.ItemQbKey = QbKey.Create(0x61CC9578);
-                            array_expert.ItemQbKey = QbKey.Create(0x57471F39);
+                            string[] diffs = { "easy", "medium", "hard", "expert" };
+                            string[] insts = { "", "_rhythm", "_guitarcoop", "_rhythmcoop" };
+                            // song.inst[i].diff[d]
+                            QbItemBase[][] song_notes_container = new QbItemBase   [insts.Length][];//[diffs.Length];
+                            QbItemInteger[][] song_notes        = new QbItemInteger[insts.Length][];//[diffs.Length];
+                            for (int i = 0; i < song_notes_container.Length; i++)
+                            {
+                                song_notes_container[i] = new QbItemBase   [diffs.Length];
+                                song_notes[i]           = new QbItemInteger[diffs.Length];
+                                for (int d = 0; d < song_notes_container[i].Length; d++)
+                                {
+                                    song_notes[i][d] = new QbItemInteger(songdata);
+                                    song_notes_container[i][d] = new QbItemArray(songdata);
+                                    song_notes_container[i][d].Create(QbItemType.SectionArray);
+                                    song_notes_container[i][d].ItemQbKey =
+                                        QbKey.Create("fastgh3_song" + insts[i] + '_' + diffs[d]);
+                                }
+                            }
                             OffsetTransformer OT = new OffsetTransformer(chart);
                             List<Note> spTmp = new List<Note>();
                             Note spLast = new Note(), noteLast = new Note();
                             int spTmp3 = 0, spTmp2 = 0;
                             List<int> spPnc = new List<int>();
-                            foreach (Note a in chart.NoteTracks["ExpertSingle"])
-                            {
-                                if (a.Type == NoteType.Regular && spLast != null)
-                                {
-                                    //Console.WriteLine(spTmp3);
-                                    noteLast = a;
-                                    spTmp3 = noteLast.Offset;
-                                    if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
-                                    {
-                                        //Console.WriteLine(spTmp3 + " >= " + spLast.Offset + " && " + spTmp3 + " < " + spLast.OffsetEnd);
-                                        //Console.WriteLine(a.OffsetMilliseconds(OT));
-                                        spTmp2++;
-                                    }
-                                    else
-                                    {
-                                        if (spTmp2 > 0)
-                                        {
-                                            spPnc.Add(spTmp2);
-                                            spTmp2 = 0;
-                                        }
-                                    }
-                                }
-                                if (a.Type == NoteType.Special && a.SpecialFlag == 2)
-                                {
-                                    spTmp.Add(a);
-                                    spLast = a;
-                                    spTmp3 = noteLast.Offset;
-                                    if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
-                                    {
-                                        spTmp2++;
-                                    }
-                                }
-                            }
+                            string[] TrackDiffs = { "Easy", "Medium", "Hard", "Expert" };
+                            string[] TrackInsts = { "Single", "DoubleBass", "DoubleGuitar", "DoubleBass" };
+                            // doublebass would exist both on rhythm and rhythmcoop? lol?
+                            // depend on enhanced bass for singleplayer rhythm kek
+
                             //for (int i = 0; i < spPnc.Count; i++)
-                                //Console.WriteLine(spPnc[i]);
+                            //Console.WriteLine(spPnc[i]);
                             int test;
                             int delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
                             QbcNoteTrack tmp;
-                            try
+
+                            int dd = 0;
+                            int ii = 0;
+                            foreach (string i in TrackInsts)
                             {
-                                tmp = new QbcNoteTrack(chart.NoteTracks["EasySingle"], OT);
-                                if (tmp.Count > 0)
-                                    test = tmp.Count;
-                                else test = 3;
-                                notes_easy.Create(QbItemType.ArrayInteger, tmp.Count * 3);
-                                for (int i = 0; i < tmp.Count; i++)
+                                dd = 0;
+                                foreach (string d in TrackDiffs)
                                 {
-                                    notes_easy.Values[(i * 3)] = tmp[i].Offset + delay;
-                                    notes_easy.Values[(i * 3) + 1] = tmp[i].Length;
-                                    notes_easy.Values[(i * 3) + 2] = tmp[i].FretMask;
+                                    verboseline("Checking " + d + i);
+                                    if (chart.NoteTracks[d + i] != null)
+                                    {
+                                        verboseline("Got " + d + i);
+                                        // count notes in starpower phrases
+                                        // weird setup
+                                        // Thanks Neversoft
+                                        foreach (Note a in chart.NoteTracks[d + i])
+                                        {
+                                            if (a.Type == NoteType.Regular && spLast != null)
+                                            {
+                                                //Console.WriteLine(spTmp3);
+                                                noteLast = a;
+                                                spTmp3 = noteLast.Offset;
+                                                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
+                                                {
+                                                    //Console.WriteLine(spTmp3 + " >= " + spLast.Offset + " && " + spTmp3 + " < " + spLast.OffsetEnd);
+                                                    //Console.WriteLine(a.OffsetMilliseconds(OT));
+                                                    spTmp2++;
+                                                }
+                                                else
+                                                {
+                                                    if (spTmp2 > 0)
+                                                    {
+                                                        spPnc.Add(spTmp2);
+                                                        spTmp2 = 0;
+                                                    }
+                                                }
+                                            }
+                                            if (a.Type == NoteType.Special && a.SpecialFlag == 2)
+                                            {
+                                                spTmp.Add(a);
+                                                spLast = a;
+                                                spTmp3 = noteLast.Offset;
+                                                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
+                                                {
+                                                    spTmp2++;
+                                                }
+                                            }
+                                        }
+                                        try
+                                        {
+                                            ConsoleColor[] log_notecolors = new ConsoleColor[] {
+                                                        ConsoleColor.Green,
+                                                        ConsoleColor.Red,
+                                                        ConsoleColor.Yellow,
+                                                        ConsoleColor.Blue,
+                                                        ConsoleColor.Yellow
+                                            };
+                                            tmp = new QbcNoteTrack(chart.NoteTracks[d + i], OT);
+                                            if (tmp.Count > 0)
+                                                test = tmp.Count;
+                                            else test = 3;
+                                            song_notes[ii][dd].Create(QbItemType.ArrayInteger, tmp.Count * 3);
+                                            for (int j = 0; j < tmp.Count; j++)
+                                            {
+                                                song_notes[ii][dd].Values[(j * 3)] = tmp[j].Offset + delay;
+                                                song_notes[ii][dd].Values[(j * 3) + 1] = tmp[j].Length;
+                                                song_notes[ii][dd].Values[(j * 3) + 2] = tmp[j].FretMask;
+                                                // fancy for nothing
+                                                if (verboselog)
+                                                {
+                                                    Console.Write((tmp[j].Offset + delay).ToString().PadLeft(8) + "ms: ");
+                                                    bool hopo = (tmp[j].FretMask >> 5 & 1) == 1;
+                                                    for (int k = 0; k < 4; k++)
+                                                    {
+                                                        //Console.BackgroundColor = log_notecolors[k];
+                                                        if ((tmp[j].FretMask >> k & 1) == 1)
+                                                            Console.BackgroundColor = log_notecolors[k]; //Console.Write('█');
+                                                        else
+                                                            Console.ResetColor();
+                                                        //Console.ForegroundColor = ConsoleColor.White;
+                                                        /*if (hopo)
+                                                            Console.Write('•');
+                                                        else
+                                                            Console.Write(' ');*/
+                                                        Console.Write(' ');
+                                                    }
+                                                    Console.ResetColor();
+                                                    if ((tmp[j].FretMask >> 4 & 1) == 1)
+                                                    {
+                                                        Console.ForegroundColor = log_notecolors[4];
+                                                        Console.BackgroundColor = ConsoleColor.Red;
+                                                        Console.Write('▒');
+                                                    }
+                                                    else
+                                                        Console.Write(' ');
+                                                    Console.ResetColor();
+                                                    Console.Write(' ' + (tmp[j].Length).ToString().PadLeft(5) + "ms long ");
+                                                    Console.WriteLine();
+                                                }
+                                            }
+                                        }
+                                        catch
+                                        {
+                                            song_notes[ii][dd].Create(QbItemType.ArrayInteger, 3);
+                                            for (int j = 0; j < 3; j++)
+                                                song_notes[ii][dd].Values[j] = 0;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        song_notes[ii][dd].Create(QbItemType.ArrayInteger, 3);
+                                        for (int j = 0; j < 3; j++)
+                                            song_notes[ii][dd].Values[j] = 0;
+                                    }
+                                    dd++;
                                 }
+                                ii++;
                             }
-                            catch
-                            {
-                                notes_easy.Create(QbItemType.ArrayInteger, 3);
-                                for (int i = 0; i < 3; i++)
-                                    notes_easy.Values[i] = 0;
-                            }
-
-                            try
-                            {
-
-                                tmp = new QbcNoteTrack(chart.NoteTracks["MediumSingle"], OT);
-                                if (tmp.Count > 0)
-                                    test = tmp.Count;
-                                else test = 3;
-                                notes_medium.Create(QbItemType.ArrayInteger, tmp.Count * 3);
-                                for (int i = 0; i < tmp.Count; i++)
-                                {
-                                    notes_medium.Values[(i * 3)] = tmp[i].Offset + delay;
-                                    notes_medium.Values[(i * 3) + 1] = tmp[i].Length;
-                                    notes_medium.Values[(i * 3) + 2] = tmp[i].FretMask;
-                                }
-                            }
-                            catch
-                            {
-                                notes_medium.Create(QbItemType.ArrayInteger, 3);
-                                for (int i = 0; i < 3; i++)
-                                    notes_medium.Values[i] = 0;
-                            }
-
-                            try
-                            {
-
-                                tmp = new QbcNoteTrack(chart.NoteTracks["HardSingle"], OT);
-                                if (tmp.Count > 0)
-                                    test = tmp.Count;
-                                else test = 3;
-                                notes_hard.Create(QbItemType.ArrayInteger, tmp.Count * 3);
-                                for (int i = 0; i < tmp.Count; i++)
-                                {
-                                    notes_hard.Values[(i * 3)] = tmp[i].Offset + delay;
-                                    notes_hard.Values[(i * 3) + 1] = tmp[i].Length;
-                                    notes_hard.Values[(i * 3) + 2] = tmp[i].FretMask;
-                                }
-                            }
-                            catch
-                            {
-                                notes_hard.Create(QbItemType.ArrayInteger, 3);
-                                for (int i = 0; i < 3; i++)
-                                    notes_hard.Values[i] = 0;
-                            }
-
-
-                            tmp = new QbcNoteTrack(chart.NoteTracks["ExpertSingle"], OT);
-                            if (tmp.Count > 0)
-                                test = tmp.Count;
-                            else test = 3;
-                            notes_expert.Create(QbItemType.ArrayInteger, tmp.Count * 3);
-                            for (int i = 0; i < tmp.Count; i++)
-                            {
-                                notes_expert.Values[(i * 3)] = tmp[i].Offset + delay;
-                                notes_expert.Values[(i * 3) + 1] = tmp[i].Length;
-                                notes_expert.Values[(i * 3) + 2] = tmp[i].FretMask;
-                            }
+                            
                             verboseline("Adding note arrays to QB.");
-                            songdata.AddItem(array_easy);
-                            songdata.AddItem(array_medium);
+                            /*for (int d = 0; d < song_notes_container.Length; d++)
+                            {
+                                songdata.AddItem(song_notes_container[0][d]);
+                                song_notes_container[0][d].AddItem(song_notes[0][d]);
+                            }*/
+                            // use this for organized QBs ^
+                            // as pleasing[definition needed] as the below looks to do
+                            // without having multiple loops, idk man
+                            for (int i = 0; i < song_notes_container.Length; i++)
+                            {
+                                for (int d = 0; d < song_notes_container[i].Length; d++)
+                                {
+                                    songdata.AddItem(song_notes_container[i][d]);
+                                    song_notes_container[i][d].AddItem(song_notes[i][d]);
+                                }
+                            }/**/
+                            /*songdata.AddItem(array_medium);
                             songdata.AddItem(array_hard);
                             songdata.AddItem(array_expert);
                             array_easy.AddItem(notes_easy);
                             array_medium.AddItem(notes_medium);
                             array_hard.AddItem(notes_hard);
-                            array_expert.AddItem(notes_expert);
+                            array_expert.AddItem(notes_expert);*/
                             verboseline("Creating and adding starpower arrays...");
                             QbItemBase array_easy_star = new QbItemArray(songdata);
                             QbItemBase array_medium_star = new QbItemArray(songdata);
@@ -1008,7 +1054,7 @@ namespace FastGH3
                                 star_expert.Create(QbItemType.ArrayInteger, 1);
                                 array_expert_array.AddItem(star_expert);
                             }
-                            // STILL MAKE THIS IN LOOPS 2ND REMINDER AJE(IQE)(JQARGYJ)(!#{?P>:$!>":!$^
+                            // KAY OU GOT ONE PART DONE, DOOOOO THE REST, SUHLLLAAAVVVEEE!!!!!!!!!!!
                             songdata.AddItem(array_expert_star);
                             verboseline("Creating powerup arrays...");
                             QbItemBase array_easy_battle = new QbItemArray(songdata);
@@ -1272,7 +1318,20 @@ namespace FastGH3
                             #endregion
                             #region END TIME
                             verboseline("Getting end time...");
-                            int endtime = Math.Max(
+                            int endtime = 0;
+                            //           blehe  v
+                            for (int i = 0; i < 4; i++)
+                            {
+                                for (int d = 0; d < 4; d++)
+                                {
+                                    endtime = Math.Max(endtime,
+                                        song_notes[i][d].Values[song_notes[i][d].Values.Length - 3] +
+                                        song_notes[i][d].Values[song_notes[i][d].Values.Length - 2]
+                                        );
+                                    verboseline("Calculating: end time so far: " + endtime);
+                                }
+                            }
+                            /*int endtime = Math.Max(
                                 Math.Max(
                                 Math.Max(
                                 notes_easy.Values[notes_easy.Values.Length - 3] + notes_easy.Values[notes_easy.Values.Length - 2],
@@ -1287,7 +1346,7 @@ namespace FastGH3
                                 Math.Max(
                                 notes_hard_rhythm.Values[notes_hard_rhythm.Values.Length - 3] + notes_hard_rhythm.Values[notes_hard_rhythm.Values.Length - 2],
                                 notes_expert_rhythm.Values[notes_expert_rhythm.Values.Length - 3] + notes_expert_rhythm.Values[notes_expert_rhythm.Values.Length - 2]
-                                )));
+                                )));*/
                             verboseline("End time is " + endtime);
                             #endregion
                             #region CO-OP VALUES
@@ -1556,7 +1615,7 @@ namespace FastGH3
                             array_fretbars.ItemQbKey = QbKey.Create(0xC3C71E9D);
                             QbItemInteger fretbars = new QbItemInteger(songdata);
                             List<int> msrs = new List<int>();
-                            for (int i = 0; OT.GetTime(i) < OT.songLength + chart.Resolution; i += chart.Resolution)
+                            for (int i = 0; OT.GetTime(i) < ((float)(endtime) / 1000) + 2000; i += chart.Resolution)
                             {
                                 msrs.Add(Convert.ToInt32(OT.GetTime(i) * 1000));
                             }
@@ -1681,12 +1740,19 @@ namespace FastGH3
                             verboseline("Writing song.qb...");
                             //songdata.Write(folder + pak + "song.qb");
                             Console.WriteLine("Compiling PAK.");
-                            try {
-                                buildsong.ReplaceFile("songs\fastgh3.mid.qb", songdata);// folder + pak + "song.qb"); // songs\fastgh3.mid.qb
+                            // somehow songs\fastgh3.mid.qb =/= E15310CD here
+                            // wtf is the name of 993B9724
+                            // though i think name wouldnt actually
+                            // matter here because of how the game
+                            // loads paks, which doesnt depend on
+                            // specifically named files like this
+                            try
+                            {
+                                buildsong.ReplaceFile("E15310CD", songdata);// folder + pak + "song.qb"); // songs\fastgh3.mid.qb
                             }
                             catch
                             {
-                                buildsong.AddFile(songdata, "songs\fastgh3.mid.qb", QbKey.Create(".qb"), false);
+                                buildsong.AddFile(songdata, "E15310CD", QbKey.Create(".qb"), false);
                             }
                             File.Delete(folder + pak + "song.qb");
                             if (cacheEnabled)
@@ -1700,6 +1766,7 @@ namespace FastGH3
                                 cache.SetKeyValue(charthash.ToString("X16"), "Length", ((endtime / 1000) / 60).ToString("00") + ':' + (((endtime / 1000) % 60)).ToString("00"));
                                 cache.Save(folder + dataf + "CACHE\\.db.ini");
                             }
+                            verboseline("DID EVERYTHING WORK?!");
                         }
                         else
                         {
@@ -1708,6 +1775,8 @@ namespace FastGH3
                                 folder + "\\DATA\\CACHE\\" + charthash.ToString("X16"),
                                 folder + "\\DATA\\PAK\\song.pak.xen", true);
                         }
+                        //if (verboselog)
+                            //Console.ReadKey();
                         if (!audCache)
                         {
                             if (!MTFSB)
