@@ -42,9 +42,9 @@ namespace FastGH3
         public static Random random = new Random();
         public static DateTime starttime = DateTime.Today;
         public static Chart chart = new Chart();
-        public static byte[] paknew = new byte[0x1960], paknewP1 =
+        public static byte[] paknew = new byte[0xB0], paknewP1 =
         {
-            0xA7, 0xF5, 0x05, 0xC4, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x1C,
+            0xA7, 0xF5, 0x05, 0xC4, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x1C,
             0x00, 0x00, 0x00, 0x00, 0xE1, 0x53, 0x10, 0xCD, 0x4C, 0x1E, 0x75, 0x69,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2C, 0xB3, 0xEF, 0x3B,
             0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
@@ -219,7 +219,7 @@ namespace FastGH3
                 {
                     Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(openchart.FileName));
                 }
-                Application.Exit();
+                Environment.Exit(0);
             }
             if (args.Length > 0)
             {
@@ -253,7 +253,7 @@ namespace FastGH3
                         if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > (1024 * 1024) * 9)
                         {
                             if (MessageBox.Show("This song package is a larger file than usual. Do you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                                Application.Exit();
+                                Environment.Exit(0);
                         }
                         //if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
                         //settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
@@ -327,9 +327,12 @@ namespace FastGH3
                         Console.WriteLine("Reading file.");
                         if (cacheEnabled)
                         {
+                            verboseline("Indexing cache...");
                             cacheList = Directory.GetFiles(folder + "DATA\\CACHE");
                             for (int i = 0; i < cacheList.Length; i++)
                             {
+                                //verboseline("\r(" + i + "/" + cacheList.Length + ")...");
+                                // forgot how to rewrite a line
                                 cacheList[i] = Path.GetFileNameWithoutExtension(cacheList[i]);
                             }
                         }
@@ -531,7 +534,7 @@ namespace FastGH3
                             {
                                 audiolost = MessageBox.Show("No song audio can be found.\nDo you want to search for it?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
                                 if (audiolost == DialogResult.Cancel)
-                                    Application.Exit();
+                                    Environment.Exit(0);
                                 if (audiolost == DialogResult.Yes)
                                 {
                                     searchaudioresult = searchaudio.ShowDialog();
@@ -672,7 +675,7 @@ namespace FastGH3
                             verboseline("Creating encoder process...");
                             if (!MTFSB)
                             {
-                                verboseline("Synchronous mode set");
+                                verbose("S"); // lol
                                 fsbbuild.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuild.bat";
                                 if (!verboselog)
                                 {
@@ -692,7 +695,7 @@ namespace FastGH3
                             }
                             else
                             {
-                                verboseline("Asynchronous mode set");
+                                verbose("As");
                                 Directory.CreateDirectory(folder + music + "\\TOOLS\\fsbtmp");
                                 File.Copy(folder + music + "\\TOOLS\\blank.mp3", folder + music + "\\TOOLS\\fsbtmp\\fastgh3_preview.mp3", true);
                                 string[] fsbnames = { "song", "guitar", "rhythm" };
@@ -733,6 +736,7 @@ namespace FastGH3
                                 }
                                 fsbbuild3.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
                             }
+                            verbose("ynchronous mode set\n");
                             verboseline("Starting FSB building...");
                             if (!MTFSB)
                             {
@@ -779,15 +783,15 @@ namespace FastGH3
                             verboseline("Creating new QB files...");
                             disallowGameStartup();
                             Array.Copy(paknewP1, 0, paknew, 0, paknewP1.Length);
-                            Array.Copy(qbnew, 0, paknew, 0x1000, qbnew.Length);
-                            for (int i = 0x1020; i < 4; i++)
+                            Array.Copy(qbnew, 0, paknew, 0x80, qbnew.Length);
+                            /*for (int i = 0x1020; i < 4; i++)
                             {
                                 paknew[i] = 0xAB;
                             }
                             for (int i = 0x1030; i < paknew.Length; i++)
                             {
                                 paknew[i] = 0xAB;
-                            }
+                            }*/
                             File.WriteAllBytes(folder + pak + "song.pak.xen", paknew);
                             verboseline("Creating PakFormat and PakEditor from song.pak");
                             Console.WriteLine("Opening song pak.");
@@ -838,14 +842,12 @@ namespace FastGH3
                                 }
                             }
                             OffsetTransformer OT = new OffsetTransformer(chart);
-                            List<Note> spTmp = new List<Note>();
-                            Note spLast = new Note(), noteLast = new Note();
-                            int spTmp3 = 0, spTmp2 = 0;
-                            List<int> spPnc = new List<int>();
                             string[] TrackDiffs = { "Easy", "Medium", "Hard", "Expert" };
                             string[] TrackInsts = { "Single", "DoubleBass", "DoubleGuitar", "DoubleBass" };
                             // doublebass would exist both on rhythm and rhythmcoop? lol?
                             // depend on enhanced bass for singleplayer rhythm kek
+
+                            bool atleast1track = false;
 
                             //for (int i = 0; i < spPnc.Count; i++)
                             //Console.WriteLine(spPnc[i]);
@@ -863,43 +865,8 @@ namespace FastGH3
                                     verboseline("Checking " + d + i);
                                     if (chart.NoteTracks[d + i] != null)
                                     {
+                                        atleast1track = true;
                                         verboseline("Got " + d + i);
-                                        // count notes in starpower phrases
-                                        // weird setup
-                                        // Thanks Neversoft
-                                        foreach (Note a in chart.NoteTracks[d + i])
-                                        {
-                                            if (a.Type == NoteType.Regular && spLast != null)
-                                            {
-                                                //Console.WriteLine(spTmp3);
-                                                noteLast = a;
-                                                spTmp3 = noteLast.Offset;
-                                                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
-                                                {
-                                                    //Console.WriteLine(spTmp3 + " >= " + spLast.Offset + " && " + spTmp3 + " < " + spLast.OffsetEnd);
-                                                    //Console.WriteLine(a.OffsetMilliseconds(OT));
-                                                    spTmp2++;
-                                                }
-                                                else
-                                                {
-                                                    if (spTmp2 > 0)
-                                                    {
-                                                        spPnc.Add(spTmp2);
-                                                        spTmp2 = 0;
-                                                    }
-                                                }
-                                            }
-                                            if (a.Type == NoteType.Special && a.SpecialFlag == 2)
-                                            {
-                                                spTmp.Add(a);
-                                                spLast = a;
-                                                spTmp3 = noteLast.Offset;
-                                                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
-                                                {
-                                                    spTmp2++;
-                                                }
-                                            }
-                                        }
                                         try
                                         {
                                             ConsoleColor[] log_notecolors = new ConsoleColor[] {
@@ -914,6 +881,8 @@ namespace FastGH3
                                                 test = tmp.Count;
                                             else test = 3;
                                             song_notes[ii][dd].Create(QbItemType.ArrayInteger, tmp.Count * 3);
+                                            // is ItemCount what i need instead of Create(type, arraysize)
+                                            // so i implemented that parameter for nothing?
                                             for (int j = 0; j < tmp.Count; j++)
                                             {
                                                 song_notes[ii][dd].Values[(j * 3)] = tmp[j].Offset + delay;
@@ -970,6 +939,23 @@ namespace FastGH3
                                 }
                                 ii++;
                             }
+                            if (!atleast1track)
+                            {
+                                File.Delete(folder + pak + "song.qb");
+                                if (!MTFSB)
+                                {
+                                    if (!fsbbuild.HasExited)
+                                        fsbbuild.Kill();
+                                }
+                                else
+                                {
+                                    for (int i = 0; i < fsbbuild2.Length; i++)
+                                        if (!fsbbuild2[i].HasExited)
+                                            fsbbuild2[i].Kill();
+                                } // doesn't work because killing this only kills the parent EXE and doesn't stop the script >:(
+                                MessageBox.Show("No guitar/rhythm tracks can be found. Exiting...","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                                Environment.Exit(0);
+                            }
                             
                             verboseline("Adding note arrays to QB.");
                             /*for (int d = 0; d < song_notes_container.Length; d++)
@@ -996,66 +982,125 @@ namespace FastGH3
                             array_hard.AddItem(notes_hard);
                             array_expert.AddItem(notes_expert);*/
                             verboseline("Creating and adding starpower arrays...");
-                            QbItemBase array_easy_star = new QbItemArray(songdata);
-                            QbItemBase array_medium_star = new QbItemArray(songdata);
-                            QbItemBase array_hard_star = new QbItemArray(songdata);
-                            QbItemBase array_expert_star = new QbItemArray(songdata);
-                            array_easy_star.Create(QbItemType.SectionArray);
-                            array_medium_star.Create(QbItemType.SectionArray);
-                            array_hard_star.Create(QbItemType.SectionArray);
-                            array_expert_star.Create(QbItemType.SectionArray);
-                            QbItemBase array_easy_array = new QbItemArray(songdata);
-                            QbItemBase array_medium_array = new QbItemArray(songdata);
-                            QbItemBase array_hard_array = new QbItemArray(songdata);
-                            QbItemBase array_expert_array = new QbItemArray(songdata);
-                            array_easy_array.Create(QbItemType.ArrayArray);
-                            array_medium_array.Create(QbItemType.ArrayArray);
-                            array_hard_array.Create(QbItemType.ArrayArray);
-                            array_expert_array.Create(QbItemType.ArrayArray);
-                            array_easy_star.ItemQbKey = QbKey.Create(0x9C876792);
-                            array_medium_star.ItemQbKey = QbKey.Create(0x4FE36D34);
-                            array_hard_star.ItemQbKey = QbKey.Create(0x74F79A34);
-                            array_expert_star.ItemQbKey = QbKey.Create(0x608DEDC6);
-                            QbItemInteger star_easy = new QbItemInteger(songdata);
-                            QbItemInteger star_medium = new QbItemInteger(songdata);
-                            QbItemInteger star_hard = new QbItemInteger(songdata);
-                            star_easy.Create(QbItemType.ArrayInteger, 1);
-                            star_medium.Create(QbItemType.ArrayInteger, 1);
-                            star_hard.Create(QbItemType.ArrayInteger, 1);
-                            songdata.AddItem(array_easy_star);
-                            songdata.AddItem(array_medium_star);
-                            songdata.AddItem(array_hard_star);
-                            array_easy_star.AddItem(array_easy_array);
-                            array_medium_star.AddItem(array_medium_array);
-                            array_hard_star.AddItem(array_hard_array);
-                            array_expert_star.AddItem(array_expert_array);
-                            QbItemInteger star_expert;
-                            int spPnc2 = 0;
-                            if (spTmp.Count != 0)
-                                foreach (Note a in spTmp)
-                                {
-                                    try {
-                                        star_expert = new QbItemInteger(songdata);
-                                        star_expert.Create(QbItemType.ArrayInteger, 3);
-                                        star_expert.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
-                                        star_expert.Values[1] = (int)Math.Round(OT.GetTime(a.Length) * 1000);
-                                        star_expert.Values[2] = spPnc[spPnc2];
-                                        array_expert_array.AddItem(star_expert);
-                                        spPnc2++;
-                                    }
-                                    catch
-                                    {
-                                        Console.WriteLine("/!\\ Error adding a starpower phrase, if this message appears more than once, there may be a problem");
-                                    }
-                                }
-                            else
+                            QbItemBase[][] song_stars_array_container = new QbItemBase[insts.Length][];//[diffs.Length];
+                            QbItemBase[][] song_stars_container = new QbItemBase[insts.Length][];//[diffs.Length];
+                            QbItemInteger[][] song_stars = new QbItemInteger[insts.Length][];//[diffs.Length];
+                            QbItemInteger starTmp;
+                            for (int i = 0; i < song_stars_container.Length; i++)
                             {
-                                star_expert = new QbItemInteger(songdata);
-                                star_expert.Create(QbItemType.ArrayInteger, 1);
-                                array_expert_array.AddItem(star_expert);
+                                song_stars_array_container[i] = new QbItemBase[diffs.Length];
+                                song_stars_container[i] = new QbItemArray[diffs.Length];
+                                //song_stars[i] = new QbItemInteger[diffs.Length];
+                                for (int d = 0; d < song_stars_container[i].Length; d++)
+                                {
+                                    //song_stars[i][d] = new QbItemInteger(songdata);
+                                    song_stars_array_container[i][d] = new QbItemArray(songdata);
+                                    song_stars_array_container[i][d].Create(QbItemType.SectionArray);
+                                    song_stars_array_container[i][d].ItemQbKey =
+                                        QbKey.Create("fastgh3" + insts[i] + '_' + diffs[d] + "_star");
+                                    song_stars_container[i][d] = new QbItemArray(songdata);
+                                    song_stars_container[i][d].Create(QbItemType.ArrayArray);
+                                }
+                            }
+                            for (int i = 0; i < song_stars_array_container.Length; i++)
+                            {
+                                for (int d = 0; d < song_stars_array_container[i].Length; d++)
+                                {
+                                    songdata.AddItem(song_stars_array_container[i][d]);
+                                    song_stars_array_container[i][d].AddItem(song_stars_container[i][d]);
+                                }
+                            }
+                            ii = 0;
+                            foreach (string i in TrackInsts)
+                            {
+                                dd = 0;
+                                foreach (string d in TrackDiffs)
+                                {
+                                    if (chart.NoteTracks[d + i] != null)
+                                    {
+                                        // count notes in starpower phrases
+                                        // weird setup
+                                        // Thanks Neversoft
+
+                                        // i forgot how this even works
+                                        List<Note> spTmp = new List<Note>();
+                                        Note spLast = new Note(), noteLast = new Note();
+                                        int spTmp3 = 0, spTmp2 = 0;
+                                        List<int> spPnc = new List<int>();
+                                        foreach (Note a in chart.NoteTracks[d + i])
+                                        {
+                                            if (a.Type == NoteType.Regular && spLast != null)
+                                            {
+                                                //Console.WriteLine(spTmp3);
+                                                noteLast = a;
+                                                spTmp3 = noteLast.Offset;
+                                                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
+                                                {
+                                                    //Console.WriteLine(spTmp3 + " >= " + spLast.Offset + " && " + spTmp3 + " < " + spLast.OffsetEnd);
+                                                    //Console.WriteLine(a.OffsetMilliseconds(OT));
+                                                    spTmp2++;
+                                                }
+                                                else
+                                                {
+                                                    if (spTmp2 > 0)
+                                                    {
+                                                        spPnc.Add(spTmp2);
+                                                        spTmp2 = 0;
+                                                    }
+                                                }
+                                            }
+                                            if (a.Type == NoteType.Special &&
+                                                a.SpecialFlag == 2)
+                                                // 3, allow adding
+                                                // battle notes here too
+                                            {
+                                                spTmp.Add(a);
+                                                spLast = a;
+                                                spTmp3 = noteLast.Offset;
+                                                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
+                                                {
+                                                    spTmp2++;
+                                                }
+                                            }
+                                        }
+                                        int spPnc2 = 0;
+                                        if (spTmp.Count != 0)
+                                            foreach (Note a in spTmp)
+                                            {
+                                                try
+                                                {
+                                                    starTmp = new QbItemInteger(songdata);
+                                                    starTmp.Create(QbItemType.ArrayInteger, 3);
+                                                    starTmp.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
+                                                    starTmp.Values[1] = (int)Math.Round(OT.GetTime(a.Length) * 1000);
+                                                    starTmp.Values[2] = spPnc[spPnc2];
+                                                    song_stars_container[ii][dd].AddItem(starTmp);
+                                                    spPnc2++;
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                    Console.WriteLine("/!\\ Error adding a starpower phrase, if this message appears more than once, there may be a problem");
+                                                    //Console.WriteLine(e);
+                                                }
+                                            }
+                                        else
+                                        {
+                                            starTmp = new QbItemInteger(songdata);
+                                            starTmp.Create(QbItemType.ArrayInteger, 3);
+                                            song_stars_container[ii][dd].AddItem(starTmp);
+                                        }/**/
+                                    }
+                                    else
+                                    {
+                                        starTmp = new QbItemInteger(songdata);
+                                        starTmp.Create(QbItemType.ArrayInteger, 3);
+                                        song_stars_container[ii][dd].AddItem(starTmp);
+                                    }
+                                    dd++;
+                                }
+                                ii++;
                             }
                             // KAY OU GOT ONE PART DONE, DOOOOO THE REST, SUHLLLAAAVVVEEE!!!!!!!!!!!
-                            songdata.AddItem(array_expert_star);
                             verboseline("Creating powerup arrays...");
                             QbItemBase array_easy_battle = new QbItemArray(songdata);
                             QbItemBase array_medium_battle = new QbItemArray(songdata);
@@ -1084,7 +1129,7 @@ namespace FastGH3
                             battle_easy.Create(QbItemType.ArrayInteger, 1);
                             battle_medium.Create(QbItemType.ArrayInteger, 1);
                             battle_hard.Create(QbItemType.ArrayInteger, 1);
-                            //battle_expert.Create(QbItemType.ArrayInteger, 1);
+                            battle_expert.Create(QbItemType.ArrayInteger, 1);
                             verboseline("Adding powerup arrays to QB...");
                             songdata.AddItem(array_easy_battle);
                             songdata.AddItem(array_medium_battle);
@@ -1094,7 +1139,7 @@ namespace FastGH3
                             array_medium_battle.AddItem(array_medium_battle_array);
                             array_hard_battle.AddItem(array_hard_battle_array);
                             array_expert_battle.AddItem(array_expert_battle_array);
-                            List<Note> bpTmp = new List<Note>();
+                            /*List<Note> bpTmp = new List<Note>();
                             foreach (Note a in chart.NoteTracks["ExpertSingle"])
                                 if (a.Type == NoteType.Special && a.SpecialFlag == 3)
                                     spTmp.Add(a);
@@ -1113,208 +1158,12 @@ namespace FastGH3
                                 //battle_expert = new QbItemInteger(songdata);
                                 battle_expert.Create(QbItemType.ArrayInteger, 1);
                                 //array_expert_battle_array.AddItem(battle_expert);
-                            }
+                            }*/
+                            //battle_expert.Create(QbItemType.ArrayInteger, 1);
                             array_easy_battle_array.AddItem(battle_easy);
                             array_medium_battle_array.AddItem(battle_medium);
                             array_hard_battle_array.AddItem(battle_hard);
                             array_expert_battle_array.AddItem(battle_expert);
-                            #endregion
-                            #region RHYTHM VALUES
-                            verboseline("Creating rhythm arrays...");
-                            QbItemBase array_easy_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_medium_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_hard_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_expert_rhythm = new QbItemArray(songdata);
-                            array_easy_rhythm.Create(QbItemType.SectionArray);
-                            array_medium_rhythm.Create(QbItemType.SectionArray);
-                            array_hard_rhythm.Create(QbItemType.SectionArray);
-                            array_expert_rhythm.Create(QbItemType.SectionArray);
-                            QbItemInteger notes_easy_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger notes_medium_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger notes_hard_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger notes_expert_rhythm = new QbItemInteger(songdata);
-                            array_easy_rhythm.ItemQbKey = QbKey.Create(0xADA797E4);
-                            array_medium_rhythm.ItemQbKey = QbKey.Create(0xFD09E505);
-                            array_hard_rhythm.ItemQbKey = QbKey.Create(0x25D012A1);
-                            array_expert_rhythm.ItemQbKey = QbKey.Create(0x746133F0);
-                            try
-                            {
-                                tmp = new QbcNoteTrack(chart.NoteTracks["EasyDoubleBass"], OT);
-                                if (tmp.Count > 0)
-                                    test = tmp.Count;
-                                else test = 3;
-                                notes_easy_rhythm.Create(QbItemType.ArrayInteger, tmp.Count * 3);
-                                for (int i = 0; i < tmp.Count; i++)
-                                {
-                                    notes_easy_rhythm.Values[(i * 3)] = (tmp[i].Offset + delay);
-                                    notes_easy_rhythm.Values[(i * 3) + 1] = (tmp[i].Length);
-                                    notes_easy_rhythm.Values[(i * 3) + 2] = (tmp[i].FretMask);
-                                }
-                            }
-                            catch
-                            {
-                                notes_easy_rhythm.Create(QbItemType.ArrayInteger, 3);
-                                for (int i = 0; i < 3; i++)
-                                    notes_easy_rhythm.Values[i] = 0;
-                            }
-
-                            try
-                            {
-                                tmp = new QbcNoteTrack(chart.NoteTracks["MediumDoubleBass"], OT);
-                                if (tmp.Count > 0)
-                                    test = tmp.Count;
-                                else test = 3;
-                                notes_medium_rhythm.Create(QbItemType.ArrayInteger, tmp.Count * 3);
-                                for (int i = 0; i < tmp.Count; i++)
-                                {
-                                    notes_medium_rhythm.Values[(i * 3)] = tmp[i].Offset + delay;
-                                    notes_medium_rhythm.Values[(i * 3) + 1] = (tmp[i].Length);
-                                    notes_medium_rhythm.Values[(i * 3) + 2] = (tmp[i].FretMask);
-                                }
-                            }
-                            catch
-                            {
-                                notes_medium_rhythm.Create(QbItemType.ArrayInteger, 3);
-                                for (int i = 0; i < 3; i++)
-                                    notes_medium_rhythm.Values[i] = 0;
-                            }
-
-                            try
-                            {
-
-                                tmp = new QbcNoteTrack(chart.NoteTracks["HardDoubleBass"], OT);
-                                if (tmp.Count > 0)
-                                    test = tmp.Count;
-                                else test = 3;
-                                notes_hard_rhythm.Create(QbItemType.ArrayInteger, tmp.Count * 3);
-                                for (int i = 0; i < tmp.Count; i++)
-                                {
-                                    notes_hard_rhythm.Values[(i * 3)] = tmp[i].Offset + delay;
-                                    notes_hard_rhythm.Values[(i * 3) + 1] = (tmp[i].Length);
-                                    notes_hard_rhythm.Values[(i * 3) + 2] = (tmp[i].FretMask);
-                                }
-                            }
-                            catch
-                            {
-                                notes_hard_rhythm.Create(QbItemType.ArrayInteger, 3);
-                                for (int i = 0; i < 3; i++)
-                                    notes_hard_rhythm.Values[i] = 0;
-                            }
-
-                            try
-                            {
-
-                                tmp = new QbcNoteTrack(chart.NoteTracks["ExpertDoubleBass"], OT);
-                                if (tmp.Count > 0)
-                                    test = tmp.Count;
-                                else test = 3;
-                                notes_expert_rhythm.Create(QbItemType.ArrayInteger, tmp.Count * 3);
-                                for (int i = 0; i < tmp.Count; i++)
-                                {
-                                    notes_expert_rhythm.Values[(i * 3)] = tmp[i].Offset + delay;
-                                    notes_expert_rhythm.Values[(i * 3) + 1] = (tmp[i].Length);
-                                    notes_expert_rhythm.Values[(i * 3) + 2] = (tmp[i].FretMask);
-                                }
-                            }
-                            catch
-                            {
-                                notes_expert_rhythm.Create(QbItemType.ArrayInteger, 3);
-                                for (int i = 0; i < 3; i++)
-                                    notes_expert_rhythm.Values[i] = 0;
-                            }
-                            verboseline("Adding rhythm arrays to QB.");
-                            songdata.AddItem(array_easy_rhythm);
-                            songdata.AddItem(array_medium_rhythm);
-                            songdata.AddItem(array_hard_rhythm);
-                            songdata.AddItem(array_expert_rhythm);
-                            array_easy_rhythm.AddItem(notes_easy_rhythm);
-                            array_medium_rhythm.AddItem(notes_medium_rhythm);
-                            array_hard_rhythm.AddItem(notes_hard_rhythm);
-                            array_expert_rhythm.AddItem(notes_expert_rhythm);
-                            verboseline("Creating rhythm starpower arrays...");
-                            QbItemBase array_easy_star_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_medium_star_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_hard_star_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_expert_star_rhythm = new QbItemArray(songdata);
-                            array_easy_star_rhythm.Create(QbItemType.SectionArray);
-                            array_medium_star_rhythm.Create(QbItemType.SectionArray);
-                            array_hard_star_rhythm.Create(QbItemType.SectionArray);
-                            array_expert_star_rhythm.Create(QbItemType.SectionArray);
-                            QbItemBase array_easy_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_medium_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_hard_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_expert_array_rhythm = new QbItemArray(songdata);
-                            array_easy_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_medium_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_hard_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_expert_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_easy_star_rhythm.ItemQbKey = QbKey.Create(0x4664E500);
-                            array_medium_star_rhythm.ItemQbKey = QbKey.Create(0x0F22BD43);
-                            array_hard_star_rhythm.ItemQbKey = QbKey.Create(0xAE1418A6);
-                            array_expert_star_rhythm.ItemQbKey = QbKey.Create(0x204C3DB1);
-                            QbItemInteger star_easy_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger star_medium_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger star_hard_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger star_expert_rhythm = new QbItemInteger(songdata);
-                            star_easy_rhythm.Create(QbItemType.ArrayInteger, 1);
-                            star_medium_rhythm.Create(QbItemType.ArrayInteger, 1);
-                            star_hard_rhythm.Create(QbItemType.ArrayInteger, 1);
-                            star_expert_rhythm.Create(QbItemType.ArrayInteger, 1);
-                            verboseline("Creating rhythm powerup arrays...");
-                            QbItemBase array_easy_battle_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_rhythm = new QbItemArray(songdata);
-                            array_easy_battle_rhythm.Create(QbItemType.SectionArray);
-                            array_medium_battle_rhythm.Create(QbItemType.SectionArray);
-                            array_hard_battle_rhythm.Create(QbItemType.SectionArray);
-                            array_expert_battle_rhythm.Create(QbItemType.SectionArray);
-                            QbItemBase array_easy_battle_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_array_rhythm = new QbItemArray(songdata);
-                            array_easy_battle_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_medium_battle_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_hard_battle_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_expert_battle_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_easy_battle_rhythm.ItemQbKey = QbKey.Create(0x3586AFF5);
-                            array_medium_battle_rhythm.ItemQbKey = QbKey.Create(0xB7E00BF8);
-                            array_hard_battle_rhythm.ItemQbKey = QbKey.Create(0x6A66884E);
-                            array_expert_battle_rhythm.ItemQbKey = QbKey.Create(0x3998ACEF);
-                            QbItemInteger battle_easy_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger battle_medium_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger battle_hard_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger battle_expert_rhythm = new QbItemInteger(songdata);
-                            battle_easy_rhythm.Create(QbItemType.ArrayInteger, 1);
-                            battle_medium_rhythm.Create(QbItemType.ArrayInteger, 1);
-                            battle_hard_rhythm.Create(QbItemType.ArrayInteger, 1);
-                            battle_expert_rhythm.Create(QbItemType.ArrayInteger, 1);
-                            verboseline("Adding rhythm starpower arrays to QB...");
-                            songdata.AddItem(array_easy_star_rhythm);
-                            songdata.AddItem(array_medium_star_rhythm);
-                            songdata.AddItem(array_hard_star_rhythm);
-                            songdata.AddItem(array_expert_star_rhythm);
-                            array_easy_star_rhythm.AddItem(array_easy_array_rhythm);
-                            array_medium_star_rhythm.AddItem(array_medium_array_rhythm);
-                            array_hard_star_rhythm.AddItem(array_hard_array_rhythm);
-                            array_expert_star_rhythm.AddItem(array_expert_array_rhythm);
-                            array_easy_array_rhythm.AddItem(star_easy_rhythm);
-                            array_medium_array_rhythm.AddItem(star_medium_rhythm);
-                            array_hard_array_rhythm.AddItem(star_hard_rhythm);
-                            array_expert_array_rhythm.AddItem(star_expert_rhythm);
-                            verboseline("Adding rhythm powerup arrays to QB...");
-                            songdata.AddItem(array_easy_battle_rhythm);
-                            songdata.AddItem(array_medium_battle_rhythm);
-                            songdata.AddItem(array_hard_battle_rhythm);
-                            songdata.AddItem(array_expert_battle_rhythm);
-                            array_easy_battle_rhythm.AddItem(array_easy_battle_array_rhythm);
-                            array_medium_battle_rhythm.AddItem(array_medium_battle_array_rhythm);
-                            array_hard_battle_rhythm.AddItem(array_hard_battle_array_rhythm);
-                            array_expert_battle_rhythm.AddItem(array_expert_battle_array_rhythm);
-                            array_easy_battle_array_rhythm.AddItem(battle_easy_rhythm);
-                            array_medium_battle_array_rhythm.AddItem(battle_medium_rhythm);
-                            array_hard_battle_array_rhythm.AddItem(battle_hard_rhythm);
-                            array_expert_battle_array_rhythm.AddItem(battle_expert_rhythm);
                             #endregion
                             #region END TIME
                             verboseline("Getting end time...");
@@ -1348,188 +1197,6 @@ namespace FastGH3
                                 notes_expert_rhythm.Values[notes_expert_rhythm.Values.Length - 3] + notes_expert_rhythm.Values[notes_expert_rhythm.Values.Length - 2]
                                 )));*/
                             verboseline("End time is " + endtime);
-                            #endregion
-                            #region CO-OP VALUES
-                            verboseline("Creating co-op guitar arrays...");
-                            QbItemBase array_easy_lead = new QbItemArray(songdata);
-                            QbItemBase array_medium_lead = new QbItemArray(songdata);
-                            QbItemBase array_hard_lead = new QbItemArray(songdata);
-                            QbItemBase array_expert_lead = new QbItemArray(songdata);
-                            array_easy_lead.Create(QbItemType.SectionArray);
-                            array_medium_lead.Create(QbItemType.SectionArray);
-                            array_hard_lead.Create(QbItemType.SectionArray);
-                            array_expert_lead.Create(QbItemType.SectionArray);
-                            QbItemFloats notes_easy_lead = new QbItemFloats(songdata);
-                            QbItemFloats notes_medium_lead = new QbItemFloats(songdata);
-                            QbItemFloats notes_hard_lead = new QbItemFloats(songdata);
-                            QbItemFloats notes_expert_lead = new QbItemFloats(songdata);
-                            array_easy_lead.ItemQbKey = QbKey.Create(0xFEEB1B7A);
-                            array_medium_lead.ItemQbKey = QbKey.Create(0xF6C5DED6);
-                            array_hard_lead.ItemQbKey = QbKey.Create(0x769C9E3F);
-                            array_expert_lead.ItemQbKey = QbKey.Create(0x7FAD0823);
-                            notes_easy_lead.Create(QbItemType.Floats);
-                            notes_medium_lead.Create(QbItemType.Floats);
-                            notes_hard_lead.Create(QbItemType.Floats);
-                            notes_expert_lead.Create(QbItemType.Floats);
-                            verboseline("Adding co-op guitar arrays to QB.");
-                            songdata.AddItem(array_easy_lead);
-                            songdata.AddItem(array_medium_lead);
-                            songdata.AddItem(array_hard_lead);
-                            songdata.AddItem(array_expert_lead);
-                            array_easy_lead.AddItem(notes_easy_lead);
-                            array_medium_lead.AddItem(notes_medium_lead);
-                            array_hard_lead.AddItem(notes_hard_lead);
-                            array_expert_lead.AddItem(notes_expert_lead);
-                            verboseline("Creating co-op guitar starpower arrays...");
-                            QbItemBase array_easy_star_lead = new QbItemArray(songdata);
-                            QbItemBase array_medium_star_lead = new QbItemArray(songdata);
-                            QbItemBase array_hard_star_lead = new QbItemArray(songdata);
-                            QbItemBase array_expert_star_lead = new QbItemArray(songdata);
-                            array_easy_star_lead.Create(QbItemType.SectionArray);
-                            array_medium_star_lead.Create(QbItemType.SectionArray);
-                            array_hard_star_lead.Create(QbItemType.SectionArray);
-                            array_expert_star_lead.Create(QbItemType.SectionArray);
-                            array_easy_star_lead.ItemQbKey = QbKey.Create(0xCA915FBE);
-                            array_medium_star_lead.ItemQbKey = QbKey.Create(0x5ED0E812);
-                            array_hard_star_lead.ItemQbKey = QbKey.Create(0x22E1A218);
-                            array_expert_star_lead.ItemQbKey = QbKey.Create(0x71BE68E0);
-                            QbItemFloats star_easy_lead = new QbItemFloats(songdata);
-                            QbItemFloats star_medium_lead = new QbItemFloats(songdata);
-                            QbItemFloats star_hard_lead = new QbItemFloats(songdata);
-                            QbItemFloats star_expert_lead = new QbItemFloats(songdata);
-                            star_easy_lead.Create(QbItemType.Floats);
-                            star_medium_lead.Create(QbItemType.Floats);
-                            star_hard_lead.Create(QbItemType.Floats);
-                            star_expert_lead.Create(QbItemType.Floats);
-                            verboseline("Creating co-op guitar powerup arrays...");
-                            QbItemBase array_easy_battle_lead = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_lead = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_lead = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_lead = new QbItemArray(songdata);
-                            array_easy_battle_lead.Create(QbItemType.SectionArray);
-                            array_medium_battle_lead.Create(QbItemType.SectionArray);
-                            array_hard_battle_lead.Create(QbItemType.SectionArray);
-                            array_expert_battle_lead.Create(QbItemType.SectionArray);
-                            array_easy_battle_lead.ItemQbKey = QbKey.Create(0x80CEC4D4);
-                            array_medium_battle_lead.ItemQbKey = QbKey.Create(0xE11F1383);
-                            array_hard_battle_lead.ItemQbKey = QbKey.Create(0xDF2EE36F);
-                            array_expert_battle_lead.ItemQbKey = QbKey.Create(0x6F67B494);
-                            QbItemFloats battle_easy_lead = new QbItemFloats(songdata);
-                            QbItemFloats battle_medium_lead = new QbItemFloats(songdata);
-                            QbItemFloats battle_hard_lead = new QbItemFloats(songdata);
-                            QbItemFloats battle_expert_lead = new QbItemFloats(songdata);
-                            battle_easy_lead.Create(QbItemType.Floats);
-                            battle_medium_lead.Create(QbItemType.Floats);
-                            battle_hard_lead.Create(QbItemType.Floats);
-                            battle_expert_lead.Create(QbItemType.Floats);
-                            verboseline("Adding co-op guitar starpower arrays to QB...");
-                            songdata.AddItem(array_easy_star_lead);
-                            songdata.AddItem(array_medium_star_lead);
-                            songdata.AddItem(array_hard_star_lead);
-                            songdata.AddItem(array_expert_star_lead);
-                            array_easy_star_lead.AddItem(star_easy_lead);
-                            array_medium_star_lead.AddItem(star_medium_lead);
-                            array_hard_star_lead.AddItem(star_hard_lead);
-                            array_expert_star_lead.AddItem(star_expert_lead);
-                            verboseline("Adding co-op guitar powerup arrays to QB...");
-                            songdata.AddItem(array_easy_battle_lead);
-                            songdata.AddItem(array_medium_battle_lead);
-                            songdata.AddItem(array_hard_battle_lead);
-                            songdata.AddItem(array_expert_battle_lead);
-                            array_easy_battle_lead.AddItem(battle_easy_lead);
-                            array_medium_battle_lead.AddItem(battle_medium_lead);
-                            array_hard_battle_lead.AddItem(battle_hard_lead);
-                            array_expert_battle_lead.AddItem(battle_expert_lead);
-                            verboseline("Creating co-op rhythm arrays...");
-                            QbItemBase array_easy_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_medium_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_hard_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_expert_rhythm_coop = new QbItemArray(songdata);
-                            array_easy_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_medium_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_hard_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_expert_rhythm_coop.Create(QbItemType.SectionArray);
-                            QbItemFloats notes_easy_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats notes_medium_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats notes_hard_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats notes_expert_rhythm_coop = new QbItemFloats(songdata);
-                            array_easy_rhythm_coop.ItemQbKey = QbKey.Create(0x41A934B3);
-                            array_medium_rhythm_coop.ItemQbKey = QbKey.Create(0x472C30CA);
-                            array_hard_rhythm_coop.ItemQbKey = QbKey.Create(0xC9DEB1F6);
-                            array_expert_rhythm_coop.ItemQbKey = QbKey.Create(0xCE44E63F);
-                            notes_easy_rhythm_coop.Create(QbItemType.Floats);
-                            notes_medium_rhythm_coop.Create(QbItemType.Floats);
-                            notes_hard_rhythm_coop.Create(QbItemType.Floats);
-                            notes_expert_rhythm_coop.Create(QbItemType.Floats);
-                            verboseline("Adding co-op rhythm arrays to QB.");
-                            songdata.AddItem(array_easy_rhythm_coop);
-                            songdata.AddItem(array_medium_rhythm_coop);
-                            songdata.AddItem(array_hard_rhythm_coop);
-                            songdata.AddItem(array_expert_rhythm_coop);
-                            array_easy_rhythm_coop.AddItem(notes_easy_rhythm_coop);
-                            array_medium_rhythm_coop.AddItem(notes_medium_rhythm_coop);
-                            array_hard_rhythm_coop.AddItem(notes_hard_rhythm_coop);
-                            array_expert_rhythm_coop.AddItem(notes_expert_rhythm_coop);
-                            verboseline("Creating co-op rhythm starpower arrays...");
-                            QbItemBase array_easy_star_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_medium_star_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_hard_star_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_expert_star_rhythm_coop = new QbItemArray(songdata);
-                            array_easy_star_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_medium_star_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_hard_star_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_expert_star_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_easy_star_rhythm_coop.ItemQbKey = QbKey.Create(0xC68681A5);
-                            array_medium_star_rhythm_coop.ItemQbKey = QbKey.Create(0x968DD04C);
-                            array_hard_star_rhythm_coop.ItemQbKey = QbKey.Create(0x2EF67C03);
-                            array_expert_star_rhythm_coop.ItemQbKey = QbKey.Create(0xB9E350BE);
-                            QbItemFloats star_easy_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats star_medium_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats star_hard_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats star_expert_rhythm_coop = new QbItemFloats(songdata);
-                            star_easy_rhythm_coop.Create(QbItemType.Floats);
-                            star_medium_rhythm_coop.Create(QbItemType.Floats);
-                            star_hard_rhythm_coop.Create(QbItemType.Floats);
-                            star_expert_rhythm_coop.Create(QbItemType.Floats);
-                            verboseline("Creating co-op rhythm powerup arrays...");
-                            QbItemBase array_easy_battle_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_rhythm_coop = new QbItemArray(songdata);
-                            array_easy_battle_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_medium_battle_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_hard_battle_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_expert_battle_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_easy_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x329B7626);
-                            array_medium_battle_rhythm_coop.ItemQbKey = QbKey.Create(0xE2FAF049);
-                            array_hard_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x6D7B519D);
-                            array_expert_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x6C82575E);
-                            QbItemFloats battle_easy_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats battle_medium_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats battle_hard_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats battle_expert_rhythm_coop = new QbItemFloats(songdata);
-                            battle_easy_rhythm_coop.Create(QbItemType.Floats);
-                            battle_medium_rhythm_coop.Create(QbItemType.Floats);
-                            battle_hard_rhythm_coop.Create(QbItemType.Floats);
-                            battle_expert_rhythm_coop.Create(QbItemType.Floats);
-                            verboseline("Adding co-op rhythm starpower arrays to QB...");
-                            songdata.AddItem(array_easy_star_rhythm_coop);
-                            songdata.AddItem(array_medium_star_rhythm_coop);
-                            songdata.AddItem(array_hard_star_rhythm_coop);
-                            songdata.AddItem(array_expert_star_rhythm_coop);
-                            array_easy_star_rhythm_coop.AddItem(star_easy_rhythm_coop);
-                            array_medium_star_rhythm_coop.AddItem(star_medium_rhythm_coop);
-                            array_hard_star_rhythm_coop.AddItem(star_hard_rhythm_coop);
-                            array_expert_star_rhythm_coop.AddItem(star_expert_rhythm_coop);
-                            verboseline("Adding co-op rhythm powerup arrays to QB...");
-                            songdata.AddItem(array_easy_battle_rhythm_coop);
-                            songdata.AddItem(array_medium_battle_rhythm_coop);
-                            songdata.AddItem(array_hard_battle_rhythm_coop);
-                            songdata.AddItem(array_expert_battle_rhythm_coop);
-                            array_easy_battle_rhythm_coop.AddItem(battle_easy_rhythm_coop);
-                            array_medium_battle_rhythm_coop.AddItem(battle_medium_rhythm_coop);
-                            array_hard_battle_rhythm_coop.AddItem(battle_hard_rhythm_coop);
-                            array_expert_battle_rhythm_coop.AddItem(battle_expert_rhythm_coop);
                             #endregion
                             #region FACE-OFF/BATTLE VALUES
                             verboseline("Creating face-off arrays...");
@@ -1587,6 +1254,23 @@ namespace FastGH3
                                     ts.Add(chart.SyncTrack[i]);
                                 }
                             }
+                            if (ts.Count == 0) // bruh
+                            {
+                                verboseline("No time sigs?");
+                                verboseline("https://i.kym-cdn.com/photos/images/original/002/297/355/cb3");
+                                SyncTrackEntry tsfault = new SyncTrackEntry();
+                                if (chart.SyncTrack.Count != 0)
+                                    foreach (SyncTrackEntry st in chart.SyncTrack)
+                                    {
+                                        if (st.Type == SyncType.BPM)
+                                        {
+                                            tsfault.Offset = st.Offset;
+                                        }
+                                    }
+                                tsfault.Type = SyncType.TimeSignature;
+                                tsfault.TimeSignature = 4;
+                                ts.Add(tsfault);
+                            }
                             int timesigcount = ts.Count;
                             QbItemInteger[] timesig = new QbItemInteger[timesigcount];
                             for (int i = 0; i < timesigcount; i++)
@@ -1615,7 +1299,7 @@ namespace FastGH3
                             array_fretbars.ItemQbKey = QbKey.Create(0xC3C71E9D);
                             QbItemInteger fretbars = new QbItemInteger(songdata);
                             List<int> msrs = new List<int>();
-                            for (int i = 0; OT.GetTime(i) < ((float)(endtime) / 1000) + 2000; i += chart.Resolution)
+                            for (int i = 0; OT.GetTime(i - chart.Resolution) < ((float)(endtime) / 1000); i += chart.Resolution)
                             {
                                 msrs.Add(Convert.ToInt32(OT.GetTime(i) * 1000));
                             }
@@ -1875,6 +1559,7 @@ namespace FastGH3
                                 if (data.FileName.EndsWith(".pak") ||
                                     data.FileName.EndsWith(".pak.xen"))
                                 {
+                                    verboseline("Found .pak, extracting...");
                                     data.Extract(tmpf);
                                     // do something with this moving when multiple files exist or whatever
                                     File.Delete(folder + pak + "song.pak.xen");
@@ -1885,6 +1570,7 @@ namespace FastGH3
                                 if (data.FileName.EndsWith(".fsb") ||
                                     data.FileName.EndsWith(".fsb.xen"))
                                 {
+                                    verboseline("Found .fsb, extracting...");
                                     data.Extract(tmpf);
                                     File.Delete(folder + music + "fastgh3.fsb.xen");
                                     File.Move(tmpf + data.FileName, folder + music + "fastgh3.fsb.xen");
@@ -1892,18 +1578,33 @@ namespace FastGH3
                                 if (data.FileName.EndsWith(".chart") ||
                                     data.FileName.EndsWith(".mid"))
                                 {
+                                    verboseline("Found .chart/.mid, extracting...");
                                     data.Extract(tmpf);
                                     // replace this
                                     multichartcheck.Add(data.FileName);
                                     selectedtorun = tmpf + data.FileName;
+                                } // should this be run after detecting a PAK
+                                // though then the multichart routine will run regardless
+                                if (data.FileName == "song.ini")
+                                {
+                                    verboseline("Found song.ini, extracting...");
+                                    data.Extract(tmpf);
                                 }
                                 if (data.FileName.EndsWith(".ogg") ||
                                     data.FileName.EndsWith(".mp3") ||
                                     data.FileName.EndsWith(".wav"))
                                 {
+                                    verboseline("Found audio, extracting...");
                                     data.Extract(tmpf);
                                 }
                             }
+                        }
+                        if (multichartcheck.Count == 0)
+                        {
+                            verboseline("There's nothing in here!");
+                            // ♫ There's nothing for me here ♫
+                            MessageBox.Show("No chart found","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                            Environment.Exit(0);
                         }
                         bool cancel = false;
                         fspmultichart askchoose = new fspmultichart(multichartcheck.ToArray());

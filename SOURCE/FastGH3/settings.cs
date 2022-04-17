@@ -31,9 +31,9 @@ namespace FastGH3
 
         private static bool disableEvents = false, filesafe;
 
-        private static QbFile guitarqb, hudqb, crowdqb;//, bootqb;
-        private static QbItemStruct player1;
-        private static QbItemQbKey curdiff, curdiff2, p1part;
+        private static QbFile userqb;//, bootqb;
+        //private static QbItemStruct player1;
+        private static QbItemQbKey p1diff, p2diff, p1part, p2part;
         private static QbItemInteger hyperspeed, btncheats,
             backcolrgb, viewmode, autostart, nofailv;
         private static QbItemFloat speedf;
@@ -124,66 +124,58 @@ namespace FastGH3
 
         private void saveQb()
         {
-            guitarqb.AlignPointers();
-            qbedit.ReplaceFile("scripts\\guitar\\guitar.qb", guitarqb);
+            userqb.AlignPointers();
+            qbedit.ReplaceFile("config.qb", userqb);
         }
 
         public settings()
         {
             if (File.Exists("settings.ini"))
                 ini.Load("settings.ini");
+            if (ini.GetSection("Player") == null)
+            {
+                ini.AddSection("Player");
+            }
+            if (ini.GetSection("Misc") == null)
+            {
+                ini.AddSection("Misc");
+            }
             verboselog2 = ini.GetKeyValue("Misc", "VerboseLog", "0") == "1";
             verboseline("Loading QBs...");
-            pakformat = new PakFormat(folder + pak + "qb.pak.xen", folder + pak + "qb.pab.xen", "", PakFormatType.PC, false);
+            pakformat = new PakFormat(folder + "\\DATA\\user.pak.xen", folder + "\\DATA\\user.pak.xen", "", PakFormatType.PC, false);
             qbedit = new PakEditor(pakformat, false);
-            guitarqb = qbedit.ReadQbFile("E34DCB0C");//scripts\\guitar\\guitar.qb
-            hudqb = qbedit.ReadQbFile("41A8CF91");
-            crowdqb = qbedit.ReadQbFile("341A488B"); // scripts\guitar\guitar_crowd.qb
-            //bootqb = qbedit.ReadQbFile("56628B8A");
-            //new QbFile(folder + pak + "song.qb", pakformat);
+            userqb = qbedit.ReadQbFile("config.qb");
             disableEvents = true;
-            //qbpak = File.ReadAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen");
             if (File.Exists(xmlpath))
             {
                 File.Open(xmlpath, FileMode.OpenOrCreate).Close();
                 xml = File.ReadAllText(xmlpath);
             }
             Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
-            //bgcol = (ini.GetKeyValue("Misc","BGColor","0,0,0").Split(",".ToCharArray()));
-            //backcolor = Color.FromArgb(255, Convert.ToByte(bgcol[0]), Convert.ToByte(bgcol[1]), Convert.ToByte(bgcol[2]));
             backcolrgb = (QbItemInteger)
-            hudqb.FindItem(QbKey.Create(0x32DBFA3E), false)
-                .FindItem(QbKey.Create(0xBBB5F8A2), false)
-                .Items[0].Items[1].FindItem(QbKey.Create(0x3F6BCDBA), false).Items[0];
+            userqb.FindItem(QbKey.Create("BGCol"), false).Items[0];
             backcolor = Color.FromArgb(255,
                 backcolrgb.Values[0],
                 backcolrgb.Values[1],
                 backcolrgb.Values[2]);
-            //.FindItem(QbKey.Create("elements"), false).GetItems();
-            //MessageBox.Show(backcolrgb.Values.Length.ToString());
             DialogResult = DialogResult.OK;
             InitializeComponent();
             SetForegroundWindow(Handle);
-            //colorpanel.BackColor = backcolor;
-            //hypers.Value = Convert.ToInt32(ini.GetKeyValue("Player","Hyperspeed","0"));
-            hyperspeed = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0xFD6B13B4), false);
+            hyperspeed = (QbItemInteger)userqb.FindItem(QbKey.Create(0xFD6B13B4), false);
             hypers.Value = hyperspeed.Values[0];
-            //341A488B
-            nofailv = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0x3E5FD611), false);
+            nofailv = (QbItemInteger)userqb.FindItem(QbKey.Create(0x3E5FD611), false);
             nofailcb.Checked = nofailv.Values[0] == 1;
-            btncheats = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0x2AF92804), false);
+            btncheats = (QbItemInteger)userqb.FindItem(QbKey.Create(0x2AF92804), false);
             dbgmnu.Checked = btncheats.Values[0] == 1;
-            autostart = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0x32025D94), false);
+            autostart = (QbItemInteger)userqb.FindItem(QbKey.Create(0x32025D94), false);
             keymode.Checked = autostart.Values[0] == 0;
-            //speed.Value = Convert.ToDecimal(ini.GetKeyValue("Player","Speed","100"));
-            speedf = (QbItemFloat)guitarqb.FindItem(QbKey.Create(0x16D91BC1), false);
+            speedf = (QbItemFloat)userqb.FindItem(QbKey.Create(0x16D91BC1), false);
             speed.Value = Convert.ToDecimal(speedf.Values[0] * 100);
             verboseline("Reading settings...");
             scrshmode.Checked = ini.GetKeyValue("Misc","ScrshMode","0") != "0";
             verboselog.Checked = verboselog2;
             backgroundcolordiag.Color = backcolor;
             colorpanel.BackColor = backcolor;
-            //nofailcb.Checked = ini.GetKeyValue("Misc", "Nofail", "0") != "0";
             vsyncswitch.Checked = ini.GetKeyValue("Misc", "VSync", "1") == "0";
             songcaching.Checked = ini.GetKeyValue("Misc", "SongCaching", "1") == "1";
             nostartupmsg.Checked = ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1";
@@ -195,24 +187,42 @@ namespace FastGH3
             oldres.Width = int.Parse(xml.After("<s id=\"Video.Width\">").Before("</s>"));
             oldres.Height = int.Parse(xml.After("<s id=\"Video.Height\">").Before("</s>"));
             res.Text = oldres.Width.ToString() + "x" + oldres.Height.ToString();
-            if (ini.GetKeyValue("Player", "MaxNotesAuto", "0") == "0")
-                maxnotes.Value = int.Parse(ini.GetKeyValue("Player", "MaxNotes", "1048576"));
-            else
-                maxnotes.Value = -1;
-            curdiff = (QbItemQbKey)guitarqb.FindItem(QbKey.Create(0x9B2F5962), false);
-            curdiff2 = (QbItemQbKey)guitarqb.FindItem(QbKey.Create(0x6BF07EAD), false);
+            //if (ini.GetSection("Player") == null)
+            {
+                if (ini.GetKeyValue("Player", "MaxNotesAuto", "0") == "0")
+                    maxnotes.Value = int.Parse(ini.GetKeyValue("Player", "MaxNotes", "1048576"));
+                else
+                    maxnotes.Value = -1;
+            }
+            p1diff = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_diff"), false);
+            p2diff = (QbItemQbKey)userqb.FindItem(QbKey.Create("p2_diff"), false);
+            p1part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_part"), false);
+            p2part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p2_part"), false);
             // WTF C#
-            if (curdiff.Values[0].Crc == diffCRCs[0].Crc)
+            if (p1diff.Values[0].Crc == diffCRCs[0].Crc)
                 diff.Text = "Easy";
-            else if(curdiff.Values[0].Crc == diffCRCs[1].Crc)
+            else if(p1diff.Values[0].Crc == diffCRCs[1].Crc)
                 diff.Text = "Medium";
-            else if (curdiff.Values[0].Crc == diffCRCs[2].Crc)
+            else if (p1diff.Values[0].Crc == diffCRCs[2].Crc)
                 diff.Text = "Hard";
-            else if (curdiff.Values[0].Crc == diffCRCs[3].Crc)
+            else if (p1diff.Values[0].Crc == diffCRCs[3].Crc)
                 diff.Text = "Expert";
-            //diff.Text = diffs[int.Parse(ini.GetKeyValue("Player", "Difficulty", "3"))];
-            part.SelectedIndex = int.Parse(ini.GetKeyValue("Player", "Part", "0"));
-            player1 = (QbItemStruct)guitarqb.FindItem(QbKey.Create(0xD95930AC), false);
+            if (p1part.Values[0].Crc == partCRCs[0].Crc)
+                part.SelectedIndex = 0;
+            else// if (p1part.Values[0].Crc == partCRCs[1].Crc)
+                part.SelectedIndex = 1;
+            // A CONSTANT VALUE IS EXPECTED STFU!!!!!!!!!
+            /*switch (p1diff.Values[0].Crc)
+            {
+                case diffCRCs[0].Crc:
+                    break;
+                case diffCRCs[1].Crc:
+                    break;
+                case diffCRCs[2].Crc:
+                    break;
+                case diffCRCs[3].Crc:
+                    break;
+            }*/
             disableEvents = false;
         }
 
@@ -227,82 +237,9 @@ namespace FastGH3
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 0; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x20 &&
-                        qbpak[i + 1] == 0x0D &&
-                        qbpak[i + 2] == 0 &&
-                        qbpak[i + 3] == 0x9B &&
-                        qbpak[i + 4] == 0x2F &&
-                        qbpak[i + 5] == 0x59 &&
-                        qbpak[i + 6] == 0x62 &&
-                        qbpak[i + 7] == 0xE3 &&
-                        qbpak[i + 8] == 0x4D &&
-                        qbpak[i + 9] == 0xCB &&
-                        qbpak[i + 10] == 0x0C)
-                    {
-                        switch (difficulty)
-                        {
-                            case 0:
-                                qbpak[i + 11] = 0xB6;
-                                qbpak[i + 12] = 0x9D;
-                                qbpak[i + 13] = 0x65;
-                                qbpak[i + 14] = 0x68;
-                                qbpak[i + 31] = 0xB6;
-                                qbpak[i + 32] = 0x9D;
-                                qbpak[i + 33] = 0x65;
-                                qbpak[i + 34] = 0x68;
-                                break;
-                            case 1:
-                                qbpak[i + 11] = 0x39;
-                                qbpak[i + 12] = 0x8C;
-                                qbpak[i + 13] = 0xBA;
-                                qbpak[i + 14] = 0x48;
-                                qbpak[i + 31] = 0x39;
-                                qbpak[i + 32] = 0x8C;
-                                qbpak[i + 33] = 0xBA;
-                                qbpak[i + 34] = 0x48;
-                                break;
-                            case 2:
-                                qbpak[i + 11] = 0x3E;
-                                qbpak[i + 12] = 0xEA;
-                                qbpak[i + 13] = 0xE0;
-                                qbpak[i + 14] = 0x2D;
-                                qbpak[i + 31] = 0x3E;
-                                qbpak[i + 32] = 0xEA;
-                                qbpak[i + 33] = 0xE0;
-                                qbpak[i + 34] = 0x2D;
-                                break;
-                            case 3:
-                                qbpak[i + 11] = 0xB0;
-                                qbpak[i + 12] = 0xE4;
-                                qbpak[i + 13] = 0x6C;
-                                qbpak[i + 14] = 0xBD;
-                                qbpak[i + 31] = 0xB0;
-                                qbpak[i + 32] = 0xE4;
-                                qbpak[i + 33] = 0x6C;
-                                qbpak[i + 34] = 0xBD;
-                                break;
-                        }
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find difficulty QBKey.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            changeDiff(difficulty);
-                            break;
-                    }*/
-                //filesafe = false;
-                curdiff.Values[0] = diffCRCs[difficulty];
-                curdiff2.Values[0] = diffCRCs[difficulty];
+                p1diff.Values[0] = diffCRCs[difficulty];
+                p2diff.Values[0] = diffCRCs[difficulty];
                 saveQb();
-                ini.SetKeyValue("Player", "Difficulty", difficulty.ToString());
-                ini.Save("settings.ini");
                 hypers.Enabled = true;
                 diff.Enabled = true;
                 setbgcolor.Enabled = true;
@@ -369,34 +306,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 0; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x20 &&
-                        qbpak[i + 1] == 0x01 &&
-                        qbpak[i + 2] == 0 &&
-                        qbpak[i + 3] == 0xFD &&
-                        qbpak[i + 4] == 0x6B &&
-                        qbpak[i + 5] == 0x13 &&
-                        qbpak[i + 6] == 0xB4 &&
-                        qbpak[i + 7] == 0xE3 &&
-                        qbpak[i + 8] == 0x4D &&
-                        qbpak[i + 9] == 0xCB &&
-                        qbpak[i + 10] == 0x0C)
-                    {
-                        qbpak[i + 14] = (byte)hypers.Value;
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find hyperspeed Integer.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            hypers.Value = hypers.Value;
-                            break;
-                    }*/
                 hyperspeed.Values[0] = Convert.ToInt32(hypers.Value);
                 saveQb();
                 hypers.Enabled = true;
@@ -405,9 +314,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailcb.Enabled = true;
-                //ini.SetKeyValue("Player", "Hyperspeed", hypers.Value.ToString());
-                //ini.Save("settings.ini");
-                //File.WriteAllText(folder + "\\CONFIGS\\hyperspeed", Convert.ToString(hypers.Value));
                 ResumeLayout();
             }
         }
@@ -423,87 +329,19 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 64; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x7D &&
-                        qbpak[i + 1] == 0x99 &&
-                        qbpak[i + 2] == 0xF2 &&
-                        qbpak[i + 3] == 0x8D &&
-                        qbpak[i + 4] == 0xC5 &&
-                        qbpak[i + 5] == 0xA5 &&
-                        qbpak[i + 6] == 0x49 &&
-                        qbpak[i + 7] == 0x34 &&
-                        qbpak[i + 8] == 0x00 &&
-                        qbpak[i + 9] == 0x00 &&
-                        qbpak[i + 10] == 0x16 &&
-                        qbpak[i + 11] == 0x44 &&
-                        qbpak[i + 12] == 0x00 &&
-                        qbpak[i + 13] == 0x8C &&
-                        qbpak[i + 14] == 0x00 &&
-                        qbpak[i + 15] == 0x00 &&
-                        qbpak[i + 16] == 0x3F &&
-                        qbpak[i + 17] == 0x6B &&
-                        qbpak[i + 18] == 0xCD &&
-                        qbpak[i + 19] == 0xBA &&
-                        qbpak[i + 20] == 0x00 &&
-                        qbpak[i + 21] == 0x00 &&
-                        qbpak[i + 22] == 0x16 &&
-                        qbpak[i + 23] == 0x54 &&
-                        qbpak[i + 24] == 0x00 &&
-                        qbpak[i + 25] == 0x00 &&
-                        qbpak[i + 26] == 0x16 &&
-                        qbpak[i + 27] == 0x70 &&
-                        qbpak[i + 28] == 0x00 &&
-                        qbpak[i + 29] == 0x01 &&
-                        qbpak[i + 30] == 0x01 &&
-                        qbpak[i + 31] == 0x00 &&
-                        qbpak[i + 32] == 0x00 &&
-                        qbpak[i + 33] == 0x00 &&
-                        qbpak[i + 34] == 0x00 &&
-                        qbpak[i + 35] == 0x04 &&
-                        qbpak[i + 36] == 0x00 &&
-                        qbpak[i + 37] == 0x00 &&
-                        qbpak[i + 38] == 0x16 &&
-                        qbpak[i + 39] == 0x60)
-                    {
-                        qbpak[i + 43] = backgroundcolordiag.Color.R;
-                        qbpak[i + 47] = backgroundcolordiag.Color.G;
-                        qbpak[i + 51] = backgroundcolordiag.Color.B;
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find rgba array.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            backgroundcolordiag.ShowDialog();
-                            break;
-                    }*/
-                    //.FindItem(QbKey.Create("elements"), false).GetItems();
-                //MessageBox.Show(backcolrgb.Values.Length.ToString());
                 backcolrgb.Values[0] = backgroundcolordiag.Color.R;
                 backcolrgb.Values[1] = backgroundcolordiag.Color.G;
                 backcolrgb.Values[2] = backgroundcolordiag.Color.B;
-                //saveQb();
-                hudqb.AlignPointers();
-                qbedit.ReplaceFile("scripts\\guitar\\guitar_hud_2d_career.qb", hudqb);
+                saveQb();
                 hypers.Enabled = true;
                 diff.Enabled = true;
                 setbgcolor.Enabled = true;
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailcb.Enabled = true;
-                //ini.SetKeyValue("Misc", "BGColor", backgroundcolordiag.Color.R + "," +
-                //    backgroundcolordiag.Color.G + "," + backgroundcolordiag.Color.B);
                 ini.Save("settings.ini");
                 ResumeLayout();
                 colorpanel.BackColor = backgroundcolordiag.Color;
-                //File.WriteAllText(folder + "\\CONFIGS\\bgcolor_r", backgroundcolordiag.Color.R.ToString());
-                //File.WriteAllText(folder + "\\CONFIGS\\bgcolor_g", backgroundcolordiag.Color.G.ToString());
-                //File.WriteAllText(folder + "\\CONFIGS\\bgcolor_b", backgroundcolordiag.Color.B.ToString());
             }
         }
 
@@ -537,41 +375,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 64; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x00 &&
-                        qbpak[i + 1] == 0x20 &&
-                        qbpak[i + 2] == 0x01 &&
-                        qbpak[i + 3] == 0x00 &&
-                        qbpak[i + 4] == 0x96 &&
-                        qbpak[i + 5] == 0x8F &&
-                        qbpak[i + 6] == 0x74 &&
-                        qbpak[i + 7] == 0x08 &&
-                        qbpak[i + 8] == 0x86 &&
-                        qbpak[i + 9] == 0x02 &&
-                        qbpak[i + 10] == 0xA9 &&
-                        qbpak[i + 11] == 0xFB &&
-                        qbpak[i + 12] == 0x00 &&
-                        qbpak[i + 13] == 0x00 &&
-                        qbpak[i + 14] == 0x00)
-                    {
-                        qbpak[i + 15] = Convert.ToByte(scrshmode.Checked);
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find screenshot mode value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            backgroundcolordiag.ShowDialog();
-                            break;
-                    }*/
-                //hyperspeed = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0xFD6B13B4), false);
-                //hyperspeed.Values[0] = Convert.ToInt32(hypers.Value);
-                viewmode = (QbItemInteger)guitarqb.FindItem(QbKey.Create(0xFD6B13B4), false);
+                viewmode = (QbItemInteger)userqb.FindItem(QbKey.Create("Cheat_NoFail"), false);
                 viewmode.Values[0] = scrshmode.Checked ? 1 : 0;
                 saveQb();
                 hypers.Enabled = true;
@@ -589,66 +393,8 @@ Aspyr            - Original game, images, sounds, copyright");
 
         private void nostatsonend_CheckedChanged(object sender, EventArgs e)
         {
-            if (disableEvents == false)
-            {
-                SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                /*for (int i = 64; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x01 &&
-                        qbpak[i + 1] == 0xA4 &&
-                        qbpak[i + 2] == 0x00 &&
-                        qbpak[i + 3] == 0x8D &&
-                        qbpak[i + 4] == 0x00 &&
-                        qbpak[i + 5] == 0x00 &&
-                        qbpak[i + 6] == 0xBD &&
-                        qbpak[i + 7] == 0x09 &&
-                        qbpak[i + 8] == 0x54 &&
-                        qbpak[i + 9] == 0x4C)
-                    {
-                        if (!nostatsonend.Checked)
-                        {
-                            qbpak[i + 10] = 0x3C;
-                            qbpak[i + 11] = 0x52;
-                            qbpak[i + 12] = 0x19;
-                            qbpak[i + 13] = 0x82;
-                        }
-                        else
-                        {
-                            qbpak[i + 10] = 0x98;
-                            qbpak[i + 11] = 0x17;
-                            qbpak[i + 12] = 0xD4;
-                            qbpak[i + 13] = 0x5C;
-                        }
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            backgroundcolordiag.ShowDialog();
-                            break;
-                    }*/
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-                ini.SetKeyValue("Misc", "NoStatsOnEnd", (nostatsonend.Checked ? "1" : "0"));
-                ini.Save("settings.ini");
-                //File.WriteAllText(folder + "\\CONFIGS\\nostatsonend", nostatsonend.Checked.ToString());
-                ResumeLayout();
-            }
+            ini.SetKeyValue("Misc", "NoStatsOnEnd", (nostatsonend.Checked ? "1" : "0"));
+            ini.Save("settings.ini");
         }
 
         private void Colorpanel_MouseDoubleClick()
@@ -665,59 +411,12 @@ Aspyr            - Original game, images, sounds, copyright");
         {
             ini.SetKeyValue("Misc", "VSync", (vsyncswitch.Checked ? "0" : "1"));
             ini.Save("settings.ini");
-            //File.WriteAllText(folder + "\\CONFIGS\\vsync", vsyncswitch.Checked.ToString());
         }
 
         private void nofailviewer_CheckedChanged(object sender, EventArgs e)
         {
-            if (disableEvents == false)
-            {
-                SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                /*for (int i = 64; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x13 &&
-                        qbpak[i + 1] == 0xFD &&
-                        qbpak[i + 2] == 0x2B &&
-                        qbpak[i + 3] == 0x2A &&
-                        qbpak[i + 4] == 0x34 &&
-                        qbpak[i + 5] == 0x1A &&
-                        qbpak[i + 6] == 0x48 &&
-                        qbpak[i + 7] == 0x8B &&
-                        qbpak[i + 8] == 0x00 &&
-                        qbpak[i + 9] == 0x00 &&
-                        qbpak[i + 10] == 0x00)
-                    {
-                        qbpak[i + 11] = Convert.ToByte(nofailviewer.Checked);
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            backgroundcolordiag.ShowDialog();
-                            break;
-                    }*/
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-                ini.SetKeyValue("Misc", "NofailViewer", (nofailviewer.Checked ? "1" : "0"));
-                ini.Save("settings.ini");
-                //File.WriteAllText(folder + "\\CONFIGS\\nofailviewer", nofailviewer.Checked.ToString());
-                ResumeLayout();
-            }
+            ini.SetKeyValue("Misc", "NofailViewer", (nofailviewer.Checked ? "1" : "0"));
+            ini.Save("settings.ini");
         }
 
         private void nostartupmsg_CheckedChanged(object sender, EventArgs e)
@@ -788,32 +487,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 64; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x16 &&
-                        qbpak[i + 1] == 0xD9 &&
-                        qbpak[i + 2] == 0x1B &&
-                        qbpak[i + 3] == 0xC1 &&
-                        qbpak[i + 4] == 0xE3 &&
-                        qbpak[i + 5] == 0x4D &&
-                        qbpak[i + 6] == 0xCB &&
-                        qbpak[i + 7] == 0x0C)
-                    {
-                        for (int j = 0; j < 4; j++)
-                            qbpak[i + 8 + j] = BitConverter.GetBytes((float)speed.Value/100)[3-j];
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            backgroundcolordiag.ShowDialog();
-                            break;
-                    }*/
                 autostart.Values[0] = keymode.Checked ? 0 : 1;
                 saveQb();
                 hypers.Enabled = true;
@@ -822,7 +495,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailcb.Enabled = true;
-                //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
             }
         }
 
@@ -837,56 +509,17 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 64; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x16 &&
-                        qbpak[i + 1] == 0xD9 &&
-                        qbpak[i + 2] == 0x1B &&
-                        qbpak[i + 3] == 0xC1 &&
-                        qbpak[i + 4] == 0xE3 &&
-                        qbpak[i + 5] == 0x4D &&
-                        qbpak[i + 6] == 0xCB &&
-                        qbpak[i + 7] == 0x0C)
-                    {
-                        for (int j = 0; j < 4; j++)
-                            qbpak[i + 8 + j] = BitConverter.GetBytes((float)speed.Value/100)[3-j];
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            backgroundcolordiag.ShowDialog();
-                            break;
-                    }*/
                 nofailv.Values[0] = nofailcb.Checked ? 1 : 0;
-                //saveQb();
                 int[] zoffs = { 20, 21 };
                 int _invert = nofailcb.Checked ? 1 : -1;
-                QbItemBase togglenofailgfx =
-                hudqb.FindItem(QbKey.Create(0x32DBFA3E), false)
-                    .FindItem(QbKey.Create(0xBBB5F8A2), false)
-                    .Items[0];//.Items[23].FindItem(QbKey.Create("zoff"), false).Items[0];
-
-                /*backcolrgb = (QbItemInteger)
-                hudqb.FindItem(QbKey.Create(0x32DBFA3E), false)
-                    .FindItem(QbKey.Create(0xBBB5F8A2), false)
-                    .Items[0].Items[14].FindItem(QbKey.Create(0x3F6BCDBA), false).Items[0];*/
                 QbItemInteger thiscodesucks =
                 (QbItemInteger)
-                    (togglenofailgfx.Items[13].FindItem(QbKey.Create(0x0EC4E44A), false));
+                    (userqb.FindItem(QbKey.Create("Nofailvis"), false));
                 QbItemInteger thiscodesucks2 =
                 (QbItemInteger)
-                    (togglenofailgfx.Items[14].FindItem(QbKey.Create(0x0EC4E44A), false));
+                    (userqb.FindItem(QbKey.Create("Nofailvis2"), false));
                 thiscodesucks.Values[0]  = zoffs[0] * _invert;
                 thiscodesucks2.Values[0] = zoffs[1] * _invert;/**/
-                //.FindItem(QbKey.Create("elements"), false).GetItems();
-                hudqb.AlignPointers();
-                qbedit.ReplaceFile("scripts\\guitar\\guitar_hud_2d_career.qb", hudqb);
                 saveQb();
                 hypers.Enabled = true;
                 diff.Enabled = true;
@@ -894,7 +527,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailcb.Enabled = true;
-                //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
             }
         }
 
@@ -909,32 +541,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 64; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x16 &&
-                        qbpak[i + 1] == 0xD9 &&
-                        qbpak[i + 2] == 0x1B &&
-                        qbpak[i + 3] == 0xC1 &&
-                        qbpak[i + 4] == 0xE3 &&
-                        qbpak[i + 5] == 0x4D &&
-                        qbpak[i + 6] == 0xCB &&
-                        qbpak[i + 7] == 0x0C)
-                    {
-                        for (int j = 0; j < 4; j++)
-                            qbpak[i + 8 + j] = BitConverter.GetBytes((float)speed.Value/100)[3-j];
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            backgroundcolordiag.ShowDialog();
-                            break;
-                    }*/
                 btncheats.Values[0] = dbgmnu.Checked ? 1 : 0;
                 saveQb();
                 hypers.Enabled = true;
@@ -943,7 +549,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailcb.Enabled = true;
-                //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
             }
         }
 
@@ -958,32 +563,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 64; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x16 &&
-                        qbpak[i + 1] == 0xD9 &&
-                        qbpak[i + 2] == 0x1B &&
-                        qbpak[i + 3] == 0xC1 &&
-                        qbpak[i + 4] == 0xE3 &&
-                        qbpak[i + 5] == 0x4D &&
-                        qbpak[i + 6] == 0xCB &&
-                        qbpak[i + 7] == 0x0C)
-                    {
-                        for (int j = 0; j < 4; j++)
-                            qbpak[i + 8 + j] = BitConverter.GetBytes((float)speed.Value/100)[3-j];
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                        break;
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find nofail viewercam value.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            backgroundcolordiag.ShowDialog();
-                            break;
-                    }*/
                 speedf.Values[0] = float.Parse((speed.Value / 100).ToString());
                 saveQb();
                 hypers.Enabled = true;
@@ -992,7 +571,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailcb.Enabled = true;
-                //File.WriteAllText(folder + "\\CONFIGS\\speed",speed.Value.ToString());
             }
         }
 
@@ -1009,14 +587,12 @@ Aspyr            - Original game, images, sounds, copyright");
 
         private void songcaching_CheckedChanged(object sender, EventArgs e)
         {
-            //File.WriteAllText(folder + "\\CONFIGS\\songcaching", songcaching.Checked.ToString());
             ini.SetKeyValue("Misc", "SongCaching", (songcaching.Checked ? "1" : "0"));
             ini.Save("settings.ini");
         }
 
         private void verboselog_CheckedChanged(object sender, EventArgs e)
         {
-            //File.WriteAllText(folder + "\\CONFIGS\\verboselog", verboselog.Checked.ToString());
             ini.SetKeyValue("Misc", "VerboseLog", (verboselog.Checked ? "1" : "0"));
             ini.Save("settings.ini");
         }
@@ -1030,7 +606,6 @@ Aspyr            - Original game, images, sounds, copyright");
                     ini.SetKeyValue("Player", "MaxNotes", "4000");
                     maxnotes.Value = 4000;
                 }
-                //File.WriteAllText(folder + "\\CONFIGS\\maxnotes", maxnotes.Value.ToString());
                 if (maxnotes.Value == -1)
                     ini.SetKeyValue("Player", "MaxNotesAuto", "1");
                 else
@@ -1061,47 +636,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = false;
                 nostatsonend.Enabled = false;
                 nofailcb.Enabled = false;
-                /*for (int i = 0; i < qbpak.Length; i++)
-                    if (qbpak[i] == 0x00 &&
-                        qbpak[i + 1] == 0x8D &&
-                        qbpak[i + 2] == 0 &&
-                        qbpak[i + 3] == 0 &&
-                        qbpak[i + 4] == 0xB6 &&
-                        qbpak[i + 5] == 0xF0 &&
-                        qbpak[i + 6] == 0x8F &&
-                        qbpak[i + 7] == 0x39)
-                    {
-                        if (part.SelectedIndex == 0)
-                        {
-                            qbpak[i + 8] = 0xBD;
-                            qbpak[i + 9] = 0xC5;
-                            qbpak[i + 10] = 0x3C;
-                            qbpak[i + 11] = 0xF2;
-                        }
-                        else
-                        {
-                            qbpak[i + 8] = 0x7A;
-                            qbpak[i + 9] = 0x7D;
-                            qbpak[i + 10] = 0x1D;
-                            qbpak[i + 11] = 0xCA;
-                        }
-                        filesafe = true;
-                        File.WriteAllBytes(folder + "\\DATA\\PAK\\qb.pab.xen", qbpak);
-                    }
-                if (!filesafe)
-                    switch (MessageBox.Show("Could not find difficulty QBKey.", "ERROR!", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error, MessageBoxDefaultButton.Button2))
-                    {
-                        case DialogResult.Abort:
-                            Application.Exit();
-                            break;
-                        case DialogResult.Retry:
-                            int test = part.SelectedIndex;
-                            part.SelectedIndex = 0;
-                            part.SelectedIndex = 1;
-                            part.SelectedIndex = test;
-                            break;
-                    }*/
-                p1part = (QbItemQbKey)player1.FindItem(QbKey.Create(0xB6F08F39), false);
+                p1part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_part"), false);
                 p1part.Values[0] = partCRCs[part.SelectedIndex];
                 saveQb();
                 filesafe = false;
@@ -1111,12 +646,6 @@ Aspyr            - Original game, images, sounds, copyright");
                 scrshmode.Enabled = true;
                 nostatsonend.Enabled = true;
                 nofailcb.Enabled = true;
-                ini.SetKeyValue("Player", "Part", part.SelectedIndex.ToString());
-                ini.Save("settings.ini");
-                //if (part.SelectedIndex == 0)
-                    //File.WriteAllText(folder + "\\CONFIGS\\part", "guitar");
-                //else
-                    //File.WriteAllText(folder + "\\CONFIGS\\part", "bass");
             }
         }
         

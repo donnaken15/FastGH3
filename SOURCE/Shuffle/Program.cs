@@ -57,6 +57,7 @@ ___/   \___\
             files = new List<string>();
             files.AddRange(Directory.GetFiles(randpath, "*.chart", SearchOption.AllDirectories));
             files.AddRange(Directory.GetFiles(randpath, "*.mid", SearchOption.AllDirectories));
+            files.AddRange(Directory.GetFiles(randpath, "*.fsp", SearchOption.AllDirectories));
             //Console.WriteLine(files.Count);
             int choose = rand.Next(files.Count);
             Console.WriteLine("Choosing: " + files[choose]);
