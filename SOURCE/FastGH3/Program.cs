@@ -655,7 +655,7 @@ namespace FastGH3
                                     addaud.StartInfo.Arguments += " \"" + a + '"';
                                 }
                                 //addaud.StartInfo.Arguments += " \"" + audiostreams[0] + '"';
-                                addaud.StartInfo.Arguments += " \"" + folder + music + "\\TOOLS\\mergetmp.wav\" -S --multi-threaded --norm=-0.1";// -c 2 -r 44100 -C 128
+                                addaud.StartInfo.Arguments += " \"" + folder + music + "\\TOOLS\\mergetmp.wav\" -S --multi-threaded channels 2 norm -0.1";
                                 //verboseline(addaud.StartInfo.Arguments);
                                 addaud.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
                                 addaud.Start();
@@ -664,6 +664,7 @@ namespace FastGH3
                                     addaud.BeginErrorReadLine();
                                     addaud.BeginOutputReadLine();
                                 }
+                                verboseline("merge args: sox " + addaud.StartInfo.Arguments);
                                 if (!addaud.HasExited) // <-- lol
                                 {
                                     //Console.WriteLine("Waiting for extra track merging to finish.");
@@ -675,7 +676,6 @@ namespace FastGH3
                             verboseline("Creating encoder process...");
                             if (!MTFSB)
                             {
-                                verbose("S"); // lol
                                 fsbbuild.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuild.bat";
                                 if (!verboselog)
                                 {
@@ -692,10 +692,10 @@ namespace FastGH3
                                     fsbbuild.OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
                                 }
                                 fsbbuild.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
+                                verbose("S"); // lol
                             }
                             else
                             {
-                                verbose("As");
                                 Directory.CreateDirectory(folder + music + "\\TOOLS\\fsbtmp");
                                 File.Copy(folder + music + "\\TOOLS\\blank.mp3", folder + music + "\\TOOLS\\fsbtmp\\fastgh3_preview.mp3", true);
                                 string[] fsbnames = { "song", "guitar", "rhythm" };
@@ -718,6 +718,7 @@ namespace FastGH3
                                         fsbbuild2[i].ErrorDataReceived += (sendingProcess, errorLine) => Console.WriteLine(errorLine.Data);
                                         fsbbuild2[i].OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
                                     }
+                                    verboseline("MP3 args: c128ks: " + fsbbuild2[i].StartInfo.Arguments);
                                 }
                                 fsbbuild3.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuildnoenc.bat";
                                 if (!verboselog)
@@ -735,6 +736,7 @@ namespace FastGH3
                                     fsbbuild3.OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
                                 }
                                 fsbbuild3.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
+                                verbose("As");
                             }
                             verbose("ynchronous mode set\n");
                             verboseline("Starting FSB building...");
@@ -744,6 +746,7 @@ namespace FastGH3
                                 audiostreams[0].EncloseWithQuoteMarks() + ' ' + audiostreams[1].EncloseWithQuoteMarks() + ' ' + audiostreams[2].EncloseWithQuoteMarks() + ' ' +
                                 (folder + music + "\\TOOLS\\blank.mp3").EncloseWithQuoteMarks() + ' ' + (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks();
                                 //verboseline(fsbbuild.StartInfo.Arguments);
+                                verboseline("MP3 args: c128ks " + fsbbuild.StartInfo.Arguments);
                                 fsbbuild.Start();
                                 if (verboselog)
                                 {
