@@ -486,6 +486,9 @@ namespace FastGH3
                                     nj3ts.Add(audtmpstr);
                                 }
                             }
+                        }
+                        for (int j = 0; j < 3; j++)
+                        {
                             audtmpstr = chartfolder + "vocals." + audextnames[j];
                             if (File.Exists(audtmpstr))
                             {
