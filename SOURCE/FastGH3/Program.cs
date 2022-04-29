@@ -234,22 +234,64 @@ namespace FastGH3
                     Console.WriteLine("Downloading song package...");
                     try
                     {
+                        bool datecheck = true;
                         Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
-                        string urlCache = cache.GetKeyValue("URL" + WZK64.Create(fsplink.AbsolutePath).ToString("X16"), "File", "");
+                        string cacheSect = "URL" + WZK64.Create(fsplink.AbsolutePath).ToString("X16");
+                        string urlCache = cache.GetKeyValue(cacheSect, "File", "");
                         string tmpFn = "null";
                         if (urlCache != "")
                         {
                             Console.WriteLine("Found already downloaded file.");
+                            verboseline(cacheSect);
+                            verboseline(urlCache);
                             tmpFn = urlCache;
-                            goto skipToGame;
+                            if (!datecheck)
+                                goto skipToGame;
                         }
+                        if (datecheck)
+                            Console.WriteLine("Unique file date checking enabled.");
                         WebClient fsp = new WebClient();
                         fsp.Proxy = null;
                         fsp.Headers.Add("user-agent", "Anything");
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00); // why .NET 4
-                        tmpFn = Path.GetTempFileName();
-                        string tmpFl = Path.GetTempPath();
                         fsp.OpenRead(fsplink);
+                        DateTime lastmod = new DateTime(), lastmod_cached;
+                        //verboseline("1");
+                        if (datecheck)
+                        {
+                            if (cache.GetKeyValue(cacheSect, "Date", "0") != "") // STUPID
+                                lastmod_cached = new DateTime(Convert.ToInt64(cache.GetKeyValue(cacheSect, "Date", "0")));
+                            else
+                                lastmod_cached = new DateTime(0);
+                            if (lastmod_cached.Ticks == 0)
+                                verboseline("Date not cached");
+                            else
+                                verboseline("Cached date: " + lastmod_cached.ToUniversalTime());
+                            if (fsp.ResponseHeaders["Last-Modified"] != null)
+                            {
+                                //verboseline(fsp.ResponseHeaders["Last-Modified"]);
+                                lastmod = DateTime.Parse(fsp.ResponseHeaders["Last-Modified"]);
+                                verboseline("Got file date: " + lastmod.ToUniversalTime());
+                                if (lastmod.Ticks == lastmod_cached.Ticks && lastmod_cached.Ticks != 0)
+                                {
+                                    verboseline("Unchanged file date. Using already downloaded file.");
+                                    goto skipToGame;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Different file date. Redownloading...");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No file date found.");
+                                if (urlCache != "")
+                                {
+                                    Console.WriteLine("Using already downloaded file.");
+                                    goto skipToGame;
+                                }
+                            }
+                        }
                         if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > (1024 * 1024) * 9)
                         {
                             if (MessageBox.Show("This song package is a larger file than usual. Do you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
@@ -257,12 +299,21 @@ namespace FastGH3
                         }
                         //if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
                         //settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
+                        if (File.Exists(tmpFn)) // do this?
+                            File.Delete(tmpFn);
+                        tmpFn = Path.GetTempFileName();
+                        string tmpFl = Path.GetTempPath();
                         fsp.DownloadFile(fsplink, tmpFn);
-                        File.Move(tmpFn, tmpFn + ".fsp");
+                        File.Move(tmpFn, tmpFn + Path.GetExtension(fsplink.AbsolutePath));
                         //Directory.CreateDirectory(tmpFl + "\\Z.TMP.FGH3$WEB");
-                        tmpFn += ".fsp";
+                        tmpFn += Path.GetExtension(fsplink.AbsolutePath);
                         Console.WriteLine("Writing link to cache...");
-                        cache.SetKeyValue("URL"+WZK64.Create(fsplink.AbsolutePath).ToString("X16"), "File"/*WZK64.Create(File.ReadAllBytes(tmpFn)).ToString("X16")*/, tmpFn.ToString());
+                        cache.SetKeyValue(cacheSect, "File"/*WZK64.Create(File.ReadAllBytes(tmpFn)).ToString("X16")*/, tmpFn.ToString());
+                        if (datecheck)
+                        {
+                            Console.WriteLine("Writing date to cache...");
+                            cache.SetKeyValue(cacheSect, "Date", lastmod.Ticks.ToString());
+                        }
                         cache.Save(folder + dataf + "CACHE\\.db.ini");
                         skipToGame:
                         Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
@@ -1552,6 +1603,25 @@ namespace FastGH3
                     {
                         //Console.WriteLine("FastGH3 by donnaken15");
                         Console.WriteLine("Detected song package.");
+                        /*if (cacheEnabled)
+                        {
+                            verboseline("Indexing cache...");
+                            cacheList = Directory.GetFiles(folder + "DATA\\CACHE");
+                            for (int i = 0; i < cacheList.Length; i++)
+                            {
+                                //verboseline("\r(" + i + "/" + cacheList.Length + ")...");
+                                // forgot how to rewrite a line
+                                cacheList[i] = Path.GetFileNameWithoutExtension(cacheList[i]);
+                            }
+                        }
+                        ulong fsphash = WZK64.Create(File.ReadAllBytes(args[0]));
+                        bool fspcache = false;
+                        if (cacheEnabled)
+                        {
+                            Console.WriteLine("Checking cache.");
+                            verboseline(fsphash);
+                            fspcache = isCached(fsphash);
+                        }*/
                         string tmpf = Path.GetTempPath() + "\\Z.TMP.FGH3$" + new Random().Next(0x100000, 0xFFFFFF).ToString("X5") + '\\',
                             selectedtorun = "";
                         Directory.CreateDirectory(tmpf);
