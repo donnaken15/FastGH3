@@ -441,7 +441,7 @@ namespace FastGH3
                                 }
                             }
                         }
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < audstnames.Length; i++)
                         {
                             if (!File.Exists(audiostreams[i]))
                                 for (int j = 0; j < 3; j++)
@@ -457,7 +457,7 @@ namespace FastGH3
                         }
                         // TODO: allow NJ3T routine even when song.ogg exists
                         audstnames = new string[] { "lead", "bass" };
-                        for (int i = 0; i < 2; i++)
+                        for (int i = 0; i < audstnames.Length; i++)
                         {
                             if (!File.Exists(audiostreams[i + 1]))
                                 for (int j = 0; j < 3; j++)
@@ -498,8 +498,8 @@ namespace FastGH3
                                 break;
                             }
                         }
-                        audstnames = new string[] { "drums", "vocals", "keys", "song" };
-                        for (int i = 0; i < 4; i++)
+                        audstnames = new string[] { "drums", /*"vocals",*/ "keys", /*"song"*/ };
+                        for (int i = 0; i < audstnames.Length; i++)
                         {
                             for (int j = 0; j < 3; j++)
                             {
@@ -721,7 +721,7 @@ namespace FastGH3
                                         fsbbuild2[i].ErrorDataReceived += (sendingProcess, errorLine) => Console.WriteLine(errorLine.Data);
                                         fsbbuild2[i].OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
                                     }
-                                    verboseline("MP3 args: c128ks: " + fsbbuild2[i].StartInfo.Arguments);
+                                    verboseline("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments);
                                 }
                                 fsbbuild3.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuildnoenc.bat";
                                 if (!verboselog)
