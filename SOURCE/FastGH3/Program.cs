@@ -1129,7 +1129,7 @@ namespace FastGH3
                                                     starTmp = new QbItemInteger(songdata);
                                                     starTmp.Create(QbItemType.ArrayInteger, 3);
                                                     starTmp.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
-                                                    starTmp.Values[1] = (int)Math.Round(OT.GetTime(a.Length) * 1000);
+                                                    starTmp.Values[1] = (int)Math.Round((OT.GetTime(a.Offset + a.Length) * 1000)) - starTmp.Values[0];
                                                     starTmp.Values[2] = spPnc[spPnc2];
                                                     song_stars_container[ii][dd].AddItem(starTmp);
                                                     spPnc2++;
