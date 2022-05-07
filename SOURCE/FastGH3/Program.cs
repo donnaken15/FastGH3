@@ -85,7 +85,7 @@ namespace FastGH3
             }
             catch (Exception ex)
             {
-                Console.Write("ERROR! :(\n" + ex.Message);
+                //Console.Write("ERROR! :(\n" + ex.Message);
             }
         }
 
@@ -338,7 +338,7 @@ namespace FastGH3
                             FileName = folder + "\\mid2chart.exe",
                             Arguments = paksongmid.EncloseWithQuoteMarks() + " -k -u"
                         };
-                        Console.WriteLine(verboselog);
+                        //Console.WriteLine(verboselog);
                         // Why won't this work
                         if (!verboselog)
                         {
@@ -1136,7 +1136,7 @@ namespace FastGH3
                                                 }
                                                 catch (Exception e)
                                                 {
-                                                    Console.WriteLine("/!\\ Error adding a starpower phrase, if this message appears more than once, there may be a problem");
+                                                    Console.WriteLine("/!\\ Error adding a starpower phrase. If this message appears more than once, there may be a problem");
                                                     //Console.WriteLine(e);
                                                 }
                                             }
@@ -1222,6 +1222,114 @@ namespace FastGH3
                             array_hard_battle_array.AddItem(battle_hard);
                             array_expert_battle_array.AddItem(battle_expert);
                             #endregion
+
+                            // OOPS
+
+                            verboseline("Creating rhythm powerup arrays...");
+                            QbItemBase array_easy_battle_rhythm = new QbItemArray(songdata);
+                            QbItemBase array_medium_battle_rhythm = new QbItemArray(songdata);
+                            QbItemBase array_hard_battle_rhythm = new QbItemArray(songdata);
+                            QbItemBase array_expert_battle_rhythm = new QbItemArray(songdata);
+                            array_easy_battle_rhythm.Create(QbItemType.SectionArray);
+                            array_medium_battle_rhythm.Create(QbItemType.SectionArray);
+                            array_hard_battle_rhythm.Create(QbItemType.SectionArray);
+                            array_expert_battle_rhythm.Create(QbItemType.SectionArray);
+                            QbItemBase array_easy_battle_array_rhythm = new QbItemArray(songdata);
+                            QbItemBase array_medium_battle_array_rhythm = new QbItemArray(songdata);
+                            QbItemBase array_hard_battle_array_rhythm = new QbItemArray(songdata);
+                            QbItemBase array_expert_battle_array_rhythm = new QbItemArray(songdata);
+                            array_easy_battle_array_rhythm.Create(QbItemType.ArrayArray);
+                            array_medium_battle_array_rhythm.Create(QbItemType.ArrayArray);
+                            array_hard_battle_array_rhythm.Create(QbItemType.ArrayArray);
+                            array_expert_battle_array_rhythm.Create(QbItemType.ArrayArray);
+                            array_easy_battle_rhythm.ItemQbKey = QbKey.Create(0x3586AFF5);
+                            array_medium_battle_rhythm.ItemQbKey = QbKey.Create(0xB7E00BF8);
+                            array_hard_battle_rhythm.ItemQbKey = QbKey.Create(0x6A66884E);
+                            array_expert_battle_rhythm.ItemQbKey = QbKey.Create(0x3998ACEF);
+                            QbItemInteger battle_easy_rhythm = new QbItemInteger(songdata);
+                            QbItemInteger battle_medium_rhythm = new QbItemInteger(songdata);
+                            QbItemInteger battle_hard_rhythm = new QbItemInteger(songdata);
+                            QbItemInteger battle_expert_rhythm = new QbItemInteger(songdata);
+                            battle_easy_rhythm.Create(QbItemType.ArrayInteger, 1);
+                            battle_medium_rhythm.Create(QbItemType.ArrayInteger, 1);
+                            battle_hard_rhythm.Create(QbItemType.ArrayInteger, 1);
+                            battle_expert_rhythm.Create(QbItemType.ArrayInteger, 1);
+                            verboseline("Adding rhythm powerup arrays to QB...");
+                            songdata.AddItem(array_easy_battle_rhythm);
+                            songdata.AddItem(array_medium_battle_rhythm);
+                            songdata.AddItem(array_hard_battle_rhythm);
+                            songdata.AddItem(array_expert_battle_rhythm);
+                            array_easy_battle_rhythm.AddItem(array_easy_battle_array_rhythm);
+                            array_medium_battle_rhythm.AddItem(array_medium_battle_array_rhythm);
+                            array_hard_battle_rhythm.AddItem(array_hard_battle_array_rhythm);
+                            array_expert_battle_rhythm.AddItem(array_expert_battle_array_rhythm);
+                            array_easy_battle_array_rhythm.AddItem(battle_easy_rhythm);
+                            array_medium_battle_array_rhythm.AddItem(battle_medium_rhythm);
+                            array_hard_battle_array_rhythm.AddItem(battle_hard_rhythm);
+                            array_expert_battle_array_rhythm.AddItem(battle_expert_rhythm);
+
+                            verboseline("Creating co-op guitar powerup arrays...");
+                            QbItemBase array_easy_battle_lead = new QbItemArray(songdata);
+                            QbItemBase array_medium_battle_lead = new QbItemArray(songdata);
+                            QbItemBase array_hard_battle_lead = new QbItemArray(songdata);
+                            QbItemBase array_expert_battle_lead = new QbItemArray(songdata);
+                            array_easy_battle_lead.Create(QbItemType.SectionArray);
+                            array_medium_battle_lead.Create(QbItemType.SectionArray);
+                            array_hard_battle_lead.Create(QbItemType.SectionArray);
+                            array_expert_battle_lead.Create(QbItemType.SectionArray);
+                            array_easy_battle_lead.ItemQbKey = QbKey.Create(0x80CEC4D4);
+                            array_medium_battle_lead.ItemQbKey = QbKey.Create(0xE11F1383);
+                            array_hard_battle_lead.ItemQbKey = QbKey.Create(0xDF2EE36F);
+                            array_expert_battle_lead.ItemQbKey = QbKey.Create(0x6F67B494);
+                            QbItemFloats battle_easy_lead = new QbItemFloats(songdata);
+                            QbItemFloats battle_medium_lead = new QbItemFloats(songdata);
+                            QbItemFloats battle_hard_lead = new QbItemFloats(songdata);
+                            QbItemFloats battle_expert_lead = new QbItemFloats(songdata);
+                            battle_easy_lead.Create(QbItemType.Floats);
+                            battle_medium_lead.Create(QbItemType.Floats);
+                            battle_hard_lead.Create(QbItemType.Floats);
+                            battle_expert_lead.Create(QbItemType.Floats);
+                            verboseline("Adding co-op guitar powerup arrays to QB...");
+                            songdata.AddItem(array_easy_battle_lead);
+                            songdata.AddItem(array_medium_battle_lead);
+                            songdata.AddItem(array_hard_battle_lead);
+                            songdata.AddItem(array_expert_battle_lead);
+                            array_easy_battle_lead.AddItem(battle_easy_lead);
+                            array_medium_battle_lead.AddItem(battle_medium_lead);
+                            array_hard_battle_lead.AddItem(battle_hard_lead);
+                            array_expert_battle_lead.AddItem(battle_expert_lead);
+                            
+                            verboseline("Creating co-op rhythm powerup arrays...");
+                            QbItemBase array_easy_battle_rhythm_coop = new QbItemArray(songdata);
+                            QbItemBase array_medium_battle_rhythm_coop = new QbItemArray(songdata);
+                            QbItemBase array_hard_battle_rhythm_coop = new QbItemArray(songdata);
+                            QbItemBase array_expert_battle_rhythm_coop = new QbItemArray(songdata);
+                            array_easy_battle_rhythm_coop.Create(QbItemType.SectionArray);
+                            array_medium_battle_rhythm_coop.Create(QbItemType.SectionArray);
+                            array_hard_battle_rhythm_coop.Create(QbItemType.SectionArray);
+                            array_expert_battle_rhythm_coop.Create(QbItemType.SectionArray);
+                            array_easy_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x329B7626);
+                            array_medium_battle_rhythm_coop.ItemQbKey = QbKey.Create(0xE2FAF049);
+                            array_hard_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x6D7B519D);
+                            array_expert_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x6C82575E);
+                            QbItemFloats battle_easy_rhythm_coop = new QbItemFloats(songdata);
+                            QbItemFloats battle_medium_rhythm_coop = new QbItemFloats(songdata);
+                            QbItemFloats battle_hard_rhythm_coop = new QbItemFloats(songdata);
+                            QbItemFloats battle_expert_rhythm_coop = new QbItemFloats(songdata);
+                            battle_easy_rhythm_coop.Create(QbItemType.Floats);
+                            battle_medium_rhythm_coop.Create(QbItemType.Floats);
+                            battle_hard_rhythm_coop.Create(QbItemType.Floats);
+                            battle_expert_rhythm_coop.Create(QbItemType.Floats);
+                            verboseline("Adding co-op rhythm powerup arrays to QB...");
+                            songdata.AddItem(array_easy_battle_rhythm_coop);
+                            songdata.AddItem(array_medium_battle_rhythm_coop);
+                            songdata.AddItem(array_hard_battle_rhythm_coop);
+                            songdata.AddItem(array_expert_battle_rhythm_coop);
+                            array_easy_battle_rhythm_coop.AddItem(battle_easy_rhythm_coop);
+                            array_medium_battle_rhythm_coop.AddItem(battle_medium_rhythm_coop);
+                            array_hard_battle_rhythm_coop.AddItem(battle_hard_rhythm_coop);
+                            array_expert_battle_rhythm_coop.AddItem(battle_expert_rhythm_coop);
+
                             #region END TIME
                             verboseline("Getting end time...");
                             int endtime = 0;
@@ -1515,6 +1623,28 @@ namespace FastGH3
                             File.Copy(
                                 folder + "\\DATA\\CACHE\\" + charthash.ToString("X16"),
                                 folder + "\\DATA\\PAK\\song.pak.xen", true);
+                            if (ischart)
+                            {
+                                chart.Load(args[0]);
+                            }
+                            else chart.Load(folder + pak + "song.chart");
+                            string title = "Untitled", author = "Unknown";
+                            IniFile songini = new IniFile();
+                            if (File.Exists("song.ini"))
+                            {
+                                songini.Load("song.ini");
+                                title = songini.GetKeyValue("song", "name", "Untitled").Trim();
+                                author = songini.GetKeyValue("song", "artist", "Unknown").Trim();
+                            }
+                            foreach (SongSectionEntry s in chart.Song)
+                            {
+                                if (s.Key == "Name" && (s.Value.Trim() != ""))
+                                    title  = chart.Song["Name"].Value.Trim();
+                                if (s.Key == "Artist" && (s.Value.Trim() != ""))
+                                    author = chart.Song["Artist"].Value.Trim();
+                            };
+                            File.WriteAllText(folder + "currentsong.txt",
+                                author + " - " + title);
                         }
                         //if (verboselog)
                             //Console.ReadKey();
@@ -1722,6 +1852,7 @@ namespace FastGH3
                         PakFormat fmt = new PakFormat(args[0], "", "", PakFormatType.PC);
                         PakEditor pak = new PakEditor(fmt);
                         QbFile qb = pak.ReadQbFile(pak.QbFilenames[0]); //auto guess song paks have 1 qb file, except official ones.....
+                        
                         if (qb.Items[1].QbItemType == QbItemType.SectionArray)
                         {
                             if (qb.Items[1].Items[0].QbItemType == QbItemType.ArrayInteger)
