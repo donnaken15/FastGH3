@@ -730,7 +730,7 @@ namespace FastGH3
                             verboseline("Creating encoder process...");
                             if (!MTFSB)
                             {
-                                fsbbuild.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuild.bat";
+                                fsbbuild.StartInfo.FileName = "cmd";
                                 if (!verboselog)
                                 {
                                     fsbbuild.StartInfo.CreateNoWindow = true;
@@ -758,8 +758,8 @@ namespace FastGH3
                                     fsbbuild2[i] = new Process();
                                     fsbbuild2[i].StartInfo = new ProcessStartInfo()
                                     {
-                                        FileName = folder + music + "\\TOOLS\\c128ks.bat",
-                                        Arguments = audiostreams[i].EncloseWithQuoteMarks() + " \"" + folder + music + "\\TOOLS\\fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"",
+                                        FileName = "cmd",
+                                        Arguments = "/c " + ((folder + music + "\\TOOLS\\c128ks.bat").EncloseWithQuoteMarks() + " " + audiostreams[i].EncloseWithQuoteMarks() + " \"" + folder + music + "\\TOOLS\\fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").EncloseWithQuoteMarks(),
                                         CreateNoWindow = true,
                                         UseShellExecute = true,
                                         WindowStyle = ProcessWindowStyle.Hidden
@@ -774,7 +774,8 @@ namespace FastGH3
                                     }
                                     verboseline("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments);
                                 }
-                                fsbbuild3.StartInfo.FileName = folder + music + "\\TOOLS\\fsbbuildnoenc.bat";
+                                fsbbuild3.StartInfo.FileName = "cmd";
+                                fsbbuild3.StartInfo.Arguments = "/c " + ((folder + music + "\\TOOLS\\fsbbuildnoenc.bat").EncloseWithQuoteMarks());
                                 if (!verboselog)
                                 {
                                     fsbbuild3.StartInfo.CreateNoWindow = true;
@@ -796,9 +797,9 @@ namespace FastGH3
                             verboseline("Starting FSB building...");
                             if (!MTFSB)
                             {
-                                fsbbuild.StartInfo.Arguments =
+                                fsbbuild.StartInfo.Arguments = "/c " + ((folder + music + "\\TOOLS\\fsbbuild.bat").EncloseWithQuoteMarks() +
                                 audiostreams[0].EncloseWithQuoteMarks() + ' ' + audiostreams[1].EncloseWithQuoteMarks() + ' ' + audiostreams[2].EncloseWithQuoteMarks() + ' ' +
-                                (folder + music + "\\TOOLS\\blank.mp3").EncloseWithQuoteMarks() + ' ' + (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks();
+                                (folder + music + "\\TOOLS\\blank.mp3").EncloseWithQuoteMarks() + ' ' + (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks()).EncloseWithQuoteMarks();
                                 //verboseline(fsbbuild.StartInfo.Arguments);
                                 verboseline("MP3 args: c128ks " + fsbbuild.StartInfo.Arguments);
                                 fsbbuild.Start();
@@ -819,8 +820,8 @@ namespace FastGH3
                                         fsbbuild2[i].BeginOutputReadLine();
                                     }
                                 }
-                                fsbbuild3.StartInfo.Arguments =
-                                    (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks();
+                                fsbbuild3.StartInfo.Arguments = "/c " + ((folder + music + "\\TOOLS\\fsbbuildnoenc.bat").EncloseWithQuoteMarks() + ' ' +
+                                    (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks()).EncloseWithQuoteMarks();
                             }
                         }
                         else
@@ -1623,6 +1624,9 @@ namespace FastGH3
                             File.Copy(
                                 folder + "\\DATA\\CACHE\\" + charthash.ToString("X16"),
                                 folder + "\\DATA\\PAK\\song.pak.xen", true);
+                            File.Copy(args[0], paksongmid, true);
+                            mid2chart.Start();
+                            mid2chart.WaitForExit();
                             if (ischart)
                             {
                                 chart.Load(args[0]);
@@ -1645,6 +1649,8 @@ namespace FastGH3
                             };
                             File.WriteAllText(folder + "currentsong.txt",
                                 author + " - " + title);
+                            File.Delete(paksongmid);
+                            File.Delete(paksongchart);
                         }
                         //if (verboselog)
                             //Console.ReadKey();
