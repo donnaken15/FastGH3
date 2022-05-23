@@ -17,11 +17,12 @@ change(autowhammy=1);
 // why still triggerable when starpower < 0.5 ? lol?
 repeat
 {
-	Wait(10,Seconds);
+	wait_beats(16);
 	// lazy to use format
-	if (*player1_status.star_power_used == 0 ||
+	if ((*player1_status.star_power_used == 0 ||
 		*player1_status.bot_play == 0 ||
-		*player1_status.bot_star_power == 1)
+		*player1_status.bot_star_power == 1) &&
+		*player1_status.star_power_sequence == 0)
 	{
 		if (*player1_status.star_power_amount >= 50.0)
 		{
@@ -39,9 +40,10 @@ repeat
 			printf('not enough starpower!!!!!!!!!!!!!');
 		}
 	}
-	if (*player2_status.star_power_used == 0 ||
+	if ((*player2_status.star_power_used == 0 ||
 		*player2_status.bot_play == 0 ||
-		*player2_status.bot_star_power == 1)
+		*player2_status.bot_star_power == 1) &&
+		*player2_status.star_power_sequence == 0)
 	{
 		if (*player2_status.star_power_amount >= 50.0)
 		{
