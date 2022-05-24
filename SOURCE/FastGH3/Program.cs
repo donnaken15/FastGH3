@@ -549,7 +549,7 @@ namespace FastGH3
                                 break;
                             }
                         }
-                        audstnames = new string[] { "drums", /*"vocals",*/ "keys", /*"song"*/ };
+                        audstnames = new string[] { "drums", /*"vocals",*/ "keys", "song" };
                         for (int i = 0; i < audstnames.Length; i++)
                         {
                             for (int j = 0; j < 3; j++)
@@ -558,7 +558,7 @@ namespace FastGH3
                                 if (File.Exists(audtmpstr))
                                 {
                                     verboseline("Found FOF structure files / " + audstnames[i]);
-                                    if (i != 3)
+                                    if (i != 3 && audstnames[i] != "song")
                                     {
                                         notjust3trax = true;
                                     }
