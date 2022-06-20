@@ -915,6 +915,14 @@ namespace FastGH3
 
                             int dd = 0;
                             int ii = 0;
+                            // TODO: stringpointer for lower difficulties to redirect to
+                            // least difficult chart if they aren't authored
+                            //
+                            // so like if an easy chart doesn't exist but hard
+                            // and expert charts do, easy redirects to the hard chart
+                            // and so space is saved from having dupe note tracks
+                            //
+                            // maybe also for arrays that don't have anything
                             foreach (string i in TrackInsts)
                             {
                                 dd = 0;
@@ -924,16 +932,9 @@ namespace FastGH3
                                     if (chart.NoteTracks[d + i] != null)
                                     {
                                         atleast1track = true;
-                                        verboseline("Got " + d + i);
+                                        verboseline("Parsing " + d + i);
                                         try
                                         {
-                                            ConsoleColor[] log_notecolors = new ConsoleColor[] {
-                                                        ConsoleColor.Green,
-                                                        ConsoleColor.Red,
-                                                        ConsoleColor.Yellow,
-                                                        ConsoleColor.Blue,
-                                                        ConsoleColor.Yellow
-                                            };
                                             tmp = new QbcNoteTrack(chart.NoteTracks[d + i], OT);
                                             if (tmp.Count > 0)
                                                 test = tmp.Count;
@@ -946,38 +947,6 @@ namespace FastGH3
                                                 song_notes[ii][dd].Values[(j * 3)] = tmp[j].Offset + delay;
                                                 song_notes[ii][dd].Values[(j * 3) + 1] = tmp[j].Length;
                                                 song_notes[ii][dd].Values[(j * 3) + 2] = tmp[j].FretMask;
-                                                // fancy for nothing
-                                                if (verboselog)
-                                                {
-                                                    Console.Write((tmp[j].Offset + delay).ToString().PadLeft(8) + "ms: ");
-                                                    bool hopo = (tmp[j].FretMask >> 5 & 1) == 1;
-                                                    for (int k = 0; k < 4; k++)
-                                                    {
-                                                        //Console.BackgroundColor = log_notecolors[k];
-                                                        if ((tmp[j].FretMask >> k & 1) == 1)
-                                                            Console.BackgroundColor = log_notecolors[k]; //Console.Write('█');
-                                                        else
-                                                            Console.ResetColor();
-                                                        //Console.ForegroundColor = ConsoleColor.White;
-                                                        /*if (hopo)
-                                                            Console.Write('•');
-                                                        else
-                                                            Console.Write(' ');*/
-                                                        Console.Write(' ');
-                                                    }
-                                                    Console.ResetColor();
-                                                    if ((tmp[j].FretMask >> 4 & 1) == 1)
-                                                    {
-                                                        Console.ForegroundColor = log_notecolors[4];
-                                                        Console.BackgroundColor = ConsoleColor.Red;
-                                                        Console.Write('▒');
-                                                    }
-                                                    else
-                                                        Console.Write(' ');
-                                                    Console.ResetColor();
-                                                    Console.Write(' ' + (tmp[j].Length).ToString().PadLeft(5) + "ms long ");
-                                                    Console.WriteLine();
-                                                }
                                             }
                                         }
                                         catch
