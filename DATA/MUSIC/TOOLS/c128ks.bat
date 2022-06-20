@@ -10,6 +10,10 @@ goto :EOF
 
 :out
 SET LPARAMS=--cbr -b 128 --resample 44100 -m j
-IF "%~x1" EQU ".ogg" ( "%~dp0sox" %1 -c 2 -r 44100 -S --multi-threaded -t wav - | "%~dp0lame" %LPARAMS% - %2 ) ^
-ELSE ( "%~dp0lame" %LPARAMS% %1 %2 )
+IF "%~x1" EQU ".wav" ( "%~dp0lame" %LPARAMS% %1 %2 ) ^
+ELSE (
+IF "%~x1" EQU ".mp3" ( "%~dp0lame" %LPARAMS% %1 %2 ) ^
+ELSE ( "%~dp0sox" %1 -c 2 -r 44100 -S --multi-threaded -t wav - | "%~dp0lame" %LPARAMS% - %2 )
+)
+
 goto :EOF

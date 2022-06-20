@@ -477,9 +477,9 @@ namespace FastGH3
                             }
                         }
                         string[] audstnames = { "song", "guitar", "rhythm" },
-                            audextnames = { "ogg", "mp3", "wav" };
+                            audextnames = { "ogg", "mp3", "wav", "opus" };
                         //bool grandlb = false;
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < 4; i++)
                         {
                             if (!File.Exists(audiostreams[0]))
                             {
@@ -495,7 +495,7 @@ namespace FastGH3
                         for (int i = 0; i < audstnames.Length; i++)
                         {
                             if (!File.Exists(audiostreams[i]))
-                                for (int j = 0; j < 3; j++)
+                                for (int j = 0; j < 4; j++)
                                 {
                                     audtmpstr = chartfolder + audstnames[i] + '.' + audextnames[j];
                                     if (File.Exists(audtmpstr))
@@ -511,7 +511,7 @@ namespace FastGH3
                         for (int i = 0; i < audstnames.Length; i++)
                         {
                             if (!File.Exists(audiostreams[i + 1]))
-                                for (int j = 0; j < 3; j++)
+                                for (int j = 0; j < 4; j++)
                                 {
                                     audtmpstr = chartfolder + audstnames[i] + '.' + audextnames[j];
                                     if (File.Exists(audtmpstr))
@@ -525,7 +525,7 @@ namespace FastGH3
                         bool notjust3trax = false; // nj3ts.Count smh
                         List<string> nj3ts = new List<string>();
                         verboseline("Checking if extra audio exists");
-                        for (int j = 0; j < 3; j++)
+                        for (int j = 0; j < 4; j++)
                         {
                             for (int i = 1; i < 9; i++)
                             {
@@ -538,7 +538,7 @@ namespace FastGH3
                                 }
                             }
                         }
-                        for (int j = 0; j < 3; j++)
+                        for (int j = 0; j < 4; j++)
                         {
                             audtmpstr = chartfolder + "vocals." + audextnames[j];
                             if (File.Exists(audtmpstr))
@@ -552,7 +552,7 @@ namespace FastGH3
                         audstnames = new string[] { "drums", /*"vocals",*/ "keys", "song" };
                         for (int i = 0; i < audstnames.Length; i++)
                         {
-                            for (int j = 0; j < 3; j++)
+                            for (int j = 0; j < 4; j++)
                             {
                                 audtmpstr = chartfolder + audstnames[i] + '.' + audextnames[j];
                                 if (File.Exists(audtmpstr))
@@ -582,7 +582,7 @@ namespace FastGH3
                                 CheckFileExists = true,
                                 CheckPathExists = true,
                                 InitialDirectory = Path.GetDirectoryName(args[0]),
-                                Filter = "Audio files|*.mp3;*.wav;*.ogg|Any type|*.*"
+                                Filter = "Audio files|*.mp3;*.wav;*.ogg;*.opus|Any type|*.*"
                             };
                             do
                             {
@@ -1773,7 +1773,8 @@ namespace FastGH3
                                 }
                                 if (data.FileName.EndsWith(".ogg") ||
                                     data.FileName.EndsWith(".mp3") ||
-                                    data.FileName.EndsWith(".wav"))
+                                    data.FileName.EndsWith(".wav") ||
+                                    data.FileName.EndsWith(".opus"))
                                 {
                                     verboseline("Found audio, extracting...");
                                     data.Extract(tmpf);
