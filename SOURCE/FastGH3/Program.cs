@@ -336,7 +336,7 @@ namespace FastGH3
                         mid2chart.StartInfo = new ProcessStartInfo()
                         {
                             FileName = folder + "\\mid2chart.exe",
-                            Arguments = paksongmid.EncloseWithQuoteMarks() + " -k -u"
+                            Arguments = paksongmid.EncloseWithQuoteMarks() + " -k -u -p -m"
                         };
                         //Console.WriteLine(verboselog);
                         // Why won't this work
@@ -394,7 +394,7 @@ namespace FastGH3
                         else chart.Load(folder + pak + "song.chart");
                         File.Delete(folder + pak + "song.mid");
                         File.Delete(folder + pak + "song.chart");
-                        File.Delete(folder + pak + "song (Dummy).chart");
+                        //File.Delete(folder + pak + "song (Dummy).chart");
                         bool relfile = false;
                         try
                         {
