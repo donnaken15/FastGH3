@@ -52,3 +52,4 @@ DATA/PAK/tmp.pak.xen
 *.lnk
 PLUGINS/QDBhook.dll
 \!*
+.vs/

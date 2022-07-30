@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GH3+", "GH3+", "{F3FC9BC7-6E8D-4520-8A7D-DDDC391453EE}"
 EndProject
@@ -65,6 +65,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QDB debugger", "QDB debugger", "{4EC93DA0-3B84-4898-8D12-687AC8CF559D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "buildtex", "E:\buildtex\buildtex\buildtex.csproj", "{1D0B1565-9F7B-47A5-AF52-12DB9E60F487}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "modifiers", "GH3Plus\src\plugins\modifiers\modifiers.vcxproj", "{BE539091-ED1F-49AB-BA31-A73652947613}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -325,6 +327,18 @@ Global
 		{1D0B1565-9F7B-47A5-AF52-12DB9E60F487}.Release|x64.Build.0 = Release|Any CPU
 		{1D0B1565-9F7B-47A5-AF52-12DB9E60F487}.Release|x86.ActiveCfg = Release|Any CPU
 		{1D0B1565-9F7B-47A5-AF52-12DB9E60F487}.Release|x86.Build.0 = Release|Any CPU
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Debug|Any CPU.Build.0 = Debug|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Debug|x64.ActiveCfg = Debug|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Debug|x64.Build.0 = Debug|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Debug|x86.ActiveCfg = Debug|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Debug|x86.Build.0 = Debug|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Release|Any CPU.ActiveCfg = Release|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Release|Any CPU.Build.0 = Release|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Release|x64.ActiveCfg = Release|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Release|x64.Build.0 = Release|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Release|x86.ActiveCfg = Release|Win32
+		{BE539091-ED1F-49AB-BA31-A73652947613}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -356,5 +370,9 @@ Global
 		{0A7C51A9-DEDF-4429-BC5F-ABA601A47E51} = {E44AC199-1849-4F8C-BD1F-56D331D966C9}
 		{4EC93DA0-3B84-4898-8D12-687AC8CF559D} = {E9ECE84B-7EB9-4B4E-BACD-D9FD396CD886}
 		{1D0B1565-9F7B-47A5-AF52-12DB9E60F487} = {E9ECE84B-7EB9-4B4E-BACD-D9FD396CD886}
+		{BE539091-ED1F-49AB-BA31-A73652947613} = {E44AC199-1849-4F8C-BD1F-56D331D966C9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F626D18-605C-460B-9D2C-4AE45CE11016}
 	EndGlobalSection
 EndGlobal
