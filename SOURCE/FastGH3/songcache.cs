@@ -7,6 +7,8 @@ namespace FastGH3
 {
     public partial class songcache : Form
     {
+        // should I specify file path/name in the INI when caching a song?
+
         public string folder = Path.GetDirectoryName(Application.ExecutablePath) + "\\DATA\\CACHE\\";
 
         public IniFile i = new IniFile();
@@ -36,7 +38,7 @@ namespace FastGH3
                             "Play"
                             );
                         cache.Rows.Add(newRow);
-                        if (Height < 500)
+                        if (Height < 700)
                             Height += 22;
                     }
                 }
@@ -56,7 +58,7 @@ namespace FastGH3
                 newSize /= bThousand;
             }
             if (bUnit == 0)
-                return newSize.ToString("0").PadLeft(4) + " bytes";
+                return newSize.ToString("0").PadLeft(4) + " bytes"; // why even
             else
                 return newSize.ToString("0.00 ").PadLeft(7) + bUnits[bUnit] + 'B';
         }
@@ -66,6 +68,10 @@ namespace FastGH3
             IniFile.IniSection cs = i.GetSection((string)cache.Rows[e.RowIndex].Cells[0].Value);
             File.Copy(folder + cs.Name, folder + "..\\PAK\\song.pak.xen", true);
             File.Copy(folder + cs.GetKey("Audio").Value, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
+            string title  = cs.GetKey("Title").Value;
+            string author = cs.GetKey("Author").Value;
+            File.WriteAllText(folder + "..\\..\\currentsong.txt",
+                author + " - " + title);
             Process.Start(folder + "..\\..\\game.exe");
         }
 

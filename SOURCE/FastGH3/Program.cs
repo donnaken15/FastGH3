@@ -1589,9 +1589,10 @@ namespace FastGH3
                         }
                         else
                         {
+                            string cacheidStr = charthash.ToString("X16");
                             Console.WriteLine("Cached chart found.");
                             File.Copy(
-                                folder + "\\DATA\\CACHE\\" + charthash.ToString("X16"),
+                                folder + "\\DATA\\CACHE\\" + cacheidStr,
                                 folder + "\\DATA\\PAK\\song.pak.xen", true);
                             File.Copy(args[0], paksongmid, true);
                             mid2chart.Start();
@@ -1602,6 +1603,8 @@ namespace FastGH3
                             }
                             else chart.Load(folder + pak + "song.chart");
                             string title = "Untitled", author = "Unknown";
+                            title = cache.GetKeyValue(cacheidStr, "Title", "Untitled");
+                            author = cache.GetKeyValue(cacheidStr, "Author", "Unknown");
                             IniFile songini = new IniFile();
                             if (File.Exists("song.ini"))
                             {
@@ -1612,7 +1615,7 @@ namespace FastGH3
                             foreach (SongSectionEntry s in chart.Song)
                             {
                                 if (s.Key == "Name" && (s.Value.Trim() != ""))
-                                    title  = chart.Song["Name"].Value.Trim();
+                                    title = chart.Song["Name"].Value.Trim();
                                 if (s.Key == "Artist" && (s.Value.Trim() != ""))
                                     author = chart.Song["Artist"].Value.Trim();
                             };
