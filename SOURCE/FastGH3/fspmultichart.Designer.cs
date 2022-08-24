@@ -55,7 +55,7 @@
             this.listfiles.IntegralHeight = false;
             this.listfiles.Location = new System.Drawing.Point(13, 45);
             this.listfiles.Name = "listfiles";
-            this.listfiles.Size = new System.Drawing.Size(235, 201);
+            this.listfiles.Size = new System.Drawing.Size(252, 113);
             this.listfiles.TabIndex = 1;
             this.listfiles.DoubleClick += new System.EventHandler(this.select);
             this.listfiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.select);
@@ -65,7 +65,7 @@
             this.choose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.choose.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.choose.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.choose.Location = new System.Drawing.Point(12, 254);
+            this.choose.Location = new System.Drawing.Point(12, 166);
             this.choose.Name = "choose";
             this.choose.Size = new System.Drawing.Size(75, 23);
             this.choose.TabIndex = 2;
@@ -78,7 +78,7 @@
             this.cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.cancel.Location = new System.Drawing.Point(173, 254);
+            this.cancel.Location = new System.Drawing.Point(190, 166);
             this.cancel.Name = "cancel";
             this.cancel.Size = new System.Drawing.Size(75, 23);
             this.cancel.TabIndex = 3;
@@ -89,7 +89,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(260, 289);
+            this.ClientSize = new System.Drawing.Size(277, 201);
             this.Controls.Add(this.cancel);
             this.Controls.Add(this.choose);
             this.Controls.Add(this.listfiles);
@@ -97,7 +97,7 @@
             this.Name = "fspmultichart";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Warning";
+            this.Text = "FastGH3 : Warning";
             this.ResumeLayout(false);
             this.PerformLayout();
 

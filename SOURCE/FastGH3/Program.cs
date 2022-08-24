@@ -8,6 +8,7 @@ using Ionic.Zip;
 using System.Runtime.InteropServices;
 using ChartEdit;
 using System.Collections.Generic;
+using Microsoft.Win32;
 
 namespace FastGH3
 {
@@ -55,33 +56,25 @@ namespace FastGH3
             0x10, 0x10, 0x0C, 0x00
         };
 
-        static string Reverse(string s)
+        // from stackoverflow 1266674
+        public static string NormalizePath(string path)
         {
-            verboseline("Reversing string...");
-            char[] charArray = s.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
+            return Path.GetFullPath(new Uri(path).LocalPath)
+                       .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                       .ToUpperInvariant();
         }
 
-        static object choose(params object[] choices)
-        {
-            verbose("Choosing items: ");
-            for (int i = 0; i < choices.Length; i++)
-            {
-                verbose(choices[i].ToString());
-                if (i < choices.Length - 1)
-                    verbose(", ");
-            }
-            verboseline(null);
-            return choices[random.Next(0, choices.Length)];
-        }
+        public static string GH3EXEPath;
 
         static void disallowGameStartup()
         {
             try
             {
                 foreach (Process proc in Process.GetProcessesByName("game"))
-                    proc.Kill();
+                {
+                    if (NormalizePath(proc.MainModule.FileName) == GH3EXEPath)
+                        proc.Kill();
+                }
             }
             catch (Exception ex)
             {
@@ -124,11 +117,6 @@ namespace FastGH3
 
         static bool cacheEnabled = true;
 
-        static string sox2ndparam(byte i)
-        {
-            return ' ' + folder + music + "audio\\" + i.ToString().Replace("0", "song").Replace("1", "guitar").Replace("2", "rhythm") + ".ogg rate 44.1k";
-        }
-
         static string[] cacheList;
 
         // Ask for filename just because external data is being handled.
@@ -140,7 +128,7 @@ namespace FastGH3
                 return isCached(hash);
             }
             return false;
-        }
+        }/**/
 
         static bool isCached(ulong hash)
         {
@@ -154,29 +142,69 @@ namespace FastGH3
             return false;
         }
 
+        //http://csharptest.net/526/how-to-search-the-environments-path-for-an-exe-or-dll/index.html
+        /// <summary>
+        /// Expands environment variables and, if unqualified, locates the exe in the working directory
+        /// or the evironment's path.
+        /// </summary>
+        /// <param name="exe">The name of the executable file</param>
+        /// <returns>The fully-qualified path to the file</returns>
+        /// <exception cref="System.IO.FileNotFoundException">Raised when the exe was not found</exception>
+        public static string FindExePath(string exe)
+        {
+            exe = Environment.ExpandEnvironmentVariables(exe);
+            if (!File.Exists(exe))
+            {
+                if (Path.GetDirectoryName(exe) == String.Empty)
+                {
+                    foreach (string test in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';'))
+                    {
+                        string path = test.Trim();
+                        if (!String.IsNullOrEmpty(path) && File.Exists(path = Path.Combine(path, exe)))
+                            return Path.GetFullPath(path);
+                    }
+                }
+                return "";
+                //throw new FileNotFoundException(new FileNotFoundException().Message, exe);
+            }
+            return Path.GetFullPath(exe);
+        }
+
         [STAThread]
         static void Main(string[] args)
         {
-            Process[] multiinstcheck = Process.GetProcessesByName("fastgh3");
-            //MessageBox.Show(multiinstcheck.Length.ToString());
-            int multiinstcheckn = 0;
-            if (multiinstcheck.Length > 1)
-                foreach (Process fgh3 in multiinstcheck)
-                {
-                    //MessageBox.Show(fgh3.MainModule.FileName);
-                    if (fgh3.MainModule.FileName == Application.ExecutablePath)
+            bool multiinstcheck_ = true;
+            if (multiinstcheck_)
+            {
+                Process[] multiinstcheck = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Application.ExecutablePath));
+                //MessageBox.Show(multiinstcheck.Length.ToString());
+                int multiinstcheckn = 0;
+                //int multiinstcheckn2 = 0;
+                if (multiinstcheck.Length > 1)
+                    foreach (Process fgh3 in multiinstcheck)
                     {
-                        multiinstcheckn++;
-                        if (multiinstcheckn > 1)
+                        if (NormalizePath(fgh3.MainModule.FileName) ==
+                            NormalizePath(Application.ExecutablePath))
                         {
-                            MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
-                            break;
+                            // can't check process arguments >:(
+                            // without some complicated WMI thing
+                            // unless (as i thought of using) i
+                            // use an MMF to indicate that a
+                            // song converting launcher is active
+                            multiinstcheckn++;
+                            // 1 or [0] = probably this process
+                            if (multiinstcheckn > 1)
+                            {
+                                MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
+                                break;
+                            }
                         }
                     }
-                }
+            }
             Console.Title = title;
             folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
+            GH3EXEPath = NormalizePath(folder + "\\game.exe");
             if (File.Exists(folder + "settings.ini"))
                 settings.Load(folder + "settings.ini");
             string chartext = ".chart", midext = ".mid",
@@ -192,6 +220,7 @@ namespace FastGH3
                 if (File.Exists(folder + dataf + "CACHE\\.db.ini"))
                     cache.Load(folder + dataf + "CACHE\\.db.ini");
             }
+            #region NO ARGS ROUTINE
             if (args.Length == 0)
             {
                 if (settings.GetKeyValue("Misc", "NoStartupMsg", "0") == "0")
@@ -221,13 +250,16 @@ namespace FastGH3
                 }
                 Environment.Exit(0);
             }
+            #endregion
             if (args.Length > 0)
             {
                 if (args[0] == "-settings")
                 {
+                    // muh classic theme
                     Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
                     new settings().ShowDialog();
                 }
+                #region DOWNLOAD SONG
                 else if (args[0] == "dl" && (args[1] != "" || args[1] != null))
                 {
                     Console.WriteLine(title + " by donnaken15");
@@ -236,20 +268,25 @@ namespace FastGH3
                     {
                         bool datecheck = true;
                         Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
-                        string cacheSect = "URL" + WZK64.Create(fsplink.AbsolutePath).ToString("X16");
-                        string urlCache = cache.GetKeyValue(cacheSect, "File", "");
+                        string cacheSect = ""; // ...
+                        string urlCache = "";
                         string tmpFn = "null";
-                        if (urlCache != "")
+                        if (cacheEnabled)
                         {
-                            Console.WriteLine("Found already downloaded file.");
-                            verboseline(cacheSect);
-                            verboseline(urlCache);
-                            tmpFn = urlCache;
-                            if (!datecheck)
-                                goto skipToGame;
+                            cacheSect = "URL" + WZK64.Create(fsplink.AbsolutePath).ToString("X16");
+                            urlCache = cache.GetKeyValue(cacheSect, "File", "");
+                            if (urlCache != "")
+                            {
+                                Console.WriteLine("Found already downloaded file.");
+                                verboseline(cacheSect);
+                                verboseline(urlCache);
+                                tmpFn = urlCache;
+                                if (!datecheck)
+                                    goto skipToGame;
+                            }
+                            if (datecheck)
+                                Console.WriteLine("Unique file date checking enabled.");
                         }
-                        if (datecheck)
-                            Console.WriteLine("Unique file date checking enabled.");
                         WebClient fsp = new WebClient();
                         fsp.Proxy = null;
                         fsp.Headers.Add("user-agent", "Anything");
@@ -257,7 +294,7 @@ namespace FastGH3
                         fsp.OpenRead(fsplink);
                         DateTime lastmod = new DateTime(), lastmod_cached;
                         //verboseline("1");
-                        if (datecheck)
+                        if (datecheck && cacheEnabled)
                         {
                             if (cache.GetKeyValue(cacheSect, "Date", "0") != "") // STUPID
                                 lastmod_cached = new DateTime(Convert.ToInt64(cache.GetKeyValue(cacheSect, "Date", "0")));
@@ -279,7 +316,8 @@ namespace FastGH3
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Different file date. Redownloading...");
+                                    if (lastmod.Ticks == 0)
+                                        Console.WriteLine("Different file date. Redownloading...");
                                 }
                             }
                             else
@@ -304,18 +342,24 @@ namespace FastGH3
                         tmpFn = Path.GetTempFileName();
                         string tmpFl = Path.GetTempPath();
                         fsp.DownloadFile(fsplink, tmpFn);
-                        File.Move(tmpFn, tmpFn + Path.GetExtension(fsplink.AbsolutePath));
+                        File.Move(tmpFn, tmpFn + ".fsp");
                         //Directory.CreateDirectory(tmpFl + "\\Z.TMP.FGH3$WEB");
-                        tmpFn += Path.GetExtension(fsplink.AbsolutePath);
-                        Console.WriteLine("Writing link to cache...");
-                        cache.SetKeyValue(cacheSect, "File"/*WZK64.Create(File.ReadAllBytes(tmpFn)).ToString("X16")*/, tmpFn.ToString());
-                        if (datecheck)
+                        tmpFn += ".fsp";
+                        if (cacheEnabled)
                         {
-                            Console.WriteLine("Writing date to cache...");
-                            cache.SetKeyValue(cacheSect, "Date", lastmod.Ticks.ToString());
+                            Console.WriteLine("Writing link to cache...");
+                            cache.SetKeyValue(cacheSect, "File"/*WZK64.Create(File.ReadAllBytes(tmpFn)).ToString("X16")*/, tmpFn.ToString());
+                            if (datecheck)
+                            {
+                                Console.WriteLine("Writing date to cache...");
+                                cache.SetKeyValue(cacheSect, "Date", lastmod.Ticks.ToString());
+                            }
+                            cache.Save(folder + dataf + "CACHE\\.db.ini");
                         }
-                        cache.Save(folder + dataf + "CACHE\\.db.ini");
                         skipToGame:
+                        // download FSP --> open and extract FSP --> convert song --> game
+                        // FastGH3.exe  --> FastGH3.exe          --> FastGH3.exe  --> game.exe
+                        // :P
                         Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
                     }
                     catch (Exception ex)
@@ -324,8 +368,10 @@ namespace FastGH3
                         Console.ReadKey();
                     }
                 }
+                #endregion
                 else if (File.Exists(args[0]))
                 {
+                    #region STANDARD ROUTINE
                     Console.WriteLine(title + " by donnaken15");
                     if (Path.GetFileName(args[0]).EndsWith(chartext) || Path.GetFileName(args[0]).EndsWith(midext))
                     {
@@ -522,7 +568,7 @@ namespace FastGH3
                                     }
                                 }
                         }
-                        bool notjust3trax = false; // nj3ts.Count smh
+                        bool notjust3trax = false; // nj3ts.Count smh // "3 Count!"
                         List<string> nj3ts = new List<string>();
                         verboseline("Checking if extra audio exists");
                         for (int j = 0; j < 4; j++)
@@ -1625,7 +1671,8 @@ namespace FastGH3
                             File.Delete(paksongchart);
                         }
                         //if (verboselog)
-                            //Console.ReadKey();
+                        //Console.ReadKey();
+                        #region COMPILE AUDIO TO FSB
                         if (!audCache)
                         {
                             if (!MTFSB)
@@ -1673,13 +1720,14 @@ namespace FastGH3
                             if (File.Exists(folder + "\\DATA\\MUSIC\\TOOLS\\mergetmp.wav"))
                                 File.Delete(folder + "\\DATA\\MUSIC\\TOOLS\\mergetmp.wav");
                         }
+                        #endregion
                         //verboseline("Cleaning up...");
                         disallowGameStartup();
                         Console.WriteLine("Speeding up.");
                         verboseline("Creating GH3 process...");
                         Process gh3 = new Process();
                         gh3.StartInfo.WorkingDirectory = folder;
-                        gh3.StartInfo.FileName = folder + "\\game.exe";
+                        gh3.StartInfo.FileName = GH3EXEPath;
                         if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
                         {
                             verboseline("Getting max notes...");
@@ -1707,7 +1755,11 @@ namespace FastGH3
                             Console.ReadKey();
                         }
                     }
-                    else if (File.Exists(args[0]) && (args[0].EndsWith(".fsp") || args[0].EndsWith(".zip")))
+                    #endregion
+                    #region FSP EXTRACT
+                    else if (File.Exists(args[0]) &&
+                        (args[0].EndsWith(".fsp") || args[0].EndsWith(".zip") ||
+                        args[0].EndsWith(".7z") || args[0].EndsWith(".rar")))
                     {
                         //Console.WriteLine("FastGH3 by donnaken15");
                         Console.WriteLine("Detected song package.");
@@ -1730,57 +1782,223 @@ namespace FastGH3
                             verboseline(fsphash);
                             fspcache = isCached(fsphash);
                         }*/
+                        // TODO: CACHE IDS FOR ZIPS, AND USE THROUGH FOLDER NAME
                         string tmpf = Path.GetTempPath() + "\\Z.TMP.FGH3$" + new Random().Next(0x100000, 0xFFFFFF).ToString("X5") + '\\',
                             selectedtorun = "";
                         Directory.CreateDirectory(tmpf);
                         bool compiled = false;
                         List<string> multichartcheck = new List<string>();
-                        using (ZipFile file = ZipFile.Read(args[0]))
+                        if (args[0].EndsWith(".zip") || args[0].EndsWith(".fsp" /* :( */))
                         {
-                            file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
-                            foreach (ZipEntry data in file)
+                            try
                             {
-                                if (data.FileName.EndsWith(".pak") ||
-                                    data.FileName.EndsWith(".pak.xen"))
+                                using (ZipFile file = ZipFile.Read(args[0]))
                                 {
-                                    verboseline("Found .pak, extracting...");
-                                    data.Extract(tmpf);
-                                    // do something with this moving when multiple files exist or whatever
-                                    File.Delete(folder + pak + "song.pak.xen");
-                                    File.Move(tmpf + data.FileName, folder + pak + "song.pak.xen");
-                                    multichartcheck.Add(data.FileName);
-                                    compiled = true;
+                                    file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+                                    foreach (ZipEntry data in file)
+                                    {
+                                        if (data.FileName.EndsWith(".pak") ||
+                                            data.FileName.EndsWith(".pak.xen"))
+                                        {
+                                            verboseline("Found .pak, extracting...");
+                                            data.Extract(tmpf);
+                                            // do something with this moving when multiple files exist or whatever
+                                            File.Delete(folder + pak + "song.pak.xen");
+                                            File.Move(tmpf + data.FileName, folder + pak + "song.pak.xen");
+                                            multichartcheck.Add(data.FileName);
+                                            compiled = true;
+                                        }
+                                        if (data.FileName.EndsWith(".fsb") ||
+                                            data.FileName.EndsWith(".fsb.xen"))
+                                        {
+                                            verboseline("Found .fsb, extracting...");
+                                            data.Extract(tmpf);
+                                            File.Delete(folder + music + "fastgh3.fsb.xen");
+                                            File.Move(tmpf + data.FileName, folder + music + "fastgh3.fsb.xen");
+                                        }
+                                        if (data.FileName.EndsWith(".chart") ||
+                                            data.FileName.EndsWith(".mid"))
+                                        {
+                                            verboseline("Found .chart/.mid, extracting...");
+                                            data.Extract(tmpf);
+                                            // replace this
+                                            multichartcheck.Add(data.FileName);
+                                            selectedtorun = tmpf + data.FileName;
+                                        } // should this be run after detecting a PAK
+                                          // though then the multichart routine will run regardless
+                                        if (data.FileName == "song.ini")
+                                        {
+                                            verboseline("Found song.ini, extracting...");
+                                            data.Extract(tmpf);
+                                        }
+                                        if (data.FileName.EndsWith(".ogg") ||
+                                            data.FileName.EndsWith(".mp3") ||
+                                            data.FileName.EndsWith(".wav") ||
+                                            data.FileName.EndsWith(".opus"))
+                                        {
+                                            verboseline("Found audio, extracting...");
+                                            data.Extract(tmpf);
+                                        }
+                                    }
                                 }
-                                if (data.FileName.EndsWith(".fsb") ||
-                                    data.FileName.EndsWith(".fsb.xen"))
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.Write("ERROR! :(\n" + ex.Message);
+                                Console.ReadKey();
+                            }
+                        }
+                        else
+                        // extract using 7-zip or WinRAR if installed
+                        {
+                            verboseline("OH NO, THE SEVENS AND THE ROARS!"); // lol
+                            //if (args[0].EndsWith(".7z") || args[0].EndsWith(".rar"))
+                            // unnecessary and redundant clause if this is conditioned
+                            // to run on set file types
+                            bool got7Z = false, gotWRAR = false;
+                            verboseline("Looking for command line accessible 7Zip.");
+                            string z7path = FindExePath("7z.exe"); // do i have to specify .exe
+                            got7Z = z7path != "";
+                            if (!got7Z)
+                            {
+                                z7path = FindExePath("7za.exe");
+                                got7Z = z7path != "";
+                            }
+                            string rarpath = "";
+                            if (!got7Z)
+                            {
+                                // or look in registry
+                                verboseline("Looking for 7Zip in registry.");
+                                RegistryKey z7key;
+                                // also check HKLM hive?
+                                z7key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\7-Zip");
+                                if (z7key != null)
                                 {
-                                    verboseline("Found .fsb, extracting...");
-                                    data.Extract(tmpf);
-                                    File.Delete(folder + music + "fastgh3.fsb.xen");
-                                    File.Move(tmpf + data.FileName, folder + music + "fastgh3.fsb.xen");
+                                    z7path = (string)z7key.GetValue("Path");
+                                    if (z7path == null)
+                                    {
+                                        z7path = (string)z7key.GetValue("Path64");
+                                        if (z7path != null)
+                                            got7Z = true;
+                                    }
+                                    else
+                                        got7Z = true;
+                                    if (got7Z)
+                                        z7path += "\\7z.exe";
+                                    if (!File.Exists(z7path) && got7Z)
+                                    {
+                                        verboseline("Wait WTF, THE PROGRAM ISN'T THERE!! HOW!");
+                                        got7Z = false;
+                                    }
                                 }
-                                if (data.FileName.EndsWith(".chart") ||
-                                    data.FileName.EndsWith(".mid"))
+                                z7key.Close();
+                            }
+                            else
+                                verboseline("Found 7Zip");
+                            if (got7Z)
+                            {
+                                verboseline("7Zip is installed. Using that...");
+                                //verboseline(z7path);
+                            }
+                            else
+                            {
+                                verboseline("7Zip could not be found.");
+                                verboseline("Looking for command line accessible WinRAR or UnRar.exe");
+                                rarpath = FindExePath("UnRar.exe");
+                                gotWRAR = rarpath != "";
+                                if (gotWRAR)
                                 {
-                                    verboseline("Found .chart/.mid, extracting...");
-                                    data.Extract(tmpf);
-                                    // replace this
-                                    multichartcheck.Add(data.FileName);
-                                    selectedtorun = tmpf + data.FileName;
-                                } // should this be run after detecting a PAK
-                                // though then the multichart routine will run regardless
-                                if (data.FileName == "song.ini")
-                                {
-                                    verboseline("Found song.ini, extracting...");
-                                    data.Extract(tmpf);
+                                    if (!args[0].EndsWith(".rar"))
+                                    {
+                                        MessageBox.Show("7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        Environment.Exit(1);
+                                    }
+                                    verboseline("Found UnRAR. Using that...");
                                 }
-                                if (data.FileName.EndsWith(".ogg") ||
-                                    data.FileName.EndsWith(".mp3") ||
-                                    data.FileName.EndsWith(".wav") ||
-                                    data.FileName.EndsWith(".opus"))
+                                else
+                                    verboseline("UnRAR could not be found.");
+                            }
+                            Process Xtract = new Process();
+                            if (!verboselog)
+                            {
+                                Xtract.StartInfo.CreateNoWindow = true;
+                                Xtract.StartInfo.UseShellExecute = true;
+                                Xtract.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                            }
+                            else
+                            {
+                                Xtract.StartInfo.UseShellExecute = false;
+                                Xtract.StartInfo.RedirectStandardError = true;
+                                Xtract.StartInfo.RedirectStandardOutput = true;
+                                Xtract.ErrorDataReceived += (sendingProcess, errorLine) => Console.WriteLine(errorLine.Data);
+                                Xtract.OutputDataReceived += (sendingProcess, dataLine) => Console.WriteLine(dataLine.Data);
+                            }
+
+                            if (got7Z)
+                            {
+                                Xtract.StartInfo.FileName = z7path;
+                                Xtract.StartInfo.Arguments = "x "+args[0].EncloseWithQuoteMarks()+" -o"+tmpf.EncloseWithQuoteMarks();
+                            }
+                            else if (gotWRAR)
+                            {
+                                Xtract.StartInfo.FileName = rarpath;
+                                Xtract.StartInfo.Arguments = "x -o+ "+Path.GetFullPath(args[0]).EncloseWithQuoteMarks()+" "+tmpf.EncloseWithQuoteMarks();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Unsupported file type, unless you have 7-Zip or WinRAR installed.","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                                Environment.Exit(1);
+                            }
+                            if (got7Z || gotWRAR)
+                            {
+                                verboseline("Executing " + Xtract.StartInfo.FileName.EncloseWithQuoteMarks() + " " + Xtract.StartInfo.Arguments);
+                                Xtract.Start();
+                                Xtract.WaitForExit();
+                                verboseline("Exit code: " + Xtract.ExitCode);
+                                if (Xtract.ExitCode != 0)
                                 {
-                                    verboseline("Found audio, extracting...");
-                                    data.Extract(tmpf);
+                                    MessageBox.Show("The extractor returned a non-zero error code. This could mean that the extraction has failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    Environment.Exit(1);
+                                }
+                                foreach (string f in Directory.GetFiles(tmpf, "*.*", SearchOption.AllDirectories))
+                                {
+                                    if (f.EndsWith(".pak") ||
+                                        f.EndsWith(".pak.xen"))
+                                    {
+                                        verboseline("Found .pak");
+                                        // do something with this moving when multiple files exist or whatever
+                                        File.Delete(folder + pak + "song.pak.xen");
+                                        File.Move(f, folder + pak + "song.pak.xen");
+                                        multichartcheck.Add(f);
+                                        compiled = true;
+                                    }
+                                    if (f.EndsWith(".fsb") ||
+                                        f.EndsWith(".fsb.xen"))
+                                    {
+                                        verboseline("Found .fsb");
+                                        File.Delete(folder + music + "fastgh3.fsb.xen");
+                                        File.Move(f, folder + music + "fastgh3.fsb.xen");
+                                    }
+                                    if (f.EndsWith(".chart") ||
+                                        f.EndsWith(".mid"))
+                                    {
+                                        verboseline("Found .chart/.mid");
+                                        // replace this
+                                        multichartcheck.Add(f);
+                                        selectedtorun = f;
+                                    } // should this be run after detecting a PAK
+                                      // though then the multichart routine will run regardless
+                                    if (f == "song.ini")
+                                    {
+                                        verboseline("Found song.ini");
+                                    }
+                                    if (f.EndsWith(".ogg") ||
+                                        f.EndsWith(".mp3") ||
+                                        f.EndsWith(".wav") ||
+                                        f.EndsWith(".opus"))
+                                    {
+                                        verboseline("Found audio");
+                                    }
                                 }
                             }
                         }
@@ -1789,16 +2007,16 @@ namespace FastGH3
                             verboseline("There's nothing in here!");
                             // ♫ There's nothing for me here ♫
                             MessageBox.Show("No chart found","Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
-                            Environment.Exit(0);
+                            Environment.Exit(1);
                         }
                         bool cancel = false;
-                        fspmultichart askchoose = new fspmultichart(multichartcheck.ToArray());
                         if (multichartcheck.Count > 1)
                         {
+                            fspmultichart askchoose = new fspmultichart(multichartcheck.ToArray());
                             askchoose.ShowDialog();
-                            if (File.Exists(tmpf + askchoose.chosen) && askchoose.DialogResult == DialogResult.OK)
+                            if (File.Exists(askchoose.chosen) && askchoose.DialogResult == DialogResult.OK)
                             {
-                                selectedtorun = tmpf + askchoose.chosen;
+                                selectedtorun = askchoose.chosen;
                                 compiled = !Path.GetFileName(askchoose.chosen).EndsWith(".chart") &&
                                             !Path.GetFileName(askchoose.chosen).EndsWith(".mid");
                             }
@@ -1811,7 +2029,7 @@ namespace FastGH3
                                 verboseline("Creating GH3 process...");
                                 Process gh3 = new Process();
                                 gh3.StartInfo.WorkingDirectory = folder;
-                                gh3.StartInfo.FileName = folder + "\\game.exe";
+                                gh3.StartInfo.FileName = folder + GH3EXEPath;
                                 // dont do this lol
                                 if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
                                     settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
@@ -1884,16 +2102,22 @@ namespace FastGH3
                                 verboseline("Creating GH3 process...");
                                 Process gh3 = new Process();
                                 gh3.StartInfo.WorkingDirectory = folder;
-                                gh3.StartInfo.FileName = folder + "\\game.exe";
+                                gh3.StartInfo.FileName = folder + GH3EXEPath;
                                 // dont do this lol
                                 if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
                                     settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
                                 settings.Save(folder + "settings.ini");
                                 Console.WriteLine("Ready, go!");
                                 //gh3.Start();
+                                if (settings.GetKeyValue("Misc", "PreserveLog", "0") == "1")
+                                {
+                                    Console.WriteLine("Press any key to exit");
+                                    Console.ReadKey();
+                                }
                             }
                         }
                     }
+                    #endregion
                 }
                 else Console.WriteLine("That file does not exist.");
                 GC.Collect();

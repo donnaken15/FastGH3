@@ -1,0 +1,1 @@
+copy "%~1" "%~dp0\backgrnd_video.bik.xen" /y
