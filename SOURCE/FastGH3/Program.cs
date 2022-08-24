@@ -271,9 +271,10 @@ namespace FastGH3
                         string cacheSect = ""; // ...
                         string urlCache = "";
                         string tmpFn = "null";
+                        verboseline(fsplink.AbsoluteUri);
                         if (cacheEnabled)
                         {
-                            cacheSect = "URL" + WZK64.Create(fsplink.AbsolutePath).ToString("X16");
+                            cacheSect = "URL" + WZK64.Create(fsplink.AbsoluteUri).ToString("X16");
                             urlCache = cache.GetKeyValue(cacheSect, "File", "");
                             if (urlCache != "")
                             {
@@ -2029,7 +2030,7 @@ namespace FastGH3
                                 verboseline("Creating GH3 process...");
                                 Process gh3 = new Process();
                                 gh3.StartInfo.WorkingDirectory = folder;
-                                gh3.StartInfo.FileName = folder + GH3EXEPath;
+                                gh3.StartInfo.FileName = GH3EXEPath;
                                 // dont do this lol
                                 if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
                                     settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
