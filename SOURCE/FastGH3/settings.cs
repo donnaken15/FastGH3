@@ -427,10 +427,11 @@ Aspyr            - Original game, images, sounds, copyright");
 
         private void ctmpb_Click(object sender, EventArgs e)
         {
-            string tmpf = Path.GetTempPath();
-            string[] tmpds = Directory.GetDirectories(tmpf, "Z.TMP.FGH3$*", SearchOption.TopDirectoryOnly);
-            string[] tmpfs = Directory.GetFiles(tmpf, "*.tmp.fsp", SearchOption.TopDirectoryOnly);
-            foreach (string folder in tmpds)
+            string tmpf = folder + "\\DATA\\CACHE";
+            string[] tmpds;
+            //string[] tmpds = Directory.GetDirectories(tmpf, "*", SearchOption.TopDirectoryOnly);
+            string[] tmpfs = Directory.GetFiles(Path.GetTempPath(), "*.tmp.fsp", SearchOption.TopDirectoryOnly);
+            /*foreach (string folder in tmpds)
             {
                 //string[] whycs = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
                 //foreach (string whycs2 in whycs)
@@ -438,11 +439,17 @@ Aspyr            - Original game, images, sounds, copyright");
                     //File.Delete(whycs2);
                 //}
                 Directory.Delete(folder, true);
-            }
+            }*/
             foreach (string file in tmpfs)
-            {
                 File.Delete(file);
-            }
+
+            tmpds = Directory.GetDirectories(Path.GetTempPath(), "Aspyr* FastGH3", SearchOption.TopDirectoryOnly);
+            foreach (string folder in tmpds)
+                Directory.Delete(folder, true);
+
+            tmpfs = Directory.GetFiles(Path.GetTempPath(), "libSoX.tmp.*", SearchOption.TopDirectoryOnly);
+            foreach (string file in tmpfs)
+                File.Delete(file);
             if (File.Exists(folder + "\\DATA\\CACHE\\.db.ini"))
             {
                 IniFile cache = new IniFile();
@@ -451,7 +458,7 @@ Aspyr            - Original game, images, sounds, copyright");
                 string[] stupidEnumerasdaewrhygio = new string[cache.Sections.Count];
                 foreach (IniFile.IniSection sect in cache.Sections)
                 {
-                    if (sect.Name.StartsWith("URL"))
+                    if (sect.Name.StartsWith("URL") || sect.Name.StartsWith("ZIP"))
                     {
                         stupidEnumerasdaewrhygio[sectCount] = sect.Name;
                         sectCount++;
