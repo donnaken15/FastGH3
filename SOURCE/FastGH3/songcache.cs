@@ -70,8 +70,20 @@ namespace FastGH3
             File.Copy(folder + cs.GetKey("Audio").Value, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
             string title  = cs.GetKey("Title").Value;
             string author = cs.GetKey("Author").Value;
-            File.WriteAllText(folder + "..\\..\\currentsong.txt",
-                author + " - " + title);
+            string[] songParams = new string[] {
+                author,
+                title,
+                "Unknown",
+                "Unknown",
+                "Unknown",
+                cs.GetKey("Length").Value,
+                "Unknown"
+            };
+            File.WriteAllText(folder + "currentsong.txt",
+                Program.FormatText(
+                    Program.settings.GetKeyValue("Misc", "SongtextFormat", "%a - %t")
+                    .Replace("\\n", Environment.NewLine),
+                songParams));
             Process.Start(folder + "..\\..\\game.exe");
         }
 

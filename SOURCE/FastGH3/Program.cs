@@ -183,6 +183,52 @@ namespace FastGH3
             return Path.GetFullPath(exe);
         }
 
+
+        //                   lol
+        public static string FormatText(string input, string[] songParams)
+        {
+            string formatted = input;
+            for (int i = 0; i < formatted.Length; i++)
+            {
+                if (formatted[i] == '%' && i + 1 < formatted.Length)
+                {
+                    string insert = "%";
+                    switch (formatted[i + 1])
+                    {
+                        // how to avoid 3 % when putting "%%%%"?
+                        case 'a':
+                            insert = songParams[0];
+                            break;
+                        case 't':
+                            insert = songParams[1];
+                            break;
+                        case 'b':
+                            insert = songParams[2];
+                            break;
+                        case 'c':
+                            insert = songParams[3];
+                            break;
+                        case 'y':
+                            insert = songParams[4];
+                            break;
+                        case 'l':
+                            insert = songParams[5];
+                            break;
+                        case 'g':
+                            insert = songParams[6];
+                            break;
+                        default:
+                            insert = formatted[i + 1].ToString();
+                            break;
+                    }
+                    formatted = formatted.Remove(i, 2);
+                    formatted = formatted.Insert(i, insert);
+                    i++;
+                }
+            }
+            return formatted;
+        }
+
         [STAThread]
         static void Main(string[] args)
         {
@@ -268,21 +314,22 @@ namespace FastGH3
             {
                 // combine logs from any of 3 processes to easily look for errors from all of them
                 bool newfile = settings.GetKeyValue("Misc", "FinishedLog", "1") == "1";
-                if (writefile)
-                {
-                    if (newfile)
+                if (args[0] != "-settings")
+                    if (writefile)
                     {
-                        File.Delete(folder + "launcher.txt");
+                        if (newfile)
+                        {
+                            File.Delete(folder + "launcher.txt");
+                        }
+                        launcherlog = new StreamWriter(folder + "launcher.txt", !newfile);
+                        if (newfile)
+                        {
+                            launcherlog.WriteLine("FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n--------------------------------");
+                            newfile = false;
+                            settings.SetKeyValue("Misc", "FinishedLog", "0");
+                            settings.Save(folder + "settings.ini");
+                        }
                     }
-                    launcherlog = new StreamWriter(folder + "launcher.txt", !newfile);
-                    if (newfile)
-                    {
-                        launcherlog.WriteLine("FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n--------------------------------");
-                        newfile = false;
-                        settings.SetKeyValue("Misc", "FinishedLog", "0");
-                        settings.Save(folder + "settings.ini");
-                    }
-                }
                 if (args[0] == "-settings")
                 {
                     // muh classic theme
@@ -485,6 +532,23 @@ namespace FastGH3
                         else chart.Load(folder + pak + "song.chart");
                         File.Delete(folder + pak + "song.mid");
                         File.Delete(folder + pak + "song.chart");
+                        if (writefile && launcherlog != null)
+                        {
+                            string songName = "";
+                            foreach (SongSectionEntry chartinfo in chart.Song)
+                            {
+                                switch (chartinfo.Key)
+                                {
+                                    case "Name":
+                                    case "Artist":
+                                    case "Charter":
+                                        songName += chartinfo.Value + ",";
+                                        break;
+                                }
+                            }
+                            //songName.Remove(songName.Length - 1,1); wont work
+                            launcherlog.WriteLine(songName);
+                        }
                         //File.Delete(folder + pak + "song (Dummy).chart");
                         bool relfile = false;
                         try
@@ -1633,24 +1697,45 @@ namespace FastGH3
                             QbItemString songyear = new QbItemString(songdata);
                             songyear.Create(QbItemType.StructItemString);
                             songyear.ItemQbKey = QbKey.Create("year");
+                            QbItemString songchrtr = new QbItemString(songdata);
+                            songchrtr.Create(QbItemType.StructItemString);
+                            songchrtr.ItemQbKey = QbKey.Create("charter");
                             songtitle.Strings[0] = songini.GetKeyValue("song", "name", "Untitled").Trim();
                             songauthr.Strings[0] = songini.GetKeyValue("song", "artist", "Unknown").Trim();
                             songalbum.Strings[0] = songini.GetKeyValue("song", "album", "Unknown").Trim();
-                            songyear.Strings[0] = songini.GetKeyValue("song", "year", "2021").Trim();
+                            songyear.Strings[0] = songini.GetKeyValue("song", "year", "Unknown").Trim();
+                            songchrtr.Strings[0] = songini.GetKeyValue("song", "charter", "Unknown").Trim();
+                            string genre = songini.GetKeyValue("song", "genre", "Unknown").Trim();
                             foreach (SongSectionEntry s in chart.Song)
                             {
                                 if (s.Key == "Name" && (s.Value.Trim() != ""))
                                     songtitle.Strings[0] = chart.Song["Name"].Value.Trim();
                                 if (s.Key == "Artist" && (s.Value.Trim() != ""))
                                     songauthr.Strings[0] = chart.Song["Artist"].Value.Trim();
+                                if (s.Key == "Charter" && (s.Value.Trim() != ""))
+                                    songchrtr.Strings[0] = chart.Song["Charter"].Value.Trim();
                             };
                             songdata.AddItem(songmeta);
                             songmeta.AddItem(songtitle);
                             songmeta.AddItem(songauthr);
                             songmeta.AddItem(songalbum);
                             songmeta.AddItem(songyear);
+                            songmeta.AddItem(songchrtr);
+                            string timeString = ((endtime / 1000) / 60).ToString("00") + ':' + (((endtime / 1000) % 60)).ToString("00");
+                            string[] songParams = new string[] {
+                                songauthr.Strings[0],
+                                songtitle.Strings[0],
+                                songalbum.Strings[0],
+                                songchrtr.Strings[0],
+                                songyear.Strings[0],
+                                timeString,
+                                genre
+                            };
                             File.WriteAllText(folder + "currentsong.txt",
-                                songauthr.Strings[0] + " - " + songtitle.Strings[0]);
+                                FormatText(
+                                    settings.GetKeyValue("Misc","SongtextFormat","%a - %t")
+                                    .Replace("\\n",Environment.NewLine),
+                                songParams));
                             #endregion
                             #endregion
                             verboseline("Aligning pointers...");
@@ -1681,7 +1766,7 @@ namespace FastGH3
                                     folder + "\\DATA\\CACHE\\" + charthash.ToString("X16"), true);
                                 cache.SetKeyValue(charthash.ToString("X16"), "Title", songtitle.Strings[0]);
                                 cache.SetKeyValue(charthash.ToString("X16"), "Author", songauthr.Strings[0]);
-                                cache.SetKeyValue(charthash.ToString("X16"), "Length", ((endtime / 1000) / 60).ToString("00") + ':' + (((endtime / 1000) % 60)).ToString("00"));
+                                cache.SetKeyValue(charthash.ToString("X16"), "Length", timeString);
                                 cache.Save(folder + dataf + "CACHE\\.db.ini");
                             }
                             verboseline("DID EVERYTHING WORK?!");
@@ -1701,25 +1786,51 @@ namespace FastGH3
                                 chart.Load(args[0]);
                             }
                             else chart.Load(folder + pak + "song.chart");
-                            string title = "Untitled", author = "Unknown";
+                            string title = "Untitled", author = "Unknown",
+                                year = "Unknown", timestr = "Unknown",
+                                album = "Unknown", charter = "Unknown",
+                                genre = "Unknown";
                             title = cache.GetKeyValue(cacheidStr, "Title", "Untitled");
                             author = cache.GetKeyValue(cacheidStr, "Author", "Unknown");
+                            timestr = cache.GetKeyValue(cacheidStr, "Length", "Undefined");
                             IniFile songini = new IniFile();
                             if (File.Exists("song.ini"))
                             {
                                 songini.Load("song.ini");
                                 title = songini.GetKeyValue("song", "name", "Untitled").Trim();
                                 author = songini.GetKeyValue("song", "artist", "Unknown").Trim();
+                                album = songini.GetKeyValue("song", "album", "Unknown").Trim();
+                                year = songini.GetKeyValue("song", "year", "Unknown").Trim();
+                                charter = songini.GetKeyValue("song", "charter", "Unknown").Trim();
+                                genre = songini.GetKeyValue("song", "genre", "Unknown").Trim();
+                                float duration = int.Parse(songini.GetKeyValue("song", "song_length", "0"));
+                                timestr = ((duration / 1000) / 60).ToString("00") + ':' + (((duration / 1000) % 60)).ToString("00");
+                                // MAKE THIS A FUNCTION ^
                             }
                             foreach (SongSectionEntry s in chart.Song)
                             {
+                                // also optimize this with switch and have Value != "" wrap around it
                                 if (s.Key == "Name" && (s.Value.Trim() != ""))
                                     title = chart.Song["Name"].Value.Trim();
                                 if (s.Key == "Artist" && (s.Value.Trim() != ""))
                                     author = chart.Song["Artist"].Value.Trim();
+                                if (s.Key == "Charter" && (s.Value.Trim() != ""))
+                                    charter = chart.Song["Charter"].Value.Trim();
+                            };
+                            string[] songParams = new string[] {
+                                author,
+                                title,
+                                album,
+                                charter,
+                                year,
+                                timestr,
+                                genre
                             };
                             File.WriteAllText(folder + "currentsong.txt",
-                                author + " - " + title);
+                                FormatText(
+                                    settings.GetKeyValue("Misc", "SongtextFormat", "%a - %t")
+                                    .Replace("\\n", Environment.NewLine),
+                                songParams));
                             File.Delete(paksongmid);
                             File.Delete(paksongchart);
                         }

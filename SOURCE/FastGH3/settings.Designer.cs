@@ -21,10 +21,8 @@ namespace FastGH3
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(settings));
             this.ok = new System.Windows.Forms.Button();
             this.reslabel = new System.Windows.Forms.Label();
-            this.res = new System.Windows.Forms.ComboBox();
             this.hypers = new System.Windows.Forms.NumericUpDown();
             this.hyperlabel = new System.Windows.Forms.Label();
             this.diff = new System.Windows.Forms.ComboBox();
@@ -32,31 +30,23 @@ namespace FastGH3
             this.importonly = new System.Windows.Forms.CheckBox();
             this.creditlink = new System.Windows.Forms.LinkLabel();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.scrshmode = new System.Windows.Forms.CheckBox();
-            this.nostatsonend = new System.Windows.Forms.CheckBox();
             this.setbgcolor = new System.Windows.Forms.Button();
             this.colorpanel = new System.Windows.Forms.Panel();
             this.speed = new System.Windows.Forms.NumericUpDown();
-            this.nofailviewer = new System.Windows.Forms.CheckBox();
-            this.vsyncswitch = new System.Windows.Forms.CheckBox();
             this.maxnotes = new System.Windows.Forms.NumericUpDown();
             this.part = new System.Windows.Forms.ComboBox();
             this.replaygame = new System.Windows.Forms.Button();
             this.pluginmanage = new System.Windows.Forms.Button();
-            this.songcaching = new System.Windows.Forms.CheckBox();
             this.viewsongcache = new System.Windows.Forms.Button();
-            this.verboselog = new System.Windows.Forms.CheckBox();
-            this.nostartupmsg = new System.Windows.Forms.CheckBox();
-            this.preserveLog = new System.Windows.Forms.CheckBox();
-            this.dbgmnu = new System.Windows.Forms.CheckBox();
-            this.keymode = new System.Windows.Forms.CheckBox();
             this.ctmpb = new System.Windows.Forms.Button();
+            this.tweaksbtn = new System.Windows.Forms.Button();
+            this.songtxtfmt_ = new System.Windows.Forms.Button();
+            this.res = new System.Windows.Forms.ComboBox();
             this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
             this.speedlabel = new System.Windows.Forms.Label();
             this.maxnoteslbl = new System.Windows.Forms.Label();
             this.instlabel = new System.Windows.Forms.Label();
-            this.miscsettings = new System.Windows.Forms.CheckedListBox();
-            this.nofailcb = new System.Windows.Forms.CheckBox();
+            this.tweaksList = new System.Windows.Forms.CheckedListBox();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
@@ -67,7 +57,7 @@ namespace FastGH3
             this.ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ok.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.ok.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ok.Location = new System.Drawing.Point(241, 255);
+            this.ok.Location = new System.Drawing.Point(244, 270);
             this.ok.Name = "ok";
             this.ok.Size = new System.Drawing.Size(29, 23);
             this.ok.TabIndex = 0;
@@ -85,18 +75,6 @@ namespace FastGH3
             this.reslabel.Size = new System.Drawing.Size(60, 13);
             this.reslabel.TabIndex = 1;
             this.reslabel.Text = "Resolution:";
-            // 
-            // res
-            // 
-            this.res.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.res.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.res.FormattingEnabled = true;
-            this.res.Location = new System.Drawing.Point(66, 3);
-            this.res.Name = "res";
-            this.res.Size = new System.Drawing.Size(84, 21);
-            this.res.TabIndex = 2;
-            this.tooltip.SetToolTip(this.res, "This allows you to change the window size of the game.");
-            this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
             // 
             // hypers
             // 
@@ -154,7 +132,7 @@ namespace FastGH3
             // 
             this.importonly.AutoSize = true;
             this.importonly.Enabled = false;
-            this.importonly.Location = new System.Drawing.Point(12, 314);
+            this.importonly.Location = new System.Drawing.Point(177, 217);
             this.importonly.Name = "importonly";
             this.importonly.Size = new System.Drawing.Size(103, 17);
             this.importonly.TabIndex = 7;
@@ -171,7 +149,7 @@ namespace FastGH3
             this.creditlink.AutoSize = true;
             this.creditlink.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.creditlink.LinkColor = System.Drawing.Color.Black;
-            this.creditlink.Location = new System.Drawing.Point(12, 268);
+            this.creditlink.Location = new System.Drawing.Point(12, 283);
             this.creditlink.Name = "creditlink";
             this.creditlink.Size = new System.Drawing.Size(39, 13);
             this.creditlink.TabIndex = 8;
@@ -194,37 +172,6 @@ namespace FastGH3
             this.tooltip.UseAnimation = false;
             this.tooltip.UseFading = false;
             this.tooltip.Popup += new System.Windows.Forms.PopupEventHandler(this.tooltip_Popup);
-            // 
-            // scrshmode
-            // 
-            this.scrshmode.AutoSize = true;
-            this.scrshmode.Enabled = false;
-            this.scrshmode.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.scrshmode.Location = new System.Drawing.Point(12, 361);
-            this.scrshmode.Name = "scrshmode";
-            this.scrshmode.Size = new System.Drawing.Size(115, 18);
-            this.scrshmode.TabIndex = 9;
-            this.scrshmode.Text = "Screenshot mode";
-            this.tooltip.SetToolTip(this.scrshmode, resources.GetString("scrshmode.ToolTip"));
-            this.scrshmode.UseVisualStyleBackColor = true;
-            this.scrshmode.Visible = false;
-            this.scrshmode.CheckedChanged += new System.EventHandler(this.scrshmode_CheckedChanged);
-            // 
-            // nostatsonend
-            // 
-            this.nostatsonend.AutoSize = true;
-            this.nostatsonend.Enabled = false;
-            this.nostatsonend.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.nostatsonend.Location = new System.Drawing.Point(15, 299);
-            this.nostatsonend.Name = "nostatsonend";
-            this.nostatsonend.Size = new System.Drawing.Size(107, 18);
-            this.nostatsonend.TabIndex = 10;
-            this.nostatsonend.Text = "No stats on end";
-            this.tooltip.SetToolTip(this.nostatsonend, "Won\'t display score after song is over.\r\nIt will instead close out the game.\r\nThi" +
-        "s won\'t be applied for Practice mode.");
-            this.nostatsonend.UseVisualStyleBackColor = true;
-            this.nostatsonend.Visible = false;
-            this.nostatsonend.CheckedChanged += new System.EventHandler(this.nostatsonend_CheckedChanged);
             // 
             // setbgcolor
             // 
@@ -278,35 +225,6 @@ namespace FastGH3
             0});
             this.speed.ValueChanged += new System.EventHandler(this.speed_ValueChanged);
             // 
-            // nofailviewer
-            // 
-            this.nofailviewer.AutoSize = true;
-            this.nofailviewer.Enabled = false;
-            this.nofailviewer.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.nofailviewer.Location = new System.Drawing.Point(8, 337);
-            this.nofailviewer.Name = "nofailviewer";
-            this.nofailviewer.Size = new System.Drawing.Size(122, 18);
-            this.nofailviewer.TabIndex = 16;
-            this.nofailviewer.Text = "No fail (viewercam)";
-            this.tooltip.SetToolTip(this.nofailviewer, "Alternative no fail mode. However, the \r\nRock Meter can go down but at the lowest" +
-        "\r\nhealth, the needle will stop and not change\r\nfor the rest of the song.");
-            this.nofailviewer.UseVisualStyleBackColor = true;
-            this.nofailviewer.Visible = false;
-            this.nofailviewer.CheckedChanged += new System.EventHandler(this.nofailviewer_CheckedChanged);
-            // 
-            // vsyncswitch
-            // 
-            this.vsyncswitch.AutoSize = true;
-            this.vsyncswitch.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.vsyncswitch.Location = new System.Drawing.Point(4, 162);
-            this.vsyncswitch.Name = "vsyncswitch";
-            this.vsyncswitch.Size = new System.Drawing.Size(99, 18);
-            this.vsyncswitch.TabIndex = 15;
-            this.vsyncswitch.Text = "Disable Vsync";
-            this.tooltip.SetToolTip(this.vsyncswitch, "Get unlimited FPS.");
-            this.vsyncswitch.UseVisualStyleBackColor = true;
-            this.vsyncswitch.CheckedChanged += new System.EventHandler(this.vsyncswitch_CheckedChanged);
-            // 
             // maxnotes
             // 
             this.maxnotes.Location = new System.Drawing.Point(208, 27);
@@ -357,114 +275,33 @@ namespace FastGH3
             // pluginmanage
             // 
             this.pluginmanage.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.pluginmanage.Location = new System.Drawing.Point(156, 138);
+            this.pluginmanage.Location = new System.Drawing.Point(4, 109);
             this.pluginmanage.Name = "pluginmanage";
-            this.pluginmanage.Size = new System.Drawing.Size(124, 23);
+            this.pluginmanage.Size = new System.Drawing.Size(87, 23);
             this.pluginmanage.TabIndex = 23;
             this.pluginmanage.Text = "Manage Plugins";
             this.tooltip.SetToolTip(this.pluginmanage, "Select what plugins should be loaded or disabled.");
             this.pluginmanage.UseVisualStyleBackColor = true;
             this.pluginmanage.Click += new System.EventHandler(this.pluginmanage_Click);
             // 
-            // songcaching
-            // 
-            this.songcaching.AutoSize = true;
-            this.songcaching.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.songcaching.Location = new System.Drawing.Point(4, 109);
-            this.songcaching.Name = "songcaching";
-            this.songcaching.Size = new System.Drawing.Size(99, 18);
-            this.songcaching.TabIndex = 24;
-            this.songcaching.Text = "Song Caching";
-            this.tooltip.SetToolTip(this.songcaching, "Toggle song caching. If enabled, any song that will be selected is cached for lat" +
-        "er play.");
-            this.songcaching.UseVisualStyleBackColor = true;
-            this.songcaching.CheckedChanged += new System.EventHandler(this.songcaching_CheckedChanged);
-            // 
             // viewsongcache
             // 
             this.viewsongcache.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.viewsongcache.Location = new System.Drawing.Point(156, 109);
+            this.viewsongcache.Location = new System.Drawing.Point(97, 109);
             this.viewsongcache.Name = "viewsongcache";
-            this.viewsongcache.Size = new System.Drawing.Size(124, 23);
+            this.viewsongcache.Size = new System.Drawing.Size(78, 23);
             this.viewsongcache.TabIndex = 25;
             this.viewsongcache.Text = "Song Cache";
             this.tooltip.SetToolTip(this.viewsongcache, "View song cache files.");
             this.viewsongcache.UseVisualStyleBackColor = true;
             this.viewsongcache.Click += new System.EventHandler(this.viewsongcache_Click);
             // 
-            // verboselog
-            // 
-            this.verboselog.AutoSize = true;
-            this.verboselog.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.verboselog.Location = new System.Drawing.Point(4, 127);
-            this.verboselog.Name = "verboselog";
-            this.verboselog.Size = new System.Drawing.Size(112, 18);
-            this.verboselog.TabIndex = 26;
-            this.verboselog.Text = "Verbose Logging";
-            this.tooltip.SetToolTip(this.verboselog, "Display EVERYTHING that happens during execution.");
-            this.verboselog.UseVisualStyleBackColor = true;
-            this.verboselog.CheckedChanged += new System.EventHandler(this.verboselog_CheckedChanged);
-            // 
-            // nostartupmsg
-            // 
-            this.nostartupmsg.AutoSize = true;
-            this.nostartupmsg.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.nostartupmsg.Location = new System.Drawing.Point(4, 144);
-            this.nostartupmsg.Name = "nostartupmsg";
-            this.nostartupmsg.Size = new System.Drawing.Size(126, 18);
-            this.nostartupmsg.TabIndex = 16;
-            this.nostartupmsg.Text = "No startup message";
-            this.tooltip.SetToolTip(this.nostartupmsg, "If turned on when opening the application by itself, the program will immediately" +
-        " ask for a file.");
-            this.nostartupmsg.UseVisualStyleBackColor = true;
-            this.nostartupmsg.CheckedChanged += new System.EventHandler(this.nostartupmsg_CheckedChanged);
-            // 
-            // preserveLog
-            // 
-            this.preserveLog.AutoSize = true;
-            this.preserveLog.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.preserveLog.Location = new System.Drawing.Point(4, 180);
-            this.preserveLog.Name = "preserveLog";
-            this.preserveLog.Size = new System.Drawing.Size(91, 18);
-            this.preserveLog.TabIndex = 10;
-            this.preserveLog.Text = "Preserve log";
-            this.tooltip.SetToolTip(this.preserveLog, "If enabled, the program will wait for a keypress to exit.");
-            this.preserveLog.UseVisualStyleBackColor = true;
-            this.preserveLog.CheckedChanged += new System.EventHandler(this.preservelog_CheckedChanged);
-            // 
-            // dbgmnu
-            // 
-            this.dbgmnu.AutoSize = true;
-            this.dbgmnu.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.dbgmnu.Location = new System.Drawing.Point(4, 198);
-            this.dbgmnu.Name = "dbgmnu";
-            this.dbgmnu.Size = new System.Drawing.Size(93, 18);
-            this.dbgmnu.TabIndex = 10;
-            this.dbgmnu.Text = "Debug menu";
-            this.tooltip.SetToolTip(this.dbgmnu, "Enable built-in debug menu.\r\nWARNING: Don\'t use venue-type functions.");
-            this.dbgmnu.UseVisualStyleBackColor = true;
-            this.dbgmnu.CheckedChanged += new System.EventHandler(this.dbgmnu_CheckedChanged);
-            // 
-            // keymode
-            // 
-            this.keymode.AutoSize = true;
-            this.keymode.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.keymode.Location = new System.Drawing.Point(4, 217);
-            this.keymode.Name = "keymode";
-            this.keymode.Size = new System.Drawing.Size(106, 18);
-            this.keymode.TabIndex = 10;
-            this.keymode.Text = "Keyboard mode";
-            this.tooltip.SetToolTip(this.keymode, "Enable to fix key input not working without going through certain menus, or detec" +
-        "ting a controller you don\'t want it to.\r\nMay require pressing green twice.");
-            this.keymode.UseVisualStyleBackColor = true;
-            this.keymode.CheckedChanged += new System.EventHandler(this.keymode_CheckedChanged);
-            // 
             // ctmpb
             // 
             this.ctmpb.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ctmpb.Location = new System.Drawing.Point(156, 167);
+            this.ctmpb.Location = new System.Drawing.Point(181, 109);
             this.ctmpb.Name = "ctmpb";
-            this.ctmpb.Size = new System.Drawing.Size(124, 23);
+            this.ctmpb.Size = new System.Drawing.Size(99, 23);
             this.ctmpb.TabIndex = 31;
             this.ctmpb.Text = "Clean Temp Files";
             this.tooltip.SetToolTip(this.ctmpb, "Clean files from downloading and extracting Song Packages.\r\nWarning: Reuse of the" +
@@ -472,6 +309,41 @@ namespace FastGH3
         "take a bit of time.");
             this.ctmpb.UseVisualStyleBackColor = true;
             this.ctmpb.Click += new System.EventHandler(this.ctmpb_Click);
+            // 
+            // tweaksbtn
+            // 
+            this.tweaksbtn.Location = new System.Drawing.Point(187, 231);
+            this.tweaksbtn.Name = "tweaksbtn";
+            this.tweaksbtn.Size = new System.Drawing.Size(99, 23);
+            this.tweaksbtn.TabIndex = 32;
+            this.tweaksbtn.Text = "Game Tweaks";
+            this.tooltip.SetToolTip(this.tweaksbtn, "More settings!");
+            this.tweaksbtn.UseVisualStyleBackColor = true;
+            this.tweaksbtn.Visible = false;
+            // 
+            // songtxtfmt_
+            // 
+            this.songtxtfmt_.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.songtxtfmt_.Location = new System.Drawing.Point(181, 138);
+            this.songtxtfmt_.Name = "songtxtfmt_";
+            this.songtxtfmt_.Size = new System.Drawing.Size(99, 23);
+            this.songtxtfmt_.TabIndex = 33;
+            this.songtxtfmt_.Text = "Song Text Format";
+            this.tooltip.SetToolTip(this.songtxtfmt_, "Change the format of currentsong.txt. Can be useful for streaming.");
+            this.songtxtfmt_.UseVisualStyleBackColor = true;
+            this.songtxtfmt_.Click += new System.EventHandler(this.songtxtfmt__Click);
+            // 
+            // res
+            // 
+            this.res.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.res.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.res.FormattingEnabled = true;
+            this.res.Location = new System.Drawing.Point(66, 3);
+            this.res.Name = "res";
+            this.res.Size = new System.Drawing.Size(84, 21);
+            this.res.TabIndex = 2;
+            this.tooltip.SetToolTip(this.res, "This allows you to change the window size of the game.");
+            this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
             // 
             // backgroundcolordiag
             // 
@@ -508,65 +380,52 @@ namespace FastGH3
             this.instlabel.TabIndex = 21;
             this.instlabel.Text = "Instrument:";
             // 
-            // miscsettings
+            // tweaksList
             // 
-            this.miscsettings.Enabled = false;
-            this.miscsettings.FormattingEnabled = true;
-            this.miscsettings.Items.AddRange(new object[] {
+            this.tweaksList.CheckOnClick = true;
+            this.tweaksList.FormattingEnabled = true;
+            this.tweaksList.IntegralHeight = false;
+            this.tweaksList.Items.AddRange(new object[] {
             "Song caching",
-            "No stats on end",
-            "Disable Vsync",
             "Verbose logging",
+            "Preserve log",
+            "Disable Vsync",
             "No startup message",
-            "Press start to play",
-            "Lefty flip"});
-            this.miscsettings.Location = new System.Drawing.Point(156, 270);
-            this.miscsettings.Name = "miscsettings";
-            this.miscsettings.Size = new System.Drawing.Size(127, 109);
-            this.miscsettings.TabIndex = 30;
-            this.miscsettings.Visible = false;
-            // 
-            // nofailcb
-            // 
-            this.nofailcb.AutoSize = true;
-            this.nofailcb.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.nofailcb.Location = new System.Drawing.Point(4, 237);
-            this.nofailcb.Name = "nofailcb";
-            this.nofailcb.Size = new System.Drawing.Size(62, 18);
-            this.nofailcb.TabIndex = 10;
-            this.nofailcb.Text = "No fail";
-            this.nofailcb.UseVisualStyleBackColor = true;
-            this.nofailcb.CheckedChanged += new System.EventHandler(this.nofail_CheckedChanged);
+            "Exit on song end",
+            "Keyboard mode",
+            "Debug menu",
+            "No intro",
+            "No particles",
+            "No fail",
+            "Background video"});
+            this.tweaksList.Location = new System.Drawing.Point(4, 138);
+            this.tweaksList.Name = "tweaksList";
+            this.tweaksList.Size = new System.Drawing.Size(171, 135);
+            this.tweaksList.TabIndex = 30;
+            this.tweaksList.ThreeDCheckBoxes = true;
+            this.tweaksList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.inputChanged);
+            this.tweaksList.SelectedIndexChanged += new System.EventHandler(this.updateTweakBoxes);
             // 
             // settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 290);
+            this.ClientSize = new System.Drawing.Size(285, 305);
+            this.Controls.Add(this.songtxtfmt_);
+            this.Controls.Add(this.tweaksbtn);
             this.Controls.Add(this.ctmpb);
-            this.Controls.Add(this.miscsettings);
-            this.Controls.Add(this.verboselog);
+            this.Controls.Add(this.tweaksList);
             this.Controls.Add(this.viewsongcache);
-            this.Controls.Add(this.songcaching);
             this.Controls.Add(this.pluginmanage);
             this.Controls.Add(this.part);
             this.Controls.Add(this.instlabel);
             this.Controls.Add(this.replaygame);
             this.Controls.Add(this.maxnotes);
             this.Controls.Add(this.maxnoteslbl);
-            this.Controls.Add(this.nostartupmsg);
-            this.Controls.Add(this.nofailviewer);
-            this.Controls.Add(this.vsyncswitch);
             this.Controls.Add(this.speed);
             this.Controls.Add(this.speedlabel);
             this.Controls.Add(this.colorpanel);
             this.Controls.Add(this.setbgcolor);
-            this.Controls.Add(this.nofailcb);
-            this.Controls.Add(this.keymode);
-            this.Controls.Add(this.dbgmnu);
-            this.Controls.Add(this.preserveLog);
-            this.Controls.Add(this.nostatsonend);
-            this.Controls.Add(this.scrshmode);
             this.Controls.Add(this.creditlink);
             this.Controls.Add(this.importonly);
             this.Controls.Add(this.diff);
@@ -603,7 +462,6 @@ namespace FastGH3
 
         private Button ok;
         private Label reslabel;
-        private ComboBox res;
         private NumericUpDown hypers;
         private Label hyperlabel;
         private ComboBox diff;
@@ -611,30 +469,22 @@ namespace FastGH3
         private CheckBox importonly;
         private LinkLabel creditlink;
         private ToolTip tooltip;
-        private CheckBox scrshmode;
-        private CheckBox nostatsonend;
         private ColorDialog backgroundcolordiag;
         private Button setbgcolor;
         private Panel colorpanel;
         private NumericUpDown speed;
         private Label speedlabel;
-        private CheckBox vsyncswitch;
-        private CheckBox nofailviewer;
         private Label maxnoteslbl;
         private NumericUpDown maxnotes;
         private Button replaygame;
         private Label instlabel;
         private ComboBox part;
         private Button pluginmanage;
-        private CheckBox songcaching;
         private Button viewsongcache;
-        private CheckBox verboselog;
-        private CheckedListBox miscsettings;
-        private CheckBox nostartupmsg;
-        private CheckBox preserveLog;
-        private CheckBox dbgmnu;
-        private CheckBox keymode;
-        private CheckBox nofailcb;
+        private CheckedListBox tweaksList;
         private Button ctmpb;
+        private Button tweaksbtn;
+        private Button songtxtfmt_;
+        private ComboBox res;
     }
 }

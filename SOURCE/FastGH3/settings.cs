@@ -34,9 +34,10 @@ namespace FastGH3
         private static QbFile userqb;//, bootqb;
         //private static QbItemStruct player1;
         private static QbItemQbKey p1diff, p2diff, p1part, p2part;
-        private static QbItemInteger hyperspeed, btncheats,
-            backcolrgb, viewmode, autostart, nofailv;
-        private static QbItemFloat speedf;
+        /*private static QbItemInteger hyperspeed, btncheats,
+            backcolrgb, viewmode, nofailv;*/
+        private static QbItemInteger backcolrgb, autostart;
+        //private static QbItemFloat speedf;
         private static QbKey[] diffCRCs = {
             QbKey.Create(0xB69D6568), QbKey.Create(0x398CBA48),
             QbKey.Create(0x3EEAE02D), QbKey.Create(0xB0E46CBD)
@@ -161,25 +162,22 @@ namespace FastGH3
             DialogResult = DialogResult.OK;
             InitializeComponent();
             SetForegroundWindow(Handle);
-            hyperspeed = (QbItemInteger)userqb.FindItem(QbKey.Create(0xFD6B13B4), false);
-            hypers.Value = hyperspeed.Values[0];
-            nofailv = (QbItemInteger)userqb.FindItem(QbKey.Create(0x3E5FD611), false);
-            nofailcb.Checked = nofailv.Values[0] == 1;
-            btncheats = (QbItemInteger)userqb.FindItem(QbKey.Create(0x2AF92804), false);
-            dbgmnu.Checked = btncheats.Values[0] == 1;
-            autostart = (QbItemInteger)userqb.FindItem(QbKey.Create(0x32025D94), false);
-            keymode.Checked = autostart.Values[0] == 0;
-            speedf = (QbItemFloat)userqb.FindItem(QbKey.Create(0x16D91BC1), false);
-            speed.Value = Convert.ToDecimal(speedf.Values[0] * 100);
             verboseline("Reading settings...");
-            scrshmode.Checked = ini.GetKeyValue("Misc","ScrshMode","0") != "0";
-            verboselog.Checked = verboselog2;
+            tweaksList.SetItemChecked((int)Tweaks.KeyboardMode, (int)getQBConfig(QbKey.Create("autolaunch_startnow"), 1) == 0);
+            hypers.Value = (int)getQBConfig(QbKey.Create("Cheat_Hyperspeed"), 0);
+            tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(QbKey.Create("disable_intro"), 0) == 1);
+            tweaksList.SetItemChecked((int)Tweaks.NoParticles, (int)getQBConfig(QbKey.Create("disable_particles"), 0) == 1);
+            tweaksList.SetItemChecked((int)Tweaks.NoFail, (int)getQBConfig(QbKey.Create("Cheat_NoFail"), 0) == 1);
+            tweaksList.SetItemChecked((int)Tweaks.DebugMenu, (int)getQBConfig(QbKey.Create("enable_button_cheats"), 0) == 1);
+            speed.Value = (decimal/*wtf*/)(float)getQBConfig(QbKey.Create("current_speedfactor"), 1.0f) * 100;
+            tweaksList.SetItemChecked((int)Tweaks.VerboseLog, verboselog2);
             backgroundcolordiag.Color = backcolor;
             colorpanel.BackColor = backcolor;
-            vsyncswitch.Checked = ini.GetKeyValue("Misc", "VSync", "1") == "0";
-            songcaching.Checked = ini.GetKeyValue("Misc", "SongCaching", "1") == "1";
-            nostartupmsg.Checked = ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1";
-            preserveLog.Checked = ini.GetKeyValue("Misc", "PreserveLog", "0") == "1";
+            tweaksList.SetItemChecked((int)Tweaks.DisableVsync, ini.GetKeyValue("Misc", "VSync", "1") == "0");
+            tweaksList.SetItemChecked((int)Tweaks.SongCaching, ini.GetKeyValue("Misc", "SongCaching", "1") == "1");
+            tweaksList.SetItemChecked((int)Tweaks.NoStartupMsg, ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1");
+            tweaksList.SetItemChecked((int)Tweaks.PreserveLog, ini.GetKeyValue("Misc", "PreserveLog", "0") == "1");
+            tweaksList.SetItemChecked((int)Tweaks.BkgdVideo, (int)getQBConfig(QbKey.Create("enable_video"), 0) == 1);
             foreach (Size sz in resz)
             {
                 res.Items.Add(sz.Width.ToString() + "x" + sz.Height.ToString());
@@ -222,6 +220,7 @@ namespace FastGH3
                     break;
                 case diffCRCs[3].Crc:
                     break;
+            // also looks redundant when i could use a loop maybe
             }*/
             disableEvents = false;
         }
@@ -231,21 +230,9 @@ namespace FastGH3
             if (!disableEvents)
             {
                 SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
                 p1diff.Values[0] = diffCRCs[difficulty];
                 p2diff.Values[0] = diffCRCs[difficulty];
                 saveQb();
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
                 ResumeLayout();
             }
         }
@@ -300,20 +287,8 @@ Aspyr            - Original game, images, sounds, copyright");
             if (!disableEvents)
             {
                 SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                hyperspeed.Values[0] = Convert.ToInt32(hypers.Value);
+                setQBConfig(QbKey.Create("Cheat_Hyperspeed"), Convert.ToInt32(hypers.Value));
                 saveQb();
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
                 ResumeLayout();
             }
         }
@@ -323,23 +298,10 @@ Aspyr            - Original game, images, sounds, copyright");
             if (backgroundcolordiag.ShowDialog() == DialogResult.OK)
             {
                 SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
                 backcolrgb.Values[0] = backgroundcolordiag.Color.R;
                 backcolrgb.Values[1] = backgroundcolordiag.Color.G;
                 backcolrgb.Values[2] = backgroundcolordiag.Color.B;
                 saveQb();
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-                ini.Save("settings.ini");
                 ResumeLayout();
                 colorpanel.BackColor = backgroundcolordiag.Color;
             }
@@ -364,39 +326,6 @@ Aspyr            - Original game, images, sounds, copyright");
         {
         }
 
-        private void scrshmode_CheckedChanged(object sender, EventArgs e)
-        {
-            if (disableEvents == false)
-            {
-                SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                viewmode = (QbItemInteger)userqb.FindItem(QbKey.Create("Cheat_NoFail"), false);
-                viewmode.Values[0] = scrshmode.Checked ? 1 : 0;
-                saveQb();
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-                ini.SetKeyValue("Misc", "ScrshMode", (scrshmode.Checked ? "1" : "0"));
-                ini.Save("settings.ini");
-                //File.WriteAllText(folder + "\\CONFIGS\\scrshmode", scrshmode.Checked.ToString());
-                ResumeLayout();
-            }
-        }
-
-        private void nostatsonend_CheckedChanged(object sender, EventArgs e)
-        {
-            ini.SetKeyValue("Misc", "NoStatsOnEnd", (nostatsonend.Checked ? "1" : "0"));
-            ini.Save("settings.ini");
-        }
-
         private void Colorpanel_MouseDoubleClick()
         {
             new colorpreview(colorpanel.BackColor).ShowDialog();
@@ -405,24 +334,6 @@ Aspyr            - Original game, images, sounds, copyright");
         private void colorpanel_Click(object sender, EventArgs e)
         {
             new colorpreview(colorpanel.BackColor).ShowDialog();
-        }
-
-        private void vsyncswitch_CheckedChanged(object sender, EventArgs e)
-        {
-            ini.SetKeyValue("Misc", "VSync", (vsyncswitch.Checked ? "0" : "1"));
-            ini.Save("settings.ini");
-        }
-
-        private void nofailviewer_CheckedChanged(object sender, EventArgs e)
-        {
-            ini.SetKeyValue("Misc", "NofailViewer", (nofailviewer.Checked ? "1" : "0"));
-            ini.Save("settings.ini");
-        }
-
-        private void nostartupmsg_CheckedChanged(object sender, EventArgs e)
-        {
-            ini.SetKeyValue("Misc", "NoStartupMsg", (nostartupmsg.Checked ? "1" : "0"));
-            ini.Save("settings.ini");
         }
 
         private void ctmpb_Click(object sender, EventArgs e)
@@ -483,104 +394,6 @@ Aspyr            - Original game, images, sounds, copyright");
             }
         }
 
-        private void keymode_CheckedChanged(object sender, EventArgs e)
-        {
-            if (disableEvents == false)
-            {
-                SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                autostart.Values[0] = keymode.Checked ? 0 : 1;
-                saveQb();
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-            }
-        }
-
-        private void nofail_CheckedChanged(object sender, EventArgs e)
-        {
-            if (disableEvents == false)
-            {
-                SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                nofailv.Values[0] = nofailcb.Checked ? 1 : 0;
-                int[] zoffs = { 20, 21 };
-                int _invert = nofailcb.Checked ? 1 : -1;
-                QbItemInteger thiscodesucks =
-                (QbItemInteger)
-                    (userqb.FindItem(QbKey.Create("Nofailvis"), false));
-                QbItemInteger thiscodesucks2 =
-                (QbItemInteger)
-                    (userqb.FindItem(QbKey.Create("Nofailvis2"), false));
-                thiscodesucks.Values[0]  = zoffs[0] * _invert;
-                thiscodesucks2.Values[0] = zoffs[1] * _invert;/**/
-                saveQb();
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-            }
-        }
-
-        private void dbgmnu_CheckedChanged(object sender, EventArgs e)
-        {
-            if (disableEvents == false)
-            {
-                SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                btncheats.Values[0] = dbgmnu.Checked ? 1 : 0;
-                saveQb();
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-            }
-        }
-
-        private void speed_ValueChanged(object sender, EventArgs e)
-        {
-            if (disableEvents == false)
-            {
-                SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                speedf.Values[0] = float.Parse((speed.Value / 100).ToString());
-                saveQb();
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-            }
-        }
-
         private void pluginmanage_Click(object sender, EventArgs e)
         {
             new dllman().ShowDialog();
@@ -592,16 +405,195 @@ Aspyr            - Original game, images, sounds, copyright");
             new songcache().ShowDialog();
         }
 
-        private void songcaching_CheckedChanged(object sender, EventArgs e)
+        void ToggleINIItem(string sect, string key, bool toggle)
         {
-            ini.SetKeyValue("Misc", "SongCaching", (songcaching.Checked ? "1" : "0"));
+            ini.SetKeyValue(sect, key, (toggle ? "1" : "0"));
             ini.Save("settings.ini");
         }
 
-        private void verboselog_CheckedChanged(object sender, EventArgs e)
+        string miscSection = "Misc";
+
+        private void songtxtfmt__Click(object sender, EventArgs e)
         {
-            ini.SetKeyValue("Misc", "VerboseLog", (verboselog.Checked ? "1" : "0"));
-            ini.Save("settings.ini");
+            songtxtfmt formatInterface = new songtxtfmt(ini.GetKeyValue(miscSection, "SongtextFormat", "%a - %t").Replace("\\n", Environment.NewLine));
+            formatInterface.ShowDialog();
+            if (formatInterface.DialogResult == DialogResult.OK)
+            {
+                ini.SetKeyValue(miscSection, "SongtextFormat", formatInterface.format.Replace(Environment.NewLine, "\\n"));
+                ini.Save("settings.ini");
+            }
+        }
+
+        private void updateTweakBoxes(object sender, EventArgs e)
+        {
+        }
+
+        public enum Tweaks
+        {
+            SongCaching,
+            VerboseLog,
+            PreserveLog,
+            DisableVsync,
+            NoStartupMsg,
+            ExitOnSongEnd,
+            KeyboardMode,
+            DebugMenu,
+            NoIntro,
+            NoParticles,
+            NoFail,
+            //Lefty,
+            BkgdVideo,
+        }
+
+        private void inputChanged(object sender, ItemCheckEventArgs e)
+        {
+            switch ((Tweaks)e.Index)
+            {
+                // stupid control won't let me do it more efficiently
+                case Tweaks.SongCaching:
+                    ToggleINIItem(miscSection, "SongCaching", e.NewValue == CheckState.Checked);
+                    break;
+                case Tweaks.VerboseLog:
+                    ToggleINIItem(miscSection, "VerboseLog", e.NewValue == CheckState.Checked);
+                    break;
+                case Tweaks.PreserveLog:
+                    ToggleINIItem(miscSection, "PreserveLog", e.NewValue == CheckState.Checked);
+                    break;
+                case Tweaks.DisableVsync:
+                    ToggleINIItem(miscSection, "VSync", e.NewValue == CheckState.Unchecked);
+                    break;
+                case Tweaks.NoStartupMsg:
+                    ToggleINIItem(miscSection, "NoStartupMsg", e.NewValue == CheckState.Checked);
+                    break;
+                case Tweaks.ExitOnSongEnd:
+                    setQBConfig(QbKey.Create("exit_on_song_end"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    break;
+                case Tweaks.KeyboardMode:
+                    setQBConfig(QbKey.Create("autolaunch_startnow"), e.NewValue == CheckState.Checked ? 0 : 1);
+                    break;
+                case Tweaks.DebugMenu:
+                    setQBConfig(QbKey.Create("enable_button_cheats"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    break;
+                case Tweaks.NoIntro:
+                    setQBConfig(QbKey.Create("disable_intro"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    break;
+                case Tweaks.NoParticles:
+                    setQBConfig(QbKey.Create("disable_particles"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    break;
+                case Tweaks.NoFail:
+                    setQBConfig(QbKey.Create("Cheat_NoFail"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    int[] zoffs = { 20, 21 };
+                    int _invert = (e.NewValue == CheckState.Checked ? 1 : -1);
+                    QbItemInteger thiscodesucks =
+                    (QbItemInteger)
+                        (userqb.FindItem(QbKey.Create("Nofailvis"), false));
+                    QbItemInteger thiscodesucks2 =
+                    (QbItemInteger)
+                        (userqb.FindItem(QbKey.Create("Nofailvis2"), false));
+                    thiscodesucks.Values[0] = zoffs[0] * _invert;
+                    thiscodesucks2.Values[0] = zoffs[1] * _invert;
+                    saveQb();
+                    break;
+                //case Tweaks.Lefty:
+                    //setQBConfig(QbKey.Create("p1_lefty"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    //break;
+                case Tweaks.BkgdVideo:
+                    setQBConfig(QbKey.Create("enable_video"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    break;
+            }
+        }
+
+        object getQBConfig(QbKey key, object def)
+        {
+            // find or create value
+            object _item = (userqb.FindItem(key, false));
+            if (_item != null)
+            {
+                switch ((_item as QbItemBase).QbItemType)
+                {
+                    case QbItemType.SectionInteger:
+                        return (_item as QbItemInteger).Values[0];
+                    case QbItemType.SectionFloat:
+                        return (_item as QbItemFloat).Values[0];
+                    case QbItemType.SectionString:
+                        return (_item as QbItemString).Strings[0];
+                    case QbItemType.SectionQbKey:
+                        return (_item as QbItemQbKey).Values[0];
+                }
+            }
+            return def;
+        }
+
+        void setQBConfig(QbKey key, object value)
+        {
+            // find or create value
+            object _item = (userqb.FindItem(key, false));
+            Type type = value.GetType();
+            if (_item == null)
+            {
+                switch (Type.GetTypeCode(type))
+                {
+                    case TypeCode.Int32:
+                        {
+                            QbItemInteger item = new QbItemInteger(userqb);
+                            item.Create(QbItemType.SectionInteger, 1); // <-- braindead parameter*
+                            item.ItemQbKey = key;
+                            userqb.AddItem(item);
+                        }
+                        break;
+                    case TypeCode.Single:
+                    case TypeCode.Double:
+                        {
+                            QbItemFloat item = new QbItemFloat(userqb);
+                            item.Create(QbItemType.SectionFloat); // *
+                            item.ItemQbKey = key;
+                            userqb.AddItem(item);
+                        }
+                        break;
+                    case TypeCode.String:
+                        {
+                            QbItemString item = new QbItemString(userqb);
+                            item.Create(QbItemType.SectionString); // *
+                            item.ItemQbKey = key;
+                            userqb.AddItem(item);
+                        }
+                        break;
+                }
+                if (value is QbKey)
+                {
+                    QbItemQbKey item = new QbItemQbKey(userqb);
+                    item.Create(QbItemType.SectionQbKey); // *
+                    item.ItemQbKey = key;
+                    userqb.AddItem(item);
+                }
+            }
+            _item = userqb.FindItem(key, false); // weird
+            try
+            {
+                switch (Type.GetTypeCode(type))
+                {
+                    case TypeCode.Int32:
+                        (_item as QbItemInteger).Values[0] = (int)value;
+                        break;
+                    case TypeCode.Single:
+                    case TypeCode.Double:
+                        (_item as QbItemFloat).Values[0] = (float)value;
+                        break;
+                    case TypeCode.String:
+                        (_item as QbItemString).Strings[0] = (string)value;
+                        break;
+                }
+                if (value is QbKey)
+                {
+                    (_item as QbItemQbKey).Values[0] = (QbKey)value;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to set user QB value.");
+                Console.WriteLine(ex);
+            }
+            saveQb();
         }
 
         private void maxnotes_ValueChanged(object sender, EventArgs e)
@@ -624,6 +616,13 @@ Aspyr            - Original game, images, sounds, copyright");
             }
         }
 
+        private void speed_ValueChanged(object sender, EventArgs e)
+        {
+            SuspendLayout();
+            setQBConfig(QbKey.Create("current_speedfactor"), float.Parse((speed.Value / 100).ToString()));
+            ResumeLayout();
+        }
+
         private void replaygame_Click(object sender, EventArgs e)
         {
             Process gh3 = new Process();
@@ -634,32 +633,11 @@ Aspyr            - Original game, images, sounds, copyright");
 
         private void part_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (disableEvents == false)
-            {
-                SuspendLayout();
-                hypers.Enabled = false;
-                diff.Enabled = false;
-                setbgcolor.Enabled = false;
-                scrshmode.Enabled = false;
-                nostatsonend.Enabled = false;
-                nofailcb.Enabled = false;
-                p1part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_part"), false);
-                p1part.Values[0] = partCRCs[part.SelectedIndex];
-                saveQb();
-                filesafe = false;
-                hypers.Enabled = true;
-                diff.Enabled = true;
-                setbgcolor.Enabled = true;
-                scrshmode.Enabled = true;
-                nostatsonend.Enabled = true;
-                nofailcb.Enabled = true;
-            }
-        }
-        
-        void preservelog_CheckedChanged(object sender, EventArgs e)
-        {
-            ini.SetKeyValue("Misc", "PreserveLog", (preserveLog.Checked ? "1" : "0"));
-            ini.Save("settings.ini");
+            SuspendLayout();
+            p1part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_part"), false);
+            p1part.Values[0] = partCRCs[part.SelectedIndex];
+            saveQb();
+            ResumeLayout();
         }
     }
 }
