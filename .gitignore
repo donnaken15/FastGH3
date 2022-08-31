@@ -53,3 +53,5 @@ DATA/PAK/tmp.pak.xen
 PLUGINS/QDBhook.dll
 \!*
 .vs/
+launcher.txt
+__pack.bat
