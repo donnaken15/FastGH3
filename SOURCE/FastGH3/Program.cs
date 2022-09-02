@@ -1076,6 +1076,46 @@ namespace FastGH3
 
                             int dd = 0;
                             int ii = 0;
+
+                            int boss_death_time = -1;
+
+                            QbItemArray array_scripts = new QbItemArray(songdata);
+                            array_scripts.Create(QbItemType.SectionArray);
+                            QbItemStructArray array_scripts_array = new QbItemStructArray(songdata);
+                            array_scripts.ItemQbKey = QbKey.Create("fastgh3_scripts");
+                            array_scripts_array.Create(QbItemType.ArrayStruct);
+                            List<QbItemStruct> scripts = new List<QbItemStruct>();
+                            foreach (EventsSectionEntry e in chart.Events)
+                            {
+                                if (e.TextValue.StartsWith("section ") ||
+                                    // looks a little redundant but also capitalization
+                                    // WELL JUST USE TOLOWER
+                                    QbKey.Create(e.TextValue) == QbKey.Create("end") ||
+                                    QbKey.Create(e.TextValue) == QbKey.Create("h") ||
+                                    QbKey.Create(e.TextValue) == QbKey.Create("*"))
+                                    continue;
+                                verboseline("Found event: " + e.TextValue);
+                                QbItemStruct newScript = new QbItemStruct(songdata);
+                                newScript.Create(QbItemType.StructHeader);
+                                QbItemInteger time = new QbItemInteger(songdata);
+                                time.Create(QbItemType.StructItemInteger, 1);
+                                QbItemQbKey scr = new QbItemQbKey(songdata);
+                                scr.Create(QbItemType.StructItemQbKey);
+                                time.ItemQbKey = QbKey.Create("time");
+                                time.Values[0] = (int)(OT.GetTime(e.Offset) * 1000);
+                                scr.ItemQbKey = QbKey.Create("scr");
+                                if (scr.ItemQbKey == QbKey.Create("boss_battle_begin_deathlick"))
+                                    boss_death_time = time.Values[0];
+                                scr.Values[0] = QbKey.Create(e.TextValue);
+                                QbItemStruct _params = new QbItemStruct(songdata);
+                                _params.Create(QbItemType.StructItemStruct);
+                                _params.ItemQbKey = QbKey.Create("params");
+                                newScript.AddItem(time);
+                                newScript.AddItem(scr);
+                                newScript.AddItem(_params);
+                                scripts.Add(newScript);
+                                //array_scripts_array.AddItem(newScript);
+                            }
                             // TODO: stringpointer for lower difficulties to redirect to
                             // least difficult chart if they aren't authored
                             //
@@ -1084,6 +1124,7 @@ namespace FastGH3
                             // and so space is saved from having dupe note tracks
                             //
                             // maybe also for arrays that don't have anything
+                            string[] partNames = { "guitar", "rhythm", "guitarcoop", "rhythmcoop" };
                             foreach (string i in TrackInsts)
                             {
                                 dd = 0;
@@ -1112,9 +1153,55 @@ namespace FastGH3
                                         }
                                         catch
                                         {
+                                            verboseline("Error in parsing notes for " + d + i);
                                             song_notes[ii][dd].Create(QbItemType.ArrayInteger, 3);
                                             for (int j = 0; j < 3; j++)
                                                 song_notes[ii][dd].Values[j] = 0;
+                                        }
+                                        try
+                                        {
+                                            foreach (Note e in chart.NoteTracks[d + i])
+                                            {
+                                                if ((e.Type != NoteType.Event ||
+                                                    QbKey.Create(e.EventName) == QbKey.Create("H") ||/* <--\ */
+                                                    QbKey.Create(e.EventName) == QbKey.Create("*"))/*a note to self for forcing*/
+                                                    && dd == 3 /*bad*/)
+                                                    // ALSO * IN A QBKEY LOL
+                                                    continue;
+                                                verboseline("Found event: " + e.EventName);
+                                                QbItemStruct newScript = new QbItemStruct(songdata);
+                                                newScript.Create(QbItemType.StructHeader);
+                                                QbItemInteger time = new QbItemInteger(songdata);
+                                                time.Create(QbItemType.StructItemInteger, 1);
+                                                QbItemQbKey scr = new QbItemQbKey(songdata);
+                                                scr.Create(QbItemType.StructItemQbKey);
+                                                time.ItemQbKey = QbKey.Create("time");
+                                                time.Values[0] = (int)(OT.GetTime(e.Offset)*1000);
+                                                scr.ItemQbKey = QbKey.Create("scr");
+                                                scr.Values[0] = QbKey.Create(e.EventName);
+                                                QbItemStruct _params = new QbItemStruct(songdata);
+                                                _params.Create(QbItemType.StructItemStruct);
+                                                _params.ItemQbKey = QbKey.Create("params");
+                                                if ((QbKey.Create(e.EventName) == QbKey.Create("solo") ||
+                                                    QbKey.Create(e.EventName) == QbKey.Create("soloend")) && ii != 0)
+                                                {
+                                                    QbItemQbKey part = new QbItemQbKey(songdata);
+                                                    part.Create(QbItemType.StructItemQbKey);
+                                                    part.ItemQbKey = QbKey.Create("part");
+                                                    part.Values[0] = QbKey.Create(partNames[ii]);
+                                                    _params.AddItem(part);
+                                                    // is guitarcoop actually a valid (player_status) part?
+                                                }
+                                                newScript.AddItem(time);
+                                                newScript.AddItem(scr);
+                                                newScript.AddItem(_params);
+                                                scripts.Add(newScript);
+                                                //array_scripts_array.AddItem(newScript);
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            verboseline("Error in parsing solos for " + d + i);
                                         }
                                     }
                                     else
@@ -1148,7 +1235,10 @@ namespace FastGH3
                                 settings.Save(folder + "settings.ini");
                                 Environment.Exit(0);
                             }
-                            
+                            scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2) {
+                                //     autismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautism
+                                return (c1.FindItem(QbKey.Create("time"), false) as QbItemInteger).Values[0].CompareTo((c2.FindItem(QbKey.Create("time"), false) as QbItemInteger).Values[0]);
+                            });
                             verboseline("Adding note arrays to QB.");
                             /*for (int d = 0; d < song_notes_container.Length; d++)
                             {
@@ -1678,6 +1768,14 @@ namespace FastGH3
                             {
                                 songdata.AddItem(misc[i]);
                                 misc[i].AddItem(misc2[i]);
+                            }
+                            verboseline("Adding scripts array to QB.");
+                            songdata.AddItem(array_scripts);
+                            array_scripts.AddItem(array_scripts_array);
+                            for (int i = 0; i < scripts.Count; i++)
+                            {
+                                //verboseline("test: "+i);
+                                array_scripts_array.AddItem(scripts[i]);
                             }
                             IniFile songini = new IniFile();
                             if (File.Exists("song.ini"))

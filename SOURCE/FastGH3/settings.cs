@@ -129,6 +129,7 @@ namespace FastGH3
             qbedit.ReplaceFile("config.qb", userqb);
         }
 
+        bool stupid = true;
         public settings()
         {
             if (File.Exists("settings.ini"))
@@ -166,7 +167,26 @@ namespace FastGH3
             tweaksList.SetItemChecked((int)Tweaks.KeyboardMode, (int)getQBConfig(QbKey.Create("autolaunch_startnow"), 1) == 0);
             hypers.Value = (int)getQBConfig(QbKey.Create("Cheat_Hyperspeed"), 0);
             tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(QbKey.Create("disable_intro"), 0) == 1);
-            tweaksList.SetItemChecked((int)Tweaks.NoParticles, (int)getQBConfig(QbKey.Create("disable_particles"), 0) == 1);
+            {
+                int disable_particles = (int)getQBConfig(QbKey.Create("disable_particles"), 0);
+                stupid = false;
+                CheckState state = CheckState.Unchecked;
+                switch (disable_particles)
+                {
+                    case 0:
+                        state = CheckState.Unchecked;
+                        break;
+                    case 1:
+                        state = CheckState.Indeterminate;
+                        break;
+                    default:
+                    case 2:
+                        state = CheckState.Checked;
+                        break;
+                }
+                tweaksList.SetItemCheckState((int)Tweaks.NoParticles, state);
+                stupid = true;
+            }
             tweaksList.SetItemChecked((int)Tweaks.NoFail, (int)getQBConfig(QbKey.Create("Cheat_NoFail"), 0) == 1);
             tweaksList.SetItemChecked((int)Tweaks.DebugMenu, (int)getQBConfig(QbKey.Create("enable_button_cheats"), 0) == 1);
             speed.Value = (decimal/*wtf*/)(float)getQBConfig(QbKey.Create("current_speedfactor"), 1.0f) * 100;
@@ -447,6 +467,8 @@ Aspyr            - Original game, images, sounds, copyright");
 
         private void inputChanged(object sender, ItemCheckEventArgs e)
         {
+            if (!stupid)
+                return;
             switch ((Tweaks)e.Index)
             {
                 // stupid control won't let me do it more efficiently
@@ -478,7 +500,27 @@ Aspyr            - Original game, images, sounds, copyright");
                     setQBConfig(QbKey.Create("disable_intro"), e.NewValue == CheckState.Checked ? 1 : 0);
                     break;
                 case Tweaks.NoParticles:
-                    setQBConfig(QbKey.Create("disable_particles"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    int disable_particles = 0;
+                    switch (e.CurrentValue)
+                    {
+                        case CheckState.Unchecked:
+                            e.NewValue = CheckState.Indeterminate;
+                            disable_particles = 1;
+                            // minimal particles
+                            break;
+                        case CheckState.Indeterminate:
+                            e.NewValue = CheckState.Checked;
+                            disable_particles = 2;
+                            // disabled particles
+                            break;
+                        case CheckState.Checked:
+                            e.NewValue = CheckState.Unchecked;
+                            disable_particles = 0;
+                            // all particles
+                            break;
+                            // HEY LOOK IT'S MINECRAFT!!11!!!1!
+                    }
+                    setQBConfig(QbKey.Create("disable_particles"), disable_particles);
                     break;
                 case Tweaks.NoFail:
                     setQBConfig(QbKey.Create("Cheat_NoFail"), e.NewValue == CheckState.Checked ? 1 : 0);
