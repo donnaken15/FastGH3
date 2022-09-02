@@ -7,6 +7,9 @@ if (*game_mode == p2_battle)
 	return;
 }
 
+// wait for window for last note
+//wait(*check_time_late,seconds);
+
 i = 1;
 repeat(*current_num_players)
 {

@@ -6,9 +6,10 @@ FormatText(checksumname=solotxt, 'solotxt%d', d = %player);
 FormatText(checksumName=lsh_p, 'last_solo_hits_p%d', d = %player);
 FormatText(checksumName=lst_p, 'last_solo_total_p%d', d = %player);
 if (screenelementexists({id: %solotxt})) {
-	num = ((100 / *%lsh_p) * *%lst_p);
+	num = ((100.0 / *%lsh_p) * *%lst_p);
 	scale = (0.8 + (%num * 100.0 * 2));
-	FormatText(textname=text, '%d\\%', d = %num);
+	MathFloor(%num);
+	FormatText(textname=text, '%d\\%', d = %floor);
 	SetScreenElementProps(
 		id = %solotxt,
 		text = %text

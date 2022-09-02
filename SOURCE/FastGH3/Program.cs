@@ -1102,7 +1102,7 @@ namespace FastGH3
                                 QbItemQbKey scr = new QbItemQbKey(songdata);
                                 scr.Create(QbItemType.StructItemQbKey);
                                 time.ItemQbKey = QbKey.Create("time");
-                                time.Values[0] = (int)(OT.GetTime(e.Offset) * 1000);
+                                time.Values[0] = (int)Math.Floor(OT.GetTime(e.Offset) * 1000);
                                 scr.ItemQbKey = QbKey.Create("scr");
                                 if (scr.ItemQbKey == QbKey.Create("boss_battle_begin_deathlick"))
                                     boss_death_time = time.Values[0];
@@ -1176,7 +1176,7 @@ namespace FastGH3
                                                 QbItemQbKey scr = new QbItemQbKey(songdata);
                                                 scr.Create(QbItemType.StructItemQbKey);
                                                 time.ItemQbKey = QbKey.Create("time");
-                                                time.Values[0] = (int)(OT.GetTime(e.Offset)*1000);
+                                                time.Values[0] = (int)Math.Floor(OT.GetTime(e.Offset)*1000);
                                                 scr.ItemQbKey = QbKey.Create("scr");
                                                 scr.Values[0] = QbKey.Create(e.EventName);
                                                 QbItemStruct _params = new QbItemStruct(songdata);
@@ -1353,8 +1353,8 @@ namespace FastGH3
                                                 {
                                                     starTmp = new QbItemInteger(songdata);
                                                     starTmp.Create(QbItemType.ArrayInteger, 3);
-                                                    starTmp.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
-                                                    starTmp.Values[1] = (int)Math.Round((OT.GetTime(a.Offset + a.Length) * 1000)) - starTmp.Values[0];
+                                                    starTmp.Values[0] = (int)Math.Floor(OT.GetTime(a.Offset) * 1000) + delay;
+                                                    starTmp.Values[1] = (int)Math.Floor((OT.GetTime(a.Offset + a.Length) * 1000)) - starTmp.Values[0];
                                                     starTmp.Values[2] = spPnc[spPnc2];
                                                     song_stars_container[ii][dd].AddItem(starTmp);
                                                     spPnc2++;
@@ -1669,8 +1669,8 @@ namespace FastGH3
                             }
                             for (int i = 0; i < timesigcount; i++)
                             {
-                                verboseline("Setting TS #" + (i).ToString() + " values (1/3) (" + Convert.ToInt32(Math.Round(OT.GetTime(ts[i].Offset) * 1000) + delay) + ")...");
-                                timesig[i].Values[0] = Convert.ToInt32(Math.Round(OT.GetTime(ts[i].Offset) * 1000) + delay);
+                                verboseline("Setting TS #" + (i).ToString() + " values (1/3) (" + (int)(Math.Floor(OT.GetTime(ts[i].Offset) * 1000) + delay) + ")...");
+                                timesig[i].Values[0] = (int)(Math.Floor(OT.GetTime(ts[i].Offset) * 1000) + delay);
                                 verboseline("Setting TS #" + (i).ToString() + " values (2/3) (" + Convert.ToInt32(ts[i].TimeSignature) + ")...");
                                 timesig[i].Values[1] = Convert.ToInt32(ts[i].TimeSignature);
                                 verboseline("Setting TS #" + (i).ToString() + " values (3/3) (" + 4 + ")...");
@@ -1689,7 +1689,7 @@ namespace FastGH3
                             List<int> msrs = new List<int>();
                             for (int i = 0; OT.GetTime(i - chart.Resolution) < ((float)(endtime) / 1000); i += chart.Resolution)
                             {
-                                msrs.Add(Convert.ToInt32(OT.GetTime(i) * 1000));
+                                msrs.Add(Convert.ToInt32(Math.Floor(OT.GetTime(i) * 1000)));
                             }
                             {
                                 fretbars.Create(QbItemType.ArrayInteger, msrs.Count);
@@ -1731,7 +1731,7 @@ namespace FastGH3
                                 markertimes[i].Create(QbItemType.StructItemInteger, 1);
                                 markertimes[i].ItemQbKey = QbKey.Create(0x906B67BA);
                                 verbose(mrkrs[i].Offset + delay);
-                                markertimes[i].Values[0] = Convert.ToInt32(Math.Round(OT.GetTime(mrkrs[i].Offset) * 1000) + delay);
+                                markertimes[i].Values[0] = (int)(Math.Floor(OT.GetTime(mrkrs[i].Offset) * 1000) + delay);
                                 verbose(", name = ");
                                 markernames[i] = new QbItemString(songdata);
                                 markernames[i].Create(QbItemType.StructItemString);

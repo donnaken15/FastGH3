@@ -2,7 +2,9 @@ script({
 	int player = 1;
 }) {
 
-num = 0; // just set it raw idot '0%'
+FormatText(checksumName=lsh_p, 'last_solo_hits_p%d', d = %player);
+FormatText(checksumName=lst_p, 'last_solo_total_p%d', d = %player);
+num = ((100 / *%lsh_p) * *%lst_p);
 FormatText(textname=text, '%d\\%', d = %num);
 FormatText(checksumname=solotxt, 'solotxt%d', d = %player);
 FormatText(checksumname=gemcont, 'gem_containerp%d', d = %player);
@@ -15,14 +17,12 @@ createscreenelement({
 	parent: %gemcont,
 	id: %solotxt,
 	font: fontgrid_title_gh3,
-	scale: 0.9,
+	scale: 0.8,
 	rgba: [255,255,255,255],
 	text: %text,
 	just: [center, center],
 	z_priority: 20,
-    pos: (640.0, 296.0)//,
-	//shadow_offs: (6.0, 6.0),
-	//shadow_rgba: [0,0,0,255]
+    pos: (640.0, 296.0)
 });
 
 }
