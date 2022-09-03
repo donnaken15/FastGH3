@@ -443,11 +443,16 @@ namespace FastGH3
                         }
                         if (writefile && launcherlog != null)
                             launcherlog.Close();
-                    skipToGame:
+                        skipToGame:
                         // download FSP --> open and extract FSP --> convert song --> game
                         // FastGH3.exe  --> FastGH3.exe          --> FastGH3.exe  --> game.exe
                         // :P
+                        GC.Collect();
                         Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
+                        if (writefile && launcherlog != null)
+                            launcherlog.Close();
+                        // "already running" >:(
+                        Environment.Exit(0);
                     }
                     catch (Exception ex)
                     {

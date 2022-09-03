@@ -132,6 +132,7 @@ namespace FastGH3
         bool stupid = true;
         public settings()
         {
+            Console.SetWindowSize(36,24);
             if (File.Exists("settings.ini"))
                 ini.Load("settings.ini");
             if (ini.GetSection("Player") == null)

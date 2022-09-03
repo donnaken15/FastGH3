@@ -7,15 +7,13 @@ if (*game_mode == p2_battle)
 	return;
 }
 
-// wait for window for last note
-//wait(*check_time_late,seconds);
-
 i = 1;
 repeat(*current_num_players)
 {
 	FormatText(checksumName=player_status, 'player%d_status', d = %i);
 	if (%part == (*%player_status.part))
 	{
+		solo_reset(%i);
 		if (%i == 1 && *solo_active_p1 == 1)
 		{
 			change(solo_active_p1 = 0);

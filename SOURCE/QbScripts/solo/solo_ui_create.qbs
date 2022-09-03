@@ -8,10 +8,7 @@ num = ((100 / *%lsh_p) * *%lst_p);
 FormatText(textname=text, '%d\\%', d = %num);
 FormatText(checksumname=solotxt, 'solotxt%d', d = %player);
 FormatText(checksumname=gemcont, 'gem_containerp%d', d = %player);
-if (screenelementexists({id: %solotxt})) {
-	destroyscreenelement({id: %solotxt});
-	KillSpawnedScript(name=solo_ui_end);
-}
+solo_reset(%player);
 createscreenelement({
 	type: textelement,
 	parent: %gemcont,
