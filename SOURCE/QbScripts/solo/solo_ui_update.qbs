@@ -5,6 +5,7 @@ script({
 FormatText(checksumname=solotxt, 'solotxt%d', d = %player);
 FormatText(checksumName=lsh_p, 'last_solo_hits_p%d', d = %player);
 FormatText(checksumName=lst_p, 'last_solo_total_p%d', d = %player);
+FormatText(checksumName=lsi_p, 'last_solo_index_p%d', d = %player);
 if (screenelementexists({id: %solotxt})) {
 	scale = (0.8 + (%num * 100.0 * 2));
 	if (*solo_display_type == 0)
@@ -15,9 +16,12 @@ if (screenelementexists({id: %solotxt})) {
 	}
 	else
 	{
+		// debug purposes or seeing how many notes we're hit of how many in the solo or what the current note is
+		// yes perfect very explanation yes yeah whoo
 		fractional = (*%lsh_p);
 		denum = (*%lst_p);
-		FormatText(textname=text, '%d / %e', d = %fractional, e = %denum);
+		index = (*%lsi_p);
+		FormatText(textname=text, '%d / %e, %f / %e', d = %fractional, e = %denum, f = %index);
 	}
 	SetScreenElementProps(
 		id = %solotxt,

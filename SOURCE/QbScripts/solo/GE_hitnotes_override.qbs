@@ -10,21 +10,40 @@ elseif ((*%player_status.text) == 'p2')
 	player = 2;
 	change(note_index_p2 = %array_entry);
 }
-set_solo_hit_buffer(/*player=%player,1*//*lol default params*/);
+set_solo_hit_buffer(player=%player);
 FormatText(checksumName=sa_p, 'solo_active_p%d', d = %player);
+update_text = 1;
 if (*%sa_p == 1)
 {
 	if (%player == 1)
 	{
-		num = (*last_solo_hits_p1 + 1);
-		change(last_solo_hits_p1 = %num);
+		// cheap cutoff
+		if (*last_solo_index_p1 < (*last_solo_total_p1+1))
+		{
+			num = (*last_solo_hits_p1 + 1);
+			change(last_solo_hits_p1 = %num);
+		}
+		else
+		{
+			update_text = 0;
+		}
 	}
 	elseif (%player == 2)
 	{
-		num = (*last_solo_hits_p2 + 1);
-		change(last_solo_hits_p2 = %num);
+		if (*last_solo_index_p2 < (*last_solo_total_p2+1))
+		{
+			num = (*last_solo_hits_p2 + 1);
+			change(last_solo_hits_p2 = %num);
+		}
+		else
+		{
+			update_text = 0;
+		}
 	}
-	solo_ui_update(player=%player);
+	if (%update_text == 1)
+	{
+		solo_ui_update(player=%player);
+	}
 }
 //printf('%d',d=%array_entry);
 if (GuitarEvent_HitNotes_CFunc())
