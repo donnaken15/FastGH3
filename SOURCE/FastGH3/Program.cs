@@ -517,6 +517,12 @@ namespace FastGH3
                             //Console.WriteLine(folder + "\\mid2chart.exe " + paksongmid.EncloseWithQuoteMarks() + " -k");
                             //Console.WriteLine(mid2chart.ExitCode);
                             //Console.ReadKey();
+                            // doesnt happen when throwing :(
+                            /*if (mid2chart.ExitCode != 0)
+                            {
+                                Console.WriteLine("An error occured when converting midi to chart. Aborting.");
+                                Environment.Exit(1);
+                            }*/
                         }
                         print("Reading file.");
                         if (cacheEnabled)

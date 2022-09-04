@@ -165,7 +165,7 @@ repeat(*current_num_players)
 		// while ([i*3] < soloend.time)
 		getarraysize(song_array);
 		k = %solo_first_note;
-		repeat(((%array_size-%k)*3))
+		repeat(((%array_size-%k)*3)) // do i need this condition even, because of the below
 		{
 			if (%song_array[%k] >= (%endtime) || %k > %array_size)
 			{
@@ -182,17 +182,13 @@ repeat(*current_num_players)
 			change(last_solo_hits_p1 = %j);
 			change(last_solo_index_p1 = %j);
 			change(last_solo_total_p1 = %k);
-			//num = (*last_solo_index_p1 + %earlyhits);
-			//change(last_solo_index_p1 = %num);
 		}
 		elseif (%i == 2)
 		{
 			change(solo_active_p2 = 1);
-			change(last_solo_hits_p2 = %j); // wtf
+			change(last_solo_hits_p2 = %j);
 			change(last_solo_index_p2 = %j);
 			change(last_solo_total_p2 = %k);
-			//num = (*last_solo_index_p2 + %earlyhits);
-			//change(last_solo_index_p2 = %num);
 		}
 		solo_ui_create(player=%i);
 	}
