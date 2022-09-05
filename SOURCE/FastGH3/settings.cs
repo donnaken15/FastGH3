@@ -129,6 +129,8 @@ namespace FastGH3
             qbedit.ReplaceFile("config.qb", userqb);
         }
 
+        bool FRAMERATE_FROM_QB = true; // set accordingly in the FastGH3 plugin
+
         bool stupid = true;
         public settings()
         {
@@ -166,6 +168,11 @@ namespace FastGH3
             SetForegroundWindow(Handle);
             verboseline("Reading settings...");
             tweaksList.SetItemChecked((int)Tweaks.KeyboardMode, (int)getQBConfig(QbKey.Create("autolaunch_startnow"), 1) == 0);
+            readytimeNoIntro.Value = (int)getQBConfig(QbKey.Create("nointro_ready_time"), 400);
+            if (FRAMERATE_FROM_QB)
+                maxFPS.Value = (int)getQBConfig(QbKey.Create("fps_max"), 60);
+            else
+                maxFPS.Value = Convert.ToInt32(ini.GetKeyValue("Player", "MaxFPS", "60"));
             hypers.Value = (int)getQBConfig(QbKey.Create("Cheat_Hyperspeed"), 0);
             tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(QbKey.Create("disable_intro"), 0) == 1);
             {
@@ -194,6 +201,7 @@ namespace FastGH3
             tweaksList.SetItemChecked((int)Tweaks.VerboseLog, verboselog2);
             backgroundcolordiag.Color = backcolor;
             colorpanel.BackColor = backcolor;
+            tweaksList.SetItemChecked((int)Tweaks.ExitOnSongEnd, (int)getQBConfig(QbKey.Create("exit_on_song_end"), 0) == 1);
             tweaksList.SetItemChecked((int)Tweaks.DisableVsync, ini.GetKeyValue("Misc", "VSync", "1") == "0");
             tweaksList.SetItemChecked((int)Tweaks.SongCaching, ini.GetKeyValue("Misc", "SongCaching", "1") == "1");
             tweaksList.SetItemChecked((int)Tweaks.NoStartupMsg, ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1");
@@ -465,6 +473,52 @@ Aspyr            - Original game, images, sounds, copyright");
             //Lefty,
             BkgdVideo,
         }
+        public QbKey[] configKeys = new QbKey[]
+        {
+            QbKey.Create("exit_on_song_end"),
+            QbKey.Create("autolaunch_startnow"),
+            QbKey.Create("enable_button_cheats"),
+            QbKey.Create("disable_intro"),
+        };
+        public bool[] configDefaults = new bool[]
+        {
+            true,
+            false,
+            true,
+            true
+        };
+
+        private void changereadytime(object sender, EventArgs e)
+        {
+            setQBConfig(QbKey.Create("nointro_ready_time"), (int)readytimeNoIntro.Value);
+        }
+
+        private void maxFPSchange(object sender, EventArgs e)
+        {
+            if (FRAMERATE_FROM_QB)
+                setQBConfig(QbKey.Create("fps_max"), (int)maxFPS.Value);
+            else
+            {
+                ini.SetKeyValue("Player", "MaxFPS", maxFPS.Value.ToString());
+                ini.Save("settings.ini");
+            }
+        }
+
+        public string[] iniNames = new string[]
+        {
+            "SongCaching",
+            "VerboseLog",
+            "PreserveLog",
+            "VSync",
+            "NoStartupMsg"
+        };
+        public bool[] iniDefaults = new bool[]
+        {
+            true,
+            false,
+            true,
+            true
+        };
 
         private void inputChanged(object sender, ItemCheckEventArgs e)
         {
@@ -474,45 +528,50 @@ Aspyr            - Original game, images, sounds, copyright");
             {
                 // stupid control won't let me do it more efficiently
                 case Tweaks.SongCaching:
-                    ToggleINIItem(miscSection, "SongCaching", e.NewValue == CheckState.Checked);
-                    break;
                 case Tweaks.VerboseLog:
-                    ToggleINIItem(miscSection, "VerboseLog", e.NewValue == CheckState.Checked);
-                    break;
                 case Tweaks.PreserveLog:
-                    ToggleINIItem(miscSection, "PreserveLog", e.NewValue == CheckState.Checked);
+                case Tweaks.NoStartupMsg:
+                    ToggleINIItem(miscSection, iniNames[e.Index], e.NewValue == CheckState.Checked);
                     break;
                 case Tweaks.DisableVsync:
                     ToggleINIItem(miscSection, "VSync", e.NewValue == CheckState.Unchecked);
                     break;
-                case Tweaks.NoStartupMsg:
-                    ToggleINIItem(miscSection, "NoStartupMsg", e.NewValue == CheckState.Checked);
+                // try replacing these with like changeConfig(index)
+                // and a string/key array accessed with index
+                // and funnel these cases into it
+                case Tweaks.NoIntro:
+                    readytimeNoIntro.Enabled = e.NewValue == CheckState.Checked;
+                    readytimelbl.Enabled = e.NewValue == CheckState.Checked;
+                    readytimems.Enabled = e.NewValue == CheckState.Checked;
+                    // "control cannot fall into another case" WHY
+                    setQBConfig(configKeys[e.Index - (int)Tweaks.ExitOnSongEnd],
+                                (e.NewValue == CheckState.Checked) ? 1 : 0);
                     break;
                 case Tweaks.ExitOnSongEnd:
-                    setQBConfig(QbKey.Create("exit_on_song_end"), e.NewValue == CheckState.Checked ? 1 : 0);
+                case Tweaks.DebugMenu:
+                    setQBConfig(configKeys[e.Index - (int)Tweaks.ExitOnSongEnd],
+                                (e.NewValue == CheckState.Checked) ? 1 : 0);
+                    // how do i invert the ternary with the bool array
                     break;
                 case Tweaks.KeyboardMode:
                     setQBConfig(QbKey.Create("autolaunch_startnow"), e.NewValue == CheckState.Checked ? 0 : 1);
-                    break;
-                case Tweaks.DebugMenu:
-                    setQBConfig(QbKey.Create("enable_button_cheats"), e.NewValue == CheckState.Checked ? 1 : 0);
-                    break;
-                case Tweaks.NoIntro:
-                    setQBConfig(QbKey.Create("disable_intro"), e.NewValue == CheckState.Checked ? 1 : 0);
                     break;
                 case Tweaks.NoParticles:
                     int disable_particles = 0;
                     switch (e.CurrentValue)
                     {
+                        // set to...
                         case CheckState.Unchecked:
                             e.NewValue = CheckState.Indeterminate;
                             disable_particles = 1;
                             // minimal particles
+                            // no hit sparks or stars
                             break;
                         case CheckState.Indeterminate:
                             e.NewValue = CheckState.Checked;
                             disable_particles = 2;
                             // disabled particles
+                            // above with flames and lightning off
                             break;
                         case CheckState.Checked:
                             e.NewValue = CheckState.Unchecked;

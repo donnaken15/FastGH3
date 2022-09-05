@@ -1,0 +1,2 @@
+cd ..
+highwaygen %1

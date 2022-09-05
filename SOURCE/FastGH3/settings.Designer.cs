@@ -21,6 +21,7 @@ namespace FastGH3
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(settings));
             this.ok = new System.Windows.Forms.Button();
             this.reslabel = new System.Windows.Forms.Label();
             this.hypers = new System.Windows.Forms.NumericUpDown();
@@ -47,9 +48,17 @@ namespace FastGH3
             this.maxnoteslbl = new System.Windows.Forms.Label();
             this.instlabel = new System.Windows.Forms.Label();
             this.tweaksList = new System.Windows.Forms.CheckedListBox();
+            this.readytimeNoIntro = new System.Windows.Forms.NumericUpDown();
+            this.readytimelbl = new System.Windows.Forms.Label();
+            this.readytimems = new System.Windows.Forms.Label();
+            this.maxFPSlbl = new System.Windows.Forms.Label();
+            this.maxFPS = new System.Windows.Forms.NumericUpDown();
+            this.fpslabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).BeginInit();
             this.SuspendLayout();
             // 
             // ok
@@ -132,7 +141,7 @@ namespace FastGH3
             // 
             this.importonly.AutoSize = true;
             this.importonly.Enabled = false;
-            this.importonly.Location = new System.Drawing.Point(177, 217);
+            this.importonly.Location = new System.Drawing.Point(118, 282);
             this.importonly.Name = "importonly";
             this.importonly.Size = new System.Drawing.Size(103, 17);
             this.importonly.TabIndex = 7;
@@ -312,7 +321,7 @@ namespace FastGH3
             // 
             // tweaksbtn
             // 
-            this.tweaksbtn.Location = new System.Drawing.Point(187, 231);
+            this.tweaksbtn.Location = new System.Drawing.Point(139, 282);
             this.tweaksbtn.Name = "tweaksbtn";
             this.tweaksbtn.Size = new System.Drawing.Size(99, 23);
             this.tweaksbtn.TabIndex = 32;
@@ -406,11 +415,89 @@ namespace FastGH3
             this.tweaksList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.inputChanged);
             this.tweaksList.SelectedIndexChanged += new System.EventHandler(this.updateTweakBoxes);
             // 
+            // readytimeNoIntro
+            // 
+            this.readytimeNoIntro.Enabled = false;
+            this.readytimeNoIntro.Location = new System.Drawing.Point(181, 224);
+            this.readytimeNoIntro.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.readytimeNoIntro.Name = "readytimeNoIntro";
+            this.readytimeNoIntro.Size = new System.Drawing.Size(84, 20);
+            this.readytimeNoIntro.TabIndex = 34;
+            this.readytimeNoIntro.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.readytimeNoIntro.ValueChanged += new System.EventHandler(this.changereadytime);
+            // 
+            // readytimelbl
+            // 
+            this.readytimelbl.AutoSize = true;
+            this.readytimelbl.Enabled = false;
+            this.readytimelbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.readytimelbl.Location = new System.Drawing.Point(181, 208);
+            this.readytimelbl.Name = "readytimelbl";
+            this.readytimelbl.Size = new System.Drawing.Size(107, 13);
+            this.readytimelbl.TabIndex = 35;
+            this.readytimelbl.Text = "Ready time (no intro):";
+            // 
+            // readytimems
+            // 
+            this.readytimems.AutoSize = true;
+            this.readytimems.Enabled = false;
+            this.readytimems.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.readytimems.Location = new System.Drawing.Point(266, 228);
+            this.readytimems.Name = "readytimems";
+            this.readytimems.Size = new System.Drawing.Size(20, 13);
+            this.readytimems.TabIndex = 36;
+            this.readytimems.Text = "ms";
+            // 
+            // maxFPSlbl
+            // 
+            this.maxFPSlbl.AutoSize = true;
+            this.maxFPSlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.maxFPSlbl.Location = new System.Drawing.Point(181, 168);
+            this.maxFPSlbl.Name = "maxFPSlbl";
+            this.maxFPSlbl.Size = new System.Drawing.Size(77, 13);
+            this.maxFPSlbl.TabIndex = 37;
+            this.maxFPSlbl.Text = "Max framerate:";
+            // 
+            // maxFPS
+            // 
+            this.maxFPS.Location = new System.Drawing.Point(181, 184);
+            this.maxFPS.Maximum = new decimal(new int[] {
+            268435455,
+            1042612833,
+            542101086,
+            0});
+            this.maxFPS.Name = "maxFPS";
+            this.maxFPS.Size = new System.Drawing.Size(76, 20);
+            this.maxFPS.TabIndex = 38;
+            this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tooltip.SetToolTip(this.maxFPS, resources.GetString("maxFPS.ToolTip"));
+            this.maxFPS.ValueChanged += new System.EventHandler(this.maxFPSchange);
+            // 
+            // fpslabel
+            // 
+            this.fpslabel.AutoSize = true;
+            this.fpslabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.fpslabel.Location = new System.Drawing.Point(259, 187);
+            this.fpslabel.Name = "fpslabel";
+            this.fpslabel.Size = new System.Drawing.Size(27, 13);
+            this.fpslabel.TabIndex = 39;
+            this.fpslabel.Text = "FPS";
+            // 
             // settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(285, 305);
+            this.Controls.Add(this.fpslabel);
+            this.Controls.Add(this.maxFPS);
+            this.Controls.Add(this.maxFPSlbl);
+            this.Controls.Add(this.readytimems);
+            this.Controls.Add(this.readytimelbl);
+            this.Controls.Add(this.readytimeNoIntro);
             this.Controls.Add(this.songtxtfmt_);
             this.Controls.Add(this.tweaksbtn);
             this.Controls.Add(this.ctmpb);
@@ -448,6 +535,8 @@ namespace FastGH3
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -486,5 +575,11 @@ namespace FastGH3
         private Button tweaksbtn;
         private Button songtxtfmt_;
         private ComboBox res;
+        private NumericUpDown readytimeNoIntro;
+        private Label readytimelbl;
+        private Label readytimems;
+        private Label maxFPSlbl;
+        private NumericUpDown maxFPS;
+        private Label fpslabel;
     }
 }
