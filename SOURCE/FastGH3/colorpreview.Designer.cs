@@ -29,10 +29,10 @@ namespace FastGH3
             // game
             // 
             this.game.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.game.Image = global::FastGH3.Properties.Resources.colorprev;
+            this.game.ImageLocation = "https://donnaken15.tk/fastgh3/gameBlank.png";
             this.game.Location = new System.Drawing.Point(0, 0);
             this.game.Name = "game";
-            this.game.Size = new System.Drawing.Size(791, 592);
+            this.game.Size = new System.Drawing.Size(585, 422);
             this.game.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.game.TabIndex = 0;
             this.game.TabStop = false;
@@ -41,7 +41,7 @@ namespace FastGH3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(791, 592);
+            this.ClientSize = new System.Drawing.Size(585, 422);
             this.Controls.Add(this.game);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;

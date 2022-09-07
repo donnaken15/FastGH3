@@ -42,8 +42,11 @@
     <ErrorReport>prompt</ErrorReport>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <LangVersion>3</LangVersion>
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <DefineConstants>
+    </DefineConstants>
+    <Optimize>true</Optimize>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>note.ico</ApplicationIcon>
@@ -65,6 +68,8 @@
     <DefineConstants />
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
@@ -74,10 +79,8 @@
       <HintPath>E:\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BinaryEndianReader.cs" />
@@ -197,12 +200,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="note.ico" />
-    <None Include="Resources\colorprev.png" />
     <None Include="app.config" />
     <None Include="app.manifest" />
     <Content Include="Queenbee\Zlib\license.txt" />
     <Content Include="Queenbee\Zlib\zlib.net.csproj" />
     <Content Include="Queenbee\Zlib\zlib.net.sln" />
+    <None Include="Resources\colorprev.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

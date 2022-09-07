@@ -9,14 +9,20 @@ if (*game_mode == p2_battle)
 	return;
 }
 
+// TODO: FIND SOMEWHERE TO RESET VALUES
+// (in transition scripts right now...)
+// right now, in certain cases of restarting
+// and skipping into a song, notes from previous
+// song session get counted
+
+// create routine for if script doesn't spawn from song?
+
 FormatText(checksumname=scripts_name,'%d_scripts',d=(*current_song));
 scripts = *%scripts_name;
 
-// TODO: FIND SOMEWHERE TO RESET THESE VALUES
-// (in transition scripts right now...)
-
 // have to do this complicated BS
 getarraysize(%scripts);
+// k = index of fastgh3_scripts array
 k = 0;
 repeat
 {
@@ -50,8 +56,47 @@ repeat
 	k = (%k + 1);
 	if (%k >= %array_size)
 	{
+		return;
+	}
+}
+k = (%k + 1);
+found_soloend = 0;
+endtime = (%time + 5000);
+// find matching soloend in fastgh3_scripts
+repeat
+{
+	// soloend.params.part == %part then endtime = soloend.time
+	scr = (%scripts[%k]);
+	if (%scr.time >= %time &&
+		%scr.scr == soloend)
+	{
+		part2 = guitar;
+		if (StructureContains(structure=%scr,params))
+		{
+			tmpval = (%scr.params); // why
+			if (StructureContains(structure=%tmpval,part))
+			{
+				part2 = (%tmpval.part);
+			}
+		}
+		if (%part == %part2)
+		{
+			endtime = (%scr.time);
+			found_soloend = 1;
+			break;
+		}
+	}
+	k = (%k + 1);
+	if (%k >= %array_size)
+	{
 		break;
 	}
+}
+// wrote because general section events (not just section markers) appeared in Soulless 1
+// quit if soloend for this script's part can't be found
+if (%found_soloend == 0)
+{
+	return;
 }
 
 i = 1;
@@ -132,36 +177,7 @@ repeat(*current_num_players)
 				jj = (%jj + 1);
 			}
 		}
-		// find matching soloend in fastgh3_scripts
-		getarraysize(%scripts);
 		k = 0;
-		endtime = (%time + 5000);
-		repeat(%array_size)
-		{
-			// soloend.params.part == %part then endtime = soloend.time
-			scr = (%scripts[%k]);
-			if (%scr.time >= %time &&
-				%scr.scr == soloend)
-			{
-				part2 = guitar;
-				if (StructureContains(structure=%scr,params))
-				{
-					tmpval = (%scr.params); // why
-					if (StructureContains(structure=%tmpval,part))
-					{
-						part2 = (%tmpval.part);
-					}
-				}
-				if (%part == %part2)
-				{
-					endtime = (%scr.time);
-					//printstruct(%scr);
-					// found soloend
-					break;
-				}
-			}
-			k = (%k + 1);
-		}
 		// while ([i*3] < soloend.time)
 		getarraysize(song_array);
 		k = %solo_first_note;
