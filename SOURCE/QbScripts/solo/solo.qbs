@@ -4,7 +4,7 @@ script({
 
 // stupid event caller won't pass actual specified time but when exactly this spawns
 
-if (*game_mode == p2_battle)
+if (*game_mode == p2_battle || *enable_solos == 0)
 {
 	return;
 }
@@ -86,6 +86,7 @@ repeat
 			break;
 		}
 	}
+	// exit if two solo scripts appear for the same part without being separated by soloend
 	k = (%k + 1);
 	if (%k >= %array_size)
 	{
@@ -102,17 +103,28 @@ if (%found_soloend == 0)
 i = 1;
 repeat(*current_num_players)
 {
-	if (%i == 1)
-	{
-		change(last_solo_index_p1 = 0);
-	}
-	elseif (%i == 2)
-	{
-		change(last_solo_index_p2 = 0);
-	}
 	FormatText(checksumName=player_status, 'player%d_status', d = %i);
 	if (%part == (*%player_status.part))
 	{
+		// wtf
+		repeat
+		{
+			if (%i == 1)
+			{
+				if (*last_solo_index_p1 >= *last_solo_total_p1 || *solo_active_p1 == 0)
+				{
+					break;
+				}
+			}
+			elseif (%i == 2)
+			{
+				if (*last_solo_index_p2 >= *last_solo_total_p2 || *solo_active_p2 == 0)
+				{
+					break;
+				}
+			}
+			wait(1,gameframe);
+		}
 		gemarrayid = (*%player_status.current_song_gem_array);
 		song_array = *%gemarrayid;
 		getarraysize(song_array);
@@ -182,8 +194,9 @@ repeat(*current_num_players)
 		getarraysize(song_array);
 		k = %solo_first_note;
 		repeat(((%array_size-%k)*3)) // do i need this condition even, because of the below
+		// APPARENTLY I DO, OTHERWISE CRASH
 		{
-			if (%song_array[%k] >= (%endtime) || %k > %array_size)
+			if (%song_array[%k] >= %endtime || %k > %array_size)
 			{
 				break; 
 			}

@@ -47,6 +47,8 @@
     <DefineConstants>
     </DefineConstants>
     <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>note.ico</ApplicationIcon>
@@ -205,7 +207,6 @@
     <Content Include="Queenbee\Zlib\license.txt" />
     <Content Include="Queenbee\Zlib\zlib.net.csproj" />
     <Content Include="Queenbee\Zlib\zlib.net.sln" />
-    <None Include="Resources\colorprev.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -238,7 +239,9 @@
       <DependentUpon>songtxtfmt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
