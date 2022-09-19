@@ -55,3 +55,4 @@ PLUGINS/QDBhook.dll
 .vs/
 launcher.txt
 __pack.bat
+DATA/ZONES/__themes/*/

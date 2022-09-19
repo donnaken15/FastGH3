@@ -1,2 +1,2 @@
-cd ..
-highwaygen %1
+cd "%~dp0.."
+highwaygen "%~1"

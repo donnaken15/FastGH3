@@ -391,6 +391,40 @@ namespace FastGH3
                         Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
                         new settings().ShowDialog();
                     }
+                    else if (args[0] == "-gfxswap")
+                    {
+                        // TODO: replace SCN with one that has the name of the .tex
+                        if (args.Length > 2)
+                        {
+                            if (File.Exists(args[1]) && File.Exists(args[2]))
+                            {
+                                if (args[2].EndsWith(".pak.xen"))
+                                {
+                                    PakFormat pakFormat = new PakFormat(args[2], args[2].Replace(".pak.xen", ".pab.xen"), "", PakFormatType.PC);
+                                    PakEditor pakEditor = new PakEditor(pakFormat, false);
+                                    pakEditor.ReplaceFile("406D171F", args[1]);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("global.pak isn't named correctly.");
+                                    Console.ReadKey();
+                                    Environment.Exit(1);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("One of the entered files don't exist.");
+                                Console.ReadKey();
+                                Environment.Exit(1);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Insufficient arguments.");
+                            Console.ReadKey();
+                            Environment.Exit(1);
+                        }
+                    }
                     #region DOWNLOAD SONG
                     else if (args[0] == "dl" && (args[1] != "" || args[1] != null))
                     {
