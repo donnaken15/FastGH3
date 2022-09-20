@@ -24,7 +24,9 @@ scripts = *%scripts_name;
 getarraysize(%scripts);
 // k = index of fastgh3_scripts array
 k = 0;
-repeat
+found_self = 0;
+// WHY DOES THIS FAIL ON __FINAL BUILD BUT NOT THE ONE I USE ALL THE TIME
+repeat(%array_size)
 {
 	// find own script props just for the exact time it was due to spawn
 	scr = (%scripts[%k]);
@@ -50,6 +52,7 @@ repeat
 		{
 			// get real due time
 			time = (%scr.time);
+			found_self = 1;
 			break;
 		}
 	}
@@ -59,11 +62,15 @@ repeat
 		return;
 	}
 }
+if (%found_self == 0)
+{
+	printf('why');
+}
 k = (%k + 1);
 found_soloend = 0;
 endtime = (%time + 5000);
 // find matching soloend in fastgh3_scripts
-repeat
+repeat(%array_size)
 {
 	// soloend.params.part == %part then endtime = soloend.time
 	scr = (%scripts[%k]);
@@ -97,6 +104,7 @@ repeat
 // quit if soloend for this script's part can't be found
 if (%found_soloend == 0)
 {
+	printf('why');
 	return;
 }
 
