@@ -28,7 +28,6 @@ namespace FastGH3
             this.hyperlabel = new System.Windows.Forms.Label();
             this.diff = new System.Windows.Forms.ComboBox();
             this.difflabel = new System.Windows.Forms.Label();
-            this.importonly = new System.Windows.Forms.CheckBox();
             this.creditlink = new System.Windows.Forms.LinkLabel();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
             this.setbgcolor = new System.Windows.Forms.Button();
@@ -40,9 +39,9 @@ namespace FastGH3
             this.pluginmanage = new System.Windows.Forms.Button();
             this.viewsongcache = new System.Windows.Forms.Button();
             this.ctmpb = new System.Windows.Forms.Button();
-            this.tweaksbtn = new System.Windows.Forms.Button();
             this.songtxtfmt_ = new System.Windows.Forms.Button();
             this.res = new System.Windows.Forms.ComboBox();
+            this.maxFPS = new System.Windows.Forms.NumericUpDown();
             this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
             this.speedlabel = new System.Windows.Forms.Label();
             this.maxnoteslbl = new System.Windows.Forms.Label();
@@ -52,13 +51,15 @@ namespace FastGH3
             this.readytimelbl = new System.Windows.Forms.Label();
             this.readytimems = new System.Windows.Forms.Label();
             this.maxFPSlbl = new System.Windows.Forms.Label();
-            this.maxFPS = new System.Windows.Forms.NumericUpDown();
             this.fpslabel = new System.Windows.Forms.Label();
+            this.tweaksPanel = new System.Windows.Forms.Panel();
+            this.tweaksLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).BeginInit();
+            this.tweaksPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ok
@@ -66,7 +67,7 @@ namespace FastGH3
             this.ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ok.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.ok.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ok.Location = new System.Drawing.Point(244, 270);
+            this.ok.Location = new System.Drawing.Point(242, 338);
             this.ok.Name = "ok";
             this.ok.Size = new System.Drawing.Size(29, 23);
             this.ok.TabIndex = 0;
@@ -137,20 +138,6 @@ namespace FastGH3
             this.difflabel.TabIndex = 6;
             this.difflabel.Text = "Default Difficulty:";
             // 
-            // importonly
-            // 
-            this.importonly.AutoSize = true;
-            this.importonly.Enabled = false;
-            this.importonly.Location = new System.Drawing.Point(118, 282);
-            this.importonly.Name = "importonly";
-            this.importonly.Size = new System.Drawing.Size(103, 17);
-            this.importonly.TabIndex = 7;
-            this.importonly.Text = "Import song only";
-            this.tooltip.SetToolTip(this.importonly, "This will make it so that the launcher only\r\nimports the song rather than startin" +
-        "g up the\r\ngame after import is successful.");
-            this.importonly.UseVisualStyleBackColor = true;
-            this.importonly.Visible = false;
-            // 
             // creditlink
             // 
             this.creditlink.ActiveLinkColor = System.Drawing.Color.Black;
@@ -158,7 +145,7 @@ namespace FastGH3
             this.creditlink.AutoSize = true;
             this.creditlink.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.creditlink.LinkColor = System.Drawing.Color.Black;
-            this.creditlink.Location = new System.Drawing.Point(12, 283);
+            this.creditlink.Location = new System.Drawing.Point(12, 351);
             this.creditlink.Name = "creditlink";
             this.creditlink.Size = new System.Drawing.Size(39, 13);
             this.creditlink.TabIndex = 8;
@@ -319,21 +306,10 @@ namespace FastGH3
             this.ctmpb.UseVisualStyleBackColor = true;
             this.ctmpb.Click += new System.EventHandler(this.ctmpb_Click);
             // 
-            // tweaksbtn
-            // 
-            this.tweaksbtn.Location = new System.Drawing.Point(139, 282);
-            this.tweaksbtn.Name = "tweaksbtn";
-            this.tweaksbtn.Size = new System.Drawing.Size(99, 23);
-            this.tweaksbtn.TabIndex = 32;
-            this.tweaksbtn.Text = "Game Tweaks";
-            this.tooltip.SetToolTip(this.tweaksbtn, "More settings!");
-            this.tweaksbtn.UseVisualStyleBackColor = true;
-            this.tweaksbtn.Visible = false;
-            // 
             // songtxtfmt_
             // 
             this.songtxtfmt_.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.songtxtfmt_.Location = new System.Drawing.Point(181, 138);
+            this.songtxtfmt_.Location = new System.Drawing.Point(181, 135);
             this.songtxtfmt_.Name = "songtxtfmt_";
             this.songtxtfmt_.Size = new System.Drawing.Size(99, 23);
             this.songtxtfmt_.TabIndex = 33;
@@ -353,6 +329,21 @@ namespace FastGH3
             this.res.TabIndex = 2;
             this.tooltip.SetToolTip(this.res, "This allows you to change the window size of the game.");
             this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
+            // 
+            // maxFPS
+            // 
+            this.maxFPS.Location = new System.Drawing.Point(163, 19);
+            this.maxFPS.Maximum = new decimal(new int[] {
+            268435455,
+            1042612833,
+            542101086,
+            0});
+            this.maxFPS.Name = "maxFPS";
+            this.maxFPS.Size = new System.Drawing.Size(76, 20);
+            this.maxFPS.TabIndex = 38;
+            this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.tooltip.SetToolTip(this.maxFPS, resources.GetString("maxFPS.ToolTip"));
+            this.maxFPS.ValueChanged += new System.EventHandler(this.maxFPSchange);
             // 
             // backgroundcolordiag
             // 
@@ -391,6 +382,9 @@ namespace FastGH3
             // 
             // tweaksList
             // 
+            this.tweaksList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tweaksList.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tweaksList.CheckOnClick = true;
             this.tweaksList.FormattingEnabled = true;
             this.tweaksList.IntegralHeight = false;
@@ -401,15 +395,19 @@ namespace FastGH3
             "Disable Vsync",
             "No startup message",
             "Exit on song end",
+            "Windowed",
+            "Borderless",
             "Keyboard mode",
             "Debug menu",
             "No intro",
             "No particles",
             "No fail",
-            "Background video"});
-            this.tweaksList.Location = new System.Drawing.Point(4, 138);
+            "Background video",
+            "Hide hit gems",
+            "Early sustain activation"});
+            this.tweaksList.Location = new System.Drawing.Point(3, 3);
             this.tweaksList.Name = "tweaksList";
-            this.tweaksList.Size = new System.Drawing.Size(171, 135);
+            this.tweaksList.Size = new System.Drawing.Size(154, 151);
             this.tweaksList.TabIndex = 30;
             this.tweaksList.ThreeDCheckBoxes = true;
             this.tweaksList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.inputChanged);
@@ -418,7 +416,7 @@ namespace FastGH3
             // readytimeNoIntro
             // 
             this.readytimeNoIntro.Enabled = false;
-            this.readytimeNoIntro.Location = new System.Drawing.Point(181, 224);
+            this.readytimeNoIntro.Location = new System.Drawing.Point(163, 59);
             this.readytimeNoIntro.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -435,7 +433,7 @@ namespace FastGH3
             this.readytimelbl.AutoSize = true;
             this.readytimelbl.Enabled = false;
             this.readytimelbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.readytimelbl.Location = new System.Drawing.Point(181, 208);
+            this.readytimelbl.Location = new System.Drawing.Point(163, 43);
             this.readytimelbl.Name = "readytimelbl";
             this.readytimelbl.Size = new System.Drawing.Size(107, 13);
             this.readytimelbl.TabIndex = 35;
@@ -446,7 +444,7 @@ namespace FastGH3
             this.readytimems.AutoSize = true;
             this.readytimems.Enabled = false;
             this.readytimems.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.readytimems.Location = new System.Drawing.Point(266, 228);
+            this.readytimems.Location = new System.Drawing.Point(248, 63);
             this.readytimems.Name = "readytimems";
             this.readytimems.Size = new System.Drawing.Size(20, 13);
             this.readytimems.TabIndex = 36;
@@ -456,53 +454,61 @@ namespace FastGH3
             // 
             this.maxFPSlbl.AutoSize = true;
             this.maxFPSlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.maxFPSlbl.Location = new System.Drawing.Point(181, 168);
+            this.maxFPSlbl.Location = new System.Drawing.Point(163, 3);
             this.maxFPSlbl.Name = "maxFPSlbl";
             this.maxFPSlbl.Size = new System.Drawing.Size(77, 13);
             this.maxFPSlbl.TabIndex = 37;
             this.maxFPSlbl.Text = "Max framerate:";
             // 
-            // maxFPS
-            // 
-            this.maxFPS.Location = new System.Drawing.Point(181, 184);
-            this.maxFPS.Maximum = new decimal(new int[] {
-            268435455,
-            1042612833,
-            542101086,
-            0});
-            this.maxFPS.Name = "maxFPS";
-            this.maxFPS.Size = new System.Drawing.Size(76, 20);
-            this.maxFPS.TabIndex = 38;
-            this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tooltip.SetToolTip(this.maxFPS, resources.GetString("maxFPS.ToolTip"));
-            this.maxFPS.ValueChanged += new System.EventHandler(this.maxFPSchange);
-            // 
             // fpslabel
             // 
             this.fpslabel.AutoSize = true;
             this.fpslabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.fpslabel.Location = new System.Drawing.Point(259, 187);
+            this.fpslabel.Location = new System.Drawing.Point(241, 22);
             this.fpslabel.Name = "fpslabel";
             this.fpslabel.Size = new System.Drawing.Size(27, 13);
             this.fpslabel.TabIndex = 39;
             this.fpslabel.Text = "FPS";
             // 
+            // tweaksPanel
+            // 
+            this.tweaksPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tweaksPanel.AutoScroll = true;
+            this.tweaksPanel.BackColor = System.Drawing.SystemColors.Window;
+            this.tweaksPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tweaksPanel.Controls.Add(this.tweaksList);
+            this.tweaksPanel.Controls.Add(this.fpslabel);
+            this.tweaksPanel.Controls.Add(this.readytimems);
+            this.tweaksPanel.Controls.Add(this.maxFPS);
+            this.tweaksPanel.Controls.Add(this.maxFPSlbl);
+            this.tweaksPanel.Controls.Add(this.readytimeNoIntro);
+            this.tweaksPanel.Controls.Add(this.readytimelbl);
+            this.tweaksPanel.Location = new System.Drawing.Point(4, 164);
+            this.tweaksPanel.Name = "tweaksPanel";
+            this.tweaksPanel.Size = new System.Drawing.Size(276, 163);
+            this.tweaksPanel.TabIndex = 40;
+            // 
+            // tweaksLabel
+            // 
+            this.tweaksLabel.AutoSize = true;
+            this.tweaksLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tweaksLabel.Location = new System.Drawing.Point(3, 138);
+            this.tweaksLabel.Name = "tweaksLabel";
+            this.tweaksLabel.Size = new System.Drawing.Size(111, 20);
+            this.tweaksLabel.TabIndex = 41;
+            this.tweaksLabel.Text = "Game tweaks:";
+            // 
             // settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(285, 305);
-            this.Controls.Add(this.fpslabel);
-            this.Controls.Add(this.maxFPS);
-            this.Controls.Add(this.maxFPSlbl);
-            this.Controls.Add(this.readytimems);
-            this.Controls.Add(this.readytimelbl);
-            this.Controls.Add(this.readytimeNoIntro);
-            this.Controls.Add(this.songtxtfmt_);
-            this.Controls.Add(this.tweaksbtn);
+            this.ClientSize = new System.Drawing.Size(283, 373);
+            this.Controls.Add(this.tweaksLabel);
+            this.Controls.Add(this.tweaksPanel);
             this.Controls.Add(this.ctmpb);
-            this.Controls.Add(this.tweaksList);
             this.Controls.Add(this.viewsongcache);
+            this.Controls.Add(this.songtxtfmt_);
             this.Controls.Add(this.pluginmanage);
             this.Controls.Add(this.part);
             this.Controls.Add(this.instlabel);
@@ -514,7 +520,6 @@ namespace FastGH3
             this.Controls.Add(this.colorpanel);
             this.Controls.Add(this.setbgcolor);
             this.Controls.Add(this.creditlink);
-            this.Controls.Add(this.importonly);
             this.Controls.Add(this.diff);
             this.Controls.Add(this.difflabel);
             this.Controls.Add(this.hyperlabel);
@@ -535,8 +540,10 @@ namespace FastGH3
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).EndInit();
+            this.tweaksPanel.ResumeLayout(false);
+            this.tweaksPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -555,7 +562,6 @@ namespace FastGH3
         private Label hyperlabel;
         private ComboBox diff;
         private Label difflabel;
-        private CheckBox importonly;
         private LinkLabel creditlink;
         private ToolTip tooltip;
         private ColorDialog backgroundcolordiag;
@@ -572,7 +578,6 @@ namespace FastGH3
         private Button viewsongcache;
         private CheckedListBox tweaksList;
         private Button ctmpb;
-        private Button tweaksbtn;
         private Button songtxtfmt_;
         private ComboBox res;
         private NumericUpDown readytimeNoIntro;
@@ -581,5 +586,7 @@ namespace FastGH3
         private Label maxFPSlbl;
         private NumericUpDown maxFPS;
         private Label fpslabel;
+        private Panel tweaksPanel;
+        private Label tweaksLabel;
     }
 }

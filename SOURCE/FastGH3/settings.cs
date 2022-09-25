@@ -134,7 +134,7 @@ namespace FastGH3
         bool stupid = true;
         public settings()
         {
-            Console.SetWindowSize(36,24);
+            Console.SetWindowSize(64,24);
             if (File.Exists("settings.ini"))
                 ini.Load("settings.ini");
             if (ini.GetSection("Player") == null)
@@ -167,6 +167,7 @@ namespace FastGH3
             InitializeComponent();
             SetForegroundWindow(Handle);
             verboseline("Reading settings...");
+            stupid = false;
             tweaksList.SetItemChecked((int)Tweaks.KeyboardMode, (int)getQBConfig(QbKey.Create("autolaunch_startnow"), 1) == 0);
             readytimeNoIntro.Value = (int)getQBConfig(QbKey.Create("nointro_ready_time"), 400);
             if (FRAMERATE_FROM_QB)
@@ -177,7 +178,6 @@ namespace FastGH3
             tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(QbKey.Create("disable_intro"), 0) == 1);
             {
                 int disable_particles = (int)getQBConfig(QbKey.Create("disable_particles"), 0);
-                stupid = false;
                 CheckState state = CheckState.Unchecked;
                 switch (disable_particles)
                 {
@@ -193,9 +193,14 @@ namespace FastGH3
                         break;
                 }
                 tweaksList.SetItemCheckState((int)Tweaks.NoParticles, state);
-                stupid = true;
             }
             tweaksList.SetItemChecked((int)Tweaks.NoFail, (int)getQBConfig(QbKey.Create("Cheat_NoFail"), 0) == 1);
+            if (tweaksList.GetItemChecked((int)Tweaks.NoIntro))
+            {
+                readytimeNoIntro.Enabled = true;
+                readytimelbl.Enabled = true;
+                readytimems.Enabled = true;
+            }
             tweaksList.SetItemChecked((int)Tweaks.DebugMenu, (int)getQBConfig(QbKey.Create("enable_button_cheats"), 0) == 1);
             speed.Value = (decimal/*wtf*/)(float)getQBConfig(QbKey.Create("current_speedfactor"), 1.0f) * 100;
             tweaksList.SetItemChecked((int)Tweaks.VerboseLog, verboselog2);
@@ -207,6 +212,12 @@ namespace FastGH3
             tweaksList.SetItemChecked((int)Tweaks.NoStartupMsg, ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1");
             tweaksList.SetItemChecked((int)Tweaks.PreserveLog, ini.GetKeyValue("Misc", "PreserveLog", "0") == "1");
             tweaksList.SetItemChecked((int)Tweaks.BkgdVideo, (int)getQBConfig(QbKey.Create("enable_video"), 0) == 1);
+            tweaksList.SetItemChecked((int)Tweaks.Windowed, ini.GetKeyValue("Misc", "Windowed", "1") == "1");
+            tweaksList.SetItemChecked((int)Tweaks.Borderless, ini.GetKeyValue("Misc", "Borderless", "1") == "1");
+            tweaksList.SetItemChecked((int)Tweaks.KillHitGems, (int)getQBConfig(QbKey.Create("kill_gems_on_hit"), 0) == 1);
+            tweaksList.SetItemChecked((int)Tweaks.EarlySustains, (int)getQBConfig(QbKey.Create("anytime_sustain_activation"), 0) == 1);
+            //tweaksList.SetItemChecked((int)Tweaks.NoShake, (int)getQBConfig(QbKey.Create("disable_shake"), 0) == 1);
+            stupid = true;
             foreach (Size sz in resz)
             {
                 res.Items.Add(sz.Width.ToString() + "x" + sz.Height.ToString());
@@ -465,13 +476,18 @@ Aspyr            - Original game, images, sounds, copyright");
             DisableVsync,
             NoStartupMsg,
             ExitOnSongEnd,
+            Windowed,
+            Borderless,
             KeyboardMode,
             DebugMenu,
             NoIntro,
             NoParticles,
             NoFail,
+            //NoShake,
             //Lefty,
             BkgdVideo,
+            KillHitGems,
+            EarlySustains
         }
         public QbKey[] configKeys = new QbKey[]
         {
@@ -510,14 +526,21 @@ Aspyr            - Original game, images, sounds, copyright");
             "VerboseLog",
             "PreserveLog",
             "VSync",
-            "NoStartupMsg"
+            "NoStartupMsg",
+            "",
+            "Windowed",
+            "Borderless"
         };
         public bool[] iniDefaults = new bool[]
         {
             true,
             false,
             true,
-            true
+            true,
+            true,
+            false,
+            true,
+            false
         };
 
         private void inputChanged(object sender, ItemCheckEventArgs e)
@@ -531,6 +554,8 @@ Aspyr            - Original game, images, sounds, copyright");
                 case Tweaks.VerboseLog:
                 case Tweaks.PreserveLog:
                 case Tweaks.NoStartupMsg:
+                case Tweaks.Windowed:
+                case Tweaks.Borderless:
                     ToggleINIItem(miscSection, iniNames[e.Index], e.NewValue == CheckState.Checked);
                     break;
                 case Tweaks.DisableVsync:
@@ -544,12 +569,12 @@ Aspyr            - Original game, images, sounds, copyright");
                     readytimelbl.Enabled = e.NewValue == CheckState.Checked;
                     readytimems.Enabled = e.NewValue == CheckState.Checked;
                     // "control cannot fall into another case" WHY
-                    setQBConfig(configKeys[e.Index - (int)Tweaks.ExitOnSongEnd],
+                    setQBConfig(configKeys[e.Index - (int)Tweaks.Borderless],
                                 (e.NewValue == CheckState.Checked) ? 1 : 0);
                     break;
                 case Tweaks.ExitOnSongEnd:
                 case Tweaks.DebugMenu:
-                    setQBConfig(configKeys[e.Index - (int)Tweaks.ExitOnSongEnd],
+                    setQBConfig(configKeys[e.Index - (int)Tweaks.Borderless],
                                 (e.NewValue == CheckState.Checked) ? 1 : 0);
                     // how do i invert the ternary with the bool array
                     break;
@@ -601,6 +626,15 @@ Aspyr            - Original game, images, sounds, copyright");
                     //break;
                 case Tweaks.BkgdVideo:
                     setQBConfig(QbKey.Create("enable_video"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    break;
+                /*case Tweaks.NoShake:
+                    setQBConfig(QbKey.Create("disable_shake"), e.NewValue == CheckState.Checked ? 0 : 1);
+                    break;*/
+                case Tweaks.KillHitGems:
+                    setQBConfig(QbKey.Create("kill_gems_on_hit"), e.NewValue == CheckState.Checked ? 1 : 0);
+                    break;
+                case Tweaks.EarlySustains:
+                    setQBConfig(QbKey.Create("anytime_sustain_activation"), e.NewValue == CheckState.Checked ? 1 : 0);
                     break;
             }
         }

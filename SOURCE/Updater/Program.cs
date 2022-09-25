@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Ionic.Zip;
+using SimpleJSON;
 
 // VS is a slow POS
 
@@ -142,15 +143,24 @@ class Program
 		Console.ResetColor();
 		Console.WriteLine("  UPDATER\n");
 		
-		bool testing = true;
+		bool testing = false;
 		string dir = "";
-		if (!testing)
-			dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-		else
-			dir = Path.GetDirectoryName("C:\\Program Files (x86)\\FastGH3\\Updater.exe");
-		Directory.SetCurrentDirectory(dir);
-		
+		dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+		Directory.SetCurrentDirectory(dir); // make path ensuring less redundant like in the launcher
+
+		// is this even in the right place
+		if (!File.Exists("FastGH3.exe") ||
+			!File.Exists("game.exe") ||
+			!File.Exists("fmodex.dll"))
+		{
+			Console.WriteLine("No familiar mod files can be found, exiting...");
+			return;
+		}
+
+		DateTime buildtime  = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+		DateTime latesttime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 		string buildname = null;
+		string latestname = null;
 		string vfilespath = "DATA\\MUSIC\\TOOLS\\";
 		string vbin = "v.bin";
 		string btbin = "bt.bin";
@@ -158,31 +168,96 @@ class Program
 		{
 			buildname = Encoding.UTF8.GetString(Convert.FromBase64String(File.ReadAllText(vfilespath+vbin)));
 		}
-		Console.WriteLine("Current build: "+buildname);
-		
-		Console.WriteLine("Checking latest build...");
+		else
+		{
+			Console.WriteLine("Build name not found, exiting...");
+			Console.ReadKey();
+			return;
+		}
+		if (File.Exists(vfilespath+btbin))
+		{
+			buildtime = buildtime.AddSeconds(Eswap(BitConverter.ToInt32(File.ReadAllBytes(vfilespath+btbin),0))).ToLocalTime();
+		}
+		else
+        {
+			Console.WriteLine("Build time not found, exiting...");
+			Console.ReadKey();
+			return;
+        }
+
+		Console.WriteLine("Downloading version info...");
 		uint latestTimestamp = 0;
+		JSONNode devVers, buildList;
 		try
 		{
-			using (WebClient onlineTimestamp = new WebClient())
+			using (WebClient fetcher = new WebClient())
 			{
-				onlineTimestamp.Proxy = null;
-				onlineTimestamp.Headers.Add("user-agent", "Anything");
+				fetcher.Proxy = null;
+				fetcher.Headers.Add("user-agent", "Anything");
 				ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00);
-				//https://raw.githubusercontent.com/donnaken15/FastGH3/main/DATA/MUSIC/TOOLS/bt.bin
-				latestTimestamp = BitConverter.ToUInt32(onlineTimestamp.DownloadData("https://donnaken15.tk/bt.bin"),0);
-				//Console.WriteLine(onlineTimestamp.DownloadString("https://donnaken15.tk/bt.bin"));
+				latestTimestamp = Eswap(BitConverter.ToUInt32(fetcher.DownloadData("https://raw.githubusercontent.com/donnaken15/FastGH3/main/DATA/MUSIC/TOOLS/bt.bin"),0));
+				latesttime = latesttime.AddSeconds(latestTimestamp).ToLocalTime();
+				Console.WriteLine("Build timestamp: " + buildtime.ToString());
+				Console.WriteLine("Got latest timestamp: " + latesttime.ToString());
+				devVers = JSON.Parse(fetcher.DownloadString("https://donnaken15.tk/fastgh3/devvers.json"));
+				buildList = JSON.Parse(fetcher.DownloadString("https://donnaken15.tk/fastgh3/vl.json"));
+				latestname = Encoding.UTF8.GetString(Convert.FromBase64String(fetcher.DownloadString("https://donnaken15.tk/fastgh3/v")));
 			}
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine("Encountered an error when checking the latest build time.");
+			Console.WriteLine("Encountered an error when downloading version info.");
 			Console.WriteLine(ex);
 			Console.ReadKey();
+			return;
 		}
-		
-		Console.WriteLine(latestTimestamp);
-		Console.WriteLine(dir);
-		
+		Console.WriteLine("Current build: " + buildList[buildname]);
+		Console.WriteLine("Latest build: " + buildList[latestname]);
+		//Console.WriteLine(devVers[0]["date"].Value);
+
+		IniFile settings = new IniFile();
+
+		if (File.Exists("settings.ini"))
+			settings.Load("settings.ini");
+
+		bool bleeding = settings.GetKeyValue("Updater","BleedingEdge","0") == "1";
+		// set default to 1 on repo and 0 on builds??
+
+		// should i put devlog in JSON and display here
+
+		// also TODO: downgrading maybe for checking errors and for when they started to appear
+		// as a consequence of me making this mod the most user friendly for charts
+
+		if (bleeding)
+		{
+			if (latesttime > buildtime)
+			{
+				Console.WriteLine("Found a new dev build!");
+			}
+			else
+            {
+				Console.WriteLine("There is no new dev build.");
+				Console.ReadKey();
+				return;
+			}
+			int nearestTimestamp = 0;
+			//for (int i = 0; )
+			//https://raw.githubusercontent.com/donnaken15/FastGH3/0c0ff7092a1f4c482a523cf6f5da2518562bc833/DATA/MUSIC/TOOLS/bt.bin
+		}
+		else
+		{
+			if (Convert.ToUInt64(latestname) > Convert.ToUInt64(buildname))
+			{
+				Console.WriteLine("Found a new build!");
+			}
+			else
+			{
+				Console.WriteLine("There is no new release build.");
+				Console.ReadKey();
+				return;
+			}
+		}
+		Console.WriteLine("Done.");
+		Console.ReadKey();
 	}
 }
