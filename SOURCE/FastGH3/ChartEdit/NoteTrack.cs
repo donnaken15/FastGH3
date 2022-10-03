@@ -52,7 +52,7 @@ namespace ChartEdit
 			}
 			else
 			{
-				result = this.noteList[fret].Count<Note>();
+				result = this.noteList[fret].Count();
 			}
 			return result;
 		}
@@ -62,7 +62,7 @@ namespace ChartEdit
 			this.SetHopoLogic();
 			this.EvaluateNoteness();
 			this.EvaluateChords();
-			this.EvaluateHOPO(chart.Resolution / 3, 1, this.Count<Note>());
+			this.EvaluateHOPO(chart.Resolution / 3, 1, this.Count());
 			this.EvaluateFlipping();
 			this.EvaluateTapping();
 			this.EvaluateSP();
@@ -70,7 +70,7 @@ namespace ChartEdit
         
 		public void Evaluate(Chart chart, int start, int start2, int end)
 		{
-			while (end < this.Count<Note>() - 1)
+			while (end < this.Count() - 1)
 			{
 				if (!base[end].IsChord)
 				{
@@ -89,7 +89,7 @@ namespace ChartEdit
         
 		public void EvaluateChords()
 		{
-			this.EvaluateChords(1, this.Count<Note>());
+			this.EvaluateChords(1, this.Count());
 		}
         
 		public void EvaluateChords(int start, int end)
@@ -124,7 +124,7 @@ namespace ChartEdit
         
 		public void EvaluateFlipping()
 		{
-			this.EvaluateFlipping(0, this.Count<Note>());
+			this.EvaluateFlipping(0, this.Count());
 		}
         
 		public void EvaluateFlipping(int start, int end)
@@ -141,7 +141,7 @@ namespace ChartEdit
 						}
 						base[j].IsHopo = !base[j].IsHopo;
 					}
-					for (int k = i + 1; k < this.Count<Note>(); k++)
+					for (int k = i + 1; k < this.Count(); k++)
 					{
 						if (base[k].Offset != base[i].Offset)
 						{
@@ -160,7 +160,7 @@ namespace ChartEdit
 						}
 						base[l].IsHopo = true;
 					}
-					for (int m = i + 1; m < this.Count<Note>(); m++)
+					for (int m = i + 1; m < this.Count(); m++)
 					{
 						if (base[m].Offset != base[i].Offset)
 						{
@@ -179,7 +179,7 @@ namespace ChartEdit
 						}
 						base[n].IsHopo = false;
 					}
-					for (int num = i + 1; num < this.Count<Note>(); num++)
+					for (int num = i + 1; num < this.Count(); num++)
 					{
 						if (base[num].Offset != base[i].Offset)
 						{
@@ -193,7 +193,7 @@ namespace ChartEdit
 
 		public void EvaluateHOPO()
 		{
-			this.EvaluateHOPO(64, 1, this.Count<Note>());
+			this.EvaluateHOPO(64, 1, this.Count());
 		}
 
 		public void EvaluateHOPO(int threshold, int start, int end)
@@ -269,7 +269,7 @@ namespace ChartEdit
 
 		public void EvaluateNoteness()
 		{
-			this.EvaluateNoteness(0, this.Count<Note>());
+			this.EvaluateNoteness(0, this.Count());
 		}
 
 		public void EvaluateNoteness(int start, int end)
@@ -288,7 +288,7 @@ namespace ChartEdit
 			int num = 0;
 			List<int> list = new List<int>();
 			int num2 = 0;
-			for (int i = 0; i < this.Count<Note>(); i++)
+			for (int i = 0; i < this.Count(); i++)
 			{
 				if (base[i].Offset != num2)
 				{
@@ -319,7 +319,7 @@ namespace ChartEdit
 		public void EvaluateSP(int start, int end)
 		{
 			int num = -1;
-			for (int i = num + 1; i < this.SpecialList.Count<Note>(); i++)
+			for (int i = num + 1; i < this.SpecialList.Count(); i++)
 			{
 				if (this.SpecialList[i].SpecialFlag == 2 && this.SpecialList[i].OffsetEnd > base[start].Offset)
 				{
@@ -347,7 +347,7 @@ namespace ChartEdit
 						else
 						{
 							base[k].IsInSP = false;
-							for (int l = num + 1; l < this.SpecialList.Count<Note>(); l++)
+							for (int l = num + 1; l < this.SpecialList.Count(); l++)
 							{
 								if (this.SpecialList[l].SpecialFlag == 2 && this.SpecialList[l].OffsetEnd > base[k].Offset)
 								{
@@ -367,7 +367,7 @@ namespace ChartEdit
 
 		public void EvaluateTapping()
 		{
-			this.EvaluateTapping(0, this.Count<Note>());
+			this.EvaluateTapping(0, this.Count());
 		}
 
 		public void EvaluateTapping(int start, int end)
@@ -384,7 +384,7 @@ namespace ChartEdit
 						}
 						base[j].IsTapping = true;
 					}
-					for (int k = i + 1; k < this.Count<Note>(); k++)
+					for (int k = i + 1; k < this.Count(); k++)
 					{
 						if (base[k].Offset != base[i].Offset)
 						{
@@ -402,7 +402,7 @@ namespace ChartEdit
 			{
 				this.HighestFret++;
 				this.noteList.Add(new List<Note>());
-				this.noteList.Last<List<Note>>().Clear();
+				this.noteList.Last().Clear();
 			}
 		}
 
@@ -449,7 +449,7 @@ namespace ChartEdit
 		public List<Note> NoteList(int fret)
 		{
 			List<Note> result;
-			if (fret >= this.noteList.Count<List<Note>>())
+			if (fret >= this.noteList.Count())
 			{
 				result = null;
 			}
@@ -519,7 +519,7 @@ namespace ChartEdit
 				{
 					result = null;
 				}
-				else if (this.noteList[fret].Count<Note>() <= index)
+				else if (this.noteList[fret].Count() <= index)
 				{
 					result = null;
 				}

@@ -83,6 +83,13 @@ namespace FastGH3
             }
         }
 
+        static void KYS()
+        {
+            // program dies too slow for it to not interfere with later process spawns
+            // "THEN RESTART YOUR COMPUTER DARK HUMOR DEPRESSINGLY EDGY KID STUPI-"
+            Process.GetCurrentProcess().Kill();
+        }
+
         static TimeSpan time
         {
             get
@@ -104,7 +111,10 @@ namespace FastGH3
             if (verboselog)
                 Console.Write(text);
             if (writefile && launcherlog != null)
+            {
                 launcherlog.Write(text);
+                launcherlog.Flush();
+            }
         }
 
         public static void verboseline(object text)
@@ -118,13 +128,18 @@ namespace FastGH3
             {
                 launcherlog.Write(timems);
                 launcherlog.WriteLine(text);
+                launcherlog.Flush();
             }
         }
 
         public static void print(object text)
         {
             if (writefile && launcherlog != null)
+            {
+                launcherlog.Write(timems);
                 launcherlog.WriteLine(text);
+                launcherlog.Flush();
+            }
             Console.WriteLine(text);
         }
 
@@ -535,11 +550,11 @@ namespace FastGH3
                             // FastGH3.exe  --> FastGH3.exe          --> FastGH3.exe  --> game.exe
                             // :P
                             GC.Collect();
-                            Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
                             if (writefile && launcherlog != null)
                                 launcherlog.Close();
                             // "already running" >:(
-                            Environment.Exit(0);
+                            Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
+                            KYS();
                         }
                         catch (Exception ex)
                         {
@@ -2456,7 +2471,7 @@ namespace FastGH3
                                     if (writefile && launcherlog != null)
                                         launcherlog.Close();
                                     Process.Start(Application.ExecutablePath, selectedtorun.EncloseWithQuoteMarks());
-                                    Environment.Exit(0);
+                                    KYS();
                                 }
                         }
                         else if ((args[0].EndsWith(".pak") || args[0].EndsWith(".pak.xen")))

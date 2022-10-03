@@ -129,7 +129,7 @@ namespace FastGH3
             qbedit.ReplaceFile("config.qb", userqb);
         }
 
-        bool FRAMERATE_FROM_QB = true; // set accordingly in the FastGH3 plugin
+        const bool FRAMERATE_FROM_QB = true; // set accordingly in the FastGH3 plugin
 
         bool stupid = true;
         public settings()
@@ -171,9 +171,9 @@ namespace FastGH3
             tweaksList.SetItemChecked((int)Tweaks.KeyboardMode, (int)getQBConfig(QbKey.Create("autolaunch_startnow"), 1) == 0);
             readytimeNoIntro.Value = (int)getQBConfig(QbKey.Create("nointro_ready_time"), 400);
             if (FRAMERATE_FROM_QB)
-                maxFPS.Value = (int)getQBConfig(QbKey.Create("fps_max"), 60);
+                maxFPS.Value = (int)getQBConfig(QbKey.Create("fps_max"), 500);
             else
-                maxFPS.Value = Convert.ToInt32(ini.GetKeyValue("Player", "MaxFPS", "60"));
+                maxFPS.Value = Convert.ToInt32(ini.GetKeyValue("Player", "MaxFPS", "500"));
             hypers.Value = (int)getQBConfig(QbKey.Create("Cheat_Hyperspeed"), 0);
             tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(QbKey.Create("disable_intro"), 0) == 1);
             {
