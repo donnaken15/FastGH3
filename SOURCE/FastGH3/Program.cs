@@ -2554,7 +2554,7 @@ namespace FastGH3
                         }
                         #endregion
                     }
-                    else print("That file does not exist. Aborting", ConsoleColor.Red);
+                    else print("That file does not exist. Exiting.", ConsoleColor.Red);
                 }
             }
             catch (Exception ex)
@@ -2574,6 +2574,13 @@ namespace FastGH3
                 Console.ResetColor(); // NOT WORKING
                 print("Press any key to exit");
                 Console.ReadKey();
+            }
+            // stupid SoX
+            // didn't happen on the previous version
+            // so WHY DOES IT CREATE THESE
+            foreach (var file in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
+            {
+                file.Delete();
             }
             GC.Collect();
             if (writefile && launcherlog != null)

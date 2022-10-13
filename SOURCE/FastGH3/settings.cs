@@ -134,7 +134,7 @@ namespace FastGH3
         bool stupid = true;
         public settings()
         {
-            Console.SetWindowSize(64,24);
+            Console.SetWindowSize(80,32);
             if (File.Exists("settings.ini"))
                 ini.Load("settings.ini");
             if (ini.GetSection("Player") == null)
@@ -217,6 +217,10 @@ namespace FastGH3
             tweaksList.SetItemChecked((int)Tweaks.KillHitGems, (int)getQBConfig(QbKey.Create("kill_gems_on_hit"), 0) == 1);
             tweaksList.SetItemChecked((int)Tweaks.EarlySustains, (int)getQBConfig(QbKey.Create("anytime_sustain_activation"), 0) == 1);
             //tweaksList.SetItemChecked((int)Tweaks.NoShake, (int)getQBConfig(QbKey.Create("disable_shake"), 0) == 1);
+            for (int i = 0; i < modNames.Length; i++)
+            {
+                ini.GetKeyValue("Modifiers", modNames[i], "0");
+            }
             stupid = true;
             foreach (Size sz in resz)
             {
@@ -518,6 +522,39 @@ Aspyr            - Original game, images, sounds, copyright");
                 ini.SetKeyValue("Player", "MaxFPS", maxFPS.Value.ToString());
                 ini.Save("settings.ini");
             }
+        }
+        public string[] modNames = new string[]
+        {
+            "AllStrums",
+            "AllDoubles",
+            "AllTaps",
+            "Hopos2Taps",
+            "Mirror",
+            "ColorShuffle"
+        };
+        public enum Modifiers
+        {
+            AllStrums,
+            AllDoubles,
+            AllTaps,
+            Hopos2Taps,
+            Mirror,
+            ColorShuffle
+        }
+
+        private void modifierUpdate(object sender, ItemCheckEventArgs e)
+        {
+            if (!stupid)
+            {
+                return;
+            }
+            ToggleINIItem("Modifiers", modNames[e.Index], e.NewValue == CheckState.Checked);
+            ini.Save("settings.ini");
+        }
+
+        private void updateModifiersList(object sender, EventArgs e)
+        {
+
         }
 
         public string[] iniNames = new string[]
