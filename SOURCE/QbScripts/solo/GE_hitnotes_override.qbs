@@ -57,4 +57,9 @@ if (GuitarEvent_HitNotes_CFunc())
 {
 	UpdateGuitarVolume();
 }
+if (GotParam(open))
+{
+	Open_NoteFX(player=%player,player_status=%player_status);
+}
+
 }
