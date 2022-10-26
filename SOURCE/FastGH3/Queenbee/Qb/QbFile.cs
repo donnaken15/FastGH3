@@ -147,6 +147,8 @@ namespace Nanook.QueenBee.Parser
             _supportedChildItems.Add(QbItemType.Floats, noComplexChildren);
 
             _supportedChildItems.Add(QbItemType.Unknown, noComplexChildren);
+
+            DebugNames = new Dictionary<uint, string>();
         }
 
         /// <summary>
@@ -170,10 +172,7 @@ namespace Nanook.QueenBee.Parser
         {
             _pakFormat = pakFormat;
             _filename = filename;
-
-            if (debugFilename.Length != 0 && File.Exists(debugFilename))
-                loadDebugFile(File.ReadAllText(debugFilename));
-
+            
             using (FileStream fs = File.Open(_filename, FileMode.Open, FileAccess.Read))
                 parse(fs);
 
@@ -188,7 +187,6 @@ namespace Nanook.QueenBee.Parser
         {
             _pakFormat = pakFormat;
             _filename = filename;
-            loadDebugFile(debugFileContents);
             parse(stream);
         }
 
@@ -397,11 +395,9 @@ namespace Nanook.QueenBee.Parser
             return null;
         }
 
-        private void loadDebugFile(string debugFileContents)
+        internal static void PopulateDebugNames(string debugFileContents)
         {
-            _debugNames = new Dictionary<uint, string>();
-
-            string[] d = debugFileContents.Replace("\r", "").Split(new char[] { '\n' });
+            string[] d = debugFileContents.Replace("\r", "").Split('\n');
 
             bool b = false;
             int pos = 10;
@@ -412,9 +408,19 @@ namespace Nanook.QueenBee.Parser
                     if (s.Trim().Length > 2)
                     {
                         if (s[pos] == ' ')
-                            _debugNames.Add(uint.Parse(s.Substring(2, pos - 2), System.Globalization.NumberStyles.HexNumber), s.Substring(pos + 1));
+                        {
+                            var key = uint.Parse(s.Substring(2, pos - 2), System.Globalization.NumberStyles.HexNumber);
+                            var value = s.Substring(pos + 1);
+                            // Don't store paths as debug names
+                            if (!DebugNames.ContainsKey(key) && !value.Contains("\\")) DebugNames.Add(key, s.Substring(pos + 1));
+                        }
                         else
-                            throw new ApplicationException(string.Format("Bad Entry in checksum in debug file, char[{0}] id not a space", pos.ToString()));
+                        {
+                            throw new ApplicationException(
+                                string.Format(
+                                    "Bad Entry in checksum in debug file, char[{0}] id not a space",
+                                    pos.ToString()));
+                        }
                     }
 
                 }
@@ -426,6 +432,13 @@ namespace Nanook.QueenBee.Parser
             }
         }
 
+        public static string GetDebugName(uint debugCrc)
+        {
+            string ret = null;
+            DebugNames.TryGetValue(debugCrc, out ret);
+            return ret;
+        }
+
         internal string LookupDebugName(uint debugCrc)
         {
             return LookupDebugName(debugCrc, true);
@@ -433,8 +446,8 @@ namespace Nanook.QueenBee.Parser
 
         internal string LookupDebugName(uint debugCrc, bool allowUserQbkeyLookup)
         {
-            if (_debugNames != null && _debugNames.ContainsKey(debugCrc))
-                return _debugNames[debugCrc];
+            if (DebugNames != null && DebugNames.ContainsKey(debugCrc))
+                return DebugNames[debugCrc];
 
             if (allowUserQbkeyLookup)
             {
@@ -973,7 +986,6 @@ namespace Nanook.QueenBee.Parser
 
         private static string _allowedScriptStringChars;
 
-        private Dictionary<uint, string> _debugNames;
         private uint _lengthCheckStart;
         private uint _magic;
         private uint _fileSize;
@@ -983,6 +995,7 @@ namespace Nanook.QueenBee.Parser
 
         private static Dictionary<QbItemType, List<QbItemType>> _supportedChildItems;
 
+        public static Dictionary<uint, string> DebugNames;
     }
 
 }

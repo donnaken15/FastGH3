@@ -1,5 +1,6 @@
 script({
 	qbkey part = guitar;
+	qbkey diff = expert;
 }) {
 
 if (*game_mode == p2_battle || *enable_solos == 0)
@@ -11,7 +12,16 @@ i = 1;
 repeat(*current_num_players)
 {
 	FormatText(checksumName=player_status, 'player%d_status', d = %i);
-	if (%part == (*%player_status.part))
+	if (%i == 1)
+	{
+		player_difficulty = current_difficulty;
+	}
+	elseif (%i == 2)
+	{
+		player_difficulty = current_difficulty2;
+	}
+	if (%part == (*%player_status.part) &&
+		%diff == (*%player_difficulty))
 	{
 		repeat
 		{

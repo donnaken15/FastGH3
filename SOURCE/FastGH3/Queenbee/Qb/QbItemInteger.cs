@@ -11,7 +11,7 @@ namespace Nanook.QueenBee.Parser
         {
         }
 
-        public void Create(QbItemType type, int length)
+        public override void Create(QbItemType type)
         {
             if (type != QbItemType.SectionInteger && type != QbItemType.SectionStringPointer &&
                 type != QbItemType.ArrayInteger && type != QbItemType.ArrayStringPointer &&
@@ -20,10 +20,14 @@ namespace Nanook.QueenBee.Parser
 
             base.Create(type);
 
-            Values = new int[length]; //sets item count
+            this.Values = new int[1]; //sets item count
             _values[0] = 0;
         }
-        
+
+        /// <summary>
+        /// Deep clones this item and all children.  Positions and lengths are not cloned.  When inserted in to another item they should be calculated.
+        /// </summary>
+        /// <returns></returns>
         public override QbItemBase Clone()
         {
             QbItemInteger qi = new QbItemInteger(this.Root);
@@ -34,7 +38,7 @@ namespace Nanook.QueenBee.Parser
 
             int[] ii = new int[this.Values.Length];
             for (int i = 0; i < ii.Length; i++)
-                ii[i] = Values[i];
+                ii[i] = this.Values[i];
 
             qi.Values = ii;
             qi.ItemCount = this.ItemCount;
@@ -108,5 +112,6 @@ namespace Nanook.QueenBee.Parser
         }
 
         private int[] _values;
+
     }
 }

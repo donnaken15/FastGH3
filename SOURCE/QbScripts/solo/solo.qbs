@@ -1,5 +1,6 @@
 script({
 	qbkey part = guitar;
+	qbkey diff = expert;
 }) {
 
 // stupid event caller won't pass actual specified time but when exactly this spawns
@@ -38,6 +39,7 @@ repeat(%array_size)
 	{
 		// fallback for no param entered
 		part2 = guitar;
+		diff2 = expert;
 		if (StructureContains(structure=%scr,params))
 		{
 			tmpval = (%scr.params);
@@ -45,15 +47,22 @@ repeat(%array_size)
 			{
 				part2 = (%tmpval.part);
 			}
+			if (StructureContains(structure=%tmpval,diff))
+			{
+				diff = (%tmpval.diff);
+			}
 		}
-		// part == part2 && time just about matches
+		// part == part2 && diff == diff2 && time just about matches
 		// so this has to be my script!
 		if (checksumequals(a=%part,b=%part2))
 		{
-			// get real due time
-			time = (%scr.time);
-			found_self = 1;
-			break;
+			if (checksumequals(a=%diff,b=%diff2))
+			{
+				// get real due time
+				time = (%scr.time);
+				found_self = 1;
+				break;
+			}
 		}
 	}
 	k = (%k + 1);
@@ -78,6 +87,7 @@ repeat(%array_size)
 		%scr.scr == soloend)
 	{
 		part2 = guitar;
+		diff2 = expert;
 		if (StructureContains(structure=%scr,params))
 		{
 			tmpval = (%scr.params); // why
@@ -85,12 +95,21 @@ repeat(%array_size)
 			{
 				part2 = (%tmpval.part);
 			}
+			if (StructureContains(structure=%tmpval,diff))
+			{
+				diff2 = (%tmpval.diff);
+			}
 		}
+		// wait why is this checked differently,
+		// did this work the entire time?
 		if (%part == %part2)
 		{
-			endtime = (%scr.time);
-			found_soloend = 1;
-			break;
+			if (%diff == %diff2)
+			{
+				endtime = (%scr.time);
+				found_soloend = 1;
+				break;
+			}
 		}
 	}
 	// exit if two solo scripts appear for the same part without being separated by soloend
@@ -112,9 +131,20 @@ i = 1;
 repeat(*current_num_players)
 {
 	FormatText(checksumName=player_status, 'player%d_status', d = %i);
-	if (%part == (*%player_status.part))
+	if (%i == 1)
+	{
+		player_difficulty = current_difficulty;
+	}
+	elseif (%i == 2)
+	{
+		player_difficulty = current_difficulty2;
+	}
+	if (%part == (*%player_status.part) &&
+		%diff == (*%player_difficulty))
 	{
 		// wtf
+		// get notes hit just before this executes
+		// but was within the markers
 		repeat
 		{
 			if (%i == 1)
@@ -133,6 +163,7 @@ repeat(*current_num_players)
 			}
 			wait(1,gameframe);
 		}
+		// get player's raw note track (time,fret,len)
 		gemarrayid = (*%player_status.current_song_gem_array);
 		song_array = *%gemarrayid;
 		getarraysize(song_array);

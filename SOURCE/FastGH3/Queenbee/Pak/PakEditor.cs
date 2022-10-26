@@ -70,7 +70,7 @@ namespace Nanook.QueenBee.Parser
                 }
 
 
-                if (_pakFormat.DebugFileExists && _debugFile) // cancer
+                if (_pakFormat.DebugFileExists)
                 {
                     string debugFileContents;
                     string filename;
@@ -96,7 +96,10 @@ namespace Nanook.QueenBee.Parser
                                 debugFileContents = pakDebug.ExtractFileToString(filename);
 
                                 if (debugFileContents.Length != 0)
+                                {
                                     addDebugFilename(debugFileContents, qbKeyFilenames, crc);
+                                    QbFile.PopulateDebugNames(debugFileContents);
+                                }
                             }
                         }
                     }

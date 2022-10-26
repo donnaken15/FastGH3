@@ -13,6 +13,16 @@
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <OutputPath>..\..\</OutputPath>
+    <DebugType>Full</DebugType>
+    <WarningLevel>4</WarningLevel>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,16 +37,6 @@
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <SignAssembly>False</SignAssembly>
-    <DelaySign>False</DelaySign>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <NoStdLib>False</NoStdLib>
-    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
-    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
-    <OutputPath>..\..\</OutputPath>
-    <DebugType>Full</DebugType>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <ErrorReport>prompt</ErrorReport>
@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <StartupObject>FastGH3.Program</StartupObject>
+    <StartupObject>Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -72,8 +72,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
@@ -83,10 +85,9 @@
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinaryEndianReader.cs" />
-    <Compile Include="BinaryEndianWriter.cs" />
     <Compile Include="ChartEdit\beatType.cs" />
     <Compile Include="ChartEdit\Chart.cs" />
     <Compile Include="ChartEdit\EventsSection.cs" />
@@ -134,6 +135,14 @@
     <Compile Include="fspmultichart.Designer.cs">
       <DependentUpon>fspmultichart.cs</DependentUpon>
     </Compile>
+    <Compile Include="keyEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="keyEdit.Designer.cs">
+      <DependentUpon>keyEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Queenbee\BinaryEndianReader.cs" />
+    <Compile Include="Queenbee\BinaryEndianWriter.cs" />
     <Compile Include="Queenbee\Pak\PakDbgQbKey.cs" />
     <Compile Include="Queenbee\Pak\PakEditor.cs" />
     <Compile Include="Queenbee\Pak\PakFormat.cs" />
@@ -224,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="fspmultichart.resx">
       <DependentUpon>fspmultichart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="keyEdit.resx">
+      <DependentUpon>keyEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

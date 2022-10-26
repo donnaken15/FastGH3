@@ -6,14 +6,14 @@ using System.IO;
 
 namespace Nanook.QueenBee.Parser
 {
-    public class QbItemScript : QbItemBase
+    public partial class QbItemScript : QbItemBase
     {
         public QbItemScript(QbFile root) : base(root)
         {
             _strings = null;
 
             if (QbFile.AllowedScriptStringChars == null || QbFile.AllowedScriptStringChars.Length == 0)
-                _allowedStringChars = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890\/?!""£$%^&*()-+{}[]'#@~?><,. =®©_";
+                _allowedStringChars = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567890\/?!""£$%^&*()-+{}[]'#@~?><,. =®©_=:";
             else
                 _allowedStringChars = QbFile.AllowedScriptStringChars;
         }
