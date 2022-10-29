@@ -117,4 +117,87 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="chartFilter" xml:space="preserve">
+    <value>Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|Any type|*.*</value>
+  </data>
+  <data name="credits" xml:space="preserve">
+    <value>adituv           - QbScript reverse engineering,
+                   compiler/decompiler,
+                   vsync flame fix,
+                   built in QB decompiler
+ExileLord        - GH3+ and executable reverse engineering,
+                   open and tap notes,
+                   ChartEdit/Chart-to-PAK classes and conversion tools,
+donnaken15       - other QbScript hacking,
+                   mod creation and setup,
+                   game optimization,
+                   main program and automation,
+                   logger plugin,
+                   Discord RPC,
+                   solos,
+                   open sustains,
+                   overlapping starpower
+Nanook           - QueenBee + Parser
+raphaelgoulart   - mid2chart
+GameZelda        - original modding and game data R.E.
+aluigi           - FSBExt, and other cool off-project extraction tools
+HATRED           - better No-CD/SecuROM fix/deobfs. than BATTERY
+No1mann          \
+Invo             \
+szymmirr         \
+Zedek the P.D.   \
+ScoreHero forums
+and many others  - Miscellaneous things / help
+SoX  devs        - SoX, decoder
+LAME devs        - LAME, faster encoder
+media-autobuild-suite
+paint.net
+FileOptimizer
+Guitar Hero SDK
+upx              - Programs used
+Activision       \
+RedOctane        \
+Neversoft        \
+Aspyr            - Original game, assets, copyright</value>
+  </data>
+  <data name="powersDefaultKey" xml:space="preserve">
+    <value>Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal</value>
+  </data>
+  <data name="splashText" xml:space="preserve">
+    <value>
+ Welcome to FastGH3 v1.0
+ FastGH3 is an advanced mod of
+ Guitar Hero 3 designed to be played
+ as fast as possible. With this mod, you
+ can play customs without any technical
+ setup, and even associate chart or mid
+ files with the game so you can access
+ your charts quickly.
+
+ To access the options, use
+ the -settings parameter or
+ open settings.bat.
+
+ Press any key to load a chart.</value>
+  </data>
+  <data name="SPwarn" xml:space="preserve">
+    <value>/!\ Error adding a starpower phrase. If this message appears more than once, there may be a problem</value>
+  </data>
+  <data name="xmlDefault" xml:space="preserve">
+    <value>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;r&gt;
+&lt;s id="Video.Width"&gt;1024&lt;/s&gt;
+&lt;s id="Video.Height"&gt;768&lt;/s&gt;
+&lt;s id="Sound.SongSkew"&gt;-0.1&lt;/s&gt;
+&lt;/r&gt;</value>
+  </data>
+  <data name="Z7_f" xml:space="preserve">
+    <value>The extractor returned a non-zero error code. This could mean that the extraction has failed.</value>
+  </data>
+  <data name="Z7_u" xml:space="preserve">
+    <value>7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.</value>
+  </data>
+  <data name="Z7_uu" xml:space="preserve">
+    <value>Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed.</value>
+  </data>
 </root>

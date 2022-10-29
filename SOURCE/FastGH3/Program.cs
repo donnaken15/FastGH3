@@ -9,6 +9,9 @@ using Ionic.Zip;
 using ChartEdit;
 using System.Collections.Generic;
 using Microsoft.Win32;
+using FastGH3.Properties;
+using System.Collections.Specialized;
+using System.Text;
 
 class Program
 {
@@ -16,20 +19,34 @@ class Program
     {
         // cheap byte saving by forcing some strings to not be unicode
         return System.Text.Encoding.ASCII.GetString(a);
+        // resources actually can deal with this just fine
+        // pretentious language/compiler
     }
+    static uint[] unusedKeys = {
+                0x212262DF, 0x7F2FC9BC, 0x32BDB4A9, 0x44819DD0, 0xCB09D855, 0x2E7DDC38,
+                0x71AA8EF7, 0x347C8050, 0x195F3B95, 0x7E1B28BC, 0x9D0C5D0C, 0xAF1E8BC1,
+                0xF51E3E9F, 0x5CD97CE0, 0xCCB6F94A, 0x9CF00B70
+            };
+    static byte[] paknew = new byte[0xB0], paknewP1 = {
+                0xA7, 0xF5, 0x05, 0xC4, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x1C,
+                0x00, 0x00, 0x00, 0x00, 0xE1, 0x53, 0x10, 0xCD, 0x4C, 0x1E, 0x75, 0x69,
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2C, 0xB3, 0xEF, 0x3B,
+                0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
+                0x89, 0x7A, 0xBB, 0x4A, 0x6A, 0xF9, 0x8E, 0xD1
+            }, qbnew = {
+                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1C, 0x1C, 0x08, 0x02, 0x04,
+                0x10, 0x04, 0x08, 0x0C, 0x0C, 0x08, 0x02, 0x04, 0x14, 0x02, 0x04, 0x0C,
+                0x10, 0x10, 0x0C, 0x00
+            };
+    static string folder, dataf = "\\DATA\\", pakf = dataf + "PAK\\",
+        music = dataf + "MUSIC\\", song = "song", title = "FastGH3";
 
     public static bool verboselog, writefile = true;
-    // pretentious language/compiler
-    public static string chartfilter = _8Bstr(new byte[] { (byte)'A', (byte)'n', (byte)'y', (byte)' ', (byte)'s', (byte)'u', (byte)'p', (byte)'p', (byte)'o', (byte)'r', (byte)'t', (byte)'e', (byte)'d', (byte)' ', (byte)'f', (byte)'i', (byte)'l', (byte)'e', (byte)'s', (byte)'|', (byte)'*', (byte)'.', (byte)'c', (byte)'h', (byte)'a', (byte)'r', (byte)'t', (byte)';', (byte)'*', (byte)'.', (byte)'m', (byte)'i', (byte)'d', (byte)';', (byte)'*', (byte)'.', (byte)'f', (byte)'s', (byte)'p', (byte)';', (byte)'*', (byte)'.', (byte)'z', (byte)'i', (byte)'p', (byte)';', (byte)'*', (byte)'.', (byte)'7', (byte)'z', (byte)';', (byte)'*', (byte)'.', (byte)'r', (byte)'a', (byte)'r', (byte)';', (byte)'*', (byte)'.', (byte)'p', (byte)'a', (byte)'k', (byte)'.', (byte)'x', (byte)'e', (byte)'n', (byte)'|', (byte)'A', (byte)'l', (byte)'l', (byte)' ', (byte)'c', (byte)'h', (byte)'a', (byte)'r', (byte)'t', (byte)' ', (byte)'t', (byte)'y', (byte)'p', (byte)'e', (byte)'s', (byte)'|', (byte)'*', (byte)'.', (byte)'c', (byte)'h', (byte)'a', (byte)'r', (byte)'t', (byte)';', (byte)'*', (byte)'.', (byte)'m', (byte)'i', (byte)'d', (byte)'|', (byte)'F', (byte)'a', (byte)'s', (byte)'t', (byte)'G', (byte)'H', (byte)'3', (byte)' ', (byte)'S', (byte)'o', (byte)'n', (byte)'g', (byte)' ', (byte)'P', (byte)'a', (byte)'c', (byte)'k', (byte)'a', (byte)'g', (byte)'e', (byte)'|', (byte)'*', (byte)'.', (byte)'f', (byte)'s', (byte)'p', (byte)';', (byte)'*', (byte)'.', (byte)'z', (byte)'i', (byte)'p', (byte)';', (byte)'*', (byte)'.', (byte)'7', (byte)'z', (byte)';', (byte)'*', (byte)'.', (byte)'r', (byte)'a', (byte)'r', (byte)'|', (byte)'A', (byte)'n', (byte)'y', (byte)' ', (byte)'t', (byte)'y', (byte)'p', (byte)'e', (byte)'|', (byte)'*', (byte)'.', (byte)'*' });
-    /*"Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen|" +
-        "All chart types|*.chart;*.mid|" +
-        "FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|" +
-        "Any type|*.*"*/
     public static OpenFileDialog openchart = new OpenFileDialog() {
         AddExtension = true,
         CheckFileExists = true,
         CheckPathExists = true,
-        Filter = chartfilter,
+        Filter = Resources.chartFilter,
         RestoreDirectory = true,
         Title = "Select chart"
     };
@@ -55,11 +72,26 @@ class Program
         }
     }
 
-    static void KYS()
+    static void die()
     {
         // program dies too slow for it to not interfere with later process spawns
         // "THEN RESTART YOUR COMPUTER DARK HUMOR DEPRESSINGLY EDGY KID STUPI-"
         Process.GetCurrentProcess().Kill();
+    }
+    static uint Eswap(uint value)
+    {
+        return ((value & 0xFF) << 24) |
+                ((value & 0xFF00) << 8) |
+                ((value & 0xFF0000) >> 8) |
+                ((value & 0xFF000000) >> 24);
+    }
+    static uint Eswap(int value)
+    {
+        return Eswap((uint)value);
+    }
+    static ushort Eswap(ushort value)
+    {
+        return (ushort)((value << 8) | (value >> 8));
     }
 
     static TimeSpan time
@@ -261,29 +293,66 @@ class Program
         FSBcolor = ConsoleColor.Yellow,
         FSPcolor = ConsoleColor.Magenta;
 
+    enum SpecialFlag
+    {
+        Faceoff1,
+        Faceoff2,
+        Starpower,
+        Battle
+    }
+
+    static Tuple<List<Note>,List<int>> SpecialToPhrases(NoteTrack track, SpecialFlag type)
+    {
+        // count notes in starpower phrases
+        // weird setup
+        // Thanks Neversoft
+
+        // i forgot how this even works
+        List<Note> spTmp = new List<Note>();
+        Note spLast = new Note(), noteLast = new Note();
+        int spTmp3 = 0, spTmp2 = 0;
+        List<int> spPnc = new List<int>();
+        foreach (Note a in track)
+        {
+            if (a.Type == NoteType.Regular && spLast != null)
+            {
+                noteLast = a;
+                spTmp3 = noteLast.Offset;
+                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
+                {
+                    spTmp2++;
+                }
+                else
+                {
+                    if (spTmp2 > 0)
+                    {
+                        spPnc.Add(spTmp2);
+                        spTmp2 = 0;
+                    }
+                }
+            }
+            if (a.Type == NoteType.Special &&
+                a.SpecialFlag == (int)type)
+            {
+                spTmp.Add(a);
+                spLast = a;
+                spTmp3 = noteLast.Offset;
+                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
+                {
+                    spTmp2++;
+                }
+            }
+        }
+        return Tuple.Create(spTmp, spPnc);
+    }
+
+    static string version = "1.0-999010723";
+    static DateTime builddate;
     [STAThread]
     static void Main(string[] args)
     {
         try
         {
-            uint[] unusedKeys = {
-                0x212262DF, 0x7F2FC9BC, 0x32BDB4A9, 0x44819DD0, 0xCB09D855, 0x2E7DDC38,
-                0x71AA8EF7, 0x347C8050, 0x195F3B95, 0x7E1B28BC, 0x9D0C5D0C, 0xAF1E8BC1,
-                0xF51E3E9F, 0x5CD97CE0, 0xCCB6F94A, 0x9CF00B70
-            };
-            byte[] paknew = new byte[0xB0], paknewP1 = {
-                0xA7, 0xF5, 0x05, 0xC4, 0x00, 0x00, 0x00, 0x80, 0x00, 0x00, 0x00, 0x1C,
-                0x00, 0x00, 0x00, 0x00, 0xE1, 0x53, 0x10, 0xCD, 0x4C, 0x1E, 0x75, 0x69,
-                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2C, 0xB3, 0xEF, 0x3B,
-                0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00,
-                0x89, 0x7A, 0xBB, 0x4A, 0x6A, 0xF9, 0x8E, 0xD1
-            }, qbnew = {
-                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1C, 0x1C, 0x08, 0x02, 0x04,
-                0x10, 0x04, 0x08, 0x0C, 0x0C, 0x08, 0x02, 0x04, 0x14, 0x02, 0x04, 0x0C,
-                0x10, 0x10, 0x0C, 0x00
-            };
-            string folder, dataf = "\\DATA\\", pakf = dataf + "PAK\\",
-                music = dataf + "MUSIC\\", song = "song", title = "FastGH3";
             // System.Reflection.Emit wat dis
             bool multiinstcheck_ = true;
             if (multiinstcheck_)
@@ -338,10 +407,7 @@ class Program
                 if (settings.GetKeyValue("Misc", "NoStartupMsg", "0") == "0")
                 {
                     Console.Clear();
-                    Console.WriteLine(_8Bstr(new byte[] {
-                        // FML
-                        (byte)'\n',(byte)' ',(byte)'W',(byte)'e',(byte)'l',(byte)'c',(byte)'o',(byte)'m',(byte)'e',(byte)' ',(byte)'t',(byte)'o',(byte)' ',(byte)'F',(byte)'a',(byte)'s',(byte)'t',(byte)'G',(byte)'H',(byte)'3',(byte)' ',(byte)'v',(byte)'1',(byte)'.',(byte)'0',(byte)'\n',(byte)'\n',(byte)' ',(byte)'F',(byte)'a',(byte)'s',(byte)'t',(byte)'G',(byte)'H',(byte)'3',(byte)' ',(byte)'i',(byte)'s',(byte)' ',(byte)'a',(byte)'n',(byte)' ',(byte)'a',(byte)'d',(byte)'v',(byte)'a',(byte)'n',(byte)'c',(byte)'e',(byte)'d',(byte)' ',(byte)'m',(byte)'o',(byte)'d',(byte)' ',(byte)'o',(byte)'f',(byte)'\n',(byte)' ',(byte)'G',(byte)'u',(byte)'i',(byte)'t',(byte)'a',(byte)'r',(byte)' ',(byte)'H',(byte)'e',(byte)'r',(byte)'o',(byte)' ',(byte)'3',(byte)' ',(byte)'d',(byte)'e',(byte)'s',(byte)'i',(byte)'g',(byte)'n',(byte)'e',(byte)'d',(byte)' ',(byte)'t',(byte)'o',(byte)' ',(byte)'b',(byte)'e',(byte)' ',(byte)'p',(byte)'l',(byte)'a',(byte)'y',(byte)'e',(byte)'d',(byte)'\n',(byte)' ',(byte)'a',(byte)'s',(byte)' ',(byte)'f',(byte)'a',(byte)'s',(byte)'t',(byte)' ',(byte)'a',(byte)'s',(byte)' ',(byte)'p',(byte)'o',(byte)'s',(byte)'s',(byte)'i',(byte)'b',(byte)'l',(byte)'e',(byte)'.',(byte)' ',(byte)'W',(byte)'i',(byte)'t',(byte)'h',(byte)' ',(byte)'t',(byte)'h',(byte)'i',(byte)'s',(byte)' ',(byte)'m',(byte)'o',(byte)'d',(byte)',',(byte)' ',(byte)'y',(byte)'o',(byte)'u',(byte)'\n',(byte)' ',(byte)'c',(byte)'a',(byte)'n',(byte)' ',(byte)'p',(byte)'l',(byte)'a',(byte)'y',(byte)' ',(byte)'c',(byte)'u',(byte)'s',(byte)'t',(byte)'o',(byte)'m',(byte)'s',(byte)' ',(byte)'w',(byte)'i',(byte)'t',(byte)'h',(byte)'o',(byte)'u',(byte)'t',(byte)' ',(byte)'a',(byte)'n',(byte)'y',(byte)' ',(byte)'t',(byte)'e',(byte)'c',(byte)'h',(byte)'n',(byte)'i',(byte)'c',(byte)'a',(byte)'l',(byte)'\n',(byte)' ',(byte)'s',(byte)'e',(byte)'t',(byte)'u',(byte)'p',(byte)',',(byte)' ',(byte)'a',(byte)'n',(byte)'d',(byte)' ',(byte)'e',(byte)'v',(byte)'e',(byte)'n',(byte)' ',(byte)'a',(byte)'s',(byte)'s',(byte)'o',(byte)'c',(byte)'i',(byte)'a',(byte)'t',(byte)'e',(byte)' ',(byte)'c',(byte)'h',(byte)'a',(byte)'r',(byte)'t',(byte)' ',(byte)'o',(byte)'r',(byte)' ',(byte)'m',(byte)'i',(byte)'d',(byte)'\n',(byte)' ',(byte)'f',(byte)'i',(byte)'l',(byte)'e',(byte)'s',(byte)' ',(byte)'w',(byte)'i',(byte)'t',(byte)'h',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'g',(byte)'a',(byte)'m',(byte)'e',(byte)' ',(byte)'s',(byte)'o',(byte)' ',(byte)'y',(byte)'o',(byte)'u',(byte)' ',(byte)'c',(byte)'a',(byte)'n',(byte)' ',(byte)'a',(byte)'c',(byte)'c',(byte)'e',(byte)'s',(byte)'s',(byte)'\n',(byte)' ',(byte)'y',(byte)'o',(byte)'u',(byte)'r',(byte)' ',(byte)'c',(byte)'h',(byte)'a',(byte)'r',(byte)'t',(byte)'s',(byte)' ',(byte)'q',(byte)'u',(byte)'i',(byte)'c',(byte)'k',(byte)'l',(byte)'y',(byte)'.',(byte)'\n',(byte)'\n',(byte)' ',(byte)'T',(byte)'o',(byte)' ',(byte)'a',(byte)'c',(byte)'c',(byte)'e',(byte)'s',(byte)'s',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'o',(byte)'p',(byte)'t',(byte)'i',(byte)'o',(byte)'n',(byte)'s',(byte)',',(byte)' ',(byte)'u',(byte)'s',(byte)'e',(byte)'\n',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'-',(byte)'s',(byte)'e',(byte)'t',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)'s',(byte)' ',(byte)'p',(byte)'a',(byte)'r',(byte)'a',(byte)'m',(byte)'e',(byte)'t',(byte)'e',(byte)'r',(byte)' ',(byte)'o',(byte)'r',(byte)'\n',(byte)' ',(byte)'o',(byte)'p',(byte)'e',(byte)'n',(byte)' ',(byte)'s',(byte)'e',(byte)'t',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)'s',(byte)'.',(byte)'b',(byte)'a',(byte)'t',(byte)'.',(byte)'\n',(byte)'\n',(byte)' ',(byte)'P',(byte)'r',(byte)'e',(byte)'s',(byte)'s',(byte)' ',(byte)'a',(byte)'n',(byte)'y',(byte)' ',(byte)'k',(byte)'e',(byte)'y',(byte)' ',(byte)'t',(byte)'o',(byte)' ',(byte)'l',(byte)'o',(byte)'a',(byte)'d',(byte)' ',(byte)'a',(byte)' ',(byte)'c',(byte)'h',(byte)'a',(byte)'r',(byte)'t',(byte)'.',(byte)'\n'
-                    }));
+                    Console.WriteLine(Resources.splashText);
                     Console.ReadKey();
                 }
                 if (openchart.ShowDialog() == DialogResult.OK)
@@ -357,7 +423,8 @@ class Program
             {
                 // combine logs from any of 3 processes to easily look for errors from all of them
                 bool newfile = settings.GetKeyValue("Misc", "FinishedLog", "1") == "1";
-                if (args[0] != "-settings")
+                if (args[0] != "-settings" &&
+                    args[0] != "-gfxswap")
                     if (writefile)
                     {
                         if (newfile)
@@ -368,6 +435,8 @@ class Program
                         if (newfile)
                         {
                             launcherlog.WriteLine("FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n--------------------------------");
+                            builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(folder + music + "\\TOOLS\\bt.bin"), 0)));
+                            launcherlog.WriteLine("version 1.0-999010723 / build time: "+builddate);
                             newfile = false;
                             settings.SetKeyValue("Misc", "FinishedLog", "0");
                             settings.Save(folder + "settings.ini");
@@ -435,6 +504,8 @@ class Program
                                     {
                                         pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", scn);
                                     }
+                                    else
+                                        pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", "default.scn.xen");
                                     File.Delete(gfx);
                                     File.Delete(scn);
                                 }
@@ -445,6 +516,8 @@ class Program
                                     {
                                         pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", args[1].Replace(".tex", ".scn").Replace(".gfx", ".scn"));
                                     }
+                                    else
+                                        pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", "default.scn.xen");
                                 }
                             }
                             else
@@ -475,123 +548,113 @@ class Program
                     Console.WriteLine(title + " by donnaken15");
                     launcherlog.WriteLine("\n######### DOWNLOAD SONG PHASE #########\n");
                     print("Downloading song package...", FSPcolor);
-                    try
+                    bool datecheck = true;
+                    Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
+                    string cacheSect = ""; // ...
+                    string urlCache = "";
+                    string tmpFn = "null";
+                    verboseline(fsplink.AbsoluteUri, FSPcolor);
+                    if (cacheEnabled)
                     {
-                        bool datecheck = true;
-                        Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
-                        string cacheSect = ""; // ...
-                        string urlCache = "";
-                        string tmpFn = "null";
-                        verboseline(fsplink.AbsoluteUri, FSPcolor);
-                        if (cacheEnabled)
+                        cacheSect = "URL" + WZK64.Create(fsplink.AbsoluteUri).ToString("X16");
+                        urlCache = cache.GetKeyValue(cacheSect, "File", "");
+                        if (urlCache != "")
                         {
-                            cacheSect = "URL" + WZK64.Create(fsplink.AbsoluteUri).ToString("X16");
-                            urlCache = cache.GetKeyValue(cacheSect, "File", "");
+                            print("Found already downloaded file.", FSPcolor);
+                            verboseline(cacheSect);
+                            verboseline(urlCache);
+                            tmpFn = urlCache;
+                            if (!datecheck)
+                                goto skipToGame;
+                        }
+                        if (datecheck)
+                            print("Unique file date checking enabled.", FSPcolor);
+                    }
+                    WebClient fsp = new WebClient();
+                    fsp.Proxy = null;
+                    fsp.Headers.Add("user-agent", "Anything");
+                    ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00); // why .NET 4
+                    fsp.OpenRead(fsplink);
+                    DateTime lastmod = new DateTime(), lastmod_cached;
+                    //verboseline("1");
+                    if (datecheck && cacheEnabled)
+                    {
+                        if (cache.GetKeyValue(cacheSect, "Date", "0") != "") // STUPID
+                            lastmod_cached = new DateTime(Convert.ToInt64(cache.GetKeyValue(cacheSect, "Date", "0")));
+                        else
+                            lastmod_cached = new DateTime(0);
+                        if (lastmod_cached.Ticks == 0)
+                            verboseline("Date not cached", cacheColor);
+                        else
+                            verboseline("Cached date: " + lastmod_cached.ToUniversalTime(), cacheColor);
+                        if (fsp.ResponseHeaders["Last-Modified"] != null)
+                        {
+                            //verboseline(fsp.ResponseHeaders["Last-Modified"]);
+                            lastmod = DateTime.Parse(fsp.ResponseHeaders["Last-Modified"]);
+                            verboseline("Got file date: " + lastmod.ToUniversalTime(), cacheColor);
+                            if (lastmod.Ticks == lastmod_cached.Ticks && lastmod_cached.Ticks != 0)
+                            {
+                                verboseline("Unchanged file date. Using already downloaded file.", cacheColor);
+                                goto skipToGame;
+                            }
+                            else
+                            {
+                                if (lastmod.Ticks == 0)
+                                    print("Different file date. Redownloading...", cacheColor);
+                            }
+                        }
+                        else
+                        {
+                            print("No file date found.", cacheColor);
                             if (urlCache != "")
                             {
-                                print("Found already downloaded file.", FSPcolor);
-                                verboseline(cacheSect);
-                                verboseline(urlCache);
-                                tmpFn = urlCache;
-                                if (!datecheck)
-                                    goto skipToGame;
-                            }
-                            if (datecheck)
-                                print("Unique file date checking enabled.", FSPcolor);
-                        }
-                        WebClient fsp = new WebClient();
-                        fsp.Proxy = null;
-                        fsp.Headers.Add("user-agent", "Anything");
-                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00); // why .NET 4
-                        fsp.OpenRead(fsplink);
-                        DateTime lastmod = new DateTime(), lastmod_cached;
-                        //verboseline("1");
-                        if (datecheck && cacheEnabled)
-                        {
-                            if (cache.GetKeyValue(cacheSect, "Date", "0") != "") // STUPID
-                                lastmod_cached = new DateTime(Convert.ToInt64(cache.GetKeyValue(cacheSect, "Date", "0")));
-                            else
-                                lastmod_cached = new DateTime(0);
-                            if (lastmod_cached.Ticks == 0)
-                                verboseline("Date not cached", cacheColor);
-                            else
-                                verboseline("Cached date: " + lastmod_cached.ToUniversalTime(), cacheColor);
-                            if (fsp.ResponseHeaders["Last-Modified"] != null)
-                            {
-                                //verboseline(fsp.ResponseHeaders["Last-Modified"]);
-                                lastmod = DateTime.Parse(fsp.ResponseHeaders["Last-Modified"]);
-                                verboseline("Got file date: " + lastmod.ToUniversalTime(), cacheColor);
-                                if (lastmod.Ticks == lastmod_cached.Ticks && lastmod_cached.Ticks != 0)
-                                {
-                                    verboseline("Unchanged file date. Using already downloaded file.", cacheColor);
-                                    goto skipToGame;
-                                }
-                                else
-                                {
-                                    if (lastmod.Ticks == 0)
-                                        print("Different file date. Redownloading...", cacheColor);
-                                }
-                            }
-                            else
-                            {
-                                print("No file date found.", cacheColor);
-                                if (urlCache != "")
-                                {
-                                    print("Using already downloaded file.", cacheColor);
-                                    goto skipToGame;
-                                }
+                                print("Using already downloaded file.", cacheColor);
+                                goto skipToGame;
                             }
                         }
-                        if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > Math.Pow(1024, 2) * 24)
-                        {
-                            if (MessageBox.Show("This song package is a larger file than usual. Do you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
-                            {
-                                if (writefile && launcherlog != null)
-                                    launcherlog.Close();
-                                settings.SetKeyValue("Misc", "FinishedLog", "1");
-                                settings.Save(folder + "settings.ini");
-                                Environment.Exit(0);
-                            }
-                        }
-                        //if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
-                        //settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
-                        if (File.Exists(tmpFn)) // do this?
-                            File.Delete(tmpFn);
-                        tmpFn = Path.GetTempFileName();
-                        string tmpFl = Path.GetTempPath();
-                        fsp.DownloadFile(fsplink, tmpFn);
-                        File.Move(tmpFn, tmpFn + ".fsp");
-                        //Directory.CreateDirectory(tmpFl + "\\Z.TMP.FGH3$WEB");
-                        tmpFn += ".fsp";
-                        if (cacheEnabled)
-                        {
-                            print("Writing link to cache...", cacheColor);
-                            cache.SetKeyValue(cacheSect, "File", tmpFn.ToString());
-                            if (datecheck)
-                            {
-                                print("Writing date to cache...", cacheColor);
-                                cache.SetKeyValue(cacheSect, "Date", lastmod.Ticks.ToString());
-                            }
-                            cache.Save(folder + dataf + "CACHE\\.db.ini");
-                        }
-                        skipToGame:
-                        // download FSP --> open and extract FSP --> convert song --> game
-                        // FastGH3.exe  --> FastGH3.exe          --> FastGH3.exe  --> game.exe
-                        // :P
-                        GC.Collect();
-                        if (writefile && launcherlog != null)
-                            launcherlog.Close();
-                        // "already running" >:(
-                        Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
-                        KYS();
                     }
-                    catch (Exception ex)
+                    if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > Math.Pow(1024, 2) * 24)
                     {
-                        print("ERROR! :(\n" + ex.Message);
-                        settings.SetKeyValue("Misc", "FinishedLog", "1");
-                        settings.Save(folder + "settings.ini");
-                        Console.ReadKey();
+                        if (MessageBox.Show("This song package is a larger file than usual. Do you want to continue?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                        {
+                            if (writefile && launcherlog != null)
+                                launcherlog.Close();
+                            settings.SetKeyValue("Misc", "FinishedLog", "1");
+                            settings.Save(folder + "settings.ini");
+                            Environment.Exit(0);
+                        }
                     }
+                    //if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
+                    //settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
+                    if (File.Exists(tmpFn)) // do this?
+                        File.Delete(tmpFn);
+                    tmpFn = Path.GetTempFileName();
+                    string tmpFl = Path.GetTempPath();
+                    fsp.DownloadFile(fsplink, tmpFn);
+                    File.Move(tmpFn, tmpFn + ".fsp");
+                    //Directory.CreateDirectory(tmpFl + "\\Z.TMP.FGH3$WEB");
+                    tmpFn += ".fsp";
+                    if (cacheEnabled)
+                    {
+                        print("Writing link to cache...", cacheColor);
+                        cache.SetKeyValue(cacheSect, "File", tmpFn.ToString());
+                        if (datecheck)
+                        {
+                            print("Writing date to cache...", cacheColor);
+                            cache.SetKeyValue(cacheSect, "Date", lastmod.Ticks.ToString());
+                        }
+                        cache.Save(folder + dataf + "CACHE\\.db.ini");
+                    }
+                skipToGame:
+                    // download FSP --> open and extract FSP --> convert song --> game
+                    // FastGH3.exe  --> FastGH3.exe          --> FastGH3.exe  --> game.exe
+                    // :P
+                    GC.Collect();
+                    if (writefile && launcherlog != null)
+                        launcherlog.Close();
+                    // "already running" >:(
+                    Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
+                    die();
                 }
                 #endregion
                 else if (File.Exists(args[0]))
@@ -971,7 +1034,7 @@ class Program
                         Process[] fsbbuild2 = new Process[3];
                         Process fsbbuild3 = new Process();
                         bool MTFSB = true; // enable asynchronous audio track encoding
-                                            //if (cacheEnabled)
+                                           //if (cacheEnabled)
                         if (!audCache)
                         {
                             print("Audio is not cached.", cacheColor);
@@ -1197,324 +1260,12 @@ class Program
                             int delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
                             QbcNoteTrack tmp;
 
-                            bool isBoss = false,
-                                gotBossScript = false,
-                                boss_useStarPhrases = false,
-                                boss_defaultprops = false;
-
-                            IniFile bossINI = new IniFile();
-                            if (File.Exists("boss.ini"))
-                                bossINI.Load("boss.ini");
-                            if (bossINI.GetSection("boss") != null)
-                                bossINI.AddSection("boss");
-                            isBoss = bossINI.GetKeyValue("boss", "enable", "0") == "1"; // not letting you off easy with a blank ini lol
-                            boss_defaultprops = bossINI.GetKeyValue("boss", "usedefault", "0") == "1";
-                            int boss_death_time = -1;
-
-                            QbKey[] defaultPowers = new QbKey[] {
-                                QbKey.Create(0x7EB6596F), // Lightning
-                                QbKey.Create(0xB880390E), // DifficultyUp
-                                QbKey.Create(0xAF753CE1), // DoubleNotes
-                                QbKey.Create(0x24EDE700), // LeftyNotes
-                                QbKey.Create(0x7429EADC), // BrokenString
-                                QbKey.Create(0x69FA8321), // WhammyAttack
-                                QbKey.Create(0x16FB37BA), // PowerUpSteal
-                                //QbKey.Create(0x3604998C), // DeathLick
-                            };
-                            QbKey[] existingPowers = new QbKey[] {
-                                QbKey.Create(0x7EB6596F),
-                                QbKey.Create(0xB880390E),
-                                QbKey.Create(0xAF753CE1),
-                                QbKey.Create(0x24EDE700),
-                                QbKey.Create(0x7429EADC),
-                                QbKey.Create(0x69FA8321),
-                                QbKey.Create(0x16FB37BA),
-                                QbKey.Create(0x3604998C),
-                            };
-
-                            QbKey key_boss_props = QbKey.Create("Boss_Props");
-                            QbItemQbKey QB_bossitems = new QbItemQbKey(songdata);
-                            string boss_name = "Player 2";
-                            QbItemStruct fastgh3_extra = new QbItemStruct(songdata);
-                            fastgh3_extra.Create(QbItemType.SectionStruct);
-                            fastgh3_extra.ItemQbKey = QbKey.Create("fastgh3_extra");
-                            QbItemQbKey QB_bossboss = new QbItemQbKey(songdata);
-                            QbItemStruct QB_bossprops = new QbItemStruct(songdata);
-                            QbItemInteger QB_bosstime = new QbItemInteger(songdata);
-                            QbItemString QB_bossname = new QbItemString(songdata);
-
-                            QbItemQbKey boss_items = new QbItemQbKey(songdata);
-                            QbItemArray boss_items_arrays = new QbItemArray(songdata);
-
-                            QbItemStruct QB_bossRKgain_s = new QbItemStruct(songdata);
-                            QbItemStruct QB_bossRKloss_s = new QbItemStruct(songdata);
-                            QbItemStruct QB_bossATKmiss_s = new QbItemStruct(songdata);
-                            QbItemStruct QB_bossWrepair_s = new QbItemStruct(songdata);
-                            QbItemStruct QB_bossSrepair_s = new QbItemStruct(songdata);
-                            QbItemStruct QB_bossSTRmiss_s = new QbItemStruct(songdata);
-                            if (isBoss)
-                            {
-                                float[] boss_rockGain = new float[4] {
-                                    0.8f,
-                                    0.7f,
-                                    0.55f,
-                                    0.4f
-                                };
-                                QbItemFloat[] QB_bossRKgain;
-                                float[] boss_rockLoss = new float[4] {
-                                    5f,
-                                    2.75f,
-                                    2.5f,
-                                    2f
-                                };
-                                QbItemFloat[] QB_bossRKloss;
-                                float[] boss_atkmiss = new float[4] {
-                                    45f,
-                                    42f,
-                                    35f,
-                                    30f
-                                };
-                                QbItemFloat[] QB_bossATKmiss;
-                                int[] boss_Wrepair = new int[4] {
-                                    1150,
-                                    900,
-                                    500,
-                                    350
-                                };
-                                QbItemInteger[] QB_bossWrepair;
-                                int[] boss_Srepair = new int[4] {
-                                    1150,
-                                    850,
-                                    650,
-                                    400
-                                };
-                                QbItemInteger[] QB_bossSrepair;
-                                float[] boss_strmiss = new float[4] {
-                                    24f,
-                                    17f,
-                                    14f,
-                                    11.5f
-                                };
-                                QbItemFloat[] QB_bossSTRmiss;
-
-                                verboseline("Song detected as boss", bossColor);
-                                boss_name = bossINI.GetKeyValue("boss", "name", boss_name);
-                                verboseline("Boss name: " + boss_name, bossColor);
-                                if (bossINI.GetKeyValue("boss", "deathtime", "-1") != "")
-                                {
-                                    boss_death_time = Convert.ToInt32(bossINI.GetKeyValue("boss", "deathtime", "-1"));
-                                }
-
-                                if (boss_defaultprops)
-                                {
-
-                                    string[] selectedPowers = bossINI.GetKeyValue("boss", "items",
-                                    _8Bstr(new byte[] {
-                                    (byte)'L',(byte)'i',(byte)'g',(byte)'h',(byte)'t',(byte)'n',(byte)'i',(byte)'n',(byte)'g',(byte)',',(byte)'D',(byte)'i',(byte)'f',(byte)'f',(byte)'i',(byte)'c',(byte)'u',(byte)'l',(byte)'t',(byte)'y',(byte)'U',(byte)'p',(byte)',',(byte)'D',(byte)'o',(byte)'u',(byte)'b',(byte)'l',(byte)'e',(byte)'N',(byte)'o',(byte)'t',(byte)'e',(byte)'s',(byte)',',(byte)'L',(byte)'e',(byte)'f',(byte)'t',(byte)'y',(byte)'N',(byte)'o',(byte)'t',(byte)'e',(byte)'s',(byte)',',(byte)'B',(byte)'r',(byte)'o',(byte)'k',(byte)'e',(byte)'n',(byte)'S',(byte)'t',(byte)'r',(byte)'i',(byte)'n',(byte)'g',(byte)',',(byte)'W',(byte)'h',(byte)'a',(byte)'m',(byte)'m',(byte)'y',(byte)'A',(byte)'t',(byte)'t',(byte)'a',(byte)'c',(byte)'k',(byte)',',(byte)'P',(byte)'o',(byte)'w',(byte)'e',(byte)'r',(byte)'U',(byte)'p',(byte)'S',(byte)'t',(byte)'e',(byte)'a',(byte)'l'
-                                    }))
-                                    .Split(',');
-                                    // HOW DO I USE THIS https://stackoverflow.com/questions/4916838/is-there-a-string-type-with-8-bit-chars
-
-                                    List<QbKey> allowedPowers = new List<QbKey>();
-                                    bool powerDoesntExist;
-                                    for (int i = 0; i < selectedPowers.Length; i++)
-                                    {
-                                        powerDoesntExist = true;
-                                        foreach (QbKey j in existingPowers)
-                                        {
-                                            if (QbKey.Create(selectedPowers[i]) == j)
-                                            {
-                                                powerDoesntExist = false;
-                                                break;
-                                            }
-                                        }
-                                        if (powerDoesntExist)
-                                        {
-                                            print("Got non-existent powerup in boss.ini: " +
-                                                selectedPowers[i] + "!! Not using.",ConsoleColor.Red);
-                                            continue;
-                                        }
-                                        allowedPowers.Add(QbKey.Create(selectedPowers[i]));
-                                    }
-
-                                    boss_items.Create(QbItemType.ArrayQbKey);
-                                    boss_items.Values = allowedPowers.ToArray();
-                                    boss_items_arrays.Create(QbItemType.StructItemArray);
-                                    boss_items_arrays.ItemQbKey = QbKey.Create("PowerUps");
-
-                                    QB_bosstime.Create(QbItemType.SectionInteger);
-                                    QB_bosstime.ItemQbKey = QbKey.Create("boss_death_time");
-                                    QB_bosstime.Values[0] = boss_death_time;
-
-                                    QB_bossboss.Create(QbItemType.StructItemQbKey);
-                                    QB_bossboss.ItemQbKey = QbKey.Create("boss");
-                                    QB_bossboss.Values[0] = key_boss_props;
-
-                                    QB_bossprops.Create(QbItemType.SectionStruct);
-                                    QB_bossprops.ItemQbKey = key_boss_props;
-
-                                    QB_bossname.Create(QbItemType.SectionString);
-                                    QB_bossname.ItemQbKey = QbKey.Create("boss_name");
-                                    QB_bossname.Strings[0] = boss_name;
-
-                                    QB_bossRKgain = new QbItemFloat[4];
-                                    QB_bossRKloss = new QbItemFloat[4];
-                                    QB_bossATKmiss = new QbItemFloat[4];
-                                    QB_bossWrepair = new QbItemInteger[4];
-                                    QB_bossSrepair = new QbItemInteger[4];
-                                    QB_bossSTRmiss = new QbItemFloat[4];
-
-                                    QB_bossRKgain_s.Create(QbItemType.StructItemStruct);
-                                    QB_bossRKgain_s.ItemQbKey = QbKey.Create("GainPerNote");
-                                    QB_bossRKloss_s.Create(QbItemType.StructItemStruct);
-                                    QB_bossRKloss_s.ItemQbKey = QbKey.Create("LossPerNote");
-                                    QB_bossATKmiss_s.Create(QbItemType.StructItemStruct);
-                                    QB_bossATKmiss_s.ItemQbKey = QbKey.Create("PowerUpMissedNote");
-                                    QB_bossWrepair_s.Create(QbItemType.StructItemStruct);
-                                    QB_bossWrepair_s.ItemQbKey = QbKey.Create("WhammySpeed");
-                                    QB_bossSrepair_s.Create(QbItemType.StructItemStruct);
-                                    QB_bossSrepair_s.ItemQbKey = QbKey.Create("BrokenStringSpeed");
-                                    QB_bossSTRmiss_s.Create(QbItemType.StructItemStruct);
-                                    QB_bossSTRmiss_s.ItemQbKey = QbKey.Create("BrokenStringMissedNote");
-                                    int ddd = 0;
-                                    foreach (string d in diffs)
-                                    {
-                                        boss_rockGain[ddd] = Convert.ToSingle(
-                                            bossINI.GetKeyValue("rockgain", d, boss_rockGain[ddd].ToString()));
-                                        boss_rockLoss[ddd] = Convert.ToSingle(
-                                            bossINI.GetKeyValue("rockloss", d, boss_rockLoss[ddd].ToString()));
-                                        boss_atkmiss[ddd] = Convert.ToSingle(
-                                            bossINI.GetKeyValue("attackmiss", d, boss_atkmiss[ddd].ToString()));
-                                        boss_Wrepair[ddd] = Convert.ToInt32(
-                                            bossINI.GetKeyValue("whammyrepair", d, boss_Wrepair[ddd].ToString()));
-                                        boss_Srepair[ddd] = Convert.ToInt32(
-                                            bossINI.GetKeyValue("stringrepair", d, boss_Srepair[ddd].ToString()));
-                                        boss_strmiss[ddd] = Convert.ToSingle(
-                                            bossINI.GetKeyValue("stringmiss", d, boss_strmiss[ddd].ToString()));
-
-                                        QbKey diffCRC = QbKey.Create(d);
-
-                                        QB_bossRKgain[ddd] = new QbItemFloat(songdata);
-                                        QB_bossRKgain[ddd].Create(QbItemType.StructItemFloat);
-                                        QB_bossRKgain[ddd].ItemQbKey = diffCRC;
-                                        QB_bossRKgain[ddd].Values[0] = boss_rockGain[ddd];
-                                        QB_bossRKgain_s.AddItem(QB_bossRKgain[ddd]);
-
-                                        QB_bossRKloss[ddd] = new QbItemFloat(songdata);
-                                        QB_bossRKloss[ddd].Create(QbItemType.StructItemFloat);
-                                        QB_bossRKloss[ddd].ItemQbKey = diffCRC;
-                                        QB_bossRKloss[ddd].Values[0] = boss_rockLoss[ddd];
-                                        QB_bossRKloss_s.AddItem(QB_bossRKloss[ddd]);
-
-                                        QB_bossATKmiss[ddd] = new QbItemFloat(songdata);
-                                        QB_bossATKmiss[ddd].Create(QbItemType.StructItemFloat);
-                                        QB_bossATKmiss[ddd].ItemQbKey = diffCRC;
-                                        QB_bossATKmiss[ddd].Values[0] = boss_atkmiss[ddd];
-                                        QB_bossATKmiss_s.AddItem(QB_bossATKmiss[ddd]);
-
-                                        QB_bossWrepair[ddd] = new QbItemInteger(songdata);
-                                        QB_bossWrepair[ddd].Create(QbItemType.StructItemInteger);
-                                        QB_bossWrepair[ddd].ItemQbKey = diffCRC;
-                                        QB_bossWrepair[ddd].Values[0] = boss_Wrepair[ddd];
-                                        QB_bossWrepair_s.AddItem(QB_bossWrepair[ddd]);
-
-                                        QB_bossSrepair[ddd] = new QbItemInteger(songdata);
-                                        QB_bossSrepair[ddd].Create(QbItemType.StructItemInteger);
-                                        QB_bossSrepair[ddd].ItemQbKey = diffCRC;
-                                        QB_bossSrepair[ddd].Values[0] = boss_Srepair[ddd];
-                                        QB_bossSrepair_s.AddItem(QB_bossSrepair[ddd]);
-
-                                        QB_bossSTRmiss[ddd] = new QbItemFloat(songdata);
-                                        QB_bossSTRmiss[ddd].Create(QbItemType.StructItemFloat);
-                                        QB_bossSTRmiss[ddd].ItemQbKey = diffCRC;
-                                        QB_bossSTRmiss[ddd].Values[0] = boss_strmiss[ddd];
-                                        QB_bossSTRmiss_s.AddItem(QB_bossSTRmiss[ddd]);
-
-                                        /*verboseline(d + "; rock gain: " + boss_rockGain[ddd], bossColor);
-                                        verboseline(d + "; rock loss: " + boss_rockLoss[ddd], bossColor);
-                                        verboseline(d + "; attakmiss: " + boss_atkmiss[ddd], bossColor);
-                                        verboseline(d + "; wh repair: " + boss_Wrepair[ddd], bossColor);
-                                        verboseline(d + "; strrepair: " + boss_Srepair[ddd], bossColor);
-                                        verboseline(d + "; str  miss: " + boss_strmiss[ddd], bossColor);*/
-                                        ddd++;
-                                    }
-                                }
-                            }
-
                             QbItemArray array_scripts = new QbItemArray(songdata);
                             array_scripts.Create(QbItemType.SectionArray);
                             QbItemStructArray array_scripts_array = new QbItemStructArray(songdata);
                             array_scripts.ItemQbKey = QbKey.Create(0x195F3B95); // fastgh3_scripts
                             array_scripts_array.Create(QbItemType.ArrayStruct);
                             List<QbItemStruct> scripts = new List<QbItemStruct>();
-                            foreach (EventsSectionEntry e in chart.Events)
-                            {
-                                QbKey eventKey = QbKey.Create(e.TextValue);
-                                if (e.TextValue.ToLower().StartsWith("section "))
-                                    continue;
-                                if (eventKey != QbKey.Create(0xFF03CC4E) && // end
-                                    eventKey != QbKey.Create(0x2DE8C60E) && // printf
-                                    eventKey != QbKey.Create(0xBE304E86) && // printstruct
-                                    eventKey != QbKey.Create(0xF0CF92C0)) // boss_battle_begin_deathlick
-                                    continue;
-                                verboseline("Found event: " + e.TextValue, chartConvColor);
-                                QbItemStruct newScript = new QbItemStruct(songdata);
-                                newScript.Create(QbItemType.StructHeader);
-                                QbItemInteger time = new QbItemInteger(songdata);
-                                time.Create(QbItemType.StructItemInteger);
-                                QbItemQbKey scr = new QbItemQbKey(songdata);
-                                scr.Create(QbItemType.StructItemQbKey);
-                                time.ItemQbKey = QbKey.Create(0x906B67BA); // time
-                                time.Values[0] = (int)Math.Floor(OT.GetTime(e.Offset) * 1000) + delay;
-                                scr.ItemQbKey = QbKey.Create(0xA6D2D890); // scr
-                                scr.Values[0] = QbKey.Create(e.TextValue);
-                                if (scr.Values[0] == QbKey.Create(0xF0CF92C0) && isBoss)
-                                {
-                                    gotBossScript = true;
-                                    if (boss_death_time < 1)
-                                        boss_death_time = time.Values[0];
-                                    verboseline("1 " + gotBossScript);
-                                }
-                                QbItemStruct _params = new QbItemStruct(songdata);
-                                _params.Create(QbItemType.StructItemStruct);
-                                _params.ItemQbKey = QbKey.Create(0x7031F10C); // params
-                                newScript.AddItem(time);
-                                newScript.AddItem(scr);
-                                newScript.AddItem(_params);
-                                if (scr.Values[0] == QbKey.Create(0xF0CF92C0) && !isBoss)
-                                {
-                                    continue; // if not boss, dont add this
-                                }
-                                if (scr.Values[0] == QbKey.Create(0xF0CF92C0) && boss_death_time < 1)
-                                {
-                                    continue; // if boss_death_time is invalid
-                                }
-                                scripts.Add(newScript);
-                                //array_scripts_array.AddItem(newScript);
-                            }
-                            if (isBoss)
-                            {
-                                if (!gotBossScript)
-                                {
-                                    QbItemStruct deathScript = new QbItemStruct(songdata);
-                                    deathScript.Create(QbItemType.StructHeader);
-                                    QbItemInteger time = new QbItemInteger(songdata);
-                                    time.Create(QbItemType.StructItemInteger);
-                                    QbItemQbKey scr = new QbItemQbKey(songdata);
-                                    scr.Create(QbItemType.StructItemQbKey);
-                                    time.ItemQbKey = QbKey.Create(0x906B67BA); // time
-                                    time.Values[0] = boss_death_time;
-                                    scr.ItemQbKey = QbKey.Create(0xA6D2D890); // scr
-                                    scr.Values[0] = QbKey.Create(0xF0CF92C0); // deth
-                                    QbItemStruct _params = new QbItemStruct(songdata);
-                                    _params.Create(QbItemType.StructItemStruct);
-                                    _params.ItemQbKey = QbKey.Create(0x7031F10C); // params
-                                    deathScript.AddItem(time);
-                                    deathScript.AddItem(scr);
-                                    deathScript.AddItem(_params);
-                                    scripts.Add(deathScript);
-                                }
-                            }
 
                             int dd = 0;
                             int ii = 0;
@@ -1649,13 +1400,6 @@ class Program
                                 settings.Save(folder + "settings.ini");
                                 Environment.Exit(0);
                             }
-                            verboseline("Sorting scripts by time.", chartConvColor);
-                            // sort scripts by time
-                            scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2)
-                            {
-                                //     autismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautism
-                                return (c1.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0].CompareTo((c2.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0]);
-                            });
                             verboseline("Adding note arrays to QB.", chartConvColor);
                             /*for (int d = 0; d < song_notes_container.Length; d++)
                             {
@@ -1710,51 +1454,10 @@ class Program
                                 {
                                     if (chart.NoteTracks[d + i] != null)
                                     {
-                                        // count notes in starpower phrases
-                                        // weird setup
-                                        // Thanks Neversoft
-
-                                        // i forgot how this even works
-                                        List<Note> spTmp = new List<Note>();
-                                        Note spLast = new Note(), noteLast = new Note();
-                                        int spTmp3 = 0, spTmp2 = 0;
-                                        List<int> spPnc = new List<int>();
-                                        foreach (Note a in chart.NoteTracks[d + i])
-                                        {
-                                            if (a.Type == NoteType.Regular && spLast != null)
-                                            {
-                                                //Console.WriteLine(spTmp3);
-                                                noteLast = a;
-                                                spTmp3 = noteLast.Offset;
-                                                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
-                                                {
-                                                    //Console.WriteLine(spTmp3 + " >= " + spLast.Offset + " && " + spTmp3 + " < " + spLast.OffsetEnd);
-                                                    //Console.WriteLine(a.OffsetMilliseconds(OT));
-                                                    spTmp2++;
-                                                }
-                                                else
-                                                {
-                                                    if (spTmp2 > 0)
-                                                    {
-                                                        spPnc.Add(spTmp2);
-                                                        spTmp2 = 0;
-                                                    }
-                                                }
-                                            }
-                                            if (a.Type == NoteType.Special &&
-                                                a.SpecialFlag == 2)
-                                            // 3, allow adding
-                                            // battle notes here too
-                                            {
-                                                spTmp.Add(a);
-                                                spLast = a;
-                                                spTmp3 = noteLast.Offset;
-                                                if (spTmp3 >= spLast.Offset && spTmp3 < spLast.OffsetEnd)
-                                                {
-                                                    spTmp2++;
-                                                }
-                                            }
-                                        }
+                                        Tuple<List<Note>, List<int>> special =
+                                            SpecialToPhrases(chart.NoteTracks[d + i], SpecialFlag.Starpower);
+                                        List<Note> spTmp = special.Item1;
+                                        List<int> spPnc = special.Item2;
                                         int spPnc2 = 0;
                                         if (spTmp.Count != 0)
                                             foreach (Note a in spTmp)
@@ -1774,7 +1477,7 @@ class Program
                                                 }
                                                 catch /*(Exception e)*/
                                                 {
-                                                    print("/!\\ Error adding a starpower phrase. If this message appears more than once, there may be a problem", ConsoleColor.Yellow);
+                                                    print(Resources.SPwarn, ConsoleColor.Yellow);
                                                     //Console.WriteLine(e);
                                                 }
                                             }
@@ -1797,176 +1500,7 @@ class Program
                                 }
                                 ii++;
                             }
-                            // KAY OU GOT ONE PART DONE, DOOOOO THE REST, SUHLLLAAAVVVEEE!!!!!!!!!!!
-                            verboseline("Creating powerup arrays...", chartConvColor);
-                            QbItemBase array_easy_battle = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle = new QbItemArray(songdata);
-                            array_easy_battle.Create(QbItemType.SectionArray);
-                            array_medium_battle.Create(QbItemType.SectionArray);
-                            array_hard_battle.Create(QbItemType.SectionArray);
-                            array_expert_battle.Create(QbItemType.SectionArray);
-                            QbItemBase array_easy_battle_array = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_array = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_array = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_array = new QbItemArray(songdata);
-                            array_easy_battle_array.Create(QbItemType.ArrayArray);
-                            array_medium_battle_array.Create(QbItemType.ArrayArray);
-                            array_hard_battle_array.Create(QbItemType.ArrayArray);
-                            array_expert_battle_array.Create(QbItemType.ArrayArray);
-                            array_easy_battle.ItemQbKey = QbKey.Create(0xBA97A161);
-                            array_medium_battle.ItemQbKey = QbKey.Create(0x4575E6F0);
-                            array_hard_battle.ItemQbKey = QbKey.Create(0xE57786DA);
-                            array_expert_battle.ItemQbKey = QbKey.Create(0xCB0D41E7);
-                            QbItemInteger battle_easy = new QbItemInteger(songdata);
-                            QbItemInteger battle_medium = new QbItemInteger(songdata);
-                            QbItemInteger battle_hard = new QbItemInteger(songdata);
-                            QbItemInteger battle_expert = new QbItemInteger(songdata);
-                            battle_easy.Create(QbItemType.ArrayInteger);
-                            battle_medium.Create(QbItemType.ArrayInteger);
-                            battle_hard.Create(QbItemType.ArrayInteger);
-                            battle_expert.Create(QbItemType.ArrayInteger);
-                            verboseline("Adding powerup arrays to QB...", chartConvColor);
-                            songdata.AddItem(array_easy_battle);
-                            songdata.AddItem(array_medium_battle);
-                            songdata.AddItem(array_hard_battle);
-                            songdata.AddItem(array_expert_battle);
-                            array_easy_battle.AddItem(array_easy_battle_array);
-                            array_medium_battle.AddItem(array_medium_battle_array);
-                            array_hard_battle.AddItem(array_hard_battle_array);
-                            array_expert_battle.AddItem(array_expert_battle_array);
-                            /*List<Note> bpTmp = new List<Note>();
-                            foreach (Note a in chart.NoteTracks["ExpertSingle"])
-                                if (a.Type == NoteType.Special && a.SpecialFlag == 3)
-                                    spTmp.Add(a);
-                            if (spTmp.Count != 0)
-                                foreach (Note a in spTmp)
-                                {
-                                    //battle_expert = new QbItemInteger(songdata);
-                                    battle_expert.Create(QbItemType.ArrayInteger, 3);
-                                    battle_expert.Values[0] = (int)Math.Round(OT.GetTime(a.Offset) * 1000) + delay;
-                                    battle_expert.Values[1] = (int)Math.Round(OT.GetTime(a.Length) * 1000);
-                                    battle_expert.Values[2] = 10;
-                                    //array_expert_battle_array.AddItem(battle_expert);
-                                }
-                            else
-                            {
-                                //battle_expert = new QbItemInteger(songdata);
-                                battle_expert.Create(QbItemType.ArrayInteger, 1);
-                                //array_expert_battle_array.AddItem(battle_expert);
-                            }*/
-                            //battle_expert.Create(QbItemType.ArrayInteger, 1);
-                            array_easy_battle_array.AddItem(battle_easy);
-                            array_medium_battle_array.AddItem(battle_medium);
-                            array_hard_battle_array.AddItem(battle_hard);
-                            array_expert_battle_array.AddItem(battle_expert);
-                            #endregion
 
-                            verboseline("Creating rhythm powerup arrays...", chartConvColor);
-                            QbItemBase array_easy_battle_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_rhythm = new QbItemArray(songdata);
-                            array_easy_battle_rhythm.Create(QbItemType.SectionArray);
-                            array_medium_battle_rhythm.Create(QbItemType.SectionArray);
-                            array_hard_battle_rhythm.Create(QbItemType.SectionArray);
-                            array_expert_battle_rhythm.Create(QbItemType.SectionArray);
-                            QbItemBase array_easy_battle_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_array_rhythm = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_array_rhythm = new QbItemArray(songdata);
-                            array_easy_battle_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_medium_battle_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_hard_battle_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_expert_battle_array_rhythm.Create(QbItemType.ArrayArray);
-                            array_easy_battle_rhythm.ItemQbKey = QbKey.Create(0x3586AFF5);
-                            array_medium_battle_rhythm.ItemQbKey = QbKey.Create(0xB7E00BF8);
-                            array_hard_battle_rhythm.ItemQbKey = QbKey.Create(0x6A66884E);
-                            array_expert_battle_rhythm.ItemQbKey = QbKey.Create(0x3998ACEF);
-                            QbItemInteger battle_easy_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger battle_medium_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger battle_hard_rhythm = new QbItemInteger(songdata);
-                            QbItemInteger battle_expert_rhythm = new QbItemInteger(songdata);
-                            battle_easy_rhythm.Create(QbItemType.ArrayInteger);
-                            battle_medium_rhythm.Create(QbItemType.ArrayInteger);
-                            battle_hard_rhythm.Create(QbItemType.ArrayInteger);
-                            battle_expert_rhythm.Create(QbItemType.ArrayInteger);
-                            verboseline("Adding rhythm powerup arrays to QB...", chartConvColor);
-                            songdata.AddItem(array_easy_battle_rhythm);
-                            songdata.AddItem(array_medium_battle_rhythm);
-                            songdata.AddItem(array_hard_battle_rhythm);
-                            songdata.AddItem(array_expert_battle_rhythm);
-                            array_easy_battle_rhythm.AddItem(array_easy_battle_array_rhythm);
-                            array_medium_battle_rhythm.AddItem(array_medium_battle_array_rhythm);
-                            array_hard_battle_rhythm.AddItem(array_hard_battle_array_rhythm);
-                            array_expert_battle_rhythm.AddItem(array_expert_battle_array_rhythm);
-                            array_easy_battle_array_rhythm.AddItem(battle_easy_rhythm);
-                            array_medium_battle_array_rhythm.AddItem(battle_medium_rhythm);
-                            array_hard_battle_array_rhythm.AddItem(battle_hard_rhythm);
-                            array_expert_battle_array_rhythm.AddItem(battle_expert_rhythm);
-
-                            verboseline("Creating co-op guitar powerup arrays...", chartConvColor);
-                            QbItemBase array_easy_battle_lead = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_lead = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_lead = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_lead = new QbItemArray(songdata);
-                            array_easy_battle_lead.Create(QbItemType.SectionArray);
-                            array_medium_battle_lead.Create(QbItemType.SectionArray);
-                            array_hard_battle_lead.Create(QbItemType.SectionArray);
-                            array_expert_battle_lead.Create(QbItemType.SectionArray);
-                            array_easy_battle_lead.ItemQbKey = QbKey.Create(0x80CEC4D4);
-                            array_medium_battle_lead.ItemQbKey = QbKey.Create(0xE11F1383);
-                            array_hard_battle_lead.ItemQbKey = QbKey.Create(0xDF2EE36F);
-                            array_expert_battle_lead.ItemQbKey = QbKey.Create(0x6F67B494);
-                            QbItemFloats battle_easy_lead = new QbItemFloats(songdata);
-                            QbItemFloats battle_medium_lead = new QbItemFloats(songdata);
-                            QbItemFloats battle_hard_lead = new QbItemFloats(songdata);
-                            QbItemFloats battle_expert_lead = new QbItemFloats(songdata);
-                            battle_easy_lead.Create(QbItemType.Floats);
-                            battle_medium_lead.Create(QbItemType.Floats);
-                            battle_hard_lead.Create(QbItemType.Floats);
-                            battle_expert_lead.Create(QbItemType.Floats);
-                            verboseline("Adding co-op guitar powerup arrays to QB...", chartConvColor);
-                            songdata.AddItem(array_easy_battle_lead);
-                            songdata.AddItem(array_medium_battle_lead);
-                            songdata.AddItem(array_hard_battle_lead);
-                            songdata.AddItem(array_expert_battle_lead);
-                            array_easy_battle_lead.AddItem(battle_easy_lead);
-                            array_medium_battle_lead.AddItem(battle_medium_lead);
-                            array_hard_battle_lead.AddItem(battle_hard_lead);
-                            array_expert_battle_lead.AddItem(battle_expert_lead);
-
-                            verboseline("Creating co-op rhythm powerup arrays...", chartConvColor);
-                            QbItemBase array_easy_battle_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_medium_battle_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_hard_battle_rhythm_coop = new QbItemArray(songdata);
-                            QbItemBase array_expert_battle_rhythm_coop = new QbItemArray(songdata);
-                            array_easy_battle_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_medium_battle_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_hard_battle_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_expert_battle_rhythm_coop.Create(QbItemType.SectionArray);
-                            array_easy_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x329B7626);
-                            array_medium_battle_rhythm_coop.ItemQbKey = QbKey.Create(0xE2FAF049);
-                            array_hard_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x6D7B519D);
-                            array_expert_battle_rhythm_coop.ItemQbKey = QbKey.Create(0x6C82575E);
-                            QbItemFloats battle_easy_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats battle_medium_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats battle_hard_rhythm_coop = new QbItemFloats(songdata);
-                            QbItemFloats battle_expert_rhythm_coop = new QbItemFloats(songdata);
-                            battle_easy_rhythm_coop.Create(QbItemType.Floats);
-                            battle_medium_rhythm_coop.Create(QbItemType.Floats);
-                            battle_hard_rhythm_coop.Create(QbItemType.Floats);
-                            battle_expert_rhythm_coop.Create(QbItemType.Floats);
-                            verboseline("Adding co-op rhythm powerup arrays to QB...", chartConvColor);
-                            songdata.AddItem(array_easy_battle_rhythm_coop);
-                            songdata.AddItem(array_medium_battle_rhythm_coop);
-                            songdata.AddItem(array_hard_battle_rhythm_coop);
-                            songdata.AddItem(array_expert_battle_rhythm_coop);
-                            array_easy_battle_rhythm_coop.AddItem(battle_easy_rhythm_coop);
-                            array_medium_battle_rhythm_coop.AddItem(battle_medium_rhythm_coop);
-                            array_hard_battle_rhythm_coop.AddItem(battle_hard_rhythm_coop);
-                            array_expert_battle_rhythm_coop.AddItem(battle_expert_rhythm_coop);
 
                             #region END TIME
                             verboseline("Getting end time...", chartConvColor);
@@ -1985,32 +1519,494 @@ class Program
                             }
                             verboseline("End time is " + endtime, chartConvColor);
                             #endregion
+
+                            #region BOSS PROPS
+
+                            bool isBoss = false,
+                                gotBossScript = false,
+                                boss_useStarPhrases = true,
+                                boss_defaultprops = true;
+
+                            IniFile bossINI = new IniFile();
+                            if (File.Exists("boss.ini"))
+                                bossINI.Load("boss.ini");
+                            if (bossINI.GetSection("boss") != null)
+                                bossINI.AddSection("boss");
+                            isBoss = bossINI.GetKeyValue("boss", "enable", "0") == "1"; // not letting you off easy with a blank ini lol
+                            boss_defaultprops = bossINI.GetKeyValue("boss", "usedefault", "0") == "1";
+                            boss_useStarPhrases = bossINI.GetKeyValue("boss", "usestarphrases", "1") == "1";
+                            int boss_death_time = -1;
+
+                            QbKey[] defaultPowers = new QbKey[] {
+                                QbKey.Create(0x7EB6596F), // Lightning
+                                QbKey.Create(0xB880390E), // DifficultyUp
+                                QbKey.Create(0xAF753CE1), // DoubleNotes
+                                QbKey.Create(0x24EDE700), // LeftyNotes
+                                QbKey.Create(0x7429EADC), // BrokenString
+                                QbKey.Create(0x69FA8321), // WhammyAttack
+                                QbKey.Create(0x16FB37BA), // PowerUpSteal
+                                //QbKey.Create(0x3604998C), // DeathLick
+                            };
+                            QbKey[] existingPowers = new QbKey[] {
+                                QbKey.Create(0x7EB6596F),
+                                QbKey.Create(0xB880390E),
+                                QbKey.Create(0xAF753CE1),
+                                QbKey.Create(0x24EDE700),
+                                QbKey.Create(0x7429EADC),
+                                QbKey.Create(0x69FA8321),
+                                QbKey.Create(0x16FB37BA),
+                                QbKey.Create(0x3604998C),
+                            };
+
+                            QbKey key_boss_props = QbKey.Create("Boss_Props");
+                            QbItemQbKey QB_bossitems = new QbItemQbKey(songdata);
+                            string boss_name = "Player 2";
+                            QbItemStruct fastgh3_extra = new QbItemStruct(songdata);
+                            fastgh3_extra.Create(QbItemType.SectionStruct);
+                            fastgh3_extra.ItemQbKey = QbKey.Create("fastgh3_extra");
+                            QbItemQbKey QB_bossboss = new QbItemQbKey(songdata);
+                            QbItemStruct QB_bossprops = new QbItemStruct(songdata);
+                            QbItemInteger QB_bosstime = new QbItemInteger(songdata);
+                            QbItemString QB_bossname = new QbItemString(songdata);
+
+                            if (isBoss)
+                            {
+                                verboseline("Song detected as boss", bossColor);
+                                boss_name = bossINI.GetKeyValue("boss", "name", boss_name);
+                                verboseline("Boss name: " + boss_name, bossColor);
+                                if (bossINI.GetKeyValue("boss", "deathtime", "-1") != "")
+                                {
+                                    boss_death_time = Convert.ToInt32(bossINI.GetKeyValue("boss", "deathtime", "-1"));
+                                }
+                                verboseline("Default props: " + boss_defaultprops, bossColor);
+                                verboseline("Use star phrases: " + boss_useStarPhrases, bossColor);
+                            }
+
+                            QbItemQbKey boss_items = new QbItemQbKey(songdata);
+                            QbItemArray boss_items_arrays = new QbItemArray(songdata);
+
+                            QbItemStruct QB_bossRKgain_s = new QbItemStruct(songdata);
+                            QbItemStruct QB_bossRKloss_s = new QbItemStruct(songdata);
+                            QbItemStruct QB_bossATKmiss_s = new QbItemStruct(songdata);
+                            QbItemStruct QB_bossWrepair_s = new QbItemStruct(songdata);
+                            QbItemStruct QB_bossSrepair_s = new QbItemStruct(songdata);
+                            QbItemStruct QB_bossSTRmiss_s = new QbItemStruct(songdata);
+
+                            foreach (EventsSectionEntry e in chart.Events)
+                            {
+                                QbKey eventKey = QbKey.Create(e.TextValue);
+                                if (e.TextValue.ToLower().StartsWith("section "))
+                                    continue;
+                                if (eventKey != QbKey.Create(0xFF03CC4E) && // end
+                                    eventKey != QbKey.Create(0x2DE8C60E) && // printf
+                                    eventKey != QbKey.Create(0xBE304E86) && // printstruct
+                                    eventKey != QbKey.Create(0xF0CF92C0)) // boss_battle_begin_deathlick
+                                    continue;
+                                verboseline("Found event: " + e.TextValue, chartConvColor);
+                                QbItemStruct newScript = new QbItemStruct(songdata);
+                                newScript.Create(QbItemType.StructHeader);
+                                QbItemInteger time = new QbItemInteger(songdata);
+                                time.Create(QbItemType.StructItemInteger);
+                                QbItemQbKey scr = new QbItemQbKey(songdata);
+                                scr.Create(QbItemType.StructItemQbKey);
+                                time.ItemQbKey = QbKey.Create(0x906B67BA); // time
+                                time.Values[0] = (int)Math.Floor(OT.GetTime(e.Offset) * 1000) + delay;
+                                scr.ItemQbKey = QbKey.Create(0xA6D2D890); // scr
+                                scr.Values[0] = QbKey.Create(e.TextValue);
+                                if (scr.Values[0] == QbKey.Create(0xF0CF92C0) && isBoss)
+                                {
+                                    gotBossScript = true;
+                                    if (boss_death_time < 1)
+                                        boss_death_time = time.Values[0];
+                                }
+                                QbItemStruct _params = new QbItemStruct(songdata);
+                                _params.Create(QbItemType.StructItemStruct);
+                                _params.ItemQbKey = QbKey.Create(0x7031F10C); // params
+                                newScript.AddItem(time);
+                                newScript.AddItem(scr);
+                                newScript.AddItem(_params);
+                                if (scr.Values[0] == QbKey.Create(0xF0CF92C0) && !isBoss)
+                                {
+                                    continue; // if not boss, dont add this
+                                }
+                                /*if (scr.Values[0] == QbKey.Create(0xF0CF92C0) && boss_death_time < 1)
+                                {
+                                    continue; // if boss_death_time is invalid
+                                } what did i add this for ?????*/
+                                scripts.Add(newScript);
+                                //array_scripts_array.AddItem(newScript);
+                            }
+                            if (isBoss)
+                            {
+                                // auto set death time if not specified at all
+                                if (boss_death_time < 1)
+                                {
+                                    // fractional time, probably not good for extra long songs
+                                    //boss_death_time = endtime * 0.92;
+
+                                    // 13 seconds before the song ends
+                                    // hahahahaha
+                                    boss_death_time = endtime - 13000;
+                                }
+
+                                // if event is not put manually in chart
+                                if (!gotBossScript)
+                                {
+                                    QbItemStruct deathScript = new QbItemStruct(songdata);
+                                    deathScript.Create(QbItemType.StructHeader);
+                                    QbItemInteger time = new QbItemInteger(songdata);
+                                    time.Create(QbItemType.StructItemInteger);
+                                    QbItemQbKey scr = new QbItemQbKey(songdata);
+                                    scr.Create(QbItemType.StructItemQbKey);
+                                    time.ItemQbKey = QbKey.Create(0x906B67BA); // time
+                                    time.Values[0] = boss_death_time;
+                                    scr.ItemQbKey = QbKey.Create(0xA6D2D890); // scr
+                                    scr.Values[0] = QbKey.Create(0xF0CF92C0); // deth
+                                    QbItemStruct _params = new QbItemStruct(songdata);
+                                    _params.Create(QbItemType.StructItemStruct);
+                                    _params.ItemQbKey = QbKey.Create(0x7031F10C); // params
+                                    deathScript.AddItem(time);
+                                    deathScript.AddItem(scr);
+                                    deathScript.AddItem(_params);
+                                    scripts.Add(deathScript);
+                                }
+
+                                float[] boss_rockGain = new float[4] {
+                                    0.8f,
+                                    0.7f,
+                                    0.55f,
+                                    0.4f
+                                };
+                                QbItemFloat[] QB_bossRKgain;
+                                float[] boss_rockLoss = new float[4] {
+                                    5f,
+                                    2.75f,
+                                    2.5f,
+                                    2f
+                                };
+                                QbItemFloat[] QB_bossRKloss;
+                                float[] boss_atkmiss = new float[4] {
+                                    45f,
+                                    42f,
+                                    35f,
+                                    30f
+                                };
+                                QbItemFloat[] QB_bossATKmiss;
+                                int[] boss_Wrepair = new int[4] {
+                                    1150,
+                                    900,
+                                    500,
+                                    350
+                                };
+                                QbItemInteger[] QB_bossWrepair;
+                                int[] boss_Srepair = new int[4] {
+                                    1150,
+                                    850,
+                                    650,
+                                    400
+                                };
+                                QbItemInteger[] QB_bossSrepair;
+                                float[] boss_strmiss = new float[4] {
+                                    24f,
+                                    17f,
+                                    14f,
+                                    11.5f
+                                };
+                                QbItemFloat[] QB_bossSTRmiss;
+
+                                QB_bosstime.Create(QbItemType.SectionInteger);
+                                QB_bosstime.ItemQbKey = QbKey.Create("boss_death_time");
+                                QB_bosstime.Values[0] = boss_death_time;
+
+                                QB_bossname.Create(QbItemType.SectionString);
+                                QB_bossname.ItemQbKey = QbKey.Create("boss_name");
+                                QB_bossname.Strings[0] = boss_name;
+
+                                QB_bossboss.Create(QbItemType.StructItemQbKey);
+                                QB_bossboss.ItemQbKey = QbKey.Create("boss");
+                                QB_bossboss.Values[0] = key_boss_props;
+
+                                if (!boss_defaultprops)
+                                {
+
+                                    string[] selectedPowers = bossINI.GetKeyValue("boss", "items", Resources.powersDefaultKey).Split(',');
+                                    // HOW DO I USE THIS https://stackoverflow.com/questions/4916838/is-there-a-string-type-with-8-bit-chars
+
+                                    List<QbKey> allowedPowers = new List<QbKey>();
+                                    bool powerDoesntExist;
+                                    for (int i = 0; i < selectedPowers.Length; i++)
+                                    {
+                                        powerDoesntExist = true;
+                                        foreach (QbKey j in existingPowers)
+                                        {
+                                            if (QbKey.Create(selectedPowers[i]) == j)
+                                            {
+                                                powerDoesntExist = false;
+                                                break;
+                                            }
+                                        }
+                                        if (powerDoesntExist)
+                                        {
+                                            print("Got non-existent powerup in boss.ini: " +
+                                                selectedPowers[i] + "!! Not using.", ConsoleColor.Red);
+                                            continue;
+                                        }
+                                        allowedPowers.Add(QbKey.Create(selectedPowers[i]));
+                                    }
+
+                                    boss_items.Create(QbItemType.ArrayQbKey);
+                                    boss_items.Values = allowedPowers.ToArray();
+                                    boss_items_arrays.Create(QbItemType.StructItemArray);
+                                    boss_items_arrays.ItemQbKey = QbKey.Create("PowerUps");
+
+                                    QB_bossprops.Create(QbItemType.SectionStruct);
+                                    QB_bossprops.ItemQbKey = key_boss_props;
+
+                                    QB_bossRKgain = new QbItemFloat[4];
+                                    QB_bossRKloss = new QbItemFloat[4];
+                                    QB_bossATKmiss = new QbItemFloat[4];
+                                    QB_bossWrepair = new QbItemInteger[4];
+                                    QB_bossSrepair = new QbItemInteger[4];
+                                    QB_bossSTRmiss = new QbItemFloat[4];
+
+                                    QB_bossRKgain_s.Create(QbItemType.StructItemStruct);
+                                    QB_bossRKgain_s.ItemQbKey = QbKey.Create("GainPerNote");
+                                    QB_bossRKloss_s.Create(QbItemType.StructItemStruct);
+                                    QB_bossRKloss_s.ItemQbKey = QbKey.Create("LossPerNote");
+                                    QB_bossATKmiss_s.Create(QbItemType.StructItemStruct);
+                                    QB_bossATKmiss_s.ItemQbKey = QbKey.Create("PowerUpMissedNote");
+                                    QB_bossWrepair_s.Create(QbItemType.StructItemStruct);
+                                    QB_bossWrepair_s.ItemQbKey = QbKey.Create("WhammySpeed");
+                                    QB_bossSrepair_s.Create(QbItemType.StructItemStruct);
+                                    QB_bossSrepair_s.ItemQbKey = QbKey.Create("BrokenStringSpeed");
+                                    QB_bossSTRmiss_s.Create(QbItemType.StructItemStruct);
+                                    QB_bossSTRmiss_s.ItemQbKey = QbKey.Create("BrokenStringMissedNote");
+                                    int ddd = 0;
+                                    foreach (string d in diffs)
+                                    {
+                                        if (bossINI.GetKeyValue("rockgain", d, "") != "")
+                                            boss_rockGain[ddd] = Convert.ToSingle(
+                                                bossINI.GetKeyValue("rockgain", d, ""));
+                                        if (bossINI.GetKeyValue("rockloss", d, "") != "")
+                                            boss_rockLoss[ddd] = Convert.ToSingle(
+                                                bossINI.GetKeyValue("rockloss", d, ""));
+                                        if (bossINI.GetKeyValue("attackmiss", d, "") != "")
+                                            boss_atkmiss[ddd] = Convert.ToSingle(
+                                                bossINI.GetKeyValue("attackmiss", d, ""));
+                                        if (bossINI.GetKeyValue("whammyrepair", d, "") != "")
+                                            boss_Wrepair[ddd] = Convert.ToInt32(
+                                                bossINI.GetKeyValue("whammyrepair", d, ""));
+                                        if (bossINI.GetKeyValue("stringrepair", d, "") != "")
+                                            boss_Srepair[ddd] = Convert.ToInt32(
+                                                bossINI.GetKeyValue("stringrepair", d, ""));
+                                        if (bossINI.GetKeyValue("stringmiss", d, "") != "")
+                                            boss_strmiss[ddd] = Convert.ToSingle(
+                                                bossINI.GetKeyValue("stringmiss", d, ""));
+
+                                        QbKey diffCRC = QbKey.Create(d);
+
+                                        QB_bossRKgain[ddd] = new QbItemFloat(songdata);
+                                        QB_bossRKgain[ddd].Create(QbItemType.StructItemFloat);
+                                        QB_bossRKgain[ddd].ItemQbKey = diffCRC;
+                                        QB_bossRKgain[ddd].Values[0] = boss_rockGain[ddd];
+                                        QB_bossRKgain_s.AddItem(QB_bossRKgain[ddd]);
+
+                                        QB_bossRKloss[ddd] = new QbItemFloat(songdata);
+                                        QB_bossRKloss[ddd].Create(QbItemType.StructItemFloat);
+                                        QB_bossRKloss[ddd].ItemQbKey = diffCRC;
+                                        QB_bossRKloss[ddd].Values[0] = boss_rockLoss[ddd];
+                                        QB_bossRKloss_s.AddItem(QB_bossRKloss[ddd]);
+
+                                        QB_bossATKmiss[ddd] = new QbItemFloat(songdata);
+                                        QB_bossATKmiss[ddd].Create(QbItemType.StructItemFloat);
+                                        QB_bossATKmiss[ddd].ItemQbKey = diffCRC;
+                                        QB_bossATKmiss[ddd].Values[0] = boss_atkmiss[ddd];
+                                        QB_bossATKmiss_s.AddItem(QB_bossATKmiss[ddd]);
+
+                                        QB_bossWrepair[ddd] = new QbItemInteger(songdata);
+                                        QB_bossWrepair[ddd].Create(QbItemType.StructItemInteger);
+                                        QB_bossWrepair[ddd].ItemQbKey = diffCRC;
+                                        QB_bossWrepair[ddd].Values[0] = boss_Wrepair[ddd];
+                                        QB_bossWrepair_s.AddItem(QB_bossWrepair[ddd]);
+
+                                        QB_bossSrepair[ddd] = new QbItemInteger(songdata);
+                                        QB_bossSrepair[ddd].Create(QbItemType.StructItemInteger);
+                                        QB_bossSrepair[ddd].ItemQbKey = diffCRC;
+                                        QB_bossSrepair[ddd].Values[0] = boss_Srepair[ddd];
+                                        QB_bossSrepair_s.AddItem(QB_bossSrepair[ddd]);
+
+                                        QB_bossSTRmiss[ddd] = new QbItemFloat(songdata);
+                                        QB_bossSTRmiss[ddd].Create(QbItemType.StructItemFloat);
+                                        QB_bossSTRmiss[ddd].ItemQbKey = diffCRC;
+                                        QB_bossSTRmiss[ddd].Values[0] = boss_strmiss[ddd];
+                                        QB_bossSTRmiss_s.AddItem(QB_bossSTRmiss[ddd]);
+
+                                        /*verboseline(d + "; rock gain: " + boss_rockGain[ddd], bossColor);
+                                        verboseline(d + "; rock loss: " + boss_rockLoss[ddd], bossColor);
+                                        verboseline(d + "; attakmiss: " + boss_atkmiss[ddd], bossColor);
+                                        verboseline(d + "; wh repair: " + boss_Wrepair[ddd], bossColor);
+                                        verboseline(d + "; strrepair: " + boss_Srepair[ddd], bossColor);
+                                        verboseline(d + "; str  miss: " + boss_strmiss[ddd], bossColor);*/
+                                        ddd++;
+                                    }
+                                }
+                            }
+                            #endregion
+
+                            // KAY OU GOT ONE PART DONE, DOOOOO THE REST, SUHLLLAAAVVVEEE!!!!!!!!!!!
+                            verboseline("Creating powerup arrays...", chartConvColor);
+                            QbItemBase[][] song_battle_array_container = new QbItemBase[insts.Length][];//[diffs.Length];
+                            QbItemBase[][] song_battle_container = new QbItemBase[insts.Length][];//[diffs.Length];
+                            QbItemInteger[][] song_battle = new QbItemInteger[insts.Length][];//[diffs.Length];
+                            for (int i = 0; i < song_battle_container.Length; i++)
+                            {
+                                song_battle_array_container[i] = new QbItemBase[diffs.Length];
+                                song_battle_container[i] = new QbItemArray[diffs.Length];
+                                for (int d = 0; d < song_battle_container[i].Length; d++)
+                                {
+                                    song_battle_array_container[i][d] = new QbItemArray(songdata);
+                                    song_battle_array_container[i][d].Create(QbItemType.SectionArray);
+                                    song_battle_array_container[i][d].ItemQbKey =
+                                        QbKey.Create("fastgh3" + insts[i] + '_' + diffs[d] + "_starbattlemode");
+                                    song_battle_container[i][d] = new QbItemArray(songdata);
+                                    song_battle_container[i][d].Create(QbItemType.ArrayArray);
+                                }
+                            }
+                            for (int i = 0; i < song_battle_array_container.Length; i++)
+                            {
+                                for (int d = 0; d < song_battle_array_container[i].Length; d++)
+                                {
+                                    songdata.AddItem(song_battle_array_container[i][d]);
+                                    song_battle_array_container[i][d].AddItem(song_battle_container[i][d]);
+                                }
+                            }
+                            ii = 0;
+                            foreach (string i in TrackInsts)
+                            {
+                                dd = 0;
+                                foreach (string d in TrackDiffs)
+                                {
+                                    if (chart.NoteTracks[d + i] != null)
+                                    {
+                                        SpecialFlag useSP = SpecialFlag.Battle;
+                                        //verboseline(d + i);
+                                        if (boss_useStarPhrases)
+                                            useSP = SpecialFlag.Starpower;
+                                        Tuple<List<Note>, List<int>> special =
+                                            SpecialToPhrases(chart.NoteTracks[d + i], useSP);
+                                        List<Note> spTmp = special.Item1;
+                                        List<int> spPnc = special.Item2;
+                                        int spPnc2 = 0;
+                                        if (spTmp.Count != 0)
+                                            foreach (Note a in spTmp)
+                                            {
+                                                try
+                                                {
+                                                    starTmp = new QbItemInteger(songdata);
+                                                    starTmp.Create(QbItemType.ArrayInteger);
+                                                    starTmp.Values = new int[] {
+                                                        (int)Math.Floor(OT.GetTime(a.Offset) * 1000) + delay,
+                                                        0,
+                                                        spPnc[spPnc2]
+                                                    };
+                                                    starTmp.Values[1] = (int)Math.Floor((OT.GetTime(a.Offset + a.Length) * 1000)) - starTmp.Values[0];
+                                                    song_battle_container[ii][dd].AddItem(starTmp);
+                                                    spPnc2++;
+                                                }
+                                                catch /*(Exception e)*/
+                                                {
+                                                    print(Resources.SPwarn, ConsoleColor.Yellow);
+                                                    //Console.WriteLine(e);
+                                                }
+                                            }
+                                        else
+                                        {
+                                            starTmp = new QbItemInteger(songdata);
+                                            starTmp.Create(QbItemType.ArrayInteger);
+                                            starTmp.Values = new int[3];
+                                            song_battle_container[ii][dd].AddItem(starTmp);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        starTmp = new QbItemInteger(songdata);
+                                        starTmp.Create(QbItemType.ArrayInteger);
+                                        starTmp.Values = new int[3];
+                                        song_battle_container[ii][dd].AddItem(starTmp);
+                                    }
+                                    dd++;
+                                }
+                                ii++;
+                            }
+                            #endregion
+
+                            verboseline("Sorting scripts by time.", chartConvColor);
+                            scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2)
+                            {
+                                //     autismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautism
+                                return (c1.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0].CompareTo((c2.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0]);
+                            });
+
                             #region FACE-OFF/BATTLE VALUES
-                            verboseline("Creating face-off arrays...", chartConvColor);
+                            verboseline("Creating face-off sections...", chartConvColor);
                             QbItemBase array_faceoff_p1 = new QbItemArray(songdata);
                             QbItemBase array_faceoff_p2 = new QbItemArray(songdata);
-                            array_faceoff_p1.Create(QbItemType.SectionArray);
-                            array_faceoff_p2.Create(QbItemType.SectionArray);
                             QbItemBase array_faceoff_p1_array = new QbItemArray(songdata);
                             QbItemBase array_faceoff_p2_array = new QbItemArray(songdata);
-                            array_faceoff_p1_array.Create(QbItemType.ArrayArray);
-                            array_faceoff_p2_array.Create(QbItemType.ArrayArray);
+                            //QbItemBase array_faceoff_p1_array_array = new QbItemArray(songdata);
+                            //QbItemBase array_faceoff_p2_array_array = new QbItemArray(songdata);
+                            array_faceoff_p1.Create(QbItemType.SectionArray);
+                            array_faceoff_p2.Create(QbItemType.SectionArray);
                             array_faceoff_p1.ItemQbKey = QbKey.Create(0xD3885E76);
                             array_faceoff_p2.ItemQbKey = QbKey.Create(0x4A810FCC);
-                            QbItemInteger faceoff_p1 = new QbItemInteger(songdata);
-                            QbItemInteger faceoff_p2 = new QbItemInteger(songdata);
-                            faceoff_p1.Create(QbItemType.ArrayInteger);
-                            faceoff_p1.Values = new int[2];
-                            faceoff_p2.Create(QbItemType.ArrayInteger);
-                            faceoff_p2.Values = new int[2];
-                            verboseline("Adding face-off arrays to QB...", chartConvColor);
+                            array_faceoff_p1_array.Create(QbItemType.ArrayArray);
+                            array_faceoff_p2_array.Create(QbItemType.ArrayArray);
+                            bool[] gotfo = new bool[2];
+                            // game only allows two face-off tracks for all difficulties
+                            // so, use expert track
+                            if (chart.NoteTracks["ExpertSingle"] != null)
+                            {
+                                foreach (Note a in chart.NoteTracks["ExpertSingle"])
+                                {
+                                    if (a.Type == NoteType.Special &&
+                                        (a.SpecialFlag == 0) || (a.SpecialFlag == 1))
+                                    {
+                                        gotfo[a.SpecialFlag] = true;
+                                        QbItemInteger faceoff_bit = new QbItemInteger(songdata);
+                                        faceoff_bit.Create(QbItemType.ArrayInteger);
+                                        faceoff_bit.Values = new int[] {
+                                            (int)Math.Floor(OT.GetTime(a.Offset) * 1000),
+                                            (int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
+                                        };
+                                        if (a.SpecialFlag == 0)
+                                            array_faceoff_p1_array.AddItem(faceoff_bit);
+                                        else
+                                            array_faceoff_p2_array.AddItem(faceoff_bit);
+                                    }
+                                }
+                            }
+                            {
+                                if (!gotfo[0])
+                                {
+                                    QbItemInteger null_faceoff = new QbItemInteger(songdata);
+                                    null_faceoff.Create(QbItemType.ArrayInteger);
+                                    null_faceoff.Values = new int[] { 0, int.MaxValue };
+                                    array_faceoff_p1_array.AddItem(null_faceoff);
+                                }
+                                if (!gotfo[1])
+                                {
+                                    QbItemInteger null_faceoff = new QbItemInteger(songdata);
+                                    null_faceoff.Create(QbItemType.ArrayInteger);
+                                    null_faceoff.Values = new int[] { 0, int.MaxValue };
+                                    array_faceoff_p2_array.AddItem(null_faceoff);
+                                }
+                            }
                             songdata.AddItem(array_faceoff_p1);
                             songdata.AddItem(array_faceoff_p2);
                             array_faceoff_p1.AddItem(array_faceoff_p1_array);
                             array_faceoff_p2.AddItem(array_faceoff_p2_array);
-                            array_faceoff_p1_array.AddItem(faceoff_p1);
-                            array_faceoff_p2_array.AddItem(faceoff_p2);
-                            verboseline("Creating battle arrays...", chartConvColor);
+
+                            // unused
                             QbItemBase array_battle_p1 = new QbItemArray(songdata);
                             QbItemBase array_battle_p2 = new QbItemArray(songdata);
                             array_battle_p1.Create(QbItemType.SectionArray);
@@ -2021,7 +2017,6 @@ class Program
                             array_battle_p2.ItemQbKey = QbKey.Create(0x4B8C1D5E);
                             array_battle_p1_array.Create(QbItemType.Floats);
                             array_battle_p2_array.Create(QbItemType.Floats);
-                            verboseline("Adding battle arrays to QB.", chartConvColor);
                             songdata.AddItem(array_battle_p1);
                             songdata.AddItem(array_battle_p2);
                             array_battle_p1.AddItem(array_battle_p1_array);
@@ -2056,6 +2051,7 @@ class Program
                                         if (st.Type == SyncType.BPM)
                                         {
                                             tsfault.Offset = st.Offset;
+                                            break;
                                         }
                                     }
                                 tsfault.Type = SyncType.TimeSignature;
@@ -2246,7 +2242,7 @@ class Program
                                 fastgh3_extra.AddItem(QB_bossboss);
                                 songdata.AddItem(QB_bosstime);
                                 songdata.AddItem(QB_bossname);
-                                if (boss_defaultprops)
+                                if (!boss_defaultprops)
                                 {
                                     QB_bossprops.AddItem(QB_bossRKgain_s);
                                     QB_bossprops.AddItem(QB_bossRKloss_s);
@@ -2264,7 +2260,7 @@ class Program
                                     QB_bossprops.AddItem(profile);
 
                                     QbItemQbKey name = new QbItemQbKey(songdata);
-                                    name.Create(QbItemType.StructItemQbKey);
+                                    name.Create(QbItemType.StructItemQbKeyString);
                                     name.ItemQbKey = QbKey.Create("character_name");
                                     name.Values[0] = QbKey.Create("boss_name");
                                     QB_bossprops.AddItem(name);
@@ -2456,6 +2452,14 @@ class Program
                         gh3.Start();
                         settings.SetKeyValue("Misc", "FinishedLog", "1");
                         settings.Save(folder + "settings.ini");
+                        verboseline("Cleaning up SoX temp files FOR SOME REASON!!!");
+                        // stupid SoX
+                        // didn't happen on the previous version
+                        // so WHY DOES IT CREATE THESE
+                        foreach (var file in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
+                        {
+                            file.Delete();
+                        }
                         if (settings.GetKeyValue("Misc", "PreserveLog", "0") == "1")
                         {
                             print("Press any key to exit");
@@ -2489,7 +2493,21 @@ class Program
                         {
                             tmpf = Path.GetTempPath() + "Z.FGH3.TMP\\";
                             if (Directory.Exists(tmpf))
-                                Directory.Delete(tmpf, true);
+                            // WHY ARE YOU PUTTING DESKTOP.INI IN YOUR CHART FOLDERS
+                            //Directory.Delete(tmpf, true);
+                            {
+                                foreach (string f in Directory.GetFiles(tmpf, "*.*", SearchOption.TopDirectoryOnly))
+                                {
+                                    try
+                                    {
+                                        File.Delete(f);
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            }
                             else
                                 Directory.CreateDirectory(tmpf);
                         }
@@ -2531,7 +2549,7 @@ class Program
                                     multichartcheck.Add(f);
                                     selectedtorun = f;
                                 } // should this be run after detecting a PAK
-                                    // though then the multichart routine will run regardless
+                                  // though then the multichart routine will run regardless
                                 if (f == "song.ini")
                                 {
                                     verboseline("Found song.ini", FSPcolor);
@@ -2549,7 +2567,7 @@ class Program
                         {
                             Directory.CreateDirectory(tmpf);
                             bool zipReadBlatantfail = false; // cheap just to get around
-                                                                // ambiguous zip type when downloading (a 7Z) from drive
+                                                             // ambiguous zip type when downloading (a 7Z) from drive
                             try
                             {
                                 ZipFile.Read(args[0]);
@@ -2560,12 +2578,12 @@ class Program
                             }
                             if ((args[0].EndsWith(".zip") || args[0].EndsWith(".fsp" /* :( */)) && !zipReadBlatantfail)
                             {
-                                try
+                                using (ZipFile file = ZipFile.Read(args[0]))
                                 {
-                                    using (ZipFile file = ZipFile.Read(args[0]))
+                                    file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+                                    foreach (ZipEntry data in file)
                                     {
-                                        file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
-                                        foreach (ZipEntry data in file)
+                                        try
                                         {
                                             if (data.FileName.EndsWith(".pak") ||
                                                 data.FileName.EndsWith(".pak.xen"))
@@ -2595,7 +2613,7 @@ class Program
                                                 multichartcheck.Add(data.FileName);
                                                 selectedtorun = tmpf + data.FileName;
                                             } // should this be run after detecting a PAK
-                                                // though then the multichart routine will run regardless
+                                              // though then the multichart routine will run regardless
                                             if (data.FileName == "song.ini")
                                             {
                                                 verboseline("Found song.ini, extracting...", FSPcolor);
@@ -2610,12 +2628,11 @@ class Program
                                                 data.Extract(tmpf);
                                             }
                                         }
+                                        catch (Exception e)
+                                        {
+                                            verboseline("Error extracting a file:" + e, ConsoleColor.Yellow);
+                                        }
                                     }
-                                }
-                                catch (Exception ex)
-                                {
-                                    print("ERROR! :(\n" + ex.Message, ConsoleColor.Red);
-                                    Console.ReadKey();
                                 }
                             }
                             else
@@ -2681,7 +2698,7 @@ class Program
                                     {
                                         if (!args[0].EndsWith(".rar"))
                                         {
-                                            MessageBox.Show("7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                            MessageBox.Show(Resources.Z7_u, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                             if (writefile && launcherlog != null)
                                                 launcherlog.Close();
                                             settings.SetKeyValue("Misc", "FinishedLog", "1");
@@ -2722,7 +2739,7 @@ class Program
                                 else
                                 {
                                     verboseline("Unsupported archive type", FSPcolor);
-                                    MessageBox.Show("Unsupported archive type, unless you have 7-Zip or WinRAR installed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show(Resources.Z7_uu, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     if (writefile && launcherlog != null)
                                         launcherlog.Close();
                                     settings.SetKeyValue("Misc", "FinishedLog", "1");
@@ -2737,7 +2754,7 @@ class Program
                                     verboseline("Exit code: " + Xtract.ExitCode, FSPcolor);
                                     if (Xtract.ExitCode != 0)
                                     {
-                                        MessageBox.Show("The extractor returned a non-zero error code. This could mean that the extraction has failed.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        MessageBox.Show(Resources.Z7_f, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         Environment.Exit(1);
                                     }
                                     foreach (string f in Directory.GetFiles(tmpf, "*.*", SearchOption.AllDirectories))
@@ -2767,7 +2784,7 @@ class Program
                                             multichartcheck.Add(f);
                                             selectedtorun = f;
                                         } // should this be run after detecting a PAK
-                                            // though then the multichart routine will run regardless
+                                          // though then the multichart routine will run regardless
                                         if (f == "song.ini")
                                         {
                                             verboseline("Found song.ini", FSPcolor);
@@ -2836,10 +2853,10 @@ class Program
                                 if (writefile && launcherlog != null)
                                     launcherlog.Close();
                                 Process.Start(Application.ExecutablePath, selectedtorun.EncloseWithQuoteMarks());
-                                KYS();
+                                die();
                             }
                     }
-                    else if ((args[0].EndsWith(".pak") || args[0].EndsWith(".pak.xen")))
+                    /*else if ((args[0].EndsWith(".pak") || args[0].EndsWith(".pak.xen")))
                     {
                         Console.WriteLine("FastGH3 by donnaken15");
                         print("Detected song PAK.", FSPcolor);
@@ -2916,10 +2933,15 @@ class Program
                                 settings.Save(folder + "settings.ini");
                             }
                         }
-                    }
+                    }*/
                     #endregion
                 }
-                else print("That file does not exist. Exiting.", ConsoleColor.Red);
+                else
+                {
+                    print("That file does not exist. Exiting.", ConsoleColor.Red);
+                    settings.SetKeyValue("Misc", "FinishedLog", "1");
+                    settings.Save(folder + "settings.ini");
+                }
             }
         }
         catch (Exception ex)
@@ -2928,6 +2950,9 @@ class Program
             Console.ForegroundColor = ConsoleColor.Red;
             print("ERROR! :(");
             print(ex);
+            settings.SetKeyValue("Misc", "FinishedLog", "1");
+            // default value is 1, so why dont i just remove the key
+            settings.Save(folder + "settings.ini");
             // what instance would this fit v
             /*Exception exx = ex.InnerException;
             while (exx != null)
@@ -2937,15 +2962,76 @@ class Program
             }*/
             Console.ForegroundColor = oldcolor;
             Console.ResetColor(); // NOT WORKING
+
+            // upload log for diagnostics
+            if (writefile && launcherlog != null)
+                launcherlog.Close();
+            launcherlog = null;
+            string log = File.ReadAllText(folder + "launcher.txt");
+            if (true && log.Length < 0x20000) // max 128 KB to upload
+            {
+                print("Uploading log.");
+
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00);
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
+                string host = "https://0x0.st/";
+                var request = (HttpWebRequest)WebRequest.Create(host);
+                string boundary = "------------------------" + DateTime.Now.Ticks.ToString("x");
+                request.ContentType = "multipart/form-data; boundary=" + boundary;
+                request.Method = "POST";
+                request.ServicePoint.Expect100Continue = true;
+
+                // brain drain
+                byte[] tempBuffer = Encoding.ASCII.GetBytes(
+                    "\r\n--" + boundary + "\r\n" +
+                    "Content-Disposition: form-data; name=\"file\"; filename=\"launcher.txt\"\r\n" +
+                    "Content-Type: text/plain\r\n\r\n" +
+                    log + "\r\n--" + boundary + "--");
+                request.ContentLength = tempBuffer.Length;
+
+                using (Stream requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(tempBuffer, 0, tempBuffer.Length);
+                }
+
+                var response = request.GetResponse();
+
+                Stream stream2 = response.GetResponseStream();
+                StreamReader reader2 = new StreamReader(stream2);
+                string outlink = reader2.ReadToEnd().Trim('\n', '\r');
+                char[] id = outlink.Between(host,".txt").ToCharArray();
+
+                // report to me
+                char[] URLalphabet = "DEQhd2uFteibPwq0SWBInTpA_jcZL5GKz3YCR14Ulk87Jors9vNHgfaOmMXy6Vx-".ToCharArray();
+
+                var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.tk/fastgh3/diagno.php");
+                report.ContentType = "application/octet-stream";
+                report.Method = "POST";
+
+                byte[] reportbytes = new byte[id.Length];
+                for (int i = 0; i < id.Length; i++)
+                {
+                    reportbytes[i] = (byte)Array.IndexOf(URLalphabet, id[i]);
+                }
+                report.ContentLength = reportbytes.Length;
+
+                using (Stream reportStream = report.GetRequestStream())
+                {
+                    reportStream.Write(reportbytes, 0, reportbytes.Length);
+                }
+                Stream stream3 = report.GetResponse().GetResponseStream();
+                StreamReader reader3 = new StreamReader(stream3);
+                print(reader3.ReadToEnd());
+                // im not returning any data, so
+
+                print("Log saved to " + outlink);
+            }
+
             print("Press any key to exit");
             Console.ReadKey();
-        }
-        // stupid SoX
-        // didn't happen on the previous version
-        // so WHY DOES IT CREATE THESE
-        foreach (var file in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
-        {
-            file.Delete();
+            Environment.Exit(1);
         }
         //GC.Collect();
         if (writefile && launcherlog != null)

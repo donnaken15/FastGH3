@@ -59,5 +59,115 @@ namespace FastGH3.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|Any type|*.*.
+        /// </summary>
+        internal static string chartFilter {
+            get {
+                return ResourceManager.GetString("chartFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to adituv           - QbScript reverse engineering,
+        ///                   compiler/decompiler,
+        ///                   vsync flame fix,
+        ///                   built in QB decompiler
+        ///ExileLord        - GH3+ and executable reverse engineering,
+        ///                   open and tap notes,
+        ///                   ChartEdit/Chart-to-PAK classes and conversion tools,
+        ///donnaken15       - other QbScript hacking,
+        ///                   mod creation and setup,
+        ///                   game optimization,
+        ///                   main program and auto [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string credits {
+            get {
+                return ResourceManager.GetString("credits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal.
+        /// </summary>
+        internal static string powersDefaultKey {
+            get {
+                return ResourceManager.GetString("powersDefaultKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        /// Welcome to FastGH3 v1.0
+        /// FastGH3 is an advanced mod of
+        /// Guitar Hero 3 designed to be played
+        /// as fast as possible. With this mod, you
+        /// can play customs without any technical
+        /// setup, and even associate chart or mid
+        /// files with the game so you can access
+        /// your charts quickly.
+        ///
+        /// To access the options, use
+        /// the -settings parameter or
+        /// open settings.bat.
+        ///
+        /// Press any key to load a chart..
+        /// </summary>
+        internal static string splashText {
+            get {
+                return ResourceManager.GetString("splashText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /!\ Error adding a starpower phrase. If this message appears more than once, there may be a problem.
+        /// </summary>
+        internal static string SPwarn {
+            get {
+                return ResourceManager.GetString("SPwarn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;r&gt;
+        ///&lt;s id=&quot;Video.Width&quot;&gt;1024&lt;/s&gt;
+        ///&lt;s id=&quot;Video.Height&quot;&gt;768&lt;/s&gt;
+        ///&lt;s id=&quot;Sound.SongSkew&quot;&gt;-0.1&lt;/s&gt;
+        ///&lt;/r&gt;.
+        /// </summary>
+        internal static string xmlDefault {
+            get {
+                return ResourceManager.GetString("xmlDefault", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The extractor returned a non-zero error code. This could mean that the extraction has failed..
+        /// </summary>
+        internal static string Z7_f {
+            get {
+                return ResourceManager.GetString("Z7_f", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface..
+        /// </summary>
+        internal static string Z7_u {
+            get {
+                return ResourceManager.GetString("Z7_u", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed..
+        /// </summary>
+        internal static string Z7_uu {
+            get {
+                return ResourceManager.GetString("Z7_uu", resourceCulture);
+            }
+        }
     }
 }

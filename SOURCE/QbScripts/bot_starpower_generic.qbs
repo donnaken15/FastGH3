@@ -1,6 +1,4 @@
 script() {
-printf('banned from milohax club');
-printf('also deleted, F');
 
 if (*player1_status.bot_play == 0 &&
 	*player2_status.bot_play == 0)
@@ -8,6 +6,7 @@ if (*player1_status.bot_play == 0 &&
 	printf('bot not turned on!!!!!!!!!!!!!');
 	return;
 }
+// GHPCED mode LOL v
 change(autowhammy=1);
 // TODO, fix autowhammy for individual players
 

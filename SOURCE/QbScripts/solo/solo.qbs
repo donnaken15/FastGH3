@@ -133,36 +133,17 @@ repeat(*current_num_players)
 	FormatText(checksumName=player_status, 'player%d_status', d = %i);
 	if (%i == 1)
 	{
+		change(last_solo_index_p1 = 0);
 		player_difficulty = current_difficulty;
 	}
 	elseif (%i == 2)
 	{
+		change(last_solo_index_p2 = 0);
 		player_difficulty = current_difficulty2;
 	}
 	if (%part == (*%player_status.part) &&
 		%diff == (*%player_difficulty))
 	{
-		// wtf
-		// get notes hit just before this executes
-		// but was within the markers
-		repeat
-		{
-			if (%i == 1)
-			{
-				if (*last_solo_index_p1 >= *last_solo_total_p1 || *solo_active_p1 == 0)
-				{
-					break;
-				}
-			}
-			elseif (%i == 2)
-			{
-				if (*last_solo_index_p2 >= *last_solo_total_p2 || *solo_active_p2 == 0)
-				{
-					break;
-				}
-			}
-			wait(1,gameframe);
-		}
 		// get player's raw note track (time,fret,len)
 		gemarrayid = (*%player_status.current_song_gem_array);
 		song_array = *%gemarrayid;
@@ -233,9 +214,8 @@ repeat(*current_num_players)
 		getarraysize(song_array);
 		k = %solo_first_note;
 		repeat(((%array_size-%k)*3)) // do i need this condition even, because of the below
-		// APPARENTLY I DO, OTHERWISE CRASH
 		{
-			if (%song_array[%k] >= %endtime || %k > %array_size)
+			if (%song_array[%k] >= (%endtime) || %k > %array_size)
 			{
 				break; 
 			}

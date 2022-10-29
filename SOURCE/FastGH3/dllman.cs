@@ -9,7 +9,7 @@ public partial class dllman : Form
     public dllman()
     {
         InitializeComponent();
-        Height += new DirectoryInfo(folder + "\\PLUGINS").GetFiles("*.dll", SearchOption.AllDirectories).Length * 9;
+        Height += new DirectoryInfo(folder + "\\PLUGINS\\").GetFiles("*.dll", SearchOption.AllDirectories).Length * 9;
         dllrefresh();
     }
 
@@ -34,7 +34,7 @@ public partial class dllman : Form
     private void dllselected(object sender, System.ComponentModel.CancelEventArgs e)
     {
         foreach (string file in dllopen.FileNames)
-            if (Path.GetPathRoot(file) != folder + "\\PLUGINS")
+            if (Path.GetPathRoot(file) != folder + "\\PLUGINS\\")
                 File.Copy(file, folder + "\\PLUGINS\\" + Path.GetFileName(file), true);
         dllrefresh();
     }
@@ -48,7 +48,7 @@ public partial class dllman : Form
     {
         dlloff.Enabled = false;
         dlllist.Items.Clear();
-        foreach (FileInfo file in new DirectoryInfo(folder + "\\PLUGINS").GetFiles("*.dll", SearchOption.TopDirectoryOnly))
+        foreach (FileInfo file in new DirectoryInfo(folder + "\\PLUGINS\\").GetFiles("*.dll", SearchOption.TopDirectoryOnly))
             dlllist.Items.Add(file);
         try
         {

@@ -18,14 +18,36 @@ elseif (%player == 2)
 	change(last_solo_total_p2 = 0);
 	change(note_index_p2 = 0);
 }
-//KillSpawnedScript(name=solo);
-//KillSpawnedScript(name=soloend);
+if (%player == 1)
+{
+	getarraysize({
+		qbkeyref $00000000 = solo_hit_buffer_p1;
+	});
+}
+elseif (%player == 2)
+{
+	getarraysize({
+		qbkeyref $00000000 = solo_hit_buffer_p2;
+	});
+}
+formattext(checksumname=array,'solo_hit_buffer_p%d',d=%player);
+hit_buffer = *%array;
+i = 0;
+repeat(%array_size)
+{
+	SetArrayElement(
+		arrayname=%array,
+		globalarray,
+		index=%i,
+		newvalue=0);
+	i = (%i + 1);
+}
 if (GotParam(reset_hud))
 {
-	FormatText(checksumname=solotxt, 'solotxt%d', d = %player);
-	if (screenelementexists({id: %solotxt})) {
+	KillSpawnedScript(name=solo_ui_end);
+	if (screenelementexists({id: %solotxt}))
+	{
 		destroyscreenelement({id: %solotxt});
-		//KillSpawnedScript(name=solo_ui_end);
 	}
 }
 

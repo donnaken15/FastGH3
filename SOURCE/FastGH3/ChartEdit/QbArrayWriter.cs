@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ChartEdit
 {
-	internal class QbArrayWriter : IChartWriter
+    /*internal class QbArrayWriter : IChartWriter
 	{
         public void Save(Chart chart)
         {
@@ -66,5 +66,5 @@ namespace ChartEdit
         }
         
         private OffsetTransformer _ot;
-	}
+    }*/
 }

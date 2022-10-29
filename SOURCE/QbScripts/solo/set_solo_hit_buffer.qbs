@@ -23,8 +23,15 @@ elseif (%player == 2)
 		qbkeyref $00000000 = solo_hit_buffer_p2;
 	});
 }
+//printstruct(<...>);
 
+hit_buffer = *%array;
 i = 1;
+SetArrayElement(
+	arrayname=%array,
+	globalarray,
+	index=(%array_size-1),
+	newvalue=%$00000000);
 repeat(%array_size - 1)
 {
 	SetArrayElement(
@@ -34,10 +41,5 @@ repeat(%array_size - 1)
 		newvalue=(*%array[%i]));
 	i = (%i + 1);
 }
-SetArrayElement(
-	arrayname=%array,
-	globalarray,
-	index=(%array_size-1),
-	newvalue=%$00000000);
 
 }

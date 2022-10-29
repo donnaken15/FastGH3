@@ -9,7 +9,7 @@ namespace Nanook.QueenBee.Parser
 {
     public partial class QbItemScript
     {
-        public string Translate(Dictionary<uint, string> debugNames = null)
+        public string Translate(Dictionary<uint, string> debugNames)
         {
             var sourceBuilder = new StringBuilder();
             using (var ms = new MemoryStream(this.ScriptData))
@@ -294,7 +294,7 @@ namespace Nanook.QueenBee.Parser
             currentLine.Append(")");
         }
 
-        private static string getKeyString(uint checksum, Dictionary<uint, string> debugNames = null) {
+        private static string getKeyString(uint checksum, Dictionary<uint, string> debugNames) {
             if (debugNames != null && debugNames.ContainsKey(checksum)) {
                 return debugNames[checksum];
             } else {
@@ -333,7 +333,7 @@ namespace Nanook.QueenBee.Parser
             }
         }
 
-        private static string getQbStruct(BinaryReader input, long structStartPos, Dictionary<uint, string> debugNames = null) {
+        private static string getQbStruct(BinaryReader input, long structStartPos, Dictionary<uint, string> debugNames) {
             long nextPos = SwapEndianness(input.ReadUInt32());
             StringBuilder structString = new StringBuilder();
             structString.AppendLine("(QbStruct) {{");
@@ -356,7 +356,7 @@ namespace Nanook.QueenBee.Parser
             return structString.ToString();
         }
 
-        private static string getQbValue(BinaryReader input, long structStartPos, StructType type, Dictionary<uint, string> debugNames = null) {
+        private static string getQbValue(BinaryReader input, long structStartPos, StructType type, Dictionary<uint, string> debugNames) {
             uint dataAddr;
             string valstr;
             byte b, b2;
