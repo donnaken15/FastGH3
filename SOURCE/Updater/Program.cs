@@ -7,6 +7,64 @@ using SimpleJSON;
 
 // VS is a slow POS
 
+static class SubstringExtensions
+{
+	public static string EncloseWithQuoteMarks(this string value)
+	{
+		return '"' + value + '"';
+	}
+
+	public static string Between(this string value, string a, string b)
+	{
+		int posA = value.IndexOf(a);
+		int posB = value.LastIndexOf(b);
+		if (posA == -1)
+		{
+			return "";
+		}
+		if (posB == -1)
+		{
+			return "";
+		}
+		int adjustedPosA = posA + a.Length;
+		if (adjustedPosA >= posB)
+		{
+			return "";
+		}
+		return value.Substring(adjustedPosA, posB - adjustedPosA);
+	}
+
+	/// <summary>
+	/// Get string value after [first] a.
+	/// </summary>
+	public static string Before(this string value, string a)
+	{
+		int posA = value.IndexOf(a);
+		if (posA == -1)
+		{
+			return "";
+		}
+		return value.Substring(0, posA);
+	}
+
+	/// <summary>
+	/// Get string value after [last] a.
+	/// </summary>
+	public static string After(this string value, string a)
+	{
+		int posA = value.LastIndexOf(a);
+		if (posA == -1)
+		{
+			return "";
+		}
+		int adjustedPosA = posA + a.Length;
+		if (adjustedPosA >= value.Length)
+		{
+			return "";
+		}
+		return value.Substring(adjustedPosA);
+	}
+}
 class Program
 {
 	static byte[] logoBits = {
@@ -149,12 +207,22 @@ class Program
 		Directory.SetCurrentDirectory(dir); // make path ensuring less redundant like in the launcher
 
 		// is this even in the right place
-		if (!File.Exists("FastGH3.exe") ||
-			!File.Exists("game.exe") ||
-			!File.Exists("fmodex.dll"))
+		string[] requiredFiles = new string[] {
+			"AWL.dll",
+			"binkw32.dll",
+			"FastGH3.exe",
+			"fmodex.dll",
+			"game.exe",
+			"Ionic.Zip.dll",
+			"mid2chart.exe",
+		};
+		foreach (string i in requiredFiles)
 		{
-			Console.WriteLine("No familiar mod files can be found, exiting...");
-			return;
+			if (!File.Exists(dir+i)) // EXCEPT HERE SOMEHOW
+			{
+				Console.WriteLine("No familiar files can be found, exiting...");
+				return;
+			}
 		}
 
 		DateTime buildtime  = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
@@ -187,22 +255,22 @@ class Program
 
 		Console.WriteLine("Downloading version info...");
 		uint latestTimestamp = 0;
+		uint latestVerTime = 0;
 		JSONNode devVers, buildList;
+		WebClient fetcher = new WebClient();
 		try
 		{
-			using (WebClient fetcher = new WebClient())
-			{
-				fetcher.Proxy = null;
-				fetcher.Headers.Add("user-agent", "Anything");
-				ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00);
-				latestTimestamp = Eswap(BitConverter.ToUInt32(fetcher.DownloadData("https://raw.githubusercontent.com/donnaken15/FastGH3/main/DATA/MUSIC/TOOLS/bt.bin"),0));
-				latesttime = latesttime.AddSeconds(latestTimestamp).ToLocalTime();
-				Console.WriteLine("Build timestamp: " + buildtime.ToString());
-				Console.WriteLine("Got latest timestamp: " + latesttime.ToString());
-				devVers = JSON.Parse(fetcher.DownloadString("https://donnaken15.tk/fastgh3/devvers.json"));
-				buildList = JSON.Parse(fetcher.DownloadString("https://donnaken15.tk/fastgh3/vl.json"));
-				latestname = Encoding.UTF8.GetString(Convert.FromBase64String(fetcher.DownloadString("https://donnaken15.tk/fastgh3/v")));
-			}
+			fetcher.Proxy = null;
+			fetcher.Headers.Add("user-agent", "Anything");
+			ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00);
+			latestTimestamp = Eswap(BitConverter.ToUInt32(fetcher.DownloadData("https://raw.githubusercontent.com/donnaken15/FastGH3/main/DATA/MUSIC/TOOLS/bt.bin"),0));
+			latesttime = latesttime.AddSeconds(latestTimestamp).ToLocalTime();
+			Console.WriteLine("Build timestamp: " + buildtime.ToString());
+			Console.WriteLine("Got latest timestamp: " + latesttime.ToString());
+			devVers = JSON.Parse(fetcher.DownloadString("https://donnaken15.tk/fastgh3/devvers.json"));
+			buildList = JSON.Parse(fetcher.DownloadString("https://donnaken15.tk/fastgh3/vl.json"));
+			latestname = Encoding.UTF8.GetString(Convert.FromBase64String(fetcher.DownloadString("https://donnaken15.tk/fastgh3/v")));
+			//latestVerTime = Convert.ToUInt32(Convert.FromBase64String(fetcher.DownloadString("https://raw.githubusercontent.com/donnaken15/FastGH3/main/DATA/MUSIC/TOOLS/v.bin")));
 		}
 		catch (Exception ex)
 		{
@@ -228,11 +296,42 @@ class Program
 		// also TODO: downgrading maybe for checking errors and for when they started to appear
 		// as a consequence of me making this mod the most user friendly for charts
 
+		string[] blacklist = new string[] {
+			"aspyrconfig.bat",
+			"settings.ini",
+			"data\\user.pak.xen",
+			"data\\movies\\bik\\backgrnd_video.bik.xen",
+			"data\\music\\fastgh3.fsb.xen",
+			"data\\pak\\dbg.pak.xen",
+			"data\\pak\\player.pak.xen",
+			"data\\pak\\song.pak.xen",
+			"data\\pak\\global.pab.xen",
+			"data\\pak\\global.pak.xen",
+			"data\\pak\\global_sfx.pak.xen",
+			"ionic.zip.dll",
+			"updater.exe",
+			".gitignore",
+			".gitmodules",
+			// TODO: check for if this is the default PAK
+			// in case of a later occurence of being
+			// able to remove more unneeded stuff like the
+			// thousands of blank textures and new menu
+			// no longer using older textures
+		};
+		
+		ZipFile buildZip;
+		string zipPath = Path.GetTempPath()+"\\FGH3_UPD.ZIP";
+		string zipURL = "https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.zip";
+
+		// TODO: display changes since
+		// TODO: also update updater.exe to update this
+		// update the updater :^)
 		if (bleeding)
 		{
 			if (latesttime > buildtime)
 			{
 				Console.WriteLine("Found a new dev build!");
+				zipURL = "https://github.com/donnaken15/FastGH3/archive/refs/heads/main.zip";
 			}
 			else
             {
@@ -257,6 +356,53 @@ class Program
 				return;
 			}
 		}
+		fetcher.DownloadFile(new Uri(zipURL),zipPath);
+		buildZip = ZipFile.Read(zipPath);
+		foreach (ZipEntry f in buildZip)
+		{
+			try {
+				if (f.IsDirectory) continue;
+				bool ugh = false;
+				string truename = f.FileName.ToLower();
+				if (bleeding)
+				{
+					truename = truename.After("fastgh3-main/");
+				}
+				if (truename.StartsWith("source/")) continue;
+				if (truename.StartsWith(".github/")) continue;
+				truename = truename.Replace("/","\\");
+				foreach (string g in blacklist)
+				{
+					if (truename == g)
+					{
+						ugh = true;
+						break;
+					}
+				}
+				if (ugh) continue;
+				f.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+				f.Extract();
+				if (bleeding)
+				{
+					File.Copy("FastGH3-main\\"+truename,truename,true);
+					File.Delete("FastGH3-main\\"+truename);
+					// NET is the worst thing ever
+					// READ THESE REMARKS, THESE DEVS ARE INSANE!!!!
+					// https://learn.microsoft.com/en-us/dotnet/api/system.io.file.move?view=netframework-4.0#system-io-file-move(system-string-system-string-system-boolean)
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Error occured from extracting "+f.FileName);
+				Console.WriteLine(ex);
+			}
+		}
+		if (bleeding)
+		{
+			Directory.Delete("FastGH3-main\\",true);
+		}
+		buildZip.Dispose();
+		File.Delete(zipPath);
 		Console.WriteLine("Done.");
 		Console.ReadKey();
 	}
