@@ -65,10 +65,37 @@ class Program
 
     static void disallowGameStartup()
     {
-        foreach (Process proc in Process.GetProcessesByName("game"))
+        try
         {
-            if (NormalizePath(proc.MainModule.FileName) == GH3EXEPath)
-                proc.Kill();
+            foreach (Process proc in Process.GetProcessesByName("game"))
+            {
+                if (NormalizePath(proc.MainModule.FileName) == GH3EXEPath)
+                    proc.Kill();
+            }
+        }
+        catch
+        {
+
+        }
+    }
+    static void killEncoders()
+    {
+        try
+        {
+            foreach (Process proc in Process.GetProcessesByName("lame"))
+            {
+                if (NormalizePath(proc.MainModule.FileName) == NormalizePath(folder + dataf + music + "\\TOOLS\\lame.exe"))
+                    proc.Kill();
+            }
+            foreach (Process proc in Process.GetProcessesByName("sox"))
+            {
+                if (NormalizePath(proc.MainModule.FileName) == NormalizePath(folder + dataf + music + "\\TOOLS\\sox.exe"))
+                    proc.Kill();
+            }
+        }
+        catch
+        {
+
         }
     }
 
@@ -1393,6 +1420,7 @@ class Program
                                         if (!fsbbuild2[i].HasExited)
                                             fsbbuild2[i].Kill();
                                 } // doesn't work because killing this only kills the parent EXE and doesn't stop the script >:(
+                                killEncoders();
                                 MessageBox.Show("No guitar/rhythm tracks can be found. Exiting...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 if (writefile && launcherlog != null)
                                     launcherlog.Close();
@@ -2554,6 +2582,10 @@ class Program
                                 {
                                     verboseline("Found song.ini", FSPcolor);
                                 }
+                                if (f == "boss.ini")
+                                {
+                                    verboseline("Found boss.ini", FSPcolor);
+                                }
                                 if (f.EndsWith(".ogg") ||
                                     f.EndsWith(".mp3") ||
                                     f.EndsWith(".wav") ||
@@ -2585,6 +2617,7 @@ class Program
                                     {
                                         try
                                         {
+                                            data.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
                                             if (data.FileName.EndsWith(".pak") ||
                                                 data.FileName.EndsWith(".pak.xen"))
                                             {
@@ -2619,6 +2652,11 @@ class Program
                                                 verboseline("Found song.ini, extracting...", FSPcolor);
                                                 data.Extract(tmpf);
                                             }
+                                            if (data.FileName == "boss.ini")
+                                            {
+                                                verboseline("Found boss.ini, extracting...", FSPcolor);
+                                                data.Extract(tmpf);
+                                            }
                                             if (data.FileName.EndsWith(".ogg") ||
                                                 data.FileName.EndsWith(".mp3") ||
                                                 data.FileName.EndsWith(".wav") ||
@@ -2630,7 +2668,7 @@ class Program
                                         }
                                         catch (Exception e)
                                         {
-                                            verboseline("Error extracting a file:" + e, ConsoleColor.Yellow);
+                                            verboseline("Error extracting a file: " + data.FileName + '\n' + e, ConsoleColor.Yellow);
                                         }
                                     }
                                 }
@@ -2788,6 +2826,10 @@ class Program
                                         if (f == "song.ini")
                                         {
                                             verboseline("Found song.ini", FSPcolor);
+                                        }
+                                        if (f == "boss.ini")
+                                        {
+                                            verboseline("Found boss.ini", FSPcolor);
                                         }
                                         if (f.EndsWith(".ogg") ||
                                             f.EndsWith(".mp3") ||

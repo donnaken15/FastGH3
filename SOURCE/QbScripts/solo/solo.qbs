@@ -18,7 +18,8 @@ if (*game_mode == p2_battle || *enable_solos == 0)
 
 // create routine for if script doesn't spawn from song?
 
-FormatText(checksumname=scripts_name,'%d_scripts',d=(*current_song));
+get_song_prefix(song=fastgh3); // AWIJ$%JPQ#*(M%BH^MU<P)_Q#($B(MO<LU^BU@Q#M)_<(@BIMO^(<%*U!QB#M<)_(B^M<U@$)P(^B>
+FormatText(checksumname=scripts_name,'%d_scripts',d=%song_prefix);
 scripts = *%scripts_name;
 
 // have to do this complicated BS
@@ -26,7 +27,6 @@ getarraysize(%scripts);
 // k = index of fastgh3_scripts array
 k = 0;
 found_self = 0;
-// WHY DOES THIS FAIL ON __FINAL BUILD BUT NOT THE ONE I USE ALL THE TIME
 repeat(%array_size)
 {
 	// find own script props just for the exact time it was due to spawn
