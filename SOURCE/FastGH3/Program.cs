@@ -63,7 +63,7 @@ class Program
                     .ToUpperInvariant();
     }
 
-    static void disallowGameStartup()
+    public static void disallowGameStartup()
     {
         try
         {
@@ -75,7 +75,7 @@ class Program
         }
         catch
         {
-
+            verboseline("Failed to kill game. It can't be open while a song is converting.");
         }
     }
     static void killEncoders()
@@ -270,6 +270,8 @@ class Program
     //                   lol
     public static string FormatText(string input, string[] songParams)
     {
+        if (input == null)
+            input = "%a - %t";
         string formatted = input;
         for (int i = 0; i < formatted.Length; i++)
         {
@@ -462,8 +464,16 @@ class Program
                         if (newfile)
                         {
                             launcherlog.WriteLine("FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n--------------------------------");
-                            builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(folder + music + "\\TOOLS\\bt.bin"), 0)));
-                            launcherlog.WriteLine("version 1.0-999010723 / build time: "+builddate);
+                            try
+                            {
+                                builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(folder + music + "\\TOOLS\\bt.bin"), 0)));
+                                // a person legitimately had this file missing, how is that even possible >:(
+                            }
+                            catch
+                            {
+                                builddate = DateTime.MinValue;
+                            }
+                            launcherlog.WriteLine("version "+version+" / build time: "+builddate);
                             newfile = false;
                             settings.SetKeyValue("Misc", "FinishedLog", "0");
                             settings.Save(folder + "settings.ini");
@@ -575,6 +585,7 @@ class Program
                     Console.WriteLine(title + " by donnaken15");
                     launcherlog.WriteLine("\n######### DOWNLOAD SONG PHASE #########\n");
                     print("Downloading song package...", FSPcolor);
+                    verboseline("URL: " + args[1], FSPcolor);
                     bool datecheck = true;
                     Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
                     string cacheSect = ""; // ...
@@ -697,9 +708,9 @@ class Program
                         mid2chart.StartInfo = new ProcessStartInfo()
                         {
                             FileName = folder + "\\mid2chart.exe",
-                            Arguments = paksongmid.EncloseWithQuoteMarks() + " -k -u -p -m"
+                            Arguments = paksongmid.EncloseWithQuoteMarks() + " -k -u -p -m",
                         };
-                        // Why won't this work
+                        // WHY WONT THIS WORK!!!!
                         if (!verboselog && !writefile)
                         {
                             mid2chart.StartInfo.CreateNoWindow = true;
@@ -728,6 +739,8 @@ class Program
                             //mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
                             //Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
                             //Console.ReadKey();
+                            //if (File.Exists(folder + "mid2chart.log"))
+                                //File.Delete(folder + "mid2chart.log");
                             File.Copy(args[0], paksongmid, true);
                             mid2chart.Start();
                             mid2chart.WaitForExit();
@@ -737,6 +750,15 @@ class Program
                                 Console.WriteLine("An error occured when converting midi to chart. Aborting.");
                                 Environment.Exit(1);
                             }*/
+                            // im suffering so hard
+                            if (File.Exists(folder + "mid2chart.log"))
+                            {
+                                throw new Exception("Error occured from mid2chart:\n\n"+File.ReadAllText(folder + "mid2chart.log")+"\n\n");
+                            }
+                            if (!File.Exists(paksongchart))
+                            {
+                                throw new Exception("Cannot find MIDI after converting to chart. Something must've went wrong with mid2chart. Aborting.");
+                            }
                         }
                         print("Reading file.", chartConvColor);
                         if (cacheEnabled)
@@ -1062,6 +1084,7 @@ class Program
                         Process fsbbuild3 = new Process();
                         bool MTFSB = true; // enable asynchronous audio track encoding
                                            //if (cacheEnabled)
+                        disallowGameStartup();
                         if (!audCache)
                         {
                             print("Audio is not cached.", cacheColor);
@@ -1176,6 +1199,14 @@ class Program
                             }
                             verbose("ynchronous mode set\n", FSBcolor);
                             verboseline("Starting FSB building...", FSBcolor);
+                            try
+                            {
+                                Directory.Delete(folder + dataf + music + "\\TOOLS\\fsbtmp", true);
+                            }
+                            catch
+                            {
+                                verboseline("Failed to delete the temp FSB folder!");
+                            }
                             if (!MTFSB)
                             {
                                 fsbbuild.StartInfo.Arguments = "/c " + ((folder + music + "\\TOOLS\\fsbbuild.bat").EncloseWithQuoteMarks() + ' ' +
@@ -1320,9 +1351,9 @@ class Program
                                             tmp = new QbcNoteTrack(chart.NoteTracks[d + i], OT);
                                             if (tmp.Count > 0)
                                                 test = tmp.Count;
-                                            else test = 3;
+                                            else test = 1;
                                             song_notes[ii][dd].Create(QbItemType.ArrayInteger);
-                                            song_notes[ii][dd].Values = new int[tmp.Count * 3];
+                                            song_notes[ii][dd].Values = new int[test * 3];
                                             // is ItemCount what i need instead of Create(type, arraysize)
                                             // so i implemented that parameter for nothing?
                                             for (int j = 0; j < tmp.Count; j++)
@@ -1538,10 +1569,17 @@ class Program
                             {
                                 for (int d = 0; d < 4; d++)
                                 {
-                                    endtime = Math.Max(endtime,
-                                        song_notes[i][d].Values[song_notes[i][d].Values.Length - 3] +
-                                        song_notes[i][d].Values[song_notes[i][d].Values.Length - 2]
-                                        );
+                                    try
+                                    {
+                                        endtime = Math.Max(endtime,
+                                            song_notes[i][d].Values[song_notes[i][d].Values.Length - 3] +
+                                            song_notes[i][d].Values[song_notes[i][d].Values.Length - 2]
+                                            );
+                                    }
+                                    catch
+                                    {
+                                        verboseline("Unable to get the end time for a note track. ["+i+"]["+d+"]");
+                                    }
                                     verboseline("Calculating: end time so far: " + endtime, chartConvColor);
                                 }
                             }
@@ -2258,7 +2296,7 @@ class Program
                                 genre
                             };
                             File.WriteAllText(folder + "currentsong.txt",
-                                FormatText(
+                                FormatText( // WHY ARE SETTINGS DEFAULTS BECOMING NULL
                                     settings.GetKeyValue("Misc", "SongtextFormat", "%a - %t")
                                     .Replace("\\n", Environment.NewLine),
                                 songParams));
@@ -2486,7 +2524,14 @@ class Program
                         // so WHY DOES IT CREATE THESE
                         foreach (var file in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
                         {
-                            file.Delete();
+                            try
+                            {
+                                file.Delete();
+                            }
+                            catch
+                            {
+
+                            }
                         }
                         if (settings.GetKeyValue("Misc", "PreserveLog", "0") == "1")
                         {
@@ -3065,7 +3110,7 @@ class Program
                 }
                 Stream stream3 = report.GetResponse().GetResponseStream();
                 StreamReader reader3 = new StreamReader(stream3);
-                print(reader3.ReadToEnd());
+                reader3.ReadToEnd();
                 // im not returning any data, so
 
                 print("Log saved to " + outlink);

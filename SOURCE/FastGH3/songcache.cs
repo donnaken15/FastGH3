@@ -82,6 +82,7 @@ public partial class songcache : Form
                 Program.settings.GetKeyValue("Misc", "SongtextFormat", "%a - %t")
                 .Replace("\\n", Environment.NewLine),
             songParams));
+        Program.disallowGameStartup();
         Process.Start(folder + "..\\..\\game.exe");
     }
 
