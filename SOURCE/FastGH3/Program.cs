@@ -1448,16 +1448,21 @@ class Program
                                 else
                                 {
                                     for (int i = 0; i < fsbbuild2.Length; i++)
-                                        if (!fsbbuild2[i].HasExited)
-                                            fsbbuild2[i].Kill();
-                                } // doesn't work because killing this only kills the parent EXE and doesn't stop the script >:(
-                                killEncoders();
-                                MessageBox.Show("No guitar/rhythm tracks can be found. Exiting...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                if (writefile && launcherlog != null)
-                                    launcherlog.Close();
-                                settings.SetKeyValue("Misc", "FinishedLog", "1");
-                                settings.Save(folder + "settings.ini");
-                                Environment.Exit(0);
+                                        try
+                                        {
+                                            if (!fsbbuild2[i].HasExited)
+                                                fsbbuild2[i].Kill();
+                                        }
+                                        catch { }
+                                    // doesn't work because killing this only kills the parent EXE and doesn't stop the script >:(
+                                    killEncoders();
+                                    MessageBox.Show("No guitar/rhythm tracks can be found. Exiting...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    if (writefile && launcherlog != null)
+                                        launcherlog.Close();
+                                    settings.SetKeyValue("Misc", "FinishedLog", "1");
+                                    settings.Save(folder + "settings.ini");
+                                    Environment.Exit(0);
+                                }
                             }
                             verboseline("Adding note arrays to QB.", chartConvColor);
                             /*for (int d = 0; d < song_notes_container.Length; d++)
