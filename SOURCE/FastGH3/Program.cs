@@ -739,9 +739,17 @@ class Program
                             //mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
                             //Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
                             //Console.ReadKey();
-                            //if (File.Exists(folder + "mid2chart.log"))
-                                //File.Delete(folder + "mid2chart.log");
                             File.Copy(args[0], paksongmid, true);
+                            try
+                            {
+                                if (File.Exists(folder + "mid2chart.log"))
+                                    File.Delete(folder + "mid2chart.log");
+                            }
+                            catch (Exception ex)
+                            {
+                                verboseline("For some reason failed to delete the mid2chart error log.");
+                                verboseline(ex);
+                            }
                             mid2chart.Start();
                             mid2chart.WaitForExit();
                             // doesnt happen when throwing :(
@@ -2747,27 +2755,35 @@ class Program
                                     verboseline("Looking for 7Zip in registry.", FSPcolor);
                                     RegistryKey z7key;
                                     // also check HKLM hive?
-                                    z7key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\7-Zip");
-                                    if (z7key != null)
+                                    try
                                     {
-                                        z7path = (string)z7key.GetValue("Path");
-                                        if (z7path == null)
+                                        z7key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\7-Zip");
+                                        if (z7key != null)
                                         {
-                                            z7path = (string)z7key.GetValue("Path64");
-                                            if (z7path != null)
+                                            z7path = (string)z7key.GetValue("Path");
+                                            if (z7path == null)
+                                            {
+                                                z7path = (string)z7key.GetValue("Path64");
+                                                if (z7path != null)
+                                                    got7Z = true;
+                                            }
+                                            else
                                                 got7Z = true;
+                                            if (got7Z)
+                                                z7path += "\\7z.exe";
+                                            if (!File.Exists(z7path) && got7Z)
+                                            {
+                                                verboseline("Wait WTF, THE PROGRAM ISN'T THERE!! HOW!", FSPcolor);
+                                                got7Z = false;
+                                            }
                                         }
-                                        else
-                                            got7Z = true;
-                                        if (got7Z)
-                                            z7path += "\\7z.exe";
-                                        if (!File.Exists(z7path) && got7Z)
-                                        {
-                                            verboseline("Wait WTF, THE PROGRAM ISN'T THERE!! HOW!", FSPcolor);
-                                            got7Z = false;
-                                        }
+                                        z7key.Close();
                                     }
-                                    z7key.Close();
+                                    catch
+                                    {
+                                        got7Z = false;
+                                        verboseline("Somehow looking for 7-Zip failed. Is it installed?");
+                                    }
                                 }
                                 else
                                     verboseline("Found 7Zip", FSPcolor);
