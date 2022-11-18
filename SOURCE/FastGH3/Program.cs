@@ -1056,6 +1056,10 @@ class Program
                         ulong charthash = WZK64.Create(
                                 File.ReadAllBytes(args[0])
                         );
+                        if (File.Exists("boss.ini"))
+                        {
+                            charthash ^= WZK64.Create(File.ReadAllBytes("boss.ini"));
+                        }
                         ulong audhash = 0;
                         bool chartCache = false;
                         bool audCache = false;
@@ -1211,9 +1215,10 @@ class Program
                             {
                                 Directory.Delete(folder + dataf + music + "\\TOOLS\\fsbtmp", true);
                             }
-                            catch
+                            catch (Exception e)
                             {
-                                verboseline("Failed to delete the temp FSB folder!");
+                                print("Failed to delete the temp FSB folder!");
+                                print(e);
                             }
                             if (!MTFSB)
                             {
@@ -1249,9 +1254,24 @@ class Program
                         else
                         {
                             print("Cached audio found.", FSBcolor);
-                            File.Copy(
-                                folder + "\\DATA\\CACHE\\" + audhash.ToString("X16"),
-                                folder + "\\DATA\\MUSIC\\fastgh3.fsb.xen", true);
+                            try
+                            {
+                                File.Copy(
+                                    folder + "\\DATA\\CACHE\\" + audhash.ToString("X16"),
+                                    folder + "\\DATA\\MUSIC\\fastgh3.fsb.xen", true);
+                            }
+                            catch (IOException e)
+                            {
+                                print("Failed to copy cached FSB. WHY?!!!");
+                                print(e);
+                                print("Attempting to kill game if \"it is used by another process\" somehow.");
+                                disallowGameStartup();
+                                print("Deleting the currently loaded FSB in case.");
+                                File.Delete(folder + "\\DATA\\MUSIC\\fastgh3.fsb.xen");
+                                File.Copy(
+                                    folder + "\\DATA\\CACHE\\" + audhash.ToString("X16"),
+                                    folder + "\\DATA\\MUSIC\\fastgh3.fsb.xen", true);
+                            }
                         }
                         #endregion
                         disallowGameStartup();
@@ -1816,7 +1836,7 @@ class Program
                                     for (int i = 0; i < selectedPowers.Length; i++)
                                     {
                                         powerDoesntExist = true;
-                                        foreach (QbKey j in existingPowers)
+                                        foreach (QbKey j in defaultPowers)
                                         {
                                             if (QbKey.Create(selectedPowers[i]) == j)
                                             {
@@ -2433,19 +2453,17 @@ class Program
                                     charter = chart.Song["Charter"].Value.Trim();
                             };
                             string[] songParams = new string[] {
-                            author,
-                            _title,
-                            album,
-                            charter,
-                            year,
-                            timestr,
-                            genre
-                        };
+                                author,
+                                _title,
+                                album,
+                                charter,
+                                year,
+                                timestr,
+                                genre
+                            };
                             File.WriteAllText(folder + "currentsong.txt",
-                                FormatText(
-                                    settings.GetKeyValue("Misc", "SongtextFormat", "%a - %t")
-                                    .Replace("\\n", Environment.NewLine),
-                                songParams));
+                                FormatText(settings.GetKeyValue("Misc", "SongtextFormat", "%a - %t")
+                                    .Replace("\\n", Environment.NewLine), songParams));
                             File.Delete(paksongmid);
                             File.Delete(paksongchart);
                         }
@@ -2531,20 +2549,27 @@ class Program
                         gh3.Start();
                         settings.SetKeyValue("Misc", "FinishedLog", "1");
                         settings.Save(folder + "settings.ini");
-                        verboseline("Cleaning up SoX temp files FOR SOME REASON!!!");
-                        // stupid SoX
-                        // didn't happen on the previous version
-                        // so WHY DOES IT CREATE THESE
-                        foreach (var file in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
+                        try
                         {
-                            try
+                            verboseline("Cleaning up SoX temp files FOR SOME REASON!!!");
+                            // stupid SoX
+                            // didn't happen on the previous version
+                            // so WHY DOES IT CREATE THESE
+                            foreach (var file in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
                             {
-                                file.Delete();
-                            }
-                            catch
-                            {
+                                try
+                                {
+                                    file.Delete();
+                                }
+                                catch
+                                {
 
+                                }
                             }
+                        }
+                        catch
+                        {
+                            verboseline("fail");
                         }
                         if (settings.GetKeyValue("Misc", "PreserveLog", "0") == "1")
                         {
@@ -2776,8 +2801,10 @@ class Program
                                                 verboseline("Wait WTF, THE PROGRAM ISN'T THERE!! HOW!", FSPcolor);
                                                 got7Z = false;
                                             }
+                                            z7key.Close();
                                         }
-                                        z7key.Close();
+                                        else
+                                            print("Could not find 7-Zip path in registry. Is it installed?");
                                     }
                                     catch
                                     {

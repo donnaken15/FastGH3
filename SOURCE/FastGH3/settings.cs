@@ -779,7 +779,8 @@ public partial class settings : Form
 
     object getQBConfig(QbKey key, object def)
     {
-        // find or create value
+        // find matching item's value or use a default
+        // we're only accessing global/root items with this
         object _item = (userqb.FindItem(key, false));
         if (_item != null)
         {

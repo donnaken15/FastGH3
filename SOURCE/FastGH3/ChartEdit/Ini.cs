@@ -184,7 +184,7 @@ public class IniFile
             else
                 return sDefault;
         }
-        return string.Empty;
+        return sDefault;
     }
 
     // Sets a KeyValuePair in a certain section
