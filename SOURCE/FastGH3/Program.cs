@@ -15,13 +15,6 @@ using System.Text;
 
 class Program
 {
-    public static string _8Bstr(byte[] a)
-    {
-        // cheap byte saving by forcing some strings to not be unicode
-        return System.Text.Encoding.ASCII.GetString(a);
-        // resources actually can deal with this just fine
-        // pretentious language/compiler
-    }
     static uint[] unusedKeys = {
                 0x212262DF, 0x7F2FC9BC, 0x32BDB4A9, 0x44819DD0, 0xCB09D855, 0x2E7DDC38,
                 0x71AA8EF7, 0x347C8050, 0x195F3B95, 0x7E1B28BC, 0x9D0C5D0C, 0xAF1E8BC1,
@@ -1097,6 +1090,9 @@ class Program
                         bool MTFSB = true; // enable asynchronous audio track encoding
                                            //if (cacheEnabled)
                         disallowGameStartup();
+                        string CMDpath = FindExePath("cmd.exe");
+                        if (CMDpath == "") // somehow someone got an error of a process starting
+                            CMDpath = "cmd"; // assuming its one of these building scripts
                         if (!audCache)
                         {
                             print("Audio is not cached.", cacheColor);
@@ -1105,7 +1101,7 @@ class Program
                                 print("Found more than three audio tracks, merging.", FSBcolor);
                                 addaud.StartInfo = new ProcessStartInfo()
                                 {
-                                    FileName = "cmd",
+                                    FileName = CMDpath,
                                     Arguments = ((folder + music + "\\TOOLS\\nj3t.bat").EncloseWithQuoteMarks())
                                 };
                                 if (!verboselog && !writefile)
@@ -1144,9 +1140,9 @@ class Program
                                 }
                             }
                             verboseline("Creating encoder process...", FSBcolor);
+                            fsbbuild.StartInfo.FileName = CMDpath;
                             if (!MTFSB)
                             {
-                                fsbbuild.StartInfo.FileName = "cmd";
                                 if (!verboselog && !writefile)
                                 {
                                     fsbbuild.StartInfo.CreateNoWindow = true;
@@ -1174,7 +1170,7 @@ class Program
                                     fsbbuild2[i] = new Process();
                                     fsbbuild2[i].StartInfo = new ProcessStartInfo()
                                     {
-                                        FileName = "cmd",
+                                        FileName = CMDpath,
                                         Arguments = "/c " + ((folder + music + "\\TOOLS\\c128ks.bat").EncloseWithQuoteMarks() + " " + audiostreams[i].EncloseWithQuoteMarks() + " \"" + folder + music + "\\TOOLS\\fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").EncloseWithQuoteMarks(),
                                         CreateNoWindow = true,
                                         UseShellExecute = true,
@@ -1190,7 +1186,7 @@ class Program
                                     }
                                     verboseline("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments, FSBcolor);
                                 }
-                                fsbbuild3.StartInfo.FileName = "cmd";
+                                fsbbuild3.StartInfo.FileName = CMDpath;
                                 fsbbuild3.StartInfo.Arguments = "/c " + ((folder + music + "\\TOOLS\\fsbbuild.bat").EncloseWithQuoteMarks());
                                 if (!verboselog && !writefile)
                                 {
@@ -1211,6 +1207,7 @@ class Program
                             }
                             verbose("ynchronous mode set\n", FSBcolor);
                             verboseline("Starting FSB building...", FSBcolor);
+                            print(fsbbuild.StartInfo.FileName);
                             try
                             {
                                 Directory.Delete(folder + dataf + music + "\\TOOLS\\fsbtmp", true);
