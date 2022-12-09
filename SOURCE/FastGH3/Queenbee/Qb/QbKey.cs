@@ -63,7 +63,9 @@ namespace Nanook.QueenBee.Parser
             string str = FormatText(text);
 
             if (str == null)
-                throw new ArgumentNullException("text");
+                //throw new ArgumentNullException("text"); no one cares
+                // treat like a blank string
+                return new QbKey(0xFFFFFFFF);
 
             if (Regex.IsMatch(str, "^[0-9a-fA-F]{8}$"))
                 return new QbKey(uint.Parse(str, System.Globalization.NumberStyles.HexNumber));

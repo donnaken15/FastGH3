@@ -18,7 +18,7 @@ if (*game_mode == p2_battle || *enable_solos == 0)
 
 // create routine for if script doesn't spawn from song?
 
-get_song_prefix(song=fastgh3); // AWIJ$%JPQ#*(M%BH^MU<P)_Q#($B(MO<LU^BU@Q#M)_<(@BIMO^(<%*U!QB#M<)_(B^M<U@$)P(^B>
+get_song_prefix(song=(*current_song)); // AWIJ$%JPQ#*(M%BH^MU<P)_Q#($B(MO<LU^BU@Q#M)_<(@BIMO^(<%*U!QB#M<)_(B^M<U@$)P(^B>
 FormatText(checksumname=scripts_name,'%d_scripts',d=%song_prefix);
 scripts = *%scripts_name;
 
@@ -133,12 +133,10 @@ repeat(*current_num_players)
 	FormatText(checksumName=player_status, 'player%d_status', d = %i);
 	if (%i == 1)
 	{
-		change(last_solo_index_p1 = 0);
 		player_difficulty = current_difficulty;
 	}
 	elseif (%i == 2)
 	{
-		change(last_solo_index_p2 = 0);
 		player_difficulty = current_difficulty2;
 	}
 	if (%part == (*%player_status.part) &&
@@ -162,10 +160,12 @@ repeat(*current_num_players)
 		// current note index
 		if (%i == 1)
 		{
+			change(last_solo_index_p1 = 0);
 			note_index = *note_index_p1;
 		}
 		elseif (%i == 2)
 		{
+			change(last_solo_index_p2 = 0);
 			note_index = *note_index_p2;
 		}
 		note_index = (%note_index / 3);

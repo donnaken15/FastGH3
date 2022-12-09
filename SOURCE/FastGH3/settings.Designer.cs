@@ -42,6 +42,7 @@ partial class settings
             this.maxFPS = new System.Windows.Forms.NumericUpDown();
             this.readytimeNoIntro = new System.Windows.Forms.NumericUpDown();
             this.keybindsBtn = new System.Windows.Forms.Button();
+            this.p2parttoggle = new System.Windows.Forms.CheckBox();
             this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
             this.speedlabel = new System.Windows.Forms.Label();
             this.maxnoteslbl = new System.Windows.Forms.Label();
@@ -52,7 +53,6 @@ partial class settings
             this.maxFPSlbl = new System.Windows.Forms.Label();
             this.fpslabel = new System.Windows.Forms.Label();
             this.tweaksPanel = new System.Windows.Forms.Panel();
-            this.p2parttoggle = new System.Windows.Forms.CheckBox();
             this.modifiersList = new System.Windows.Forms.CheckedListBox();
             this.modifierslbl = new System.Windows.Forms.Label();
             this.tweaksLabel = new System.Windows.Forms.Label();
@@ -380,6 +380,19 @@ partial class settings
             this.keybindsBtn.UseVisualStyleBackColor = true;
             this.keybindsBtn.Click += new System.EventHandler(this.openKeybinds);
             // 
+            // p2parttoggle
+            // 
+            this.p2parttoggle.AutoSize = true;
+            this.p2parttoggle.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.p2parttoggle.Location = new System.Drawing.Point(146, 195);
+            this.p2parttoggle.Name = "p2parttoggle";
+            this.p2parttoggle.Size = new System.Drawing.Size(109, 18);
+            this.p2parttoggle.TabIndex = 42;
+            this.p2parttoggle.Text = "Player 2 is guitar";
+            this.tooltip.SetToolTip(this.p2parttoggle, "Required for playing face-off and battle.");
+            this.p2parttoggle.UseVisualStyleBackColor = true;
+            this.p2parttoggle.Click += new System.EventHandler(this.p2parttoggle_Click);
+            // 
             // backgroundcolordiag
             // 
             this.backgroundcolordiag.AnyColor = true;
@@ -511,19 +524,6 @@ partial class settings
             this.tweaksPanel.Name = "tweaksPanel";
             this.tweaksPanel.Size = new System.Drawing.Size(272, 217);
             this.tweaksPanel.TabIndex = 40;
-            // 
-            // p2parttoggle
-            // 
-            this.p2parttoggle.AutoSize = true;
-            this.p2parttoggle.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.p2parttoggle.Location = new System.Drawing.Point(146, 195);
-            this.p2parttoggle.Name = "p2parttoggle";
-            this.p2parttoggle.Size = new System.Drawing.Size(109, 18);
-            this.p2parttoggle.TabIndex = 42;
-            this.p2parttoggle.Text = "Player 2 is guitar";
-            this.tooltip.SetToolTip(this.p2parttoggle, "Required for playing face-off and battle.");
-            this.p2parttoggle.UseVisualStyleBackColor = true;
-            this.p2parttoggle.Click += new System.EventHandler(this.p2parttoggle_Click);
             // 
             // modifiersList
             // 

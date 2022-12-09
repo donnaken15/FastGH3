@@ -58,7 +58,7 @@ class Program
 
     public static void disallowGameStartup()
     {
-        try
+        /*try
         {
             foreach (Process proc in Process.GetProcessesByName("game"))
             {
@@ -66,10 +66,18 @@ class Program
                     proc.Kill();
             }
         }
-        catch
+        catch*/
         {
-            verboseline("Failed to kill game. It can't be open while a song is converting.");
+            //verboseline("Failed to kill game. It can't be open while a song is converting.");
+            //verboseline("Killing game from the inside...");
+            settings.SetKeyValue("Misc", "Killswitch", "1");
+            settings.Save(folder + "settings.ini");
         }
+    }
+    public static void allowGameStartup()
+    {
+        settings.SetKeyValue("Misc", "Killswitch", "0");
+        settings.Save(folder + "settings.ini");
     }
     static void killEncoders()
     {
@@ -486,6 +494,7 @@ class Program
                     {
                         if (File.Exists(args[1]) && File.Exists(args[2]))
                         {
+                            string defaultscn = folder + dataf + "\\zones\\__themes\\default.scn.xen";
                             if (args[2].EndsWith(".pak.xen"))
                             {
                                 PakFormat pakFormat = new PakFormat(args[2], args[2].Replace(".pak.xen", ".pab.xen"), "", PakFormatType.PC);
@@ -535,7 +544,7 @@ class Program
                                         pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", scn);
                                     }
                                     else
-                                        pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", "default.scn.xen");
+                                        pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", defaultscn);
                                     File.Delete(gfx);
                                     File.Delete(scn);
                                 }
@@ -547,7 +556,7 @@ class Program
                                         pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", args[1].Replace(".tex", ".scn").Replace(".gfx", ".scn"));
                                     }
                                     else
-                                        pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", "default.scn.xen");
+                                        pakEditor.ReplaceFile("zones\\global\\global_gfx.scn", defaultscn);
                                 }
                             }
                             else
@@ -1261,8 +1270,8 @@ class Program
                             {
                                 print("Failed to copy cached FSB. WHY?!!!");
                                 print(e);
-                                print("Attempting to kill game if \"it is used by another process\" somehow.");
-                                disallowGameStartup();
+                                //print("Attempting to kill game if \"it is used by another process\" somehow.");
+                                //disallowGameStartup();
                                 print("Deleting the currently loaded FSB in case.");
                                 File.Delete(folder + "\\DATA\\MUSIC\\fastgh3.fsb.xen");
                                 File.Copy(
@@ -1340,7 +1349,9 @@ class Program
                             bool atleast1track = false;
 
                             int test;
-                            int delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
+                            int delay = 0;
+                            if (chart.Song["Offset"].Value != null) // ugh
+                                delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
                             QbcNoteTrack tmp;
 
                             QbItemArray array_scripts = new QbItemArray(songdata);
@@ -2516,7 +2527,7 @@ class Program
                             }
                         }
                         #endregion
-                        disallowGameStartup();
+                        allowGameStartup();
                         Console.ResetColor();
                         print("Speeding up.");
                         verboseline("Creating GH3 process...");
@@ -2602,6 +2613,8 @@ class Program
                             tmpf = Path.GetTempPath() + "Z.FGH3.TMP\\";
                             if (Directory.Exists(tmpf))
                             // WHY ARE YOU PUTTING DESKTOP.INI IN YOUR CHART FOLDERS
+                            // *coming from someone who has hidden files shown
+                            // when it's not a default option on windows
                             //Directory.Delete(tmpf, true);
                             {
                                 foreach (string f in Directory.GetFiles(tmpf, "*.*", SearchOption.TopDirectoryOnly))
@@ -2637,6 +2650,7 @@ class Program
                                     f.EndsWith(".pak.xen"))
                                 {
                                     verboseline("Found .pak", FSPcolor);
+                                    disallowGameStartup();
                                     File.Delete(folder + pakf + "song.pak.xen");
                                     File.Copy(f, folder + pakf + "song.pak.xen", true);
                                     multichartcheck.Add(f);
@@ -2646,6 +2660,7 @@ class Program
                                     f.EndsWith(".fsb.xen"))
                                 {
                                     verboseline("Found .fsb", FSPcolor);
+                                    disallowGameStartup();
                                     File.Delete(folder + music + "fastgh3.fsb.xen");
                                     File.Copy(f, folder + music + "fastgh3.fsb.xen", true);
                                 }
@@ -2701,6 +2716,7 @@ class Program
                                             if (data.FileName.EndsWith(".pak") ||
                                                 data.FileName.EndsWith(".pak.xen"))
                                             {
+                                                disallowGameStartup();
                                                 verboseline("Found .pak, extracting...", FSPcolor);
                                                 data.Extract(tmpf);
                                                 // do something with this moving when multiple files exist or whatever
@@ -2712,6 +2728,7 @@ class Program
                                             if (data.FileName.EndsWith(".fsb") ||
                                                 data.FileName.EndsWith(".fsb.xen"))
                                             {
+                                                disallowGameStartup();
                                                 verboseline("Found .fsb, extracting...", FSPcolor);
                                                 data.Extract(tmpf);
                                                 File.Delete(folder + music + "fastgh3.fsb.xen");
@@ -2890,6 +2907,7 @@ class Program
                                         if (f.EndsWith(".pak") ||
                                             f.EndsWith(".pak.xen"))
                                         {
+                                            disallowGameStartup();
                                             verboseline("Found .pak", FSPcolor);
                                             // do something with this moving when multiple files exist or whatever
                                             File.Delete(folder + pakf + "song.pak.xen");
@@ -2900,6 +2918,7 @@ class Program
                                         if (f.EndsWith(".fsb") ||
                                             f.EndsWith(".fsb.xen"))
                                         {
+                                            disallowGameStartup();
                                             verboseline("Found .fsb", FSPcolor);
                                             File.Delete(folder + music + "fastgh3.fsb.xen");
                                             File.Move(f, folder + music + "fastgh3.fsb.xen");
@@ -2965,6 +2984,7 @@ class Program
                         if (!cancel)
                             if (compiled)
                             {
+                                allowGameStartup();
                                 Console.ResetColor();
                                 print("Speeding up.");
                                 verboseline("Creating GH3 process...");
