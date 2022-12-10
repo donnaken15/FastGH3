@@ -89,6 +89,12 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="bgprev.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="bgprev.Designer.cs">
+      <DependentUpon>bgprev.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChartEdit\beatType.cs" />
     <Compile Include="ChartEdit\Chart.cs" />
     <Compile Include="ChartEdit\EventsSection.cs" />
@@ -226,6 +232,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="bgprev.resx">
+      <DependentUpon>bgprev.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="colorpreview.resx">
       <DependentUpon>colorpreview.cs</DependentUpon>
     </EmbeddedResource>

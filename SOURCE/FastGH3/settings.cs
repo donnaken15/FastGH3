@@ -159,6 +159,100 @@ public partial class settings : Form
         qbedit.ReplaceFile("config.qb", userqb);
     }
 
+    static uint Eswap(uint value)
+    {
+        return ((value & 0xFF) << 24) |
+                ((value & 0xFF00) << 8) |
+                ((value & 0xFF0000) >> 8) |
+                ((value & 0xFF000000) >> 24);
+    }
+
+    static ushort Eswap(ushort value)
+    {
+        return (ushort)(((value & 0xFF) << 8) | ((value & 0xFF00) >> 8));
+    }
+
+    static byte LOBYTE(ushort value)
+    {
+        return (byte)(value & 0xFF);
+    }
+
+    static byte HIBYTE(ushort value)
+    {
+        return (byte)(value >> 8);
+    }
+
+    // https://www.c-sharpcorner.com/UploadFile/ishbandhu2009/resize-an-image-in-C-Sharp/
+    private static Image resizeImage(Image imgToResize, Size size)
+    {
+        int destWidth = size.Width;
+        int destHeight = size.Height;
+        Bitmap b = new Bitmap(destWidth, destHeight);
+        Graphics g = Graphics.FromImage(b);
+        g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
+        g.Dispose();
+        return b;
+    }
+
+    private static PakFormat globalPF;
+    private static PakEditor globalPE;
+    public static Image bgImg;
+    Image getBGIMG()
+    {
+        //if (globalPE == null)
+            //return null;
+        byte[] tmp = globalPE.ExtractFileToBytes("24535078");
+        //uint imgoff = 0x28;
+        //int imglen = tmp.Length - imgoff;
+        uint imgoff = Eswap(BitConverter.ToUInt32(tmp, 0x1C));
+        uint imglen = Eswap(BitConverter.ToUInt32(tmp, 0x20));
+        byte[] imgbytes = new byte[imglen];
+        Array.Copy(tmp,imgoff,imgbytes,0,imglen);
+        //Console.WriteLine(BitConverter.ToString(imgbytes, 0, 0x28));
+        return Image.FromStream(new MemoryStream(imgbytes),true);
+    }
+    void setBGIMG(Image i, bool reconvert)
+    {
+        var ms = new MemoryStream();
+        ms.Write(
+            new byte[] {
+                0x0A, 0x28, 0x11, 0x00,
+                0x00, 0x00, 0x00, 0x00,
+            }, 0, 8);
+        byte[] dims = new byte[] {
+            HIBYTE((ushort)i.Width), LOBYTE((ushort)i.Width),
+            HIBYTE((ushort)i.Height), LOBYTE((ushort)i.Height),
+        };
+        ms.Write(dims, 0, 4);
+        ms.WriteByte(0x00);
+        ms.WriteByte(0x01);
+        ms.Write(dims, 0, 4);
+        ms.Write(
+            new byte[] {
+                0x00, 0x01, 0x01, 0x08, 0x05, 0x00
+            }, 0, 6);
+        ms.Write(
+            new byte[] {
+                0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x28,
+            }, 0, 8);
+        long lenptr = ms.Position;
+        ms.Write(
+            new byte[] {
+                0x00, 0x00, 0x00, 0x00,
+                0x00, 0x00, 0x00, 0x00,
+            }, 0, 8);
+        System.Drawing.Imaging.ImageFormat fmt = i.RawFormat;
+        if (reconvert)
+            fmt = System.Drawing.Imaging.ImageFormat.Jpeg;
+        i.Save(ms, fmt);
+        long strsize = ms.Position - 0x28;
+        ms.Position = lenptr;
+        ms.Write(BitConverter.GetBytes(Eswap((uint)strsize)),0,4);
+        globalPE.ReplaceFile("24535078", ms.ToArray());
+        //File.WriteAllBytes("DATA\\test22.img.xen",ms.ToArray());
+    }
+
     int[] keyBinds = new int[] {
         (int)KeyID.D1,
         (int)KeyID.D2,
@@ -203,7 +297,7 @@ public partial class settings : Form
         }
         else
             xml.LoadXml(xmlDefault);
-        Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
+        //Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
         backcolrgb = (QbItemInteger)
         userqb.FindItem(QbKey.Create("BGCol"), false).Items[0];
         backcolor = Color.FromArgb(255,
@@ -212,6 +306,12 @@ public partial class settings : Form
             backcolrgb.Values[2]);
         DialogResult = DialogResult.OK;
         InitializeComponent();
+
+        globalPF = new PakFormat(folder + "\\DATA\\ZONES\\global.pak.xen", folder + "\\DATA\\ZONES\\global.pab.xen", "", PakFormatType.PC, false);
+        globalPE = new PakEditor(globalPF, false);
+        pbxBg.Image = getBGIMG();
+        setBGIMG(pbxBg.Image, false);
+
         SetForegroundWindow(Handle);
         verboseline("Reading settings...");
         tweaksList.SetItemChecked((int)Tweaks.KeyboardMode, (int)getQBConfig(QbKey.Create(0x32025D94), 1) == 0); // autolaunch_startnow
@@ -633,6 +733,51 @@ public partial class settings : Form
         Hopos2Taps,
         Mirror,
         ColorShuffle
+    }
+
+    private void showBgImg(object sender, EventArgs e)
+    {
+        new bgprev(getBGIMG()).ShowDialog();
+    }
+
+    private void setbgimg_Click(object sender, EventArgs e)
+    {
+        selectImage0.ShowDialog();
+    }
+
+    // https://math.stackexchange.com/a/3381750
+    int nearestPowOf2(int x)
+    {
+        // 2^round(log2(x))
+        return (int)Math.Pow(2,Math.Round(Math.Log(x, 2)));
+    }
+    bool IsPowerOfTwo(int x)
+    {
+        return (x & (x - 1)) == 0;
+    }
+    private void confirmImageReplace(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        Image img = Image.FromFile(selectImage0.FileName);
+        bool needResizing = false;
+        int newWidth = img.Width;
+        int newHeight = img.Height;
+        if (!IsPowerOfTwo(img.Width))
+        {
+            needResizing = true;
+            newWidth = nearestPowOf2(img.Width);
+        }
+        if (!IsPowerOfTwo(img.Height))
+        {
+            needResizing = true;
+            newHeight = nearestPowOf2(img.Height);
+        }
+        if (needResizing)
+        {
+            img = resizeImage(img, new Size(newWidth, newHeight));
+        }
+        //img.Save("DATA\\test33.png");
+        setBGIMG(img,needResizing);
+        pbxBg.Image = getBGIMG();
     }
 
     private void modifierUpdate(object sender, ItemCheckEventArgs e)

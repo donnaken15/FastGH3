@@ -8,6 +8,7 @@ public partial class songtxtfmt : Form
         InitializeComponent();
         format = originalSetting;
         inputBox.Text = format;
+        inputChanged(null, null); // wtf
     }
         
     string[] songParams = new string[] {
