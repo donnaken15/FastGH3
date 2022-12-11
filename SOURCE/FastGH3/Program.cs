@@ -271,9 +271,9 @@ class Program
     //                   lol
     public static string FormatText(string input, string[] songParams)
     {
-        if (input == null)
-            input = "%a - %t";
         string formatted = input;
+        if (formatted == null)
+            formatted = "%a - %t";
         for (int i = 0; i < formatted.Length; i++)
         {
             if (formatted[i] == '%' && i + 1 < formatted.Length)
@@ -1216,7 +1216,6 @@ class Program
                             }
                             verbose("ynchronous mode set\n", FSBcolor);
                             verboseline("Starting FSB building...", FSBcolor);
-                            print(fsbbuild.StartInfo.FileName);
                             try
                             {
                                 Directory.Delete(folder + dataf + music + "\\TOOLS\\fsbtmp", true);
@@ -1350,7 +1349,7 @@ class Program
 
                             int test;
                             int delay = 0;
-                            if (chart.Song["Offset"].Value != null) // ugh
+                            if (chart.Song["Offset"] != null) // ugh
                                 delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
                             QbcNoteTrack tmp;
 

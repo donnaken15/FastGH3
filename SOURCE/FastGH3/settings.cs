@@ -209,7 +209,10 @@ public partial class settings : Form
         byte[] imgbytes = new byte[imglen];
         Array.Copy(tmp,imgoff,imgbytes,0,imglen);
         //Console.WriteLine(BitConverter.ToString(imgbytes, 0, 0x28));
-        return Image.FromStream(new MemoryStream(imgbytes),true);
+        if (BitConverter.ToUInt32(imgbytes, 0) != 0x20534444)
+            return Image.FromStream(new MemoryStream(imgbytes), true);
+        else
+            return DDS.DDSImage.Load(imgbytes).Images[0];
     }
     void setBGIMG(Image i, bool reconvert)
     {
@@ -310,7 +313,7 @@ public partial class settings : Form
         globalPF = new PakFormat(folder + "\\DATA\\ZONES\\global.pak.xen", folder + "\\DATA\\ZONES\\global.pab.xen", "", PakFormatType.PC, false);
         globalPE = new PakEditor(globalPF, false);
         pbxBg.Image = getBGIMG();
-        setBGIMG(pbxBg.Image, false);
+        //setBGIMG(pbxBg.Image, false);
 
         SetForegroundWindow(Handle);
         verboseline("Reading settings...");
@@ -776,8 +779,16 @@ public partial class settings : Form
             img = resizeImage(img, new Size(newWidth, newHeight));
         }
         //img.Save("DATA\\test33.png");
+        pbxBg.Image = img;
         setBGIMG(img,needResizing);
-        pbxBg.Image = getBGIMG();
+    }
+
+    private void resetbgcol(object sender, EventArgs e)
+    {
+        backcolrgb.Values[0] = 255;
+        backcolrgb.Values[1] = 255;
+        backcolrgb.Values[2] = 255;
+        saveQb();
     }
 
     private void modifierUpdate(object sender, ItemCheckEventArgs e)

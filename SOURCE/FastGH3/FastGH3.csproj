@@ -129,6 +129,7 @@
     <Compile Include="colorpreview.Designer.cs">
       <DependentUpon>colorpreview.cs</DependentUpon>
     </Compile>
+    <Compile Include="DDS.cs" />
     <Compile Include="dllman.cs">
       <SubType>Form</SubType>
     </Compile>

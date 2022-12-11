@@ -63,6 +63,7 @@ public partial class songcache : Form
 
     private void runGameWithCache(DataGridViewCellEventArgs e)
     {
+        Program.disallowGameStartup();
         IniFile.IniSection cs = i.GetSection((string)cache.Rows[e.RowIndex].Cells[0].Value);
         File.Copy(folder + cs.Name, folder + "..\\PAK\\song.pak.xen", true);
         File.Copy(folder + cs.GetKey("Audio").Value, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
@@ -82,7 +83,7 @@ public partial class songcache : Form
                 Program.settings.GetKeyValue("Misc", "SongtextFormat", "%a - %t")
                 .Replace("\\n", Environment.NewLine),
             songParams));
-        Program.disallowGameStartup();
+        Program.allowGameStartup();
         Process.Start(folder + "..\\..\\game.exe");
     }
 

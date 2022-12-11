@@ -12,6 +12,7 @@ namespace ChartEdit
 			this.BPM.Clear();
 			this.Offset.Clear();
 			this.timeOffset.Clear();
+			int syncEntryCount = 0;
 			foreach (SyncTrackEntry syncTrackEntry in chart.SyncTrack)
 			{
 				if (syncTrackEntry.BPM != 0)
@@ -19,7 +20,16 @@ namespace ChartEdit
 					this.BPM.Add((float)syncTrackEntry.BPM / 1000f);
 					this.Offset.Add(syncTrackEntry.Offset);
 				}
+				syncEntryCount++;
 			}
+			if (syncEntryCount == 0) // why
+			{
+				this.BPM.Add(120.0f / 1000f);
+				this.Offset.Add(0);
+			}
+			// ^haven't tested
+			// someone got an index out of range
+			// error on this function
 			this.CreateOffsets();
 			this.songLength = this.GetTime(chart.LastIndex);
 		}

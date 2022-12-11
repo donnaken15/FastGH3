@@ -43,6 +43,8 @@ partial class settings
             this.readytimeNoIntro = new System.Windows.Forms.NumericUpDown();
             this.keybindsBtn = new System.Windows.Forms.Button();
             this.p2parttoggle = new System.Windows.Forms.CheckBox();
+            this.setbgimg = new System.Windows.Forms.Button();
+            this.pbxBg = new System.Windows.Forms.PictureBox();
             this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
             this.speedlabel = new System.Windows.Forms.Label();
             this.maxnoteslbl = new System.Windows.Forms.Label();
@@ -56,16 +58,15 @@ partial class settings
             this.modifiersList = new System.Windows.Forms.CheckedListBox();
             this.modifierslbl = new System.Windows.Forms.Label();
             this.tweaksLabel = new System.Windows.Forms.Label();
-            this.setbgimg = new System.Windows.Forms.Button();
-            this.pbxBg = new System.Windows.Forms.PictureBox();
             this.selectImage0 = new System.Windows.Forms.OpenFileDialog();
+            this.resetbgcol_ = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).BeginInit();
-            this.tweaksPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBg)).BeginInit();
+            this.tweaksPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ok
@@ -181,7 +182,7 @@ partial class settings
             this.setbgcolor.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.setbgcolor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
             this.setbgcolor.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.setbgcolor.Location = new System.Drawing.Point(88, 388);
+            this.setbgcolor.Location = new System.Drawing.Point(98, 402);
             this.setbgcolor.Name = "setbgcolor";
             this.setbgcolor.Size = new System.Drawing.Size(113, 23);
             this.setbgcolor.TabIndex = 11;
@@ -195,7 +196,7 @@ partial class settings
             // 
             this.colorpanel.BackColor = System.Drawing.Color.Black;
             this.colorpanel.Cursor = System.Windows.Forms.Cursors.Help;
-            this.colorpanel.Location = new System.Drawing.Point(207, 388);
+            this.colorpanel.Location = new System.Drawing.Point(217, 402);
             this.colorpanel.Name = "colorpanel";
             this.colorpanel.Size = new System.Drawing.Size(23, 23);
             this.colorpanel.TabIndex = 12;
@@ -399,6 +400,34 @@ partial class settings
             this.p2parttoggle.UseVisualStyleBackColor = true;
             this.p2parttoggle.Click += new System.EventHandler(this.p2parttoggle_Click);
             // 
+            // setbgimg
+            // 
+            this.setbgimg.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.setbgimg.Location = new System.Drawing.Point(4, 79);
+            this.setbgimg.Name = "setbgimg";
+            this.setbgimg.Size = new System.Drawing.Size(111, 23);
+            this.setbgimg.TabIndex = 43;
+            this.setbgimg.Text = "Set backdrop image";
+            this.tooltip.SetToolTip(this.setbgimg, "Set current background image when playing a song.\r\nWarning: This applies to your " +
+        "current zones, so if you\r\nswap zones, the current background image will be rever" +
+        "ted.");
+            this.setbgimg.UseVisualStyleBackColor = true;
+            this.setbgimg.Click += new System.EventHandler(this.setbgimg_Click);
+            // 
+            // pbxBg
+            // 
+            this.pbxBg.BackColor = System.Drawing.Color.Black;
+            this.pbxBg.Cursor = System.Windows.Forms.Cursors.Help;
+            this.pbxBg.Location = new System.Drawing.Point(122, 79);
+            this.pbxBg.Name = "pbxBg";
+            this.pbxBg.Size = new System.Drawing.Size(23, 23);
+            this.pbxBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbxBg.TabIndex = 44;
+            this.pbxBg.TabStop = false;
+            this.tooltip.SetToolTip(this.pbxBg, "Background image that\'s going to be shown in the game.\r\nDouble click to see a lar" +
+        "ger preview of how it will look.");
+            this.pbxBg.DoubleClick += new System.EventHandler(this.showBgImg);
+            // 
             // backgroundcolordiag
             // 
             this.backgroundcolordiag.AnyColor = true;
@@ -572,34 +601,6 @@ partial class settings
             this.tweaksLabel.TabIndex = 41;
             this.tweaksLabel.Text = "Tweaks:";
             // 
-            // setbgimg
-            // 
-            this.setbgimg.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.setbgimg.Location = new System.Drawing.Point(4, 79);
-            this.setbgimg.Name = "setbgimg";
-            this.setbgimg.Size = new System.Drawing.Size(111, 23);
-            this.setbgimg.TabIndex = 43;
-            this.setbgimg.Text = "Set backdrop image";
-            this.tooltip.SetToolTip(this.setbgimg, "Set current background image when playing a song.\r\nWarning: This applies to your " +
-        "current zones, so if you\r\nswap zones, the current background image will be rever" +
-        "ted.");
-            this.setbgimg.UseVisualStyleBackColor = true;
-            this.setbgimg.Click += new System.EventHandler(this.setbgimg_Click);
-            // 
-            // pbxBg
-            // 
-            this.pbxBg.BackColor = System.Drawing.Color.Black;
-            this.pbxBg.Cursor = System.Windows.Forms.Cursors.Help;
-            this.pbxBg.Location = new System.Drawing.Point(122, 79);
-            this.pbxBg.Name = "pbxBg";
-            this.pbxBg.Size = new System.Drawing.Size(23, 23);
-            this.pbxBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxBg.TabIndex = 44;
-            this.pbxBg.TabStop = false;
-            this.tooltip.SetToolTip(this.pbxBg, "Background image that\'s going to be shown in the game.\r\nDouble click to see a lar" +
-        "ger preview of how it will look.");
-            this.pbxBg.DoubleClick += new System.EventHandler(this.showBgImg);
-            // 
             // selectImage0
             // 
             this.selectImage0.Filter = "Common image formats|*.png;*.jpg;*.bmp|Portable Network Graphics|*.png|JPEG|*.jpe" +
@@ -607,11 +608,25 @@ partial class settings
             this.selectImage0.Title = "Select background image";
             this.selectImage0.FileOk += new System.ComponentModel.CancelEventHandler(this.confirmImageReplace);
             // 
+            // resetbgcol_
+            // 
+            this.resetbgcol_.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.resetbgcol_.Location = new System.Drawing.Point(76, 387);
+            this.resetbgcol_.Name = "resetbgcol_";
+            this.resetbgcol_.Size = new System.Drawing.Size(130, 23);
+            this.resetbgcol_.TabIndex = 45;
+            this.resetbgcol_.Text = "Reset background color";
+            this.tooltip.SetToolTip(this.resetbgcol_, "Background color is going to be deprecated in favor of background images.\r\nClick " +
+        "this to reset it to white.");
+            this.resetbgcol_.UseVisualStyleBackColor = true;
+            this.resetbgcol_.Click += new System.EventHandler(this.resetbgcol);
+            // 
             // settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(280, 416);
+            this.Controls.Add(this.resetbgcol_);
             this.Controls.Add(this.pbxBg);
             this.Controls.Add(this.setbgimg);
             this.Controls.Add(this.keybindsBtn);
@@ -653,9 +668,9 @@ partial class settings
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbxBg)).EndInit();
             this.tweaksPanel.ResumeLayout(false);
             this.tweaksPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxBg)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -707,4 +722,5 @@ partial class settings
     private Button setbgimg;
     private PictureBox pbxBg;
     private OpenFileDialog selectImage0;
+    private Button resetbgcol_;
 }
