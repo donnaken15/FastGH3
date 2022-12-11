@@ -96,7 +96,7 @@ class Program
         }
         catch
         {
-
+            print("Failed to kill LAME or SOX executables.");
         }
     }
 
