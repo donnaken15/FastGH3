@@ -1,16 +1,26 @@
 @echo off
 echo Creating class keys...
-reg add "HKCR\.chart" /f /ve /d "FastGH3.chart" && echo OK || echo FAIL
-reg add "HKCR\.fsp" /f /ve /d "FastGH3.FSP" && echo OK || echo FAIL
-reg add "HKCR\FastGH3" /f /ve /d "FastGH3" && echo OK || echo FAIL
-reg add "HKCR\FastGH3" /f /v "URL Protocol" && echo OK || echo FAIL
-reg add "HKCR\FastGH3\shell\open\command" /f /ve /d "\"%~dp0FastGH3.exe\" dl \"%%1\"" && echo OK || echo FAIL
-reg add "HKCR\FastGH3.chart" /f /ve /d "Guitar Hero Chart" && echo OK || echo FAIL
-reg add "HKCR\FastGH3.chart\shell\open" /f /ve /d "Play" && echo OK || echo FAIL
-reg add "HKCR\FastGH3.chart\shell\open\command" /f /ve /d "\"%~dp0FastGH3.exe\" \"%%1\"" && echo OK || echo FAIL
-reg add "HKCR\FastGH3.FSP" /f /ve /d "FastGH3 Song Package" && echo OK || echo FAIL
-reg add "HKCR\FastGH3.FSP\shell\open" /f /ve /d "Play" && echo OK || echo FAIL
-reg add "HKCR\FastGH3.FSP\shell\open\command" /f /ve /d "\"%~dp0FastGH3.exe\" \"%%1\"" && echo OK || echo FAIL
+set C=reg add
+set CMD="\"%~dp0FastGH3.exe\" \"%%1\""
+set OPEN=shell\open
+set K=HKCR\FastGH3
+set D=/f /ve /d
+set OK=echo OK
+set FAIL=echo FAIL
+%C% "HKCR\.chart" %D% "FastGH3.chart" && %OK% || %FAIL%
+%C% "HKCR\.fsp" %D% "FastGH3.FSP" && %OK% || %FAIL%
+%C% "%K%" %D% "FastGH3" && %OK% || %FAIL%
+%C% "%K%" /f /v "URL Protocol" && %OK% || %FAIL%
+%C% "%K%\%OPEN%\command" %D% "\"%~dp0FastGH3.exe\" dl \"%%1\"" && %OK% || %FAIL%
+%C% "%K%.chart" %D% "Guitar Hero Chart" && %OK% || %FAIL%
+%C% "%K%.chart\%OPEN%" %D% "Play" && %OK% || %FAIL%
+%C% "%K%.chart\%OPEN%\command" %D% %CMD% && %OK% || %FAIL%
+%C% "%K%.FSP" %D% "FastGH3 Song Package" && %OK% || %FAIL%
+%C% "%K%.FSP\%OPEN%" %D% "Play" && %OK% || %FAIL%
+%C% "%K%.FSP\%OPEN%\command" %D% %CMD% && %OK% || %FAIL%
+set FAIL=%ERRORLEVEL%
 echo If you see any FAILs here, something went wrong.
+echo This requires running as administrator.
 echo Done.
-if %ERRORLEVEL% NEQ 0 do (pause && exit /b)
+set ERRORLEVEL=%FAIL%
+IF ERRORLEVEL 1 (pause && exit /b)

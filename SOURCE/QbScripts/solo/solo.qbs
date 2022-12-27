@@ -170,8 +170,8 @@ repeat(*current_num_players)
 		}
 		note_index = (%note_index / 3);
 		current_first_note = 0;
-		if (*current_starttime != 0)
-		{
+		//if (*current_starttime != 0) // crashes on wii for some reason
+		//{
 			// find first playable note (if skipped into song)
 			starttime = *current_starttime;
 			repeat(%array_size)
@@ -182,7 +182,7 @@ repeat(*current_num_players)
 				}
 				current_first_note = (%current_first_note + 3);
 			}
-		}
+		//}
 		//            first solo note, first playable note
 		note_index = (%note_index + %current_first_note + 3);
 		// count notes hit before this executed

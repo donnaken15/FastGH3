@@ -123,12 +123,6 @@
     <Compile Include="ChartEdit\SyncType.cs" />
     <Compile Include="ChartEdit\TrackProps.cs" />
     <Compile Include="ChartEdit\TrackPropsList.cs" />
-    <Compile Include="colorpreview.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="colorpreview.Designer.cs">
-      <DependentUpon>colorpreview.cs</DependentUpon>
-    </Compile>
     <Compile Include="DDS.cs" />
     <Compile Include="dllman.cs">
       <SubType>Form</SubType>
@@ -235,9 +229,6 @@
   <ItemGroup>
     <EmbeddedResource Include="bgprev.resx">
       <DependentUpon>bgprev.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="colorpreview.resx">
-      <DependentUpon>colorpreview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="dllman.resx">
       <DependentUpon>dllman.cs</DependentUpon>

@@ -3,21 +3,21 @@ using System.Windows.Forms;
 
 partial class settings
 {
-    private System.ComponentModel.IContainer components = null;
+	private System.ComponentModel.IContainer components = null;
 
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing && (components != null))
-        {
-            components.Dispose();
-        }
-        base.Dispose(disposing);
-    }
+	protected override void Dispose(bool disposing)
+	{
+		if (disposing && (components != null))
+		{
+			components.Dispose();
+		}
+		base.Dispose(disposing);
+	}
 
-    #region Windows Form Designer generated code
+	#region Windows Form Designer generated code
 
-    private void InitializeComponent()
-    {
+	private void InitializeComponent()
+	{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(settings));
             this.ok = new System.Windows.Forms.Button();
@@ -45,6 +45,7 @@ partial class settings
             this.p2parttoggle = new System.Windows.Forms.CheckBox();
             this.setbgimg = new System.Windows.Forms.Button();
             this.pbxBg = new System.Windows.Forms.PictureBox();
+            this.resetbgcol_ = new System.Windows.Forms.Button();
             this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
             this.speedlabel = new System.Windows.Forms.Label();
             this.maxnoteslbl = new System.Windows.Forms.Label();
@@ -59,7 +60,6 @@ partial class settings
             this.modifierslbl = new System.Windows.Forms.Label();
             this.tweaksLabel = new System.Windows.Forms.Label();
             this.selectImage0 = new System.Windows.Forms.OpenFileDialog();
-            this.resetbgcol_ = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
@@ -408,9 +408,8 @@ partial class settings
             this.setbgimg.Size = new System.Drawing.Size(111, 23);
             this.setbgimg.TabIndex = 43;
             this.setbgimg.Text = "Set backdrop image";
-            this.tooltip.SetToolTip(this.setbgimg, "Set current background image when playing a song.\r\nWarning: This applies to your " +
-        "current zones, so if you\r\nswap zones, the current background image will be rever" +
-        "ted.");
+            this.tooltip.SetToolTip(this.setbgimg, "Set current background image when playing a song.\r\nNote: Background color is goin" +
+        "g to be deprecated in favor of background images.");
             this.setbgimg.UseVisualStyleBackColor = true;
             this.setbgimg.Click += new System.EventHandler(this.setbgimg_Click);
             // 
@@ -427,6 +426,20 @@ partial class settings
             this.tooltip.SetToolTip(this.pbxBg, "Background image that\'s going to be shown in the game.\r\nDouble click to see a lar" +
         "ger preview of how it will look.");
             this.pbxBg.DoubleClick += new System.EventHandler(this.showBgImg);
+            // 
+            // resetbgcol_
+            // 
+            this.resetbgcol_.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.resetbgcol_.Location = new System.Drawing.Point(76, 387);
+            this.resetbgcol_.Name = "resetbgcol_";
+            this.resetbgcol_.Size = new System.Drawing.Size(130, 23);
+            this.resetbgcol_.TabIndex = 45;
+            this.resetbgcol_.Text = "Reset background color";
+            this.tooltip.SetToolTip(this.resetbgcol_, "Background color is going to be deprecated in favor of background images.\r\nClick " +
+        "this to reset it to white.");
+            this.resetbgcol_.UseVisualStyleBackColor = true;
+            this.resetbgcol_.Visible = false;
+            this.resetbgcol_.Click += new System.EventHandler(this.resetbgcol);
             // 
             // backgroundcolordiag
             // 
@@ -608,19 +621,6 @@ partial class settings
             this.selectImage0.Title = "Select background image";
             this.selectImage0.FileOk += new System.ComponentModel.CancelEventHandler(this.confirmImageReplace);
             // 
-            // resetbgcol_
-            // 
-            this.resetbgcol_.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.resetbgcol_.Location = new System.Drawing.Point(76, 387);
-            this.resetbgcol_.Name = "resetbgcol_";
-            this.resetbgcol_.Size = new System.Drawing.Size(130, 23);
-            this.resetbgcol_.TabIndex = 45;
-            this.resetbgcol_.Text = "Reset background color";
-            this.tooltip.SetToolTip(this.resetbgcol_, "Background color is going to be deprecated in favor of background images.\r\nClick " +
-        "this to reset it to white.");
-            this.resetbgcol_.UseVisualStyleBackColor = true;
-            this.resetbgcol_.Click += new System.EventHandler(this.resetbgcol);
-            // 
             // settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -674,53 +674,53 @@ partial class settings
             this.ResumeLayout(false);
             this.PerformLayout();
 
-    }
+	}
 
-    private void Colorpanel_MouseDoubleClick(object sender, MouseEventArgs e)
-    {
-        throw new System.NotImplementedException();
-    }
+	private void Colorpanel_MouseDoubleClick(object sender, MouseEventArgs e)
+	{
+		throw new System.NotImplementedException();
+	}
 
-    #endregion
+	#endregion
 
-    private Button ok;
-    private Label reslabel;
-    private NumericUpDown hypers;
-    private Label hyperlabel;
-    private ComboBox diff;
-    private Label difflabel;
-    private LinkLabel creditlink;
-    private ToolTip tooltip;
-    private ColorDialog backgroundcolordiag;
-    private Button setbgcolor;
-    private Panel colorpanel;
-    private NumericUpDown speed;
-    private Label speedlabel;
-    private Label maxnoteslbl;
-    private NumericUpDown maxnotes;
-    private Button replaygame;
-    private Label instlabel;
-    private ComboBox part;
-    private Button pluginmanage;
-    private Button viewsongcache;
-    private CheckedListBox tweaksList;
-    private Button ctmpb;
-    private Button songtxtfmt_;
-    private ComboBox res;
-    private NumericUpDown readytimeNoIntro;
-    private Label readytimelbl;
-    private Label readytimems;
-    private Label maxFPSlbl;
-    private NumericUpDown maxFPS;
-    private Label fpslabel;
-    private Panel tweaksPanel;
-    private Label tweaksLabel;
-    private CheckedListBox modifiersList;
-    private Label modifierslbl;
-    private Button keybindsBtn;
-    private CheckBox p2parttoggle;
-    private Button setbgimg;
-    private PictureBox pbxBg;
-    private OpenFileDialog selectImage0;
-    private Button resetbgcol_;
+	private Button ok;
+	private Label reslabel;
+	private NumericUpDown hypers;
+	private Label hyperlabel;
+	private ComboBox diff;
+	private Label difflabel;
+	private LinkLabel creditlink;
+	private ToolTip tooltip;
+	private ColorDialog backgroundcolordiag;
+	private Button setbgcolor;
+	private Panel colorpanel;
+	private NumericUpDown speed;
+	private Label speedlabel;
+	private Label maxnoteslbl;
+	private NumericUpDown maxnotes;
+	private Button replaygame;
+	private Label instlabel;
+	private ComboBox part;
+	private Button pluginmanage;
+	private Button viewsongcache;
+	private CheckedListBox tweaksList;
+	private Button ctmpb;
+	private Button songtxtfmt_;
+	private ComboBox res;
+	private NumericUpDown readytimeNoIntro;
+	private Label readytimelbl;
+	private Label readytimems;
+	private Label maxFPSlbl;
+	private NumericUpDown maxFPS;
+	private Label fpslabel;
+	private Panel tweaksPanel;
+	private Label tweaksLabel;
+	private CheckedListBox modifiersList;
+	private Label modifierslbl;
+	private Button keybindsBtn;
+	private CheckBox p2parttoggle;
+	private Button setbgimg;
+	private PictureBox pbxBg;
+	private OpenFileDialog selectImage0;
+	private Button resetbgcol_;
 }
