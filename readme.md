@@ -21,6 +21,8 @@ PLAY NOW!
 * [Download (portable)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.zip)
 * [Latest Dev Build](https://github.com/donnaken15/FastGH3/archive/refs/heads/main.zip)
 <br>![last commit](https://img.shields.io/github/last-commit/donnaken15/FastGH3)
+* [Previous Releases + Changelog](https://donnaken15.tk/fastgh3/dev.html)
+* [Previous Dev Builds](https://donnaken15.tk/fastgh3/unstab.html)
 
 [Features/Planned list](https://github.com/users/donnaken15/projects/3)
 
@@ -35,6 +37,13 @@ PLAY NOW!
 * ROCK OUT!
 <br>![chart file](https://i.ibb.co/W6ZL1Wc/s1.jpg)
 
+### Extra steps
+* To enable file association (that is when you click on a file, it opens the program that supports it),
+you must use the installer or run register.bat, or click "Open with" on a chart or MIDI and select this program.
+* To play with keyboard, or if you have a controller that's not the first player,
+open settings.bat, and in tweaks, enable Keyboard mode, launch the game,
+and then press any button on your keyboard or device to play.
+
 ## Additions
 
 * Windowed mode (and borderless)
@@ -48,18 +57,19 @@ PLAY NOW!
 * Custom zones at https://donnaken15.tk/fastgh3/zones.html
 * Background images and videos
 * Easy chart downloads and instant play through fastgh3:// links
-* Song caching
-* Autoplay with starpower activation
-* A multitude of fixes, such as:
-  * Particle velocity/friction fix
-  * Whammy width fix for higher resolutions
-  * Leftover starpower FX glitch fix
+* Song caching (songs converted at least once are saved for later play)
+* Autoplay with automatic starpower activation
+* A multitude of fixes, such as for:
+  * Calibration slow down
+  * Particle velocity/friction tied to frame rate
+  * Whammy width looking smaller on higher resolutions
+  * Leftover starpower FX glitch
+  * Holding sustains when unpausing
+  * Frame rate based scripts
 * Boss battle charts
 * Rock Band Solos
 * Toggle particles
-* Fixed frame rate based scripts
 * Hide notes upon hitting them
-* Sustain hold unpause fix
 * Removed venues and models for max performance
 * Rich Presence
 * Optimized and heavily compressed zones
