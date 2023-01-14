@@ -9,9 +9,23 @@ using Nanook.QueenBee.Parser;
 using System.Xml;
 using System.Security.Principal;
 using System.Collections.Generic;
+using FastGH3.Properties;
 
 public partial class settings : Form
 {
+	public static string tooltip_maxFPS = Program._8Bstr(new byte[] {
+		(byte)'S', (byte)'e', (byte)'t', (byte)' ', (byte)'m', (byte)'a', (byte)'x', (byte)' ', (byte)'F', (byte)'P', (byte)'S', (byte)',', (byte)' ', (byte)'i', (byte)'f', (byte)' ', (byte)'n', (byte)'o', (byte)'t', (byte)' ', (byte)'c', (byte)'a', (byte)'p', (byte)'p', (byte)'e', (byte)'d', (byte)' ', (byte)'b', (byte)'y', (byte)' ', (byte)'V', (byte)'s', (byte)'y', (byte)'n', (byte)'c', (byte)'.', (byte)'\n', (byte)'I', (byte)'f', (byte)' ', (byte)'s', (byte)'e', (byte)'t', (byte)' ', (byte)'t', (byte)'o', (byte)' ', (byte)'0', (byte)',', (byte)' ', (byte)'t', (byte)'h', (byte)'e', (byte)' ', (byte)'f', (byte)'r', (byte)'a', (byte)'m', (byte)'e', (byte)' ', (byte)'r', (byte)'a', (byte)'t', (byte)'e', (byte)' ', (byte)'l', (byte)'i', (byte)'m', (byte)'i', (byte)'t', (byte)' ', (byte)'w', (byte)'i', (byte)'l', (byte)'l', (byte)' ', (byte)'n', (byte)'o', (byte)'t', (byte)' ', (byte)'t', (byte)'a', (byte)'k', (byte)'e', (byte)' ', (byte)'e', (byte)'f', (byte)'f', (byte)'e', (byte)'c', (byte)'t', (byte)'.', (byte)'\n', (byte)'A', (byte)'s', (byte)' ', (byte)'o', (byte)'f', (byte)' ', (byte)'n', (byte)'o', (byte)'w', (byte)',', (byte)' ', (byte)'i', (byte)'t', (byte)' ', (byte)'c', (byte)'a', (byte)'n', (byte)' ', (byte)'o', (byte)'n', (byte)'l', (byte)'y', (byte)' ', (byte)'c', (byte)'a', (byte)'p', (byte)' ', (byte)'t', (byte)'o', (byte)' ', (byte)'1', (byte)'m', (byte)'s', (byte)' ', (byte)'/', (byte)' ', (byte)'1', (byte)'0', (byte)'0', (byte)'0', (byte)' ', (byte)'F', (byte)'P', (byte)'S', (byte)'.', (byte)'\n', (byte)'W', (byte)'a', (byte)'r', (byte)'n', (byte)'i', (byte)'n', (byte)'g', (byte)':', (byte)' ', (byte)'S', (byte)'o', (byte)'m', (byte)'e', (byte)' ', (byte)'f', (byte)'r', (byte)'a', (byte)'m', (byte)'e', (byte)' ', (byte)'r', (byte)'a', (byte)'t', (byte)'e', (byte)'s', (byte)' ', (byte)'w', (byte)'i', (byte)'l', (byte)'l', (byte)' ', (byte)'m', (byte)'a', (byte)'k', (byte)'e', (byte)' ', (byte)'t', (byte)'h', (byte)'e', (byte)' ', (byte)'g', (byte)'a', (byte)'m', (byte)'e', (byte)' ', (byte)'l', (byte)'o', (byte)'o', (byte)'k', (byte)'\n', (byte)'c', (byte)'h', (byte)'o', (byte)'p', (byte)'p', (byte)'y', (byte)' ', (byte)'d', (byte)'e', (byte)'p', (byte)'e', (byte)'n', (byte)'d', (byte)'i', (byte)'n', (byte)'g', (byte)' ', (byte)'o', (byte)'n', (byte)' ', (byte)'t', (byte)'h', (byte)'e', (byte)' ', (byte)'r', (byte)'e', (byte)'f', (byte)'r', (byte)'e', (byte)'s', (byte)'h', (byte)' ', (byte)'r', (byte)'a', (byte)'t', (byte)'e', (byte)' ', (byte)'y', (byte)'o', (byte)'u', (byte)'r', (byte)' ', (byte)'m', (byte)'o', (byte)'n', (byte)'i', (byte)'t', (byte)'o', (byte)'r', (byte)' ', (byte)'s', (byte)'u', (byte)'p', (byte)'p', (byte)'o', (byte)'r', (byte)'t', (byte)'s', (byte)',', (byte)'\n', (byte)'o', (byte)'r', (byte)' ', (byte)'d', (byte)'e', (byte)'p', (byte)'e', (byte)'n', (byte)'d', (byte)'i', (byte)'n', (byte)'g', (byte)' ', (byte)'o', (byte)'n', (byte)' ', (byte)'y', (byte)'o', (byte)'u', (byte)'r', (byte)' ', (byte)'G', (byte)'P', (byte)'U', (byte)'.'
+	});
+	public static string tooltip_maxnotes = Program._8Bstr(new byte[] {
+		(byte)'O',(byte)'v',(byte)'e',(byte)'r',(byte)'r',(byte)'i',(byte)'d',(byte)'e',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'n',(byte)'o',(byte)'t',(byte)'e',(byte)' ',(byte)'l',(byte)'i',(byte)'m',(byte)'i',(byte)'t',(byte)'.',(byte)' ',(byte)'S',(byte)'e',(byte)'t',(byte)' ',(byte)'t',(byte)'o',(byte)' ',(byte)'-',(byte)'1',(byte)' ',(byte)'t',(byte)'o',(byte)' ',(byte)'m',(byte)'a',(byte)'k',(byte)'e',(byte)'\n',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'p',(byte)'r',(byte)'o',(byte)'g',(byte)'r',(byte)'a',(byte)'m',(byte)' ',(byte)'d',(byte)'e',(byte)'t',(byte)'e',(byte)'r',(byte)'m',(byte)'i',(byte)'n',(byte)'e',(byte)' ',(byte)'h',(byte)'o',(byte)'w',(byte)' ',(byte)'m',(byte)'a',(byte)'n',(byte)'y',(byte)' ',(byte)'n',(byte)'o',(byte)'t',(byte)'e',(byte)'s',(byte)'\n',(byte)'t',(byte)'h',(byte)'e',(byte)'r',(byte)'e',(byte)' ',(byte)'a',(byte)'r',(byte)'e',(byte)' ',(byte)'i',(byte)'n',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'c',(byte)'h',(byte)'a',(byte)'r',(byte)'t',(byte)' ',(byte)'o',(byte)'p',(byte)'e',(byte)'n',(byte)'e',(byte)'d',(byte)'.',(byte)'\n',(byte)'R',(byte)'A',(byte)'M',(byte)' ',(byte)'u',(byte)'s',(byte)'a',(byte)'g',(byte)'e',(byte)' ',(byte)'m',(byte)'a',(byte)'y',(byte)' ',(byte)'v',(byte)'a',(byte)'r',(byte)'y',(byte)'.'
+	});
+	public static string tooltip_res = Program._8Bstr(new byte[] {
+		(byte)'T',(byte)'h',(byte)'i',(byte)'s',(byte)' ',(byte)'a',(byte)'l',(byte)'l',(byte)'o',(byte)'w',(byte)'s',(byte)' ',(byte)'y',(byte)'o',(byte)'u',(byte)' ',(byte)'t',(byte)'o',(byte)' ',(byte)'c',(byte)'h',(byte)'a',(byte)'n',(byte)'g',(byte)'e',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'w',(byte)'i',(byte)'n',(byte)'d',(byte)'o',(byte)'w',(byte)' ',(byte)'s',(byte)'i',(byte)'z',(byte)'e',(byte)' ',(byte)'o',(byte)'f',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'g',(byte)'a',(byte)'m',(byte)'e',(byte)' ',(byte)'a',(byte)'c',(byte)'c',(byte)'o',(byte)'r',(byte)'d',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'t',(byte)'o',(byte)' ',(byte)'y',(byte)'o',(byte)'u',(byte)'r',(byte)' ',(byte)'m',(byte)'o',(byte)'n',(byte)'i',(byte)'t',(byte)'o',(byte)'r',(byte)' ',(byte)'s',(byte)'e',(byte)'t',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)'s',(byte)'.'
+	});
+	public static string tooltip_ctmpb = Program._8Bstr(new byte[] {
+		(byte)'C',(byte)'l',(byte)'e',(byte)'a',(byte)'n',(byte)' ',(byte)'f',(byte)'i',(byte)'l',(byte)'e',(byte)'s',(byte)' ',(byte)'f',(byte)'r',(byte)'o',(byte)'m',(byte)' ',(byte)'d',(byte)'o',(byte)'w',(byte)'n',(byte)'l',(byte)'o',(byte)'a',(byte)'d',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'a',(byte)'n',(byte)'d',(byte)' ',(byte)'e',(byte)'x',(byte)'t',(byte)'r',(byte)'a',(byte)'c',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'S',(byte)'o',(byte)'n',(byte)'g',(byte)' ',(byte)'P',(byte)'a',(byte)'c',(byte)'k',(byte)'a',(byte)'g',(byte)'e',(byte)'s',(byte)'.',(byte)'\n',(byte)'W',(byte)'a',(byte)'r',(byte)'n',(byte)'i',(byte)'n',(byte)'g',(byte)':',(byte)' ',(byte)'R',(byte)'e',(byte)'u',(byte)'s',(byte)'e',(byte)' ',(byte)'o',(byte)'f',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)'s',(byte)'e',(byte)' ',(byte)'f',(byte)'i',(byte)'l',(byte)'e',(byte)'s',(byte)' ',(byte)'w',(byte)'i',(byte)'l',(byte)'l',(byte)' ',(byte)'r',(byte)'e',(byte)'q',(byte)'u',(byte)'i',(byte)'r',(byte)'e',(byte)' ',(byte)'d',(byte)'o',(byte)'w',(byte)'n',(byte)'l',(byte)'o',(byte)'a',(byte)'d',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'a',(byte)'n',(byte)'d',(byte)'\n',(byte)'e',(byte)'x',(byte)'t',(byte)'r',(byte)'a',(byte)'c',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)'m',(byte)' ',(byte)'a',(byte)'g',(byte)'a',(byte)'i',(byte)'n',(byte)',',(byte)' ',(byte)'s',(byte)'o',(byte)'m',(byte)'e',(byte)' ',(byte)'o',(byte)'f',(byte)' ',(byte)'w',(byte)'h',(byte)'i',(byte)'c',(byte)'h',(byte)' ',(byte)'c',(byte)'a',(byte)'n',(byte)' ',(byte)'t',(byte)'a',(byte)'k',(byte)'e',(byte)' ',(byte)'a',(byte)' ',(byte)'b',(byte)'i',(byte)'t',(byte)' ',(byte)'o',(byte)'f',(byte)' ',(byte)'t',(byte)'i',(byte)'m',(byte)'e',(byte)'.'
+	});
+
 	[DllImport("user32.dll")]
 	public static extern bool SetForegroundWindow(IntPtr hWnd);
 
@@ -97,7 +111,7 @@ public partial class settings : Form
 			ref DEVMODE lpDevMode);
 
 	private static string xmlpath = Environment.GetEnvironmentVariable("USERPROFILE") + "\\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml",
-		xmlDefault = FastGH3.Properties.Resources.xmlDefault,
+		xmlDefault = Resources.ResourceManager.GetString("xmlDefault"),
 		pak = "\\DATA\\PAK\\";
 	public XmlDocument xml = new XmlDocument();
 	public XmlNode xmlCfg;
@@ -167,10 +181,10 @@ public partial class settings : Form
 				((value & 0xFF000000) >> 24);
 	}
 
-	static ushort Eswap(ushort value)
+	/*static ushort Eswap(ushort value)
 	{
 		return (ushort)(((value & 0xFF) << 8) | ((value & 0xFF00) >> 8));
-	}
+	}*/
 
 	static byte LOBYTE(ushort value)
 	{
@@ -272,6 +286,56 @@ public partial class settings : Form
 		(int)KeyID.RCtrl,
 	};
 
+	public enum Tweaks
+	{
+		SongCaching,
+		VerboseLog,
+		PreserveLog,
+		DisableVsync,
+		NoStartupMsg,
+		ExitOnSongEnd,
+		DebugMenu,
+		KeyboardMode,
+		Windowed,
+		Borderless,
+		NoIntro,
+		NoParticles,
+		NoFail,
+		EasyExpert,
+		Precision,
+		//Performance,
+		//NoShake,
+		//Lefty,
+		BkgdVideo,
+		KillHitGems,
+		EarlySustains
+	}
+
+	public QbKey[] TweakKeys = new QbKey[]
+	{
+		QbKey.Create(0),
+		QbKey.Create(0),
+		QbKey.Create(0),
+		QbKey.Create(0),
+		QbKey.Create(0),
+		QbKey.Create(0x045713D3),
+		QbKey.Create(0x2AF92804),
+		QbKey.Create(0x32025D94),
+		QbKey.Create(0),
+		QbKey.Create(0),
+		QbKey.Create(0xDF7FF31B),
+		QbKey.Create(0xD403A7A7),
+		QbKey.Create(0x3E5FD611),
+		QbKey.Create(0x404B1EF4),
+		QbKey.Create(0x3CA38921),
+		//QbKey.Create(0x392E3940), // perf
+		//NoShake,
+		//Lefty,
+		QbKey.Create(0x633E187F),
+		QbKey.Create(0xC50E4995),
+		QbKey.Create(0xF88A8D5D),
+	};
+
 	const bool FRAMERATE_FROM_QB = true; // set accordingly in the FastGH3 plugin
 
 	public settings(IniFile _ini)
@@ -301,14 +365,18 @@ public partial class settings : Form
 		else
 			xml.LoadXml(xmlDefault);
 		//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
-		backcolrgb = (QbItemInteger)
-		userqb.FindItem(QbKey.Create("BGCol"), false).Items[0];
+		backcolrgb = (QbItemInteger)userqb.FindItem(QbKey.Create("BGCol"), false).Items[0];
 		backcolor = Color.FromArgb(255,
 			backcolrgb.Values[0],
 			backcolrgb.Values[1],
 			backcolrgb.Values[2]);
 		DialogResult = DialogResult.OK;
+
 		InitializeComponent();
+		tooltip.SetToolTip(maxFPS, tooltip_maxFPS);
+		tooltip.SetToolTip(maxnotes, tooltip_maxnotes);
+		tooltip.SetToolTip(res, tooltip_res);
+		tooltip.SetToolTip(ctmpb, tooltip_ctmpb);
 
 		bkgdPF = new PakFormat(folder + "\\DATA\\bkgd.pak.xen", folder + "\\DATA\\bkgd.pab.xen", "", PakFormatType.PC, false);
 		bkgdPE = new PakEditor(bkgdPF, false);
@@ -326,9 +394,9 @@ public partial class settings : Form
 			maxFPS.Value = Convert.ToInt32(ini.GetKeyValue("Player", "MaxFPS", "500"));
 #pragma warning restore CS0162
 		hypers.Value = (int)getQBConfig(QbKey.Create(0xFD6B13B4), 0); // Cheat_Hyperspeed
-		tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(QbKey.Create(0xDF7FF31B), 0) == 1); // disable_intro
+		tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(TweakKeys[(int)Tweaks.NoIntro], 0) == 1); // disable_intro
 		{
-			int disable_particles = (int)getQBConfig(QbKey.Create(0xD403A7A7), 0); // disable_particles
+			int disable_particles = (int)getQBConfig(TweakKeys[(int)Tweaks.NoParticles], 0); // disable_particles
 			CheckState state = CheckState.Unchecked;
 			switch (disable_particles)
 			{
@@ -345,28 +413,30 @@ public partial class settings : Form
 			}
 			tweaksList.SetItemCheckState((int)Tweaks.NoParticles, state);
 		}
-		tweaksList.SetItemChecked((int)Tweaks.NoFail, (int)getQBConfig(QbKey.Create(0x3E5FD611), 0) == 1); // Cheat_NoFail
+		tweaksList.SetItemChecked((int)Tweaks.NoFail, (int)getQBConfig(TweakKeys[(int)Tweaks.NoFail], 0) == 1); // Cheat_NoFail
 		if (tweaksList.GetItemChecked((int)Tweaks.NoIntro))
 		{
 			readytimeNoIntro.Enabled = true;
 			readytimelbl.Enabled = true;
 			readytimems.Enabled = true;
 		}
-		tweaksList.SetItemChecked((int)Tweaks.DebugMenu, (int)getQBConfig(QbKey.Create(0x2AF92804), 0) == 1); // enable_button_cheats
+		tweaksList.SetItemChecked((int)Tweaks.EasyExpert, (int)getQBConfig(TweakKeys[(int)Tweaks.EasyExpert], 0) == 1);
+		tweaksList.SetItemChecked((int)Tweaks.Precision, (int)getQBConfig(TweakKeys[(int)Tweaks.Precision], 0) == 1);
+		tweaksList.SetItemChecked((int)Tweaks.DebugMenu, (int)getQBConfig(TweakKeys[(int)Tweaks.DebugMenu], 0) == 1);
 		speed.Value = (decimal/*wtf*/)(float)getQBConfig(QbKey.Create(0x16D91BC1), 1.0f) * 100; // current_speedfactor
 		tweaksList.SetItemChecked((int)Tweaks.VerboseLog, verboselog2);
-		backgroundcolordiag.Color = backcolor;
-		colorpanel.BackColor = backcolor;
-		tweaksList.SetItemChecked((int)Tweaks.ExitOnSongEnd, (int)getQBConfig(QbKey.Create(0x045713D3), 0) == 1); // exit_on_song_end
+		tweaksList.SetItemChecked((int)Tweaks.ExitOnSongEnd, (int)getQBConfig(TweakKeys[(int)Tweaks.ExitOnSongEnd], 0) == 1); // exit_on_song_end
 		tweaksList.SetItemChecked((int)Tweaks.DisableVsync, ini.GetKeyValue("Misc", "VSync", "1") == "0");
 		tweaksList.SetItemChecked((int)Tweaks.SongCaching, ini.GetKeyValue("Misc", "SongCaching", "1") == "1");
 		tweaksList.SetItemChecked((int)Tweaks.NoStartupMsg, ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1");
 		tweaksList.SetItemChecked((int)Tweaks.PreserveLog, ini.GetKeyValue("Misc", "PreserveLog", "0") == "1");
-		tweaksList.SetItemChecked((int)Tweaks.BkgdVideo, (int)getQBConfig(QbKey.Create(0x633E187F), 0) == 1); // enable_video
+		tweaksList.SetItemChecked((int)Tweaks.EasyExpert, (int)getQBConfig(TweakKeys[(int)Tweaks.EasyExpert], 0) == 1); // enable_video
+		tweaksList.SetItemChecked((int)Tweaks.Precision, (int)getQBConfig(TweakKeys[(int)Tweaks.Precision], 0) == 1); // enable_video
+		tweaksList.SetItemChecked((int)Tweaks.BkgdVideo, (int)getQBConfig(TweakKeys[(int)Tweaks.BkgdVideo], 0) == 1); // enable_video
 		tweaksList.SetItemChecked((int)Tweaks.Windowed, ini.GetKeyValue("Misc", "Windowed", "1") == "1");
 		tweaksList.SetItemChecked((int)Tweaks.Borderless, ini.GetKeyValue("Misc", "Borderless", "1") == "1");
-		tweaksList.SetItemChecked((int)Tweaks.KillHitGems, (int)getQBConfig(QbKey.Create(0xC50E4995), 0) == 1); // kill_gems_on_hit
-		tweaksList.SetItemChecked((int)Tweaks.EarlySustains, (int)getQBConfig(QbKey.Create(0xF88A8D5D), 0) == 1); // anytime_sustain_activation
+		tweaksList.SetItemChecked((int)Tweaks.KillHitGems, (int)getQBConfig(TweakKeys[(int)Tweaks.KillHitGems], 0) == 1); // kill_gems_on_hit
+		tweaksList.SetItemChecked((int)Tweaks.EarlySustains, (int)getQBConfig(TweakKeys[(int)Tweaks.EarlySustains], 0) == 1); // anytime_sustain_activation
 		//tweaksList.SetItemChecked((int)Tweaks.NoShake, (int)getQBConfig(QbKey.Create("disable_shake"), 0) == 1);
 		for (int i = 0; i < modNames.Length; i++)
 		{
@@ -529,7 +599,7 @@ public partial class settings : Form
 	private void creditlink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 	{
 		Console.Clear();
-		Console.WriteLine(FastGH3.Properties.Resources.credits);
+		Console.WriteLine(Resources.ResourceManager.GetString("credits"));
 	}
 
 	private void hypers_ValueChanged(object sender, EventArgs e)
@@ -542,20 +612,6 @@ public partial class settings : Form
 			saveQb();
 			ResumeLayout();
 		}
-	}
-
-	private void setbgcolor_Click(object sender, EventArgs e)
-	{
-		/*if (backgroundcolordiag.ShowDialog() == DialogResult.OK)
-		{
-			SuspendLayout();
-			backcolrgb.Values[0] = backgroundcolordiag.Color.R;
-			backcolrgb.Values[1] = backgroundcolordiag.Color.G;
-			backcolrgb.Values[2] = backgroundcolordiag.Color.B;
-			saveQb();
-			ResumeLayout();
-			colorpanel.BackColor = backgroundcolordiag.Color;
-		}*/
 	}
 
 	private void tooltip_Popup(object sender, PopupEventArgs e)
@@ -575,11 +631,6 @@ public partial class settings : Form
 
 	private void settings_FormClosing(object sender, FormClosingEventArgs e)
 	{
-	}
-
-	private void colorpanel_Click(object sender, EventArgs e)
-	{
-		//new colorpreview(colorpanel.BackColor).ShowDialog();
 	}
 
 	private void ctmpb_Click(object sender, EventArgs e)
@@ -674,28 +725,6 @@ public partial class settings : Form
 	{
 	}
 
-	public enum Tweaks
-	{
-		SongCaching,
-		VerboseLog,
-		PreserveLog,
-		DisableVsync,
-		NoStartupMsg,
-		ExitOnSongEnd,
-		DebugMenu,
-		KeyboardMode,
-		Windowed,
-		Borderless,
-		NoIntro,
-		NoParticles,
-		NoFail,
-		//NoShake,
-		//Lefty,
-		BkgdVideo,
-		KillHitGems,
-		EarlySustains
-	}
-
 	private void changereadytime(object sender, EventArgs e)
 	{
 		setQBConfig(QbKey.Create("nointro_ready_time"), (int)readytimeNoIntro.Value);
@@ -782,13 +811,10 @@ public partial class settings : Form
 		saveQb();
 	}
 
-	private void resetbgcol(object sender, EventArgs e)
-	{
-		backcolrgb.Values[0] = 255;
-		backcolrgb.Values[1] = 255;
-		backcolrgb.Values[2] = 255;
-		saveQb();
-	}
+    private void settings_Load(object sender, EventArgs e)
+    {
+
+    }
 
     private void modifierUpdate(object sender, ItemCheckEventArgs e)
 	{
@@ -858,20 +884,20 @@ public partial class settings : Form
 				readytimelbl.Enabled = e.NewValue == CheckState.Checked;
 				readytimems.Enabled = e.NewValue == CheckState.Checked;
 				// "control cannot fall into another case" WHY
-				setQBConfig(QbKey.Create(0xDF7FF31B), // disable_intro
+				setQBConfig(TweakKeys[(int)Tweaks.NoIntro], // disable_intro
 							(e.NewValue == CheckState.Checked) ? 1 : 0);
 				break;
 			case Tweaks.ExitOnSongEnd:
-				setQBConfig(QbKey.Create(0x045713D3), // exit_on_song_end
+				setQBConfig(TweakKeys[(int)Tweaks.ExitOnSongEnd], // exit_on_song_end
 							(e.NewValue == CheckState.Checked) ? 1 : 0);
 				break;
 			case Tweaks.DebugMenu:
-				setQBConfig(QbKey.Create(0x2AF92804), // enable_button_cheats
+				setQBConfig(TweakKeys[(int)Tweaks.DebugMenu], // enable_button_cheats
 							(e.NewValue == CheckState.Checked) ? 1 : 0);
 				// how do i invert the ternary with the bool array
 				break;
 			case Tweaks.KeyboardMode:
-				setQBConfig(QbKey.Create(0x32025D94), // autolaunch_startnow
+				setQBConfig(TweakKeys[(int)Tweaks.KeyboardMode], // autolaunch_startnow
 							(e.NewValue == CheckState.Checked ? 0 : 1));
 				break;
 			case Tweaks.NoParticles:
@@ -898,36 +924,45 @@ public partial class settings : Form
 						break;
 						// HEY LOOK IT'S MINECRAFT!!11!!!1!
 				}
-				setQBConfig(QbKey.Create(0xD403A7A7), disable_particles);
+				setQBConfig(TweakKeys[(int)Tweaks.NoParticles], disable_particles);
 				break;
 			case Tweaks.NoFail: // Cheat_NoFail
-				setQBConfig(QbKey.Create(0x3E5FD611), e.NewValue == CheckState.Checked ? 1 : 0);
+				setQBConfig(TweakKeys[(int)Tweaks.NoFail], e.NewValue == CheckState.Checked ? 1 : 0);
 				int[] zoffs = { 20, 21 };
 				int _invert = (e.NewValue == CheckState.Checked ? 1 : -1);
 				QbItemInteger thiscodesucks =
 				(QbItemInteger)
-					(userqb.FindItem(QbKey.Create("Nofailvis"), false));
+					(userqb.FindItem(QbKey.Create(0x67CF1F5D), false));
 				QbItemInteger thiscodesucks2 =
 				(QbItemInteger)
-					(userqb.FindItem(QbKey.Create("Nofailvis2"), false));
+					(userqb.FindItem(QbKey.Create(0xDD6AB3D6), false));
 				thiscodesucks.Values[0] = zoffs[0] * _invert;
 				thiscodesucks2.Values[0] = zoffs[1] * _invert;
 				saveQb();
 				break;
+			case Tweaks.EasyExpert:
+				setQBConfig(TweakKeys[(int)Tweaks.EasyExpert], e.NewValue == CheckState.Checked ? 1 : 0); // Cheat_EasyExpert
+				break;
+			case Tweaks.Precision:
+				setQBConfig(TweakKeys[(int)Tweaks.Precision], e.NewValue == CheckState.Checked ? 1 : 0); // Cheat_PrecisionMode
+				break;
+			//case Tweaks.Performance:
+				//setQBConfig(QbKey.Create(0x392E3940), e.NewValue == CheckState.Checked ? 1 : 0); // Cheat_PerformanceMode
+				//break;
 			//case Tweaks.Lefty:
-				//setQBConfig(QbKey.Create("p1_lefty"), e.NewValue == CheckState.Checked ? 1 : 0);
+				//setQBConfig(QbKey.Create(0xBBABFA47), e.NewValue == CheckState.Checked ? 1 : 0); // p1_lefty
 				//break;
 			case Tweaks.BkgdVideo:
-				setQBConfig(QbKey.Create(0x633E187F), e.NewValue == CheckState.Checked ? 1 : 0); // enable_video
+				setQBConfig(TweakKeys[(int)Tweaks.BkgdVideo], e.NewValue == CheckState.Checked ? 1 : 0); // enable_video
 				break;
 			/*case Tweaks.NoShake:
 				setQBConfig(QbKey.Create("disable_shake"), e.NewValue == CheckState.Checked ? 0 : 1);
 				break;*/
 			case Tweaks.KillHitGems:
-				setQBConfig(QbKey.Create(0xC50E4995), e.NewValue == CheckState.Checked ? 1 : 0); // kill_gems_on_hit
+				setQBConfig(TweakKeys[(int)Tweaks.KillHitGems], e.NewValue == CheckState.Checked ? 1 : 0); // kill_gems_on_hit
 				break;
 			case Tweaks.EarlySustains:
-				setQBConfig(QbKey.Create(0xF88A8D5D), e.NewValue == CheckState.Checked ? 1 : 0); // anytime_sustain_activation
+				setQBConfig(TweakKeys[(int)Tweaks.EarlySustains], e.NewValue == CheckState.Checked ? 1 : 0); // anytime_sustain_activation
 				break;
 		}
 	}

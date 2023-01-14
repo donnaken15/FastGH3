@@ -26,7 +26,7 @@
 	/// </summary>
 	private void InitializeComponent()
 	{
-		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(bgprev));
+		//System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(bgprev));
 		this.game = new System.Windows.Forms.PictureBox();
 		((System.ComponentModel.ISupportInitialize)(this.game)).BeginInit();
 		this.SuspendLayout();
@@ -50,7 +50,6 @@
 		this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 		this.ClientSize = new System.Drawing.Size(548, 411);
 		this.Controls.Add(this.game);
-		this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 		this.Name = "bgprev";
 		this.ShowIcon = false;
 		this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

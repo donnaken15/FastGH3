@@ -732,6 +732,30 @@ public partial class keyEdit : Form
 			key = Keys.NumPad7,
 			control = KeyID.Num7,
 			name = "7"
+		}, /*new KeyLayout() {
+			pos = new Point(518, buttonRows[2]),
+			size = new Size(21, 48),
+			key = Keys.Oemplus,
+			control = KeyID.NumPlus,
+			name = "+"
+		}, new KeyLayout() {
+			pos = new Point(518, buttonRows[4]),
+			size = new Size(21, 48),
+			key = Keys.oem,
+			control = KeyID.NumEnt,
+			name = "E"
+		}, new KeyLayout() {
+			pos = new Point(518, buttonRows[1]),
+			size = defaultButtonSize,
+			key = Keys.OemMinus,
+			control = KeyID.Num,
+			name = "-"
+		},*/ new KeyLayout() {
+			pos = new Point(495, buttonRows[5]),
+			size = defaultButtonSize,
+			key = Keys.OemPeriod,
+			control = KeyID.NumDel,
+			name = "."
 		}, new KeyLayout() {
 			pos = new Point(472, buttonRows[2]),
 			size = defaultButtonSize,

@@ -36,6 +36,8 @@ PLAY NOW!
 <br>![chart file](https://i.ibb.co/DPJq9tN/image.png)
 * ROCK OUT!
 <br>![chart file](https://i.ibb.co/W6ZL1Wc/s1.jpg)
+* For an extensive list of settings, open settings.bat, or in a command prompt in the game folder, run `fastgh3 -settings`.
+(Installer adds a shortcut for this)
 
 ### Extra steps
 * To enable file association (that is when you click on a file, it opens the program that supports it),
@@ -69,10 +71,16 @@ and then press any button on your keyboard or device to play.
 * Boss battle charts
 * Rock Band Solos
 * Toggle particles
+* Toggle highway/HUD intro
 * Hide notes upon hitting them
 * Removed venues and models for max performance
 * Rich Presence
 * Optimized and heavily compressed zones
+* Modifiers
+  * All strums, or doubles, or taps
+  * Hopos to taps
+  * Mirror mode
+  * Color shuffle
 
 AND A LOT MORE!
 <br>AND EVEN MORE TO COME IN THE FUTURE!

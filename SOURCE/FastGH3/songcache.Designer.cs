@@ -28,16 +28,16 @@
 	{
 		this.components = new System.ComponentModel.Container();
 		System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(songcache));
+		//System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(songcache));
 		this.cache = new System.Windows.Forms.DataGridView();
-		this.tableContext = new System.Windows.Forms.ContextMenuStrip(this.components);
-		this.deleteTool = new System.Windows.Forms.ToolStripMenuItem();
 		this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
 		this.Artist = new System.Windows.Forms.DataGridViewTextBoxColumn();
 		this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
 		this._Size = new System.Windows.Forms.DataGridViewTextBoxColumn();
 		this.Length = new System.Windows.Forms.DataGridViewTextBoxColumn();
 		this.playBtn = new System.Windows.Forms.DataGridViewButtonColumn();
+		this.tableContext = new System.Windows.Forms.ContextMenuStrip(this.components);
+		this.deleteTool = new System.Windows.Forms.ToolStripMenuItem();
 		((System.ComponentModel.ISupportInitialize)(this.cache)).BeginInit();
 		this.tableContext.SuspendLayout();
 		this.SuspendLayout();
@@ -51,12 +51,12 @@
 		this.cache.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
 		this.cache.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
 		this.cache.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-		this.ID,
-		this.Artist,
-		this.Title,
-		this._Size,
-		this.Length,
-		this.playBtn});
+			this.ID,
+			this.Artist,
+			this.Title,
+			this._Size,
+			this.Length,
+			this.playBtn});
 		this.cache.ContextMenuStrip = this.tableContext;
 		this.cache.Dock = System.Windows.Forms.DockStyle.Fill;
 		this.cache.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
@@ -75,21 +75,6 @@
 		this.cache.TabIndex = 0;
 		this.cache.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cacheClick0);
 		this.cache.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cacheDblClick);
-		// 
-		// tableContext
-		// 
-		this.tableContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-		this.deleteTool});
-		this.tableContext.Name = "tableContext";
-		this.tableContext.Size = new System.Drawing.Size(106, 26);
-		this.tableContext.Opening += new System.ComponentModel.CancelEventHandler(this.cacheRgtclick);
-		// 
-		// deleteTool
-		// 
-		this.deleteTool.Name = "deleteTool";
-		this.deleteTool.Size = new System.Drawing.Size(105, 22);
-		this.deleteTool.Text = "Delete";
-		this.deleteTool.Click += new System.EventHandler(this.cacheDelete1);
 		// 
 		// ID
 		// 
@@ -148,13 +133,28 @@
 		this.playBtn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 		this.playBtn.Width = 38;
 		// 
+		// tableContext
+		// 
+		this.tableContext.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.deleteTool});
+		this.tableContext.Name = "tableContext";
+		this.tableContext.Size = new System.Drawing.Size(106, 26);
+		this.tableContext.Opening += new System.ComponentModel.CancelEventHandler(this.cacheRgtclick);
+		// 
+		// deleteTool
+		// 
+		this.deleteTool.Name = "deleteTool";
+		this.deleteTool.Size = new System.Drawing.Size(105, 22);
+		this.deleteTool.Text = "Delete";
+		this.deleteTool.Click += new System.EventHandler(this.cacheDelete1);
+		// 
 		// songcache
 		// 
 		this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 		this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 		this.ClientSize = new System.Drawing.Size(492, 22);
 		this.Controls.Add(this.cache);
-		this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+		//this.Icon = (FastGH3.Properties.Resources.blank);
 		this.Name = "songcache";
 		this.ShowIcon = false;
 		this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

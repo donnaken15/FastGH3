@@ -78,9 +78,8 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\Ionic.Zip.dll</HintPath>
+    <Reference Include="Ionic.Zip">
+      <HintPath>E:\DotNetZip\Zip Reduced\bin\Release\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -130,7 +129,6 @@
     <Compile Include="dllman.Designer.cs">
       <DependentUpon>dllman.cs</DependentUpon>
     </Compile>
-    <Compile Include="ExtensionAttribute.cs" />
     <Compile Include="fspmultichart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +141,11 @@
     <Compile Include="keyEdit.Designer.cs">
       <DependentUpon>keyEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Queenbee\BinaryEndianReader.cs" />
     <Compile Include="Queenbee\BinaryEndianWriter.cs" />
     <Compile Include="Queenbee\Pak\PakDbgQbKey.cs" />
@@ -154,11 +157,6 @@
     <Compile Include="Queenbee\Pak\PakItemType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Queenbee\Qb\base\EditableAttribute.cs" />
     <Compile Include="Queenbee\Qb\base\GenericQbItem.cs" />
     <Compile Include="Queenbee\Qb\base\QbItemBase.cs" />
@@ -227,30 +225,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="bgprev.resx">
-      <DependentUpon>bgprev.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="dllman.resx">
-      <DependentUpon>dllman.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="fspmultichart.resx">
-      <DependentUpon>fspmultichart.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="keyEdit.resx">
-      <DependentUpon>keyEdit.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="settings.resx">
-      <DependentUpon>settings.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="songcache.resx">
-      <DependentUpon>songcache.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="songtxtfmt.resx">
-      <DependentUpon>songtxtfmt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,6 @@
 	/// </summary>
 	private void InitializeComponent()
 	{
-		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(dllman));
 		this.dlllist = new System.Windows.Forms.ListBox();
 		this.dlladd = new System.Windows.Forms.Button();
 		this.dllrem = new System.Windows.Forms.Button();
@@ -39,7 +38,7 @@
 		// 
 		// dlllist
 		// 
-		this.dlllist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+		this.dlllist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
 		| System.Windows.Forms.AnchorStyles.Left)));
 		this.dlllist.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 		this.dlllist.FormattingEnabled = true;
@@ -117,8 +116,8 @@
 		// 
 		// gh3plog
 		// 
-		this.gh3plog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-		| System.Windows.Forms.AnchorStyles.Left) 
+		this.gh3plog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+		| System.Windows.Forms.AnchorStyles.Left)
 		| System.Windows.Forms.AnchorStyles.Right)));
 		this.gh3plog.BackColor = System.Drawing.SystemColors.Window;
 		this.gh3plog.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -152,8 +151,8 @@
 		this.Controls.Add(this.dllrem);
 		this.Controls.Add(this.dlladd);
 		this.Controls.Add(this.dlllist);
-		this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 		this.Name = "dllman";
+		this.ShowIcon = false;
 		this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 		this.Text = "Plugin Manager";
 		this.ResumeLayout(false);

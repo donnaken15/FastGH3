@@ -26,7 +26,7 @@
 	/// </summary>
 	private void InitializeComponent()
 	{
-		System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(songtxtfmt));
+		//System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(songtxtfmt));
 		this.inputBox = new System.Windows.Forms.TextBox();
 		this.usageTxt = new System.Windows.Forms.Label();
 		this.exampleTxt = new System.Windows.Forms.Label();
@@ -35,7 +35,7 @@
 		// 
 		// inputBox
 		// 
-		this.inputBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+		this.inputBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 		| System.Windows.Forms.AnchorStyles.Right)));
 		this.inputBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 		this.inputBox.Location = new System.Drawing.Point(0, 0);
@@ -49,7 +49,7 @@
 		// 
 		// usageTxt
 		// 
-		this.usageTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+		this.usageTxt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 		| System.Windows.Forms.AnchorStyles.Right)));
 		this.usageTxt.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.usageTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -62,8 +62,8 @@
 		// 
 		// exampleTxt
 		// 
-		this.exampleTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-		| System.Windows.Forms.AnchorStyles.Left) 
+		this.exampleTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+		| System.Windows.Forms.AnchorStyles.Left)
 		| System.Windows.Forms.AnchorStyles.Right)));
 		this.exampleTxt.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 		this.exampleTxt.Location = new System.Drawing.Point(0, 156);
@@ -94,7 +94,7 @@
 		this.Controls.Add(this.exampleTxt);
 		this.Controls.Add(this.usageTxt);
 		this.Controls.Add(this.inputBox);
-		this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+		//this.Icon = (FastGH3.Properties.Resources.blank);
 		this.MaximizeBox = false;
 		this.MinimumSize = new System.Drawing.Size(340, 320);
 		this.Name = "songtxtfmt";

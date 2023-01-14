@@ -15,11 +15,9 @@ partial class settings
 	}
 
 	#region Windows Form Designer generated code
-
 	private void InitializeComponent()
 	{
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(settings));
             this.ok = new System.Windows.Forms.Button();
             this.reslabel = new System.Windows.Forms.Label();
             this.hypers = new System.Windows.Forms.NumericUpDown();
@@ -28,24 +26,21 @@ partial class settings
             this.difflabel = new System.Windows.Forms.Label();
             this.creditlink = new System.Windows.Forms.LinkLabel();
             this.tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.setbgcolor = new System.Windows.Forms.Button();
-            this.colorpanel = new System.Windows.Forms.Panel();
             this.speed = new System.Windows.Forms.NumericUpDown();
-            this.maxnotes = new System.Windows.Forms.NumericUpDown();
             this.part = new System.Windows.Forms.ComboBox();
             this.replaygame = new System.Windows.Forms.Button();
             this.pluginmanage = new System.Windows.Forms.Button();
             this.viewsongcache = new System.Windows.Forms.Button();
             this.ctmpb = new System.Windows.Forms.Button();
             this.songtxtfmt_ = new System.Windows.Forms.Button();
-            this.res = new System.Windows.Forms.ComboBox();
-            this.maxFPS = new System.Windows.Forms.NumericUpDown();
             this.readytimeNoIntro = new System.Windows.Forms.NumericUpDown();
             this.keybindsBtn = new System.Windows.Forms.Button();
             this.p2parttoggle = new System.Windows.Forms.CheckBox();
             this.setbgimg = new System.Windows.Forms.Button();
             this.pbxBg = new System.Windows.Forms.PictureBox();
-            this.resetbgcol_ = new System.Windows.Forms.Button();
+            this.res = new System.Windows.Forms.ComboBox();
+            this.maxnotes = new System.Windows.Forms.NumericUpDown();
+            this.maxFPS = new System.Windows.Forms.NumericUpDown();
             this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
             this.speedlabel = new System.Windows.Forms.Label();
             this.maxnoteslbl = new System.Windows.Forms.Label();
@@ -62,10 +57,10 @@ partial class settings
             this.selectImage0 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBg)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).BeginInit();
             this.tweaksPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,7 +100,7 @@ partial class settings
             this.hypers.Name = "hypers";
             this.hypers.Size = new System.Drawing.Size(32, 20);
             this.hypers.TabIndex = 3;
-            this.tooltip.SetToolTip(this.hypers, "This applies for both player difficulties.");
+            this.tooltip.SetToolTip(this.hypers, "This applies for both player hyperspeeds.");
             this.hypers.ValueChanged += new System.EventHandler(this.hypers_ValueChanged);
             // 
             // hyperlabel
@@ -177,34 +172,6 @@ partial class settings
             this.tooltip.UseFading = false;
             this.tooltip.Popup += new System.Windows.Forms.PopupEventHandler(this.tooltip_Popup);
             // 
-            // setbgcolor
-            // 
-            this.setbgcolor.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.setbgcolor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F);
-            this.setbgcolor.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.setbgcolor.Location = new System.Drawing.Point(98, 402);
-            this.setbgcolor.Name = "setbgcolor";
-            this.setbgcolor.Size = new System.Drawing.Size(113, 23);
-            this.setbgcolor.TabIndex = 11;
-            this.setbgcolor.Text = "Set background color";
-            this.tooltip.SetToolTip(this.setbgcolor, "Set current background color when playing a song.");
-            this.setbgcolor.UseVisualStyleBackColor = true;
-            this.setbgcolor.Visible = false;
-            this.setbgcolor.Click += new System.EventHandler(this.setbgcolor_Click);
-            // 
-            // colorpanel
-            // 
-            this.colorpanel.BackColor = System.Drawing.Color.Black;
-            this.colorpanel.Cursor = System.Windows.Forms.Cursors.Help;
-            this.colorpanel.Location = new System.Drawing.Point(217, 402);
-            this.colorpanel.Name = "colorpanel";
-            this.colorpanel.Size = new System.Drawing.Size(23, 23);
-            this.colorpanel.TabIndex = 12;
-            this.tooltip.SetToolTip(this.colorpanel, "Background color that\'s going to be shown in the game.\r\nDouble click to see a lar" +
-        "ger preview of how it will look.");
-            this.colorpanel.Visible = false;
-            this.colorpanel.DoubleClick += new System.EventHandler(this.colorpanel_Click);
-            // 
             // speed
             // 
             this.speed.DecimalPlaces = 3;
@@ -230,26 +197,6 @@ partial class settings
             0,
             0});
             this.speed.ValueChanged += new System.EventHandler(this.speed_ValueChanged);
-            // 
-            // maxnotes
-            // 
-            this.maxnotes.Location = new System.Drawing.Point(204, 27);
-            this.maxnotes.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.maxnotes.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.maxnotes.Name = "maxnotes";
-            this.maxnotes.Size = new System.Drawing.Size(72, 20);
-            this.maxnotes.TabIndex = 18;
-            this.tooltip.SetToolTip(this.maxnotes, "Override the note limit. Set to -1 to make\r\nthe program determine how many notes\r" +
-        "\nthere are in the chart opened.\r\nRAM usage may vary.");
-            this.maxnotes.ValueChanged += new System.EventHandler(this.maxnotes_ValueChanged);
             // 
             // part
             // 
@@ -312,9 +259,6 @@ partial class settings
             this.ctmpb.Size = new System.Drawing.Size(99, 23);
             this.ctmpb.TabIndex = 31;
             this.ctmpb.Text = "Clean Temp Files";
-            this.tooltip.SetToolTip(this.ctmpb, "Clean files from downloading and extracting Song Packages.\r\nWarning: Reuse of the" +
-        "se files will require downloading and\r\nextracting them again, some of which can " +
-        "take a bit of time.");
             this.ctmpb.UseVisualStyleBackColor = true;
             this.ctmpb.Click += new System.EventHandler(this.ctmpb_Click);
             // 
@@ -329,34 +273,6 @@ partial class settings
             this.tooltip.SetToolTip(this.songtxtfmt_, "Change the format of currentsong.txt. Can be useful for streaming.");
             this.songtxtfmt_.UseVisualStyleBackColor = true;
             this.songtxtfmt_.Click += new System.EventHandler(this.songtxtfmt__Click);
-            // 
-            // res
-            // 
-            this.res.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.res.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.res.FormattingEnabled = true;
-            this.res.Location = new System.Drawing.Point(66, 2);
-            this.res.Name = "res";
-            this.res.Size = new System.Drawing.Size(80, 21);
-            this.res.TabIndex = 2;
-            this.tooltip.SetToolTip(this.res, "This allows you to change the window size of the game according to your monitor s" +
-        "ettings.");
-            this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
-            // 
-            // maxFPS
-            // 
-            this.maxFPS.Location = new System.Drawing.Point(145, 19);
-            this.maxFPS.Maximum = new decimal(new int[] {
-            268435455,
-            1042612833,
-            542101086,
-            0});
-            this.maxFPS.Name = "maxFPS";
-            this.maxFPS.Size = new System.Drawing.Size(76, 20);
-            this.maxFPS.TabIndex = 38;
-            this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tooltip.SetToolTip(this.maxFPS, resources.GetString("maxFPS.ToolTip"));
-            this.maxFPS.ValueChanged += new System.EventHandler(this.maxFPSchange);
             // 
             // readytimeNoIntro
             // 
@@ -427,19 +343,48 @@ partial class settings
         "ger preview of how it will look.");
             this.pbxBg.DoubleClick += new System.EventHandler(this.showBgImg);
             // 
-            // resetbgcol_
+            // res
             // 
-            this.resetbgcol_.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.resetbgcol_.Location = new System.Drawing.Point(76, 387);
-            this.resetbgcol_.Name = "resetbgcol_";
-            this.resetbgcol_.Size = new System.Drawing.Size(130, 23);
-            this.resetbgcol_.TabIndex = 45;
-            this.resetbgcol_.Text = "Reset background color";
-            this.tooltip.SetToolTip(this.resetbgcol_, "Background color is going to be deprecated in favor of background images.\r\nClick " +
-        "this to reset it to white.");
-            this.resetbgcol_.UseVisualStyleBackColor = true;
-            this.resetbgcol_.Visible = false;
-            this.resetbgcol_.Click += new System.EventHandler(this.resetbgcol);
+            this.res.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.res.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.res.FormattingEnabled = true;
+            this.res.Location = new System.Drawing.Point(66, 2);
+            this.res.Name = "res";
+            this.res.Size = new System.Drawing.Size(80, 21);
+            this.res.TabIndex = 2;
+            this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
+            // 
+            // maxnotes
+            // 
+            this.maxnotes.Location = new System.Drawing.Point(204, 27);
+            this.maxnotes.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.maxnotes.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+            this.maxnotes.Name = "maxnotes";
+            this.maxnotes.Size = new System.Drawing.Size(72, 20);
+            this.maxnotes.TabIndex = 18;
+            this.maxnotes.ValueChanged += new System.EventHandler(this.maxnotes_ValueChanged);
+            // 
+            // maxFPS
+            // 
+            this.maxFPS.Location = new System.Drawing.Point(145, 19);
+            this.maxFPS.Maximum = new decimal(new int[] {
+            268435455,
+            1042612833,
+            542101086,
+            0});
+            this.maxFPS.Name = "maxFPS";
+            this.maxFPS.Size = new System.Drawing.Size(76, 20);
+            this.maxFPS.TabIndex = 38;
+            this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.maxFPS.ValueChanged += new System.EventHandler(this.maxFPSchange);
             // 
             // backgroundcolordiag
             // 
@@ -498,6 +443,8 @@ partial class settings
             "No intro",
             "No particles",
             "No fail",
+            "Easy expert",
+            "Precision",
             "Background video",
             "Hide hit gems",
             "Early sustain activation"});
@@ -626,7 +573,6 @@ partial class settings
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(280, 416);
-            this.Controls.Add(this.resetbgcol_);
             this.Controls.Add(this.pbxBg);
             this.Controls.Add(this.setbgimg);
             this.Controls.Add(this.keybindsBtn);
@@ -643,8 +589,6 @@ partial class settings
             this.Controls.Add(this.maxnoteslbl);
             this.Controls.Add(this.speed);
             this.Controls.Add(this.speedlabel);
-            this.Controls.Add(this.colorpanel);
-            this.Controls.Add(this.setbgcolor);
             this.Controls.Add(this.creditlink);
             this.Controls.Add(this.diff);
             this.Controls.Add(this.difflabel);
@@ -662,13 +606,14 @@ partial class settings
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FastGH3 settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.settings_FormClosing);
+            this.Load += new System.EventHandler(this.settings_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydownreacts);
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbxBg)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).EndInit();
             this.tweaksPanel.ResumeLayout(false);
             this.tweaksPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -692,8 +637,6 @@ partial class settings
 	private LinkLabel creditlink;
 	private ToolTip tooltip;
 	private ColorDialog backgroundcolordiag;
-	private Button setbgcolor;
-	private Panel colorpanel;
 	private NumericUpDown speed;
 	private Label speedlabel;
 	private Label maxnoteslbl;
@@ -722,5 +665,4 @@ partial class settings
 	private Button setbgimg;
 	private PictureBox pbxBg;
 	private OpenFileDialog selectImage0;
-	private Button resetbgcol_;
 }

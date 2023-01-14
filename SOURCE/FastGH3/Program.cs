@@ -15,6 +15,16 @@ using System.Text;
 
 class Program
 {
+	public static string _8Bstr(byte[] a)
+	{
+		// cheap byte saving by forcing some strings to not be unicode
+		return Encoding.ASCII.GetString(a);
+		// resources actually can deal with this just fine
+		// nevermind, any resx is too big for the EXE
+		// or even this is too bloated for non forms somehow
+		// pretentious language/compiler
+	}
+
 	static uint[] unusedKeys = {
 				0x212262DF, 0x7F2FC9BC, 0x32BDB4A9, 0x44819DD0, 0xCB09D855, 0x2E7DDC38,
 				0x71AA8EF7, 0x347C8050, 0x195F3B95, 0x7E1B28BC, 0x9D0C5D0C, 0xAF1E8BC1,
@@ -39,7 +49,7 @@ class Program
 		AddExtension = true,
 		CheckFileExists = true,
 		CheckPathExists = true,
-		Filter = Resources.chartFilter,
+		Filter = Resources.ResourceManager.GetString("chartFilter"),
 		RestoreDirectory = true,
 		Title = "Select chart"
 	};
@@ -437,7 +447,7 @@ class Program
 				if (settings.GetKeyValue("Misc", "NoStartupMsg", "0") == "0")
 				{
 					Console.Clear();
-					Console.WriteLine(Resources.splashText);
+					Console.WriteLine(Resources.ResourceManager.GetString("splashText"));
 					Console.ReadKey();
 				}
 				if (openchart.ShowDialog() == DialogResult.OK)
@@ -1576,7 +1586,7 @@ class Program
 												}
 												catch /*(Exception e)*/
 												{
-													print(Resources.SPwarn, ConsoleColor.Yellow);
+													print(Resources.ResourceManager.GetString("SPwarn"), ConsoleColor.Yellow);
 													//Console.WriteLine(e);
 												}
 											}
@@ -1835,7 +1845,7 @@ class Program
 								if (!boss_defaultprops)
 								{
 
-									string[] selectedPowers = bossINI.GetKeyValue("boss", "items", Resources.powersDefaultKey).Split(',');
+									string[] selectedPowers = bossINI.GetKeyValue("boss", "items", Resources.ResourceManager.GetString("powersDefaultKey")).Split(',');
 									// HOW DO I USE THIS https://stackoverflow.com/questions/4916838/is-there-a-string-type-with-8-bit-chars
 
 									List<QbKey> allowedPowers = new List<QbKey>();
@@ -2021,7 +2031,7 @@ class Program
 												}
 												catch /*(Exception e)*/
 												{
-													print(Resources.SPwarn, ConsoleColor.Yellow);
+													print(Resources.ResourceManager.GetString("SPwarn"), ConsoleColor.Yellow);
 													//Console.WriteLine(e);
 												}
 											}
@@ -2342,6 +2352,53 @@ class Program
 								songParams));
 							#endregion
 							#endregion
+
+							#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART
+							// definitely no one will use this
+							if (settings.GetKeyValue("Misc","SongVideos","0") == "1")
+							{
+								// low IQ:
+								// detect if RAD Video Tools is installed
+								// and convert the song's background video (MP4)
+								// to Bink, and wait like 10 minutes for it
+								// to finish encoding
+								verboseline("Song videos enabled");
+								if (File.Exists("background.bik"))
+								{
+									verboseline("Found (Bink) background video");
+									if (settings.GetKeyValue("Misc", "LastSongHadVideo", "0") == "0")
+									{
+										verboseline("Saving user background video");
+										// save last background video
+										File.Copy(
+											folder + dataf + "MOVIES\\BIK\\" + "backgrnd_video.bik.xen",
+											folder + dataf + "MOVIES\\BIK\\" + "lastvid", true);
+										settings.SetKeyValue("Misc", "LastSongHadVideo", "1");
+										settings.Save(folder + "settings.ini");
+									}
+									File.Copy("background.bik",
+										folder + dataf + "MOVIES\\BIK\\" + "backgrnd_video.bik.xen", true);
+								}
+								else
+								{
+									verboseline("No (Bink) background video found");
+									if (settings.GetKeyValue("Misc", "LastSongHadVideo", "0") == "1")
+									{
+										verboseline("Restoring user background video");
+										// restore user video after playing a song a background video
+										// and now playing a song without one
+										File.Copy(
+											folder + dataf + "MOVIES\\BIK\\" + "lastvid",
+											folder + dataf + "MOVIES\\BIK\\" + "backgrnd_video.bik.xen", true);
+										File.Delete(
+											folder + dataf + "MOVIES\\BIK\\" + "lastvid");
+										settings.SetKeyValue("Misc", "LastSongHadVideo", "0");
+										settings.Save(folder + "settings.ini");
+									}
+								}
+							}
+							#endregion
+
 							if (isBoss)
 							{
 								songdata.AddItem(fastgh3_extra);
@@ -2573,6 +2630,29 @@ class Program
 
 								}
 							}
+							foreach (var file in new DirectoryInfo(Path.GetTempPath()+"Z.FGH3.TMP\\").EnumerateFiles())
+							{
+								try
+								{
+									file.Delete();
+								}
+								catch
+								{
+
+								}
+							}
+							foreach (var file in new DirectoryInfo(Path.GetTempPath()+"Z.FGH3.TMP\\").EnumerateDirectories())
+							{
+								try
+								{
+									file.Delete(true);
+								}
+								catch
+								{
+
+								}
+							}
+							Directory.Delete(Path.GetTempPath()+"Z.FGH3.TMP\\",true);
 						}
 						catch
 						{
@@ -2842,7 +2922,7 @@ class Program
 									{
 										if (!args[0].EndsWith(".rar"))
 										{
-											MessageBox.Show(Resources.Z7_u, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+											MessageBox.Show(Resources.ResourceManager.GetString("Z7_u"), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 											if (writefile && launcherlog != null)
 												launcherlog.Close();
 											settings.SetKeyValue("Misc", "FinishedLog", "1");
@@ -2873,7 +2953,7 @@ class Program
 								if (got7Z)
 								{
 									Xtract.StartInfo.FileName = z7path;
-									Xtract.StartInfo.Arguments = "x " + args[0].EncloseWithQuoteMarks() + " -o" + tmpf.EncloseWithQuoteMarks();
+									Xtract.StartInfo.Arguments = "x " + args[0].EncloseWithQuoteMarks() + " -aoa -o" + tmpf.EncloseWithQuoteMarks();
 								}
 								else if (gotWRAR)
 								{
@@ -2883,7 +2963,7 @@ class Program
 								else
 								{
 									verboseline("Unsupported archive type", FSPcolor);
-									MessageBox.Show(Resources.Z7_uu, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									MessageBox.Show(Resources.ResourceManager.GetString("Z7_uu"), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									if (writefile && launcherlog != null)
 										launcherlog.Close();
 									settings.SetKeyValue("Misc", "FinishedLog", "1");
@@ -2898,7 +2978,7 @@ class Program
 									verboseline("Exit code: " + Xtract.ExitCode, FSPcolor);
 									if (Xtract.ExitCode != 0)
 									{
-										MessageBox.Show(Resources.Z7_f, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										MessageBox.Show(Resources.ResourceManager.GetString("Z7_f"), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 										Environment.Exit(1);
 									}
 									foreach (string f in Directory.GetFiles(tmpf, "*.*", SearchOption.AllDirectories))
@@ -3090,6 +3170,7 @@ class Program
 				else
 				{
 					print("That file does not exist. Exiting.", ConsoleColor.Red);
+					MessageBox.Show("File cannot be found.\nPath: "+args[0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					settings.SetKeyValue("Misc", "FinishedLog", "1");
 					settings.Save(folder + "settings.ini");
 				}
