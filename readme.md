@@ -4,11 +4,13 @@
 
 Play Guitar Hero better than ever before!
 
-The days of GHTCP and janky-to-use tools are no longer, so we bring you THIS!
+Optimized and reworked for speed, portability, accessibility, and QOL.
+
+The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer, so we bring you THIS!
 
 ![version](https://img.shields.io/github/v/release/donnaken15/FastGH3)
 ![mod size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.tk%2Ffastgh3%2F__final_size.php)
-![release date](https://img.shields.io/github/release-date/donnaken15/FastGH3)
+![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
 ![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/total)
 <br>![commit activity](https://img.shields.io/github/commit-activity/m/donnaken15/FastGH3)
 ![launcher code size](https://img.shields.io/github/size/donnaken15/FastGH3/SOURCE/FastGH3/Program.cs?label=launcher%20code%20size)

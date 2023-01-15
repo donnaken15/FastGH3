@@ -1,23 +1,23 @@
 ﻿/*
  * 
- *  DDSImage.cs - DDS Texture File Reading (Uncompressed, DXT1/2/3/4/5, V8U8) and Writing (Uncompressed Only)
- *  
- *  By Shendare (Jon D. Jackson)
+ *	DDSImage.cs - DDS Texture File Reading (Uncompressed, DXT1/2/3/4/5, V8U8) and Writing (Uncompressed Only)
+ *	
+ *	By Shendare (Jon D. Jackson)
  * 
- *  Rebuilt from Microsoft DDS documentation with the help of the DDSImage.cs reading class from
- *  Lorenzo Consolaro, under the MIT License.  https://code.google.com/p/kprojects/ 
+ *	Rebuilt from Microsoft DDS documentation with the help of the DDSImage.cs reading class from
+ *	Lorenzo Consolaro, under the MIT License.  https://code.google.com/p/kprojects/ 
  * 
- *  Portions of this code not covered by another author's or entity's copyright are released under
- *  the Creative Commons Zero (CC0) public domain license.
- *  
- *  To the extent possible under law, Shendare (Jon D. Jackson) has waived all copyright and
- *  related or neighboring rights to this DDSImage class. This work is published from: The United States. 
- *  
- *  You may copy, modify, and distribute the work, even for commercial purposes, without asking permission.
+ *	Portions of this code not covered by another author's or entity's copyright are released under
+ *	the Creative Commons Zero (CC0) public domain license.
+ *	
+ *	To the extent possible under law, Shendare (Jon D. Jackson) has waived all copyright and
+ *	related or neighboring rights to this DDSImage class. This work is published from: The United States. 
+ *	
+ *	You may copy, modify, and distribute the work, even for commercial purposes, without asking permission.
  * 
- *  For more information, read the CC0 summary and full legal text here:
- *  
- *  https://creativecommons.org/publicdomain/zero/1.0/
+ *	For more information, read the CC0 summary and full legal text here:
+ *	
+ *	https://creativecommons.org/publicdomain/zero/1.0/
  * 
  */
 
@@ -32,50 +32,7 @@ namespace DDS
 {
 	class DDSImage
 	{
-		#region Constants and Bitflags
-
-		private const uint MAGIC_NUMBER = 0x20534444;
-
-		private const uint DDPF_ALPHAPIXELS = 0x00000001;
-		private const uint DDPF_ALPHA = 0x00000002; // Alpha channel only. Deprecated.
-		private const uint DDPF_FOURCC = 0x00000004;
-		private const uint DDPF_RGB = 0x00000040;
-		private const uint DDPF_YUV = 0x00000200;
-		private const uint DDPF_LUMINANCE = 0x00020000;
-
-		private const int DDSD_CAPS = 0x00000001;
-		private const int DDSD_HEIGHT = 0x00000002;
-		private const int DDSD_WIDTH = 0x00000004;
-		private const int DDSD_PITCH = 0x00000008;
-		private const int DDSD_PIXELFORMAT = 0x00001000;
-		private const int DDSD_MIPMAPCOUNT = 0x00020000;
-		private const int DDSD_LINEARSIZE = 0x00080000;
-		private const int DDSD_DEPTH = 0x00800000;
-
-		private const int DDSCAPS_COMPLEX = 0x00000008;
-		private const int DDSCAPS_TEXTURE = 0x00001000;
-		private const int DDSCAPS_MIPMAP = 0x00400000;
-
-		private const int DDSCAPS2_CUBEMAP = 0x00000200;
-		private const int DDSCAPS2_CUBEMAP_POSITIVEX = 0x00000400;
-		private const int DDSCAPS2_CUBEMAP_NEGATIVEX = 0x00000800;
-		private const int DDSCAPS2_CUBEMAP_POSITIVEY = 0x00001000;
-		private const int DDSCAPS2_CUBEMAP_NEGATIVEY = 0x00002000;
-		private const int DDSCAPS2_CUBEMAP_POSITIVEZ = 0x00004000;
-		private const int DDSCAPS2_CUBEMAP_NEGATIVEZ = 0x00008000;
-		private const int DDSCAPS2_VOLUME = 0x00200000;
-
-		private const uint FOURCC_DXT1 = 0x31545844;
-		private const uint FOURCC_DXT2 = 0x32545844;
-		private const uint FOURCC_DXT3 = 0x33545844;
-		private const uint FOURCC_DXT4 = 0x34545844;
-		private const uint FOURCC_DXT5 = 0x35545844;
-		private const uint FOURCC_DX10 = 0x30315844;
-		private const uint FOURCC_V8U8 = 0X38553856; // Only used internally
-
-		#endregion
-
-		public enum CompressionMode
+		public enum CMP
 		{
 			Unknown = 0,
 			DXT1 = 1,
@@ -93,28 +50,28 @@ namespace DDS
 			RGB32 = 32
 		}
 
-		public DDS_HEADER Header;
+		public HEAD Header;
 
 #pragma warning disable 0649
-		public DDS_HEADER_DXT10 Header10;
+		public HEAD10 Header10;
 #pragma warning restore 0649
 
-		public DDS_PIXELFORMAT PixelFormat;
+		public PIXFMT PixFmt;
 
 		public Bitmap[] Images;
 
 		public int MipMapCount;
 
-		public CompressionMode Format;
+		public CMP Format;
 		public string FormatName
 		{
 			get
 			{
 				switch (Format)
 				{
-					case CompressionMode.A1R5G5B5:
+					case CMP.A1R5G5B5:
 						return "ARGB16";
-					case CompressionMode.R5G6B5:
+					case CMP.R5G6B5:
 						return "RGB16";
 					default:
 						return Format.ToString();
@@ -125,18 +82,18 @@ namespace DDS
 		public DDSImage() { }
 
 		public static DDSImage Load(string Filename) { using (FileStream _stream = File.OpenRead(Filename)) { return Load(_stream); } }
-		public static DDSImage Load(byte[] FileContents)
+		public static DDSImage Load(byte[] data)
 		{
 			byte[] FileNoTXTR;
-			if (FileContents[0] == 4 && FileContents[1] == 0 &&
-				FileContents[2] == 0 && FileContents[3] == 0 &&
-				FileContents[4] == 3)
+			if (data[0] == 4 && data[1] == 0 &&
+				data[2] == 0 && data[3] == 0 &&
+				data[4] == 3)
 			{
-				FileNoTXTR = new byte[FileContents.Length - 0x1C];
-				Array.Copy(FileContents, 0x1C, FileNoTXTR, 0, FileContents.Length - 0x1C);
+				FileNoTXTR = new byte[data.Length - 0x1C];
+				Array.Copy(data, 0x1C, FileNoTXTR, 0, data.Length - 0x1C);
 			}
 			else
-				FileNoTXTR = FileContents;
+				FileNoTXTR = data;
 			using (MemoryStream _stream = new MemoryStream(FileNoTXTR))
 			{
 				return Load(_stream);
@@ -148,64 +105,64 @@ namespace DDS
 
 			using (BinaryReader _data = new BinaryReader(Source))
 			{
-				if (_data.ReadInt32() != MAGIC_NUMBER)
+				if (_data.ReadInt32() != 0x20534444)
 				{
 					throw new InvalidDataException("DDSImage.Load() requires a .dds texture file stream");
 				}
 
-				_dds.Format = CompressionMode.Unknown;
+				_dds.Format = CMP.Unknown;
 
-				_dds.Header.dwSize = _data.ReadInt32();
-				_dds.Header.dwFlags = _data.ReadInt32();
-				_dds.Header.dwHeight = _data.ReadInt32();
-				_dds.Header.dwWidth = _data.ReadInt32();
-				_dds.Header.dwPitchOrLinearSize = _data.ReadInt32();
-				_dds.Header.dwDepth = _data.ReadInt32();
-				_dds.Header.dwMipMapCount = _data.ReadInt32();
+				_dds.Header.size = _data.ReadInt32();
+				_dds.Header.flags = _data.ReadInt32();
+				_dds.Header.h = _data.ReadInt32();
+				_dds.Header.w = _data.ReadInt32();
+				_dds.Header.PoLS = _data.ReadInt32();
+				_dds.Header.depth = _data.ReadInt32();
+				_dds.Header.mipmapc = _data.ReadInt32();
 
 				// Unused Reserved1 Fields
 				_data.ReadBytes(11 * sizeof(int));
 
 				// Image Pixel Format
-				_dds.PixelFormat.dwSize = _data.ReadUInt32();
-				_dds.PixelFormat.dwFlags = _data.ReadUInt32();
-				_dds.PixelFormat.dwFourCC = _data.ReadUInt32();
-				_dds.PixelFormat.dwRGBBitCount = _data.ReadUInt32();
-				_dds.PixelFormat.dwRBitMask = _data.ReadUInt32();
-				_dds.PixelFormat.dwGBitMask = _data.ReadUInt32();
-				_dds.PixelFormat.dwBBitMask = _data.ReadUInt32();
-				_dds.PixelFormat.dwABitMask = _data.ReadUInt32();
+				_dds.PixFmt.size = _data.ReadUInt32();
+				_dds.PixFmt.flags = _data.ReadUInt32();
+				_dds.PixFmt._4CC = _data.ReadUInt32();
+				_dds.PixFmt.RGBBC = _data.ReadUInt32();
+				_dds.PixFmt.R = _data.ReadUInt32();
+				_dds.PixFmt.G = _data.ReadUInt32();
+				_dds.PixFmt.B = _data.ReadUInt32();
+				_dds.PixFmt.A = _data.ReadUInt32();
 
-				_dds.Header.dwCaps = _data.ReadInt32();
-				_dds.Header.dwCaps2 = _data.ReadInt32();
-				_dds.Header.dwCaps3 = _data.ReadInt32();
-				_dds.Header.dwCaps4 = _data.ReadInt32();
-				_dds.Header.dwReserved2 = _data.ReadInt32();
+				_dds.Header.rsv2 = _data.ReadInt32();
+				_dds.Header.rsv3 = _data.ReadInt32();
+				_dds.Header.rsv4 = _data.ReadInt32();
+				_dds.Header.rsv5 = _data.ReadInt32();
+				_dds.Header.rsv6 = _data.ReadInt32();
 
-				if ((_dds.PixelFormat.dwFlags & DDPF_FOURCC) != 0)
+				if ((_dds.PixFmt.flags & 4) != 0)
 				{
-					switch (_dds.PixelFormat.dwFourCC)
+					switch (_dds.PixFmt._4CC)
 					{
-						case FOURCC_DX10:
-							_dds.Format = CompressionMode.DX10;
+						case 0x30315844:
+							_dds.Format = CMP.DX10;
 							throw new InvalidDataException("DX10 textures not supported at this time.");
-						case FOURCC_DXT1:
-							_dds.Format = CompressionMode.DXT1;
+						case 0x31545844:
+							_dds.Format = CMP.DXT1;
 							break;
-						case FOURCC_DXT2:
-							_dds.Format = CompressionMode.DXT2;
+						case 0x32545844:
+							_dds.Format = CMP.DXT2;
 							break;
-						case FOURCC_DXT3:
-							_dds.Format = CompressionMode.DXT3;
+						case 0x33545844:
+							_dds.Format = CMP.DXT3;
 							break;
-						case FOURCC_DXT4:
-							_dds.Format = CompressionMode.DXT4;
+						case 0x34545844:
+							_dds.Format = CMP.DXT4;
 							break;
-						case FOURCC_DXT5:
-							_dds.Format = CompressionMode.DXT5;
+						case 0x35545844:
+							_dds.Format = CMP.DXT5;
 							break;
 						default:
-							switch (_dds.PixelFormat.dwFourCC)
+							switch (_dds.PixFmt._4CC)
 							{
 								default:
 									break;
@@ -214,31 +171,31 @@ namespace DDS
 					}
 				}
 
-				if ((_dds.PixelFormat.dwFlags & DDPF_FOURCC) == 0)
+				if ((_dds.PixFmt.flags & 4) == 0)
 				{
 					// Uncompressed. How many BPP?
 
 					bool _supportedBpp = false;
 
-					switch (_dds.PixelFormat.dwRGBBitCount)
+					switch (_dds.PixFmt.RGBBC)
 					{
 						case 16:
-							if (_dds.PixelFormat.dwABitMask == 0)
+							if (_dds.PixFmt.A == 0)
 							{
-								_dds.Format = CompressionMode.R5G6B5;
+								_dds.Format = CMP.R5G6B5;
 							}
 							else
 							{
-								_dds.Format = CompressionMode.A1R5G5B5;
+								_dds.Format = CMP.A1R5G5B5;
 							}
 							_supportedBpp = true;
 							break;
 						case 24:
-							_dds.Format = CompressionMode.RGB24;
+							_dds.Format = CMP.RGB24;
 							_supportedBpp = true;
 							break;
 						case 32:
-							_dds.Format = CompressionMode.RGB32;
+							_dds.Format = CMP.RGB32;
 							_supportedBpp = true;
 							break;
 					}
@@ -250,23 +207,23 @@ namespace DDS
 				}
 
 				_dds.MipMapCount = 1;
-				if ((_dds.Header.dwFlags & DDSD_MIPMAPCOUNT) != 0)
+				if ((_dds.Header.flags & 0x00020000) != 0)
 				{
-					_dds.MipMapCount = (_dds.Header.dwMipMapCount == 0) ? 1 : _dds.Header.dwMipMapCount;
+					_dds.MipMapCount = (_dds.Header.mipmapc == 0) ? 1 : _dds.Header.mipmapc;
 				}
 
 				_dds.Images = new Bitmap[_dds.MipMapCount];
 
 				int _imageSize;
-				int _w = (_dds.Header.dwWidth < 0) ? -_dds.Header.dwWidth : _dds.Header.dwWidth;
-				int _h = (_dds.Header.dwHeight < 0) ? -_dds.Header.dwHeight : _dds.Header.dwHeight;
+				int _w = (_dds.Header.w < 0) ? -_dds.Header.w : _dds.Header.w;
+				int _h = (_dds.Header.h < 0) ? -_dds.Header.h : _dds.Header.h;
 
 				// DDS Documentation recommends ignoring the dwLinearOrPitchSize value and calculating on your own.
-				if ((_dds.PixelFormat.dwFlags & DDPF_RGB) != 0)
+				if ((_dds.PixFmt.flags & 0x40) != 0)
 				{
 					// Linear Size
 
-					_imageSize = (_w * _h * ((int)_dds.PixelFormat.dwRGBBitCount + 7) >> 3);
+					_imageSize = (_w * _h * ((int)_dds.PixFmt.RGBBC + 7) >> 3);
 				}
 				else
 				{
@@ -274,17 +231,17 @@ namespace DDS
 
 					_imageSize = ((_w + 3) >> 2) * (((_h + 3) >> 2));
 
-					switch (_dds.PixelFormat.dwFourCC)
+					switch (_dds.PixFmt._4CC)
 					{
-						case FOURCC_DXT1:
+						case 0x31545844:
 							_imageSize <<= 3; // 64 bits color per block
 							break;
-						case FOURCC_DXT2:
-						case FOURCC_DXT3:
+						case 0x32545844:
+						case 0x33545844:
 							_imageSize <<= 4; // 64 bits alpha + 64 bits color per block
 							break;
-						case FOURCC_DXT4:
-						case FOURCC_DXT5:
+						case 0x34545844:
+						case 0x35545844:
 							_imageSize <<= 4; // 64 bits alpha + 64 bits color per block
 							break;
 					}
@@ -301,28 +258,28 @@ namespace DDS
 						int _w2 = _w >> _level;
 						int _h2 = _h >> _level;
 
-						uint _compressionMode = _dds.PixelFormat.dwFourCC;
+						uint _compressionMode = _dds.PixFmt._4CC;
 
-						if ((_dds.PixelFormat.dwFlags & DDPF_RGB) != 0)
+						if ((_dds.PixFmt.flags & 0x40) != 0)
 						{
 							_compressionMode = (uint)_dds.Format;
 						}
-						else if ((_dds.PixelFormat.dwFlags & DDPF_FOURCC) == 0 &&
-								  _dds.PixelFormat.dwRGBBitCount == 16 &&
-								  _dds.PixelFormat.dwRBitMask == 0x00FF &&
-								  _dds.PixelFormat.dwGBitMask == 0xFF00 &&
-								  _dds.PixelFormat.dwBBitMask == 0x0000 &&
-								  _dds.PixelFormat.dwABitMask == 0x0000)
+						else if ((_dds.PixFmt.flags & 4) == 0 &&
+								  _dds.PixFmt.RGBBC == 16 &&
+								  _dds.PixFmt.R == 0x00FF &&
+								  _dds.PixFmt.G == 0xFF00 &&
+								  _dds.PixFmt.B == 0x0000 &&
+								  _dds.PixFmt.A == 0x0000)
 						{
-							_dds.Format = CompressionMode.V8U8;
-							_compressionMode = FOURCC_V8U8;
+							_dds.Format = CMP.V8U8;
+							_compressionMode = 0X38553856;
 						}
 
 						_dds.Images[_level] = Decompress.Image(_imageBits, _w2, _h2, _compressionMode);
 					}
 					catch
 					{
-						// Unexpected end of file. Perhaps mipmaps weren't fully written to file.
+						// Unexpected end of file. Perhaps mipmapc weren't fully written to file.
 						// We'll at least provide them with what we've extracted so far.
 
 						_dds.MipMapCount = _level;
@@ -346,17 +303,17 @@ namespace DDS
 
 		private class Decompress
 		{
-			public static Bitmap Image(byte[] Data, int W, int H, uint CompressionMode)
+			public static Bitmap Image(byte[] Data, int W, int H, uint CMP)
 			{
 				Bitmap _img = new Bitmap((W < 4) ? 4 : W, (H < 4) ? 4 : H);
 
-				switch (CompressionMode)
+				switch (CMP)
 				{
 					case 15:
 					case 16:
 					case 24:
 					case 32:
-						return Linear(Data, W, H, CompressionMode);
+						return Linear(Data, W, H, CMP);
 				}
 
 				// https://msdn.microsoft.com/en-us/library/bb147243%28v=vs.85%29.aspx
@@ -377,23 +334,23 @@ namespace DDS
 				Int32[] _pixels = new Int32[_stride * _bits.Height];
 
 				// Decompress the blocks
-				switch (CompressionMode)
+				switch (CMP)
 				{
-					case FOURCC_DXT1:
+					case 0x31545844:
 						DXT1(_bpp16, _pixels, W, H, _stride);
 						break;
 
-					case FOURCC_DXT2:
-					case FOURCC_DXT3:
+					case 0x32545844:
+					case 0x33545844:
 						DXT3(_bpp16, _pixels, W, H, _stride);
 						break;
 
-					case FOURCC_DXT4:
-					case FOURCC_DXT5:
+					case 0x34545844:
+					case 0x35545844:
 						DXT5(_bpp16, _pixels, W, H, _stride);
 						break;
 
-					case FOURCC_V8U8:
+					case 0X38553856:
 						V8U8(_bpp16, _pixels, W, H, _stride);
 						break;
 
@@ -414,10 +371,10 @@ namespace DDS
 				if (_pixels == null)
 				{
 					throw new InvalidDataException(string.Format("DDS compression Mode '{0}{0}{0}{0}' not supported.",
-						(char)(CompressionMode & 0xFF),
-						(char)((CompressionMode >> 8) & 0xFF),
-						(char)((CompressionMode >> 16) & 0xFF),
-						(char)((CompressionMode >> 24) & 0xFF)));
+						(char)(CMP & 0xFF),
+						(char)((CMP >> 8) & 0xFF),
+						(char)((CMP >> 16) & 0xFF),
+						(char)((CMP >> 24) & 0xFF)));
 				}
 
 				return _img;
@@ -745,7 +702,7 @@ namespace DDS
 
 				switch (bpp)
 				{
-					case 15: // CompressionMode.A1R5G5B5:
+					case 15: // CMP.A1R5G5B5:
 						_pos = 0;
 						for (int _y = 0; _y < H; _y++)
 						{
@@ -765,7 +722,7 @@ namespace DDS
 							}
 						}
 						break;
-					case 16: // CompressionMode.R5G6B5:
+					case 16: // CMP.R5G6B5:
 						_pos = 0;
 						_a = 0xFF << 24;
 
@@ -840,7 +797,7 @@ namespace DDS
 			}
 		}
 
-		/*public static bool Save(DDSImage Image, string Filename, CompressionMode Format)
+		/*public static bool Save(DDSImage Image, string Filename, CMP Format)
 		{
 			try
 			{
@@ -851,7 +808,7 @@ namespace DDS
 				return false;
 			}
 		}
-		public static bool Save(DDSImage Image, Stream Stream, CompressionMode Format)
+		public static bool Save(DDSImage Image, Stream Stream, CMP Format)
 		{
 			try
 			{
@@ -862,7 +819,7 @@ namespace DDS
 				return false;
 			}
 		}
-		public static bool Save(Bitmap Picture, string Filename, CompressionMode Format)
+		public static bool Save(Bitmap Picture, string Filename, CMP Format)
 		{
 			try
 			{
@@ -876,7 +833,7 @@ namespace DDS
 				return false;
 			}
 		}
-		public static bool Save(Bitmap Picture, Stream Stream, CompressionMode Format)
+		public static bool Save(Bitmap Picture, Stream Stream, CMP Format)
 		{
 			if ((Picture == null) || (Stream == null))
 			{
@@ -885,13 +842,13 @@ namespace DDS
 
 			switch (Format)
 			{
-				case CompressionMode.A1R5G5B5:
+				case CMP.A1R5G5B5:
 					break;
-				case CompressionMode.R5G6B5:
+				case CMP.R5G6B5:
 					break;
-				case CompressionMode.RGB24:
+				case CMP.RGB24:
 					break;
-				case CompressionMode.RGB32:
+				case CMP.RGB32:
 					break;
 				default:
 					return false;
@@ -931,8 +888,8 @@ namespace DDS
 					_mipMaps.Add(_map);
 				}
 
-				DDS_HEADER _header;
-				DDS_PIXELFORMAT _format;
+				HEAD _header;
+				PIXFMT _format;
 
 				using (BinaryWriter _stream = new BinaryWriter(Stream))
 				{
@@ -940,82 +897,82 @@ namespace DDS
 
 					uint _hasAlpha = ((Picture.PixelFormat & System.Drawing.Imaging.PixelFormat.Alpha) != 0) ? 1u : 0u;
 
-					_format.dwSize = 32;
-					_format.dwFlags = DDPF_RGB | (DDPF_ALPHAPIXELS * _hasAlpha);
-					_format.dwFourCC = 0;
+					_format.size = 32;
+					_format.flags = 0x40 | (1 * _hasAlpha); // DDPF_ALPHAPIXELS
+					_format._4CC = 0;
 					switch (Format)
 					{
-						case CompressionMode.R5G6B5:
-							_format.dwRGBBitCount = 16;
-							_format.dwABitMask = 0x0000;
-							_format.dwRBitMask = 0xF800;
-							_format.dwGBitMask = 0x07E0;
-							_format.dwBBitMask = 0x001F;
+						case CMP.R5G6B5:
+							_format.RGBBC = 16;
+							_format.A = 0x0000;
+							_format.R = 0xF800;
+							_format.G = 0x07E0;
+							_format.B = 0x001F;
 							break;
-						case CompressionMode.A1R5G5B5:
-							_format.dwRGBBitCount = 16;
-							_format.dwABitMask = 0x8000;
-							_format.dwRBitMask = 0x7C00;
-							_format.dwGBitMask = 0x03E0;
-							_format.dwBBitMask = 0x001F;
+						case CMP.A1R5G5B5:
+							_format.RGBBC = 16;
+							_format.A = 0x8000;
+							_format.R = 0x7C00;
+							_format.G = 0x03E0;
+							_format.B = 0x001F;
 							break;
-						case CompressionMode.RGB24:
-							_format.dwRGBBitCount = 24;
-							_format.dwABitMask = 0x00000000;
-							_format.dwRBitMask = 0x00ff0000;
-							_format.dwGBitMask = 0x0000ff00;
-							_format.dwBBitMask = 0x000000ff;
+						case CMP.RGB24:
+							_format.RGBBC = 24;
+							_format.A = 0x00000000;
+							_format.R = 0x00ff0000;
+							_format.G = 0x0000ff00;
+							_format.B = 0x000000ff;
 							break;
-						case CompressionMode.RGB32:
+						case CMP.RGB32:
 						default:
-							_format.dwRGBBitCount = 32;
-							_format.dwABitMask = 0xff000000 * _hasAlpha;
-							_format.dwRBitMask = 0x00ff0000;
-							_format.dwGBitMask = 0x0000ff00;
-							_format.dwBBitMask = 0x000000ff;
+							_format.RGBBC = 32;
+							_format.A = 0xff000000 * _hasAlpha;
+							_format.R = 0x00ff0000;
+							_format.G = 0x0000ff00;
+							_format.B = 0x000000ff;
 							break;
 					}
 
-					_header.dwSize = 124;
-					_header.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT | DDSD_MIPMAPCOUNT | DDSD_PITCH;
-					_header.dwHeight = Picture.Height;
-					_header.dwWidth = Picture.Width;
-					_header.dwPitchOrLinearSize = (int)(_header.dwWidth * _header.dwHeight * (_format.dwRGBBitCount >> 3));
-					_header.dwDepth = 0;
-					_header.dwMipMapCount = _mipMaps.Count;
-					_header.dwCaps = DDSCAPS_COMPLEX | DDSCAPS_TEXTURE | DDSCAPS_MIPMAP;
-					_header.dwCaps2 = 0;
-					_header.dwCaps3 = 0;
-					_header.dwCaps4 = 0;
-					_header.dwReserved2 = 0;
+					_header.size = 124;
+					_header.flags = 0x2100F;
+					_header.h = Picture.Height;
+					_header.w = Picture.Width;
+					_header.PoLS = (int)(_header.w * _header.h * (_format.RGBBC >> 3));
+					_header.depth = 0;
+					_header.mipmapc = _mipMaps.Count;
+					_header.rsv2 = 0x401008;
+					_header.rsv3 = 0;
+					_header.rsv4 = 0;
+					_header.rsv5 = 0;
+					_header.rsv6 = 0;
 
-					_stream.Write(_header.dwSize);
-					_stream.Write(_header.dwFlags);
-					_stream.Write(_header.dwHeight);
-					_stream.Write(_header.dwWidth);
-					_stream.Write(_header.dwPitchOrLinearSize);
-					_stream.Write(_header.dwDepth);
-					_stream.Write(_header.dwMipMapCount);
+					_stream.Write(_header.size);
+					_stream.Write(_header.flags);
+					_stream.Write(_header.h);
+					_stream.Write(_header.w);
+					_stream.Write(_header.PoLS);
+					_stream.Write(_header.depth);
+					_stream.Write(_header.mipmapc);
 
 					for (int _i = 0; _i < 11; _i++)
 					{
 						_stream.Write((uint)0);
 					}
 
-					_stream.Write(_format.dwSize);
-					_stream.Write(_format.dwFlags);
-					_stream.Write(_format.dwFourCC);
-					_stream.Write(_format.dwRGBBitCount);
-					_stream.Write(_format.dwRBitMask);
-					_stream.Write(_format.dwGBitMask);
-					_stream.Write(_format.dwBBitMask);
-					_stream.Write(_format.dwABitMask);
+					_stream.Write(_format.size);
+					_stream.Write(_format.flags);
+					_stream.Write(_format._4CC);
+					_stream.Write(_format.RGBBC);
+					_stream.Write(_format.R);
+					_stream.Write(_format.G);
+					_stream.Write(_format.B);
+					_stream.Write(_format.A);
 
-					_stream.Write(_header.dwCaps);
-					_stream.Write(_header.dwCaps2);
-					_stream.Write(_header.dwCaps3);
-					_stream.Write(_header.dwCaps4);
-					_stream.Write(_header.dwReserved2);
+					_stream.Write(_header.rsv2);
+					_stream.Write(_header.rsv3);
+					_stream.Write(_header.rsv4);
+					_stream.Write(_header.rsv5);
+					_stream.Write(_header.rsv6);
 
 					foreach (Bitmap _surface in _mipMaps)
 					{
@@ -1030,7 +987,7 @@ namespace DDS
 
 						switch (Format)
 						{
-							case CompressionMode.A1R5G5B5:
+							case CMP.A1R5G5B5:
 								switch (_bits.PixelFormat)
 								{
 									case System.Drawing.Imaging.PixelFormat.Format24bppRgb: // R8G8B8 -> A1R5G5B5
@@ -1085,7 +1042,7 @@ namespace DDS
 										break;
 								}
 								break;
-							case CompressionMode.R5G6B5:
+							case CMP.R5G6B5:
 								switch (_bits.PixelFormat)
 								{
 									case System.Drawing.Imaging.PixelFormat.Format24bppRgb: // R8G8B8 -> R5G6B5
@@ -1151,7 +1108,7 @@ namespace DDS
 										break;
 								}
 								break;
-							case CompressionMode.RGB24:
+							case CMP.RGB24:
 								switch (_bits.PixelFormat)
 								{
 									case System.Drawing.Imaging.PixelFormat.Format24bppRgb: // R8G8B8
@@ -1212,7 +1169,7 @@ namespace DDS
 										break;
 								}
 								break;
-							case CompressionMode.RGB32:
+							case CMP.RGB32:
 								switch (_bits.PixelFormat)
 								{
 									case System.Drawing.Imaging.PixelFormat.Format24bppRgb: // R8G8B8 -> A8R8G8B8
@@ -1283,174 +1240,44 @@ namespace DDS
 		}*/
 	}
 
-	public struct DDS_PIXELFORMAT
+	public struct PIXFMT
 	{
-		public uint dwSize;
-		public uint dwFlags;
-		public uint dwFourCC;
-		public uint dwRGBBitCount;
-		public uint dwRBitMask;
-		public uint dwGBitMask;
-		public uint dwBBitMask;
-		public uint dwABitMask;
+		public uint size;
+		public uint flags;
+		public uint _4CC;
+		public uint RGBBC;
+		public uint R;
+		public uint G;
+		public uint B;
+		public uint A;
 	}
 
-	public struct DDS_HEADER
+	public struct HEAD
 	{
-		public int dwSize;
-		public int dwFlags;
-		public int dwHeight;
-		public int dwWidth;
-		public int dwPitchOrLinearSize;
-		public int dwDepth;
-		public int dwMipMapCount;
-		public int[] dwReserved1;
-		public int dwCaps;
-		public int dwCaps2;
-		public int dwCaps3;
-		public int dwCaps4;
-		public int dwReserved2;
+		public int size;
+		public int flags;
+		public int h;
+		public int w;
+		public int PoLS;
+		public int depth;
+		public int mipmapc;
+		public int[] rsvrd;
+		public int rsv2;
+		public int rsv3;
+		public int rsv4;
+		public int rsv5;
+		public int rsv6;
 	}
 
 	#region DX10 - Not currently implemented.
 
-	public struct DDS_HEADER_DXT10
+	public struct HEAD10
 	{
-		public DXGI_FORMAT dxgiFormat;
-		public D3D10_RESOURCE_DIMENSION resourceDimension;
+		public uint dxgiFormat;
+		public uint resourceDimension;
 		public uint miscFlag;
 		public uint arraySize;
 		public uint reserved;
-	}
-
-	public enum DXGI_FORMAT : uint
-	{
-		DXGI_FORMAT_UNKNOWN = 0,
-		DXGI_FORMAT_R32G32B32A32_TYPELESS = 1,
-		DXGI_FORMAT_R32G32B32A32_FLOAT = 2,
-		DXGI_FORMAT_R32G32B32A32_UINT = 3,
-		DXGI_FORMAT_R32G32B32A32_SINT = 4,
-		DXGI_FORMAT_R32G32B32_TYPELESS = 5,
-		DXGI_FORMAT_R32G32B32_FLOAT = 6,
-		DXGI_FORMAT_R32G32B32_UINT = 7,
-		DXGI_FORMAT_R32G32B32_SINT = 8,
-		DXGI_FORMAT_R16G16B16A16_TYPELESS = 9,
-		DXGI_FORMAT_R16G16B16A16_FLOAT = 10,
-		DXGI_FORMAT_R16G16B16A16_UNORM = 11,
-		DXGI_FORMAT_R16G16B16A16_UINT = 12,
-		DXGI_FORMAT_R16G16B16A16_SNORM = 13,
-		DXGI_FORMAT_R16G16B16A16_SINT = 14,
-		DXGI_FORMAT_R32G32_TYPELESS = 15,
-		DXGI_FORMAT_R32G32_FLOAT = 16,
-		DXGI_FORMAT_R32G32_UINT = 17,
-		DXGI_FORMAT_R32G32_SINT = 18,
-		DXGI_FORMAT_R32G8X24_TYPELESS = 19,
-		DXGI_FORMAT_D32_FLOAT_S8X24_UINT = 20,
-		DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS = 21,
-		DXGI_FORMAT_X32_TYPELESS_G8X24_UINT = 22,
-		DXGI_FORMAT_R10G10B10A2_TYPELESS = 23,
-		DXGI_FORMAT_R10G10B10A2_UNORM = 24,
-		DXGI_FORMAT_R10G10B10A2_UINT = 25,
-		DXGI_FORMAT_R11G11B10_FLOAT = 26,
-		DXGI_FORMAT_R8G8B8A8_TYPELESS = 27,
-		DXGI_FORMAT_R8G8B8A8_UNORM = 28,
-		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB = 29,
-		DXGI_FORMAT_R8G8B8A8_UINT = 30,
-		DXGI_FORMAT_R8G8B8A8_SNORM = 31,
-		DXGI_FORMAT_R8G8B8A8_SINT = 32,
-		DXGI_FORMAT_R16G16_TYPELESS = 33,
-		DXGI_FORMAT_R16G16_FLOAT = 34,
-		DXGI_FORMAT_R16G16_UNORM = 35,
-		DXGI_FORMAT_R16G16_UINT = 36,
-		DXGI_FORMAT_R16G16_SNORM = 37,
-		DXGI_FORMAT_R16G16_SINT = 38,
-		DXGI_FORMAT_R32_TYPELESS = 39,
-		DXGI_FORMAT_D32_FLOAT = 40,
-		DXGI_FORMAT_R32_FLOAT = 41,
-		DXGI_FORMAT_R32_UINT = 42,
-		DXGI_FORMAT_R32_SINT = 43,
-		DXGI_FORMAT_R24G8_TYPELESS = 44,
-		DXGI_FORMAT_D24_UNORM_S8_UINT = 45,
-		DXGI_FORMAT_R24_UNORM_X8_TYPELESS = 46,
-		DXGI_FORMAT_X24_TYPELESS_G8_UINT = 47,
-		DXGI_FORMAT_R8G8_TYPELESS = 48,
-		DXGI_FORMAT_R8G8_UNORM = 49,
-		DXGI_FORMAT_R8G8_UINT = 50,
-		DXGI_FORMAT_R8G8_SNORM = 51,
-		DXGI_FORMAT_R8G8_SINT = 52,
-		DXGI_FORMAT_R16_TYPELESS = 53,
-		DXGI_FORMAT_R16_FLOAT = 54,
-		DXGI_FORMAT_D16_UNORM = 55,
-		DXGI_FORMAT_R16_UNORM = 56,
-		DXGI_FORMAT_R16_UINT = 57,
-		DXGI_FORMAT_R16_SNORM = 58,
-		DXGI_FORMAT_R16_SINT = 59,
-		DXGI_FORMAT_R8_TYPELESS = 60,
-		DXGI_FORMAT_R8_UNORM = 61,
-		DXGI_FORMAT_R8_UINT = 62,
-		DXGI_FORMAT_R8_SNORM = 63,
-		DXGI_FORMAT_R8_SINT = 64,
-		DXGI_FORMAT_A8_UNORM = 65,
-		DXGI_FORMAT_R1_UNORM = 66,
-		DXGI_FORMAT_R9G9B9E5_SHAREDEXP = 67,
-		DXGI_FORMAT_R8G8_B8G8_UNORM = 68,
-		DXGI_FORMAT_G8R8_G8B8_UNORM = 69,
-		DXGI_FORMAT_BC1_TYPELESS = 70,
-		DXGI_FORMAT_BC1_UNORM = 71,
-		DXGI_FORMAT_BC1_UNORM_SRGB = 72,
-		DXGI_FORMAT_BC2_TYPELESS = 73,
-		DXGI_FORMAT_BC2_UNORM = 74,
-		DXGI_FORMAT_BC2_UNORM_SRGB = 75,
-		DXGI_FORMAT_BC3_TYPELESS = 76,
-		DXGI_FORMAT_BC3_UNORM = 77,
-		DXGI_FORMAT_BC3_UNORM_SRGB = 78,
-		DXGI_FORMAT_BC4_TYPELESS = 79,
-		DXGI_FORMAT_BC4_UNORM = 80,
-		DXGI_FORMAT_BC4_SNORM = 81,
-		DXGI_FORMAT_BC5_TYPELESS = 82,
-		DXGI_FORMAT_BC5_UNORM = 83,
-		DXGI_FORMAT_BC5_SNORM = 84,
-		DXGI_FORMAT_B5G6R5_UNORM = 85,
-		DXGI_FORMAT_B5G5R5A1_UNORM = 86,
-		DXGI_FORMAT_B8G8R8A8_UNORM = 87,
-		DXGI_FORMAT_B8G8R8X8_UNORM = 88,
-		DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM = 89,
-		DXGI_FORMAT_B8G8R8A8_TYPELESS = 90,
-		DXGI_FORMAT_B8G8R8A8_UNORM_SRGB = 91,
-		DXGI_FORMAT_B8G8R8X8_TYPELESS = 92,
-		DXGI_FORMAT_B8G8R8X8_UNORM_SRGB = 93,
-		DXGI_FORMAT_BC6H_TYPELESS = 94,
-		DXGI_FORMAT_BC6H_UF16 = 95,
-		DXGI_FORMAT_BC6H_SF16 = 96,
-		DXGI_FORMAT_BC7_TYPELESS = 97,
-		DXGI_FORMAT_BC7_UNORM = 98,
-		DXGI_FORMAT_BC7_UNORM_SRGB = 99,
-		DXGI_FORMAT_AYUV = 100,
-		DXGI_FORMAT_Y410 = 101,
-		DXGI_FORMAT_Y416 = 102,
-		DXGI_FORMAT_NV12 = 103,
-		DXGI_FORMAT_P010 = 104,
-		DXGI_FORMAT_P016 = 105,
-		DXGI_FORMAT_420_OPAQUE = 106,
-		DXGI_FORMAT_YUY2 = 107,
-		DXGI_FORMAT_Y210 = 108,
-		DXGI_FORMAT_Y216 = 109,
-		DXGI_FORMAT_NV11 = 110,
-		DXGI_FORMAT_AI44 = 111,
-		DXGI_FORMAT_IA44 = 112,
-		DXGI_FORMAT_P8 = 113,
-		DXGI_FORMAT_A8P8 = 114,
-		DXGI_FORMAT_B4G4R4A4_UNORM = 115,
-		DXGI_FORMAT_FORCE_UINT = 0xffffffff
-	}
-
-	public enum D3D10_RESOURCE_DIMENSION
-	{
-		D3D10_RESOURCE_DIMENSION_UNKNOWN = 0,
-		D3D10_RESOURCE_DIMENSION_BUFFER = 1,
-		D3D10_RESOURCE_DIMENSION_TEXTURE1D = 2,
-		D3D10_RESOURCE_DIMENSION_TEXTURE2D = 3,
-		D3D10_RESOURCE_DIMENSION_TEXTURE3D = 4
 	}
 
 	#endregion

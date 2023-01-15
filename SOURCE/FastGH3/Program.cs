@@ -93,9 +93,9 @@ class Program
 	{
 		try
 		{
-			foreach (Process proc in Process.GetProcessesByName("lame"))
+			foreach (Process proc in Process.GetProcessesByName("helix"))
 			{
-				if (NormalizePath(proc.MainModule.FileName) == NormalizePath(folder + dataf + music + "\\TOOLS\\lame.exe"))
+				if (NormalizePath(proc.MainModule.FileName) == NormalizePath(folder + dataf + music + "\\TOOLS\\helix.exe"))
 					proc.Kill();
 			}
 			foreach (Process proc in Process.GetProcessesByName("sox"))
@@ -106,7 +106,7 @@ class Program
 		}
 		catch
 		{
-			print("Failed to kill LAME or SOX executables.");
+			print("Failed to kill helix or SoX executables.");
 		}
 	}
 
@@ -1112,8 +1112,20 @@ class Program
 						string CMDpath = FindExePath("cmd.exe");
 						if (CMDpath == "") // somehow someone got an error of a process starting
 							CMDpath = "cmd"; // assuming its one of these building scripts
+						try
+						{
+							if (Directory.Exists(folder + dataf + music + "\\TOOLS\\fsbtmp"))
+								Directory.Delete(folder + dataf + music + "\\TOOLS\\fsbtmp", true);
+						}
+						catch (Exception e)
+						{
+							print("Failed to delete the temp FSB folder!");
+							print(e);
+						}
+						TimeSpan audioConv_start = time, audioConv_end = time;
 						if (!audCache)
 						{
+							audioConv_start = time;
 							print("Audio is not cached.", cacheColor);
 							if (notjust3trax)
 							{
@@ -1226,15 +1238,6 @@ class Program
 							}
 							verbose("ynchronous mode set\n", FSBcolor);
 							verboseline("Starting FSB building...", FSBcolor);
-							try
-							{
-								Directory.Delete(folder + dataf + music + "\\TOOLS\\fsbtmp", true);
-							}
-							catch (Exception e)
-							{
-								print("Failed to delete the temp FSB folder!");
-								print(e);
-							}
 							if (!MTFSB)
 							{
 								fsbbuild.StartInfo.Arguments = "/c " + ((folder + music + "\\TOOLS\\fsbbuild.bat").EncloseWithQuoteMarks() + ' ' +
@@ -2540,6 +2543,7 @@ class Program
 								{
 									print("Waiting for song encoding to finish.", FSBcolor);
 									fsbbuild.WaitForExit();
+									audioConv_end = time;
 									if (cacheEnabled)
 									{
 										print("Writing audio to cache.", FSBcolor);
@@ -2569,6 +2573,7 @@ class Program
 								fsbbuild3.Start();
 								if (!fsbbuild3.HasExited)
 									fsbbuild3.WaitForExit();
+								audioConv_end = time;
 								{
 									if (cacheEnabled)
 									{
@@ -2584,6 +2589,11 @@ class Program
 						}
 						#endregion
 						allowGameStartup();
+						if (!audCache)
+						{
+							double audioConv_time = audioConv_end.TotalMilliseconds - audioConv_start.TotalMilliseconds;
+							print("Elapsed audio encoding time: "+(audioConv_time/1000).ToString()+" seconds", FSBcolor);
+						}
 						Console.ResetColor();
 						print("Speeding up.");
 						verboseline("Creating GH3 process...");

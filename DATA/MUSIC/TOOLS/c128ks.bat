@@ -9,22 +9,7 @@ set ERRORLEVEL=222
 goto :EOF
 
 :out
-SET LPARAMS=--cbr -b 128 --resample 44100 -m j
-SET SPARAMS=-c 2 -r 44100 -S --multi-threaded
-SET SOX="%~dp0sox" %1 %SPARAMS%
-IF "%~x1" EQU ".wav" (
-	%SOX% -t mp3 -C 128 %2
-) ELSE (
-	IF "%~x1" EQU ".mp3" (
-		%SOX% -t mp3 -C 128 %2
-	) ELSE (
-		IF "%~x1" EQU ".ogg" (
-			%SOX% -t mp3 -C 128 %2
-		) ELSE (
-			:#for opus which is somehow extremely slow on just sox
-			%SOX% -t wav - | "%~dp0lame" %LPARAMS% - %2
-		)
-	)
-)
+:# TESTING THIS OUT!! BASED FAST CHAD HELIX
+"%~dp0sox" %1 -c 2 -r 44100 -S --multi-threaded -t wav - | "%~dp0helix" - %2 -B64 -M1 -u2 -q1
 
 goto :EOF
