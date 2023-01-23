@@ -26,9 +26,8 @@ if /I NOT "%~f1"=="%~dp0fsbtmp\fastgh3_preview.mp3" (
 )
 IF %ERRORLEVEL% EQU 222 echo Audio encoding failed, cannot continue. & EXIT /B
 
-"%~dp0fsbext" -d "%~dp0fsbtmp" -s "%~dp0template.dat" -r "%~dp0.tmp.fsb"
-"%~dp0fsbenc" "%~dp0.tmp.fsb" %5
+set b=%~dp0fsbtmp\fastgh3_
+"%~dp0makefsb" "%b%guitar.mp3" "%b%rhythm.mp3" "%b%song.mp3" "%b%preview.mp3" %5
 
-del "%~dp0.tmp.fsb"
 del "%~dp0fsbtmp" /S/Q
 rmdir "%~dp0fsbtmp"

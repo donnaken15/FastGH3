@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("FastGH3")]
-[assembly: AssemblyDescription("An advanced mod for Guitar Hero 3 designed for playing charts easily.")]
+[assembly: AssemblyDescription("An advanced mod of Guitar Hero 3 designed for playing charts easily.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("donnaken15")]
 [assembly: AssemblyProduct("FastGH3")]

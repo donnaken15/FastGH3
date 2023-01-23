@@ -1,6 +1,4 @@
 @echo off
-:# Constant 128kbps Stereo encoder
-:# for (MP3, WAV, OGG, OPUS)
 set ERRORLEVEL=0
 if exist %1 goto :out
 echo Invalid filename:
@@ -9,7 +7,7 @@ set ERRORLEVEL=222
 goto :EOF
 
 :out
-:# TESTING THIS OUT!! BASED FAST CHAD HELIX
-"%~dp0sox" %1 -c 2 -r 44100 -S --multi-threaded -t wav - | "%~dp0helix" - %2 -B64 -M1 -u2 -q1
+IF "%ab%"=="" set ab=64
+"%~dp0sox" %1 -c 2 -r 44100 -S --multi-threaded -t wav - | "%~dp0helix" - %2 -B%ab% -M1 -u2 -q1
 
 goto :EOF

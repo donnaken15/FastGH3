@@ -10,7 +10,6 @@ using ChartEdit;
 using System.Collections.Generic;
 using Microsoft.Win32;
 using FastGH3.Properties;
-using System.Collections.Specialized;
 using System.Text;
 
 class Program
@@ -464,7 +463,8 @@ class Program
 				// combine logs from any of 3 processes to easily look for errors from all of them
 				bool newfile = settings.GetKeyValue("Misc", "FinishedLog", "1") == "1";
 				if (args[0] != "-settings" &&
-					args[0] != "-gfxswap")
+					args[0] != "-gfxswap" &&
+					args[0] != "-shuffle")
 					if (writefile)
 					{
 						if (newfile)
@@ -496,8 +496,61 @@ class Program
 					//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
 					new settings(settings).ShowDialog();
 				}
-				#region GFXSWAP
-				else if (args[0] == "-gfxswap")
+                #region SHUFFLE
+                else if (args[0] == "-shuffle")
+				{
+					Console.WriteLine(@"
+___     ___\
+   \   /   /
+    \ /
+     X
+    / \
+___/   \___\
+           /
+");
+					List<string> paths, files;
+					IniFile.IniSection shuffleCfg;
+					Random rand = new Random((int)DateTime.Now.Ticks);
+					if (settings.GetSection("Shuffle") == null)
+					{
+						MessageBox.Show("Shuffle settings section cannot be found", "Error",
+							MessageBoxButtons.OK, MessageBoxIcon.Error);
+						Environment.Exit(1);
+					}
+					shuffleCfg = settings.GetSection("Shuffle");
+					verboseline("got shuffle section");
+					paths = new List<string>();
+					string curpath;
+					foreach (IniFile.IniSection.IniKey key in shuffleCfg.Keys)
+						if (key.Name.ToLower().StartsWith("path"))
+						{
+							curpath = NormalizePath(key.Value);
+							if (Directory.Exists(curpath) && paths.IndexOf(curpath) == -1)
+								paths.Add(curpath);
+							else if (!Directory.Exists(curpath))
+								verboseline("got invalid directory, skipping: "+key.Value);
+						}
+					verboseline("added paths ("+paths.Count+")");
+					string randpath = paths[rand.Next(paths.Count-1)];
+					files = new List<string>();
+					files.AddRange(Directory.GetFiles(randpath, "*.chart", SearchOption.AllDirectories));
+					files.AddRange(Directory.GetFiles(randpath, "*.mid", SearchOption.AllDirectories));
+					files.AddRange(Directory.GetFiles(randpath, "*.fsp", SearchOption.AllDirectories));
+					verboseline("added files");
+					if (files.Count == 0)
+					{
+						MessageBox.Show("Can't find any charts!", "Error",
+							MessageBoxButtons.OK, MessageBoxIcon.Error);
+						Environment.Exit(1);
+                    }
+					int choose = rand.Next(files.Count);
+					print("Choosing: " + files[choose]);
+					Process.Start(folder + "FastGH3.exe", "\"" + files[choose] + "\"");
+					die();
+				}
+                #endregion
+                #region GFXSWAP
+                else if (args[0] == "-gfxswap")
 				{
 					// TODO: replace SCN with one that has the name of the .tex
 					if (args.Length > 2)
@@ -1125,6 +1178,11 @@ class Program
 						TimeSpan audioConv_start = time, audioConv_end = time;
 						if (!audCache)
 						{
+							string AB_param =
+								(Convert.ToInt32(settings.GetKeyValue("Misc", "AB", "128")) / 2/*thx helix*/).ToString();
+							//bool VBR = false;
+							//VBR = (settings.GetKeyValue("Misc", "VBR", "0") == "1");
+							//string VBR_param = VBR ? "V" : "B";
 							audioConv_start = time;
 							print("Audio is not cached.", cacheColor);
 							if (notjust3trax)
@@ -1149,6 +1207,8 @@ class Program
 									addaud.ErrorDataReceived += (sendingProcess, errorLine) => print(errorLine.Data, FSBcolor);
 									addaud.OutputDataReceived += (sendingProcess, dataLine) => print(dataLine.Data, FSBcolor);
 								}
+								addaud.StartInfo.EnvironmentVariables["AB"] = AB_param;
+								//addaud.StartInfo.EnvironmentVariables["BM"] = VBR_param;
 								foreach (string a in nj3ts)
 								{
 									addaud.StartInfo.Arguments += " \"" + a + '"';
@@ -1207,6 +1267,8 @@ class Program
 										UseShellExecute = true,
 										WindowStyle = ProcessWindowStyle.Hidden
 									};
+									fsbbuild2[i].StartInfo.EnvironmentVariables["AB"] = AB_param;
+									//fsbbuild2[i].StartInfo.EnvironmentVariables["BM"] = VBR_param;
 									if (verboselog || writefile)
 									{
 										fsbbuild2[i].StartInfo.UseShellExecute = false;
@@ -1240,6 +1302,8 @@ class Program
 							verboseline("Starting FSB building...", FSBcolor);
 							if (!MTFSB)
 							{
+								fsbbuild.StartInfo.EnvironmentVariables["AB"] = AB_param;
+								//fsbbuild.StartInfo.EnvironmentVariables["BM"] = VBR_param;
 								fsbbuild.StartInfo.Arguments = "/c " + ((folder + music + "\\TOOLS\\fsbbuild.bat").EncloseWithQuoteMarks() + ' ' +
 								audiostreams[0].EncloseWithQuoteMarks() + ' ' + audiostreams[1].EncloseWithQuoteMarks() + ' ' + audiostreams[2].EncloseWithQuoteMarks() + ' ' +
 								(folder + music + "\\TOOLS\\blank.mp3").EncloseWithQuoteMarks() + ' ' + (folder + music + "\\fastgh3.fsb.xen").EncloseWithQuoteMarks()).EncloseWithQuoteMarks();

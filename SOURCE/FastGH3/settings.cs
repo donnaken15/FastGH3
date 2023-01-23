@@ -25,6 +25,9 @@ public partial class settings : Form
 	public static string tooltip_ctmpb = Program._8Bstr(new byte[] {
 		(byte)'C',(byte)'l',(byte)'e',(byte)'a',(byte)'n',(byte)' ',(byte)'f',(byte)'i',(byte)'l',(byte)'e',(byte)'s',(byte)' ',(byte)'f',(byte)'r',(byte)'o',(byte)'m',(byte)' ',(byte)'d',(byte)'o',(byte)'w',(byte)'n',(byte)'l',(byte)'o',(byte)'a',(byte)'d',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'a',(byte)'n',(byte)'d',(byte)' ',(byte)'e',(byte)'x',(byte)'t',(byte)'r',(byte)'a',(byte)'c',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'S',(byte)'o',(byte)'n',(byte)'g',(byte)' ',(byte)'P',(byte)'a',(byte)'c',(byte)'k',(byte)'a',(byte)'g',(byte)'e',(byte)'s',(byte)'.',(byte)'\n',(byte)'W',(byte)'a',(byte)'r',(byte)'n',(byte)'i',(byte)'n',(byte)'g',(byte)':',(byte)' ',(byte)'R',(byte)'e',(byte)'u',(byte)'s',(byte)'e',(byte)' ',(byte)'o',(byte)'f',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)'s',(byte)'e',(byte)' ',(byte)'f',(byte)'i',(byte)'l',(byte)'e',(byte)'s',(byte)' ',(byte)'w',(byte)'i',(byte)'l',(byte)'l',(byte)' ',(byte)'r',(byte)'e',(byte)'q',(byte)'u',(byte)'i',(byte)'r',(byte)'e',(byte)' ',(byte)'d',(byte)'o',(byte)'w',(byte)'n',(byte)'l',(byte)'o',(byte)'a',(byte)'d',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'a',(byte)'n',(byte)'d',(byte)'\n',(byte)'e',(byte)'x',(byte)'t',(byte)'r',(byte)'a',(byte)'c',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)'m',(byte)' ',(byte)'a',(byte)'g',(byte)'a',(byte)'i',(byte)'n',(byte)',',(byte)' ',(byte)'s',(byte)'o',(byte)'m',(byte)'e',(byte)' ',(byte)'o',(byte)'f',(byte)' ',(byte)'w',(byte)'h',(byte)'i',(byte)'c',(byte)'h',(byte)' ',(byte)'c',(byte)'a',(byte)'n',(byte)' ',(byte)'t',(byte)'a',(byte)'k',(byte)'e',(byte)' ',(byte)'a',(byte)' ',(byte)'b',(byte)'i',(byte)'t',(byte)' ',(byte)'o',(byte)'f',(byte)' ',(byte)'t',(byte)'i',(byte)'m',(byte)'e',(byte)'.'
 	});
+	public static string tooltip_aq = Program._8Bstr(new byte[] {
+		(byte)'C',(byte)'h',(byte)'a',(byte)'n',(byte)'g',(byte)'e',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'b',(byte)'i',(byte)'t',(byte)'r',(byte)'a',(byte)'t',(byte)'e',(byte)' ',(byte)'u',(byte)'s',(byte)'e',(byte)'d',(byte)' ',(byte)'f',(byte)'o',(byte)'r',(byte)' ',(byte)'c',(byte)'o',(byte)'n',(byte)'v',(byte)'e',(byte)'r',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'s',(byte)'o',(byte)'n',(byte)'g',(byte)'s',(byte)'.',(byte)'\n',(byte)'T',(byte)'h',(byte)'i',(byte)'s',(byte)' ',(byte)'w',(byte)'i',(byte)'l',(byte)'l',(byte)' ',(byte)'o',(byte)'n',(byte)'l',(byte)'y',(byte)' ',(byte)'t',(byte)'a',(byte)'k',(byte)'e',(byte)' ',(byte)'e',(byte)'f',(byte)'f',(byte)'e',(byte)'c',(byte)'t',(byte)' ',(byte)'f',(byte)'o',(byte)'r',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'n',(byte)'e',(byte)'x',(byte)'t',(byte)' ',(byte)'s',(byte)'o',(byte)'n',(byte)'g',(byte)'s',(byte)' ',(byte)'c',(byte)'o',(byte)'n',(byte)'v',(byte)'e',(byte)'r',(byte)'t',(byte)'e',(byte)'d',(byte)'.',(byte)'\n',(byte)'T',(byte)'h',(byte)'e',(byte)' ',(byte)'d',(byte)'e',(byte)'f',(byte)'a',(byte)'u',(byte)'l',(byte)'t',(byte)' ',(byte)'i',(byte)'s',(byte)' ',(byte)'1',(byte)'2',(byte)'8',(byte)'k',(byte)'b',(byte)'p',(byte)'s',(byte)',',(byte)' ',(byte)'a',(byte)'s',(byte)' ',(byte)'d',(byte)'e',(byte)'c',(byte)'i',(byte)'d',(byte)'e',(byte)'d',(byte)' ',(byte)'b',(byte)'y',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'g',(byte)'a',(byte)'m',(byte)'e',(byte)'.',(byte)'\n',(byte)'I',(byte)'f',(byte)' ',(byte)'s',(byte)'o',(byte)'n',(byte)'g',(byte)' ',(byte)'c',(byte)'a',(byte)'c',(byte)'h',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'i',(byte)'s',(byte)' ',(byte)'t',(byte)'u',(byte)'r',(byte)'n',(byte)'e',(byte)'d',(byte)' ',(byte)'o',(byte)'n',(byte)',',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'c',(byte)'a',(byte)'c',(byte)'h',(byte)'e',(byte)'d',(byte)' ',(byte)'s',(byte)'o',(byte)'n',(byte)'g',(byte)'s',(byte)' ',(byte)'w',(byte)'i',(byte)'l',(byte)'l',(byte)'\n',(byte)'k',(byte)'e',(byte)'e',(byte)'p',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)' ',(byte)'b',(byte)'i',(byte)'t',(byte)'r',(byte)'a',(byte)'t',(byte)'e',(byte)' ',(byte)'s',(byte)'e',(byte)'t',(byte)'t',(byte)'i',(byte)'n',(byte)'g',(byte)' ',(byte)'t',(byte)'h',(byte)'e',(byte)'y',(byte)' ',(byte)'w',(byte)'e',(byte)'r',(byte)'e',(byte)' ',(byte)'c',(byte)'o',(byte)'n',(byte)'v',(byte)'e',(byte)'r',(byte)'t',(byte)'e',(byte)'d',(byte)' ',(byte)'w',(byte)'i',(byte)'t',(byte)'h',(byte)'.',(byte)'\n',(byte)'N',(byte)'o',(byte)'t',(byte)'e',(byte)':',(byte)' ',(byte)'T',(byte)'h',(byte)'i',(byte)'s',(byte)' ',(byte)'w',(byte)'i',(byte)'l',(byte)'l',(byte)' ',(byte)'a',(byte)'l',(byte)'s',(byte)'o',(byte)' ',(byte)'r',(byte)'e',(byte)'s',(byte)'u',(byte)'l',(byte)'t',(byte)' ',(byte)'i',(byte)'n',(byte)' ',(byte)'l',(byte)'a',(byte)'r',(byte)'g',(byte)'e',(byte)'r',(byte)' ',(byte)'c',(byte)'o',(byte)'m',(byte)'p',(byte)'i',(byte)'l',(byte)'e',(byte)'d',(byte)'\n',(byte)'a',(byte)'u',(byte)'d',(byte)'i',(byte)'o',(byte)' ',(byte)'f',(byte)'i',(byte)'l',(byte)'e',(byte)'s',(byte)',',(byte)' ',(byte)'w',(byte)'h',(byte)'i',(byte)'c',(byte)'h',(byte)' ',(byte)'e',(byte)'f',(byte)'f',(byte)'e',(byte)'c',(byte)'t',(byte)'s',(byte)' ',(byte)'y',(byte)'o',(byte)'u',(byte)'r',(byte)' ',(byte)'s',(byte)'o',(byte)'n',(byte)'g',(byte)' ',(byte)'c',(byte)'a',(byte)'c',(byte)'h',(byte)'e',(byte)' ',(byte)'a',(byte)'s',(byte)' ',(byte)'w',(byte)'e',(byte)'l',(byte)'l',(byte)'.'
+	});
 
 	[DllImport("user32.dll")]
 	public static extern bool SetForegroundWindow(IntPtr hWnd);
@@ -340,7 +343,7 @@ public partial class settings : Form
 
 	public settings(IniFile _ini)
 	{
-		Console.SetWindowSize(80,32);
+		Console.SetWindowSize(80, 32);
 		ini = _ini;
 		if (ini.GetSection("Player") == null)
 		{
@@ -377,6 +380,7 @@ public partial class settings : Form
 		tooltip.SetToolTip(maxnotes, tooltip_maxnotes);
 		tooltip.SetToolTip(res, tooltip_res);
 		tooltip.SetToolTip(ctmpb, tooltip_ctmpb);
+		tooltip.SetToolTip(aqlvl, tooltip_aq);
 
 		bkgdPF = new PakFormat(folder + "\\DATA\\bkgd.pak.xen", folder + "\\DATA\\bkgd.pab.xen", "", PakFormatType.PC, false);
 		bkgdPE = new PakEditor(bkgdPF, false);
@@ -437,7 +441,7 @@ public partial class settings : Form
 		tweaksList.SetItemChecked((int)Tweaks.Borderless, ini.GetKeyValue("Misc", "Borderless", "1") == "1");
 		tweaksList.SetItemChecked((int)Tweaks.KillHitGems, (int)getQBConfig(TweakKeys[(int)Tweaks.KillHitGems], 0) == 1); // kill_gems_on_hit
 		tweaksList.SetItemChecked((int)Tweaks.EarlySustains, (int)getQBConfig(TweakKeys[(int)Tweaks.EarlySustains], 0) == 1); // anytime_sustain_activation
-		//tweaksList.SetItemChecked((int)Tweaks.NoShake, (int)getQBConfig(QbKey.Create("disable_shake"), 0) == 1);
+																															  //tweaksList.SetItemChecked((int)Tweaks.NoShake, (int)getQBConfig(QbKey.Create("disable_shake"), 0) == 1);
 		for (int i = 0; i < modNames.Length; i++)
 		{
 			modifiersList.SetItemChecked(i, ini.GetKeyValue("Modifiers", modNames[i], "0") == "1");
@@ -545,7 +549,7 @@ public partial class settings : Form
 		// WTF C#
 		if ((QbKey)getQBConfig(QbKey.Create("p1_diff"), QbKey.Create("expert")) == diffCRCs[0].Crc)
 			diff.Text = "Easy";
-		else if((QbKey)getQBConfig(QbKey.Create("p1_diff"), QbKey.Create("expert")) == diffCRCs[1].Crc)
+		else if ((QbKey)getQBConfig(QbKey.Create("p1_diff"), QbKey.Create("expert")) == diffCRCs[1].Crc)
 			diff.Text = "Medium";
 		else if ((QbKey)getQBConfig(QbKey.Create("p1_diff"), QbKey.Create("expert")) == diffCRCs[2].Crc)
 			diff.Text = "Hard";
@@ -572,6 +576,7 @@ public partial class settings : Form
 				break;
 		// also looks redundant when i could use a loop maybe
 		}*/
+		aqlvl.Value = Convert.ToInt32(ini.GetKeyValue("Misc", "AB", "128"));
 		disableEvents = false;
 	}
 
@@ -811,12 +816,20 @@ public partial class settings : Form
 		saveQb();
 	}
 
-    private void settings_Load(object sender, EventArgs e)
-    {
+	private void settings_Load(object sender, EventArgs e)
+	{
 
-    }
+	}
 
-    private void modifierUpdate(object sender, ItemCheckEventArgs e)
+	private void changeAQ(object sender, EventArgs e)
+	{
+		if (disableEvents)
+			return;
+		ini.SetKeyValue("Misc","AB",aqlvl.Value.ToString());
+		ini.Save("settings.ini");
+	}
+
+	private void modifierUpdate(object sender, ItemCheckEventArgs e)
 	{
 		if (disableEvents)
 			return;

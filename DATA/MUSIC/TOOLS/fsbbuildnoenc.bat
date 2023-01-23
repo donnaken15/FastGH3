@@ -10,9 +10,8 @@ if %argC% NEQ 1 echo Invalid number of arguments && exit /b
 
 del %1 /Q > nul
 
-"%~dp0fsbext" -d "%~dp0fsbtmp" -s "%~dp0template.dat" -r "%~dp0.tmp.fsb"
-"%~dp0fsbenc" "%~dp0.tmp.fsb" %1
+set b=%~dp0fsbtmp\fastgh3_
+"%~dp0makefsb" "%b%guitar.mp3" "%b%rhythm.mp3" "%b%song.mp3" "%b%preview.mp3" %1
 
-del "%~dp0.tmp.fsb"
 del "%~dp0fsbtmp" /S/Q
 rmdir "%~dp0fsbtmp"

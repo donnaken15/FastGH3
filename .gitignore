@@ -59,3 +59,5 @@ DATA/ZONES/__themes/*/
 /__UPDATERTEST/
 /__WII/
 /__BRANCHES/
+*_original.*
+DATA/MOVIES/BIK/lastvid
