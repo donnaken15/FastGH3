@@ -300,6 +300,7 @@ class Program
 			"aspyrconfig.bat",
 			"settings.ini",
 			"data\\user.pak.xen",
+			"data\\bkgd.pak.xen",
 			"data\\movies\\bik\\backgrnd_video.bik.xen",
 			"data\\music\\fastgh3.fsb.xen",
 			"data\\pak\\dbg.pak.xen",

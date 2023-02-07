@@ -2,6 +2,6 @@
 {
 	internal interface IChartWriter
 	{
-		void Save(Chart chart);
+		//void Save(Chart chart);
 	}
 }

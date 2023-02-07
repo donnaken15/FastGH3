@@ -93,9 +93,6 @@
     <Compile Include="bgprev.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="bgprev.Designer.cs">
-      <DependentUpon>bgprev.cs</DependentUpon>
-    </Compile>
     <Compile Include="ChartEdit\beatType.cs" />
     <Compile Include="ChartEdit\Chart.cs" />
     <Compile Include="ChartEdit\EventsSection.cs" />
@@ -103,7 +100,6 @@
     <Compile Include="ChartEdit\EventType.cs" />
     <Compile Include="ChartEdit\GameProps.cs" />
     <Compile Include="ChartEdit\Globals.cs" />
-    <Compile Include="ChartEdit\IChartWriter.cs" />
     <Compile Include="ChartEdit\Ini.cs" />
     <Compile Include="ChartEdit\KeyValue.cs" />
     <Compile Include="ChartEdit\Note.cs" />
@@ -124,7 +120,6 @@
     <Compile Include="ChartEdit\SyncType.cs" />
     <Compile Include="ChartEdit\TrackProps.cs" />
     <Compile Include="ChartEdit\TrackPropsList.cs" />
-    <Compile Include="DDS.cs" />
     <Compile Include="dllman.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,31 +188,17 @@
     <Compile Include="songtxtfmt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="songtxtfmt.Designer.cs">
-      <DependentUpon>songtxtfmt.cs</DependentUpon>
-    </Compile>
     <Compile Include="SubstringExtensions.cs" />
-    <Compile Include="Queenbee\Zlib\Adler32.cs" />
-    <Compile Include="Queenbee\Zlib\Deflate.cs" />
-    <Compile Include="Queenbee\Zlib\InfBlocks.cs" />
-    <Compile Include="Queenbee\Zlib\InfCodes.cs" />
-    <Compile Include="Queenbee\Zlib\Inflate.cs" />
-    <Compile Include="Queenbee\Zlib\InfTree.cs" />
-    <Compile Include="Queenbee\Zlib\JZlib.cs" />
-    <Compile Include="Queenbee\Zlib\StaticTree.cs" />
-    <Compile Include="Queenbee\Zlib\SupportClass.cs" />
-    <Compile Include="Queenbee\Zlib\Tree.cs" />
-    <Compile Include="Queenbee\Zlib\ZlibStream.cs" />
-    <Compile Include="Queenbee\Zlib\ZStream.cs" />
     <Compile Include="WZK64.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="note.ico" />
+    <None Include="Resources\credits.txt" />
+    <None Include="Resources\pn.bin" />
+    <None Include="Resources\qn.bin" />
+    <None Include="Resources\lt.txt" />
     <None Include="app.config" />
     <None Include="app.manifest" />
-    <Content Include="Queenbee\Zlib\license.txt" />
-    <Content Include="Queenbee\Zlib\zlib.net.csproj" />
-    <Content Include="Queenbee\Zlib\zlib.net.sln" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -235,7 +216,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Queenbee\Qb\Script\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

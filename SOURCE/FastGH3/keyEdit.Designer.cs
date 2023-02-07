@@ -40,9 +40,9 @@
             this.ctrlDown = new System.Windows.Forms.Button();
             this.button114 = new System.Windows.Forms.Button();
             this.button115 = new System.Windows.Forms.Button();
-            this.selectedButtonTxt = new System.Windows.Forms.Label();
+            this.selBtnL = new System.Windows.Forms.Label();
             this.keylayout = new System.Windows.Forms.Panel();
-            this.currentButtonTxt = new System.Windows.Forms.Label();
+            this.cBtnL = new System.Windows.Forms.Label();
             this.ctrlCancel = new System.Windows.Forms.Button();
             this.ctrlUnk2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.guitarPic)).BeginInit();
@@ -67,7 +67,7 @@
             this.ctrlG.TabIndex = 3;
             this.ctrlG.Tag = 0;
             this.ctrlG.UseVisualStyleBackColor = false;
-            this.ctrlG.Click += new System.EventHandler(this.beginBind);
+            this.ctrlG.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlR
             // 
@@ -78,7 +78,7 @@
             this.ctrlR.TabIndex = 4;
             this.ctrlR.Tag = 1;
             this.ctrlR.UseVisualStyleBackColor = false;
-            this.ctrlR.Click += new System.EventHandler(this.beginBind);
+            this.ctrlR.Click += new System.EventHandler(this.bBind);
             // 
             // hintTxt
             // 
@@ -99,7 +99,7 @@
             this.ctrlY.TabIndex = 6;
             this.ctrlY.Tag = 2;
             this.ctrlY.UseVisualStyleBackColor = false;
-            this.ctrlY.Click += new System.EventHandler(this.beginBind);
+            this.ctrlY.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlB
             // 
@@ -110,7 +110,7 @@
             this.ctrlB.TabIndex = 7;
             this.ctrlB.Tag = 3;
             this.ctrlB.UseVisualStyleBackColor = false;
-            this.ctrlB.Click += new System.EventHandler(this.beginBind);
+            this.ctrlB.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlO
             // 
@@ -121,7 +121,7 @@
             this.ctrlO.TabIndex = 8;
             this.ctrlO.Tag = 4;
             this.ctrlO.UseVisualStyleBackColor = false;
-            this.ctrlO.Click += new System.EventHandler(this.beginBind);
+            this.ctrlO.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlBar
             // 
@@ -134,7 +134,7 @@
             this.ctrlBar.Tag = 12;
             this.ctrlBar.Text = "Bar";
             this.ctrlBar.UseVisualStyleBackColor = false;
-            this.ctrlBar.Click += new System.EventHandler(this.beginBind);
+            this.ctrlBar.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlSelect
             // 
@@ -147,7 +147,7 @@
             this.ctrlSelect.Tag = 5;
             this.ctrlSelect.Text = "Select";
             this.ctrlSelect.UseVisualStyleBackColor = false;
-            this.ctrlSelect.Click += new System.EventHandler(this.beginBind);
+            this.ctrlSelect.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlStart
             // 
@@ -160,7 +160,7 @@
             this.ctrlStart.Tag = 7;
             this.ctrlStart.Text = "Start";
             this.ctrlStart.UseVisualStyleBackColor = false;
-            this.ctrlStart.Click += new System.EventHandler(this.beginBind);
+            this.ctrlStart.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlUp
             // 
@@ -173,7 +173,7 @@
             this.ctrlUp.Tag = 10;
             this.ctrlUp.Text = "Up";
             this.ctrlUp.UseVisualStyleBackColor = false;
-            this.ctrlUp.Click += new System.EventHandler(this.beginBind);
+            this.ctrlUp.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlDown
             // 
@@ -186,7 +186,7 @@
             this.ctrlDown.Tag = 9;
             this.ctrlDown.Text = "Down";
             this.ctrlDown.UseVisualStyleBackColor = false;
-            this.ctrlDown.Click += new System.EventHandler(this.beginBind);
+            this.ctrlDown.Click += new System.EventHandler(this.bBind);
             // 
             // button114
             // 
@@ -212,12 +212,12 @@
             // 
             // selectedButtonTxt
             // 
-            this.selectedButtonTxt.AutoSize = true;
-            this.selectedButtonTxt.Location = new System.Drawing.Point(5, 164);
-            this.selectedButtonTxt.Name = "selectedButtonTxt";
-            this.selectedButtonTxt.Size = new System.Drawing.Size(85, 13);
-            this.selectedButtonTxt.TabIndex = 13;
-            this.selectedButtonTxt.Text = "Selected button:";
+            this.selBtnL.AutoSize = true;
+            this.selBtnL.Location = new System.Drawing.Point(5, 164);
+            this.selBtnL.Name = "selectedButtonTxt";
+            this.selBtnL.Size = new System.Drawing.Size(85, 13);
+            this.selBtnL.TabIndex = 13;
+            this.selBtnL.Text = "Selected button:";
             // 
             // keylayout
             // 
@@ -228,13 +228,13 @@
             // 
             // currentButtonTxt
             // 
-            this.currentButtonTxt.AutoSize = true;
-            this.currentButtonTxt.Location = new System.Drawing.Point(85, 164);
-            this.currentButtonTxt.Name = "currentButtonTxt";
-            this.currentButtonTxt.Size = new System.Drawing.Size(19, 13);
-            this.currentButtonTxt.TabIndex = 15;
-            this.currentButtonTxt.Text = "    ";
-            this.currentButtonTxt.Visible = false;
+            this.cBtnL.AutoSize = true;
+            this.cBtnL.Location = new System.Drawing.Point(85, 164);
+            this.cBtnL.Name = "currentButtonTxt";
+            this.cBtnL.Size = new System.Drawing.Size(19, 13);
+            this.cBtnL.TabIndex = 15;
+            this.cBtnL.Text = "    ";
+            this.cBtnL.Visible = false;
             // 
             // ctrlCancel
             // 
@@ -248,7 +248,7 @@
             this.ctrlCancel.Text = "Cancel";
             this.ctrlCancel.UseVisualStyleBackColor = false;
             this.ctrlCancel.Visible = false;
-            this.ctrlCancel.Click += new System.EventHandler(this.beginBind);
+            this.ctrlCancel.Click += new System.EventHandler(this.bBind);
             // 
             // ctrlUnk2
             // 
@@ -262,16 +262,16 @@
             this.ctrlUnk2.Text = "???";
             this.ctrlUnk2.UseVisualStyleBackColor = false;
             this.ctrlUnk2.Visible = false;
-            this.ctrlUnk2.Click += new System.EventHandler(this.beginBind);
+            this.ctrlUnk2.Click += new System.EventHandler(this.bBind);
             // 
             // keyEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(550, 590);
-            this.Controls.Add(this.currentButtonTxt);
+            this.Controls.Add(this.cBtnL);
             this.Controls.Add(this.keylayout);
-            this.Controls.Add(this.selectedButtonTxt);
+            this.Controls.Add(this.selBtnL);
             this.Controls.Add(this.button115);
             this.Controls.Add(this.button114);
             this.Controls.Add(this.ctrlDown);
@@ -316,9 +316,9 @@
 	private System.Windows.Forms.Button ctrlDown;
 	private System.Windows.Forms.Button button114;
 	private System.Windows.Forms.Button button115;
-	private System.Windows.Forms.Label selectedButtonTxt;
+	private System.Windows.Forms.Label selBtnL;
 	private System.Windows.Forms.Panel keylayout;
-	private System.Windows.Forms.Label currentButtonTxt;
+	private System.Windows.Forms.Label cBtnL;
 	private System.Windows.Forms.Button ctrlCancel;
 	private System.Windows.Forms.Button ctrlUnk2;
 }

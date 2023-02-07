@@ -17,661 +17,714 @@ partial class settings
 	#region Windows Form Designer generated code
 	private void InitializeComponent()
 	{
-            this.components = new System.ComponentModel.Container();
-            this.ok = new System.Windows.Forms.Button();
-            this.reslabel = new System.Windows.Forms.Label();
-            this.hypers = new System.Windows.Forms.NumericUpDown();
-            this.hyperlabel = new System.Windows.Forms.Label();
-            this.diff = new System.Windows.Forms.ComboBox();
-            this.difflabel = new System.Windows.Forms.Label();
-            this.creditlink = new System.Windows.Forms.LinkLabel();
-            this.tooltip = new System.Windows.Forms.ToolTip(this.components);
-            this.speed = new System.Windows.Forms.NumericUpDown();
-            this.part = new System.Windows.Forms.ComboBox();
-            this.replaygame = new System.Windows.Forms.Button();
-            this.pluginmanage = new System.Windows.Forms.Button();
-            this.viewsongcache = new System.Windows.Forms.Button();
-            this.songtxtfmt_ = new System.Windows.Forms.Button();
-            this.readytimeNoIntro = new System.Windows.Forms.NumericUpDown();
-            this.keybindsBtn = new System.Windows.Forms.Button();
-            this.p2parttoggle = new System.Windows.Forms.CheckBox();
-            this.setbgimg = new System.Windows.Forms.Button();
-            this.pbxBg = new System.Windows.Forms.PictureBox();
-            this.aqlvl = new System.Windows.Forms.NumericUpDown();
-            this.ctmpb = new System.Windows.Forms.Button();
-            this.res = new System.Windows.Forms.ComboBox();
-            this.maxnotes = new System.Windows.Forms.NumericUpDown();
-            this.maxFPS = new System.Windows.Forms.NumericUpDown();
-            this.backgroundcolordiag = new System.Windows.Forms.ColorDialog();
-            this.speedlabel = new System.Windows.Forms.Label();
-            this.maxnoteslbl = new System.Windows.Forms.Label();
-            this.instlabel = new System.Windows.Forms.Label();
-            this.tweaksList = new System.Windows.Forms.CheckedListBox();
-            this.readytimelbl = new System.Windows.Forms.Label();
-            this.readytimems = new System.Windows.Forms.Label();
-            this.maxFPSlbl = new System.Windows.Forms.Label();
-            this.fpslabel = new System.Windows.Forms.Label();
-            this.tweaksPanel = new System.Windows.Forms.Panel();
-            this.kbpslbl = new System.Windows.Forms.Label();
-            this.aqlbl = new System.Windows.Forms.Label();
-            this.modifiersList = new System.Windows.Forms.CheckedListBox();
-            this.modifierslbl = new System.Windows.Forms.Label();
-            this.tweaksLabel = new System.Windows.Forms.Label();
-            this.selectImage0 = new System.Windows.Forms.OpenFileDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxBg)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aqlvl)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).BeginInit();
-            this.tweaksPanel.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // ok
-            // 
-            this.ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ok.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.ok.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ok.Location = new System.Drawing.Point(242, 454);
-            this.ok.Name = "ok";
-            this.ok.Size = new System.Drawing.Size(34, 25);
-            this.ok.TabIndex = 0;
-            this.ok.Text = "OK";
-            this.tooltip.SetToolTip(this.ok, "Exit dialog.");
-            this.ok.UseVisualStyleBackColor = true;
-            this.ok.Click += new System.EventHandler(this.ok_Click);
-            // 
-            // reslabel
-            // 
-            this.reslabel.AutoSize = true;
-            this.reslabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.reslabel.Location = new System.Drawing.Point(4, 6);
-            this.reslabel.Name = "reslabel";
-            this.reslabel.Size = new System.Drawing.Size(60, 13);
-            this.reslabel.TabIndex = 1;
-            this.reslabel.Text = "Resolution:";
-            // 
-            // hypers
-            // 
-            this.hypers.Location = new System.Drawing.Point(114, 26);
-            this.hypers.Maximum = new decimal(new int[] {
-            5,
-            0,
-            0,
-            0});
-            this.hypers.Name = "hypers";
-            this.hypers.Size = new System.Drawing.Size(32, 20);
-            this.hypers.TabIndex = 3;
-            this.tooltip.SetToolTip(this.hypers, "This applies for both player hyperspeeds.");
-            this.hypers.ValueChanged += new System.EventHandler(this.hypers_ValueChanged);
-            // 
-            // hyperlabel
-            // 
-            this.hyperlabel.AutoSize = true;
-            this.hyperlabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.hyperlabel.Location = new System.Drawing.Point(4, 30);
-            this.hyperlabel.Name = "hyperlabel";
-            this.hyperlabel.Size = new System.Drawing.Size(104, 13);
-            this.hyperlabel.TabIndex = 4;
-            this.hyperlabel.Text = "Default Hyperspeed:";
-            // 
-            // diff
-            // 
-            this.diff.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.diff.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.diff.FormattingEnabled = true;
-            this.diff.Items.AddRange(new object[] {
-            "Easy",
-            "Medium",
-            "Hard",
-            "Expert"});
-            this.diff.Location = new System.Drawing.Point(88, 52);
-            this.diff.Name = "diff";
-            this.diff.Size = new System.Drawing.Size(58, 21);
-            this.diff.TabIndex = 5;
-            this.tooltip.SetToolTip(this.diff, "This applies for both player difficulties.");
-            this.diff.SelectedIndexChanged += new System.EventHandler(this.diff_SelectedIndexChanged);
-            // 
-            // difflabel
-            // 
-            this.difflabel.AutoSize = true;
-            this.difflabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.difflabel.Location = new System.Drawing.Point(4, 56);
-            this.difflabel.Name = "difflabel";
-            this.difflabel.Size = new System.Drawing.Size(87, 13);
-            this.difflabel.TabIndex = 6;
-            this.difflabel.Text = "Default Difficulty:";
-            // 
-            // creditlink
-            // 
-            this.creditlink.ActiveLinkColor = System.Drawing.Color.Black;
-            this.creditlink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.creditlink.AutoSize = true;
-            this.creditlink.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.creditlink.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.creditlink.LinkColor = System.Drawing.Color.Black;
-            this.creditlink.Location = new System.Drawing.Point(4, 455);
-            this.creditlink.Name = "creditlink";
-            this.creditlink.Size = new System.Drawing.Size(59, 20);
-            this.creditlink.TabIndex = 8;
-            this.creditlink.TabStop = true;
-            this.creditlink.Text = "Credits";
-            this.tooltip.SetToolTip(this.creditlink, "Credits will be displayed in console.");
-            this.creditlink.VisitedLinkColor = System.Drawing.Color.White;
-            this.creditlink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.creditlink_LinkClicked);
-            // 
-            // tooltip
-            // 
-            this.tooltip.AutomaticDelay = 0;
-            this.tooltip.AutoPopDelay = 9999999;
-            this.tooltip.InitialDelay = 500;
-            this.tooltip.IsBalloon = true;
-            this.tooltip.ReshowDelay = 0;
-            this.tooltip.ShowAlways = true;
-            this.tooltip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.tooltip.ToolTipTitle = "About this setting";
-            this.tooltip.UseAnimation = false;
-            this.tooltip.UseFading = false;
-            this.tooltip.Popup += new System.Windows.Forms.PopupEventHandler(this.tooltip_Popup);
-            // 
-            // speed
-            // 
-            this.speed.DecimalPlaces = 3;
-            this.speed.Location = new System.Drawing.Point(185, 3);
-            this.speed.Maximum = new decimal(new int[] {
-            -1981284353,
-            -1966660860,
-            0,
-            0});
-            this.speed.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.speed.Name = "speed";
-            this.speed.Size = new System.Drawing.Size(82, 20);
-            this.speed.TabIndex = 13;
-            this.speed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.tooltip.SetToolTip(this.speed, "Enter percentage of song speed.");
-            this.speed.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            this.speed.ValueChanged += new System.EventHandler(this.speed_ValueChanged);
-            // 
-            // part
-            // 
-            this.part.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.part.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.part.FormattingEnabled = true;
-            this.part.Items.AddRange(new object[] {
-            "Guitar",
-            "Rhythm"});
-            this.part.Location = new System.Drawing.Point(206, 52);
-            this.part.Name = "part";
-            this.part.Size = new System.Drawing.Size(70, 21);
-            this.part.TabIndex = 22;
-            this.tooltip.SetToolTip(this.part, "Change instrument or track to be played in game.");
-            this.part.SelectedIndexChanged += new System.EventHandler(this.part_SelectedIndexChanged);
-            // 
-            // replaygame
-            // 
-            this.replaygame.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.replaygame.Location = new System.Drawing.Point(152, 79);
-            this.replaygame.Name = "replaygame";
-            this.replaygame.Size = new System.Drawing.Size(124, 24);
-            this.replaygame.TabIndex = 20;
-            this.replaygame.Text = "Replay Last Song";
-            this.tooltip.SetToolTip(this.replaygame, "Relaunch the game with the previous song in place.");
-            this.replaygame.UseVisualStyleBackColor = true;
-            this.replaygame.Click += new System.EventHandler(this.replaygame_Click);
-            // 
-            // pluginmanage
-            // 
-            this.pluginmanage.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.pluginmanage.Location = new System.Drawing.Point(4, 109);
-            this.pluginmanage.Name = "pluginmanage";
-            this.pluginmanage.Size = new System.Drawing.Size(91, 23);
-            this.pluginmanage.TabIndex = 23;
-            this.pluginmanage.Text = "Plugins";
-            this.tooltip.SetToolTip(this.pluginmanage, "Select what plugins should be loaded or disabled.\r\nRequires GH3+ compatible plugi" +
-        "ns.");
-            this.pluginmanage.UseVisualStyleBackColor = true;
-            this.pluginmanage.Click += new System.EventHandler(this.pluginmanage_Click);
-            // 
-            // viewsongcache
-            // 
-            this.viewsongcache.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.viewsongcache.Location = new System.Drawing.Point(99, 109);
-            this.viewsongcache.Name = "viewsongcache";
-            this.viewsongcache.Size = new System.Drawing.Size(74, 23);
-            this.viewsongcache.TabIndex = 25;
-            this.viewsongcache.Text = "Song Cache";
-            this.tooltip.SetToolTip(this.viewsongcache, "View cached chart files. Songs will appear\r\nhere only when song caching is turned" +
-        " on.");
-            this.viewsongcache.UseVisualStyleBackColor = true;
-            this.viewsongcache.Click += new System.EventHandler(this.viewsongcache_Click);
-            // 
-            // songtxtfmt_
-            // 
-            this.songtxtfmt_.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.songtxtfmt_.Location = new System.Drawing.Point(177, 135);
-            this.songtxtfmt_.Name = "songtxtfmt_";
-            this.songtxtfmt_.Size = new System.Drawing.Size(99, 23);
-            this.songtxtfmt_.TabIndex = 33;
-            this.songtxtfmt_.Text = "Song Text Format";
-            this.tooltip.SetToolTip(this.songtxtfmt_, "Change the format of currentsong.txt. Can be useful for streaming.");
-            this.songtxtfmt_.UseVisualStyleBackColor = true;
-            this.songtxtfmt_.Click += new System.EventHandler(this.songtxtfmt__Click);
-            // 
-            // readytimeNoIntro
-            // 
-            this.readytimeNoIntro.Enabled = false;
-            this.readytimeNoIntro.Location = new System.Drawing.Point(5, 96);
-            this.readytimeNoIntro.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.readytimeNoIntro.Name = "readytimeNoIntro";
-            this.readytimeNoIntro.Size = new System.Drawing.Size(59, 20);
-            this.readytimeNoIntro.TabIndex = 34;
-            this.readytimeNoIntro.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.tooltip.SetToolTip(this.readytimeNoIntro, "Change the amount of time to wait before the\r\nsong starts. Requires \"No intro\" to" +
-        " be turned on.");
-            this.readytimeNoIntro.ValueChanged += new System.EventHandler(this.changereadytime);
-            // 
-            // keybindsBtn
-            // 
-            this.keybindsBtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.keybindsBtn.Location = new System.Drawing.Point(78, 135);
-            this.keybindsBtn.Name = "keybindsBtn";
-            this.keybindsBtn.Size = new System.Drawing.Size(95, 23);
-            this.keybindsBtn.TabIndex = 42;
-            this.keybindsBtn.Text = "Change Keybinds";
-            this.tooltip.SetToolTip(this.keybindsBtn, "Change controls for playing on keyboard.");
-            this.keybindsBtn.UseVisualStyleBackColor = true;
-            this.keybindsBtn.Click += new System.EventHandler(this.openKeybinds);
-            // 
-            // p2parttoggle
-            // 
-            this.p2parttoggle.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.p2parttoggle.Location = new System.Drawing.Point(6, 234);
-            this.p2parttoggle.Name = "p2parttoggle";
-            this.p2parttoggle.Size = new System.Drawing.Size(90, 18);
-            this.p2parttoggle.TabIndex = 42;
-            this.p2parttoggle.Text = "Player 2 guitar";
-            this.tooltip.SetToolTip(this.p2parttoggle, "Required for playing face-off and battle.");
-            this.p2parttoggle.UseVisualStyleBackColor = true;
-            this.p2parttoggle.Click += new System.EventHandler(this.p2parttoggle_Click);
-            // 
-            // setbgimg
-            // 
-            this.setbgimg.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.setbgimg.Location = new System.Drawing.Point(4, 79);
-            this.setbgimg.Name = "setbgimg";
-            this.setbgimg.Size = new System.Drawing.Size(111, 23);
-            this.setbgimg.TabIndex = 43;
-            this.setbgimg.Text = "Set backdrop image";
-            this.tooltip.SetToolTip(this.setbgimg, "Set current background image when playing a song.\r\nNote: Background color is goin" +
-        "g to be deprecated in favor of background images.");
-            this.setbgimg.UseVisualStyleBackColor = true;
-            this.setbgimg.Click += new System.EventHandler(this.setbgimg_Click);
-            // 
-            // pbxBg
-            // 
-            this.pbxBg.BackColor = System.Drawing.Color.Black;
-            this.pbxBg.Cursor = System.Windows.Forms.Cursors.Help;
-            this.pbxBg.Location = new System.Drawing.Point(122, 79);
-            this.pbxBg.Name = "pbxBg";
-            this.pbxBg.Size = new System.Drawing.Size(23, 23);
-            this.pbxBg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbxBg.TabIndex = 44;
-            this.pbxBg.TabStop = false;
-            this.tooltip.SetToolTip(this.pbxBg, "Background image that\'s going to be shown in the game.\r\nDouble click to see a lar" +
-        "ger preview of how it will look.");
-            this.pbxBg.DoubleClick += new System.EventHandler(this.showBgImg);
-            // 
-            // aqlvl
-            // 
-            this.aqlvl.Increment = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.aqlvl.Location = new System.Drawing.Point(5, 57);
-            this.aqlvl.Maximum = new decimal(new int[] {
-            256,
-            0,
-            0,
-            0});
-            this.aqlvl.Minimum = new decimal(new int[] {
-            96,
-            0,
-            0,
-            0});
-            this.aqlvl.Name = "aqlvl";
-            this.aqlvl.Size = new System.Drawing.Size(59, 20);
-            this.aqlvl.TabIndex = 44;
-            this.aqlvl.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.aqlvl.Value = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-            this.aqlvl.ValueChanged += new System.EventHandler(this.changeAQ);
-            // 
-            // ctmpb
-            // 
-            this.ctmpb.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.ctmpb.Location = new System.Drawing.Point(177, 109);
-            this.ctmpb.Name = "ctmpb";
-            this.ctmpb.Size = new System.Drawing.Size(99, 23);
-            this.ctmpb.TabIndex = 31;
-            this.ctmpb.Text = "Clean Temp Files";
-            this.ctmpb.UseVisualStyleBackColor = true;
-            this.ctmpb.Click += new System.EventHandler(this.ctmpb_Click);
-            // 
-            // res
-            // 
-            this.res.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.res.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.res.FormattingEnabled = true;
-            this.res.Location = new System.Drawing.Point(66, 2);
-            this.res.Name = "res";
-            this.res.Size = new System.Drawing.Size(80, 21);
-            this.res.TabIndex = 2;
-            this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
-            // 
-            // maxnotes
-            // 
-            this.maxnotes.Location = new System.Drawing.Point(204, 27);
-            this.maxnotes.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
-            this.maxnotes.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            -2147483648});
-            this.maxnotes.Name = "maxnotes";
-            this.maxnotes.Size = new System.Drawing.Size(72, 20);
-            this.maxnotes.TabIndex = 18;
-            this.maxnotes.ValueChanged += new System.EventHandler(this.maxnotes_ValueChanged);
-            // 
-            // maxFPS
-            // 
-            this.maxFPS.Location = new System.Drawing.Point(5, 18);
-            this.maxFPS.Maximum = new decimal(new int[] {
-            268435455,
-            1042612833,
-            542101086,
-            0});
-            this.maxFPS.Name = "maxFPS";
-            this.maxFPS.Size = new System.Drawing.Size(60, 20);
-            this.maxFPS.TabIndex = 38;
-            this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.maxFPS.ValueChanged += new System.EventHandler(this.maxFPSchange);
-            // 
-            // backgroundcolordiag
-            // 
-            this.backgroundcolordiag.AnyColor = true;
-            this.backgroundcolordiag.FullOpen = true;
-            // 
-            // speedlabel
-            // 
-            this.speedlabel.AutoSize = true;
-            this.speedlabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.speedlabel.Location = new System.Drawing.Point(149, 6);
-            this.speedlabel.Name = "speedlabel";
-            this.speedlabel.Size = new System.Drawing.Size(133, 13);
-            this.speedlabel.TabIndex = 14;
-            this.speedlabel.Text = "Speed:                            %";
-            // 
-            // maxnoteslbl
-            // 
-            this.maxnoteslbl.AutoSize = true;
-            this.maxnoteslbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.maxnoteslbl.Location = new System.Drawing.Point(149, 30);
-            this.maxnoteslbl.Name = "maxnoteslbl";
-            this.maxnoteslbl.Size = new System.Drawing.Size(62, 13);
-            this.maxnoteslbl.TabIndex = 17;
-            this.maxnoteslbl.Text = "Max notes: ";
-            // 
-            // instlabel
-            // 
-            this.instlabel.AutoSize = true;
-            this.instlabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.instlabel.Location = new System.Drawing.Point(149, 56);
-            this.instlabel.Name = "instlabel";
-            this.instlabel.Size = new System.Drawing.Size(59, 13);
-            this.instlabel.TabIndex = 21;
-            this.instlabel.Text = "Instrument:";
-            // 
-            // tweaksList
-            // 
-            this.tweaksList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tweaksList.CheckOnClick = true;
-            this.tweaksList.FormattingEnabled = true;
-            this.tweaksList.IntegralHeight = false;
-            this.tweaksList.Items.AddRange(new object[] {
-            "Song caching",
-            "Verbose logging",
-            "Preserve log",
-            "Disable Vsync",
-            "No startup message",
-            "Exit on song end",
-            "Debug menu",
-            "Keyboard mode",
-            "Windowed",
-            "Borderless",
-            "No intro",
-            "No particles",
-            "No fail",
-            "Easy expert",
-            "Precision",
-            "Background video",
-            "Hide hit gems",
-            "Early sustain activation"});
-            this.tweaksList.Location = new System.Drawing.Point(7, 164);
-            this.tweaksList.Name = "tweaksList";
-            this.tweaksList.Size = new System.Drawing.Size(149, 284);
-            this.tweaksList.TabIndex = 30;
-            this.tweaksList.ThreeDCheckBoxes = true;
-            this.tweaksList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.inputChanged);
-            this.tweaksList.SelectedIndexChanged += new System.EventHandler(this.updateTweakBoxes);
-            // 
-            // readytimelbl
-            // 
-            this.readytimelbl.Enabled = false;
-            this.readytimelbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.readytimelbl.Location = new System.Drawing.Point(3, 80);
-            this.readytimelbl.Name = "readytimelbl";
-            this.readytimelbl.Size = new System.Drawing.Size(92, 13);
-            this.readytimelbl.TabIndex = 35;
-            this.readytimelbl.Text = "No intro ready time:";
-            // 
-            // readytimems
-            // 
-            this.readytimems.AutoSize = true;
-            this.readytimems.Enabled = false;
-            this.readytimems.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.readytimems.Location = new System.Drawing.Point(66, 101);
-            this.readytimems.Name = "readytimems";
-            this.readytimems.Size = new System.Drawing.Size(20, 13);
-            this.readytimems.TabIndex = 36;
-            this.readytimems.Text = "ms";
-            // 
-            // maxFPSlbl
-            // 
-            this.maxFPSlbl.AutoSize = true;
-            this.maxFPSlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.maxFPSlbl.Location = new System.Drawing.Point(3, 2);
-            this.maxFPSlbl.Name = "maxFPSlbl";
-            this.maxFPSlbl.Size = new System.Drawing.Size(77, 13);
-            this.maxFPSlbl.TabIndex = 37;
-            this.maxFPSlbl.Text = "Max framerate:";
-            // 
-            // fpslabel
-            // 
-            this.fpslabel.AutoSize = true;
-            this.fpslabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.fpslabel.Location = new System.Drawing.Point(66, 23);
-            this.fpslabel.Name = "fpslabel";
-            this.fpslabel.Size = new System.Drawing.Size(27, 13);
-            this.fpslabel.TabIndex = 39;
-            this.fpslabel.Text = "FPS";
-            // 
-            // tweaksPanel
-            // 
-            this.tweaksPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.tweaksPanel.AutoScroll = true;
-            this.tweaksPanel.BackColor = System.Drawing.SystemColors.Window;
-            this.tweaksPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.tweaksPanel.Controls.Add(this.kbpslbl);
-            this.tweaksPanel.Controls.Add(this.aqlvl);
-            this.tweaksPanel.Controls.Add(this.aqlbl);
-            this.tweaksPanel.Controls.Add(this.p2parttoggle);
-            this.tweaksPanel.Controls.Add(this.modifiersList);
-            this.tweaksPanel.Controls.Add(this.modifierslbl);
-            this.tweaksPanel.Controls.Add(this.fpslabel);
-            this.tweaksPanel.Controls.Add(this.readytimems);
-            this.tweaksPanel.Controls.Add(this.maxFPS);
-            this.tweaksPanel.Controls.Add(this.maxFPSlbl);
-            this.tweaksPanel.Controls.Add(this.readytimeNoIntro);
-            this.tweaksPanel.Controls.Add(this.readytimelbl);
-            this.tweaksPanel.Location = new System.Drawing.Point(157, 164);
-            this.tweaksPanel.Name = "tweaksPanel";
-            this.tweaksPanel.Size = new System.Drawing.Size(119, 284);
-            this.tweaksPanel.TabIndex = 40;
-            // 
-            // kbpslbl
-            // 
-            this.kbpslbl.AutoSize = true;
-            this.kbpslbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.kbpslbl.Location = new System.Drawing.Point(66, 61);
-            this.kbpslbl.Name = "kbpslbl";
-            this.kbpslbl.Size = new System.Drawing.Size(30, 13);
-            this.kbpslbl.TabIndex = 45;
-            this.kbpslbl.Text = "kbps";
-            // 
-            // aqlbl
-            // 
-            this.aqlbl.AutoSize = true;
-            this.aqlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.aqlbl.Location = new System.Drawing.Point(4, 41);
-            this.aqlbl.Name = "aqlbl";
-            this.aqlbl.Size = new System.Drawing.Size(70, 13);
-            this.aqlbl.TabIndex = 43;
-            this.aqlbl.Text = "Audio quality:";
-            // 
-            // modifiersList
-            // 
-            this.modifiersList.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.modifiersList.CheckOnClick = true;
-            this.modifiersList.FormattingEnabled = true;
-            this.modifiersList.IntegralHeight = false;
-            this.modifiersList.Items.AddRange(new object[] {
-            "All strums",
-            "All doubles",
-            "All taps",
-            "Hopos to taps",
-            "Mirror mode",
-            "Color shuffle"});
-            this.modifiersList.Location = new System.Drawing.Point(5, 137);
-            this.modifiersList.Name = "modifiersList";
-            this.modifiersList.Size = new System.Drawing.Size(88, 91);
-            this.modifiersList.TabIndex = 41;
-            this.modifiersList.ThreeDCheckBoxes = true;
-            this.modifiersList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.modifierUpdate);
-            this.modifiersList.SelectedIndexChanged += new System.EventHandler(this.updateModifiersList);
-            // 
-            // modifierslbl
-            // 
-            this.modifierslbl.AutoSize = true;
-            this.modifierslbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.modifierslbl.Location = new System.Drawing.Point(3, 121);
-            this.modifierslbl.Name = "modifierslbl";
-            this.modifierslbl.Size = new System.Drawing.Size(52, 13);
-            this.modifierslbl.TabIndex = 40;
-            this.modifierslbl.Text = "Modifiers:";
-            // 
-            // tweaksLabel
-            // 
-            this.tweaksLabel.AutoSize = true;
-            this.tweaksLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tweaksLabel.Location = new System.Drawing.Point(5, 138);
-            this.tweaksLabel.Name = "tweaksLabel";
-            this.tweaksLabel.Size = new System.Drawing.Size(67, 20);
-            this.tweaksLabel.TabIndex = 41;
-            this.tweaksLabel.Text = "Tweaks:";
-            // 
-            // selectImage0
-            // 
-            this.selectImage0.Filter = "Common image formats|*.png;*.jpg;*.bmp|Portable Network Graphics|*.png|JPEG|*.jpe" +
-    "g|Bitmap|*.bmp|Any type|*.*";
-            this.selectImage0.Title = "Select background image";
-            this.selectImage0.FileOk += new System.ComponentModel.CancelEventHandler(this.confirmImageReplace);
-            // 
-            // settings
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(280, 484);
-            this.Controls.Add(this.pbxBg);
-            this.Controls.Add(this.setbgimg);
-            this.Controls.Add(this.keybindsBtn);
-            this.Controls.Add(this.tweaksLabel);
-            this.Controls.Add(this.tweaksPanel);
-            this.Controls.Add(this.ctmpb);
-            this.Controls.Add(this.tweaksList);
-            this.Controls.Add(this.viewsongcache);
-            this.Controls.Add(this.songtxtfmt_);
-            this.Controls.Add(this.pluginmanage);
-            this.Controls.Add(this.part);
-            this.Controls.Add(this.instlabel);
-            this.Controls.Add(this.replaygame);
-            this.Controls.Add(this.maxnotes);
-            this.Controls.Add(this.maxnoteslbl);
-            this.Controls.Add(this.speed);
-            this.Controls.Add(this.speedlabel);
-            this.Controls.Add(this.creditlink);
-            this.Controls.Add(this.diff);
-            this.Controls.Add(this.difflabel);
-            this.Controls.Add(this.hyperlabel);
-            this.Controls.Add(this.hypers);
-            this.Controls.Add(this.res);
-            this.Controls.Add(this.reslabel);
-            this.Controls.Add(this.ok);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "settings";
-            this.ShowIcon = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "FastGH3 settings";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.settings_FormClosing);
-            this.Load += new System.EventHandler(this.settings_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydownreacts);
-            ((System.ComponentModel.ISupportInitialize)(this.hypers)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.speed)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.readytimeNoIntro)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxBg)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.aqlvl)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxnotes)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.maxFPS)).EndInit();
-            this.tweaksPanel.ResumeLayout(false);
-            this.tweaksPanel.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+		this.components = new System.ComponentModel.Container();
+		this.ok = new System.Windows.Forms.Button();
+		// desparate to reduce file size by renaming these
+		// to smaller things, but it looks like it's worth it
+		// because it's actually taking effect
+		this.resL = new System.Windows.Forms.Label();
+		this.hypers = new System.Windows.Forms.NumericUpDown();
+		this.hLabel = new System.Windows.Forms.Label();
+		this.diff = new System.Windows.Forms.ComboBox();
+		this.dfLabel = new System.Windows.Forms.Label();
+		this.crLink = new System.Windows.Forms.LinkLabel();
+		this.tt = new System.Windows.Forms.ToolTip(this.components);
+		this.speed = new System.Windows.Forms.NumericUpDown();
+		this.part = new System.Windows.Forms.ComboBox();
+		this.replay = new System.Windows.Forms.Button();
+		this.gh3pm = new System.Windows.Forms.Button();
+		this.sCa = new System.Windows.Forms.Button();
+		this.sFmT = new System.Windows.Forms.Button();
+		this.RTnoi = new System.Windows.Forms.NumericUpDown();
+		this.kBnds = new System.Windows.Forms.Button();
+		this.p2partt = new System.Windows.Forms.CheckBox();
+		this.setbgimg = new System.Windows.Forms.Button();
+		this.bImg = new System.Windows.Forms.PictureBox();
+		this.dCtrl = new System.Windows.Forms.NumericUpDown();
+		this.aqlvl = new System.Windows.Forms.NumericUpDown();
+		this.ctmpb = new System.Windows.Forms.Button();
+		this.res = new System.Windows.Forms.ComboBox();
+		this.MaxN = new System.Windows.Forms.NumericUpDown();
+		this.maxFPS = new System.Windows.Forms.NumericUpDown();
+		this.spL = new System.Windows.Forms.Label();
+		this.mXnL = new System.Windows.Forms.Label();
+		this.iL = new System.Windows.Forms.Label();
+		this.tLb = new System.Windows.Forms.CheckedListBox();
+		this.RTlbl = new System.Windows.Forms.Label();
+		this.RTms = new System.Windows.Forms.Label();
+		this.mFPSl = new System.Windows.Forms.Label();
+		this.FPSl = new System.Windows.Forms.Label();
+		this.tPanel = new System.Windows.Forms.Panel();
+		this.kbpslbl = new System.Windows.Forms.Label();
+		this.aqlbl = new System.Windows.Forms.Label();
+		this.modList = new System.Windows.Forms.CheckedListBox();
+		this.modl = new System.Windows.Forms.Label();
+		this.tLabel = new System.Windows.Forms.Label();
+		this.selImg = new System.Windows.Forms.OpenFileDialog();
+		this.vlbl = new System.Windows.Forms.Label();
+		this.dCtrlLBL = new System.Windows.Forms.Label();
+		this.modelbl = new System.Windows.Forms.Label();
+		this.mode = new System.Windows.Forms.ComboBox();
+		((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.RTnoi)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.bImg)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.dCtrl)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.aqlvl)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.MaxN)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.maxFPS)).BeginInit();
+		this.tPanel.SuspendLayout();
+		this.SuspendLayout();
+		// 
+		// ok
+		// 
+		this.ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+		this.ok.DialogResult = System.Windows.Forms.DialogResult.OK;
+		this.ok.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.ok.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+		this.ok.Location = new System.Drawing.Point(242, 446);
+		this.ok.Name = "ok";
+		this.ok.Size = new System.Drawing.Size(34, 25);
+		this.ok.TabIndex = 0;
+		this.ok.Text = "OK";
+		this.tt.SetToolTip(this.ok, "Exit dialog.");
+		this.ok.UseVisualStyleBackColor = true;
+		this.ok.Click += new System.EventHandler(this.ok_Click);
+		// 
+		// reslabel
+		// 
+		this.resL.AutoSize = true;
+		this.resL.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.resL.Location = new System.Drawing.Point(4, 6);
+		this.resL.Name = "reslabel";
+		this.resL.Size = new System.Drawing.Size(60, 13);
+		this.resL.TabIndex = 1;
+		this.resL.Text = "Resolution:";
+		// 
+		// hypers
+		// 
+		this.hypers.Location = new System.Drawing.Point(106, 26);
+		this.hypers.Maximum = new decimal(new int[] {
+		5,
+		0,
+		0,
+		0});
+		this.hypers.Name = "hypers";
+		this.hypers.Size = new System.Drawing.Size(42, 20);
+		this.hypers.TabIndex = 3;
+		this.hypers.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+		this.hypers.ValueChanged += new System.EventHandler(this.hypers_ValueChanged);
+		// 
+		// hyperlabel
+		// 
+		this.hLabel.AutoSize = true;
+		this.hLabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.hLabel.Location = new System.Drawing.Point(4, 30);
+		this.hLabel.Name = "hyperlabel";
+		this.hLabel.Size = new System.Drawing.Size(104, 13);
+		this.hLabel.TabIndex = 4;
+		this.hLabel.Text = "Default Hyperspeed:";
+		// 
+		// diff
+		// 
+		this.diff.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+		this.diff.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.diff.FormattingEnabled = true;
+		this.diff.Items.AddRange(new object[] {
+		"Easy",
+		"Medium",
+		"Hard",
+		"Expert"});
+		this.diff.Location = new System.Drawing.Point(90, 52);
+		this.diff.Name = "diff";
+		this.diff.Size = new System.Drawing.Size(58, 21);
+		this.diff.TabIndex = 5;
+		this.diff.SelectedIndexChanged += new System.EventHandler(this.diff_SelectedIndexChanged);
+		// 
+		// difflabel
+		// 
+		this.dfLabel.AutoSize = true;
+		this.dfLabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.dfLabel.Location = new System.Drawing.Point(4, 55);
+		this.dfLabel.Name = "difflabel";
+		this.dfLabel.Size = new System.Drawing.Size(87, 13);
+		this.dfLabel.TabIndex = 6;
+		this.dfLabel.Text = "Default Difficulty:";
+		// 
+		// creditlink
+		// 
+		this.crLink.ActiveLinkColor = System.Drawing.Color.Black;
+		this.crLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+		this.crLink.AutoSize = true;
+		this.crLink.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+		this.crLink.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+		this.crLink.LinkColor = System.Drawing.Color.Black;
+		this.crLink.Location = new System.Drawing.Point(177, 448);
+		this.crLink.Name = "creditlink";
+		this.crLink.Size = new System.Drawing.Size(59, 20);
+		this.crLink.TabIndex = 8;
+		this.crLink.TabStop = true;
+		this.crLink.Text = "Credits";
+		this.crLink.VisitedLinkColor = System.Drawing.Color.White;
+		this.crLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.creditlink_LinkClicked);
+		// 
+		// tooltip
+		// 
+		this.tt.AutomaticDelay = 0;
+		this.tt.AutoPopDelay = 9999999;
+		this.tt.InitialDelay = 500;
+		this.tt.IsBalloon = true;
+		this.tt.ReshowDelay = 0;
+		this.tt.ShowAlways = true;
+		this.tt.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+		this.tt.ToolTipTitle = "About this setting";
+		this.tt.UseAnimation = false;
+		this.tt.UseFading = false;
+		this.tt.Popup += new System.Windows.Forms.PopupEventHandler(this.tooltip_Popup);
+		// 
+		// speed
+		// 
+		this.speed.DecimalPlaces = 3;
+		this.speed.Location = new System.Drawing.Point(185, 3);
+		this.speed.Maximum = new decimal(new int[] {
+		-1981284353,
+		-1966660860,
+		0,
+		0});
+		this.speed.Minimum = new decimal(new int[] {
+		1,
+		0,
+		0,
+		0});
+		this.speed.Name = "speed";
+		this.speed.Size = new System.Drawing.Size(82, 20);
+		this.speed.TabIndex = 13;
+		this.speed.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+		this.speed.Value = new decimal(new int[] {
+		100,
+		0,
+		0,
+		0});
+		this.speed.ValueChanged += new System.EventHandler(this.speed_ValueChanged);
+		// 
+		// part
+		// 
+		this.part.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+		this.part.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.part.FormattingEnabled = true;
+		this.part.Items.AddRange(new object[] {
+		"Guitar",
+		"Rhythm"});
+		this.part.Location = new System.Drawing.Point(204, 52);
+		this.part.Name = "part";
+		this.part.Size = new System.Drawing.Size(72, 21);
+		this.part.TabIndex = 22;
+		this.part.SelectedIndexChanged += new System.EventHandler(this.part_SelectedIndexChanged);
+		// 
+		// replaygame
+		// 
+		this.replay.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.replay.Location = new System.Drawing.Point(150, 77);
+		this.replay.Name = "replaygame";
+		this.replay.Size = new System.Drawing.Size(126, 19);
+		this.replay.TabIndex = 20;
+		this.replay.Text = "Replay Last Song";
+		this.replay.UseVisualStyleBackColor = true;
+		this.replay.Click += new System.EventHandler(this.replaygame_Click);
+		// 
+		// pluginmanage
+		// 
+		this.gh3pm.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.gh3pm.Location = new System.Drawing.Point(150, 100);
+		this.gh3pm.Name = "pluginmanage";
+		this.gh3pm.Size = new System.Drawing.Size(52, 19);
+		this.gh3pm.TabIndex = 23;
+		this.gh3pm.Text = "Plugins";
+		this.gh3pm.UseVisualStyleBackColor = true;
+		this.gh3pm.Click += new System.EventHandler(this.pluginmanage_Click);
+		// 
+		// viewsongcache
+		// 
+		this.sCa.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.sCa.Location = new System.Drawing.Point(205, 123);
+		this.sCa.Name = "viewsongcache";
+		this.sCa.Size = new System.Drawing.Size(71, 19);
+		this.sCa.TabIndex = 25;
+		this.sCa.Text = "Song Cache";
+		this.sCa.UseVisualStyleBackColor = true;
+		this.sCa.Click += new System.EventHandler(this.viewsongcache_Click);
+		// 
+		// songtxtfmt_
+		// 
+		this.sFmT.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.sFmT.Location = new System.Drawing.Point(105, 123);
+		this.sFmT.Name = "songtxtfmt_";
+		this.sFmT.Size = new System.Drawing.Size(97, 19);
+		this.sFmT.TabIndex = 33;
+		this.sFmT.Text = "Song Text Format";
+		this.sFmT.UseVisualStyleBackColor = true;
+		this.sFmT.Click += new System.EventHandler(this.songtxtfmt__Click);
+		// 
+		// readytimeNoIntro
+		// 
+		this.RTnoi.Enabled = false;
+		this.RTnoi.Location = new System.Drawing.Point(5, 96);
+		this.RTnoi.Maximum = new decimal(new int[] {
+		999999,
+		0,
+		0,
+		0});
+		this.RTnoi.Name = "readytimeNoIntro";
+		this.RTnoi.Size = new System.Drawing.Size(59, 20);
+		this.RTnoi.TabIndex = 34;
+		this.RTnoi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+		this.RTnoi.ValueChanged += new System.EventHandler(this.changereadytime);
+		// 
+		// keybindsBtn
+		// 
+		this.kBnds.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.kBnds.Location = new System.Drawing.Point(205, 100);
+		this.kBnds.Name = "keybindsBtn";
+		this.kBnds.Size = new System.Drawing.Size(71, 19);
+		this.kBnds.TabIndex = 42;
+		this.kBnds.Text = "Keybinds";
+		this.kBnds.UseVisualStyleBackColor = true;
+		this.kBnds.Click += new System.EventHandler(this.openKeybinds);
+		// 
+		// p2parttoggle
+		// 
+		this.p2partt.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.p2partt.Location = new System.Drawing.Point(6, 234);
+		this.p2partt.Name = "p2parttoggle";
+		this.p2partt.Size = new System.Drawing.Size(90, 18);
+		this.p2partt.TabIndex = 42;
+		this.p2partt.Text = "Player 2 guitar";
+		this.p2partt.UseVisualStyleBackColor = true;
+		this.p2partt.Click += new System.EventHandler(this.p2parttoggle_Click);
+		// 
+		// setbgimg
+		// 
+		this.setbgimg.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.setbgimg.Location = new System.Drawing.Point(5, 100);
+		this.setbgimg.Name = "setbgimg";
+		this.setbgimg.Size = new System.Drawing.Size(110, 19);
+		this.setbgimg.TabIndex = 43;
+		this.setbgimg.Text = "Set backdrop image";
+		this.setbgimg.UseVisualStyleBackColor = true;
+		this.setbgimg.Click += new System.EventHandler(this.setbgimg_Click);
+		// 
+		// pbxBg
+		// 
+		this.bImg.BackColor = System.Drawing.SystemColors.Control;
+		this.bImg.Cursor = System.Windows.Forms.Cursors.Help;
+		this.bImg.Location = new System.Drawing.Point(119, 100);
+		this.bImg.Name = "pbxBg";
+		this.bImg.Size = new System.Drawing.Size(28, 19);
+		this.bImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+		this.bImg.TabIndex = 44;
+		this.bImg.TabStop = false;
+		this.bImg.DoubleClick += new System.EventHandler(this.showBgImg);
+		// 
+		// dCtrl
+		// 
+		this.dCtrl.Location = new System.Drawing.Point(111, 77);
+		this.dCtrl.Maximum = new decimal(new int[] {
+		8,
+		0,
+		0,
+		0});
+		this.dCtrl.Name = "dCtrl";
+		this.dCtrl.Size = new System.Drawing.Size(37, 20);
+		this.dCtrl.TabIndex = 47;
+		this.dCtrl.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+		this.dCtrl.ValueChanged += new System.EventHandler(this.dCtrlUpd);
+		// 
+		// aqlvl
+		// 
+		this.aqlvl.Increment = new decimal(new int[] {
+		8,
+		0,
+		0,
+		0});
+		this.aqlvl.Location = new System.Drawing.Point(5, 57);
+		this.aqlvl.Maximum = new decimal(new int[] {
+		256,
+		0,
+		0,
+		0});
+		this.aqlvl.Minimum = new decimal(new int[] {
+		96,
+		0,
+		0,
+		0});
+		this.aqlvl.Name = "aqlvl";
+		this.aqlvl.Size = new System.Drawing.Size(59, 20);
+		this.aqlvl.TabIndex = 44;
+		this.aqlvl.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+		this.aqlvl.Value = new decimal(new int[] {
+		128,
+		0,
+		0,
+		0});
+		this.aqlvl.ValueChanged += new System.EventHandler(this.changeAQ);
+		// 
+		// ctmpb
+		// 
+		this.ctmpb.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.ctmpb.Location = new System.Drawing.Point(5, 123);
+		this.ctmpb.Name = "ctmpb";
+		this.ctmpb.Size = new System.Drawing.Size(97, 19);
+		this.ctmpb.TabIndex = 31;
+		this.ctmpb.Text = "Clean Temp Files";
+		this.ctmpb.UseVisualStyleBackColor = true;
+		this.ctmpb.Click += new System.EventHandler(this.ctmpb_Click);
+		// 
+		// res
+		// 
+		this.res.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+		this.res.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.res.FormattingEnabled = true;
+		this.res.Location = new System.Drawing.Point(70, 2);
+		this.res.Name = "res";
+		this.res.Size = new System.Drawing.Size(78, 21);
+		this.res.TabIndex = 2;
+		this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
+		// 
+		// maxnotes
+		// 
+		this.MaxN.Location = new System.Drawing.Point(204, 27);
+		this.MaxN.Maximum = new decimal(new int[] {
+		2147483647,
+		0,
+		0,
+		0});
+		this.MaxN.Minimum = new decimal(new int[] {
+		1,
+		0,
+		0,
+		-2147483648});
+		this.MaxN.Name = "maxnotes";
+		this.MaxN.Size = new System.Drawing.Size(72, 20);
+		this.MaxN.TabIndex = 18;
+		this.MaxN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+		this.MaxN.ValueChanged += new System.EventHandler(this.maxnotes_ValueChanged);
+		// 
+		// maxFPS
+		// 
+		this.maxFPS.Location = new System.Drawing.Point(5, 18);
+		this.maxFPS.Maximum = new decimal(new int[] {
+		268435455,
+		1042612833,
+		542101086,
+		0});
+		this.maxFPS.Name = "maxFPS";
+		this.maxFPS.Size = new System.Drawing.Size(60, 20);
+		this.maxFPS.TabIndex = 38;
+		this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+		this.maxFPS.ValueChanged += new System.EventHandler(this.maxFPSchange);
+		// 
+		// speedlabel
+		// 
+		this.spL.AutoSize = true;
+		this.spL.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.spL.Location = new System.Drawing.Point(149, 6);
+		this.spL.Name = "speedlabel";
+		this.spL.Size = new System.Drawing.Size(133, 13);
+		this.spL.TabIndex = 14;
+		// 
+		// maxnoteslbl
+		// 
+		this.mXnL.AutoSize = true;
+		this.mXnL.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.mXnL.Location = new System.Drawing.Point(149, 30);
+		this.mXnL.Name = "maxnoteslbl";
+		this.mXnL.Size = new System.Drawing.Size(62, 13);
+		this.mXnL.TabIndex = 17;
+		this.mXnL.Text = "Max notes: ";
+		// 
+		// instlabel
+		// 
+		this.iL.AutoSize = true;
+		this.iL.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.iL.Location = new System.Drawing.Point(149, 55);
+		this.iL.Name = "instlabel";
+		this.iL.Size = new System.Drawing.Size(59, 13);
+		this.iL.TabIndex = 21;
+		this.iL.Text = "Instrument:";
+		// 
+		// tweaksList
+		// 
+		this.tLb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+		| System.Windows.Forms.AnchorStyles.Left)));
+		this.tLb.CheckOnClick = true;
+		this.tLb.FormattingEnabled = true;
+		this.tLb.IntegralHeight = false;
+		this.tLb.Items.AddRange(new object[] {
+		"Song caching",
+		"Verbose logging",
+		"Preserve log",
+		"Disable Vsync",
+		"No startup message",
+		"Exit on song end",
+		"Debug menu",
+		"Keyboard mode",
+		"Windowed",
+		"Borderless",
+		"No intro",
+		"No particles",
+		"No fail",
+		"Easy expert",
+		"Precision",
+		"Background video",
+		"Hide hit gems",
+		"Early sustain activation"});
+		this.tLb.Location = new System.Drawing.Point(7, 165);
+		this.tLb.Name = "tweaksList";
+		this.tLb.Size = new System.Drawing.Size(149, 277);
+		this.tLb.TabIndex = 30;
+		this.tLb.ThreeDCheckBoxes = true;
+		this.tLb.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tweakUpdate);
+		this.tLb.SelectedIndexChanged += new System.EventHandler(this.updateTweakBoxes);
+		// 
+		// readytimelbl
+		// 
+		this.RTlbl.Enabled = false;
+		this.RTlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.RTlbl.Location = new System.Drawing.Point(3, 80);
+		this.RTlbl.Name = "readytimelbl";
+		this.RTlbl.Size = new System.Drawing.Size(92, 13);
+		this.RTlbl.TabIndex = 35;
+		this.RTlbl.Text = "No intro ready time:";
+		// 
+		// readytimems
+		// 
+		this.RTms.AutoSize = true;
+		this.RTms.Enabled = false;
+		this.RTms.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.RTms.Location = new System.Drawing.Point(66, 101);
+		this.RTms.Name = "readytimems";
+		this.RTms.Size = new System.Drawing.Size(20, 13);
+		this.RTms.TabIndex = 36;
+		this.RTms.Text = "ms";
+		// 
+		// maxFPSlbl
+		// 
+		this.mFPSl.AutoSize = true;
+		this.mFPSl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.mFPSl.Location = new System.Drawing.Point(3, 2);
+		this.mFPSl.Name = "maxFPSlbl";
+		this.mFPSl.Size = new System.Drawing.Size(77, 13);
+		this.mFPSl.TabIndex = 37;
+		this.mFPSl.Text = "Max framerate:";
+		// 
+		// fpslabel
+		// 
+		this.FPSl.AutoSize = true;
+		this.FPSl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.FPSl.Location = new System.Drawing.Point(66, 23);
+		this.FPSl.Name = "fpslabel";
+		this.FPSl.Size = new System.Drawing.Size(27, 13);
+		this.FPSl.TabIndex = 39;
+		this.FPSl.Text = "FPS";
+		// 
+		// tweaksPanel
+		// 
+		this.tPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+		| System.Windows.Forms.AnchorStyles.Left)));
+		this.tPanel.AutoScroll = true;
+		this.tPanel.BackColor = System.Drawing.SystemColors.Window;
+		this.tPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+		this.tPanel.Controls.Add(this.kbpslbl);
+		this.tPanel.Controls.Add(this.aqlvl);
+		this.tPanel.Controls.Add(this.aqlbl);
+		this.tPanel.Controls.Add(this.p2partt);
+		this.tPanel.Controls.Add(this.modList);
+		this.tPanel.Controls.Add(this.modl);
+		this.tPanel.Controls.Add(this.FPSl);
+		this.tPanel.Controls.Add(this.RTms);
+		this.tPanel.Controls.Add(this.maxFPS);
+		this.tPanel.Controls.Add(this.mFPSl);
+		this.tPanel.Controls.Add(this.RTnoi);
+		this.tPanel.Controls.Add(this.RTlbl);
+		this.tPanel.Location = new System.Drawing.Point(157, 165);
+		this.tPanel.Name = "tweaksPanel";
+		this.tPanel.Size = new System.Drawing.Size(119, 277);
+		this.tPanel.TabIndex = 40;
+		// 
+		// kbpslbl
+		// 
+		this.kbpslbl.AutoSize = true;
+		this.kbpslbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.kbpslbl.Location = new System.Drawing.Point(66, 61);
+		this.kbpslbl.Name = "kbpslbl";
+		this.kbpslbl.Size = new System.Drawing.Size(30, 13);
+		this.kbpslbl.TabIndex = 45;
+		this.kbpslbl.Text = "kbps";
+		// 
+		// aqlbl
+		// 
+		this.aqlbl.AutoSize = true;
+		this.aqlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.aqlbl.Location = new System.Drawing.Point(4, 41);
+		this.aqlbl.Name = "aqlbl";
+		this.aqlbl.Size = new System.Drawing.Size(70, 13);
+		this.aqlbl.TabIndex = 43;
+		this.aqlbl.Text = "Audio quality:";
+		// 
+		// modifiersList
+		// 
+		this.modList.BorderStyle = System.Windows.Forms.BorderStyle.None;
+		this.modList.CheckOnClick = true;
+		this.modList.FormattingEnabled = true;
+		this.modList.IntegralHeight = false;
+		this.modList.Items.AddRange(new object[] {
+		"All strums",
+		"All doubles",
+		"All taps",
+		"Hopos to taps",
+		"Mirror mode",
+		"Color shuffle"});
+		this.modList.Location = new System.Drawing.Point(5, 137);
+		this.modList.Name = "modifiersList";
+		this.modList.Size = new System.Drawing.Size(88, 91);
+		this.modList.TabIndex = 41;
+		this.modList.ThreeDCheckBoxes = true;
+		this.modList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.modifierUpdate);
+		this.modList.SelectedIndexChanged += new System.EventHandler(this.updateModifiersList);
+		// 
+		// modifierslbl
+		// 
+		this.modl.AutoSize = true;
+		this.modl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.modl.Location = new System.Drawing.Point(3, 121);
+		this.modl.Name = "modifierslbl";
+		this.modl.Size = new System.Drawing.Size(52, 13);
+		this.modl.TabIndex = 40;
+		this.modl.Text = "Modifiers:";
+		// 
+		// tweaksLabel
+		// 
+		this.tLabel.AutoSize = true;
+		this.tLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+		this.tLabel.Location = new System.Drawing.Point(3, 146);
+		this.tLabel.Name = "tweaksLabel";
+		this.tLabel.Size = new System.Drawing.Size(58, 16);
+		this.tLabel.TabIndex = 41;
+		this.tLabel.Text = "Tweaks:";
+		// 
+		// selectImage0
+		// 
+		this.selImg.Filter = "Supported image formats|*.png;*.jpg;*.bmp;*.dds|Portable Network Graphics|*.png|J" +
+"PEG|*.jpeg|Bitmap|*.bmp|DirectDraw Surface|*.dds|Any type|*.*";
+		this.selImg.Title = "Select background image";
+		this.selImg.FileOk += new System.ComponentModel.CancelEventHandler(this.confirmImageReplace);
+		// 
+		// vlbl
+		// 
+		this.vlbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+		this.vlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.vlbl.Location = new System.Drawing.Point(8, 445);
+		this.vlbl.Name = "vlbl";
+		this.vlbl.Size = new System.Drawing.Size(163, 28);
+		this.vlbl.TabIndex = 45;
+		this.vlbl.Text = "VER";
+		// 
+		// dCtrlLBL
+		// 
+		this.dCtrlLBL.AutoSize = true;
+		this.dCtrlLBL.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.dCtrlLBL.Location = new System.Drawing.Point(4, 79);
+		this.dCtrlLBL.Name = "dCtrlLBL";
+		this.dCtrlLBL.Size = new System.Drawing.Size(111, 13);
+		this.dCtrlLBL.TabIndex = 46;
+		this.dCtrlLBL.Text = "Default Controller (ID):";
+		// 
+		// modelbl
+		// 
+		this.modelbl.AutoSize = true;
+		this.modelbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.modelbl.Location = new System.Drawing.Point(118, 151);
+		this.modelbl.Name = "modelbl";
+		this.modelbl.Size = new System.Drawing.Size(37, 13);
+		this.modelbl.TabIndex = 48;
+		this.modelbl.Text = "Mode:";
+		this.modelbl.Visible = false;
+		// 
+		// mode
+		// 
+		this.mode.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.mode.FormattingEnabled = true;
+		this.mode.Items.AddRange(new object[] {
+		"Quickplay",
+		"Co-op",
+		"Face-off",
+		"Pro Face-off",
+		"Battle"});
+		this.mode.Location = new System.Drawing.Point(154, 149);
+		this.mode.Name = "mode";
+		this.mode.Size = new System.Drawing.Size(91, 21);
+		this.mode.TabIndex = 49;
+		this.mode.Text = "Quickplay";
+		this.mode.Visible = false;
+		// 
+		// settings
+		// 
+		this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+		this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+		this.ClientSize = new System.Drawing.Size(280, 476);
+		this.Controls.Add(this.vlbl);
+		this.Controls.Add(this.mode);
+		this.Controls.Add(this.modelbl);
+		this.Controls.Add(this.dCtrl);
+		this.Controls.Add(this.dCtrlLBL);
+		this.Controls.Add(this.hypers);
+		this.Controls.Add(this.bImg);
+		this.Controls.Add(this.setbgimg);
+		this.Controls.Add(this.kBnds);
+		this.Controls.Add(this.tPanel);
+		this.Controls.Add(this.ctmpb);
+		this.Controls.Add(this.tLb);
+		this.Controls.Add(this.sCa);
+		this.Controls.Add(this.sFmT);
+		this.Controls.Add(this.gh3pm);
+		this.Controls.Add(this.part);
+		this.Controls.Add(this.iL);
+		this.Controls.Add(this.replay);
+		this.Controls.Add(this.MaxN);
+		this.Controls.Add(this.mXnL);
+		this.Controls.Add(this.speed);
+		this.Controls.Add(this.spL);
+		this.Controls.Add(this.crLink);
+		this.Controls.Add(this.diff);
+		this.Controls.Add(this.dfLabel);
+		this.Controls.Add(this.hLabel);
+		this.Controls.Add(this.res);
+		this.Controls.Add(this.resL);
+		this.Controls.Add(this.ok);
+		this.Controls.Add(this.tLabel);
+		this.DoubleBuffered = true;
+		this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+		this.MaximizeBox = false;
+		this.MinimizeBox = false;
+		this.Name = "settings";
+		this.ShowIcon = false;
+		this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+		this.Text = "FastGH3 settings";
+		this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.settings_FormClosing);
+		this.Load += new System.EventHandler(this.settings_Load);
+		this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydownreacts);
+		((System.ComponentModel.ISupportInitialize)(this.hypers)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.speed)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.RTnoi)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.bImg)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.dCtrl)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.aqlvl)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.MaxN)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.maxFPS)).EndInit();
+		this.tPanel.ResumeLayout(false);
+		this.tPanel.PerformLayout();
+		this.ResumeLayout(false);
+		this.PerformLayout();
 
 	}
 
@@ -683,43 +736,47 @@ partial class settings
 	#endregion
 
 	private Button ok;
-	private Label reslabel;
+	private Label resL;
 	private NumericUpDown hypers;
-	private Label hyperlabel;
+	private Label hLabel;
 	private ComboBox diff;
-	private Label difflabel;
-	private LinkLabel creditlink;
-	private ToolTip tooltip;
-	private ColorDialog backgroundcolordiag;
+	private Label dfLabel;
+	private LinkLabel crLink;
+	private ToolTip tt;
 	private NumericUpDown speed;
-	private Label speedlabel;
-	private Label maxnoteslbl;
-	private NumericUpDown maxnotes;
-	private Button replaygame;
-	private Label instlabel;
+	private Label spL;
+	private Label mXnL;
+	private NumericUpDown MaxN;
+	private Button replay;
+	private Label iL;
 	private ComboBox part;
-	private Button pluginmanage;
-	private Button viewsongcache;
-	private CheckedListBox tweaksList;
+	private Button gh3pm;
+	private Button sCa;
+	private CheckedListBox tLb;
 	private Button ctmpb;
-	private Button songtxtfmt_;
+	private Button sFmT;
 	private ComboBox res;
-	private NumericUpDown readytimeNoIntro;
-	private Label readytimelbl;
-	private Label readytimems;
-	private Label maxFPSlbl;
+	private NumericUpDown RTnoi;
+	private Label RTlbl;
+	private Label RTms;
+	private Label mFPSl;
 	private NumericUpDown maxFPS;
-	private Label fpslabel;
-	private Panel tweaksPanel;
-	private Label tweaksLabel;
-	private CheckedListBox modifiersList;
-	private Label modifierslbl;
-	private Button keybindsBtn;
-	private CheckBox p2parttoggle;
+	private Label FPSl;
+	private Panel tPanel;
+	private Label tLabel;
+	private CheckedListBox modList;
+	private Label modl;
+	private Button kBnds;
+	private CheckBox p2partt;
 	private Button setbgimg;
-	private PictureBox pbxBg;
-	private OpenFileDialog selectImage0;
+	private PictureBox bImg;
+	private OpenFileDialog selImg;
 	private Label kbpslbl;
 	private NumericUpDown aqlvl;
 	private Label aqlbl;
+	private Label vlbl;
+	private Label dCtrlLBL;
+	private NumericUpDown dCtrl;
+	private Label modelbl;
+	private ComboBox mode;
 }

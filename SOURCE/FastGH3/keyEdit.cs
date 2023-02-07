@@ -124,18 +124,18 @@ public enum KeyID
 	Mouse2 = 402,
 }
 
-public struct KeyLayout
+public struct Key
 {
 	public Point pos;
 	public Size size;
 	public Keys key;
-	public KeyID control;
+	public KeyID ctrl;
 	public string name;
 }
 
 public partial class keyEdit : Form
 {
-	public int[] keyBinds = new int[] {
+	public int[] kBinds = new int[] {
 		(int)KeyID.D1,
 		(int)KeyID.D2,
 		(int)KeyID.D3,
@@ -151,30 +151,30 @@ public partial class keyEdit : Form
 		(int)KeyID.RCtrl,
 	};
 
-	ControlID currentControl = ControlID.Unbound;
-	private void beginBind(object sender, System.EventArgs e)
+	ControlID c = ControlID.Unbound;
+	private void bBind(object sender, System.EventArgs e)
 	{
-		selectedButtonTxt.Visible = true;
-		currentButtonTxt.Text = controlNames[(int)(sender as Button).Tag];
-		currentButtonTxt.Visible = true;
-		currentControl = (ControlID)(sender as Button).Tag;
+		selBtnL.Visible = true;
+		cBtnL.Text = cNames[(int)(sender as Button).Tag];
+		cBtnL.Visible = true;
+		c = (ControlID)(sender as Button).Tag;
 	}
-	private void endBind(object sender, System.EventArgs e)
+	private void eBind(object sender, System.EventArgs e)
 	{
-		if (currentControl != ControlID.Unbound)
+		if (c != ControlID.Unbound)
 		{
-			selectedButtonTxt.Visible = false;
-			currentButtonTxt.Visible = false;
+			selBtnL.Visible = false;
+			cBtnL.Visible = false;
 			Button btn = sender as Button;
-			keyBinds[(int)currentControl] = (int)keytable[(int)btn.Tag].control;
+			kBinds[(int)c] = (int)keytable[(int)btn.Tag].ctrl;
 			updateKeys();
-			currentControl = ControlID.Unbound;
+			c = ControlID.Unbound;
 		}
 	}
 
-	const int defaultButtonWidth = 22;
-	const int defaultButtonHeight = 22;
-	static int[] buttonRows = new int[] {
+	const int dbw = 22; // default button sizes
+	const int dbh = 22;
+	static int[] rows = new int[] {
 		3,
 		29,
 		55,
@@ -182,69 +182,69 @@ public partial class keyEdit : Form
 		107,
 		133
 	};
-	static Size defaultButtonSize = new Size(defaultButtonWidth, defaultButtonHeight);
+	static Size dB = new Size(dbw, dbh); // lol
 	#region keytable
-	static KeyLayout[] keytable = new KeyLayout[]
+	static Key[] keytable = new Key[]
 	{
-		new KeyLayout() {
-			pos = new Point(3, buttonRows[0]),
-			size = defaultButtonSize,
+		new Key() {
+			pos = new Point(3, rows[0]),
+			size = dB,
 			key = Keys.Escape,
-			control = KeyID.Escape,
+			ctrl = KeyID.Escape,
 			name = "Es"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*2), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*2), rows[0]),
+			size = dB,
 			key = Keys.F1,
-			control = KeyID.F1,
+			ctrl = KeyID.F1,
 			name = "F1"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*3), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*3), rows[0]),
+			size = dB,
 			key = Keys.F2,
-			control = KeyID.F2,
+			ctrl = KeyID.F2,
 			name = "F2"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*4), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*4), rows[0]),
+			size = dB,
 			key = Keys.F3,
-			control = KeyID.F3,
+			ctrl = KeyID.F3,
 			name = "F3"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*5), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*5), rows[0]),
+			size = dB,
 			key = Keys.F4,
-			control = KeyID.F4,
+			ctrl = KeyID.F4,
 			name = "F4"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*7), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*7), rows[0]),
+			size = dB,
 			key = Keys.F5,
-			control = KeyID.F5,
+			ctrl = KeyID.F5,
 			name = "F5"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*8), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*8), rows[0]),
+			size = dB,
 			key = Keys.F6,
-			control = KeyID.F6,
+			ctrl = KeyID.F6,
 			name = "F6"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*9), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*9), rows[0]),
+			size = dB,
 			key = Keys.F7,
-			control = KeyID.F7,
+			ctrl = KeyID.F7,
 			name = "F7"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*10), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*10), rows[0]),
+			size = dB,
 			key = Keys.F8,
-			control = KeyID.F8,
+			ctrl = KeyID.F8,
 			name = "F8"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*12), buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*12), rows[0]),
+			size = dB,
 			key = Keys.F9,
-			control = KeyID.F9,
+			ctrl = KeyID.F9,
 			name = "F9"
 		}, /*new KeyLayout() {
 			pos = new Point(3+(23*13), buttonRows[0]),
@@ -264,383 +264,383 @@ public partial class keyEdit : Form
 			key = Keys.LButton,
 			control = KeyID.Escape,
 			name = "12"
-		},*/ new KeyLayout() {
-			pos = new Point(376, buttonRows[0]),
-			size = defaultButtonSize,
+		},*/ new Key() {
+			pos = new Point(376, rows[0]),
+			size = dB,
 			key = Keys.PrintScreen,
-			control = KeyID.PrScr,
+			ctrl = KeyID.PrScr,
 			name = "Pr"
-		}, new KeyLayout() {
-			pos = new Point(399, buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(399, rows[0]),
+			size = dB,
 			key = Keys.Scroll,
-			control = KeyID.ScrLck,
+			ctrl = KeyID.ScrLck,
 			name = "Sc"
-		}, new KeyLayout() {
-			pos = new Point(422, buttonRows[0]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(422, rows[0]),
+			size = dB,
 			key = Keys.Pause,
-			control = KeyID.Pause,
+			ctrl = KeyID.Pause,
 			name = "Br"
-		}, new KeyLayout() {
-			pos = new Point(3, buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3, rows[1]),
+			size = dB,
 			key = Keys.Oemtilde,
-			control = KeyID.Tilda,
+			ctrl = KeyID.Tilda,
 			name = "~"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*1), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*1), rows[1]),
+			size = dB,
 			key = Keys.D1,
-			control = KeyID.D1,
+			ctrl = KeyID.D1,
 			name = "1"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*2), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*2), rows[1]),
+			size = dB,
 			key = Keys.D2,
-			control = KeyID.D2,
+			ctrl = KeyID.D2,
 			name = "2"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*3), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*3), rows[1]),
+			size = dB,
 			key = Keys.D3,
-			control = KeyID.D3,
+			ctrl = KeyID.D3,
 			name = "3"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*4), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*4), rows[1]),
+			size = dB,
 			key = Keys.D4,
-			control = KeyID.D4,
+			ctrl = KeyID.D4,
 			name = "4"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*5), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*5), rows[1]),
+			size = dB,
 			key = Keys.D5,
-			control = KeyID.D5,
+			ctrl = KeyID.D5,
 			name = "5"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*6), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*6), rows[1]),
+			size = dB,
 			key = Keys.D6,
-			control = KeyID.D6,
+			ctrl = KeyID.D6,
 			name = "6"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*7), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*7), rows[1]),
+			size = dB,
 			key = Keys.D7,
-			control = KeyID.D7,
+			ctrl = KeyID.D7,
 			name = "7"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*8), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*8), rows[1]),
+			size = dB,
 			key = Keys.D8,
-			control = KeyID.D8,
+			ctrl = KeyID.D8,
 			name = "8"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*9), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*9), rows[1]),
+			size = dB,
 			key = Keys.D9,
-			control = KeyID.D9,
+			ctrl = KeyID.D9,
 			name = "9"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*10), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*10), rows[1]),
+			size = dB,
 			key = Keys.D0,
-			control = KeyID.D0,
+			ctrl = KeyID.D0,
 			name = "0"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*11), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*11), rows[1]),
+			size = dB,
 			key = Keys.OemMinus,
-			control = KeyID.Sign,
+			ctrl = KeyID.Sign,
 			name = "_"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*12), buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(3+(23*12), rows[1]),
+			size = dB,
 			key = Keys.Oemplus,
-			control = KeyID.Equal,
+			ctrl = KeyID.Equal,
 			name = "+"
-		}, new KeyLayout() {
-			pos = new Point(3+(23*13), buttonRows[1]),
-			size = new Size(68, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(3+(23*13), rows[1]),
+			size = new Size(68, dbh),
 			key = Keys.Back,
-			control = KeyID.Back,
+			ctrl = KeyID.Back,
 			name = "Backspace"
-		}, new KeyLayout() {
-			pos = new Point(376, buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(376, rows[1]),
+			size = dB,
 			key = Keys.Insert,
-			control = KeyID.Ins,
+			ctrl = KeyID.Ins,
 			name = "In"
-		}, new KeyLayout() {
-			pos = new Point(399, buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(399, rows[1]),
+			size = dB,
 			key = Keys.Home,
-			control = KeyID.Home,
+			ctrl = KeyID.Home,
 			name = "H"
-		}, new KeyLayout() {
-			pos = new Point(422, buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(422, rows[1]),
+			size = dB,
 			key = Keys.PageUp,
-			control = KeyID.PgUp,
+			ctrl = KeyID.PgUp,
 			name = "U"
-		}, new KeyLayout() {
-			pos = new Point(376, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(376, rows[2]),
+			size = dB,
 			key = Keys.Delete,
-			control = KeyID.Delete,
+			ctrl = KeyID.Delete,
 			name = "Dl"
-		}, new KeyLayout() {
-			pos = new Point(399, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(399, rows[2]),
+			size = dB,
 			key = Keys.End,
-			control = KeyID.End,
+			ctrl = KeyID.End,
 			name = "E"
-		}, new KeyLayout() {
-			pos = new Point(422, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(422, rows[2]),
+			size = dB,
 			key = Keys.PageDown,
-			control = KeyID.PgDn,
+			ctrl = KeyID.PgDn,
 			name = "D"
-		}, new KeyLayout() {
-			pos = new Point(3, buttonRows[2]),
-			size = new Size(37, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(3, rows[2]),
+			size = new Size(37, dbh),
 			key = Keys.Tab,
-			control = KeyID.Tab,
+			ctrl = KeyID.Tab,
 			name = "Tab"
-		}, new KeyLayout() {
-			pos = new Point(43, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(43, rows[2]),
+			size = dB,
 			key = Keys.Q,
-			control = KeyID.Q,
+			ctrl = KeyID.Q,
 			name = "Q"
-		}, new KeyLayout() {
-			pos = new Point(66, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(66, rows[2]),
+			size = dB,
 			key = Keys.W,
-			control = KeyID.W,
+			ctrl = KeyID.W,
 			name = "W"
-		}, new KeyLayout() {
-			pos = new Point(89, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(89, rows[2]),
+			size = dB,
 			key = Keys.E,
-			control = KeyID.E,
+			ctrl = KeyID.E,
 			name = "E"
-		}, new KeyLayout() {
-			pos = new Point(112, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(112, rows[2]),
+			size = dB,
 			key = Keys.R,
-			control = KeyID.R,
+			ctrl = KeyID.R,
 			name = "R"
-		}, new KeyLayout() {
-			pos = new Point(135, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(135, rows[2]),
+			size = dB,
 			key = Keys.T,
-			control = KeyID.T,
+			ctrl = KeyID.T,
 			name = "T"
-		}, new KeyLayout() {
-			pos = new Point(158, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(158, rows[2]),
+			size = dB,
 			key = Keys.Y,
-			control = KeyID.Y,
+			ctrl = KeyID.Y,
 			name = "Y"
-		}, new KeyLayout() {
-			pos = new Point(181, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(181, rows[2]),
+			size = dB,
 			key = Keys.U,
-			control = KeyID.U,
+			ctrl = KeyID.U,
 			name = "U"
-		}, new KeyLayout() {
-			pos = new Point(204, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(204, rows[2]),
+			size = dB,
 			key = Keys.I,
-			control = KeyID.I,
+			ctrl = KeyID.I,
 			name = "I"
-		}, new KeyLayout() {
-			pos = new Point(227, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(227, rows[2]),
+			size = dB,
 			key = Keys.O,
-			control = KeyID.O,
+			ctrl = KeyID.O,
 			name = "O"
-		}, new KeyLayout() {
-			pos = new Point(250, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(250, rows[2]),
+			size = dB,
 			key = Keys.P,
-			control = KeyID.P,
+			ctrl = KeyID.P,
 			name = "P"
-		}, new KeyLayout() {
-			pos = new Point(273, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(273, rows[2]),
+			size = dB,
 			key = Keys.OemOpenBrackets,
-			control = KeyID.BrackL,
+			ctrl = KeyID.BrackL,
 			name = "["
-		}, new KeyLayout() {
-			pos = new Point(296, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(296, rows[2]),
+			size = dB,
 			key = Keys.OemCloseBrackets,
-			control = KeyID.BrackR,
+			ctrl = KeyID.BrackR,
 			name = "]"
-		}, new KeyLayout() {
-			pos = new Point(320, buttonRows[2]),
-			size = new Size(50, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(320, rows[2]),
+			size = new Size(50, dbh),
 			key = Keys.OemBackslash,
-			control = KeyID.BkSlash,
+			ctrl = KeyID.BkSlash,
 			name = "\\"
-		}, new KeyLayout() {
-			pos = new Point(3, buttonRows[3]),
-			size = new Size(44, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(3, rows[3]),
+			size = new Size(44, dbh),
 			key = Keys.CapsLock,
-			control = KeyID.Caps,
+			ctrl = KeyID.Caps,
 			name = "CapsLk"
-		}, new KeyLayout() {
-			pos = new Point(50, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(50, rows[3]),
+			size = dB,
 			key = Keys.A,
-			control = KeyID.A,
+			ctrl = KeyID.A,
 			name = "A"
-		}, new KeyLayout() {
-			pos = new Point(73, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(73, rows[3]),
+			size = dB,
 			key = Keys.S,
-			control = KeyID.S,
+			ctrl = KeyID.S,
 			name = "S"
-		}, new KeyLayout() {
-			pos = new Point(96, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(96, rows[3]),
+			size = dB,
 			key = Keys.D,
-			control = KeyID.D,
+			ctrl = KeyID.D,
 			name = "D"
-		}, new KeyLayout() {
-			pos = new Point(119, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(119, rows[3]),
+			size = dB,
 			key = Keys.F,
-			control = KeyID.F,
+			ctrl = KeyID.F,
 			name = "F"
-		}, new KeyLayout() {
-			pos = new Point(142, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(142, rows[3]),
+			size = dB,
 			key = Keys.G,
-			control = KeyID.G,
+			ctrl = KeyID.G,
 			name = "G"
-		}, new KeyLayout() {
-			pos = new Point(165, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(165, rows[3]),
+			size = dB,
 			key = Keys.H,
-			control = KeyID.H,
+			ctrl = KeyID.H,
 			name = "H"
-		}, new KeyLayout() {
-			pos = new Point(188, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(188, rows[3]),
+			size = dB,
 			key = Keys.J,
-			control = KeyID.J,
+			ctrl = KeyID.J,
 			name = "J"
-		}, new KeyLayout() {
-			pos = new Point(211, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(211, rows[3]),
+			size = dB,
 			key = Keys.K,
-			control = KeyID.K,
+			ctrl = KeyID.K,
 			name = "K"
-		}, new KeyLayout() {
-			pos = new Point(234, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(234, rows[3]),
+			size = dB,
 			key = Keys.L,
-			control = KeyID.L,
+			ctrl = KeyID.L,
 			name = "L"
-		}, new KeyLayout() {
-			pos = new Point(257, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(257, rows[3]),
+			size = dB,
 			key = Keys.OemSemicolon,
-			control = KeyID.SColon,
+			ctrl = KeyID.SColon,
 			name = ":"
-		}, new KeyLayout() {
-			pos = new Point(280, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(280, rows[3]),
+			size = dB,
 			key = Keys.OemQuotes,
-			control = KeyID.DQuote,
+			ctrl = KeyID.DQuote,
 			name = "\""
-		}, new KeyLayout() {
-			pos = new Point(304, buttonRows[3]),
-			size = new Size(66, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(304, rows[3]),
+			size = new Size(66, dbh),
 			key = Keys.Enter,
-			control = KeyID.Enter,
+			ctrl = KeyID.Enter,
 			name = "Enter"
-		}, new KeyLayout() {
-			pos = new Point(3, buttonRows[4]),
-			size = new Size(61, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(3, rows[4]),
+			size = new Size(61, dbh),
 			key = Keys.LShiftKey,
-			control = KeyID.LShift,
+			ctrl = KeyID.LShift,
 			name = "Shift"
-		}, new KeyLayout() {
-			pos = new Point(66, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(66, rows[4]),
+			size = dB,
 			key = Keys.Z,
-			control = KeyID.Z,
+			ctrl = KeyID.Z,
 			name = "Z"
-		}, new KeyLayout() {
-			pos = new Point(89, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(89, rows[4]),
+			size = dB,
 			key = Keys.X,
-			control = KeyID.X,
+			ctrl = KeyID.X,
 			name = "X"
-		}, new KeyLayout() {
-			pos = new Point(112, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(112, rows[4]),
+			size = dB,
 			key = Keys.C,
-			control = KeyID.C,
+			ctrl = KeyID.C,
 			name = "C"
-		}, new KeyLayout() {
-			pos = new Point(135, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(135, rows[4]),
+			size = dB,
 			key = Keys.V,
-			control = KeyID.V,
+			ctrl = KeyID.V,
 			name = "V"
-		}, new KeyLayout() {
-			pos = new Point(158, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(158, rows[4]),
+			size = dB,
 			key = Keys.B,
-			control = KeyID.B,
+			ctrl = KeyID.B,
 			name = "B"
-		}, new KeyLayout() {
-			pos = new Point(181, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(181, rows[4]),
+			size = dB,
 			key = Keys.N,
-			control = KeyID.N,
+			ctrl = KeyID.N,
 			name = "N"
-		}, new KeyLayout() {
-			pos = new Point(204, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(204, rows[4]),
+			size = dB,
 			key = Keys.M,
-			control = KeyID.M,
+			ctrl = KeyID.M,
 			name = "M"
-		}, new KeyLayout() {
-			pos = new Point(227, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(227, rows[4]),
+			size = dB,
 			key = Keys.Oemcomma,
-			control = KeyID.Comma,
+			ctrl = KeyID.Comma,
 			name = "<"
-		}, new KeyLayout() {
-			pos = new Point(250, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(250, rows[4]),
+			size = dB,
 			key = Keys.OemPeriod,
-			control = KeyID.Period,
+			ctrl = KeyID.Period,
 			name = ">"
-		}, new KeyLayout() {
-			pos = new Point(273, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(273, rows[4]),
+			size = dB,
 			key = Keys.OemQuestion,
-			control = KeyID.QMark,
+			ctrl = KeyID.QMark,
 			name = "?"
-		}, new KeyLayout() {
-			pos = new Point(297, buttonRows[4]),
-			size = new Size(73, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(297, rows[4]),
+			size = new Size(73, dbh),
 			key = Keys.RShiftKey,
-			control = KeyID.RShift,
+			ctrl = KeyID.RShift,
 			name = "Shift"
-		}, new KeyLayout() {
-			pos = new Point(3, buttonRows[5]),
-			size = new Size(29, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(3, rows[5]),
+			size = new Size(29, dbh),
 			key = Keys.LControlKey,
-			control = KeyID.LCtrl,
+			ctrl = KeyID.LCtrl,
 			name = "Ctrl"
 		}, /*new KeyLayout() {
 			pos = new Point(66, buttonRows[4]),
@@ -648,23 +648,23 @@ public partial class keyEdit : Form
 			key = Keys.LWin,
 			control = KeyID.Win,
 			name = "Win"
-		},*/ new KeyLayout() {
-			pos = new Point(66, buttonRows[5]),
-			size = new Size(29, defaultButtonHeight),
+		},*/ new Key() {
+			pos = new Point(66, rows[5]),
+			size = new Size(29, dbh),
 			key = Keys.LMenu,
-			control = KeyID.LAlt,
+			ctrl = KeyID.LAlt,
 			name = "Alt"
-		}, new KeyLayout() {
-			pos = new Point(97, buttonRows[5]),
-			size = new Size(139, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(97, rows[5]),
+			size = new Size(139, dbh),
 			key = Keys.Space,
-			control = KeyID.Space,
+			ctrl = KeyID.Space,
 			name = ""
-		}, new KeyLayout() {
-			pos = new Point(239, buttonRows[5]),
-			size = new Size(29, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(239, rows[5]),
+			size = new Size(29, dbh),
 			key = Keys.RMenu,
-			control = KeyID.RAlt,
+			ctrl = KeyID.RAlt,
 			name = "Alt"
 		}, /*new KeyLayout() {
 			pos = new Point(271, buttonRows[4]),
@@ -678,41 +678,41 @@ public partial class keyEdit : Form
 			key = Keys.Menu,
 			control = KeyID.Menu,
 			name = "N"
-		},*/ new KeyLayout() {
-			pos = new Point(341, buttonRows[5]),
-			size = new Size(29, defaultButtonHeight),
+		},*/ new Key() {
+			pos = new Point(341, rows[5]),
+			size = new Size(29, dbh),
 			key = Keys.RControlKey,
-			control = KeyID.RCtrl,
+			ctrl = KeyID.RCtrl,
 			name = "Ctrl"
-		}, new KeyLayout() {
-			pos = new Point(399, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(399, rows[4]),
+			size = dB,
 			key = Keys.Up,
-			control = KeyID.Up,
+			ctrl = KeyID.Up,
 			name = "↑"
-		}, new KeyLayout() {
-			pos = new Point(376, buttonRows[5]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(376, rows[5]),
+			size = dB,
 			key = Keys.Left,
-			control = KeyID.Left,
+			ctrl = KeyID.Left,
 			name = "←"
-		}, new KeyLayout() {
-			pos = new Point(399, buttonRows[5]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(399, rows[5]),
+			size = dB,
 			key = Keys.Down,
-			control = KeyID.Down,
+			ctrl = KeyID.Down,
 			name = "↓"
-		}, new KeyLayout() {
-			pos = new Point(422, buttonRows[5]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(422, rows[5]),
+			size = dB,
 			key = Keys.Right,
-			control = KeyID.Right,
+			ctrl = KeyID.Right,
 			name = "→"
-		}, new KeyLayout() {
-			pos = new Point(449, buttonRows[1]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(449, rows[1]),
+			size = dB,
 			key = Keys.NumLock,
-			control = KeyID.NumLock,
+			ctrl = KeyID.NumLock,
 			name = "nL"
 		},/* new KeyLayout() {
 			pos = new Point(449, buttonRows[1]),
@@ -726,11 +726,11 @@ public partial class keyEdit : Form
 			key = Keys.oem,
 			control = KeyID.NumAst,
 			name = "nL"
-		},*/ new KeyLayout() {
-			pos = new Point(449, buttonRows[2]),
-			size = defaultButtonSize,
+		},*/ new Key() {
+			pos = new Point(449, rows[2]),
+			size = dB,
 			key = Keys.NumPad7,
-			control = KeyID.Num7,
+			ctrl = KeyID.Num7,
 			name = "7"
 		}, /*new KeyLayout() {
 			pos = new Point(518, buttonRows[2]),
@@ -750,72 +750,72 @@ public partial class keyEdit : Form
 			key = Keys.OemMinus,
 			control = KeyID.Num,
 			name = "-"
-		},*/ new KeyLayout() {
-			pos = new Point(495, buttonRows[5]),
-			size = defaultButtonSize,
+		},*/ new Key() {
+			pos = new Point(495, rows[5]),
+			size = dB,
 			key = Keys.OemPeriod,
-			control = KeyID.NumDel,
+			ctrl = KeyID.NumDel,
 			name = "."
-		}, new KeyLayout() {
-			pos = new Point(472, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(472, rows[2]),
+			size = dB,
 			key = Keys.NumPad8,
-			control = KeyID.Num8,
+			ctrl = KeyID.Num8,
 			name = "8"
-		}, new KeyLayout() {
-			pos = new Point(495, buttonRows[2]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(495, rows[2]),
+			size = dB,
 			key = Keys.NumPad9,
-			control = KeyID.Num9,
+			ctrl = KeyID.Num9,
 			name = "9"
-		}, new KeyLayout() {
-			pos = new Point(449, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(449, rows[3]),
+			size = dB,
 			key = Keys.NumPad4,
-			control = KeyID.Num4,
+			ctrl = KeyID.Num4,
 			name = "4"
-		}, new KeyLayout() {
-			pos = new Point(472, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(472, rows[3]),
+			size = dB,
 			key = Keys.NumPad5,
-			control = KeyID.Num5,
+			ctrl = KeyID.Num5,
 			name = "5"
-		}, new KeyLayout() {
-			pos = new Point(495, buttonRows[3]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(495, rows[3]),
+			size = dB,
 			key = Keys.NumPad6,
-			control = KeyID.Num6,
+			ctrl = KeyID.Num6,
 			name = "6"
-		}, new KeyLayout() {
-			pos = new Point(449, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(449, rows[4]),
+			size = dB,
 			key = Keys.NumPad1,
-			control = KeyID.Num1,
+			ctrl = KeyID.Num1,
 			name = "1"
-		}, new KeyLayout() {
-			pos = new Point(472, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(472, rows[4]),
+			size = dB,
 			key = Keys.NumPad2,
-			control = KeyID.Num2,
+			ctrl = KeyID.Num2,
 			name = "2"
-		}, new KeyLayout() {
-			pos = new Point(495, buttonRows[4]),
-			size = defaultButtonSize,
+		}, new Key() {
+			pos = new Point(495, rows[4]),
+			size = dB,
 			key = Keys.NumPad3,
-			control = KeyID.Num3,
+			ctrl = KeyID.Num3,
 			name = "3"
-		}, new KeyLayout() {
-			pos = new Point(449, buttonRows[5]),
-			size = new Size(44, defaultButtonHeight),
+		}, new Key() {
+			pos = new Point(449, rows[5]),
+			size = new Size(44, dbh),
 			key = Keys.NumPad0,
-			control = KeyID.Num0,
+			ctrl = KeyID.Num0,
 			name = "0"
 		},
 	};
 	#endregion
-	Button[] keyButtons = new Button[keytable.Length];
+	Button[] kBtns = new Button[keytable.Length];
 
-	public static Color[] keyColors = new Color[] {
+	public static Color[] kCol = new Color[] {
 		Color.SpringGreen,
 		Color.Red,
 		Color.Yellow,
@@ -830,7 +830,7 @@ public partial class keyEdit : Form
 		Color.LightGray,
 		Color.White,
 	};
-	public static string[] controlNames = new string[] {
+	public static string[] cNames = new string[] {
 		"Green",
 		"Red",
 		"Yellow",
@@ -849,14 +849,14 @@ public partial class keyEdit : Form
 	public void updateKeys()
 	{
 		this.SuspendLayout();
-		for (int i = 0; i < keyButtons.Length; i++)
+		for (int i = 0; i < kBtns.Length; i++)
 		{
 			Color newColor = SystemColors.Control;
-			for (int j = 0; j < keyBinds.Length; j++)
+			for (int j = 0; j < kBinds.Length; j++)
 			{
-				if (keytable[i].control == (KeyID)keyBinds[j])
+				if (keytable[i].ctrl == (KeyID)kBinds[j])
 				{
-					newColor = keyColors[j];
+					newColor = kCol[j];
 					continue;
 				}
 			}
@@ -868,8 +868,8 @@ public partial class keyEdit : Form
 			{
 				textColor = Color.White;
 			}
-			keyButtons[i].BackColor = newColor;
-			keyButtons[i].ForeColor = textColor;
+			kBtns[i].BackColor = newColor;
+			kBtns[i].ForeColor = textColor;
 		}
 		this.ResumeLayout(false);
 		this.PerformLayout();
@@ -878,13 +878,13 @@ public partial class keyEdit : Form
 	public keyEdit(int[] binds)
 	{
 		if (binds != null)
-			keyBinds = binds;
+			kBinds = binds;
 		InitializeComponent();
 		this.SuspendLayout();
 		Font fnt = new Font("Arial", 6.75f);
 		for (int i = 0; i < keytable.Length; i++)
 		{
-			keyButtons[i] = new Button()
+			kBtns[i] = new Button()
 			{
 				Location = keytable[i].pos,
 				Size = keytable[i].size,
@@ -895,8 +895,8 @@ public partial class keyEdit : Form
 				Padding = new Padding(0),
 				//FlatStyle = FlatStyle.System,
 			};
-			keyButtons[i].Click += endBind;
-			keylayout.Controls.Add(keyButtons[i]);
+			kBtns[i].Click += eBind;
+			keylayout.Controls.Add(kBtns[i]);
 		}
 		this.ResumeLayout(false);
 		this.PerformLayout();

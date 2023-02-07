@@ -38,7 +38,7 @@ namespace ChartEdit
 			qbcNote.FretMask |= num;
 		}
 
-		public StringBuilder AsString()
+		/*public StringBuilder AsString()
 		{
 			StringBuilder stringBuilder = new StringBuilder(base.Count * 11);
 			foreach (QbcNote qbcNote in this)
@@ -51,7 +51,7 @@ namespace ChartEdit
 				stringBuilder.Append("\r\n");
 			}
 			return stringBuilder;
-		}
+		}*/
 
 		private int LastOffset()
 		{

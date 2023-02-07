@@ -1,0 +1,135 @@
+Initializing...
+FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n--------------------------------
+Shuffle settings section cannot be found
+Can't find any charts!
+Cannot find a file indicating of containing highway GFX.
+global.pak isn't named correctly.
+One of the entered files don't exist.
+\n######### DOWNLOAD SONG PHASE #########\n
+Downloading song package...
+already downloaded file.
+Unique file date checking enabled.
+Date not cached
+This song package is a larger file than usual. ({0} MB)\nDo you want to continue?
+Writing link to cache...
+Writing date to cache...
+\n######### MAIN LAUNCHER PHASE #########\n
+Reading file.
+Detected chart file.
+Detected midi file.
+Converting to chart...
+Cannot find chart after converting from MIDI. Something must've went wrong with mid2chart. Exiting.
+Checking cache...
+Encoding song.
+Getting audio files...
+Found audio with the chart name
+Found FOF structure files / 
+Checking if extra audio exists
+Found isolated drums audio (
+Found isolated vocals audio
+Current selected audio streams are:
+No song audio can be found.\nDo you want to search for it?
+Want to play without audio?\nThis is not compatible with practice mode.
+Failed to delete the temp FSB folder!
+Found more than three audio tracks, merging.
+Creating encoder process...
+ynchronous mode set\n
+Starting FSB building...
+Cached audio found.
+Failed to copy cached FSB. WHY?!!!
+Deleting the currently loaded FSB in case.
+Chart is not cached.
+Opening song pak.
+dbg.pak.xen can go kill itself
+i'm %#@!?ng done
+Compiling chart.
+Creating note arrays...
+Error in parsing notes for 
+Error in parsing solos for 
+Creating and adding starpower arrays...
+Getting end time...
+Unable to get the end time for a note track [
+Calculating end time, so far: 
+End time is 
+Reading boss props...
+Song detected as boss
+Ignoring death lick script
+Got non-existent powerup in boss.ini: 
+Creating powerup arrays...
+Sorting scripts by time.
+Creating face-off sections...
+Creating time signature arrays...
+https://i.kym-cdn.com/photos/images/original/002/297/355/cb3
+Creating fretbar arrays...
+Collecting garbage...
+Creating marker arrays...
+Aligning pointers...
+Compiling PAK.
+Writing PAK to cache.
+DID EVERYTHING WORK?!
+Cached chart found.
+Waiting for song encoding to finish.
+Writing audio to cache.
+Waiting for extra track merging to finish.
+Elapsed audio encoding time: 
+Creating GH3 process...
+Ready, go!
+Cleaning up SoX temp files FOR SOME REASON!!!
+\n######### FSP EXTRACT PHASE #########\n
+Detected song package.
+Found cached ID.
+ZIP not cached.
+Found cached FSP.
+Error: Cached FSP does not exist. Extracting.
+Error extracting a file: 
+Looking for command line accessible 7Zip.
+Looking for 7Zip in registry.
+Wait WTF, THE PROGRAM ISN'T THERE!! HOW!
+Could not find 7-Zip path in registry. Is it installed?
+Somehow looking for 7-Zip failed. Is it installed?
+7Zip is installed. Using that...
+7Zip could not be found.
+Looking for command line accessible WinRAR or UnRar.exe
+Found UnRAR. Using that...
+UnRAR could not be found.
+Unsupported archive type
+Writing path to cache...
+That file does not exist. Exiting.
+DEQhd2uFteibPwq0SWBInTpA_jcZL5GKz3YCR14Ulk87Jors9vNHgfaOmMXy6Vx-
+Press any key to exit
+Found (Bink) background video
+No (Bink) background video found
+\n___     ___\\\n   \\   /   /\n    \\ /\n     X\n    / \\\n___/   \\___\\\n           /\n
+Set max FPS, if not capped by Vsync.\nIf set to 0, the frame rate limit will not take effect.\nAs of now, it can only cap to 1ms / 1000 FPS.\nWarning: Some frame rates will make the game look\nchoppy depending on the refresh rate your monitor supports,\nor depending on your GPU.
+Override the note limit. Set to -1 to make\nthe program determine how many notes\nthere are in the chart opened.\nRAM usage may vary.
+This allows you to change the window size of the game according to your monitor settings.
+Clean files from downloading and extracting Song Packages.\nWarning: Reuse of these files will require downloading and\nextracting them again, some of which can take a bit of time.
+Change the bitrate used for converting songs.\nThis will only take effect for the next songs converted.\nThe default is 128kbps, as decided by the game.\nIf song caching is turned on, the cached songs will\nkeep the bitrate setting they were converted with.\nNote: This will also result in larger compiled\naudio files, which effects your song cache as well.
+Change the controller that is selected to play when Keyboard mode is off.\nWARNING: Unplugging or plugging in controllers can affect this setting.
+This applies for both player hyperspeeds.
+This applies for both player difficulties.
+Credits will be displayed in console.
+Enter percentage of song speed.
+Change instrument or track to be played in game.
+Relaunch the game with the previous song in place.
+Select what plugins should be loaded or disabled.\nRequires GH3+ compatible plugins.
+View cached chart files. Songs will appear\nhere only when song caching is turned on.
+Change the format of currentsong.txt. Can be useful for streaming.
+Change the amount of time to wait before the\nsong starts. Requires \"No intro\" to be turned on.
+Change controls for playing on keyboard.
+Required for playing face-off and battle.
+Set current background image when playing a song.\nNote: Background color is going to be deprecated in favor of background images.
+Background image that\'s going to be shown in the game.\nDouble click to see a larger preview of how it will look.
+Speed:                            %
+6f1d2b61d5a011cfbfc7444553540000
+201 202 203 204 205 311 999 219 235 400 401 999 307
+The extractor returned a non-zero error code. This could mean that the extraction has failed.
+7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.
+Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed.
+%a - Author, %t - Title, %b - Album, %% - Percent,\n%c - Charter, %y - Year, %l - Length, %g - Genre
+/!\\ Error adding a starpower phrase. If this message appears more than once, there may be a problem
+Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|Any type|*.*
+Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal
+Saving user background video
+Restoring user background video
+Failed to kill helix or SoX executables.

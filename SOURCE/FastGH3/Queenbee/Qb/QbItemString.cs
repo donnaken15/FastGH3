@@ -21,7 +21,7 @@ namespace Nanook.QueenBee.Parser
 
 
             _isUnicode = ((type == QbItemType.SectionStringW || type == QbItemType.ArrayStringW || type == QbItemType.StructItemStringW) &&
-                (base.Root.PakFormat.PakFormatType == PakFormatType.PC || base.Root.PakFormat.PakFormatType == PakFormatType.XBox));
+                (base.Root.PakFormat.PakFormatType == PakFormatType.PC));
 
             _charWidth = !_isUnicode ? 1 : 2;
 
@@ -56,7 +56,7 @@ namespace Nanook.QueenBee.Parser
             //System.Diagnostics.Debug.WriteLine(string.Format("{0} - 0x{1}", type.ToString(), (base.StreamPos(br) - 4).ToString("X").PadLeft(8, '0')));
 
             _isUnicode = ((type == QbItemType.SectionStringW || type == QbItemType.ArrayStringW || type == QbItemType.StructItemStringW) &&
-                (base.Root.PakFormat.PakFormatType == PakFormatType.PC || base.Root.PakFormat.PakFormatType == PakFormatType.XBox));
+                (base.Root.PakFormat.PakFormatType == PakFormatType.PC));
 
             byte[] bytes;
 

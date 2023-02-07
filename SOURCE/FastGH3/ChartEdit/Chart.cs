@@ -191,7 +191,8 @@ namespace ChartEdit
 			}
 		}
         
-		public void Save(string fileName)
+		// read only app
+		/*public void Save(string fileName)
 		{
 			StringBuilder stringBuilder = new StringBuilder();
 			this.WriteSongData(stringBuilder);
@@ -307,7 +308,7 @@ namespace ChartEdit
 				chartData.Append("\r\n");
 			}
 			chartData.Append("}\r\n");
-		}
+		}*/
         
 		public int EighthResolution
 		{

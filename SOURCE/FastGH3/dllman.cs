@@ -26,7 +26,7 @@ public partial class dllman : Form
 	private void dlldel(object sender, EventArgs e)
 	{
 		foreach (object dll in dlllist.SelectedItems)
-			if (dll.ToString() != "core.dll")
+			if (dll.ToString().ToLower() != "core.dll")
 				File.Delete(folder + plugins + dll.ToString().Replace("(*)",disabled));
 		dllrefresh();
 		if (dlllist.SelectedIndex == -1)

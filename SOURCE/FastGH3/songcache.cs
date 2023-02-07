@@ -7,9 +7,9 @@ public partial class songcache : Form
 {
 	// should I specify file path/name in the INI when caching a song?
 
-	public string folder = Path.GetDirectoryName(Application.ExecutablePath) + "\\DATA\\CACHE\\";
+	string folder = Path.GetDirectoryName(Application.ExecutablePath) + "\\DATA\\CACHE\\";
 
-	public IniFile i = new IniFile();
+	IniFile i = new IniFile();
 
 	public songcache()
 	{
@@ -43,10 +43,10 @@ public partial class songcache : Form
 		}
 	}
 
-	char[] bUnits = " KMGT".ToCharArray();
-	uint bThousand = 1024; // based *ibibytes
+	static char[] bUnits = " KMGT".ToCharArray();
+	static uint bThousand = 1024; // based *ibibytes
 
-	public string FileSize(long length)
+	public static string FileSize(long length)
 	{
 		float newSize = length;
 		byte bUnit = 0;
@@ -63,7 +63,7 @@ public partial class songcache : Form
 
 	private void runGameWithCache(DataGridViewCellEventArgs e)
 	{
-		Program.disallowGameStartup();
+		Program.killgame();
 		IniFile.IniSection cs = i.GetSection((string)cache.Rows[e.RowIndex].Cells[0].Value);
 		File.Copy(folder + cs.Name, folder + "..\\PAK\\song.pak.xen", true);
 		File.Copy(folder + cs.GetKey("Audio").Value, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
@@ -80,10 +80,10 @@ public partial class songcache : Form
 		};
 		File.WriteAllText(folder + "..\\currentsong.txt",
 			Program.FormatText(
-				Program.settings.GetKeyValue("Misc", "SongtextFormat", "%a - %t")
+				Program.cfg("Misc", "SongtextFormat", "%a - %t")
 				.Replace("\\n", Environment.NewLine),
 			songParams));
-		Program.allowGameStartup();
+		Program.unkillgame();
 		Process.Start(folder + "..\\..\\game.exe");
 	}
 

@@ -1,0 +1,37 @@
+adituv           - QbScript reverse engineering,
+                   compiler/decompiler,
+                   vsync flame fix,
+                   built in QB decompiler
+ExileLord        - GH3+ and executable reverse engineering,
+                   open and tap notes,
+                   ChartEdit/Chart-to-PAK classes and conversion tools,
+donnaken15       - other QbScript hacking,
+                   mod creation and setup,
+                   game optimization,
+                   main program and automation,
+                   logger plugin,
+                   Discord RPC,
+                   solos,
+                   open sustains,
+                   overlapping starpower
+Nanook           - QueenBee + Parser
+raphaelgoulart   - mid2chart
+GameZelda        - original modding and game data R.E.
+HATRED           - better No-CD/SecuROM fix/deobfs. than BATTERY
+No1mann          \
+Invo             \
+szymmirr         \
+Zedek the P.D.   \
+ScoreHero forums
+and many others  - Miscellaneous things / help
+SoX  devs        - SoX, decoder
+LAME devs        - LAME, faster encoder
+media-autobuild-suite
+paint.net
+FileOptimizer
+Guitar Hero SDK
+upx              - Programs used
+Activision       \
+RedOctane        \
+Neversoft        \
+Aspyr            - Original game, assets, copyright
