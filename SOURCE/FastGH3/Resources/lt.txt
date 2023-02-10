@@ -133,3 +133,4 @@ Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpS
 Saving user background video
 Restoring user background video
 Failed to kill helix or SoX executables.
+Running mid2chart, log:

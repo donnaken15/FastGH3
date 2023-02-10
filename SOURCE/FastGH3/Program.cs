@@ -416,7 +416,62 @@ class Program
 		return Tuple.Create(sT, sNC);
 	}
 
-	public static Process cmd(string fn, string a, string i) //new Headless process
+	static short lx, ly; // save/restore cursor position
+	// buffer can go as big as 0x7FFF/0x7FFF
+	// i learned this from hacking registry
+	// to make cmd have 32767 lines
+	static void sc()
+	{
+		lx = (short)Console.CursorLeft;
+		ly = (short)Console.CursorTop;
+	}
+	static void rc()
+	{
+		Console.SetCursorPosition(lx, ly);
+		//Console.CursorLeft = lx;
+		//Console.CursorTop = ly;
+	}
+	// progress bars
+	static short[] pbl; // lines to write to
+	static void pb(float p, int l) // update progress bar at that line
+	{
+		if (p < 0 || pbl[l] < 0 || l < 0)
+			return;
+		if (wl)
+			_l("track "+l.ToString()+": "+p.ToString(), true);
+		sc();
+		Console.SetCursorPosition(8, pbl[l]); //             width
+		//Console.Write("AAA");
+		Console.Write(p.ToString("0").PadLeft(3)+"% (" + new string('-', (int)Math.Floor((p/100)*32)));
+		rc();
+	}
+	static float ps(string t)
+		// parse sox progress bar for "In: %"
+		// sox flushes/refreshes bar at long intervals
+		// but command prompt will still display it properly
+	{
+		if (t == null) return -1;
+		string tr; // trimmed log for last instance of printing In:
+		/*if (t.LastIndexOf("\nIn:") != -1)
+		{
+			// probably won't happen
+			// having second thought
+			// realizing that the
+			// event is executed
+			// for each line always
+			vl("test, got multiline stdout");
+			tr = t.Substring(t.LastIndexOf("\nIn:")+4);
+		}
+		else*/ if (t.LastIndexOf("In:") != -1)
+			tr = t.Substring(t.LastIndexOf("In:")+3);
+		else
+			return -1; // invalid
+		tr = tr.Substring(0, tr.IndexOf('%'));
+		//vl("progress test: "+tr);
+		return float.Parse(tr);
+	}
+
+	public static Process cmd(string fn, string a, int i) //new Headless process
 	{
 		// for optimizing heavy use of *
 		Process n = new Process();
@@ -441,17 +496,24 @@ class Program
 			n.StartInfo.UseShellExecute = false;
 			n.StartInfo.RedirectStandardError = true;
 			n.StartInfo.RedirectStandardOutput = true;
-			string pf = "";
-			if (i != null)
-				pf = i + ": "; // indicate which process this is in log
-			n.ErrorDataReceived += (p, e) => vl(pf + e.Data);
-			n.OutputDataReceived += (p, d) => vl(pf + d.Data);
+			if (i == -1)
+			{
+				// print log of program running
+				n.ErrorDataReceived += (p, e) => vl(e.Data);
+				n.OutputDataReceived += (p, d) => vl(d.Data);
+			}
+			else
+			{
+				// update progress bar for audio tracks being encoded
+				n.ErrorDataReceived += (p, e) => pb(ps(e.Data), i);
+				n.OutputDataReceived += (p, d) => pb(ps(d.Data), i);
+			}
 		}
 		return n;
 	}
 	public static Process cmd(string fname, string args)
 	{
-		return cmd(fname,args,null);
+		return cmd(fname,args,-1);
 	}
 	public static string[] vstr;
 
@@ -865,7 +927,7 @@ class Program
 						vl("File is: " + args[0]);
 						Process mid2chart = cmd(folder + "\\mid2chart.exe",
 							paksongmid.EncloseWithQuoteMarks() + " -k -u -p -m",
-							"mid2chart");
+							-1);
 						print(vstr[16], chartConvColor); // "Reading file."
 						if (Path.GetFileName(args[0]).EndsWith(chartext))
 						{
@@ -882,6 +944,7 @@ class Program
 							//Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
 							//Console.ReadKey();
 							File.Copy(args[0], paksongmid, true);
+							vl(vstr[135]);
 							mid2chart.Start();
 							if (vb || wl)
 							{
@@ -1240,7 +1303,8 @@ class Program
 						Process[] fsbbuild2 = new Process[3]; // 3 async encoders
 						Process fsbbuild3 = new Process(); // makefsb part
 						const bool MTFSB = true; // enable asynchronous audio track encoding
-										   //if (cacheEnabled)
+												 //if (cacheEnabled)
+						pbl = new short[3] { -1, -1, -1 };
 						killgame();
 						string CMDpath = where("cmd.exe");
 						if (CMDpath == "") // somehow someone got an error of a process starting
@@ -1272,7 +1336,7 @@ class Program
 								//print("Found more than three audio tracks, merging.", FSBcolor);
 								addaud = cmd(CMDpath,
 									(folder + music + "\\TOOLS\\nj3t.bat").EncloseWithQuoteMarks(),
-									"nj3t");
+									0);
 								addaud.StartInfo.EnvironmentVariables["AB"] = AB_param;
 								//addaud.StartInfo.EnvironmentVariables["BM"] = VBR_param;
 								foreach (string a in nj3ts)
@@ -1301,7 +1365,7 @@ class Program
 							v(time, FSBcolor);
 							if (!MTFSB)
 							{
-								fsbbuild = cmd(CMDpath, null, "fsbbuild");
+								fsbbuild = cmd(CMDpath, null, -1);
 								fsbbuild.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
 								v("S", FSBcolor); // lol
 							}
@@ -1312,13 +1376,13 @@ class Program
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								for (int i = 0; i < fsbbuild2.Length; i++)
 								{
-									fsbbuild2[i] = cmd(CMDpath, "/c " + ((folder + music + "\\TOOLS\\c128ks.bat").EncloseWithQuoteMarks() + " " + audiostreams[i].EncloseWithQuoteMarks() + " \"" + folder + music + "\\TOOLS\\fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").EncloseWithQuoteMarks(), fsbnames[i]);
+									fsbbuild2[i] = cmd(CMDpath, "/c " + ((folder + music + "\\TOOLS\\c128ks.bat").EncloseWithQuoteMarks() + " " + audiostreams[i].EncloseWithQuoteMarks() + " \"" + folder + music + "\\TOOLS\\fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").EncloseWithQuoteMarks(), i);
 									fsbbuild2[i].StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
 									fsbbuild2[i].StartInfo.EnvironmentVariables["AB"] = AB_param;
 									//fsbbuild2[i].StartInfo.EnvironmentVariables["BM"] = VBR_param;
 									vl("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments, FSBcolor);
 								}
-								fsbbuild3 = cmd(CMDpath, "/c " + ((folder + music + "\\TOOLS\\fsbbuild.bat").EncloseWithQuoteMarks()), "fsbbuild");
+								fsbbuild3 = cmd(CMDpath, "/c " + ((folder + music + "\\TOOLS\\fsbbuild.bat").EncloseWithQuoteMarks()), -1);
 								fsbbuild3.StartInfo.WorkingDirectory = folder + music + "\\TOOLS\\";
 								v("As", FSBcolor);
 							}
@@ -2639,6 +2703,14 @@ class Program
 							else
 							{
 								print(vstr[70], FSBcolor);
+								// high IQ: get file size of MP3 being encoded
+								Console.WriteLine("Encoding progress:");
+								string[] fsbnames = { "song", "guitar", "rhythm" };
+								for (int i = 0; i < 3; i++)
+								{
+									pbl[i] = (short)Console.CursorTop;
+									Console.WriteLine(fsbnames[i].PadRight(6)+":   0% ("+")".PadLeft(33)); // leet optimization
+								}
 								for (int i = 0; i < fsbbuild2.Length; i++)
 									if (!nj3t || (nj3t && i != 0))
 										if (!fsbbuild2[i].HasExited)
@@ -3058,10 +3130,11 @@ class Program
 									Environment.Exit(1);
 									return;
 								}
-								Process x = cmd(xf,xa,"extractor");
+								Process x = cmd(xf,xa,-1);
 								if (got7Z || gotWRAR)
 								{
 									vl("Executing " + x.StartInfo.FileName.EncloseWithQuoteMarks() + " " + x.StartInfo.Arguments, FSPcolor);
+									vl("log:");
 									x.Start();
 									if (vb || wl)
 									{
