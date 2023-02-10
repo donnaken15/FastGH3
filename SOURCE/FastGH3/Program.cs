@@ -1,47 +1,71 @@
-﻿using System;
-using System.IO;
-using System.Diagnostics;
-using System.Windows.Forms;
-using Nanook.QueenBee.Parser;
-using System.Net;
+﻿using ChartEdit;
 using Ionic.Zip;
-using ChartEdit;
-using System.Collections.Generic;
 using Microsoft.Win32;
-using FastGH3.Properties;
+using Nanook.QueenBee.Parser;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
-//using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 #pragma warning disable CS0162 // Unreachable code detected NO ONE CARES
 
 class Program
 {
+	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileInt", CharSet = CharSet.Unicode)] // im forced to use widestrings anyway so why not
+	public static extern int GI(
+		string a, string k, int d, string f);
+	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileString", CharSet = CharSet.Unicode)]
+	public static extern int GStr(
+		string a, string k,
+		string d, [In, Out] char[] s,
+		int n, string f);
+	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileSectionNames", CharSet = CharSet.Unicode)]
+	public static extern int GSN(
+		char[] s, int n, string f);
+	[DllImport("kernel32.dll", EntryPoint = "WritePrivateProfileString", CharSet = CharSet.Unicode)]
+	public static extern bool WSec(
+		string a, string s, string f);
+	[DllImport("kernel32.dll", EntryPoint = "WritePrivateProfileString", CharSet = CharSet.Unicode)]
+	public static extern bool WStr(
+		string a, string k, string s, string f);
+	//https://www.pinvoke.net/default.aspx/kernel32.GetPrivateProfileSectionNames
+	public static string[] sn(string i)
+	{
+		char[] buf = new char[0x20000];
+		// being generous for people playing 6500 songs
+		// (16+3+1)*(6553*1)
+		//hash+
+		//  prefix+
+		//       nullterm
+		//         *entrycount
+		int retn = GSN(buf, buf.Length, i);
+		if (retn == 0)
+			return new string[0];
+		string ret = new string(buf).Substring(0, retn);
+		return ret.Substring(0, ret.Length - 1).Split('\0');
+	}
+
 	public static string folder, dataf = "\\DATA\\", pakf = dataf + "PAK\\",
 		music = dataf + "MUSIC\\", title = "FastGH3";
 
 	static bool vb, wl = true;
-	//static string inif;
-	static IniFile ini = new IniFile(), cache = new IniFile();
+	public static string inif;
+	public static string cachf;
 	static StreamWriter log = null;
 	static string GH3EXEPath;
 
 	// from stackoverflow 1266674
-	public static string NormalizePath(string path)
+	public static string NP(string path)
 	{
 		return Path.GetFullPath(new Uri(path).LocalPath)
 					.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
 					.ToUpperInvariant();
 	}
-
-	// maybe all i needed for INI was: https://www.pinvoke.net/default.aspx/kernel32.GetPrivateProfileInt ???
-	// reading cache sections still require the class
-	// thonk: https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-getprivateprofilesectionnames
-	// i somehow imagine the kernel functions to be slower ^
-	// and since the ini is opened and closed every call
-
-	//[DllImport("kernel32.dll")]
-	//static extern uint GetPrivateProfileInt(string lpAppName, string lpKeyName,
-	//int nDefault, string lpFileName);
 
 	public static string m = "Misc";
 	public static string ks = "Killswitch";
@@ -49,18 +73,39 @@ class Program
 	public static string sv = "SongVideos";
 	public static string lshv = "LastSongHadVideo";
 	public static string stf = "SongtextFormat";
-	public static string cfg(string s, string k, string v)
+	public static string ini(string a, string k, string d, int i, string f)
 	{
-		return ini.GetKeyValue(s, k, v); // whatever
+		char[] _ = new char[i];
+		int len = GStr(a, k, d, _, i, f);
+		return new string(_).Substring(0, len);
 	}
-	public static int cfg(string s, string k, int v)
+	public static int ini(string a, string k, int d, string f)
 	{
-		return int.Parse(cfg(s,k,v.ToString())); // whatever
+		return GI(a, k, d, f);
 	}
-	public static void cfgWrite(string s, string k, object v)
+	public static string ini(string s, string k, string d, string f) // for being lazy
 	{
-		ini.SetKeyValue(s, k, v.ToString());
-		ini.Save(folder + "settings.ini");
+		return ini(s, k, d, 0x200, f);
+	}
+	public static string cfg(string s, string k, string d, int i)
+	{
+		return ini(s, k, d, i, inif);
+	}
+	public static string cfg(string s, string k, string d) // for being lazy
+	{
+		return ini(s, k, d, 0x200, inif);
+	}
+	public static int cfg(string s, string k, int d)
+	{
+		return int.Parse(cfg(s,k,d.ToString()));
+	}
+	public static void iniw(string s, string k, object d, string f)
+	{
+		WStr(s, k, d.ToString(), f);
+	}
+	public static void cfgWrite(string s, string k, object d)
+	{
+		iniw(s, k, d, inif);
 	}
 	public static void killgame()
 	{
@@ -70,7 +115,7 @@ class Program
 	{
 		cfgWrite(m, ks, 0);
 	}
-	static void copySongVideo(string bik)
+	static void cSV(string bik)
 	{
 		#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART
 		// definitely no one will use this
@@ -125,12 +170,12 @@ class Program
 		{
 			foreach (Process proc in Process.GetProcessesByName("helix"))
 			{
-				if (NormalizePath(proc.MainModule.FileName) == NormalizePath(folder + dataf + music + "\\TOOLS\\helix.exe"))
+				if (NP(proc.MainModule.FileName) == NP(folder + dataf + music + "\\TOOLS\\helix.exe"))
 					proc.Kill();
 			}
 			foreach (Process proc in Process.GetProcessesByName("sox"))
 			{
-				if (NormalizePath(proc.MainModule.FileName) == NormalizePath(folder + dataf + music + "\\TOOLS\\sox.exe"))
+				if (NP(proc.MainModule.FileName) == NP(folder + dataf + music + "\\TOOLS\\sox.exe"))
 					proc.Kill();
 			}
 		}
@@ -326,7 +371,7 @@ class Program
 		Pow
 	}
 
-	static Tuple<List<Note>,List<int>> SpecialToPhrases(NoteTrack t, SF s)
+	static Tuple<List<Note>,List<int>> S2P(NoteTrack t, SF s)
 	{
 		// count notes in starpower phrases
 		// weird setup
@@ -415,7 +460,7 @@ class Program
 	[STAThread]
 	static void Main(string[] args)
 	{
-		// base 256 KB without this code
+		// 36 KB
 		try
 		{
 			// System.Reflection.Emit wat dis
@@ -429,8 +474,8 @@ class Program
 				if (mic.Length > 1)
 					foreach (Process fgh3 in mic)
 					{
-						if (NormalizePath(fgh3.MainModule.FileName) ==
-							NormalizePath(Application.ExecutablePath))
+						if (NP(fgh3.MainModule.FileName) ==
+							NP(Application.ExecutablePath))
 						{
 							// can't check process arguments >:(
 							// without some complicated WMI thing
@@ -450,27 +495,27 @@ class Program
 			}
 			Console.Title = title;
 			folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
-			GH3EXEPath = NormalizePath(folder + "\\game.exe");
-			if (File.Exists(folder + "settings.ini"))
-				ini.Load(folder + "settings.ini");
-			vb = ini.GetKeyValue(m, settings.t.VerboseLog.ToString(), "0") == "1";
+			inif = folder + "settings.ini";
+			GH3EXEPath = NP(folder + "\\game.exe");
+			//if (File.Exists(folder + "settings.ini"))
+				//ini.Load(folder + "settings.ini");
+			vb = cfg(m, settings.t.VerboseLog.ToString(), 0) == 1;
 			vstr = Resources.ResourceManager.GetString("vstr").Split('\n');
 			for (int i = 0; i < vstr.Length; i++)
 			{
-				vstr[i] = System.Text.RegularExpressions.Regex.Unescape(vstr[i]);
+				vstr[i] = Regex.Unescape(vstr[i]);
 			}
 			vl(vstr[0]);// "Initializing..."
-			caching = ini.GetKeyValue(m, settings.t.SongCaching.ToString(), "1") == "1";
+			caching = cfg(m, settings.t.SongCaching.ToString(), 1) == 1;
 			if (caching)
 			{
 				Directory.CreateDirectory(folder + dataf + "CACHE");
-				if (File.Exists(folder + dataf + "CACHE\\.db.ini"))
-					cache.Load(folder + dataf + "CACHE\\.db.ini");
+				cachf = folder + dataf + "CACHE\\.db.ini";
 			}
 			#region NO ARGS ROUTINE
 			if (args.Length == 0)
 			{
-				if (cfg(m, settings.t.NoStartupMsg.ToString(), "0") == "0")
+				if (cfg(m, settings.t.NoStartupMsg.ToString(), 0) == 0)
 				{
 					Console.Clear();
 					Console.WriteLine(Resources.ResourceManager.GetString("splashText"));
@@ -550,28 +595,35 @@ class Program
 					// 0.5-1 kb
 					Console.WriteLine(vstr[101]);
 					List<string> paths, files;
-					IniFile.IniSection shuffleCfg;
-					Random rand = new Random((int)DateTime.Now.Ticks);
+					/*IniFile.IniSection shuffleCfg;
 					if (ini.GetSection("Shuffle") == null)
 					{
 						MessageBox.Show(vstr[2], "Error", // "Shuffle settings section cannot be found"
 							MessageBoxButtons.OK, MessageBoxIcon.Error);
 						Environment.Exit(1);
 					}
-					shuffleCfg = ini.GetSection("Shuffle");
+					shuffleCfg = ini.GetSection("Shuffle");*/
 					//vl("got shuffle section");
 					paths = new List<string>();
 					string curpath;
-					foreach (IniFile.IniSection.IniKey key in shuffleCfg.Keys)
-						if (key.Name.ToLower().StartsWith("path"))
-						{
-							curpath = NormalizePath(key.Value);
-							if (Directory.Exists(curpath) && paths.IndexOf(curpath) == -1)
-								paths.Add(curpath);
-							else if (!Directory.Exists(curpath))
-								vl("got invalid directory, skipping: "+key.Value);
-						}
+					int j = 0;
+					string p;
+					while ((p = cfg("Shuffle","path"+(++j).ToString(),"")) != "")
+					{
+						curpath = NP(p);
+						if (Directory.Exists(curpath) && paths.IndexOf(curpath) == -1)
+							paths.Add(curpath);
+						else if (!Directory.Exists(curpath))
+							vl("got invalid directory, skipping: "+p);
+					}
+					if (paths.Count == 0)
+					{
+						MessageBox.Show(vstr[2], "Error",
+							MessageBoxButtons.OK, MessageBoxIcon.Error);
+						Environment.Exit(1);
+					}
 					vl("added paths ("+paths.Count+")");
+					Random rand = new Random((int)DateTime.Now.Ticks);
 					string randpath = paths[rand.Next(paths.Count-1)];
 					files = new List<string>();
 					files.AddRange(Directory.GetFiles(randpath, "*.chart", SearchOption.AllDirectories));
@@ -691,22 +743,22 @@ class Program
 					vl("URL: " + args[1], FSPcolor);
 					bool datecheck = true;
 					Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
-					string cacheSect = ""; // ...
-					string urlCache = "";
-					string tmpFn = "null";
-					string adf = vstr[9]; // "already downloaded file." // desparate
+					string cs = ""; // ...
+					string uC = "";
+					string tF = "null";
+					string adf = vstr[9]; // "already downloaded file." // desperate
 					string fdp = " file date. ";
 					vl(fsplink.AbsoluteUri, FSPcolor);
 					if (caching)
 					{
-						cacheSect = "URL" + WZK64.Create(fsplink.AbsoluteUri).ToString("X16");
-						urlCache = cache.GetKeyValue(cacheSect, "File", "");
-						if (urlCache != "")
+						cs = "URL" + WZK64.Create(fsplink.AbsoluteUri).ToString("X16");
+						uC = ini(cs, "File", "", 65, cachf);
+						if (uC != "")
 						{
 							print("Found "+adf, FSPcolor);
-							vl(cacheSect);
-							vl(urlCache);
-							tmpFn = urlCache;
+							vl(cs);
+							vl(uC);
+							tF = uC;
 							if (!datecheck)
 								goto skipToGame;
 						}
@@ -723,8 +775,8 @@ class Program
 					//verboseline("1");
 					if (datecheck && caching)
 					{
-						if (cache.GetKeyValue(cacheSect, "Date", "0") != "") // STUPID
-							lastmod_cached = new DateTime(Convert.ToInt64(cache.GetKeyValue(cacheSect, "Date", "0")));
+						if (ini(cs, "Date", 0, cachf) != 0) // STUPID
+							lastmod_cached = new DateTime(Convert.ToInt64(ini(cs, "Date", 0, cachf)));
 						else
 							lastmod_cached = new DateTime(0);
 						if (lastmod_cached.Ticks == 0)
@@ -750,7 +802,7 @@ class Program
 						else
 						{
 							print("No file date found.", cacheColor);
-							if (urlCache != "")
+							if (uC != "")
 							{
 								print("Using "+adf, cacheColor);
 								goto skipToGame;
@@ -772,24 +824,23 @@ class Program
 					}
 					//if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
 					//settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
-					if (File.Exists(tmpFn)) // do this?
-						File.Delete(tmpFn);
-					tmpFn = Path.GetTempFileName();
+					if (File.Exists(tF)) // do this?
+						File.Delete(tF);
+					tF = Path.GetTempFileName();
 					string tmpFl = Path.GetTempPath();
-					fsp.DownloadFile(fsplink, tmpFn);
-					File.Move(tmpFn, tmpFn + ".fsp");
+					fsp.DownloadFile(fsplink, tF);
+					File.Move(tF, tF + ".fsp");
 					//Directory.CreateDirectory(tmpFl + "\\Z.TMP.FGH3$WEB");
-					tmpFn += ".fsp";
+					tF += ".fsp";
 					if (caching)
 					{
 						print(vstr[13], cacheColor); // "Writing link to cache..."
-						cache.SetKeyValue(cacheSect, "File", tmpFn.ToString());
+						iniw(cs, "File", tF.ToString(), cachf);
 						if (datecheck)
 						{
 							print(vstr[14], cacheColor); // "Writing date to cache..."
-							cache.SetKeyValue(cacheSect, "Date", lastmod.Ticks.ToString());
+							iniw(cs, "Date", lastmod.Ticks.ToString(), cachf);
 						}
-						cache.Save(folder + dataf + "CACHE\\.db.ini");
 					}
 				skipToGame:
 					// download FSP --> open and extract FSP --> convert song --> game
@@ -799,7 +850,7 @@ class Program
 					if (wl && log != null)
 						log.Close();
 					// "already running" >:(
-					Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tmpFn));
+					Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tF));
 					die();
 				}
 				#endregion
@@ -1507,7 +1558,7 @@ class Program
 												QbItemStruct p = new QbItemStruct(mid);
 												p.Create(QbItemType.StructItemStruct);
 												p.ItemQbKey = QbKey.Create(0x7031F10C);
-												// i'm getting desparate at shortening these names for tipping over the 512 byte difference
+												// i'm getting desperate at shortening these names for tipping over the 512 byte difference
 												// and for the fact that WHY DO THESE THINGS NEED NAMES IN THE EXE WHEN IT SHOULD BE OPTIMIZED
 
 												// wish there was a simpler way to make these objects
@@ -1630,7 +1681,7 @@ class Program
 									if (chart.NoteTracks[d + i] != null)
 									{
 										Tuple<List<Note>, List<int>> special =
-											SpecialToPhrases(chart.NoteTracks[d + i], SF.SP);
+											S2P(chart.NoteTracks[d + i], SF.SP);
 										List<Note> sT2 = special.Item1;
 										List<int> sNC = special.Item2;
 										int sNC2 = 0;
@@ -1713,12 +1764,10 @@ class Program
 								boss_useSP = true,
 								boss_defProps = true;
 
-							IniFile bossINI = new IniFile();
-							if (File.Exists("boss.ini"))
-								bossINI.Load("boss.ini");
-							isBoss = bossINI.GetKeyValue("boss", "enable", "0") == "1"; // not letting you off easy with a blank ini lol
-							boss_defProps = bossINI.GetKeyValue("boss", "usedefault", "0") == "1";
-							boss_useSP = bossINI.GetKeyValue("boss", "usestarphrases", "1") == "1";
+							string bini = "boss.ini";
+							isBoss = ini("boss", "enable", 0, bini) == 1; // not letting you off easy with a blank ini lol
+							boss_defProps = ini("boss", "usedefault", 0, bini) == 1;
+							boss_useSP = ini("boss", "usestarphrases", 1, bini) == 1;
 							int boss_death_time = -1;
 
 							QbKey[] defaultPowers = new QbKey[] {
@@ -1757,11 +1806,11 @@ class Program
 							{
 								vl(vstr[54], bossColor);
 								//vl("Song detected as boss", bossColor);
-								boss_name = bossINI.GetKeyValue("boss", "name", boss_name);
+								boss_name = ini("boss", "name", boss_name, bini);
 								vl("Boss name: " + boss_name, bossColor);
-								if (bossINI.GetKeyValue("boss", "deathtime", "-1") != "")
+								if (ini("boss", "deathtime", -1, bini) != -1)
 								{
-									boss_death_time = Convert.ToInt32(bossINI.GetKeyValue("boss", "deathtime", "-1"));
+									boss_death_time = Convert.ToInt32(ini("boss", "deathtime", -1, bini));
 								}
 								//vl("Default props: " + boss_defProps, bossColor);
 								//vl("Use star phrases: " + boss_useSP, bossColor);
@@ -1914,7 +1963,7 @@ class Program
 								if (!boss_defProps)
 								{
 
-									string[] selectedPowers = bossINI.GetKeyValue("boss", "items", vstr[131]).Split(',');
+									string[] selectedPowers = ini("boss", "items", vstr[131], bini).Split(',');
 									// HOW DO I USE THIS https://stackoverflow.com/questions/4916838/is-there-a-string-type-with-8-bit-chars
 
 									List<QbKey> allowedPowers = new List<QbKey>();
@@ -1969,24 +2018,24 @@ class Program
 									int ddd = 0;
 									foreach (string d in diffs)
 									{
-										if (bossINI.GetKeyValue("rockgain", d, "") != "")
+										if (ini("rockgain", d, "", bini) != "")
 											boss_rockGain[ddd] = Convert.ToSingle(
-												bossINI.GetKeyValue("rockgain", d, ""));
-										if (bossINI.GetKeyValue("rockloss", d, "") != "")
+												ini("rockgain", d, "", bini));
+										if (ini("rockloss", d, "", bini) != "")
 											boss_rockLoss[ddd] = Convert.ToSingle(
-												bossINI.GetKeyValue("rockloss", d, ""));
-										if (bossINI.GetKeyValue("attackmiss", d, "") != "")
+												ini("rockloss", d, "", bini));
+										if (ini("attackmiss", d, "", bini) != "")
 											boss_atkmiss[ddd] = Convert.ToSingle(
-												bossINI.GetKeyValue("attackmiss", d, ""));
-										if (bossINI.GetKeyValue("whammyrepair", d, "") != "")
+												ini("attackmiss", d, "", bini));
+										if (ini("whammyrepair", d, "", bini) != "")
 											boss_Wrepair[ddd] = Convert.ToInt32(
-												bossINI.GetKeyValue("whammyrepair", d, ""));
-										if (bossINI.GetKeyValue("stringrepair", d, "") != "")
+												ini("whammyrepair", d, "", bini));
+										if (ini("stringrepair", d, "", bini) != "")
 											boss_Srepair[ddd] = Convert.ToInt32(
-												bossINI.GetKeyValue("stringrepair", d, ""));
-										if (bossINI.GetKeyValue("stringmiss", d, "") != "")
+												ini("stringrepair", d, "", bini));
+										if (ini("stringmiss", d, "", bini) != "")
 											boss_strmiss[ddd] = Convert.ToSingle(
-												bossINI.GetKeyValue("stringmiss", d, ""));
+												ini("stringmiss", d, "", bini));
 
 										QbKey diffCRC = QbKey.Create(d);
 
@@ -2078,7 +2127,7 @@ class Program
 										if (boss_useSP)
 											useSP = SF.SP;
 										Tuple<List<Note>, List<int>> special =
-											SpecialToPhrases(chart.NoteTracks[d + i], useSP);
+											S2P(chart.NoteTracks[d + i], useSP);
 										List<Note> sT2 = special.Item1;
 										int sNC2 = 0;
 										if (sT2.Count != 0)
@@ -2370,9 +2419,7 @@ class Program
 							{
 								scr_arr.AddItem(scripts[i]);
 							}
-							IniFile songini = new IniFile();
-							if (File.Exists("song.ini"))
-								songini.Load("song.ini");
+							string sini = "song.ini";
 							QbItemBase songmeta = new QbItemStruct(mid);
 							songmeta.Create(QbItemType.SectionStruct);
 							songmeta.ItemQbKey = QbKey.Create("fastgh3_meta");
@@ -2391,12 +2438,12 @@ class Program
 							QbItemString songchrtr = new QbItemString(mid);
 							songchrtr.Create(QbItemType.StructItemString);
 							songchrtr.ItemQbKey = QbKey.Create("charter");
-							songtitle.Strings[0] = songini.GetKeyValue("song", "name", "Untitled").Trim();
-							songauthr.Strings[0] = songini.GetKeyValue("song", "artist", "Unknown").Trim();
-							songalbum.Strings[0] = songini.GetKeyValue("song", "album", "Unknown").Trim();
-							songyear.Strings[0] = songini.GetKeyValue("song", "year", "Unknown").Trim();
-							songchrtr.Strings[0] = songini.GetKeyValue("song", "charter", "Unknown").Trim();
-							string genre = songini.GetKeyValue("song", "genre", "Unknown").Trim();
+							songtitle.Strings[0] = ini("song", "name", "Untitled", sini).Trim();
+							songauthr.Strings[0] = ini("song", "artist", "Unknown", sini).Trim();
+							songalbum.Strings[0] = ini("song", "album", "Unknown", sini).Trim();
+							songyear.Strings[0] = ini("song", "year", "Unknown", sini).Trim();
+							songchrtr.Strings[0] = ini("song", "charter", "Unknown", sini).Trim();
+							string genre = ini("song", "genre", "Unknown", sini).Trim();
 							foreach (SongSectionEntry s in chart.Song)
 							{
 								if (s.Key == "Name" && (s.Value.Trim() != ""))
@@ -2423,8 +2470,7 @@ class Program
 								genre
 							};
 							File.WriteAllText(folder + "currentsong.txt",
-								FormatText(cfg(m, stf, "%a - %t")
-									.Replace("\\n", Environment.NewLine),
+								FormatText(Regex.Unescape(cfg(m, stf, "%a - %t")),
 								songParams));
 							#endregion
 							#endregion
@@ -2494,10 +2540,9 @@ class Program
 								//print("Writing PAK to cache.", cacheColor);
 								File.Copy(songpak,
 									folder + "\\DATA\\CACHE\\" + charthash.ToString("X16"), true);
-								cache.SetKeyValue(charthash.ToString("X16"), "Title", songtitle.Strings[0]);
-								cache.SetKeyValue(charthash.ToString("X16"), "Author", songauthr.Strings[0]);
-								cache.SetKeyValue(charthash.ToString("X16"), "Length", timeString);
-								cache.Save(folder + dataf + "CACHE\\.db.ini");
+								iniw(charthash.ToString("X16"), "Title", songtitle.Strings[0], cachf);
+								iniw(charthash.ToString("X16"), "Author", songauthr.Strings[0], cachf);
+								iniw(charthash.ToString("X16"), "Length", timeString, cachf);
 							}
 							vl(vstr[68]);
 							//vl("DID EVERYTHING WORK?!");
@@ -2529,20 +2574,19 @@ class Program
 								year = unknown, timestr = unknown,
 								album = unknown, charter = unknown,
 								genre = unknown;
-							_title = cache.GetKeyValue(cacheidStr, "Title", "Untitled");
-							author = cache.GetKeyValue(cacheidStr, "Author", unknown);
-							timestr = cache.GetKeyValue(cacheidStr, "Length", "Undefined");
-							IniFile songini = new IniFile();
+							_title = ini(cacheidStr, "Title", "Untitled", cachf);
+							author = ini(cacheidStr, "Author", unknown, cachf);
+							timestr = ini(cacheidStr, "Length", "Undefined", cachf);
+							string sini = "song.ini";
 							if (File.Exists("song.ini"))
 							{
-								songini.Load("song.ini");
-								_title = songini.GetKeyValue("song", "name", "Untitled").Trim();
-								author = songini.GetKeyValue("song", "artist", unknown).Trim();
-								album = songini.GetKeyValue("song", "album", unknown).Trim();
-								year = songini.GetKeyValue("song", "year", unknown).Trim();
-								charter = songini.GetKeyValue("song", "charter", unknown).Trim();
-								genre = songini.GetKeyValue("song", "genre", unknown).Trim();
-								float duration = int.Parse(songini.GetKeyValue("song", "song_length", "0"));
+								_title = ini("song", "name", "Untitled", sini).Trim();
+								author = ini("song", "artist", unknown, sini).Trim();
+								album = ini("song", "album", unknown, sini).Trim();
+								year = ini("song", "year", unknown, sini).Trim();
+								charter = ini("song", "charter", unknown, sini).Trim();
+								genre = ini("song", "genre", unknown, sini).Trim();
+								float duration = int.Parse(ini("song", "song_length", "0", sini));
 								timestr = ((duration / 1000) / 60).ToString("00") + ':' + (((duration / 1000) % 60)).ToString("00");
 								// MAKE THIS A FUNCTION ^
 							}
@@ -2566,8 +2610,8 @@ class Program
 								genre
 							};
 							File.WriteAllText(folder + "currentsong.txt",
-								FormatText(cfg(m, stf, "%a - %t")
-									.Replace("\\n", Environment.NewLine), songParams));
+								FormatText(Regex.Unescape(cfg(m, stf, "%a - %t")),
+								songParams));
 							File.Delete(paksongmid);
 							File.Delete(paksongchart);
 						}
@@ -2588,8 +2632,7 @@ class Program
 										//print("Writing audio to cache.", FSBcolor);
 										File.Copy(fsb,
 											folder + "\\DATA\\CACHE\\" + audhash.ToString("X16"), true);
-										cache.SetKeyValue(charthash.ToString("X16"), "Audio", audhash.ToString("X16"));
-										cache.Save(folder + dataf + "CACHE\\.db.ini");
+										iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
 									}
 								}
 							}
@@ -2620,14 +2663,13 @@ class Program
 										//print("Writing audio to cache.", cacheColor);
 										File.Copy(fsb,
 											folder + "\\DATA\\CACHE\\" + audhash.ToString("X16"), true);
-										cache.SetKeyValue(charthash.ToString("X16"), "Audio", audhash.ToString("X16"));
-										cache.Save(folder + dataf + "CACHE\\.db.ini");
+										iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
 									}
 								}
 							}
 						}
 						#endregion
-						copySongVideo("background.bik");
+						cSV("background.bik");
 						unkillgame();
 						if (!audCache)
 						{
@@ -2715,7 +2757,7 @@ class Program
 						if (caching)
 						{
 							print(vstr[21], cacheColor);
-							if (cache.GetSection("ZIP" + fsphashStr) != null)
+							if (Array.IndexOf(sn(cachf), "ZIP" + fsphashStr) != -1)
 							{
 								vl(vstr[79], cacheColor);
 								fspcache = true;
@@ -3092,8 +3134,7 @@ class Program
 						{
 							print(vstr[95], cacheColor);
 							//print("Writing path to cache...", cacheColor);
-							cache.SetKeyValue("ZIP" + fsphashStr, "Path", tmpf);
-							cache.Save(folder + dataf + "CACHE\\.db.ini");
+							iniw("ZIP" + fsphashStr, "Path", tmpf, cachf);
 						}
 						if (multichartcheck.Count == 0)
 						{

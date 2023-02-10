@@ -121,6 +121,9 @@
   <data name="credits" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\credits.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="kl" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\kl.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="paknew" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pn.bin;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

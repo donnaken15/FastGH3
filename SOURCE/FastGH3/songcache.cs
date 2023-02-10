@@ -8,34 +8,31 @@ public partial class songcache : Form
 	// should I specify file path/name in the INI when caching a song?
 
 	string folder = Path.GetDirectoryName(Application.ExecutablePath) + "\\DATA\\CACHE\\";
-
-	IniFile i = new IniFile();
+	string i;
 
 	public songcache()
 	{
 		InitializeComponent();
-		if (File.Exists(folder + ".db.ini"))
 		{
-			i.Load(folder + ".db.ini");
+			i = folder + ".db.ini";
 			DataGridViewRow newRow;
-			foreach (IniFile.IniSection s in i.Sections)
+			foreach (string s in Program.sn(i))
 			{
-				if (File.Exists(folder + s.Name) &&
-					File.Exists(folder + i.GetKeyValue(s.Name,
-						"Audio", new string('0', 16))))
+				if (File.Exists(folder + s) &&
+					File.Exists(folder + Program.ini(s, "Audio", 0.ToString("X8"), 17, i)))
 				{
 					newRow = new DataGridViewRow();
-					newRow.CreateCells(cache,
-						s.Name, // icon
-						i.GetKeyValue(s.Name, "Author", "Unknown"),
-						i.GetKeyValue(s.Name, "Title", "Untitled"),
-						FileSize(new FileInfo(folder + s.Name).Length +
-								new FileInfo(folder + i.GetKeyValue(s.Name,
-											"Audio", new string('0', 16))).Length),
-						i.GetKeyValue(s.Name, "Length", "00:00"),
+					newRow.CreateCells(c,
+						s, // icon
+						Program.ini(s, "Author", "Unknown", 64, i),
+						Program.ini(s, "Title", "Untitled", 64, i),
+						fs(new FileInfo(folder + s).Length +
+								new FileInfo(folder +
+								Program.ini(s, "Audio", 0.ToString("X8"), 17, i)).Length),
+						Program.ini(s, "Length", "00:00", 8, i),
 						"Play"
 						);
-					cache.Rows.Add(newRow);
+					c.Rows.Add(newRow);
 					if (Height < 700)
 						Height += 22;
 				}
@@ -43,80 +40,80 @@ public partial class songcache : Form
 		}
 	}
 
-	static char[] bUnits = " KMGT".ToCharArray();
-	static uint bThousand = 1024; // based *ibibytes
+	static char[] bU = " KMGT".ToCharArray();
+	static uint bT = 1024; // based *ibibytes
 
-	public static string FileSize(long length)
+	public static string fs(long l)
 	{
-		float newSize = length;
-		byte bUnit = 0;
-		while (newSize >= bThousand && bUnit < bUnits.Length - 1)
+		float n = l;
+		byte u = 0;
+		while (n >= bT && u < bU.Length - 1)
 		{
-			bUnit++;
-			newSize /= bThousand;
+			u++;
+			n /= bT;
 		}
-		if (bUnit == 0)
-			return newSize.ToString("0").PadLeft(4) + " bytes"; // why even
+		if (u == 0)
+			return n.ToString("0").PadLeft(4) + " bytes"; // why even
 		else
-			return newSize.ToString("0.00 ").PadLeft(7) + bUnits[bUnit] + 'B';
+			return n.ToString("0.00 ").PadLeft(7) + bU[u] + 'B';
 	}
 
-	private void runGameWithCache(DataGridViewCellEventArgs e)
+	private void r(DataGridViewCellEventArgs e)
 	{
 		Program.killgame();
-		IniFile.IniSection cs = i.GetSection((string)cache.Rows[e.RowIndex].Cells[0].Value);
-		File.Copy(folder + cs.Name, folder + "..\\PAK\\song.pak.xen", true);
-		File.Copy(folder + cs.GetKey("Audio").Value, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
-		string title  = cs.GetKey("Title").Value;
-		string author = cs.GetKey("Author").Value;
+		string cs = (string)c.Rows[e.RowIndex].Cells[0].Value;
+		string au = Program.ini(cs, "Audio", null, 17, i);
+		string t = Program.ini(cs, "Title", null, 64, i);
+		string a = Program.ini(cs, "Author", null, 64, i);
+		string l = Program.ini(cs, "Length", "00:00", 8, i);
+		File.Copy(folder + cs, folder + "..\\PAK\\song.pak.xen", true);
+		File.Copy(folder + au, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
 		string[] songParams = new string[] {
-			author,
-			title,
+			a,
+			t,
 			"Unknown",
 			"Unknown",
 			"Unknown",
-			cs.GetKey("Length").Value,
+			l,
 			"Unknown"
 		};
-		File.WriteAllText(folder + "..\\currentsong.txt",
+		File.WriteAllText(folder + "..\\..\\currentsong.txt",
 			Program.FormatText(
-				Program.cfg("Misc", "SongtextFormat", "%a - %t")
-				.Replace("\\n", Environment.NewLine),
+				System.Text.RegularExpressions.Regex.Unescape(Program.cfg(Program.m, Program.stf, "%a - %t")),
 			songParams));
 		Program.unkillgame();
 		Process.Start(folder + "..\\..\\game.exe");
 	}
 
-	private void cacheClick0(object sender, DataGridViewCellEventArgs e)
+	private void cc(object sender, DataGridViewCellEventArgs e)
 	{
 		switch (e.ColumnIndex)
 		{
 			case 5:
-				runGameWithCache(e);
+				r(e);
 				break;
 		}
 	}
 
-	private void cacheDblClick(object sender, DataGridViewCellEventArgs e)
+	private void cdblc(object sender, DataGridViewCellEventArgs e)
 	{
-		runGameWithCache(e);
+		r(e);
 	}
 
-	private void cacheDelete1(object sender, EventArgs e)
+	private void cdel(object sender, EventArgs e)
 	{
-		foreach (DataGridViewRow d in cache.SelectedRows)
+		foreach (DataGridViewRow d in c.SelectedRows)
 		{
-			IniFile.IniSection s = i.GetSection(d.Cells[0].Value.ToString());
-			File.Delete(folder + s.Name);
-			File.Delete(folder + s.GetKey("Audio").Value);
-			i.RemoveSection(s.Name);
-			i.Save(folder + ".db.ini");
-			cache.Rows.Remove(d);
+			string s = (string)d.Cells[0].Value;
+			File.Delete(folder + s);
+			File.Delete(folder + Program.ini(s, "Audio", null, 17, i));
+			Program.WSec(s, null, i);
+			c.Rows.Remove(d);
 		}
 	}
 
-	private void cacheRgtclick(object sender, System.ComponentModel.CancelEventArgs e)
+	private void crcl(object sender, System.ComponentModel.CancelEventArgs e)
 	{
-		deleteTool.Enabled = cache.SelectedRows.Count > 0;
+		deleteTool.Enabled = c.SelectedRows.Count > 0;
 	}
 }

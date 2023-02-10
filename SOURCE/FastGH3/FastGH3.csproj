@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{123C0E48-6F74-4CDC-8F5A-42E516B505EE}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AppDesignerFolder>P</AppDesignerFolder>
     <RootNamespace>FastGH3</RootNamespace>
     <AssemblyName>FastGH3</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -100,7 +100,6 @@
     <Compile Include="ChartEdit\EventType.cs" />
     <Compile Include="ChartEdit\GameProps.cs" />
     <Compile Include="ChartEdit\Globals.cs" />
-    <Compile Include="ChartEdit\Ini.cs" />
     <Compile Include="ChartEdit\KeyValue.cs" />
     <Compile Include="ChartEdit\Note.cs" />
     <Compile Include="ChartEdit\NoteProp.cs" />
@@ -138,10 +137,10 @@
     <Compile Include="keyEdit.Designer.cs">
       <DependentUpon>keyEdit.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="P\res.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>res.resx</DependentUpon>
     </Compile>
     <Compile Include="Queenbee\BinaryEndianReader.cs" />
     <Compile Include="Queenbee\BinaryEndianWriter.cs" />
@@ -153,7 +152,7 @@
     <Compile Include="Queenbee\Pak\PakHeaderItem.cs" />
     <Compile Include="Queenbee\Pak\PakItemType.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="P\AssemblyInfo.cs" />
     <Compile Include="Queenbee\Qb\base\EditableAttribute.cs" />
     <Compile Include="Queenbee\Qb\base\GenericQbItem.cs" />
     <Compile Include="Queenbee\Qb\base\QbItemBase.cs" />
@@ -193,12 +192,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="note.ico" />
+    <None Include="Resources\ikeys.txt" />
     <None Include="Resources\credits.txt" />
+    <None Include="Resources\kl.bin" />
     <None Include="Resources\pn.bin" />
     <None Include="Resources\qn.bin" />
     <None Include="Resources\lt.txt" />
     <None Include="app.config" />
-    <None Include="app.manifest" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -208,10 +208,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="P\res.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>res.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

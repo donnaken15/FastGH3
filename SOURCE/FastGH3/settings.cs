@@ -7,19 +7,17 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using Nanook.QueenBee.Parser;
 using System.Xml;
-using System.Security.Principal;
 using System.Collections.Generic;
-using FastGH3.Properties;
 using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 
 public partial class settings : Form
 {
-	[DllImport("user32.dll")]
-	public static extern bool SetForegroundWindow(IntPtr hWnd);
+	[DllImport("user32.dll", EntryPoint = "SetForegroundWindow")]
+	public static extern bool SFW(IntPtr hWnd);
 
 	[StructLayout(LayoutKind.Sequential)]
-	public struct POINTL
+	public struct P
 	{
 		[MarshalAs(UnmanagedType.I4)]
 		public int x;
@@ -28,7 +26,7 @@ public partial class settings : Form
 	}
 	[StructLayout(LayoutKind.Sequential,
 	CharSet = CharSet.Ansi)]
-	public struct DEVMODE
+	public struct DM
 	{
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 		public string a;
@@ -42,7 +40,7 @@ public partial class settings : Form
 		public UInt16 d;
 		[MarshalAs(UnmanagedType.U4)]
 		public UInt32 e;
-		public POINTL f;
+		public P f;
 		[MarshalAs(UnmanagedType.U4)]
 		public UInt32 g;
 		[MarshalAs(UnmanagedType.U4)]
@@ -89,15 +87,15 @@ public partial class settings : Form
 		public UInt32 z;
 	}
 
-	[DllImport("user32.dll")]
+	[DllImport("user32.dll", EntryPoint = "EnumDisplaySettings")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern Boolean EnumDisplaySettings(
+	public static extern Boolean EDS(
 			[param: MarshalAs(UnmanagedType.LPTStr)]
 			string a,
 			[param: MarshalAs(UnmanagedType.U4)]
 			int b,
 			[In, Out]
-			ref DEVMODE c);
+			ref DM c);
 
 	private static string xmlpath = Environment.GetEnvironmentVariable("USERPROFILE") + "\\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml",
 		xmlDefault = Resources.ResourceManager.GetString("xmlDefault");
@@ -120,8 +118,6 @@ public partial class settings : Form
 	private static Size oldres;
 
 	private static string folder = Program.folder;//Path.GetDirectoryName(Application.ExecutablePath) + '\\';
-
-	private static IniFile ini = new IniFile();
 
 	void cRes(string width, string height)
 	{
@@ -166,7 +162,7 @@ public partial class settings : Form
 	}
 
 	// https://www.c-sharpcorner.com/UploadFile/ishbandhu2009/resize-an-image-in-C-Sharp/
-	private static Image resizeImage(Image imgToResize, Size size)
+	private static Image rsI(Image imgToResize, Size size)
 	{
 		int destWidth = size.Width;
 		int destHeight = size.Height;
@@ -247,20 +243,20 @@ public partial class settings : Form
 		//File.WriteAllBytes("DATA\\test22.img.xen",ms.ToArray());
 	}
 
-	int[] keyBinds = new int[] {
-		(int)KeyID.D1,
-		(int)KeyID.D2,
-		(int)KeyID.D3,
-		(int)KeyID.D4,
-		(int)KeyID.D5,
-		(int)KeyID.RShift,
-		(int)KeyID.Escape,
-		(int)KeyID.Back,
+	ushort[] keyBinds = new ushort[] {
+		201,
+		202,
+		203,
+		204,
+		205,
+		311,
+		999,
+		219,
 		235,
-		(int)KeyID.Down,
-		(int)KeyID.Up,
-		(int)KeyID.Escape,
-		(int)KeyID.RCtrl,
+		400,
+		401,
+		220,
+		307,
 	};
 
 	public enum t
@@ -358,12 +354,12 @@ public partial class settings : Form
 
 	const bool FFQ = true; // framerate from QB, set accordingly in the FastGH3 plugin
 
-	public const int maxnotes_default = 0x100000;
+	public const int mxn_d = 0x100000;
 
 	public settings()
 	{
 		Console.SetWindowSize(80, 32);
-		vl2 = Program.cfg("Misc", "VerboseLog", "0") == "1";
+		vl2 = Program.cfg("Misc", t.VerboseLog.ToString(), 0) == 1;
 		Program.vl("Loading QBs...");
 		string dataf = folder + "\\DATA\\";
 		pakformat = new PakFormat(dataf + "user.pak.xen", dataf + "user.pak.xen", "", PakFormatType.PC, false);
@@ -410,23 +406,21 @@ public partial class settings : Form
 		bImg.Image = getBGIMG();
 		//setBGIMG(pbxBg.Image, false);
 
-		SetForegroundWindow(Handle);
+		SFW(Handle);
 		Program.vl("Reading settings...");
-		tLb.SetItemChecked((int)t.KeyboardMode, (int)getQBConfig(QbKey.Create(0x32025D94), 1) == 0); // autolaunch_startnow
-		dCtrl.Value = (int)getQBConfig(QbKey.Create(0xD8F8D2DE), 0);
-		RTnoi.Value = (int)getQBConfig(QbKey.Create(0x5FB765A2), 400); // nointro_ready_time
+		dCtrl.Value = (int)gQC(QbKey.Create(0xD8F8D2DE), 0);
+		RTnoi.Value = (int)gQC(QbKey.Create(0x5FB765A2), 400); // nointro_ready_time
 #pragma warning disable CS0162
 		// people wanted unlimited FPS, but
 		// then autoplay will hit too early sometimes
 		if (FFQ)
-			maxFPS.Value = (int)getQBConfig(QbKey.Create(0xCEFC2AEF), 1000); // fps_max
+			maxFPS.Value = (int)gQC(QbKey.Create(0xCEFC2AEF), 1000); // fps_max
 		else
-			maxFPS.Value = Convert.ToInt32(Program.cfg("Player", "MaxFPS", "1000"));
+			maxFPS.Value = Convert.ToInt32(Program.cfg("Player", "MaxFPS", 1000));
 #pragma warning restore CS0162
-		hypers.Value = (int)getQBConfig(QbKey.Create(0xFD6B13B4), 0); // Cheat_Hyperspeed
-		tLb.SetItemChecked((int)t.NoIntro, (int)getQBConfig(tK[(int)t.NoIntro], 0) == 1); // disable_intro
+		hypers.Value = (int)gQC(QbKey.Create(0xFD6B13B4), 0); // Cheat_Hyperspeed
 		{
-			int disable_particles = (int)getQBConfig(tK[(int)t.NoParticles], 0); // disable_particles
+			int disable_particles = (int)gQC(tK[(int)t.NoParticles], 0); // disable_particles
 			CheckState state = CheckState.Unchecked;
 			switch (disable_particles)
 			{
@@ -437,40 +431,44 @@ public partial class settings : Form
 					state = CheckState.Indeterminate;
 					break;
 				default:
-				case 2:
 					state = CheckState.Checked;
 					break;
 			}
 			tLb.SetItemCheckState((int)t.NoParticles, state);
 		}
-		tLb.SetItemChecked((int)t.NoFail, (int)getQBConfig(tK[(int)t.NoFail], 0) == 1); // Cheat_NoFail
+		for (int i = 0; i < tK.Length; i++)
+			if (tK[i].Crc != 0 && i != (int)t.KeyboardMode && i != (int)t.NoParticles)
+			tLb.SetItemChecked(i, (int)gQC(tK[i], 0) == 1);
+		tLb.SetItemChecked((int)t.KeyboardMode, (int)gQC(QbKey.Create(0x32025D94), 1) == 0); // autolaunch_startnow
+		/*tLb.SetItemChecked((int)t.NoIntro, (int)gQC(tK[(int)t.NoIntro], 0) == 1); // disable_intro
+		tLb.SetItemChecked((int)t.NoFail, (int)gQC(tK[(int)t.NoFail], 0) == 1); // Cheat_NoFail
+		tLb.SetItemChecked((int)t.EasyExpert, (int)gQC(tK[(int)t.EasyExpert], 0) == 1);
+		tLb.SetItemChecked((int)t.Precision, (int)gQC(tK[(int)t.Precision], 0) == 1);
+		tLb.SetItemChecked((int)t.DebugMenu, (int)gQC(tK[(int)t.DebugMenu], 0) == 1);
+		tLb.SetItemChecked((int)t.ExitOnSongEnd, (int)gQC(tK[(int)t.ExitOnSongEnd], 0) == 1); // exit_on_song_end
+		tLb.SetItemChecked((int)t.EasyExpert, (int)gQC(tK[(int)t.EasyExpert], 0) == 1); // enable_video
+		tLb.SetItemChecked((int)t.Precision, (int)gQC(tK[(int)t.Precision], 0) == 1); // enable_video
+		tLb.SetItemChecked((int)t.BkgdVideo, (int)gQC(tK[(int)t.BkgdVideo], 0) == 1); // enable_video
+		tLb.SetItemChecked((int)t.KillHitGems, (int)gQC(tK[(int)t.KillHitGems], 0) == 1); // kill_gems_on_hit
+		tLb.SetItemChecked((int)t.EarlySustains, (int)gQC(tK[(int)t.EarlySustains], 0) == 1);*/ // anytime_sustain_activation
+		tLb.SetItemChecked((int)t.DisableVsync, Program.cfg("Misc", "VSync", 1) == 0);
+		tLb.SetItemChecked((int)t.SongCaching, Program.cfg("Misc", t.SongCaching.ToString(), 1) == 1);
+		tLb.SetItemChecked((int)t.NoStartupMsg, Program.cfg("Misc", t.NoStartupMsg.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.PreserveLog, Program.cfg("Misc", t.PreserveLog.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.Windowed, Program.cfg("Misc", t.Windowed.ToString(), 1) == 1);
+		tLb.SetItemChecked((int)t.Borderless, Program.cfg("Misc", t.Borderless.ToString(), 1) == 1);
 		if (tLb.GetItemChecked((int)t.NoIntro))
 		{
 			RTnoi.Enabled = true;
 			RTlbl.Enabled = true;
 			RTms.Enabled = true;
 		}
-		tLb.SetItemChecked((int)t.EasyExpert, (int)getQBConfig(tK[(int)t.EasyExpert], 0) == 1);
-		tLb.SetItemChecked((int)t.Precision, (int)getQBConfig(tK[(int)t.Precision], 0) == 1);
-		tLb.SetItemChecked((int)t.DebugMenu, (int)getQBConfig(tK[(int)t.DebugMenu], 0) == 1);
-		speed.Value = (decimal/*wtf*/)(float)getQBConfig(QbKey.Create(0x16D91BC1), 1.0f) * 100; // current_speedfactor
+		speed.Value = (decimal/*wtf*/)(float)gQC(QbKey.Create(0x16D91BC1), 1.0f) * 100; // current_speedfactor
 		tLb.SetItemChecked((int)t.VerboseLog, vl2);
-		tLb.SetItemChecked((int)t.ExitOnSongEnd, (int)getQBConfig(tK[(int)t.ExitOnSongEnd], 0) == 1); // exit_on_song_end
-		tLb.SetItemChecked((int)t.DisableVsync, Program.cfg("Misc", "VSync", "1") == "0");
-		tLb.SetItemChecked((int)t.SongCaching, Program.cfg("Misc", t.SongCaching.ToString(), "1") == "1");
-		tLb.SetItemChecked((int)t.NoStartupMsg, Program.cfg("Misc", t.NoStartupMsg.ToString(), "0") == "1");
-		tLb.SetItemChecked((int)t.PreserveLog, Program.cfg("Misc", t.PreserveLog.ToString(), "0") == "1");
-		tLb.SetItemChecked((int)t.EasyExpert, (int)getQBConfig(tK[(int)t.EasyExpert], 0) == 1); // enable_video
-		tLb.SetItemChecked((int)t.Precision, (int)getQBConfig(tK[(int)t.Precision], 0) == 1); // enable_video
-		tLb.SetItemChecked((int)t.BkgdVideo, (int)getQBConfig(tK[(int)t.BkgdVideo], 0) == 1); // enable_video
-		tLb.SetItemChecked((int)t.Windowed, Program.cfg("Misc", t.Windowed.ToString(), "1") == "1");
-		tLb.SetItemChecked((int)t.Borderless, Program.cfg("Misc", t.Borderless.ToString(), "1") == "1");
-		tLb.SetItemChecked((int)t.KillHitGems, (int)getQBConfig(tK[(int)t.KillHitGems], 0) == 1); // kill_gems_on_hit
-		tLb.SetItemChecked((int)t.EarlySustains, (int)getQBConfig(tK[(int)t.EarlySustains], 0) == 1); // anytime_sustain_activation
 		//tweaksList.SetItemChecked((int)Tweaks.NoShake, (int)getQBConfig(QbKey.Create("disable_shake"), 0) == 1);
 		for (int i = 0; i < modc; i++)
 		{
-			modList.SetItemChecked(i, Program.cfg("Modifiers", modN(i), "0") == "1");
+			modList.SetItemChecked(i, Program.cfg("Modifiers", modN(i), 0) == 1);
 		}
 		//<s id="6f1d2b61d5a011cfbfc7444553540000">201 202 203 204 205 311 999 219 235 400 401 999 307 </s>
 		xmlCfg = xml.GetElementsByTagName("r")[0];
@@ -503,7 +501,7 @@ public partial class settings : Form
 				xmlK = s;
 				for (int i = 0; i < keyBinds.Length; i++)
 				{
-					keyBinds[i] = Convert.ToInt32(keybindsStr[i]);
+					keyBinds[i] = Convert.ToUInt16(keybindsStr[i]);
 				}
 			}
 		}
@@ -536,13 +534,13 @@ public partial class settings : Form
 			xmlK.Attributes.Append(stupid2);
 			xmlCfg.AppendChild(xmlK);
 		}
-		DEVMODE mode = new DEVMODE();
+		DM mode = new DM();
 		mode._ = (ushort)Marshal.SizeOf(mode);
 		int d = 0;
 		Size[] unlistedres = { // unlisted but working (i hope) (it did for me)
 			new Size(960, 720),
 		};
-		while (EnumDisplaySettings(null, d++, ref mode) == true) // Succeeded  
+		while (EDS(null, d++, ref mode) == true) // Succeeded  
 		{
 			Size newSz = new Size((int)mode.w, (int)mode.h);
 			bool diff = true;
@@ -581,7 +579,7 @@ public partial class settings : Form
 		//if (ini.GetSection("Player") == null)
 		{
 			if (Program.cfg("Player", "MaxNotesAuto", "0") == "0")
-				MaxN.Value = int.Parse(Program.cfg("Player", "MaxNotes", maxnotes_default.ToString()));
+				MaxN.Value = int.Parse(Program.cfg("Player", "MaxNotes", mxn_d.ToString()));
 			else
 				MaxN.Value = -1;
 		}
@@ -590,19 +588,19 @@ public partial class settings : Form
 		//p1part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_part"), false);
 		//p2part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p2_part"), false);
 		// WTF C#
-		if ((QbKey)getQBConfig(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[0].Crc)
+		if ((QbKey)gQC(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[0].Crc)
 			diff.Text = "Easy";
-		else if ((QbKey)getQBConfig(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[1].Crc)
+		else if ((QbKey)gQC(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[1].Crc)
 			diff.Text = "Medium";
-		else if ((QbKey)getQBConfig(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[2].Crc)
+		else if ((QbKey)gQC(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[2].Crc)
 			diff.Text = "Hard";
-		else if ((QbKey)getQBConfig(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[3].Crc)
+		else if ((QbKey)gQC(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[3].Crc)
 			diff.Text = "Expert";
-		if ((QbKey)getQBConfig(QbKey.Create(0x93D5D362), QbKey.Create(0xBDC53CF2)) == partCRCs[0].Crc)
+		if ((QbKey)gQC(QbKey.Create(0x93D5D362), QbKey.Create(0xBDC53CF2)) == partCRCs[0].Crc)
 			part.SelectedIndex = 0;
 		else// if (p1part.Values[0].Crc == partCRCs[1].Crc)
 			part.SelectedIndex = 1;
-		if ((QbKey)getQBConfig(QbKey.Create(0x1541A1CC), QbKey.Create(0x7A7D1DCA)) == partCRCs[1].Crc)
+		if ((QbKey)gQC(QbKey.Create(0x1541A1CC), QbKey.Create(0x7A7D1DCA)) == partCRCs[1].Crc)
 			p2partt.Checked = false;
 		else
 			p2partt.Checked = true;
@@ -623,59 +621,40 @@ public partial class settings : Form
 		disableEvents = false;
 	}
 
-	void changeDiff(int difficulty)
+	void cDiff(int difficulty)
 	{
 		if (disableEvents)
 			return;
-		setQBConfig(QbKey.Create(0x9FAAE40F), diffCRCs[difficulty]);
-		setQBConfig(QbKey.Create(0x193E96A1), diffCRCs[difficulty]);
+		sQC(QbKey.Create(0x9FAAE40F), diffCRCs[difficulty]);
+		sQC(QbKey.Create(0x193E96A1), diffCRCs[difficulty]);
 	}
 		
-	private void res_SelectedIndexChanged(object sender, EventArgs e)
+	private void resC(object sender, EventArgs e)
 	{
 		cRes(resz[res.SelectedIndex].Width.ToString(), resz[res.SelectedIndex].Height.ToString());
 	}
 
-	private void diff_SelectedIndexChanged(object sender, EventArgs e)
+	private void diffC(object sender, EventArgs e)
 	{
-		changeDiff(diff.SelectedIndex);
+		cDiff(diff.SelectedIndex);
 	}
 
-	private void creditlink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+	private void crlink(object sender, LinkLabelLinkClickedEventArgs e)
 	{
 		Console.Clear();
 		Console.WriteLine(Resources.ResourceManager.GetString("credits"));
 	}
 
-	private void hypers_ValueChanged(object sender, EventArgs e)
+	private void hyVC(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
 		{
-			setQBConfig(QbKey.Create("Cheat_Hyperspeed"), Convert.ToInt32(hypers.Value));
+			sQC(QbKey.Create("Cheat_Hyperspeed"), Convert.ToInt32(hypers.Value));
 		}
 	}
 
-	private void tooltip_Popup(object sender, PopupEventArgs e)
-	{
-
-	}
-
-	private void ok_Click(object sender, EventArgs e)
-	{
-		DialogResult = DialogResult.OK;
-	}
-
-	private void loadingtext_Click(object sender, EventArgs e)
-	{
-
-	}
-
-	private void settings_FormClosing(object sender, FormClosingEventArgs e)
-	{
-	}
-
-	private void ctmpb_Click(object sender, EventArgs e)
+	private void ctmp(object sender, EventArgs e)
 	{
 		string tmpf = folder + "\\DATA\\CACHE";
 		string[] tmpds;
@@ -702,28 +681,25 @@ public partial class settings : Form
 			File.Delete(file);
 		if (File.Exists(folder + "\\DATA\\" + "CACHE\\.db.ini"))
 		{
-			IniFile cache = new IniFile();
-			cache.Load(folder + "\\DATA\\" + "CACHE\\.db.ini");
 			int sectCount = 0;
-			string[] k = new string[cache.Sections.Count];
-			foreach (IniFile.IniSection sect in cache.Sections)
+			string[] k = Program.sn(Program.cachf);
+			foreach (string s in k)
 			{
-				if (sect.Name.StartsWith("URL") || sect.Name.StartsWith("ZIP"))
+				if (s.StartsWith("URL") || s.StartsWith("ZIP"))
 				{
-					k[sectCount] = sect.Name;
+					k[sectCount] = s;
 					sectCount++;
 				}
 			}
 			for (int i = 0; i < sectCount; i++)
 			{
-				cache.RemoveSection(k[i]);
-				cache.Save(folder + "\\DATA\\"+"CACHE\\.db.ini");
+				Program.WSec(k[i], null, Program.cachf);
 			}
 		}
 	}
 
 	// this wont work after focusing control
-	private void keydownreacts(object sender, KeyEventArgs e)
+	private void kde(object sender, KeyEventArgs e)
 	{
 		//base.OnKeyDown(e);
 
@@ -733,25 +709,25 @@ public partial class settings : Form
 		}
 	}
 
-	private void pluginmanage_Click(object sender, EventArgs e)
+	private void pmo(object sender, EventArgs e)
 	{
 		new dllman().ShowDialog();
 	}
 
-	private void viewsongcache_Click(object sender, EventArgs e)
+	private void vscc(object sender, EventArgs e)
 	{
 		Directory.CreateDirectory(folder + "\\DATA\\CACHE");
 		new songcache().ShowDialog();
 	}
 
-	void ToggleINIItem(string sect, string key, bool toggle)
+	void TI(string sect, string key, bool toggle)
 	{
-		Program.cfgWrite(sect, key, (toggle ? "1" : "0"));
+		Program.cfgWrite(sect, key, (toggle ? 1 : 0));
 	}
 
 	string m = "Misc";
 
-	private void songtxtfmt__Click(object sender, EventArgs e)
+	private void stfO(object sender, EventArgs e)
 	{
 		// formatInterface
 		songtxtfmt FI = new songtxtfmt(Regex.Unescape(Program.cfg(m, Program.stf, "%a - %t")).Replace("\n","\r\n"));
@@ -762,22 +738,18 @@ public partial class settings : Form
 		}
 	}
 
-	private void updateTweakBoxes(object sender, EventArgs e)
-	{
-	}
-
-	private void changereadytime(object sender, EventArgs e)
+	private void cRT(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
-		setQBConfig(QbKey.Create(0x5FB765A2), (int)RTnoi.Value);
+		sQC(QbKey.Create(0x5FB765A2), (int)RTnoi.Value);
 	}
 
-	private void maxFPSchange(object sender, EventArgs e)
+	private void mxFPSc(object sender, EventArgs e)
 	{
 #pragma warning disable CS0162 // Unreachable code detected
 		if (FFQ)
-			setQBConfig(QbKey.Create(0xCEFC2AEF), (int)maxFPS.Value);
+			sQC(QbKey.Create(0xCEFC2AEF), (int)maxFPS.Value);
 		else
 		{
 			Program.cfgWrite("Player", "MaxFPS", maxFPS.Value.ToString());
@@ -785,99 +757,65 @@ public partial class settings : Form
 #pragma warning restore CS0162 // Unreachable code detected
 	}
 
-	private void showBgImg(object sender, EventArgs e)
+	private void sBGi(object sender, EventArgs e)
 	{
 		new bgprev(getBGIMG()).ShowDialog();
 	}
 
-	private void setbgimg_Click(object sender, EventArgs e)
+	private void sBGc(object sender, EventArgs e)
 	{
 		selImg.ShowDialog();
 	}
 
 	// https://math.stackexchange.com/a/3381750
-	int nearestPowOf2(int x)
+	int nP2(int x)
 	{
 		// 2^round(log2(x))
 		return (int)Math.Pow(2,Math.Round(Math.Log(x, 2)));
 	}
-	bool IsPowerOfTwo(int x)
+	bool isP2(int x)
 	{
 		return (x & (x - 1)) == 0;
 	}
 	private void confirmImageReplace(object sender, System.ComponentModel.CancelEventArgs e)
 	{
-		/*string fname = selectImage0.FileName;
-		if (!File.Exists(fname))
-			throw new FileNotFoundException("Image not found.");
-		// no one uses DDS for pictures, so disable for now
-		uint c; // DDS magic check
+		Image i = Image.FromFile(selImg.FileName);
+		bool nR = false;
+		int nW = i.Width;
+		int nH = i.Height;
+		if (!isP2(i.Width))
 		{
-			byte[] b = new byte[4];
-			Stream a = File.OpenRead(fname);
-			a.Read(b, 0, 4);
-			c = BitConverter.ToUInt32(b, 0);
-			a.Close();
+			nR = true;
+			nW = nP2(i.Width);
 		}
-		Image img;
-		if (c == 0x20534444)
+		if (!isP2(i.Height))
 		{
-			MemoryStream DDS2PNG = new MemoryStream();
-			// convoluted because throw
-			DDS.DDSImage.Load(fname).Images[0].Save(DDS2PNG, ImageFormat.Png);
-			img = Image.FromStream(DDS2PNG);
+			nR = true;
+			nH = nP2(i.Height);
 		}
-		else
-			img = Image.FromFile(fname);*/
-		Image img = Image.FromFile(selImg.FileName);
-		//img.RawFormat = ImageFormat.
-		bool needResizing = false;
-		int newWidth = img.Width;
-		int newHeight = img.Height;
-		if (!IsPowerOfTwo(img.Width))
+		if (nR)
 		{
-			needResizing = true;
-			newWidth = nearestPowOf2(img.Width);
+			i = rsI(i, new Size(nW, nH));
 		}
-		if (!IsPowerOfTwo(img.Height))
-		{
-			needResizing = true;
-			newHeight = nearestPowOf2(img.Height);
-		}
-		if (needResizing)
-		{
-			img = resizeImage(img, new Size(newWidth, newHeight));
-		}
-		//img.Save("DATA\\test33.png");
-		bImg.Image = img;
-		setBGIMG(img,needResizing);
+		bImg.Image = i;
+		setBGIMG(i,nR);
 	}
 
-	private void settings_Load(object sender, EventArgs e)
-	{
-
-	}
-
-	private void changeAQ(object sender, EventArgs e)
+	private void cAQ(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
 		Program.cfgWrite("Misc","AB",aqlvl.Value.ToString());
 	}
 
-	private void modifierUpdate(object sender, ItemCheckEventArgs e)
+	private void mU(object sender, ItemCheckEventArgs e)
 	{
 		if (disableEvents)
 			return;
-		ToggleINIItem("Modifiers", modN(e.Index), e.NewValue == CheckState.Checked);
+		TI("Modifiers", modN(e.Index), e.NewValue == CheckState.Checked);
 	}
 
-	private void updateModifiersList(object sender, EventArgs e)
-	{
-
-	}
-
-	private void openKeybinds(object sender, EventArgs e)
+	private void oKb(object sender, EventArgs e)
 	{
 		keyEdit keyChange = new keyEdit(keyBinds);
 		//foreach (int a in keyBinds)
@@ -895,7 +833,7 @@ public partial class settings : Form
 		}
 	}
 
-	private void tweakUpdate(object sender, ItemCheckEventArgs e)
+	private void tU(object sender, ItemCheckEventArgs e)
 	{
 		if (disableEvents)
 			return;
@@ -907,10 +845,10 @@ public partial class settings : Form
 			case t.NoStartupMsg:
 			case t.Windowed:
 			case t.Borderless:
-				ToggleINIItem(m, tStr(e.Index), e.NewValue == CheckState.Checked);
+				TI(m, tStr(e.Index), e.NewValue == CheckState.Checked);
 				break;
 			case t.DisableVsync: // im stupid
-				ToggleINIItem(m, "VSync", e.NewValue == CheckState.Unchecked);
+				TI(m, "VSync", e.NewValue == CheckState.Unchecked);
 				break;
 			// try replacing these with like changeConfig(index)
 			// and a string/key array accessed with index
@@ -920,7 +858,7 @@ public partial class settings : Form
 				RTlbl.Enabled = e.NewValue == CheckState.Checked;
 				RTms.Enabled = e.NewValue == CheckState.Checked;
 				// "control cannot fall into another case" WHY
-				setQBConfig(tK[(int)t.NoIntro], // disable_intro
+				sQC(tK[(int)t.NoIntro], // disable_intro
 							(e.NewValue == CheckState.Checked) ? 1 : 0);
 				break;
 			case t.ExitOnSongEnd: // exit_on_song_end
@@ -930,11 +868,11 @@ public partial class settings : Form
 			case t.BkgdVideo: // enable_video
 			case t.KillHitGems: // kill_gems_on_hit
 			case t.EarlySustains: // anytime_sustain_activation
-				setQBConfig(tK[e.Index],
+				sQC(tK[e.Index],
 							(e.NewValue == CheckState.Checked) ? 1 : 0);
 				break;
 			case t.KeyboardMode:
-				setQBConfig(tK[(int)t.KeyboardMode], // autolaunch_startnow
+				sQC(tK[(int)t.KeyboardMode], // autolaunch_startnow
 							(e.NewValue == CheckState.Checked ? 0 : 1));
 				break;
 			case t.NoParticles:
@@ -961,10 +899,10 @@ public partial class settings : Form
 						break;
 						// HEY LOOK IT'S MINECRAFT!!11!!!1!
 				}
-				setQBConfig(tK[(int)t.NoParticles], disable_particles);
+				sQC(tK[(int)t.NoParticles], disable_particles);
 				break;
 			case t.NoFail: // Cheat_NoFail
-				setQBConfig(tK[(int)t.NoFail], e.NewValue == CheckState.Checked ? 1 : 0);
+				sQC(tK[(int)t.NoFail], e.NewValue == CheckState.Checked ? 1 : 0);
 				int[] zoffs = { 20, 21 };
 				int _invert = (e.NewValue == CheckState.Checked ? 1 : -1);
 				/*QbItemInteger thiscodesucks =
@@ -973,8 +911,8 @@ public partial class settings : Form
 				QbItemInteger thiscodesucks2 =
 				(QbItemInteger)
 					(userqb.FindItem(QbKey.Create(0xDD6AB3D6), false));*/
-				setQBConfig(QbKey.Create(0x67CF1F5D), zoffs[0] * _invert);
-				setQBConfig(QbKey.Create(0xDD6AB3D6), zoffs[0] * _invert);
+				sQC(QbKey.Create(0x67CF1F5D), zoffs[0] * _invert);
+				sQC(QbKey.Create(0xDD6AB3D6), zoffs[0] * _invert);
 				//thiscodesucks.Values[0] = zoffs[0] * _invert;
 				//thiscodesucks2.Values[0] = zoffs[1] * _invert;
 				//svQB();
@@ -991,7 +929,7 @@ public partial class settings : Form
 		}
 	}
 
-	object getQBConfig(QbKey key, object def)
+	object gQC(QbKey key, object def)
 	{
 		// find matching item's value or use a default
 		// we're only accessing global/root items with this
@@ -1013,7 +951,7 @@ public partial class settings : Form
 		return def;
 	}
 
-	void setQBConfig(QbKey key, object value)
+	void sQC(QbKey key, object value)
 	{
 		// find or create value
 		object _item = (userqb.FindItem(key, false));
@@ -1085,13 +1023,13 @@ public partial class settings : Form
 		svQB();
 	}
 
-	private void maxnotes_ValueChanged(object sender, EventArgs e)
+	private void mxnVC(object sender, EventArgs e)
 	{
 		if (disableEvents == false)
 		{
 			if (MaxN.Value == 0)
 			{
-				MaxN.Value = maxnotes_default;
+				MaxN.Value = mxn_d;
 				Program.cfgWrite("Player", "MaxNotes", MaxN.Value.ToString());
 			}
 			if (MaxN.Value == -1)
@@ -1108,15 +1046,15 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		setQBConfig(QbKey.Create(0xD8F8D2DE), Convert.ToInt32(dCtrl.Value));
+		sQC(QbKey.Create(0xD8F8D2DE), Convert.ToInt32(dCtrl.Value));
 	}
 
-	private void speed_ValueChanged(object sender, EventArgs e)
+	private void spVC(object sender, EventArgs e)
 	{
-		setQBConfig(QbKey.Create(0x16D91BC1), float.Parse((speed.Value / 100).ToString()));
+		sQC(QbKey.Create(0x16D91BC1), float.Parse((speed.Value / 100).ToString()));
 	}
 
-	private void replaygame_Click(object sender, EventArgs e)
+	private void rGc(object sender, EventArgs e)
 	{
 		Process gh3 = new Process();
 		gh3.StartInfo.WorkingDirectory = folder + "\\";
@@ -1124,20 +1062,20 @@ public partial class settings : Form
 		gh3.Start();
 	}
 
-	private void part_SelectedIndexChanged(object sender, EventArgs e)
+	private void pVC(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
-		setQBConfig(QbKey.Create(0xD8F8D2DE), partCRCs[part.SelectedIndex]);
+		sQC(QbKey.Create(0xD8F8D2DE), partCRCs[part.SelectedIndex]);
 	}
 
-	private void p2parttoggle_Click(object sender, EventArgs e)
+	private void p2pT(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
 		int part = 1;
 		if (p2partt.Checked)
 			part = 0;
-		setQBConfig(QbKey.Create(0x1541A1CC), partCRCs[part]);
+		sQC(QbKey.Create(0x1541A1CC), partCRCs[part]);
 	}
 }

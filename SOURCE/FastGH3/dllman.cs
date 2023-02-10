@@ -53,7 +53,7 @@ public partial class dllman : Form
 	{
 		dlloff.Enabled = false;
 		dlllist.Items.Clear();
-		foreach (FileInfo file in new DirectoryInfo(disabled_).GetFiles("*.dll", SearchOption.TopDirectoryOnly))
+		foreach (FileInfo file in new DirectoryInfo(folder + plugins).GetFiles("*.dll", SearchOption.TopDirectoryOnly))
 			dlllist.Items.Add(file);
 		try
 		{
@@ -87,11 +87,6 @@ public partial class dllman : Form
 		catch { }
 	}
 
-	private void dllopenhelp(object sender, EventArgs e)
-	{
-		MessageBox.Show("Select a DLL plugin that is made for GH3+", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-	}
-
 	private void dlltoggle(object sender, EventArgs e)
 	{
 		foreach (object dll in dlllist.SelectedItems)
@@ -99,10 +94,10 @@ public partial class dllman : Form
 			if (dll.ToString() != "core.dll")
 			{
 				string dllS = dll.ToString();
-				if (dllS.Contains("(*)"))
+				if (dllS.StartsWith("(*)"))
 					File.Move(disabled_ + dllS.Replace("(*)", ""), folder + plugins + dllS.Replace("(*)", ""));
 				else
-					File.Move(disabled_ + dllS, disabled_ + dllS);
+					File.Move(folder + plugins + dllS, disabled_ + dllS);
 			}
 		}
 		dllrefresh();

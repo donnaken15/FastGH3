@@ -38,7 +38,7 @@
 		// 
 		// dlllist
 		// 
-		this.dlllist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+		this.dlllist.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 		| System.Windows.Forms.AnchorStyles.Left)));
 		this.dlllist.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 		this.dlllist.FormattingEnabled = true;
@@ -108,7 +108,6 @@
 		// 
 		// dllopen
 		// 
-		this.dllopen.AutoUpgradeEnabled = false;
 		this.dllopen.Filter = "GH3+ Plugin / Dynamic Link Library (*.dll)|*.dll";
 		this.dllopen.Multiselect = true;
 		this.dllopen.RestoreDirectory = true;
@@ -116,8 +115,8 @@
 		// 
 		// gh3plog
 		// 
-		this.gh3plog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-		| System.Windows.Forms.AnchorStyles.Left)
+		this.gh3plog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+		| System.Windows.Forms.AnchorStyles.Left) 
 		| System.Windows.Forms.AnchorStyles.Right)));
 		this.gh3plog.BackColor = System.Drawing.SystemColors.Window;
 		this.gh3plog.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -157,7 +156,6 @@
 		this.Text = "Plugin Manager";
 		this.ResumeLayout(false);
 		this.PerformLayout();
-
 	}
 
 	#endregion

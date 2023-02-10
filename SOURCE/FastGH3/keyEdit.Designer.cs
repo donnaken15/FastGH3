@@ -67,7 +67,7 @@
             this.ctrlG.TabIndex = 3;
             this.ctrlG.Tag = 0;
             this.ctrlG.UseVisualStyleBackColor = false;
-            this.ctrlG.Click += new System.EventHandler(this.bBind);
+            this.ctrlG.Click += new System.EventHandler(this.bB);
             // 
             // ctrlR
             // 
@@ -78,7 +78,7 @@
             this.ctrlR.TabIndex = 4;
             this.ctrlR.Tag = 1;
             this.ctrlR.UseVisualStyleBackColor = false;
-            this.ctrlR.Click += new System.EventHandler(this.bBind);
+            this.ctrlR.Click += new System.EventHandler(this.bB);
             // 
             // hintTxt
             // 
@@ -99,7 +99,7 @@
             this.ctrlY.TabIndex = 6;
             this.ctrlY.Tag = 2;
             this.ctrlY.UseVisualStyleBackColor = false;
-            this.ctrlY.Click += new System.EventHandler(this.bBind);
+            this.ctrlY.Click += new System.EventHandler(this.bB);
             // 
             // ctrlB
             // 
@@ -110,7 +110,7 @@
             this.ctrlB.TabIndex = 7;
             this.ctrlB.Tag = 3;
             this.ctrlB.UseVisualStyleBackColor = false;
-            this.ctrlB.Click += new System.EventHandler(this.bBind);
+            this.ctrlB.Click += new System.EventHandler(this.bB);
             // 
             // ctrlO
             // 
@@ -121,7 +121,7 @@
             this.ctrlO.TabIndex = 8;
             this.ctrlO.Tag = 4;
             this.ctrlO.UseVisualStyleBackColor = false;
-            this.ctrlO.Click += new System.EventHandler(this.bBind);
+            this.ctrlO.Click += new System.EventHandler(this.bB);
             // 
             // ctrlBar
             // 
@@ -134,7 +134,7 @@
             this.ctrlBar.Tag = 12;
             this.ctrlBar.Text = "Bar";
             this.ctrlBar.UseVisualStyleBackColor = false;
-            this.ctrlBar.Click += new System.EventHandler(this.bBind);
+            this.ctrlBar.Click += new System.EventHandler(this.bB);
             // 
             // ctrlSelect
             // 
@@ -147,7 +147,7 @@
             this.ctrlSelect.Tag = 5;
             this.ctrlSelect.Text = "Select";
             this.ctrlSelect.UseVisualStyleBackColor = false;
-            this.ctrlSelect.Click += new System.EventHandler(this.bBind);
+            this.ctrlSelect.Click += new System.EventHandler(this.bB);
             // 
             // ctrlStart
             // 
@@ -160,7 +160,7 @@
             this.ctrlStart.Tag = 7;
             this.ctrlStart.Text = "Start";
             this.ctrlStart.UseVisualStyleBackColor = false;
-            this.ctrlStart.Click += new System.EventHandler(this.bBind);
+            this.ctrlStart.Click += new System.EventHandler(this.bB);
             // 
             // ctrlUp
             // 
@@ -173,7 +173,7 @@
             this.ctrlUp.Tag = 10;
             this.ctrlUp.Text = "Up";
             this.ctrlUp.UseVisualStyleBackColor = false;
-            this.ctrlUp.Click += new System.EventHandler(this.bBind);
+            this.ctrlUp.Click += new System.EventHandler(this.bB);
             // 
             // ctrlDown
             // 
@@ -186,7 +186,7 @@
             this.ctrlDown.Tag = 9;
             this.ctrlDown.Text = "Down";
             this.ctrlDown.UseVisualStyleBackColor = false;
-            this.ctrlDown.Click += new System.EventHandler(this.bBind);
+            this.ctrlDown.Click += new System.EventHandler(this.bB);
             // 
             // button114
             // 
@@ -210,11 +210,11 @@
             this.button115.Text = "Cancel";
             this.button115.UseVisualStyleBackColor = true;
             // 
-            // selectedButtonTxt
+            // selBtnL
             // 
             this.selBtnL.AutoSize = true;
             this.selBtnL.Location = new System.Drawing.Point(5, 164);
-            this.selBtnL.Name = "selectedButtonTxt";
+            this.selBtnL.Name = "selBtnL";
             this.selBtnL.Size = new System.Drawing.Size(85, 13);
             this.selBtnL.TabIndex = 13;
             this.selBtnL.Text = "Selected button:";
@@ -226,11 +226,11 @@
             this.keylayout.Size = new System.Drawing.Size(544, 160);
             this.keylayout.TabIndex = 14;
             // 
-            // currentButtonTxt
+            // cBtnL
             // 
             this.cBtnL.AutoSize = true;
             this.cBtnL.Location = new System.Drawing.Point(85, 164);
-            this.cBtnL.Name = "currentButtonTxt";
+            this.cBtnL.Name = "cBtnL";
             this.cBtnL.Size = new System.Drawing.Size(19, 13);
             this.cBtnL.TabIndex = 15;
             this.cBtnL.Text = "    ";
@@ -248,7 +248,7 @@
             this.ctrlCancel.Text = "Cancel";
             this.ctrlCancel.UseVisualStyleBackColor = false;
             this.ctrlCancel.Visible = false;
-            this.ctrlCancel.Click += new System.EventHandler(this.bBind);
+            this.ctrlCancel.Click += new System.EventHandler(this.bB);
             // 
             // ctrlUnk2
             // 
@@ -262,13 +262,13 @@
             this.ctrlUnk2.Text = "???";
             this.ctrlUnk2.UseVisualStyleBackColor = false;
             this.ctrlUnk2.Visible = false;
-            this.ctrlUnk2.Click += new System.EventHandler(this.bBind);
+            this.ctrlUnk2.Click += new System.EventHandler(this.bB);
             // 
             // keyEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 590);
+            this.ClientSize = new System.Drawing.Size(550, 379);
             this.Controls.Add(this.cBtnL);
             this.Controls.Add(this.keylayout);
             this.Controls.Add(this.selBtnL);

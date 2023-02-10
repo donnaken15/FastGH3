@@ -89,7 +89,6 @@ partial class settings
 		this.ok.Text = "OK";
 		this.tt.SetToolTip(this.ok, "Exit dialog.");
 		this.ok.UseVisualStyleBackColor = true;
-		this.ok.Click += new System.EventHandler(this.ok_Click);
 		// 
 		// reslabel
 		// 
@@ -113,7 +112,7 @@ partial class settings
 		this.hypers.Size = new System.Drawing.Size(42, 20);
 		this.hypers.TabIndex = 3;
 		this.hypers.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-		this.hypers.ValueChanged += new System.EventHandler(this.hypers_ValueChanged);
+		this.hypers.ValueChanged += new System.EventHandler(this.hyVC);
 		// 
 		// hyperlabel
 		// 
@@ -139,7 +138,7 @@ partial class settings
 		this.diff.Name = "diff";
 		this.diff.Size = new System.Drawing.Size(58, 21);
 		this.diff.TabIndex = 5;
-		this.diff.SelectedIndexChanged += new System.EventHandler(this.diff_SelectedIndexChanged);
+		this.diff.SelectedIndexChanged += new System.EventHandler(this.diffC);
 		// 
 		// difflabel
 		// 
@@ -166,7 +165,7 @@ partial class settings
 		this.crLink.TabStop = true;
 		this.crLink.Text = "Credits";
 		this.crLink.VisitedLinkColor = System.Drawing.Color.White;
-		this.crLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.creditlink_LinkClicked);
+		this.crLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.crlink);
 		// 
 		// tooltip
 		// 
@@ -180,7 +179,6 @@ partial class settings
 		this.tt.ToolTipTitle = "About this setting";
 		this.tt.UseAnimation = false;
 		this.tt.UseFading = false;
-		this.tt.Popup += new System.Windows.Forms.PopupEventHandler(this.tooltip_Popup);
 		// 
 		// speed
 		// 
@@ -205,7 +203,7 @@ partial class settings
 		0,
 		0,
 		0});
-		this.speed.ValueChanged += new System.EventHandler(this.speed_ValueChanged);
+		this.speed.ValueChanged += new System.EventHandler(this.spVC);
 		// 
 		// part
 		// 
@@ -219,7 +217,7 @@ partial class settings
 		this.part.Name = "part";
 		this.part.Size = new System.Drawing.Size(72, 21);
 		this.part.TabIndex = 22;
-		this.part.SelectedIndexChanged += new System.EventHandler(this.part_SelectedIndexChanged);
+		this.part.SelectedIndexChanged += new System.EventHandler(this.pVC);
 		// 
 		// replaygame
 		// 
@@ -230,7 +228,7 @@ partial class settings
 		this.replay.TabIndex = 20;
 		this.replay.Text = "Replay Last Song";
 		this.replay.UseVisualStyleBackColor = true;
-		this.replay.Click += new System.EventHandler(this.replaygame_Click);
+		this.replay.Click += new System.EventHandler(this.rGc);
 		// 
 		// pluginmanage
 		// 
@@ -241,7 +239,7 @@ partial class settings
 		this.gh3pm.TabIndex = 23;
 		this.gh3pm.Text = "Plugins";
 		this.gh3pm.UseVisualStyleBackColor = true;
-		this.gh3pm.Click += new System.EventHandler(this.pluginmanage_Click);
+		this.gh3pm.Click += new System.EventHandler(this.pmo);
 		// 
 		// viewsongcache
 		// 
@@ -252,7 +250,7 @@ partial class settings
 		this.sCa.TabIndex = 25;
 		this.sCa.Text = "Song Cache";
 		this.sCa.UseVisualStyleBackColor = true;
-		this.sCa.Click += new System.EventHandler(this.viewsongcache_Click);
+		this.sCa.Click += new System.EventHandler(this.vscc);
 		// 
 		// songtxtfmt_
 		// 
@@ -263,7 +261,7 @@ partial class settings
 		this.sFmT.TabIndex = 33;
 		this.sFmT.Text = "Song Text Format";
 		this.sFmT.UseVisualStyleBackColor = true;
-		this.sFmT.Click += new System.EventHandler(this.songtxtfmt__Click);
+		this.sFmT.Click += new System.EventHandler(this.stfO);
 		// 
 		// readytimeNoIntro
 		// 
@@ -278,7 +276,7 @@ partial class settings
 		this.RTnoi.Size = new System.Drawing.Size(59, 20);
 		this.RTnoi.TabIndex = 34;
 		this.RTnoi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-		this.RTnoi.ValueChanged += new System.EventHandler(this.changereadytime);
+		this.RTnoi.ValueChanged += new System.EventHandler(this.cRT);
 		// 
 		// keybindsBtn
 		// 
@@ -289,7 +287,7 @@ partial class settings
 		this.kBnds.TabIndex = 42;
 		this.kBnds.Text = "Keybinds";
 		this.kBnds.UseVisualStyleBackColor = true;
-		this.kBnds.Click += new System.EventHandler(this.openKeybinds);
+		this.kBnds.Click += new System.EventHandler(this.oKb);
 		// 
 		// p2parttoggle
 		// 
@@ -300,7 +298,7 @@ partial class settings
 		this.p2partt.TabIndex = 42;
 		this.p2partt.Text = "Player 2 guitar";
 		this.p2partt.UseVisualStyleBackColor = true;
-		this.p2partt.Click += new System.EventHandler(this.p2parttoggle_Click);
+		this.p2partt.Click += new System.EventHandler(this.p2pT);
 		// 
 		// setbgimg
 		// 
@@ -311,7 +309,7 @@ partial class settings
 		this.setbgimg.TabIndex = 43;
 		this.setbgimg.Text = "Set backdrop image";
 		this.setbgimg.UseVisualStyleBackColor = true;
-		this.setbgimg.Click += new System.EventHandler(this.setbgimg_Click);
+		this.setbgimg.Click += new System.EventHandler(this.sBGc);
 		// 
 		// pbxBg
 		// 
@@ -323,7 +321,7 @@ partial class settings
 		this.bImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 		this.bImg.TabIndex = 44;
 		this.bImg.TabStop = false;
-		this.bImg.DoubleClick += new System.EventHandler(this.showBgImg);
+		this.bImg.DoubleClick += new System.EventHandler(this.sBGi);
 		// 
 		// dCtrl
 		// 
@@ -366,7 +364,7 @@ partial class settings
 		0,
 		0,
 		0});
-		this.aqlvl.ValueChanged += new System.EventHandler(this.changeAQ);
+		this.aqlvl.ValueChanged += new System.EventHandler(this.cAQ);
 		// 
 		// ctmpb
 		// 
@@ -377,7 +375,7 @@ partial class settings
 		this.ctmpb.TabIndex = 31;
 		this.ctmpb.Text = "Clean Temp Files";
 		this.ctmpb.UseVisualStyleBackColor = true;
-		this.ctmpb.Click += new System.EventHandler(this.ctmpb_Click);
+		this.ctmpb.Click += new System.EventHandler(this.ctmp);
 		// 
 		// res
 		// 
@@ -388,7 +386,7 @@ partial class settings
 		this.res.Name = "res";
 		this.res.Size = new System.Drawing.Size(78, 21);
 		this.res.TabIndex = 2;
-		this.res.SelectedIndexChanged += new System.EventHandler(this.res_SelectedIndexChanged);
+		this.res.SelectedIndexChanged += new System.EventHandler(this.resC);
 		// 
 		// maxnotes
 		// 
@@ -407,7 +405,7 @@ partial class settings
 		this.MaxN.Size = new System.Drawing.Size(72, 20);
 		this.MaxN.TabIndex = 18;
 		this.MaxN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-		this.MaxN.ValueChanged += new System.EventHandler(this.maxnotes_ValueChanged);
+		this.MaxN.ValueChanged += new System.EventHandler(this.mxnVC);
 		// 
 		// maxFPS
 		// 
@@ -421,7 +419,7 @@ partial class settings
 		this.maxFPS.Size = new System.Drawing.Size(60, 20);
 		this.maxFPS.TabIndex = 38;
 		this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-		this.maxFPS.ValueChanged += new System.EventHandler(this.maxFPSchange);
+		this.maxFPS.ValueChanged += new System.EventHandler(this.mxFPSc);
 		// 
 		// speedlabel
 		// 
@@ -483,8 +481,7 @@ partial class settings
 		this.tLb.Size = new System.Drawing.Size(149, 277);
 		this.tLb.TabIndex = 30;
 		this.tLb.ThreeDCheckBoxes = true;
-		this.tLb.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tweakUpdate);
-		this.tLb.SelectedIndexChanged += new System.EventHandler(this.updateTweakBoxes);
+		this.tLb.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tU);
 		// 
 		// readytimelbl
 		// 
@@ -589,8 +586,7 @@ partial class settings
 		this.modList.Size = new System.Drawing.Size(88, 91);
 		this.modList.TabIndex = 41;
 		this.modList.ThreeDCheckBoxes = true;
-		this.modList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.modifierUpdate);
-		this.modList.SelectedIndexChanged += new System.EventHandler(this.updateModifiersList);
+		this.modList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.mU);
 		// 
 		// modifierslbl
 		// 
@@ -710,9 +706,7 @@ partial class settings
 		this.ShowIcon = false;
 		this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 		this.Text = "FastGH3 settings";
-		this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.settings_FormClosing);
-		this.Load += new System.EventHandler(this.settings_Load);
-		this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydownreacts);
+		this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.kde);
 		((System.ComponentModel.ISupportInitialize)(this.hypers)).EndInit();
 		((System.ComponentModel.ISupportInitialize)(this.speed)).EndInit();
 		((System.ComponentModel.ISupportInitialize)(this.RTnoi)).EndInit();

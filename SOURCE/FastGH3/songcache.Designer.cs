@@ -29,7 +29,7 @@
 		this.components = new System.ComponentModel.Container();
 		System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
 		//System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(songcache));
-		this.cache = new System.Windows.Forms.DataGridView();
+		this.c = new System.Windows.Forms.DataGridView();
 		this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
 		this.Artist = new System.Windows.Forms.DataGridViewTextBoxColumn();
 		this.Title = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -38,43 +38,43 @@
 		this.playBtn = new System.Windows.Forms.DataGridViewButtonColumn();
 		this.tableContext = new System.Windows.Forms.ContextMenuStrip(this.components);
 		this.deleteTool = new System.Windows.Forms.ToolStripMenuItem();
-		((System.ComponentModel.ISupportInitialize)(this.cache)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.c)).BeginInit();
 		this.tableContext.SuspendLayout();
 		this.SuspendLayout();
 		// 
 		// cache
 		// 
-		this.cache.AllowUserToAddRows = false;
-		this.cache.AllowUserToDeleteRows = false;
-		this.cache.AllowUserToOrderColumns = true;
-		this.cache.AllowUserToResizeRows = false;
-		this.cache.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-		this.cache.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-		this.cache.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+		this.c.AllowUserToAddRows = false;
+		this.c.AllowUserToDeleteRows = false;
+		this.c.AllowUserToOrderColumns = true;
+		this.c.AllowUserToResizeRows = false;
+		this.c.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+		this.c.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+		this.c.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
 			this.ID,
 			this.Artist,
 			this.Title,
 			this._Size,
 			this.Length,
 			this.playBtn});
-		this.cache.ContextMenuStrip = this.tableContext;
-		this.cache.Dock = System.Windows.Forms.DockStyle.Fill;
-		this.cache.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-		this.cache.EnableHeadersVisualStyles = false;
-		this.cache.Location = new System.Drawing.Point(0, 0);
-		this.cache.MultiSelect = false;
-		this.cache.Name = "cache";
-		this.cache.ReadOnly = true;
-		this.cache.RowHeadersVisible = false;
+		this.c.ContextMenuStrip = this.tableContext;
+		this.c.Dock = System.Windows.Forms.DockStyle.Fill;
+		this.c.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+		this.c.EnableHeadersVisualStyles = false;
+		this.c.Location = new System.Drawing.Point(0, 0);
+		this.c.MultiSelect = false;
+		this.c.Name = "cache";
+		this.c.ReadOnly = true;
+		this.c.RowHeadersVisible = false;
 		dataGridViewCellStyle1.Font = new System.Drawing.Font("MS Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-		this.cache.RowsDefaultCellStyle = dataGridViewCellStyle1;
-		this.cache.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-		this.cache.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-		this.cache.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-		this.cache.Size = new System.Drawing.Size(492, 22);
-		this.cache.TabIndex = 0;
-		this.cache.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cacheClick0);
-		this.cache.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cacheDblClick);
+		this.c.RowsDefaultCellStyle = dataGridViewCellStyle1;
+		this.c.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+		this.c.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+		this.c.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+		this.c.Size = new System.Drawing.Size(492, 22);
+		this.c.TabIndex = 0;
+		this.c.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cc);
+		this.c.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cdblc);
 		// 
 		// ID
 		// 
@@ -139,27 +139,27 @@
 			this.deleteTool});
 		this.tableContext.Name = "tableContext";
 		this.tableContext.Size = new System.Drawing.Size(106, 26);
-		this.tableContext.Opening += new System.ComponentModel.CancelEventHandler(this.cacheRgtclick);
+		this.tableContext.Opening += new System.ComponentModel.CancelEventHandler(this.crcl);
 		// 
 		// deleteTool
 		// 
 		this.deleteTool.Name = "deleteTool";
 		this.deleteTool.Size = new System.Drawing.Size(105, 22);
 		this.deleteTool.Text = "Delete";
-		this.deleteTool.Click += new System.EventHandler(this.cacheDelete1);
+		this.deleteTool.Click += new System.EventHandler(this.cdel);
 		// 
 		// songcache
 		// 
 		this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 		this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 		this.ClientSize = new System.Drawing.Size(492, 22);
-		this.Controls.Add(this.cache);
+		this.Controls.Add(this.c);
 		//this.Icon = (FastGH3.Properties.Resources.blank);
 		this.Name = "songcache";
 		this.ShowIcon = false;
 		this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 		this.Text = "Song Cache";
-		((System.ComponentModel.ISupportInitialize)(this.cache)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.c)).EndInit();
 		this.tableContext.ResumeLayout(false);
 		this.ResumeLayout(false);
 
@@ -167,7 +167,7 @@
 
 	#endregion
 
-	private System.Windows.Forms.DataGridView cache;
+	private System.Windows.Forms.DataGridView c;
 	private System.Windows.Forms.DataGridViewTextBoxColumn Filesize;
 	private System.Windows.Forms.ContextMenuStrip tableContext;
 	private System.Windows.Forms.ToolStripMenuItem deleteTool;
