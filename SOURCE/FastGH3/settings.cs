@@ -361,8 +361,7 @@ public partial class settings : Form
 		Console.SetWindowSize(80, 32);
 		vl2 = Program.cfg("Misc", t.VerboseLog.ToString(), 0) == 1;
 		Program.vl("Loading QBs...");
-		string dataf = folder + "\\DATA\\";
-		pakformat = new PakFormat(dataf + "user.pak.xen", dataf + "user.pak.xen", "", PakFormatType.PC, false);
+		pakformat = new PakFormat(Program.dataf + "user.pak.xen", Program.dataf + "user.pak.xen", "", PakFormatType.PC, false);
 		qbedit = new PakEditor(pakformat, false);
 		userqb = qbedit.ReadQbFile("config.qb");
 		disableEvents = true;
@@ -401,7 +400,10 @@ public partial class settings : Form
 		tt.SetToolTip(setbgimg, Program.vstr[120]);
 		tt.SetToolTip(bImg, Program.vstr[121]);
 		this.spL.Text = Program.vstr[122];
-		bkgdPF = new PakFormat(folder + "\\DATA\\bkgd.pak.xen", folder + "\\DATA\\bkgd.pab.xen", "", PakFormatType.PC, false);
+		bkgdPF = new PakFormat(
+			Program.dataf + "bkgd.pak.xen",
+			Program.dataf + "bkgd.pab.xen", "",
+			PakFormatType.PC, false);
 		bkgdPE = new PakEditor(bkgdPF, false);
 		bImg.Image = getBGIMG();
 		//setBGIMG(pbxBg.Image, false);
@@ -656,7 +658,6 @@ public partial class settings : Form
 
 	private void ctmp(object sender, EventArgs e)
 	{
-		string tmpf = folder + "\\DATA\\CACHE";
 		string[] tmpds;
 		//string[] tmpds = Directory.GetDirectories(tmpf, "*", SearchOption.TopDirectoryOnly);
 		string[] tmpfs = Directory.GetFiles(Path.GetTempPath(), "*.tmp.fsp", SearchOption.TopDirectoryOnly);
@@ -679,7 +680,7 @@ public partial class settings : Form
 		tmpfs = Directory.GetFiles(Path.GetTempPath(), "libSoX.tmp.*", SearchOption.TopDirectoryOnly);
 		foreach (string file in tmpfs)
 			File.Delete(file);
-		if (File.Exists(folder + "\\DATA\\" + "CACHE\\.db.ini"))
+		if (File.Exists(Program.cf + ".db.ini"))
 		{
 			int sectCount = 0;
 			string[] k = Program.sn(Program.cachf);
@@ -716,7 +717,7 @@ public partial class settings : Form
 
 	private void vscc(object sender, EventArgs e)
 	{
-		Directory.CreateDirectory(folder + "\\DATA\\CACHE");
+		Directory.CreateDirectory(Program.cf);
 		new songcache().ShowDialog();
 	}
 
@@ -1057,7 +1058,7 @@ public partial class settings : Form
 	private void rGc(object sender, EventArgs e)
 	{
 		Process gh3 = new Process();
-		gh3.StartInfo.WorkingDirectory = folder + "\\";
+		gh3.StartInfo.WorkingDirectory = folder;
 		gh3.StartInfo.FileName = folder + "\\game.exe";
 		gh3.Start();
 	}

@@ -287,19 +287,19 @@ public partial class keyEdit : Form
 			ctrl = KeyID.Pause,
 			name = "Br"
 		}, new Key() {
-			pos = new Point(473, rows[0]),
+			pos = new Point(472, rows[0]),
 			size = dB,
 			key = Keys.LButton,
 			ctrl = KeyID.Mouse0,
 			name = "L"
 		}, new Key() {
-			pos = new Point(473+23+23, rows[0]),
+			pos = new Point(472+23+23, rows[0]),
 			size = dB,
 			key = Keys.RButton,
 			ctrl = KeyID.Mouse1,
 			name = "R"
 		}, new Key() {
-			pos = new Point(473+23, rows[0]),
+			pos = new Point(472+23, rows[0]),
 			size = dB,
 			key = Keys.MButton,
 			ctrl = KeyID.Mouse2,
@@ -1470,6 +1470,7 @@ public partial class keyEdit : Form
 
 	public keyEdit(ushort[] binds)
 	{
+#pragma warning disable CS0162 // Unreachable code detected
 		if (false) // dump key list for optimization
 		{
 			Stream kl = File.Create("kl.bin");
@@ -1487,32 +1488,31 @@ public partial class keyEdit : Form
 			}
 			kl.Close();
 		}
+#pragma warning restore CS0162 // Unreachable code detected
 		//if (true)
 		if (kt == null)
 		{
-			MemoryStream kr = new MemoryStream((byte[])Resources.ResourceManager.GetObject("kl"));
-			byte kc = (byte)kr.ReadByte();
+			MemoryStream ks = new MemoryStream((byte[])Resources.ResourceManager.GetObject("kl"));
+			BinaryReader kr = new BinaryReader(ks);
+			byte kc = kr.ReadByte();
 			kt = new Key[kc];
 			for (int i = 0; i < kc; i++)
 			{
 				kt[i].k = (Keys)kr.ReadByte();
-				byte[] buf = new byte[2];
-				// why
-				kr.Read(buf, 0, 2); kt[i].c = BitConverter.ToUInt16(buf, 0);
-				kr.Read(buf, 0, 2); kt[i].p.X = BitConverter.ToUInt16(buf, 0);
-				kr.Read(buf, 0, 2); kt[i].p.Y = BitConverter.ToUInt16(buf, 0);
-				kr.Read(buf, 0, 2); kt[i].s.Width = BitConverter.ToUInt16(buf, 0);
-				kr.Read(buf, 0, 2); kt[i].s.Height = BitConverter.ToUInt16(buf, 0);
-				byte strlen = (byte)kr.ReadByte();
-				buf = new byte[strlen];
-				kr.Read(buf, 0, strlen);
-				kt[i].n = System.Text.Encoding.ASCII.GetString(buf, 0, strlen);
+				kt[i].c = kr.ReadUInt16();
+				kt[i].p.X = kr.ReadUInt16();
+				kt[i].p.Y = kr.ReadUInt16();
+				kt[i].s.Width = kr.ReadUInt16();
+				kt[i].s.Height = kr.ReadUInt16();
+				byte strlen = kr.ReadByte();
+				byte[] buf = new byte[strlen];
+				kt[i].n = System.Text.Encoding.ASCII.GetString(kr.ReadBytes(strlen));
 			}
 		}
 		if (binds != null)
 			kBinds = binds;
 		InitializeComponent();
-		this.SuspendLayout();
+		SuspendLayout();
 		Font fnt = new Font("Arial", 6.75f);
 		kBt = new Button[kt.Length];
 		for (int i = 0; i < kt.Length; i++)
@@ -1531,8 +1531,8 @@ public partial class keyEdit : Form
 			kBt[i].Click += eB;
 			keylayout.Controls.Add(kBt[i]);
 		}
-		this.ResumeLayout(false);
-		this.PerformLayout();
+		ResumeLayout(false);
+		PerformLayout();
 		uK();
 	}
 }

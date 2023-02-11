@@ -7,7 +7,7 @@ public partial class songcache : Form
 {
 	// should I specify file path/name in the INI when caching a song?
 
-	string folder = Path.GetDirectoryName(Application.ExecutablePath) + "\\DATA\\CACHE\\";
+	string folder = Program.cf;
 	string i;
 
 	public songcache()
