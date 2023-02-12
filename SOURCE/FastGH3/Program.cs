@@ -82,7 +82,7 @@ class Program
 	}
 	public static int ini(string a, string k, int d, string f)
 	{
-		return GI(a, k, d, f);
+		return GI(a, k, d, Path.IsPathRooted(f) ? f : Directory.GetCurrentDirectory()+'\\'+f);
 	}
 	public static string ini(string s, string k, string d, string f) // for being lazy
 	{
@@ -452,9 +452,9 @@ class Program
 	}
 
 	static void ___(object p, DataReceivedEventArgs a)
-    {
+	{
 		vl(a.Data);
-    }
+	}
 	public static Process cmd(string fn, string a) //new Headless process
 	{
 		Process n = new Process();
