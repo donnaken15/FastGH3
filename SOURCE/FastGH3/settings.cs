@@ -1067,7 +1067,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		sQC(QbKey.Create(0xD8F8D2DE), partCRCs[part.SelectedIndex]);
+		sQC(QbKey.Create("p1_part"), partCRCs[part.SelectedIndex]);
 	}
 
 	private void p2pT(object sender, EventArgs e)

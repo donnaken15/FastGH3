@@ -8,6 +8,7 @@ goto :EOF
 
 :out
 IF "%ab%"=="" set ab=64
-"%~dp0sox" %1 -c 2 -r 44100 -V4 --multi-threaded -t wav - | "%~dp0helix" - %2 -B%ab% -M1 -u2 -q1
+IF "%bm%"=="" set bm=B
+"%~dp0sox" %1 -c 2 -r 44100 -V4 --multi-threaded -t wav - | "%~dp0helix" - %2 -%bm%%ab% -M1 -u2 -q1
 
 goto :EOF

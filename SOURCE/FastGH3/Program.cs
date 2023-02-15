@@ -128,38 +128,46 @@ class Program
 			// to Bink, and wait like 10 minutes for it
 			// to finish encoding
 			//vl("Song videos enabled");
-			if (File.Exists(bik))
+			try
 			{
-				vl(vstr[99]);
-				//vl("Found (Bink) background video");
-				if (cfg(m, lshv, 0) == 0)
+				if (File.Exists(bik))
 				{
-					vl(vstr[132]);
-					// save last background video
-					File.Copy(
-						vid + "backgrnd_video.bik.xen",
-						vid + "lastvid", true);
-					cfgWrite(m, lshv, 1);
-				}
-				File.Copy(bik,
-					vid + "backgrnd_video.bik.xen", true);
-			}
-			else
-			{
-				vl(vstr[100]);
-				//vl("No (Bink) background video found");
-				if (cfg(m, lshv, 0) == 1)
-				{
-					vl(vstr[133]);
-					// restore user video after playing a song a background video
-					// and now playing a song without one
-					File.Copy(
-						vid + "lastvid",
+					vl(vstr[99]);
+					//vl("Found (Bink) background video");
+					if (cfg(m, lshv, 0) == 0)
+					{
+						vl(vstr[132]);
+						// save last background video
+						File.Copy(
+							vid + "backgrnd_video.bik.xen",
+							vid + "lastvid", true);
+						cfgWrite(m, lshv, 1);
+					}
+					File.Copy(bik,
 						vid + "backgrnd_video.bik.xen", true);
-					File.Delete(
-						vid + "lastvid");
-					cfgWrite(m, lshv, 0);
 				}
+				else
+				{
+					vl(vstr[100]);
+					//vl("No (Bink) background video found");
+					if (cfg(m, lshv, 0) == 1)
+					{
+						vl(vstr[133]);
+						// restore user video after playing a song a background video
+						// and now playing a song without one
+						File.Copy(
+							vid + "lastvid",
+							vid + "backgrnd_video.bik.xen", true);
+						File.Delete(
+							vid + "lastvid");
+						cfgWrite(m, lshv, 0);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				print("Failed to copy song video.");
+				vl(e);
 			}
 		}
 		#endregion
@@ -491,8 +499,14 @@ class Program
 		// 36 KB
 		try
 		{
+			Console.Title = title;
+			folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
+			inif = folder + "settings.ini";
 			// System.Reflection.Emit wat dis
-			bool mic_ = true; // multi instance check
+			bool mic_ = cfg(m, "DisableMultiInstCheck", 0) == 0;
+			// multi instance check
+			// not working for one user
+			// maybe admin related
 			if (mic_)
 			{
 				Process[] mic = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Application.ExecutablePath));
@@ -521,9 +535,8 @@ class Program
 						}
 					}
 			}
-			Console.Title = title;
-			folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
-			inif = folder + "settings.ini";
+			else
+				print("Multi instance checking is off. Be careful!");
 			GH3EXEPath = NP(folder + "game.exe");
 			//if (File.Exists(folder + "settings.ini"))
 				//ini.Load(folder + "settings.ini");
@@ -1298,9 +1311,9 @@ class Program
 						{
 							AB_param =
 								(cfg(m, "AB", 128) / 2/*thx helix*/);
-							//bool VBR = false;
-							//VBR = (settings.GetKeyValue(m, "VBR", "0") == "1");
-							//string VBR_param = VBR ? "V" : "B";
+							bool VBR = false;
+							VBR = (cfg(m, "VBR", 0) == 1);
+							string VBR_param = VBR ? "V" : "B";
 							audioConv_start = time;
 							if (caching)
 								print(vstr[136], cacheColor);
@@ -1310,7 +1323,7 @@ class Program
 								//print("Found more than three audio tracks, merging.", FSBcolor);
 								addaud = cmd(CMDpath, (mt + "nj3t.bat").EncloseWithQuoteMarks());
 								addaud.StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
-								//addaud.StartInfo.EnvironmentVariables["BM"] = VBR_param;
+								addaud.StartInfo.EnvironmentVariables["BM"] = VBR_param;
 								int maxl = 0;
 								foreach (string a in nj3ts)
 								{
@@ -1353,7 +1366,7 @@ class Program
 									fsbbuild2[i] = cmd(CMDpath, "/c " + ((mt + "c128ks.bat").EncloseWithQuoteMarks() + " " + audiostreams[i].EncloseWithQuoteMarks() + " \"" + mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").EncloseWithQuoteMarks());
 									fsbbuild2[i].StartInfo.WorkingDirectory = mt;
 									fsbbuild2[i].StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
-									//fsbbuild2[i].StartInfo.EnvironmentVariables["BM"] = VBR_param;
+									fsbbuild2[i].StartInfo.EnvironmentVariables["BM"] = VBR_param;
 									vl("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments, FSBcolor);
 								}
 								fsbbuild3 = cmd(CMDpath, "/c " + ((mt + "fsbbuild.bat").EncloseWithQuoteMarks()));
@@ -1370,7 +1383,7 @@ class Program
 							{
 								fsbbuild.StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
 								fsbbuild.StartInfo.WorkingDirectory = mt;
-								//fsbbuild.StartInfo.EnvironmentVariables["BM"] = VBR_param;
+								fsbbuild.StartInfo.EnvironmentVariables["BM"] = VBR_param;
 								fsbbuild.StartInfo.Arguments = "/c " + ((mt + "fsbbuild.bat").EncloseWithQuoteMarks() + ' ' +
 								audiostreams[0].EncloseWithQuoteMarks() + ' ' + audiostreams[1].EncloseWithQuoteMarks() + ' ' + audiostreams[2].EncloseWithQuoteMarks() + ' ' +
 								(mt + "blank.mp3").EncloseWithQuoteMarks() + ' ' + fsb.EncloseWithQuoteMarks()).EncloseWithQuoteMarks();
