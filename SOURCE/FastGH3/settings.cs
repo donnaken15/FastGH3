@@ -541,16 +541,17 @@ public partial class settings : Form
 		int d = 0;
 		Size[] unlistedres = { // unlisted but working (i hope) (it did for me)
 			new Size(960, 720),
+			new Size(1440, 1080),
+		};
+		Size[] cantwork = { // why
+			new Size(640, 480),
+			new Size(720, 480),
+			new Size(720, 576),
 		};
 		while (EDS(null, d++, ref mode) == true) // Succeeded  
 		{
 			Size newSz = new Size((int)mode.w, (int)mode.h);
 			bool diff = true;
-			Size[] cantwork = { // why
-				new Size(640, 480),
-				new Size(720, 480),
-				new Size(720, 576),
-			};
 			foreach (Size res_ in resz)
 			{
 				if (res_ == newSz)
@@ -800,6 +801,9 @@ public partial class settings : Form
 		}
 		bImg.Image = i;
 		setBGIMG(i,nR);
+		// i hate myself
+		//QbItemInteger backcolrgb = (QbItemInteger)userqb.FindItem(QbKey.Create("BGCol"), false).Items[0];
+		//userqb.RemoveItem(backcolrgb);
 	}
 
 	private void cAQ(object sender, EventArgs e)

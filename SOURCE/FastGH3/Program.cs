@@ -16,13 +16,13 @@ using System.Windows.Forms;
 
 class Program
 {
-	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileInt", CharSet = CharSet.Unicode)] // im forced to use widestrings anyway so why not
+	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileInt", CharSet = CharSet.Unicode)]
 	public static extern int GI(
 		string a, string k, int d, string f);
 	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileString", CharSet = CharSet.Unicode)]
 	public static extern int GStr(
 		string a, string k,
-		string d, [In, Out] char[] s,
+		string d, [In, Out] byte[] s,
 		int n, string f);
 	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileSectionNames", CharSet = CharSet.Unicode)]
 	public static extern int GSN(
@@ -74,15 +74,24 @@ class Program
 	public static string sv = "SongVideos";
 	public static string lshv = "LastSongHadVideo";
 	public static string stf = "SongtextFormat";
+	public static string IF(string f) // ini path fix
+	{
+		return Path.IsPathRooted(f) ? f : Directory.GetCurrentDirectory() + '\\' + f;
+	}
 	public static string ini(string a, string k, string d, int i, string f)
 	{
-		char[] _ = new char[i];
-		int len = GStr(a, k, d, _, i, f);
-		return new string(_).Substring(0, len);
+		byte[] _ = new byte[i];
+		int len = GStr(a, k, d, _, i, IF(f));
+		Array.Resize(ref _, len*2);
+		return Encoding.Unicode.GetString(_);
 	}
 	public static int ini(string a, string k, int d, string f)
 	{
-		return GI(a, k, d, Path.IsPathRooted(f) ? f : Directory.GetCurrentDirectory()+'\\'+f);
+		return GI(a, k, d, IF(f));
+	}
+	public static int cfg(string a, string k, int d)
+	{
+		return GI(a, k, d, inif);
 	}
 	public static string ini(string s, string k, string d, string f) // for being lazy
 	{
@@ -95,10 +104,6 @@ class Program
 	public static string cfg(string s, string k, string d) // for being lazy
 	{
 		return ini(s, k, d, 0x200, inif);
-	}
-	public static int cfg(string s, string k, int d)
-	{
-		return int.Parse(cfg(s,k,d.ToString()));
 	}
 	public static void iniw(string s, string k, object d, string f)
 	{
@@ -1442,6 +1447,9 @@ class Program
 						killgame();
 						if (!chartCache)
 						{
+							// TODO: stringpointers for null arrays
+							// *nullNoteArray
+							// = {0,0,0}
 							if (caching)
 								print(vstr[40], cacheColor);
 								//print("Chart is not cached.", cacheColor);
@@ -1879,6 +1887,8 @@ class Program
 
 							foreach (EventsSectionEntry e in chart.Events)
 							{
+								if (e == null) { vl("Got null event!!!!!!!!!"); continue; } // wtf
+								if (e.TextValue == null) { vl("Got null event text!!!!!!!!!"); continue; } // wtf
 								QbKey eventKey = QbKey.Create(e.TextValue);
 								if (e.TextValue.ToLower().StartsWith("section "))
 									continue;
@@ -2279,6 +2289,13 @@ class Program
 								{
 									fop1a.AddItem(nullfo);
 								}
+								// use stringpointer when here?
+								// got pointer error for using
+								// same copy of item later
+								// cringe scripting system
+								nullfo = new QbItemInteger(mid);
+								nullfo.Create(QbItemType.ArrayInteger);
+								nullfo.Values = new int[] { 0, int.MaxValue };
 								if (!gotfo[1])
 								{
 									fop2a.AddItem(nullfo);
@@ -2399,11 +2416,13 @@ class Program
 							sects.ItemQbKey = QbKey.Create(0x85C8739B);
 							sects_arr.Create(QbItemType.ArrayStruct);
 							List<EventsSectionEntry> mrkrs = new List<EventsSectionEntry>();
-							foreach (EventsSectionEntry eventEntry in chart.Events)
+							foreach (EventsSectionEntry e in chart.Events)
 							{
-								if (eventEntry.TextValue.StartsWith("section "))
+								if (e == null) { vl("Got null event!!!!!!!!!");  continue; } // wtf
+								if (e.TextValue == null) { vl("Got null event text!!!!!!!!!"); continue; } // wtf
+								if (e.TextValue.StartsWith("section "))
 								{
-									mrkrs.Add(eventEntry);
+									mrkrs.Add(e);
 								}
 							}
 							int mrk_c = mrkrs.Count;
