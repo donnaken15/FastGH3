@@ -1,0 +1,50 @@
+#!/bin/sh
+
+echo
+echo "qcomp"
+echo "whatever"
+
+# no args
+if [ $# -eq 0 ]; then
+	echo -e "usage: qcomp [folder]\n"
+	exit 1
+fi
+# non existent dir arg
+if [ ! -d "$1" ]; then
+	echo invalid path
+	exit 1
+fi
+indir=$1
+find=/usr/bin/find
+# >:(
+outdir=build/
+rm "$outdir" -rf
+if	[ ! "$(dirname "$0")" = "." ]; then
+	bin=$(realpath "$0")/ # ???
+else
+	bin=$(which "$0")/ # required when script is pathed
+fi
+bin=$(dirname "$bin")
+wbin=$(cygpath -w "$bin")
+NL=$'\n'
+nul=/dev/null
+
+rm "$outdir" -rf
+mkdir -p "$outdir"
+
+echo
+echo "*****  Q COMPILATION   *****"
+echo
+
+INPUTS=$(pushd "$indir" > $nul && $find * -type f -name "*.q" && popd > $nul)
+for f in $INPUTS
+do
+	mkdir -p "${outdir}$(dirname $f)"
+	echo -e "Compiling $f..."
+	out="$outdir${f%%.*}.qb.xen"
+	node "$wbin/QBC/QBC.js" c -g gh3 "$indir/$f" -o "$out"
+done
+
+echo
+echo done...
+

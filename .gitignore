@@ -61,3 +61,6 @@ DATA/ZONES/__themes/*/
 /__BRANCHES/
 *_original.*
 DATA/MOVIES/BIK/lastvid
+/SOURCE/q/build
+/SOURCE/q/decomp
+/SOURCE/q/ext
