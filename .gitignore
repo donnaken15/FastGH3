@@ -60,4 +60,19 @@ DATA/ZONES/__themes/*/
 /__WII/
 /__BRANCHES/
 *_original.*
-DATA/MOVIES/BIK/lastvid
+/DATA/MOVIES/BIK/lastvid
+/DATA/PAK/__highways/*.dds
+/DATA/PAK/__highways/*.png
+/DATA/PAK/__highways/*.jpg
+/DATA/PAK/__highways/*/
+/DATA/MOVIES/BIK/*.bik
+/DATA/MOVIES/BIK/*.bik.xen
+!/DATA/MOVIES/BIK/backgrnd_video.bik.xen
+/DATA/*.png
+/DATA/*.jpg
+/DATA/replays/*.rep
+/DATA/ZONES/__themes/*.gfx
+/DATA/ZONES/__themes/*.gfx.xen
+/DATA/ZONES/__themes/*.zip
+
+# if i add items to this list that were already committed before, will it remove it from the repo?
