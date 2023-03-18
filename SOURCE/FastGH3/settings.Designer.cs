@@ -19,9 +19,6 @@ partial class settings
 	{
 		this.components = new System.ComponentModel.Container();
 		this.ok = new System.Windows.Forms.Button();
-		// desparate to reduce file size by renaming these
-		// to smaller things, but it looks like it's worth it
-		// because it's actually taking effect
 		this.resL = new System.Windows.Forms.Label();
 		this.hypers = new System.Windows.Forms.NumericUpDown();
 		this.hLabel = new System.Windows.Forms.Label();
@@ -90,12 +87,12 @@ partial class settings
 		this.tt.SetToolTip(this.ok, "Exit dialog.");
 		this.ok.UseVisualStyleBackColor = true;
 		// 
-		// reslabel
+		// resL
 		// 
 		this.resL.AutoSize = true;
 		this.resL.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.resL.Location = new System.Drawing.Point(4, 6);
-		this.resL.Name = "reslabel";
+		this.resL.Name = "resL";
 		this.resL.Size = new System.Drawing.Size(60, 13);
 		this.resL.TabIndex = 1;
 		this.resL.Text = "Resolution:";
@@ -114,12 +111,12 @@ partial class settings
 		this.hypers.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 		this.hypers.ValueChanged += new System.EventHandler(this.hyVC);
 		// 
-		// hyperlabel
+		// hLabel
 		// 
 		this.hLabel.AutoSize = true;
 		this.hLabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.hLabel.Location = new System.Drawing.Point(4, 30);
-		this.hLabel.Name = "hyperlabel";
+		this.hLabel.Name = "hLabel";
 		this.hLabel.Size = new System.Drawing.Size(104, 13);
 		this.hLabel.TabIndex = 4;
 		this.hLabel.Text = "Default Hyperspeed:";
@@ -140,17 +137,17 @@ partial class settings
 		this.diff.TabIndex = 5;
 		this.diff.SelectedIndexChanged += new System.EventHandler(this.diffC);
 		// 
-		// difflabel
+		// dfLabel
 		// 
 		this.dfLabel.AutoSize = true;
 		this.dfLabel.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.dfLabel.Location = new System.Drawing.Point(4, 55);
-		this.dfLabel.Name = "difflabel";
+		this.dfLabel.Name = "dfLabel";
 		this.dfLabel.Size = new System.Drawing.Size(87, 13);
 		this.dfLabel.TabIndex = 6;
 		this.dfLabel.Text = "Default Difficulty:";
 		// 
-		// creditlink
+		// crLink
 		// 
 		this.crLink.ActiveLinkColor = System.Drawing.Color.Black;
 		this.crLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -159,7 +156,7 @@ partial class settings
 		this.crLink.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
 		this.crLink.LinkColor = System.Drawing.Color.Black;
 		this.crLink.Location = new System.Drawing.Point(177, 448);
-		this.crLink.Name = "creditlink";
+		this.crLink.Name = "crLink";
 		this.crLink.Size = new System.Drawing.Size(59, 20);
 		this.crLink.TabIndex = 8;
 		this.crLink.TabStop = true;
@@ -167,7 +164,7 @@ partial class settings
 		this.crLink.VisitedLinkColor = System.Drawing.Color.White;
 		this.crLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.crlink);
 		// 
-		// tooltip
+		// tt
 		// 
 		this.tt.AutomaticDelay = 0;
 		this.tt.AutoPopDelay = 9999999;
@@ -219,51 +216,51 @@ partial class settings
 		this.part.TabIndex = 22;
 		this.part.SelectedIndexChanged += new System.EventHandler(this.pVC);
 		// 
-		// replaygame
+		// replay
 		// 
 		this.replay.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.replay.Location = new System.Drawing.Point(150, 77);
-		this.replay.Name = "replaygame";
+		this.replay.Name = "replay";
 		this.replay.Size = new System.Drawing.Size(126, 19);
 		this.replay.TabIndex = 20;
 		this.replay.Text = "Replay Last Song";
 		this.replay.UseVisualStyleBackColor = true;
 		this.replay.Click += new System.EventHandler(this.rGc);
 		// 
-		// pluginmanage
+		// gh3pm
 		// 
 		this.gh3pm.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.gh3pm.Location = new System.Drawing.Point(150, 100);
-		this.gh3pm.Name = "pluginmanage";
+		this.gh3pm.Name = "gh3pm";
 		this.gh3pm.Size = new System.Drawing.Size(52, 19);
 		this.gh3pm.TabIndex = 23;
 		this.gh3pm.Text = "Plugins";
 		this.gh3pm.UseVisualStyleBackColor = true;
 		this.gh3pm.Click += new System.EventHandler(this.pmo);
 		// 
-		// viewsongcache
+		// sCa
 		// 
 		this.sCa.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.sCa.Location = new System.Drawing.Point(205, 123);
-		this.sCa.Name = "viewsongcache";
+		this.sCa.Name = "sCa";
 		this.sCa.Size = new System.Drawing.Size(71, 19);
 		this.sCa.TabIndex = 25;
 		this.sCa.Text = "Song Cache";
 		this.sCa.UseVisualStyleBackColor = true;
 		this.sCa.Click += new System.EventHandler(this.vscc);
 		// 
-		// songtxtfmt_
+		// sFmT
 		// 
 		this.sFmT.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.sFmT.Location = new System.Drawing.Point(105, 123);
-		this.sFmT.Name = "songtxtfmt_";
+		this.sFmT.Name = "sFmT";
 		this.sFmT.Size = new System.Drawing.Size(97, 19);
 		this.sFmT.TabIndex = 33;
 		this.sFmT.Text = "Song Text Format";
 		this.sFmT.UseVisualStyleBackColor = true;
 		this.sFmT.Click += new System.EventHandler(this.stfO);
 		// 
-		// readytimeNoIntro
+		// RTnoi
 		// 
 		this.RTnoi.Enabled = false;
 		this.RTnoi.Location = new System.Drawing.Point(5, 96);
@@ -272,28 +269,28 @@ partial class settings
 		0,
 		0,
 		0});
-		this.RTnoi.Name = "readytimeNoIntro";
+		this.RTnoi.Name = "RTnoi";
 		this.RTnoi.Size = new System.Drawing.Size(59, 20);
 		this.RTnoi.TabIndex = 34;
 		this.RTnoi.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 		this.RTnoi.ValueChanged += new System.EventHandler(this.cRT);
 		// 
-		// keybindsBtn
+		// kBnds
 		// 
 		this.kBnds.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.kBnds.Location = new System.Drawing.Point(205, 100);
-		this.kBnds.Name = "keybindsBtn";
+		this.kBnds.Name = "kBnds";
 		this.kBnds.Size = new System.Drawing.Size(71, 19);
 		this.kBnds.TabIndex = 42;
 		this.kBnds.Text = "Keybinds";
 		this.kBnds.UseVisualStyleBackColor = true;
 		this.kBnds.Click += new System.EventHandler(this.oKb);
 		// 
-		// p2parttoggle
+		// p2partt
 		// 
 		this.p2partt.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.p2partt.Location = new System.Drawing.Point(6, 234);
-		this.p2partt.Name = "p2parttoggle";
+		this.p2partt.Name = "p2partt";
 		this.p2partt.Size = new System.Drawing.Size(90, 18);
 		this.p2partt.TabIndex = 42;
 		this.p2partt.Text = "Player 2 guitar";
@@ -311,12 +308,12 @@ partial class settings
 		this.setbgimg.UseVisualStyleBackColor = true;
 		this.setbgimg.Click += new System.EventHandler(this.sBGc);
 		// 
-		// pbxBg
+		// bImg
 		// 
 		this.bImg.BackColor = System.Drawing.SystemColors.Control;
 		this.bImg.Cursor = System.Windows.Forms.Cursors.Help;
 		this.bImg.Location = new System.Drawing.Point(119, 100);
-		this.bImg.Name = "pbxBg";
+		this.bImg.Name = "bImg";
 		this.bImg.Size = new System.Drawing.Size(28, 19);
 		this.bImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 		this.bImg.TabIndex = 44;
@@ -388,7 +385,7 @@ partial class settings
 		this.res.TabIndex = 2;
 		this.res.SelectedIndexChanged += new System.EventHandler(this.resC);
 		// 
-		// maxnotes
+		// MaxN
 		// 
 		this.MaxN.Location = new System.Drawing.Point(204, 27);
 		this.MaxN.Maximum = new decimal(new int[] {
@@ -401,7 +398,7 @@ partial class settings
 		0,
 		0,
 		-2147483648});
-		this.MaxN.Name = "maxnotes";
+		this.MaxN.Name = "MaxN";
 		this.MaxN.Size = new System.Drawing.Size(72, 20);
 		this.MaxN.TabIndex = 18;
 		this.MaxN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -421,36 +418,36 @@ partial class settings
 		this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 		this.maxFPS.ValueChanged += new System.EventHandler(this.mxFPSc);
 		// 
-		// speedlabel
+		// spL
 		// 
 		this.spL.AutoSize = true;
 		this.spL.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.spL.Location = new System.Drawing.Point(149, 6);
-		this.spL.Name = "speedlabel";
-		this.spL.Size = new System.Drawing.Size(133, 13);
+		this.spL.Name = "spL";
+		this.spL.Size = new System.Drawing.Size(0, 13);
 		this.spL.TabIndex = 14;
 		// 
-		// maxnoteslbl
+		// mXnL
 		// 
 		this.mXnL.AutoSize = true;
 		this.mXnL.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.mXnL.Location = new System.Drawing.Point(149, 30);
-		this.mXnL.Name = "maxnoteslbl";
+		this.mXnL.Name = "mXnL";
 		this.mXnL.Size = new System.Drawing.Size(62, 13);
 		this.mXnL.TabIndex = 17;
 		this.mXnL.Text = "Max notes: ";
 		// 
-		// instlabel
+		// iL
 		// 
 		this.iL.AutoSize = true;
 		this.iL.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.iL.Location = new System.Drawing.Point(149, 55);
-		this.iL.Name = "instlabel";
+		this.iL.Name = "iL";
 		this.iL.Size = new System.Drawing.Size(59, 13);
 		this.iL.TabIndex = 21;
 		this.iL.Text = "Instrument:";
 		// 
-		// tweaksList
+		// tLb
 		// 
 		this.tLb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 		| System.Windows.Forms.AnchorStyles.Left)));
@@ -476,55 +473,55 @@ partial class settings
 		"Background video",
 		"Hide hit gems",
 		"Early sustain activation"});
-		this.tLb.Location = new System.Drawing.Point(7, 165);
-		this.tLb.Name = "tweaksList";
-		this.tLb.Size = new System.Drawing.Size(149, 277);
+		this.tLb.Location = new System.Drawing.Point(7, 167);
+		this.tLb.Name = "tLb";
+		this.tLb.Size = new System.Drawing.Size(149, 275);
 		this.tLb.TabIndex = 30;
 		this.tLb.ThreeDCheckBoxes = true;
 		this.tLb.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.tU);
 		// 
-		// readytimelbl
+		// RTlbl
 		// 
 		this.RTlbl.Enabled = false;
 		this.RTlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.RTlbl.Location = new System.Drawing.Point(3, 80);
-		this.RTlbl.Name = "readytimelbl";
+		this.RTlbl.Name = "RTlbl";
 		this.RTlbl.Size = new System.Drawing.Size(92, 13);
 		this.RTlbl.TabIndex = 35;
 		this.RTlbl.Text = "No intro ready time:";
 		// 
-		// readytimems
+		// RTms
 		// 
 		this.RTms.AutoSize = true;
 		this.RTms.Enabled = false;
 		this.RTms.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.RTms.Location = new System.Drawing.Point(66, 101);
-		this.RTms.Name = "readytimems";
+		this.RTms.Name = "RTms";
 		this.RTms.Size = new System.Drawing.Size(20, 13);
 		this.RTms.TabIndex = 36;
 		this.RTms.Text = "ms";
 		// 
-		// maxFPSlbl
+		// mFPSl
 		// 
 		this.mFPSl.AutoSize = true;
 		this.mFPSl.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.mFPSl.Location = new System.Drawing.Point(3, 2);
-		this.mFPSl.Name = "maxFPSlbl";
+		this.mFPSl.Name = "mFPSl";
 		this.mFPSl.Size = new System.Drawing.Size(77, 13);
 		this.mFPSl.TabIndex = 37;
 		this.mFPSl.Text = "Max framerate:";
 		// 
-		// fpslabel
+		// FPSl
 		// 
 		this.FPSl.AutoSize = true;
 		this.FPSl.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.FPSl.Location = new System.Drawing.Point(66, 23);
-		this.FPSl.Name = "fpslabel";
+		this.FPSl.Name = "FPSl";
 		this.FPSl.Size = new System.Drawing.Size(27, 13);
 		this.FPSl.TabIndex = 39;
 		this.FPSl.Text = "FPS";
 		// 
-		// tweaksPanel
+		// tPanel
 		// 
 		this.tPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 		| System.Windows.Forms.AnchorStyles.Left)));
@@ -543,9 +540,9 @@ partial class settings
 		this.tPanel.Controls.Add(this.mFPSl);
 		this.tPanel.Controls.Add(this.RTnoi);
 		this.tPanel.Controls.Add(this.RTlbl);
-		this.tPanel.Location = new System.Drawing.Point(157, 165);
-		this.tPanel.Name = "tweaksPanel";
-		this.tPanel.Size = new System.Drawing.Size(119, 277);
+		this.tPanel.Location = new System.Drawing.Point(157, 167);
+		this.tPanel.Name = "tPanel";
+		this.tPanel.Size = new System.Drawing.Size(119, 275);
 		this.tPanel.TabIndex = 40;
 		// 
 		// kbpslbl
@@ -568,7 +565,7 @@ partial class settings
 		this.aqlbl.TabIndex = 43;
 		this.aqlbl.Text = "Audio quality:";
 		// 
-		// modifiersList
+		// modList
 		// 
 		this.modList.BorderStyle = System.Windows.Forms.BorderStyle.None;
 		this.modList.CheckOnClick = true;
@@ -582,33 +579,33 @@ partial class settings
 		"Mirror mode",
 		"Color shuffle"});
 		this.modList.Location = new System.Drawing.Point(5, 137);
-		this.modList.Name = "modifiersList";
+		this.modList.Name = "modList";
 		this.modList.Size = new System.Drawing.Size(88, 91);
 		this.modList.TabIndex = 41;
 		this.modList.ThreeDCheckBoxes = true;
 		this.modList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.mU);
 		// 
-		// modifierslbl
+		// modl
 		// 
 		this.modl.AutoSize = true;
 		this.modl.FlatStyle = System.Windows.Forms.FlatStyle.System;
 		this.modl.Location = new System.Drawing.Point(3, 121);
-		this.modl.Name = "modifierslbl";
+		this.modl.Name = "modl";
 		this.modl.Size = new System.Drawing.Size(52, 13);
 		this.modl.TabIndex = 40;
 		this.modl.Text = "Modifiers:";
 		// 
-		// tweaksLabel
+		// tLabel
 		// 
 		this.tLabel.AutoSize = true;
 		this.tLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 		this.tLabel.Location = new System.Drawing.Point(3, 146);
-		this.tLabel.Name = "tweaksLabel";
+		this.tLabel.Name = "tLabel";
 		this.tLabel.Size = new System.Drawing.Size(58, 16);
 		this.tLabel.TabIndex = 41;
 		this.tLabel.Text = "Tweaks:";
 		// 
-		// selectImage0
+		// selImg
 		// 
 		this.selImg.Filter = "Supported image formats|*.png;*.jpg;*.bmp;*.dds|Portable Network Graphics|*.png|J" +
 "PEG|*.jpeg|Bitmap|*.bmp|DirectDraw Surface|*.dds|Any type|*.*";
@@ -639,7 +636,7 @@ partial class settings
 		// 
 		this.modelbl.AutoSize = true;
 		this.modelbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-		this.modelbl.Location = new System.Drawing.Point(118, 151);
+		this.modelbl.Location = new System.Drawing.Point(168, 473);
 		this.modelbl.Name = "modelbl";
 		this.modelbl.Size = new System.Drawing.Size(37, 13);
 		this.modelbl.TabIndex = 48;
@@ -656,7 +653,7 @@ partial class settings
 		"Face-off",
 		"Pro Face-off",
 		"Battle"});
-		this.mode.Location = new System.Drawing.Point(154, 149);
+		this.mode.Location = new System.Drawing.Point(204, 471);
 		this.mode.Name = "mode";
 		this.mode.Size = new System.Drawing.Size(91, 21);
 		this.mode.TabIndex = 49;
