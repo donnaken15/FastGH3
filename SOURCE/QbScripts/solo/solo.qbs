@@ -142,6 +142,10 @@ repeat(*current_num_players)
 	if (%part == (*%player_status.part) &&
 		%diff == (*%player_difficulty))
 	{
+		// TODO: SKIP NOTES
+		// THAT ARE OUTSIDE OF
+		// FACE-OFF RANGE
+		// TODO: NET SUPPORT (done already in online branch)
 		// get player's raw note track (time,fret,len)
 		gemarrayid = (*%player_status.current_song_gem_array);
 		song_array = *%gemarrayid;

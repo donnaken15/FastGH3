@@ -109,17 +109,17 @@ class Program
 	{
 		WStr(s, k, d.ToString(), f);
 	}
-	public static void cfgWrite(string s, string k, object d)
+	public static void cfgW(string s, string k, object d)
 	{
 		iniw(s, k, d, inif);
 	}
 	public static void killgame()
 	{
-		cfgWrite(m, ks, 1);
+		cfgW(m, ks, 1);
 	}
 	public static void unkillgame()
 	{
-		cfgWrite(m, ks, 0);
+		cfgW(m, ks, 0);
 	}
 	static void cSV(string bik)
 	{
@@ -146,7 +146,7 @@ class Program
 						File.Copy(
 							vid + "backgrnd_video.bik.xen",
 							vid + "lastvid", true);
-						cfgWrite(m, lshv, 1);
+						cfgW(m, lshv, 1);
 					}
 					File.Copy(bik,
 						vid + "backgrnd_video.bik.xen", true);
@@ -165,7 +165,7 @@ class Program
 							vid + "backgrnd_video.bik.xen", true);
 						File.Delete(
 							vid + "lastvid");
-						cfgWrite(m, lshv, 0);
+						cfgW(m, lshv, 0);
 					}
 				}
 			}
@@ -235,6 +235,15 @@ class Program
 		{
 			return "<" + (time.TotalMilliseconds / 1000).ToString("0.000") + ">";
 		}
+	}
+
+	// cancel conversion
+	public static void exit()
+	{
+		cfgW("Temp", fl, 1);
+		cfgW("Temp", "ConvPID", -1);
+		if (wl && log != null)
+			log.Close();
 	}
 
 	// print base
@@ -514,31 +523,37 @@ class Program
 			// maybe admin related
 			if (mic_)
 			{
-				Process[] mic = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(Application.ExecutablePath));
+				Process[] mic = Process.GetProcessesByName(
+					// who's going to rename this program
+					Path.GetFileNameWithoutExtension(Application.ExecutablePath));
 				//MessageBox.Show(multiinstcheck.Length.ToString());
-				int micn = 0;
+				//int micn = 0;
 				//int multiinstcheckn2 = 0;
 				if (mic.Length > 1)
 					foreach (Process fgh3 in mic)
 					{
 						if (NP(fgh3.MainModule.FileName) ==
-							NP(Application.ExecutablePath))
+							NP(Application.ExecutablePath) &&
+							fgh3.Id != Process.GetCurrentProcess().Id)
 						{
 							// can't check process arguments >:(
 							// without some complicated WMI thing
 							// unless (as i thought of using) i
 							// use an MMF to indicate that a
 							// song converting launcher is active
-							micn++;
+							//micn++;
 							// 1 or [0] = probably this process
-							if (micn > 1)
-							{
-								MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-								Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
-								break;
-							}
+							//if (micn > 1)
+								if (cfg("Temp","ConvPID",-1) > -1 && (File.Exists(args[0]) || args[0] == "dl"))
+								{
+									MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
+									break;
+								}
 						}
 					}
+				else
+					cfgW("Temp", "ConvPID", -1);
 			}
 			else
 				print("Multi instance checking is off. Be careful!");
@@ -594,7 +609,7 @@ class Program
 			if (args.Length > 0)
 			{
 				// combine logs from any of 3 processes to easily look for errors from all of them
-				bool newfile = cfg(m, fl, 1) == 1;
+				bool newfile = cfg("Temp", fl, 1) == 1;
 				if (args[0] != "-settings" &&
 					args[0] != "-gfxswap" &&
 					args[0] != "-shuffle")
@@ -620,7 +635,7 @@ class Program
 							}
 							log.WriteLine("version "+version+" / build time: "+builddate);
 							newfile = false;
-							cfgWrite(m, fl, 0);
+							cfgW("Temp", fl, 0);
 						}
 					}
 				string chartext = ".chart", midext = ".mid",
@@ -788,6 +803,7 @@ class Program
 				#region DOWNLOAD SONG
 				else if (args[0] == "dl" && (args[1] != "" || args[1] != null))
 				{
+					cfgW("Temp", "ConvPID", Process.GetCurrentProcess().Id);
 					// 2kb
 					Console.WriteLine(title + " by donnaken15");
 					log.WriteLine(vstr[7]); // "\n######### DOWNLOAD SONG PHASE #########\n"
@@ -868,10 +884,8 @@ class Program
 							Math.Round((Convert.ToSingle(Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]))) / 1024 / 1024), 2),
 							"Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
 						{
-							if (wl && log != null)
-								log.Close();
-							cfgWrite(m, fl, 1);
-							Environment.Exit(0);
+							exit();
+							Environment.Exit(2);
 						}
 					}
 					//if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
@@ -898,9 +912,9 @@ class Program
 					// download FSP --> open and extract FSP --> convert song --> game
 					// FastGH3.exe  --> FastGH3.exe          --> FastGH3.exe  --> game.exe
 					// :P
-					GC.Collect();
-					if (wl && log != null)
-						log.Close();
+					//GC.Collect();
+					exit();
+					cfgW("Temp", fl, 0);
 					// "already running" >:(
 					Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tF));
 					die();
@@ -908,6 +922,7 @@ class Program
 				#endregion
 				else if (File.Exists(args[0]))
 				{
+					cfgW("Temp", "ConvPID", Process.GetCurrentProcess().Id);
 					#region STANDARD ROUTINE
 					Console.WriteLine(title + " by donnaken15");
 					if (Path.GetFileName(args[0]).EndsWith(chartext) || Path.GetFileName(args[0]).EndsWith(midext))
@@ -1190,9 +1205,7 @@ class Program
 								//audiolost = MessageBox.Show("No song audio can be found.\nDo you want to search for it?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
 								if (audiolost == DialogResult.Cancel)
 								{
-									if (wl && log != null)
-										log.Close();
-									cfgWrite(m, fl, 1);
+									exit();
 									Environment.Exit(0);
 								}
 								if (audiolost == DialogResult.Yes)
@@ -1684,11 +1697,9 @@ class Program
 										catch { }
 									// doesn't work because killing this only kills the parent EXE and doesn't stop the script >:(
 									killEncoders();
+									exit();
 									MessageBox.Show("No guitar/rhythm tracks can be found. Exiting...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									if (wl && log != null)
-										log.Close();
-									cfgWrite(m, fl, 1);
-									Environment.Exit(0);
+									Environment.Exit(1);
 								}
 							}
 							////vl("Adding note arrays to QB.", chartConvColor);
@@ -2625,11 +2636,16 @@ class Program
 								songpak, true);
 							File.Copy(args[0], paksongmid, true);
 							mid2chart.Start();
-							if (vb || wl)
+							try
 							{
-								mid2chart.BeginErrorReadLine();
-								mid2chart.BeginOutputReadLine();
+								// ugh
+								if (vb || wl)
+								{
+									mid2chart.BeginErrorReadLine();
+									mid2chart.BeginOutputReadLine();
+								}
 							}
+							catch { }
 							if (!mid2chart.HasExited)
 								mid2chart.WaitForExit();
 							if (ischart)
@@ -2794,12 +2810,12 @@ class Program
 								maxnotes = Math.Max(maxnotes, maxtmp);
 							}
 							vl("Got " + maxnotes + " max notes");
-							cfgWrite("Player", "MaxNotes", maxnotes.ToString());
+							cfgW("Player", "MaxNotes", maxnotes.ToString());
 						}
 						print(vstr[75]);
 						//print("Ready, go!");
 						gh3.Start();
-						cfgWrite(m, fl, 1);
+						cfgW("Temp", fl, 1);
 						try
 						{
 							// why is program sending this log when it's successful
@@ -2827,6 +2843,7 @@ class Program
 						{
 							vl("fail");
 						}
+						exit();
 						if (cfg(m, settings.t.PreserveLog.ToString(), "0") == "1")
 						{
 							print(vstr[98]);
@@ -3116,10 +3133,8 @@ class Program
 									{
 										if (!args[0].EndsWith(".rar"))
 										{
+											exit();
 											MessageBox.Show(vstr[125], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-											if (wl && log != null)
-												log.Close();
-											cfgWrite(m, fl, 1);
 											Environment.Exit(1);
 										}
 										vl(vstr[92], FSPcolor);
@@ -3143,12 +3158,10 @@ class Program
 								}
 								else
 								{
+									exit();
 									vl(vstr[94], FSPcolor);
 									//vl("Unsupported archive type", FSPcolor);
 									MessageBox.Show(vstr[126], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									if (wl && log != null)
-										log.Close();
-									cfgWrite(m, fl, 1);
 									Environment.Exit(1);
 									return;
 								}
@@ -3167,6 +3180,7 @@ class Program
 									vl("Exit code: " + x.ExitCode, FSPcolor);
 									if (x.ExitCode != 0)
 									{
+										exit();
 										MessageBox.Show(vstr[127], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 										Environment.Exit(1);
 									}
@@ -3233,12 +3247,10 @@ class Program
 						}
 						if (multichartcheck.Count == 0)
 						{
+							exit();
 							//vl("There's nothing in here!", ConsoleColor.Red);
 							// ♫ There's nothing for me here ♫
 							MessageBox.Show("No chart found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-							if (wl && log != null)
-								log.Close();
-							cfgWrite(m, fl, 1);
 							Environment.Exit(1);
 						}
 						bool cancel = false;
@@ -3266,15 +3278,15 @@ class Program
 								gh3.StartInfo.FileName = GH3EXEPath;
 								// dont do this lol
 								if (cfg("Player", "MaxNotesAuto", "0") == "1")
-									cfgWrite("Player", "MaxNotes", 0x100000.ToString());
+									cfgW("Player", "MaxNotes", 0x100000.ToString());
 								print(vstr[75]);
 								gh3.Start();
-								cfgWrite(m, fl, 1);
+								cfgW("Temp", fl, 1);
 							}
 							else
 							{
-								if (wl && log != null)
-									log.Close();
+								exit();
+					cfgW("Temp", fl, 0);
 								Process.Start(Application.ExecutablePath, selectedtorun.EncloseWithQuoteMarks());
 								die();
 							}
@@ -3361,9 +3373,10 @@ class Program
 				}
 				else
 				{
+					cfgW("Temp", fl, 1);
 					print(vstr[96], ConsoleColor.Red);
+					exit();
 					MessageBox.Show("File cannot be found.\nPath: "+args[0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					cfgWrite(m, fl, 1);
 				}
 			}
 		}
@@ -3374,7 +3387,6 @@ class Program
 			Console.ForegroundColor = ConsoleColor.Red;
 			print("ERROR! :(");
 			print(ex);
-			cfgWrite(m, fl, 1);
 			// default value is 1, so why dont i just remove the key
 			// but then i would have to write some advanced code
 			// for that when using kernel funcs
@@ -3389,8 +3401,7 @@ class Program
 			Console.ResetColor(); // NOT WORKING
 
 			// upload log for diagnostics
-			if (wl && Program.log != null)
-				Program.log.Close();
+			exit();
 			Program.log = null;
 			string log = File.ReadAllText(folder + "launcher.txt");
 			if (true && log.Length < 0x20000) // max 128 KB to upload
@@ -3460,7 +3471,6 @@ class Program
 			Environment.Exit(1);
 		}
 		//GC.Collect();
-		if (wl && log != null)
-			log.Close();
+		exit();
 	}
 }
