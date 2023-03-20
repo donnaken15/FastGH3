@@ -1,0 +1,280 @@
+pad_event_types = [
+	pad_up
+	pad_down
+	pad_right
+	pad_left
+	pad_choose
+	pad_back
+	pad_square
+	pad_circle
+	pad_L1
+	pad_R1
+	pad_L2
+	pad_R2
+	pad_L3
+	pad_R3
+	pad_select
+	pad_start
+	pad_option
+	pad_option2
+	pad_backspace
+	pad_space
+	pad_alt
+	pad_alt2
+	pad_expand
+	pad_btn_top
+	pad_btn_right
+	pad_btn_bottom
+	pad_btn_left
+]
+pad_event_up_inversion = FALSE
+xenon_pad = [
+	[
+		a
+		pad_choose
+	]
+	[
+		back
+		pad_back
+	]
+	[
+		back
+		pad_select
+	]
+	[
+		X
+		pad_square
+	]
+	[
+		left_trigger1
+		pad_L1
+	]
+	[
+		right_trigger1
+		pad_R1
+	]
+	[
+		left_trigger2
+		pad_L2
+	]
+	[
+		right_trigger2
+		pad_R2
+	]
+	[
+		b
+		pad_back
+	]
+	[
+		b
+		pad_circle
+	]
+	[
+		left_stick_button
+		pad_L3
+	]
+	[
+		right_stick_button
+		pad_R3
+	]
+	[
+		X
+		pad_option
+	]
+	[
+		y
+		pad_option2
+	]
+	[
+		X
+		pad_backspace
+	]
+	[
+		y
+		pad_space
+	]
+	[
+		right_trigger2
+		pad_alt
+	]
+	[
+		left_trigger2
+		pad_alt2
+	]
+	[
+		y
+		pad_expand
+	]
+	[
+		y
+		pad_btn_top
+	]
+	[
+		b
+		pad_btn_right
+	]
+	[
+		a
+		pad_btn_bottom
+	]
+	[
+		X
+		pad_btn_left
+	]
+	[
+		up
+		pad_up
+	]
+	[
+		down
+		pad_down
+	]
+	[
+		left
+		pad_left
+	]
+	[
+		right
+		pad_right
+	]
+]
+xenon_guitar_flip = [
+	[
+		a
+		pad_choose
+	]
+	[
+		back
+		pad_back
+	]
+	[
+		back
+		pad_select
+	]
+	[
+		X
+		pad_square
+	]
+	[
+		left_trigger1
+		pad_L1
+	]
+	[
+		right_trigger1
+		pad_R1
+	]
+	[
+		left_trigger2
+		pad_L2
+	]
+	[
+		right_trigger2
+		pad_R2
+	]
+	[
+		b
+		pad_back
+	]
+	[
+		b
+		pad_circle
+	]
+	[
+		left_stick_button
+		pad_L3
+	]
+	[
+		right_stick_button
+		pad_R3
+	]
+	[
+		X
+		pad_option
+	]
+	[
+		y
+		pad_option2
+	]
+	[
+		X
+		pad_backspace
+	]
+	[
+		y
+		pad_space
+	]
+	[
+		right_trigger2
+		pad_alt
+	]
+	[
+		left_trigger2
+		pad_alt2
+	]
+	[
+		y
+		pad_expand
+	]
+	[
+		y
+		pad_btn_top
+	]
+	[
+		b
+		pad_btn_right
+	]
+	[
+		a
+		pad_btn_bottom
+	]
+	[
+		X
+		pad_btn_left
+	]
+	[
+		up
+		pad_down
+	]
+	[
+		down
+		pad_up
+	]
+	[
+		left
+		pad_left
+	]
+	[
+		right
+		pad_right
+	]
+]
+
+script setup_main_button_event_mappings
+	SetButtonEventMappings {
+		PS3 = ($ps3_pad)
+		Xenon = ($xenon_pad)
+	}
+endscript
+
+script setup_controller_button_event_mappings\{guitar = 0 Flip = 0}
+	if NOT (<guitar>)
+		<Xenon> = $xenon_pad
+		<PS3> = $ps3_pad
+	else
+		if NOT (<Flip>)
+			<Xenon> = $xenon_pad
+			<PS3> = $ps3_guitar
+		else
+			<Xenon> = $xenon_guitar_flip
+			<PS3> = $ps3_guitar_flip
+		endif
+	endif
+	AddArrayElement array = [] element = (<controller>)
+	SetButtonEventMappings {
+		PS3 = (<PS3>)
+		Xenon = (<Xenon>)
+		devices = (<array>)
+		CLEAR
+	}
+endscript
+player_controls_valid = 0

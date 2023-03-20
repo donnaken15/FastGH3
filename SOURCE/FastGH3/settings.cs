@@ -113,8 +113,8 @@ public partial class settings : Form
 		QbKey.Create(0xBDC53CF2), QbKey.Create(0x7A7D1DCA)
 	};
 	private static List<Size> resz = new List<Size>();
-	private static PakFormat pakformat;
-	private static PakEditor qbedit;
+	//private static PakFormat pakformat;
+	//private static PakEditor qbedit;
 	private static Size oldres;
 
 	private static string folder = Program.folder;//Path.GetDirectoryName(Application.ExecutablePath) + '\\';
@@ -135,7 +135,8 @@ public partial class settings : Form
 	private void svQB()
 	{
 		userqb.AlignPointers();
-		qbedit.ReplaceFile("config.qb", userqb);
+		//qbedit.ReplaceFile("config.qb", userqb);
+		userqb.Write(Program.dataf + "config.qb.xen");
 	}
 
 	static uint Eswap(uint value)
@@ -361,9 +362,10 @@ public partial class settings : Form
 		Console.SetWindowSize(80, 32);
 		vl2 = Program.cfg("Misc", t.VerboseLog.ToString(), 0) == 1;
 		Program.vl("Loading QBs...");
-		pakformat = new PakFormat(Program.dataf + "user.pak.xen", Program.dataf + "user.pak.xen", "", PakFormatType.PC, false);
-		qbedit = new PakEditor(pakformat, false);
-		userqb = qbedit.ReadQbFile("config.qb");
+		//pakformat = new PakFormat(Program.dataf + "user.pak.xen", Program.dataf + "user.pak.xen", "", PakFormatType.PC, false);
+		//qbedit = new PakEditor(pakformat, false);
+		//userqb = qbedit.ReadQbFile("config.qb");
+		userqb = new QbFile(Program.dataf + "config.qb.xen", new PakFormat("", "", "", PakFormatType.PC));
 		disableEvents = true;
 		if (File.Exists(xmlpath))
 		{
@@ -724,7 +726,7 @@ public partial class settings : Form
 
 	void TI(string sect, string key, bool toggle)
 	{
-		Program.cfgWrite(sect, key, (toggle ? 1 : 0));
+		Program.cfgW(sect, key, (toggle ? 1 : 0));
 	}
 
 	string m = "Misc";
@@ -736,7 +738,7 @@ public partial class settings : Form
 		FI.ShowDialog();
 		if (FI.DialogResult == DialogResult.OK)
 		{
-			Program.cfgWrite(m, Program.stf, Regex.Escape(FI.f.Replace("\r", "")));
+			Program.cfgW(m, Program.stf, Regex.Escape(FI.f.Replace("\r", "")));
 		}
 	}
 
@@ -754,7 +756,7 @@ public partial class settings : Form
 			sQC(QbKey.Create(0xCEFC2AEF), (int)maxFPS.Value);
 		else
 		{
-			Program.cfgWrite("Player", "MaxFPS", maxFPS.Value.ToString());
+			Program.cfgW("Player", "MaxFPS", maxFPS.Value.ToString());
 		}
 #pragma warning restore CS0162 // Unreachable code detected
 	}
@@ -810,7 +812,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		Program.cfgWrite("Misc","AB",aqlvl.Value.ToString());
+		Program.cfgW("Misc","AB",aqlvl.Value.ToString());
 	}
 
 	private void mU(object sender, ItemCheckEventArgs e)
@@ -1035,14 +1037,14 @@ public partial class settings : Form
 			if (MaxN.Value == 0)
 			{
 				MaxN.Value = mxn_d;
-				Program.cfgWrite("Player", "MaxNotes", MaxN.Value.ToString());
+				Program.cfgW("Player", "MaxNotes", MaxN.Value.ToString());
 			}
 			if (MaxN.Value == -1)
-				Program.cfgWrite("Player", "MaxNotesAuto", "1");
+				Program.cfgW("Player", "MaxNotesAuto", "1");
 			else
 			{
-				Program.cfgWrite("Player", "MaxNotesAuto", "0");
-				Program.cfgWrite("Player", "MaxNotes", MaxN.Value.ToString());
+				Program.cfgW("Player", "MaxNotesAuto", "0");
+				Program.cfgW("Player", "MaxNotes", MaxN.Value.ToString());
 			}
 		}
 	}

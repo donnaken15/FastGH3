@@ -1,8 +1,6 @@
 #!/bin/sh
 
-echo
-echo "qcomp"
-echo "whatever"
+echo -e "\e[93m(not as fake) qcomp\e[0m"
 
 # no args
 if [ $# -eq 0 ]; then
@@ -17,34 +15,36 @@ fi
 indir=$1
 find=/usr/bin/find
 # >:(
-outdir=build/
-rm "$outdir" -rf
+
+# manual output
+if [ -z "$2" ]; then
+	outdir=$1_build/
+else
+	outdir=$2/
+fi
 if	[ ! "$(dirname "$0")" = "." ]; then
 	bin=$(realpath "$0")/ # ???
 else
 	bin=$(which "$0")/ # required when script is pathed
 fi
+
 bin=$(dirname "$bin")
 wbin=$(cygpath -w "$bin")
 NL=$'\n'
 nul=/dev/null
 
-rm "$outdir" -rf
-mkdir -p "$outdir"
-
-echo
-echo "*****  Q COMPILATION   *****"
-echo
+echo -e "\e[33m*****  Q COMPILATION   *****\e[0m"
 
 INPUTS=$(pushd "$indir" > $nul && $find * -type f -name "*.q" && popd > $nul)
 for f in $INPUTS
 do
-	mkdir -p "${outdir}$(dirname $f)"
-	echo -e "Compiling $f..."
 	out="$outdir${f%%.*}.qb.xen"
-	node "$wbin/QBC/QBC.js" c -g gh3 "$indir/$f" -o "$out"
+	if [ ! -f "$out" ] || [ "$out" -ot "$indir/$f" ]; then
+		mkdir -p "${outdir}$(dirname $f)"
+		echo -e "\e[97mCompiling $f...\e[0m"
+		node "$wbin/QBC/QBC.js" c -g gh3 "$indir/$f" -o "$out"
+	fi
 done
 
-echo
 echo done...
 

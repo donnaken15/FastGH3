@@ -1,5 +1,5 @@
-* text=auto
-*.q	text eol=lf
+* text=auto eol=lf
+*.q	text
 # :/
 *.qb	binary
 *.xen	binary
