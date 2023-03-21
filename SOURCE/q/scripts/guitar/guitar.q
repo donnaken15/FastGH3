@@ -758,7 +758,7 @@ whammy_mania_achievement_invalidated = 0
 
 script guitar_startup
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
-	Change \{AssertOnMissingScripts = 1}
+	/*Change \{AssertOnMissingScripts = 1}
 	legal_start_time = <startTime>
 	StopRendering
 	printf \{'Initializing Heaps'}
@@ -788,10 +788,10 @@ script guitar_startup
 		default
 			ScriptAssert \{'Unrecognized platform for heap setup'}
 	endswitch
-	PushMemProfile \{'Global Pak Heap'}
-	MemInitHeap name = 'heap_global_pak' size = <heap_size_globalpak> vram_size = <heap_size_globalpak_vram>
-	PopMemProfile
-	PushMemProfile \{'Characters'}
+	//PushMemProfile \{'Global Pak Heap'}
+	//MemInitHeap name = 'heap_global_pak' size = <heap_size_globalpak> vram_size = <heap_size_globalpak_vram>
+	//PopMemProfile
+	/*PushMemProfile \{'Characters'}
 	MemInitHeap name = 'heap_musician1' size = <heap_size_musician> vram_size = <heap_size_musician_vram>
 	MemInitHeap name = 'heap_musician2' size = <heap_size_musician> vram_size = <heap_size_musician_vram>
 	MemInitHeap name = 'heap_musician3' size = <heap_size_musician> vram_size = <heap_size_musician_vram>
@@ -810,30 +810,22 @@ script guitar_startup
 	if IsFmodEnabled
 		MemInitHeap name = 'heap_audio' size = <heap_size_audio> vram_size = <heap_size_audio_vram>
 	endif
-	PopMemProfile
-	printf \{'Initializing COIM'}
-	PushMemProfile \{'COIM'}
+	PopMemProfile*/
+	//printf \{'Initializing COIM'}
+	//PushMemProfile \{'COIM'}
 	//EmptyScript \{size = $#"0xc590c246" BlockAlign = $#"0xc5a1ea66" COIM_Min_Scratch_Blocks $#"0xbe4f02bf"}
-	PopMemProfile
+	//PopMemProfile
 	CompositeObjectManager_startup
-	printf \{'Initializing memory card system'}
-	MemCardSystemInitialize
-	printf \{'Initializing Anim Cache'}
-	PushMemProfile \{'Animation Cache'}
-	InitAnimSystem {
-		AnimHeapSize = 0
-		CacheBlockAlign = 0
-		AnimNxBufferSize = (262145)
-		DefCacheType = fullres
-		MaxAnimStages = 0
-		MaxAnimSubsets = 0
-		MaxDegenerateAnims = 0
-	}
-	PopMemProfile
+	//printf \{'Initializing memory card system'}
+	//MemCardSystemInitialize
+	//printf \{'Initializing Anim Cache'}
+	//PushMemProfile \{'Animation Cache'}
+	InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
+	//PopMemProfile
 	InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
-	LightShow_AddNodeFlags
+	//LightShow_AddNodeFlags
 	LightShow_Init \{notes = $#"0x104dfb2e" nodeflags = $#"0x74c1de3d" ColorOverrideExclusions = $#"0x5e1add82"}
-	create_node_flags
+	//create_node_flags
 	printf \{'Initializing Replay buffer'}
 	GetPlatform
 	switch <Platform>
@@ -845,16 +837,16 @@ script guitar_startup
 			ScriptAssert \{'Unrecognized platform for replay buffer setup'}
 	endswitch
 	AllocateDataBuffer name = replay kb = <replay_buffer_size>
-	printf \{'Initializing Cutscenes'}
-	engineconfig \{particlelod = 0}
-	if ($is_demo_mode = 1)
-		Change \{enable_button_cheats = 0}
-		Change \{Musician_Profiles = $#"0x9e3ae226"}
-	endif
-	if ($enable_button_cheats = 1)
-		LaunchViewer
-		Change \{select_shift = 1}
-	endif
+	//printf \{'Initializing Cutscenes'}
+	//engineconfig \{particlelod = 0}
+	//if ($is_demo_mode = 1)
+	//	Change \{enable_button_cheats = 0}
+	//	Change \{Musician_Profiles = $#"0x9e3ae226"}
+	//endif
+	//if ($enable_button_cheats = 1)
+	//	LaunchViewer
+	//	Change \{select_shift = 1}
+	//endif
 	printf \{'Creating sound busses'}
 	Master_SFX_Adding_Sound_Busses
 	printf \{'Calling user startup script'}
@@ -885,24 +877,24 @@ script guitar_startup
 	endif
 	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
 	setup_models
-	printf \{'Loading Zone'}
-	MemPushContext \{heap_zones}
+	//printf \{'Loading Zone'}
+	//MemPushContext \{heap_zones}
 	CreatePakManMap \{map = zones links = GH3Zones folder = 'zones/' uselinkslots}
-	MemPopContext
+	//MemPopContext
 	printf \{'current_level = %s' s = $current_level}
-	SetPakManCurrentBlock \{map = zones pak = None block_scripts = 1}
-	AddEditableList \{ped_editable_list}
-	if NOT CD
-		StartKeyboardHandler \{max_length = 128}
-	endif
+	//SetPakManCurrentBlock \{map = zones pak = None block_scripts = 1}
+	//AddEditableList \{ped_editable_list}
+	//if NOT CD
+	//	StartKeyboardHandler \{max_length = 128}
+	//endif
 	printf \{'Done initializing - into game...'}
 	InitAtoms
 	SetProgressionMaxDifficulty \{difficulty = 3}
 	setup_globaltags
 	setup_sprites
 	kill_start_key_binding
-	SetShadowRenderingFlags \{enable = 'true' object = 'skin'}
-	SetShadowMapParams \{far = 16.0}
+	//SetShadowRenderingFlags \{enable = 'true' object = 'skin'}
+	//SetShadowMapParams \{far = 16.0}
 	if NOT IsWinPort
 		setup_bg_viewport
 		restore_dummy_bg_camera
@@ -911,7 +903,7 @@ script guitar_startup
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player> AddToStringLookup
 		FormatText textname = player_text 'p%i' i = <Player> AddToStringLookup
-		SpawnScriptLater create_guitar_events params = {<...> }
+		SpawnScriptLater create_guitar_events params = { <...> }
 		Player = (<Player> + 1)
 	repeat $max_num_players
 	SetShadowProjectionTexture \{texture = white}
@@ -928,41 +920,14 @@ script guitar_startup
 		SpawnScriptLater \{autolaunch_spawned}
 	endif
 	create_guitarist
-	create_guitarist \{name = BASSIST}
 	destroy_band_member \{name = GUITARIST}
-	destroy_band_member \{name = BASSIST}
+	if ($max_num_players = 2)
+		create_guitarist \{name = BASSIST}
+		destroy_band_member \{name = BASSIST}
+	endif
 	Change \{tutorial_disable_hud = 0}
 	CreateScreenElement \{Type = ContainerElement id = dead_particle_container parent = root_window Pos = (0.0, 0.0)}
 	Init2DParticles \{parent = dead_particle_container}
-	<profile_gpu> = 0
-	if ($show_gpu_time = 1)
-		<profile_gpu> = 1
-	endif
-	if ($output_gpu_log = 1)
-		<profile_gpu> = 1
-	endif
-	if (<profile_gpu> = 1)
-		ToggleMetrics \{mode = 5}
-		if isps3
-			Change \{current_cpu = 2}
-		else
-			Change \{current_cpu = 6}
-		endif
-	else
-		if ($show_cpu_time = 1)
-			Change \{current_cpu = 0}
-			ToggleMetrics \{mode = 5}
-		else
-			ToggleMetrics \{mode = 0}
-		endif
-	endif
-	begin
-		GetTrueElapsedTime startTime = <legal_start_time>
-		if (<ElapsedTime> >= 6000)
-			Change \{legal_timer = 1}
-			break
-		endif
-	repeat
 	HideLoadingScreen
 endscript
 
@@ -972,8 +937,8 @@ script autolaunch_spawned
 	if ($autolaunch_startnow = 2)
 		SpawnScriptLater \{select_venue params = {norestart}}
 	else
-		Change primary_controller = $startup_controller
-		SpawnScriptLater start_song params = {device_num = ($startup_controller)}
+		Change \{primary_controller = $startup_controller}
+		SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
 	endif
 endscript
 kill_dummy_bg_camera = $EmptyScript
@@ -1044,7 +1009,7 @@ Terrain_Types = [
 ]
 
 script GetCurrentLevel
-	return level = ($current_level)
+	return \{level = $current_level}
 endscript
 
 script get_level_prefix

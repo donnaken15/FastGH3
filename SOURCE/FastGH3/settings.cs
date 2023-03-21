@@ -379,7 +379,7 @@ public partial class settings : Form
 		DialogResult = DialogResult.OK;
 
 		InitializeComponent();
-		vlbl.Text = "Version      : "+Program.version+"\nBuild date  : "+Program.builddate.ToLocalTime();
+		vlbl.Text = "Version      : "+Program.version;
 		// kill me
 		tt.SetToolTip(maxFPS, Program.vstr[102]);
 		tt.SetToolTip(MaxN, Program.vstr[103]);

@@ -2,28 +2,28 @@
 script setup_globaltags
 	globaltag_checksum = initial_v43
 	setup_songtags globaltag_checksum = <globaltag_checksum>
-	setup_venuetags globaltag_checksum = <globaltag_checksum>
-	setup_unlocks globaltag_checksum = <globaltag_checksum>
-	get_progression_globals \{game_mode = p1_career}
-	setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
-	get_progression_globals \{game_mode = p2_career}
-	setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
-	get_progression_globals \{game_mode = p1_quickplay}
-	setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
-	get_progression_globals \{game_mode = p2_faceoff}
-	setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
-	get_progression_globals \{game_mode = p1_quickplay Bonus}
-	setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
-	get_progression_globals \{game_mode = p1_quickplay download}
-	setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
-	setup_bandtags globaltag_checksum = <globaltag_checksum>
+	//setup_venuetags globaltag_checksum = <globaltag_checksum>
+	//setup_unlocks globaltag_checksum = <globaltag_checksum>
+	//get_progression_globals \{game_mode = p1_career}
+	//setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
+	//get_progression_globals \{game_mode = p2_career}
+	//setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
+	//get_progression_globals \{game_mode = p1_quickplay}
+	//setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
+	//get_progression_globals \{game_mode = p2_faceoff}
+	//setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
+	//get_progression_globals \{game_mode = p1_quickplay Bonus}
+	//setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
+	//get_progression_globals \{game_mode = p1_quickplay download}
+	//setup_setlisttags SetList_Songs = <tier_global> globaltag_checksum = <globaltag_checksum>
+	//setup_bandtags globaltag_checksum = <globaltag_checksum>
 	setup_user_option_tags globaltag_checksum = <globaltag_checksum>
-	setup_training_tags globaltag_checksum = <globaltag_checksum>
-	setup_store_tags globaltag_checksum = <globaltag_checksum>
-	setup_characterguitar_tags globaltag_checksum = <globaltag_checksum>
-	setup_online_tags globaltag_checksum = <globaltag_checksum>
-	setup_character_tags globaltag_checksum = <globaltag_checksum>
-	setup_achievement_tags globaltag_checksum = <globaltag_checksum>
+	//setup_training_tags globaltag_checksum = <globaltag_checksum>
+	//setup_store_tags globaltag_checksum = <globaltag_checksum>
+	//setup_characterguitar_tags globaltag_checksum = <globaltag_checksum>
+	//setup_online_tags globaltag_checksum = <globaltag_checksum>
+	//setup_character_tags globaltag_checksum = <globaltag_checksum>
+	//setup_achievement_tags globaltag_checksum = <globaltag_checksum>
 	SetGlobalTags globaltag_checksum params = {globaltag_checksum = <globaltag_checksum>}
 endscript
 default_topscores_easy = {
@@ -209,7 +209,7 @@ script setup_tiertags
 	num_tiers = ($<SetList_Songs>.num_tiers)
 	array_count = 0
 	begin
-		printf \{'why'}
+		//printf \{'why'}
 		setlist_prefix = ($<SetList_Songs>.prefix)
 		FormatText checksumName = Tier 'tier%s' s = (<array_count> + 1)
 		FormatText checksumName = tiername '%ptier%i' p = <setlist_prefix> i = (<array_count> + 1)AddToStringLookup = true
@@ -275,7 +275,7 @@ script setup_bandtags
 endscript
 
 script setup_user_option_tags
-	SetGlobalTags \{user_options params = {guitar_volume = 11 band_volume = 11 sfx_volume = 11 lefty_flip_p1 = 0 lefty_flip_p2 = 0 lag_calibration = 0.0 autosave = 1 resting_whammy_position_device_0 = -0.76 resting_whammy_position_device_1 = -0.76 resting_whammy_position_device_2 = -0.76 resting_whammy_position_device_3 = -0.76 resting_whammy_position_device_4 = -0.76 resting_whammy_position_device_5 = -0.76 resting_whammy_position_device_6 = -0.76 star_power_position_device_0 = -1.0 star_power_position_device_1 = -1.0 star_power_position_device_2 = -1.0 star_power_position_device_3 = -1.0 star_power_position_device_4 = -1.0 star_power_position_device_5 = -1.0 star_power_position_device_6 = -1.0 gamma_brightness = 5 online_game_mode = 0 online_difficulty = 0 online_num_songs = 0 online_tie_breaker = 0 online_highway = 0 unlock_Cheat_AirGuitar = 0 unlock_Cheat_PerformanceMode = 0 unlock_Cheat_Hyperspeed = 0 unlock_Cheat_NoFail = 0 unlock_Cheat_EasyExpert = 0 unlock_Cheat_PrecisionMode = 0 unlock_Cheat_BretMichaels = 0}}
+	SetGlobalTags \{user_options params = {guitar_volume = 11 band_volume = 11 sfx_volume = 11 lefty_flip_p1 = 0 lefty_flip_p2 = 0 lag_calibration = 0.0 autosave = 0 resting_whammy_position_device_0 = -0.76 resting_whammy_position_device_1 = -0.76 resting_whammy_position_device_2 = -0.76 resting_whammy_position_device_3 = -0.76 resting_whammy_position_device_4 = -0.76 resting_whammy_position_device_5 = -0.76 resting_whammy_position_device_6 = -0.76 star_power_position_device_0 = -1.0 star_power_position_device_1 = -1.0 star_power_position_device_2 = -1.0 star_power_position_device_3 = -1.0 star_power_position_device_4 = -1.0 star_power_position_device_5 = -1.0 star_power_position_device_6 = -1.0 gamma_brightness = 5 online_game_mode = 0 online_difficulty = 0 online_num_songs = 0 online_tie_breaker = 0 online_highway = 0 unlock_Cheat_AirGuitar = 0 unlock_Cheat_PerformanceMode = 0 unlock_Cheat_Hyperspeed = 0 unlock_Cheat_NoFail = 0 unlock_Cheat_EasyExpert = 0 unlock_Cheat_PrecisionMode = 0 unlock_Cheat_BretMichaels = 0}}
 endscript
 
 script setup_online_tags

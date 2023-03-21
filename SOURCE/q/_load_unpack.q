@@ -1,7 +1,5 @@
-player1_status = {
-}
-player2_status = {
-}
+player1_status = {}
+player2_status = {}
 
 script init
 	printf \{'Q Unpack'}
@@ -235,11 +233,11 @@ script init
 	GetArraySize \{qdir}
 	i = 0
 	begin
-		formattext textname=path 'scripts/%q.qb' q = (<qdir>[<i>])
+		FormatText textname = path 'scripts/%q.qb' q = (<qdir>[<i>])
 		printf 'Loading %q' q = <path>
 		LoadQB <path>
 		i = (<i> + 1)
-	repeat <array_size>
+	repeat <array_Size>
 	guitar_startup
 endscript
 
@@ -259,8 +257,18 @@ fret_anims_lrg = $nullStruct
 drummer_anims = $nullStruct
 drummer_left_arm_twist_factors = $nullStruct
 drummer_right_arm_twist_factors = $nullStruct
-tilt_default_settings = $nullStruct
-tilt_params = $nullStruct
+tilt_default_settings = {}
+tilt_params = {}
+viewport_base = {
+	rect = [
+		0.0
+		0.0
+		1.0
+		1.0
+	]
+	resolve_to_texture_with_alpha
+	resolution = 1.0
+}
 viewport_params = {
 	perm_viewports = [
 		{
@@ -279,7 +287,7 @@ viewport_params = {
 			viewports = [
 				{
 					id = UI
-					Active = false
+					Active = true
 					style = fullscreen
 				}
 			]
@@ -412,43 +420,30 @@ viewport_params = {
 			resolution = 1.0
 		}
 		highway_fader = {
-			rect = [
-				0.0
-				0.0
-				1.0
-				1.0
-			]
+			$viewport_base
 			resolve_rect = [
 				0
 				0
 				1280
 				720
 			]
-			resolve_to_texture_with_alpha
-			resolution = 1.0
 		}
 		highway_fader_2p = {
-			rect = [
-				0.0
-				0.0
-				1.0
-				1.0
-			]
+			$viewport_base
 			resolve_rect = [
 				0
 				0
 				1280
 				720
 			]
-			resolve_to_texture_with_alpha
-			resolution = 1.0
 		}
 		highway_fader_ps3 = {
-			rect = [
-				0.0
-				0.0
-				1.0
-				1.0
+			$viewport_base
+			resolve_rect = [
+				0
+				0
+				1280
+				720
 			]
 			resolve_rect = [
 				0
@@ -456,24 +451,6 @@ viewport_params = {
 				1040
 				592
 			]
-			resolve_to_texture_with_alpha
-			resolution = 1.0
-		}
-		highway_fader_2p_ps3 = {
-			rect = [
-				0.0
-				0.0
-				1.0
-				1.0
-			]
-			resolve_rect = [
-				0
-				0
-				1040
-				592
-			]
-			resolve_to_texture_with_alpha
-			resolution = 1.0
 		}
 		debug_0 = {
 			rect = [

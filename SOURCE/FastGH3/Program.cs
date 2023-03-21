@@ -505,8 +505,7 @@ class Program
 	}
 	public static string[] vstr;
 
-	public static string version = "1.0-999010723";
-	public static DateTime builddate;
+	public static string version = "1.0-10723-unpak";
 	[STAThread]
 	static void Main(string[] args)
 	{
@@ -624,16 +623,7 @@ class Program
 						if (newfile)
 						{
 							log.WriteLine(vstr[1]);
-							try
-							{
-								builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
-								// a person legitimately had this file missing, how is that even possible >:(
-							}
-							catch
-							{
-								builddate = DateTime.MinValue;
-							}
-							log.WriteLine("version "+version+" / build time: "+builddate);
+							log.WriteLine("version "+version);
 							newfile = false;
 							cfgW("Temp", fl, 0);
 						}
@@ -650,7 +640,6 @@ class Program
 					FSPcolor = ConsoleColor.Magenta;
 				if (args[0] == "-settings")
 				{
-					builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
 					// muh classic theme
 					//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
 					new settings().ShowDialog();

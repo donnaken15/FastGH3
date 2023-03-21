@@ -294,11 +294,10 @@ script increase_star_power\{amount = 10.0 player_status = player1_status}
 endscript
 
 script increase_star_power_guts
-	if ($game_mode = p2_battle ||
-		$boss_battle = 1)
+	if ($game_mode = p2_battle || $boss_battle = 1)
 		return
 	endif
-	if ($<player_status>.star_power_used = 1 & $#"0x4039f5f1" = 0)
+	if ($<player_status>.star_power_used = 1 && $overlapping_starpower = 0)
 		return
 	endif
 	old_amount = ($<player_status>.star_power_amount)
@@ -306,7 +305,7 @@ script increase_star_power_guts
 	if ($<player_status>.star_power_amount > 100)
 		Change StructureName = <player_status> star_power_amount = 100
 	endif
-	if (<old_amount> < 50.0)
+	if ($<player_status>.star_power_used = 0 && <old_amount> < 50.0)
 		if ($<player_status>.star_power_amount >= 50.0)
 			spawnscriptnow show_star_power_ready params = {player_status = <player_status>}
 		endif
@@ -401,16 +400,19 @@ endscript
 showing_raise_axe = 0
 
 script show_coop_raise_axe_for_starpower
-	if ($<player_status>.bot_play = 1)
+	if ($<player_status>.bot_play = 1 && $<player_status>.star_power_used = 0)
 		player = 1
 		begin
 			formattext checksumname = p 'player%d_status' d = <player>
-			spawnscriptnow star_power_activate_and_drain params = {
-				player_status = <p>
-				Player = <player>
-				player_text = ($<p>.text)
-			}
-			player = (<player> + 1)
+			if ($<p>.star_power_used = 0)
+				printstruct <...>
+				spawnscriptnow star_power_activate_and_drain params = {
+					player_status = <p>
+					Player = <player>
+					player_text = ($<p>.text)
+				}
+				player = (<player> + 1)
+			endif		
 		repeat $current_num_players
 		return
 	endif
@@ -535,7 +537,7 @@ script star_power_miss_note
 endscript
 
 script star_power_whammy
-	if ($<player_status>.star_power_used = 1 & $#"0x4039f5f1" = 0)
+	if ($<player_status>.star_power_used = 1 & $overlapping_starpower = 0)
 		return
 	endif
 	last_x = 0
@@ -546,7 +548,7 @@ script star_power_whammy
 	xtolerance = 0.03
 	whammy_on_time = 0.0
 	whammy_off_time = 0.0
-	whammy_time = 83.3333359
+	whammy_time = 83.3333333
 	whammy_on = 0.0
 	whammy_star_on = 0
 	whammy_star_off = 0
@@ -631,7 +633,6 @@ script star_power_whammy
 					endif
 				endif
 				if (($<player_status>.bot_play) = 1)
-				//if ($autowhammy = 1 && ($<player_status>.bot_play) = 1)
 					whammy_on = <whammy_time>
 				endif
 				if (<whammy_on> > 0.0)
@@ -649,7 +650,6 @@ script star_power_whammy
 					whammy_off_time = <time>
 					time = <time2>
 					whammy_on = (<whammy_time> - (<whammy_on_time> - <whammy_off_time>))
-					//EmptyScript '%a' a = <whammy_on>
 					if (<do_blue_whammys> = 1)
 						if (<whammy_star_on> = 5)
 							GetArraySize $gem_colors
@@ -667,7 +667,6 @@ script star_power_whammy
 						endif
 					endif
 				else
-					//EmptyScript 'off'
 					<whammy_star_on> = 0
 					<whammy_star_off> = (<whammy_star_off> + 1)
 					if (<do_blue_whammys> = 1)
@@ -700,7 +699,6 @@ script star_power_whammy
 		wait 1 gameframe
 	repeat
 endscript
-autowhammy = 0
 
 script reset_star_array
 	get_song_struct song = <song_name>
@@ -820,4 +818,4 @@ script Kill_StarPower_Camera\{changecamera = 1}
 	Change \{CameraCuts_AllowNoteScripts = true}
 	Change \{using_starpower_camera = FALSE}
 endscript
-#"0x4039f5f1" = 1
+overlapping_starpower = 1

@@ -81,6 +81,7 @@ script richpres_stop_song
 endscript
 
 // why can't i make this stuff packed
+// breaks discord display when i do
 script richpres_timeleft
 	song = $current_song
 	getsongtime

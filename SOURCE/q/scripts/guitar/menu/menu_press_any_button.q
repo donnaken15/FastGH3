@@ -161,17 +161,7 @@ script check_for_any_input\{button1 = {}button2 = {}}
 	begin
 		if NOT IsWinPort
 			if IsStandardGuitarControllerPluggedIn
-				if English
-					notify_box scale1 = (0.6000000238418579, 0.75) scale2 = (0.5, 0.6000000238418579) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "An unsupported guitar peripheral has been detected." line2 = "Connect either a Guitar Hero guitar or" line3 = "Xbox 360 controller and press START to continue." menu_z = 510000 FormatText textname = pakname '%s_text.pak' s = <stem>
-				elseif French
-					notify_box \{scale1 = (0.6000000238418579, 0.75) scale2 = (0.5, 0.6000000238418579) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "Une guitare non compatible a été détectée." line2 = "Veuillez connecter une manette guitare Guitar Hero ou une" line3 = "manette Xbox 360, et appuyez sur Start pour continuer." menu_z = 510000}
-				elseif Italian
-					notify_box \{scale1 = (0.6000000238418579, 0.75) scale2 = (0.5, 0.6000000238418579) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "È stato rilevato un controller chitarra non supportato." line2 = "Connettere una chitarra di Guitar Hero o" line3 = "un Controller Xbox 360 e premere START per continuare." menu_z = 510000}
-				elseif German
-					notify_box \{scale1 = (0.3800000250339508, 0.75) scale2 = (0.5, 0.6000000238418579) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "Ein Peripheriegerät wurde gefunden, das nicht von der Xbox 360 Konsole unterstützt wird." line2 = "Schließen Sie entweder eine Guitar Hero-Gitarre oder einen" line3 = "Xbox 360 Controller an und drücken Sie START, um fortzufahren." menu_z = 510000}
-				elseif Spanish
-					notify_box \{scale1 = (0.45000001788139343, 0.75) scale2 = (0.5, 0.6000000238418579) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "Se ha detectado un mando de guitarra periférico incompatible con la consola." line2 = "Conecta el mando de guitarra de Guitar Hero o" line3 = "el Mando Xbox 360 y pulsa START para continuar." menu_z = 510000}
-				endif
+				notify_box scale1 = (0.6000000238418579, 0.75) scale2 = (0.5, 0.6000000238418579) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "An unsupported guitar peripheral has been detected." line2 = "Connect either a Guitar Hero guitar or" line3 = "Xbox 360 controller and press START to continue." menu_z = 510000
 				CreateScreenElement \{Type = SpriteElement id = controller_fader parent = root_window texture = #"0x767a45d7" rgba = [0 0 0 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 509000 alpha = 0.7}
 				Change \{invalid_controller_lock = 1}
 				begin
@@ -186,7 +176,7 @@ script check_for_any_input\{button1 = {}button2 = {}}
 			endif
 		endif
 		if NOT ($invite_controller = -1)
-			spawnscriptnow ui_flow_manager_respond_to_action params = {action = continue flow_state_func_params = {device_num = ($invite_controller)}}
+			spawnscriptnow \{ui_flow_manager_respond_to_action params = {action = continue flow_state_func_params = {device_num = $invite_controller}}}
 			break
 		endif
 		continue = 0
@@ -211,19 +201,5 @@ script check_for_any_input\{button1 = {}button2 = {}}
 endscript
 
 script menu_press_any_button_create_obvious_text
-	text = "PRESS ANY\nBUTTON TO PLAY\n"
-	text_pos = (400.0, 256.0)
-	CreateScreenElement {
-		Type = TextBlockElement
-		parent = pab_container
-		font = fontgrid_title_gh3
-		text = <text>
-		dims = (480.0, 320.0)
-		Pos = <text_pos>
-		just = [left top]
-		internal_just = [center top]
-		rgba = [255 255 255 255]
-		Scale = 1.0
-		allow_expansion
-	}
+	CreateScreenElement \{ Type = TextBlockElement parent = pab_container font = fontgrid_title_gh3 text = 'PRESS ANY\nBUTTON TO PLAY' dims = (480.0, 320.0) Pos = (400.0, 256.0) just = [left top] internal_just = [center top] rgba = [255 255 255 255] Scale = 1.0 allow_expansion }
 endscript

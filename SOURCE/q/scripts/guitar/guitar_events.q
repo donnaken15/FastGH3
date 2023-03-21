@@ -82,7 +82,7 @@ script create_guitar_events
 	GetArraySize \{$#"0x796c727d"}
 	array_entry = 0
 	begin
-		printf \{"adding..."}
+		//printf \{"adding..."}
 		event = ($guitar_events [<array_entry>].event)
 		ExtendCrc <event> <player_text> out = event
 		SetEventHandler response = call_script event = <event> Scr = event_spawner params = {event_spawned = <array_entry>}
@@ -140,7 +140,7 @@ script event_iterator
 endscript
 
 script GuitarEvent_MissedNote
-	if ($#"0x6e482dae" = 1)
+	if ($enable_solos = 1)
 		if (($<player_status>.text)= 'p1')
 			Player = 1
 			Change note_index_p1 = <array_entry>
@@ -267,7 +267,7 @@ script GuitarEvent_UnnecessaryNote
 endscript
 
 script GuitarEvent_HitNotes
-	if ($#"0x6e482dae" = 1)
+	if ($enable_solos = 1)
 		if (($<player_status>.text)= 'p1')
 			Player = 1
 			Change note_index_p1 = <array_entry>

@@ -236,7 +236,6 @@ script muh_arby_bot_star
 		//printf \{'bot not turned on!!!!!!!!!!!!!'}
 		return
 	endif
-	Change \{autowhammy = 1}
 	if (($game_mode = p2_career || $game_mode = p2_coop) && ($player1_status.bot_play = 0 || $player2_status.bot_play = 0))
 		return
 	endif

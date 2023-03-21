@@ -1,32 +1,41 @@
 
 script solo\{part = guitar diff = expert}
-	if ($game_mode = p2_battle || $#"0x6e482dae" = 0)
+	if ($game_mode = p2_battle || $enable_solos = 0)
 		return
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = scripts_name '%d_scripts' d = <song_prefix>
+	//get_song_prefix \{song = $current_song}
+	//FormatText checksumName = scripts_name '%d_scripts' d = <song_prefix>
+	ExtendCrc \{$current_song '_scripts' out = scripts_name}
 	scripts = $<scripts_name>
-	GetArraySize <scripts>
+	GetArraySize \{scripts}
 	k = 0
-	#"0x0f46f6ae" = 0
+	found_self = 0
 	begin
-		Scr = (<scripts> [<k>])
+		// find own script props just for the exact time it was due to spawn
+		scr = (<scripts>[<k>])
+		// 1003.50 >= 1000 because %$#@ you - neversoft
+		// execution time offset is within 0-10ms for me
+		// probably tied to framerate
 		if ((<Scr>.time + 40)>= (<time>)& (<Scr>.time)< (<time>)& (<Scr>.Scr)= solo)
+			// fallback for no param entered
 			part2 = guitar
-			#"0xa46b4bd5" = expert
-			if (StructureContains structure = <Scr> params)
+			diff2 = expert
+			if StructureContains \{structure = Scr params}
 				tmpval = (<Scr>.params)
-				if (StructureContains structure = <tmpval> part)
+				if StructureContains \{structure = tmpval part}
 					part2 = (<tmpval>.part)
 				endif
-				if (StructureContains structure = <tmpval> diff)
+				if StructureContains \{structure = tmpval diff}
 					diff = (<tmpval>.diff)
 				endif
 			endif
-			if (checksumequals a = <part> b = <part2>)
-				if (checksumequals a = <diff> b = <#"0xa46b4bd5">)
+			// part == part2 && diff == diff2 && time just about matches
+			// so this has to be my script!
+			if checksumequals a = <part> b = <part2>
+				if checksumequals a = <diff> b = <diff2>
+					// get real due time
 					time = (<Scr>.time)
-					#"0x0f46f6ae" = 1
+					found_self = 1
 					break
 				endif
 			endif
@@ -35,29 +44,33 @@ script solo\{part = guitar diff = expert}
 		if (<k> >= <array_Size>)
 			return
 		endif
-	repeat (<array_Size>)
-	if (<#"0x0f46f6ae"> = 0)
-		printf 'why'
+	repeat <array_Size>
+	if (<found_self> = 0)
+		printf \{'why'}
 	endif
 	k = (<k> + 1)
 	found_soloend = 0
 	endtime = (<time> + 5000)
+	// find matching soloend in fastgh3_scripts
 	begin
-		Scr = (<scripts> [<k>])
+		// soloend.params.part == %part then endtime = soloend.time
+		Scr = (<scripts>[<k>])
 		if (<Scr>.time >= <time> & <Scr>.Scr = soloend)
 			part2 = guitar
-			#"0xa46b4bd5" = expert
-			if (StructureContains structure = <Scr> params)
+			diff2 = expert
+			if StructureContains \{structure = Scr params}
 				tmpval = (<Scr>.params)
-				if (StructureContains structure = <tmpval> part)
+				if StructureContains \{structure = tmpval part}
 					part2 = (<tmpval>.part)
 				endif
-				if (StructureContains structure = <tmpval> diff)
-					#"0xa46b4bd5" = (<tmpval>.diff)
+				if StructureContains \{structure = tmpval diff}
+					diff2 = (<tmpval>.diff)
 				endif
 			endif
+			// wait why is this checked differently,
+			// did this work the entire time?
 			if (<part> = <part2>)
-				if (<diff> = <#"0xa46b4bd5">)
+				if (<diff> = <diff2>)
 					endtime = (<Scr>.time)
 					found_soloend = 1
 					break
@@ -68,30 +81,37 @@ script solo\{part = guitar diff = expert}
 		if (<k> >= <array_Size>)
 			break
 		endif
-	repeat (<array_Size>)
+	repeat <array_Size>
+	// wrote because general section events (not just section markers) appeared in Soulless 1
+	// quit if soloend for this script's part can't be found
 	if (<found_soloend> = 0)
-		printf 'why'
+		printf \{'why'}
 		return
 	endif
 	i = 1
 	begin
 		FormatText checksumName = player_status 'player%d_status' d = <i>
 		if (<i> = 1)
-			#"0x1b31142d" = current_difficulty
+			player_difficulty = current_difficulty
 		elseif (<i> = 2)
-			#"0x1b31142d" = current_difficulty2
+			player_difficulty = current_difficulty2
 		endif
-		if (<part> = ($<player_status>.part)& <diff> = ($<#"0x1b31142d">))
+		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
+			// get player's raw note track (time,fret,len)
 			gemarrayid = ($<player_status>.current_song_gem_array)
 			song_array = $<gemarrayid>
-			GetArraySize song_array
+			//song_array = ($($<player_status>.current_song_gem_array))
+			GetArraySize \{song_array}
+			// find index with >= %time
 			solo_first_note = 0
+			// while ([i*3] < %time && i < sizeof)
 			begin
 				if (<song_array> [<solo_first_note>] >= <time>)
 					break
 				endif
 				solo_first_note = (<solo_first_note> + 3)
-			repeat (<array_Size>)
+			repeat <array_Size>
+			// current note index
 			if (<i> = 1)
 				Change last_solo_index_p1 = 0
 				note_index = $note_index_p1
@@ -101,49 +121,57 @@ script solo\{part = guitar diff = expert}
 			endif
 			note_index = (<note_index> * 3)
 			current_first_note = 0
-			startTime = $current_starttime
-			begin
-				if (<song_array> [<current_first_note>] >= <startTime>)
-					break
-				endif
-				current_first_note = (<current_first_note> + 3)
-			repeat (<array_Size>)
+			//if NOT ($current_starttime = 0) // crashes on wii for some reason
+			//{
+				// find first playable note (if skipped into song)
+				startTime = $current_starttime
+				begin
+					if (<song_array> [<current_first_note>] >= <startTime>)
+						break
+					endif
+					current_first_note = (<current_first_note> + 3)
+				repeat <array_Size>
+			//}
+			//			  first solo note, first playable note
 			note_index = (<note_index> + <current_first_note> + 3)
-			earlyhits = ((<note_index> - <solo_first_note>)/ 3)
+			// count notes hit before this executed
+			earlyhits = ((<note_index> - <solo_first_note>) / 3)
+			// if you have a solo where you can hit over 10 notes
+			// before the actual time of the solo is reached, find god
 			if (<i> = 1)
 				hit_buffer = $solo_hit_buffer_p1
 			elseif (<i> = 2)
 				hit_buffer = $solo_hit_buffer_p2
 			endif
-			GetArraySize <hit_buffer>
+			GetArraySize \{hit_buffer}
 			j = 0
-			jj = 0
+			l = 0
 			if (<earlyhits> > 0)
 				begin
-					if (<hit_buffer> [(<array_Size> - 1)] = 1 & <song_array> [(<note_index> - (<jj> * 3))] >= <time>)
+					if (<hit_buffer> [(<array_Size> - 1)] = 1 && <song_array> [(<note_index> - (<l> * 3))] >= <time>)
 						j = (<j> + 1)
 					endif
-					jj = (<jj> + 1)
+					l = (<l> + 1)
 				repeat (<earlyhits>)
 			endif
-			k = 0
-			GetArraySize song_array
+			// while ([i*3] < soloend.time)
+			GetArraySize \{song_array}
 			k = <solo_first_note>
-			begin
+			begin // do i need this condition even, because of the below
 				if (<song_array> [<k>] >= (<endtime>)|| <k> > <array_Size>)
 					break
 				endif
 				k = (<k> + 3)
 			repeat (((<array_Size> - <k>)/ 3))
-			k = (<k> - <solo_first_note>)
-			k = (<k> / 3)
+			k = ((<k> - <solo_first_note>) / 3)
+			// why
 			if (<i> = 1)
-				Change solo_active_p1 = 1
+				Change \{solo_active_p1 = 1}
 				Change last_solo_hits_p1 = <j>
 				Change last_solo_index_p1 = <j>
 				Change last_solo_total_p1 = <k>
 			elseif (<i> = 2)
-				Change solo_active_p2 = 1
+				Change \{solo_active_p2 = 1}
 				Change last_solo_hits_p2 = <j>
 				Change last_solo_index_p2 = <j>
 				Change last_solo_total_p2 = <k>
@@ -154,19 +182,19 @@ script solo\{part = guitar diff = expert}
 	repeat ($current_num_players)
 endscript
 
-script soloend\{part = guitar diff = expert}
-	if ($game_mode = p2_battle || $#"0x6e482dae" = 0)
+script soloend \{part = guitar diff = expert}
+	if ($game_mode = p2_battle || $enable_solos = 0)
 		return
 	endif
 	i = 1
 	begin
 		FormatText checksumName = player_status 'player%d_status' d = <i>
 		if (<i> = 1)
-			#"0x1b31142d" = current_difficulty
+			player_difficulty = current_difficulty
 		elseif (<i> = 2)
-			#"0x1b31142d" = current_difficulty2
+			player_difficulty = current_difficulty2
 		endif
-		if (<part> = ($<player_status>.part)& <diff> = ($<#"0x1b31142d">))
+		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
 			begin
 				if (<i> = 1)
 					if ($last_solo_index_p1 >= $last_solo_total_p1 || $solo_active_p1 = 0)
@@ -177,8 +205,8 @@ script soloend\{part = guitar diff = expert}
 						break
 					endif
 				endif
-				printf 'waiting for something to happen to the last few notes'
-				wait 1 gameframe
+				printf \{'waiting for something to happen to the last few notes'}
+				wait \{1 gameframe}
 			repeat
 			if (<i> = 1)
 				num = ($player1_status.score + ($last_solo_hits_p1 * $solo_bonus_pts))
@@ -206,8 +234,8 @@ script soloend\{part = guitar diff = expert}
 		i = (<i> + 1)
 	repeat ($current_num_players)
 endscript
-#"0x56b9781b" = $#"0xf0fffbee"
-#"0xe63b3ef1" = $#"0x868bc002"
+solo_on = $solo
+solo_off = $soloend
 
 script solo_ui_create\{Player = 1}
 	FormatText checksumName = lsh_p 'last_solo_hits_p%d' d = <Player>
@@ -458,4 +486,4 @@ solo_hit_buffer_p2 = [
 note_index_p1 = 0
 note_index_p2 = 0
 solo_display_type = 0
-#"0x6e482dae" = 1
+enable_solos = 1
