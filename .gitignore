@@ -60,6 +60,7 @@ DATA/ZONES/__themes/*/
 /__WII/
 /__BRANCHES/
 *_original.*
+/PLUGINS/Logger.dll
 /DATA/MOVIES/BIK/lastvid
 /DATA/PAK/__highways/*.dds
 /DATA/PAK/__highways/*.png
@@ -76,3 +77,4 @@ DATA/ZONES/__themes/*/
 /DATA/ZONES/__themes/*.zip
 
 # if i add items to this list that were already committed before, will it remove it from the repo?
+PLUGINS/Logger.dll

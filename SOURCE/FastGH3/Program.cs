@@ -447,15 +447,21 @@ class Program
 	{
 		if (p < 0 || pbl[l] < 0)
 			return;
-		//if (wl)
+		try
+		{
+			//if (wl)
 			//_l("track "+l.ToString()+": "+(p*100).ToString("0.0"), true);
-		lx = (short)Console.CursorLeft;
-		ly = (short)Console.CursorTop;
-		Console.SetCursorPosition(8, pbl[l]);
-		Console.Write((p*100).ToString("0").PadLeft(3));
-		Console.CursorLeft += 3;
-		Console.Write(new string('-', (int)Math.Floor(p*32)));
-		Console.SetCursorPosition(lx, ly);
+			lx = (short)Console.CursorLeft;
+			ly = (short)Console.CursorTop;
+			Console.SetCursorPosition(8, pbl[l]);
+			Console.Write((p * 100).ToString("0").PadLeft(3));
+			Console.CursorLeft += 3;
+			Console.Write(new string('-', (int)Math.Floor(p * 32)));
+			Console.SetCursorPosition(lx, ly);
+		}
+		catch {
+			vl("Progress bar fail");
+		}
 	}
 	static void __(string l, int i)
 	{
@@ -2722,21 +2728,46 @@ class Program
 							else
 							{
 								print(vstr[70], FSBcolor);
-								Console.WriteLine("Encoding progress:");
 								string[] fsbnames = { "song", "guitar", "rhythm" };
-								for (int i = 0; i < 3; i++)
+								try
 								{
-									if (audiostreams[i] == mt + "blank.mp3")
-										continue;
-									pbl[i] = (short)Console.CursorTop;
-									Console.WriteLine(fsbnames[i].PadRight(6)+":   0% ("+")".PadLeft(33)); // leet optimization
+									Console.WriteLine("Encoding progress:");
+									for (int i = 0; i < 3; i++)
+									{
+										if (audiostreams[i] == mt + "blank.mp3")
+											continue;
+										pbl[i] = (short)Console.CursorTop;
+										Console.WriteLine(fsbnames[i].PadRight(6) + ":   0% (" + ")".PadLeft(33)); // leet optimization
+									}
+									if (nj3t)
+										if (!addaud.HasExited)
+											print(vstr[72], FSBcolor);
+									// we're using CBR (for now) so don't have to worry about
+									// more inconsistent file sizes
 								}
-								if (nj3t)
-									if (!addaud.HasExited)
-										Console.WriteLine(vstr[72], FSBcolor);
+								catch
+								{
+									/*
+									<8.359>Waiting for song encoding to finish.
+									<8.359>ERROR! :(
+									<8.362>System.IO.IOException: The handle is invalid.
+										at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+										at System.Console.GetBufferInfo(Boolean throwOnNoConsole, Boolean& succeeded)
+										at System.Console.get_CursorTop()
+										at Program.Main(String[] args)
+									*/
+									// how does this happen
+									// besides for maybe small buffer
+									// or something launching this
+									// without a console window
+									// in which case, how do i know
+									// if there is
+									print("Failed to create encoding progress bars.");
+									pbl[0] = -1;
+									pbl[1] = -1;
+									pbl[2] = -1;
+								}
 								bool[] locks = { false, false, false };
-								// we're using CBR (for now) so don't have to worry about
-								// more inconsistent file sizes
 								while (!locks[0] || !locks[1] || !locks[2])
 								{
 									// this whole part made out of

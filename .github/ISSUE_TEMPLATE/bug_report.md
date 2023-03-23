@@ -12,6 +12,7 @@ assignees: donnaken15
 **Summarize**
 Explain what happens with this bug.
 
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Open '...'
@@ -22,12 +23,21 @@ Steps to reproduce the behavior:
 **Expected behavior (Optional)**
 Write what should happen.
 
+
 **Debugger information (Optional)**
 For crashing bugs in the game, this will be most useful. If you can, grab a debugger, like x64dbg or IDA, then run the game with it to find the error again, and write down the crashing address that can be found in the status bar of the debugger.
-For a more step by step tutorial on how to catch crashes, follow [this tutorial](https://gitgud.io/fretworks/guitar-hero-sdk/-/wikis/Debugging-Crashes).
+For a more step by step tutorial on how to catch crashes, follow [this tutorial](https://ghwt.de/wiki/#/sdk/debuggingcrashes?id=debugging-crashes).
+
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
+
+
+**When I downloaded this mod/what version I'm using (most likely required)**
+Specify version number for downloaded release build, or date of downloaded development build (bleeding edge).<br>
+You can check settings dialog or date of files for this, particularly FastGH3.exe.<br>
+(i.e. 1.0-999010723 / October 29, 2022)
+
 
 **Desktop (Optional, but could help figure out system specific problems):**
  - OS: [default: Windows 10]
