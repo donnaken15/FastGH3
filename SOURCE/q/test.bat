@@ -1,4 +1,4 @@
 :# REQUIRES (AND USES CYGWIN) SH
-sh ./qcomp scripts ../../DATA/scripts
-cd ../..
-game
+@sh ./qcomp scripts ../../DATA/scripts
+@cd ../..
+@start "" game

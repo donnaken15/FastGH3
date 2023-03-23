@@ -856,7 +856,9 @@ script guitar_startup
 		startup
 	endif
 	printf \{'Loading Paks'}
+	//ProfilingStart
 	LoadPak \{'zones/global/global.pak' Heap = heap_global_pak splitfile}
+	//ProfilingEnd <...> 'LoadPak global.pak'
 	LoadPak \{'zones/default.pak'}
 	SetFontProperties \{'text_A1' color_tab = $Default_Font_Colors}
 	buttons_font = 'ButtonsXenon'

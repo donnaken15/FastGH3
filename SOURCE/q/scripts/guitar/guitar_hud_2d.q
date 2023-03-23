@@ -722,10 +722,10 @@ script two_message_test
 	spawnscriptnow \{hud_show_note_streak_combo params = {Player = 2}}
 	spawnscriptnow \{show_star_power_ready params = {player_status = player2_status}}
 endscript
-#"0xc6257792" = 1
+disable_notestreak_notif = 1
 
 script hud_show_note_streak_combo\{Player = 1 combo = 0}
-	if ($end_credits = 1 || $Cheat_PerformanceMode = 1)
+	if ($end_credits = 1 || $Cheat_PerformanceMode = 1 || $disable_notestreak_notif = 1)
 		return
 	endif
 	if ($game_mode = p2_career || $game_mode = p2_coop)

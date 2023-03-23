@@ -245,12 +245,14 @@ script muh_arby_bot_star
 		begin
 			formattext checksumname = player_status 'player%d_status' d = <player>
 			if ($<player_status>.bot_play = 1)
-				if ($<player_status>.star_power_amount >= 50.0)
-					spawnscriptnow star_power_activate_and_drain params = {
-						player_status = <player_status>
-						Player = <player>
-						player_text = ($<player_status>.text)
-					}
+				if ($<player_status>.star_power_used = 0)
+					if ($<player_status>.star_power_amount >= 50.0)
+						spawnscriptnow star_power_activate_and_drain params = {
+							player_status = <player_status>
+							Player = <player>
+							player_text = ($<player_status>.text)
+						}
+					endif
 				endif
 			endif
 			player = (<player> + 1)
@@ -260,6 +262,73 @@ endscript
 
 // TODO: only print necessary info
 script PrintPlayer\{player_status = player1_status}
+	player_status = $<player_status>
+	printstruct {
+		player = {
+			controller = (<player_status>.controller)
+			Player = (<player_status>.Player)
+			star_power_usable = (<player_status>.star_power_usable)
+			star_power_amount = (<player_status>.star_power_amount)
+			star_tilt_threshold = (<player_status>.star_tilt_threshold)
+			playline_song_measure_time = (<player_status>.playline_song_measure_time)
+			star_power_used = (<player_status>.star_power_used)
+			current_run = (<player_status>.current_run)
+			//resting_whammy_position = (<player_status>.resting_whammy_position)
+			bot_play = (<player_status>.bot_play)
+			//bot_pattern = (<player_status>.bot_pattern)
+			//bot_strum = (<player_status>.bot_strum)
+			part = (<player_status>.part)
+			lefthanded_gems = (<player_status>.lefthanded_gems)
+			current_song_gem_array = (<player_status>.current_song_gem_array)
+			//current_song_fretbar_array = (<player_status>.current_song_fretbar_array)
+			current_song_star_array = (<player_status>.current_song_star_array)
+			//current_star_array_entry = (<player_status>.current_star_array_entry)
+			current_song_beat_time = (<player_status>.current_song_beat_time)
+			playline_song_beat_time = (<player_status>.playline_song_beat_time)
+			current_song_measure_time = (<player_status>.current_song_measure_time)
+			//time_in_lead = (<player_status>.time_in_lead)
+			hammer_on_tolerance = (<player_status>.hammer_on_tolerance)
+			check_time_early = (<player_status>.check_time_early)
+			check_time_late = (<player_status>.check_time_late)
+			whammy_on = (<player_status>.whammy_on)
+			star_power_sequence = (<player_status>.star_power_sequence)
+			star_power_note_count = (<player_status>.star_power_note_count)
+			score = (<player_status>.score)
+			notes_hit = (<player_status>.notes_hit)
+			total_notes = (<player_status>.total_notes)
+			best_run = (<player_status>.best_run)
+			max_notes = (<player_status>.max_notes)
+			base_score = (<player_status>.base_score)
+			stars = (<player_status>.stars)
+			sp_phrases_hit = (<player_status>.sp_phrases_hit)
+			sp_phrases_total = (<player_status>.sp_phrases_total)
+			multiplier_count = (<player_status>.multiplier_count)
+			num_multiplier = (<player_status>.num_multiplier)
+			sim_bot_score = (<player_status>.sim_bot_score)
+			scroll_time = (<player_status>.scroll_time)
+			game_speed = (<player_status>.game_speed)
+			highway_speed = (<player_status>.highway_speed)
+			//highway_material = (<player_status>.highway_material)
+			guitar_volume = (<player_status>.guitar_volume)
+			last_guitar_volume = (<player_status>.last_guitar_volume)
+			last_faceoff_note = (<player_status>.last_faceoff_note)
+			is_local_client = (<player_status>.is_local_client)
+			//current_num_powerups = (<player_status>.current_num_powerups)
+			death_lick_attack = (<player_status>.death_lick_attack)
+			//broken_string_mask = (<player_status>.broken_string_mask)
+			//broken_string_green = (<player_status>.broken_string_green)
+			//broken_string_red = (<player_status>.broken_string_red)
+			//broken_string_yellow = (<player_status>.broken_string_yellow)
+			//broken_string_blue = (<player_status>.broken_string_blue)
+			//broken_string_orange = (<player_status>.broken_string_orange)
+			//gem_filler_enabled_time_on = (<player_status>.gem_filler_enabled_time_on)
+			//gem_filler_enabled_time_off = (<player_status>.gem_filler_enabled_time_off)
+			current_health = (<player_status>.current_health)
+			button_checker_up_time = (<player_status>.button_checker_up_time)
+			last_playline_song_beat_time = (<player_status>.last_playline_song_beat_time)
+			last_playline_song_beat_change_time = (<player_status>.last_playline_song_beat_change_time)
+		}
+	}
 	printstruct $<player_status>
 endscript
 
@@ -291,3 +360,27 @@ script #"0xbee285d9"
 		}
 	endif
 endscript
+
+script ProfilingStart
+	//return
+	ProfileTime
+	return ____profiling_checkpoint_1 = <time>
+endscript
+script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____profiling_interval = 60 }
+	//return
+	ProfileTime
+	<____profiling_time> = ((<time> - <____profiling_checkpoint_1>) * 0.0001)
+	if NOT GotParam \{ loop }
+		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time>
+		return profile_time = <____profiling_time>
+	endif
+	<____profiling_i> = (<____profiling_i> + 1)
+	if (<____profiling_i> > <____profiling_interval>)
+		<____profiling_i> = 0
+		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
+		// also another error here, putting a comment right before endif causes newline to be removed
+		
+	endif
+	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
+endscript
+
