@@ -130,6 +130,7 @@
 		this.playBtn.MinimumWidth = 38;
 		this.playBtn.Name = "playBtn";
 		this.playBtn.ReadOnly = true;
+		this.playBtn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
 		this.playBtn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 		this.playBtn.Width = 38;
 		// 
