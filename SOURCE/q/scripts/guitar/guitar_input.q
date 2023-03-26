@@ -315,24 +315,23 @@ script boss_play_off
 	Change \{boss_play = 0}
 endscript
 
-script record_input
-	if GameIsPaused
-		return
-	endif
-	GetDeltaTime
-	DataBufferPutFloat name = replay value = <delta_time>
-	RecordInput \{name = replay}
-endscript
-
+playback_next_frame = 0.0
+playback_do_frame = 0
 script playback_timer
-	if ($replay_suspend = 1)
-		return
-	endif
+	//if ($replay_suspend = 1)
+		//return
+	//endif
 	if GameIsPaused
 		return
 	endif
-	if DataBufferGetFloat \{name = replay}
-		SetDeltaTime delta_time = <float>
+	GetSongTime
+	if (<songtime> > $playback_next_frame)
+		if DataBufferGetFloat \{name = replay}
+			//SetDeltaTime delta_time = <float>
+			change playback_next_frame = <float>
+			change playback_do_frame = 1
+			// set time to wait to play next frame
+		endif
 	endif
 endscript
 

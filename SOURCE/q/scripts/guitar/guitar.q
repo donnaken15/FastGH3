@@ -756,6 +756,20 @@ enable_button_cheats = 1
 whammy_mania_achievement_invalidated = 0
 #"0xcefc2aef" = 0
 
+script FileExists \{#"0x00000000" = ''}
+	StartWildcardSearch \{wildcard = <#"0x00000000">}
+	begin
+		if GetWildcardFile
+			EndWildcardSearch
+			return \{true}
+		else
+			break
+		endif
+	repeat
+	EndWildcardSearch
+	return \{false}
+endscript
+
 script guitar_startup
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
 	/*Change \{AssertOnMissingScripts = 1}
@@ -850,19 +864,37 @@ script guitar_startup
 	printf \{'Creating sound busses'}
 	Master_SFX_Adding_Sound_Busses
 	printf \{'Calling user startup script'}
-	LoadQB \{'config.qb'}
-	LoadPak \{'bkgd.pak' Heap = heap_global_pak}
+	//if FileExists \{'config.qb.xen'}
+		LoadQB \{'config.qb'}
+	//endif
+	//if FileExists \{'bkgd.pak.xen'}
+		LoadPak \{'bkgd.pak' Heap = heap_global_pak}
+	//endif
 	if ScriptExists \{startup}
 		startup
 	endif
+	printf \{'Loading mods'}
+	StartWildcardSearch \{wildcard = 'MODS\*.qb.xen'}
+	begin
+		if NOT GetWildcardFile
+			break
+		endif
+		printf 'Loading %f.qb' f = <basename>
+		formattext textname = file 'MODS/%f.qb' f = <basename>
+		LoadQB <file>
+		formattext checksumname = startup_script '%f_startup' f = <basename>
+		if ScriptExists <startup_script>
+			SpawnScriptNow <startup_script> params = { filename = <filename> basename = <basename> }
+		endif
+	repeat
+	EndWildcardSearch
 	printf \{'Loading Paks'}
 	//ProfilingStart
 	LoadPak \{'zones/global/global.pak' Heap = heap_global_pak splitfile}
 	//ProfilingEnd <...> 'LoadPak global.pak'
 	LoadPak \{'zones/default.pak'}
 	SetFontProperties \{'text_A1' color_tab = $Default_Font_Colors}
-	buttons_font = 'ButtonsXenon'
-	SetFontProperties <buttons_font> buttons_font
+	SetFontProperties \{'ButtonsXenon' buttons_font}
 	SetFontProperties \{'text_a3' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'text_a4' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'text_a6' color_tab = $Default_Font_Colors}
@@ -872,8 +904,8 @@ script guitar_startup
 	SetFontProperties \{'text_a11' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'fontgrid_title_gh3' color_tab = $Default_Font_Colors}
 	if IsFmodEnabled
-		LoadFSB \{FileName = 'streams/streamall' numstreams = 4 noWait}
-		Change streamall_fsb_index = <fsb_index>
+		//LoadFSB \{FileName = 'streams/streamall' numstreams = 4 noWait}
+		//Change streamall_fsb_index = <fsb_index>
 		EnableRemoveSoundEntry \{enable}
 		LoadPak \{'zones/global/global_sfx.pak' Heap = heap_audio}
 	endif
@@ -910,13 +942,7 @@ script guitar_startup
 	repeat $max_num_players
 	SetShadowProjectionTexture \{texture = white}
 	if ($autolaunch_startnow = 0)
-		if ($skip_boot_menu = 1)
-			spawnscriptnow \{gh3_start_pressed params = {no_back}}
-			StartRendering
-			start_flow_manager \{flow_state = main_menu_fs}
-		else
-			start_flow_manager \{flow_state = bootup_sequence_fs}
-		endif
+		start_flow_manager \{flow_state = bootup_sequence_fs}
 	else
 		StartRendering
 		SpawnScriptLater \{autolaunch_spawned}
@@ -936,12 +962,8 @@ endscript
 script autolaunch_spawned
 	NewShowStorageSelector
 	start_flow_manager \{flow_state = quickplay_play_song_fs}
-	if ($autolaunch_startnow = 2)
-		SpawnScriptLater \{select_venue params = {norestart}}
-	else
-		Change \{primary_controller = $startup_controller}
-		SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
-	endif
+	Change \{primary_controller = $startup_controller}
+	SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
 endscript
 kill_dummy_bg_camera = $EmptyScript
 restore_dummy_bg_camera = $EmptyScript

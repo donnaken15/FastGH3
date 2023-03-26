@@ -282,7 +282,8 @@ public partial class settings : Form
 		//Lefty,
 		BkgdVideo,
 		KillHitGems,
-		EarlySustains
+		EarlySustains,
+		NoStreakDisp
 	}
 	static string tStr(int i)
 	{
@@ -336,6 +337,7 @@ public partial class settings : Form
 		QbKey.Create(0x633E187F),
 		QbKey.Create(0xC50E4995),
 		QbKey.Create(0xF88A8D5D),
+		QbKey.Create(0xC6257792),
 	};
 
 	public enum mods
@@ -875,6 +877,7 @@ public partial class settings : Form
 			case t.BkgdVideo: // enable_video
 			case t.KillHitGems: // kill_gems_on_hit
 			case t.EarlySustains: // anytime_sustain_activation
+			case t.NoStreakDisp: // disable_notestreak_notif
 				sQC(tK[e.Index],
 							(e.NewValue == CheckState.Checked) ? 1 : 0);
 				break;

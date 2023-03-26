@@ -157,7 +157,7 @@ script RequestImagePreview_FileConverted
 	if GetRelativePath path = (<callbackparams>.FileName)Dir = 'images' discard_extension
 		GetFileNameFromPath path = <relativepath>
 	else
-		message = 'Sprite needs to be located in ' [proj_root] / data / images ' or subdirectory thereof !!!!'
+		message = 'Sprite needs to be located in \' [proj_root] / data / images \' or subdirectory thereof !!!!'
 		printf <message>
 		RunRemoteScript scriptname = printf params = {<message>}
 		return

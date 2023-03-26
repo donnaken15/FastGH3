@@ -309,7 +309,7 @@ script setup_highway\{Player = 1}
 				Pos = <pos2d>
 				Scale = <playline_scale>
 				just = [center bottom]
-				z_priority = 3.9000001
+				z_priority = 3.9
 			}
 			CreateScreenElement {
 				Type = SpriteElement
@@ -320,7 +320,7 @@ script setup_highway\{Player = 1}
 				Pos = <pos2d>
 				Scale = <playline_scale>
 				just = [center bottom]
-				z_priority = 3.5999999
+				z_priority = 3.6
 			}
 			<y_scale> = ($neck_lip_add / $neck_sprite_size)
 			<Pos> = (<pos2d> - ($neck_lip_base * (0.0, 1.0)))

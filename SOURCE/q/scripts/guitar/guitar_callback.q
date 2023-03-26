@@ -6,7 +6,27 @@ script timer_callback_script
 endscript
 
 script script_callback_script
+	change \{replay_suspend = 1}
+	if ($input_mode = Play)
+		if ($playback_do_frame = 1)
+			change \{replay_suspend = 0}
+			change \{structurename = player1_status bot_play = 0}
+			change \{structurename = player2_status bot_play = 0}
+		endif
+	endif
 	script_callback_script_cfunc
+	if ($input_mode = Play)
+		if ($playback_do_frame = 1)
+			printf 'got frame'
+			change \{playback_do_frame = 0}
+			change \{structurename = player1_status bot_play = 1}
+			change \{structurename = player2_status bot_play = 1}
+			GetHeldPattern controller = ($player1_status.controller) nobrokenstring
+			change structurename = player1_status bot_pattern = <hold_pattern>
+			GetHeldPattern controller = ($player2_status.controller) nobrokenstring
+			change structurename = player2_status bot_pattern = <hold_pattern>
+		endif
+	endif
 endscript
 
 script script_postcallback_script

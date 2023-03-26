@@ -234,10 +234,14 @@ script gem_scroller\{Player = 1 training_mode = 0}
 		if ($input_mode = record)
 			ClearDataBuffer \{name = replay}
 			DataBufferPutChecksum name = replay value = <song_name>
-			DataBufferPutChecksum name = replay value = ($current_transition)
-			DataBufferPutInt \{name = replay value = $#"0xa2660d69"}
-			DataBufferPutInt name = replay value = ($player1_status.controller)
-			DataBufferPutInt name = replay value = ($player2_status.controller)
+			//DataBufferPutChecksum name = replay value = ($current_transition)
+			DataBufferPutInt \{name = replay value = $current_num_players}
+			DataBufferPutInt \{name = replay value = $p1_ctrl}
+			DataBufferPutInt \{name = replay value = $p2_ctrl}
+			DataBufferPutChecksum \{name = replay value = $p1_part}
+			DataBufferPutChecksum \{name = replay value = $p2_part}
+			DataBufferPutInt \{name = replay value = $disable_intro}
+			DataBufferPutInt \{name = replay value = $nointro_ready_time}
 			DataBufferPutChecksum name = replay value = <difficulty> bytes = 16
 			DataBufferPutChecksum name = replay value = <difficulty2> bytes = 16
 			GetRandomSeeds
@@ -498,9 +502,9 @@ script load_songqpak\{async = 0}
 		get_song_prefix song = <song_name>
 		is_song_downloaded song_checksum = <song_name>
 		if (<download> = 1)
-			FormatText textname = songqpak 'song.pak   ' i = <song_prefix>
+			FormatText textname = songqpak 'song.pak' i = <song_prefix>
 		else
-			FormatText textname = songqpak 'pak/song.pak     ' i = <song_prefix>
+			FormatText textname = songqpak 'pak/song.pak' i = <song_prefix>
 		endif
 		printf "Loading Song q pak FGH3" i = <songqpak>
 		if NOT LoadPakAsync pak_name = <songqpak> Heap = heap_song no_vram async = <async>
@@ -1041,15 +1045,19 @@ script restart_gem_scroller\{no_render = 0}
 		ReadDataBuffer name = replay FileName = <replay>
 		DataBufferGetChecksum \{name = replay}
 		<song_name> = <checksum>
-		DataBufferGetChecksum \{name = replay}
-		Change current_transition = <checksum>
 		DataBufferGetInt \{name = replay}
 		if (<int> > 0)
 			Change current_num_players = <int>
 			DataBufferGetInt \{name = replay}
-			Change StructureName = player1_status controller = <int>
+			Change p1_ctrl = <int>
 			DataBufferGetInt \{name = replay}
-			Change StructureName = player2_status controller = <int>
+			Change p2_ctrl = <int>
+			DataBufferGetChecksum \{name = replay}
+			//Change StructureName = player1_status part = <int>
+			Change p1_part = <checksum>
+			DataBufferGetChecksum \{name = replay}
+			//Change StructureName = player2_status part = <int>
+			Change p2_part = <checksum>
 		else
 			Change \{current_num_players = 1}
 			DataBufferGetInt \{name = replay}
@@ -1057,6 +1065,10 @@ script restart_gem_scroller\{no_render = 0}
 			Change \{StructureName = player1_status controller = -1}
 			Change \{StructureName = player2_status controller = -1}
 		endif
+		DataBufferGetInt \{name = replay}
+		Change disable_intro = <int>
+		DataBufferGetInt \{name = replay}
+		Change nointro_ready_time = <int>
 		DataBufferGetChecksum \{name = replay bytes = 16}
 		<difficulty> = <checksum>
 		DataBufferGetChecksum \{name = replay bytes = 16}
@@ -1092,6 +1104,8 @@ endscript
 script reset_song_time\{startTime = 0}
 	Change current_deltatime = (1.0 / 60.0)
 	Change current_time = (<startTime> / 1000.0)
+	Change playback_next_frame = 0.0
+	Change playback_do_frame = 0
 	if ($input_mode = Play)
 		Change \{replay_suspend = 0}
 	endif

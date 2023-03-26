@@ -1,4 +1,4 @@
-#"0xd403a7a7" = 0
+disable_particles = 0
 #"0xb17c0279" = 0
 destroy_time = 1.0
 gHighwayTiling1 = 1.5

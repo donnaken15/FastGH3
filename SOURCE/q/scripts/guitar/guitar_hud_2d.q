@@ -722,8 +722,8 @@ script two_message_test
 	spawnscriptnow \{hud_show_note_streak_combo params = {Player = 2}}
 	spawnscriptnow \{show_star_power_ready params = {player_status = player2_status}}
 endscript
-disable_notestreak_notif = 1
 
+disable_notestreak_notif = 0
 script hud_show_note_streak_combo\{Player = 1 combo = 0}
 	if ($end_credits = 1 || $Cheat_PerformanceMode = 1 || $disable_notestreak_notif = 1)
 		return

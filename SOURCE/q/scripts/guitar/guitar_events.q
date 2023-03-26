@@ -407,19 +407,19 @@ whammy_particle_params = {
 }
 
 script hit_note_fx
-	if ($#"0xd403a7a7" > 1)
+	if ($disable_particles > 1)
 		return
 	endif
 	NoteFX <...>
-	if ($#"0xd403a7a7" = 0)
+	if ($disable_particles = 0)
 		wait 100 #"0x8d07dc15"
 		Destroy2DParticleSystem id = <particle_id> kill_when_empty
 	endif
-	if ($#"0xd403a7a7" = 1)
+	if ($disable_particles = 1)
 		Destroy2DParticleSystem id = <particle_id>
 		wait 100 #"0x8d07dc15"
 	endif
-	if ($#"0xd403a7a7" < 2)
+	if ($disable_particles < 2)
 		wait 167 #"0x8d07dc15"
 		if (ScreenElementExists id = <fx_id>)
 			DestroyScreenElement id = <fx_id>
@@ -638,13 +638,13 @@ script Destroy_AllWhammyFX
 endscript
 
 script GuitarEvent_WhammyOn
-	if ($#"0xd403a7a7" < 2)
+	if ($disable_particles < 2)
 		WhammyFXOn <...>
 	endif
 endscript
 
 script GuitarEvent_WhammyOff
-	if ($#"0xd403a7a7" < 2)
+	if ($disable_particles < 2)
 		WhammyFXOff <...>
 	endif
 endscript
@@ -778,7 +778,7 @@ script GuitarEvent_SongFailed_Spawned
 endscript
 
 script GuitarEvent_SongWon\{battle_win = 0}
-	if NotCD
+	//if NotCD
 		if ($output_gpu_log = 1)
 			if isps3
 				FormatText \{textname = FileName "%s_gpu_ps3" s = $current_level DontAssertForChecksums}
@@ -788,34 +788,44 @@ script GuitarEvent_SongWon\{battle_win = 0}
 			TextOutputEnd output_text FileName = <FileName>
 		endif
 		if ($output_song_stats = 1)
-			FormatText \{textname = FileName "stats_%s" s = $#"0x03a17838" DontAssertForChecksums}
+			//FormatText \{textname = FileName "..\..\stats_%s" s = $#"0x03a17838" DontAssertForChecksums}
 			TextOutputStart
-			TextOutput \{text = "Player 1"}
-			FormatText textname = text "Score: %s" s = ($player1_status.score)DontAssertForChecksums
+			get_song_title \{song = $current_song}
+			get_song_artist \{song = $current_song with_year = 0}
+			FormatText textname = text '%a - %t' t = <song_title> a = <song_artist>
 			TextOutput text = <text>
-			FormatText textname = text "Notes Hit: %n of %t" n = ($player1_status.notes_hit)t = ($player1_status.total_notes)DontAssertForChecksums
-			TextOutput text = <text>
-			FormatText textname = text "Best Run: %r" r = ($player1_status.best_run)DontAssertForChecksums
-			TextOutput text = <text>
-			FormatText textname = text "Max Notes: %m" m = ($player1_status.max_notes)DontAssertForChecksums
-			TextOutput text = <text>
-			FormatText textname = text "Base score: %b" b = ($player1_status.base_score)DontAssertForChecksums
-			TextOutput text = <text>
-			if (($player1_status.base_score)= 0)
-				FormatText \{textname = text "Score Scale: n/a"}
-			else
-				FormatText textname = text "Score Scale: %s" s = (($player1_status.score)/ ($player1_status.base_score))DontAssertForChecksums
-			endif
-			TextOutput text = <text>
-			if (($player1_status.total_notes)= 0)
-				FormatText \{textname = text "Notes Hit Percentage: n/a"}
-			else
-				FormatText textname = text "Notes Hit Percentage: %s" s = ((($player1_status.notes_hit)/ ($player1_status.total_notes))* 100.0)DontAssertForChecksums
-			endif
-			TextOutput text = <text>
-			TextOutputEnd output_text FileName = <FileName>
+			i = 1
+			begin
+				FormatText checksumname = player_status 'player%i_status' i = <i>
+				FormatText textname = text 'Player %i:' i = <i>
+				TextOutput text = <text>
+				FormatText textname = text 'Score: %s' s = ($<player_status>.score)
+				TextOutput text = <text>
+				FormatText textname = text 'Notes Hit: %n of %t' n = ($<player_status>.notes_hit) t = ($<player_status>.total_notes)
+				TextOutput text = <text>
+				FormatText textname = text 'Best Run: %r' r = ($<player_status>.best_run)
+				TextOutput text = <text>
+				FormatText textname = text 'Max Notes: %m' m = ($<player_status>.max_notes)
+				TextOutput text = <text>
+				FormatText textname = text 'Base score: %b' b = ($<player_status>.base_score)
+				TextOutput text = <text>
+				if (($<player_status>.base_score) = 0)
+					FormatText \{textname = text "Score Scale: n/a"}
+				else
+					FormatText textname = text "Score Scale: %s" s = (($<player_status>.score) / ($<player_status>.base_score))
+				endif
+				TextOutput text = <text>
+				if (($<player_status>.total_notes) = 0)
+					FormatText \{textname = text "Notes Hit Percentage: n/a"}
+				else
+					FormatText textname = text "Notes Hit Percentage: %s" s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
+				endif
+				TextOutput text = <text>
+				i = (<i> + 1)
+			repeat $current_num_players
+			TextOutputEnd \{output_text FileName = '..\..\stats'}
 		endif
-	endif
+	//endif
 	if ($current_num_players = 2)
 		GetSongTimeMs
 		if ($last_time_in_lead_player = 0)
@@ -1403,7 +1413,7 @@ GuitarEvent_crowd_good_medium = $EmptyScript
 GuitarEvent_StarHitNote = $EmptyScript
 
 script GuitarEvent_StarSequenceBonus
-	if ($#"0xd403a7a7" = 0)
+	if ($disable_particles = 0)
 		i = 0
 		begin
 			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = ($<player_status>.text)e = <i> AddToStringLookup = true
@@ -1419,7 +1429,7 @@ script GuitarEvent_StarSequenceBonus
 			}
 		}
 	endif
-	if ($#"0xd403a7a7" = 1)
+	if ($disable_particles = 1)
 		spawnscriptnow {
 			#"0x76536adf"
 			params = {
@@ -1733,7 +1743,7 @@ script GuitarEvent_TransitionBoss
 endscript
 
 script #"0x49b1c3d0"\{Player = 1 player_status = player1_status}
-	if ($#"0xd403a7a7" > 1)
+	if ($disable_particles > 1)
 		return
 	endif
 	wait $button_sink_time seconds
