@@ -659,6 +659,7 @@ class Program
 					builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
 					// muh classic theme
 					//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
+					Directory.SetCurrentDirectory(folder);
 					new settings().ShowDialog();
 					// settings file 31kb
 				}
