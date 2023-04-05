@@ -14,7 +14,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartArguments>-settings</StartArguments>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <StartAction>Program</StartAction>
+    <StartAction>Project</StartAction>
     <StartProgram>C:\Program Files (x86)\FastGH3\FastGH3.exe</StartProgram>
   </PropertyGroup>
 </Project>

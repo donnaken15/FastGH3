@@ -1,9 +1,5 @@
 
-script Skate8_SFX_Backgrounds_New_Area
-endscript
 
-script Skate8_SFX_Request_Background_Area_Change
-endscript
 SFX_Background_Last_Area = Default
 SFX_Background_Requested_Area = Default
 SFX_Background_Requested_Checksum = Default
@@ -32,6 +28,8 @@ PleaseDOCrossfade = 1
 SFX_Background_IS_Crossfading = FALSE
 CurrentlyPlayingOneShotSoundEvent = DoNothing_OneShot
 CurrentOneShotWaitTime = 15
+Skate8_SFX_Backgrounds_New_Area = $WhyAmIBeingCalled
+Skate8_SFX_Request_Background_Area_Change = $WhyAmIBeingCalled
 Check_For_Specific_BGs_In_Struct = $WhyAmIBeingCalled
 Check_For_TOD_BGs_In_Struct = $WhyAmIBeingCalled
 Skate8_SFX_Background_Play = $WhyAmIBeingCalled

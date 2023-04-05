@@ -40,15 +40,15 @@ script solo\{part = guitar diff = expert}
 				endif
 			endif
 		endif
-		k = (<k> + 1)
-		if (<k> >= <array_Size>)
+		Increment \{k}
+		if (<k> >= <array_size>)
 			return
 		endif
-	repeat <array_Size>
+	repeat <array_size>
 	if (<found_self> = 0)
 		printf \{'why'}
 	endif
-	k = (<k> + 1)
+	Increment \{k}
 	found_soloend = 0
 	endtime = (<time> + 5000)
 	// find matching soloend in fastgh3_scripts
@@ -77,7 +77,7 @@ script solo\{part = guitar diff = expert}
 				endif
 			endif
 		endif
-		k = (<k> + 1)
+		Increment \{k}
 		if (<k> >= <array_Size>)
 			break
 		endif
@@ -110,7 +110,7 @@ script solo\{part = guitar diff = expert}
 					break
 				endif
 				solo_first_note = (<solo_first_note> + 3)
-			repeat <array_Size>
+			repeat <array_size>
 			// current note index
 			if (<i> = 1)
 				Change last_solo_index_p1 = 0
@@ -148,17 +148,17 @@ script solo\{part = guitar diff = expert}
 			l = 0
 			if (<earlyhits> > 0)
 				begin
-					if (<hit_buffer> [(<array_Size> - 1)] = 1 && <song_array> [(<note_index> - (<l> * 3))] >= <time>)
-						j = (<j> + 1)
+					if (<hit_buffer>[(<array_Size> - 1)] = 1 && <song_array> [(<note_index> - (<l> * 3))] >= <time>)
+						Increment \{j}
 					endif
-					l = (<l> + 1)
-				repeat (<earlyhits>)
+					Increment \{l}
+				repeat <earlyhits>
 			endif
 			// while ([i*3] < soloend.time)
 			GetArraySize \{song_array}
 			k = <solo_first_note>
 			begin // do i need this condition even, because of the below
-				if (<song_array> [<k>] >= (<endtime>)|| <k> > <array_Size>)
+				if (<song_array>[<k>] >= <endtime> || <k> > <array_size>)
 					break
 				endif
 				k = (<k> + 3)
@@ -178,7 +178,7 @@ script solo\{part = guitar diff = expert}
 			endif
 			solo_ui_create Player = <i>
 		endif
-		i = (<i> + 1)
+		Increment \{i}
 	repeat ($current_num_players)
 endscript
 
@@ -213,9 +213,7 @@ script soloend \{part = guitar diff = expert}
 				Change StructureName = player1_status score = <num>
 				num1 = $last_solo_hits_p1
 				num2 = $last_solo_total_p1
-				spawnscriptnow solo_ui_end params = {
-					Player = 1
-				}
+				spawnscriptnow solo_ui_end params = { Player = 1 }
 				Change last_solo_hits_p1 = 0
 				Change last_solo_total_p1 = 0
 			elseif (<i> = 2)
@@ -223,15 +221,13 @@ script soloend \{part = guitar diff = expert}
 				Change StructureName = player2_status score = <num>
 				num1 = $last_solo_hits_p2
 				num2 = $last_solo_total_p2
-				spawnscriptnow solo_ui_end params = {
-					Player = 2
-				}
+				spawnscriptnow solo_ui_end params = { Player = 2 }
 				Change last_solo_hits_p2 = 0
 				Change last_solo_total_p2 = 0
 			endif
 			solo_reset i = <i>
 		endif
-		i = (<i> + 1)
+		Increment \{i}
 	repeat ($current_num_players)
 endscript
 solo_on = $solo
@@ -244,13 +240,9 @@ script solo_ui_create\{Player = 1}
 	FormatText textname = text '%d\%' d = <num>
 	FormatText checksumName = solotxt 'solotxt%d' d = <Player>
 	FormatText checksumName = gemcont 'gem_containerp%d' d = <Player>
-	if (ScreenElementExists {
-			id = <solotxt>
-		})
-		DestroyScreenElement {
-			id = <solotxt>
-		}
-		killspawnedscript name = solo_ui_end
+	if ScreenElementExists id = <solotxt>
+		DestroyScreenElement id = <solotxt>
+		killspawnedscript \{name = solo_ui_end}
 	endif
 	CreateScreenElement {
 		Type = TextElement
@@ -258,7 +250,7 @@ script solo_ui_create\{Player = 1}
 		id = <solotxt>
 		font = fontgrid_title_gh3
 		Scale = 0.8
-		rgba = [255 , 255 , 255 , 255]
+		rgba = [255 255 255 255]
 		text = <text>
 		just = [center , center]
 		z_priority = 20
@@ -271,9 +263,7 @@ script solo_ui_update\{Player = 1}
 	FormatText checksumName = lsh_p 'last_solo_hits_p%d' d = <Player>
 	FormatText checksumName = lst_p 'last_solo_total_p%d' d = <Player>
 	FormatText checksumName = lsi_p 'last_solo_index_p%d' d = <Player>
-	if (ScreenElementExists {
-			id = <solotxt>
-		})
+	if ScreenElementExists id = <solotxt>
 		if ($solo_display_type = 0)
 			num = ((100.0 * $<lsh_p>)/ $<lst_p>)
 			MathFloor <num>
@@ -298,9 +288,7 @@ script solo_ui_end\{Player = 1}
 	FormatText checksumName = solotxt 'solotxt%d' d = <Player>
 	FormatText checksumName = lsh_p 'last_solo_hits_p%d' d = <Player>
 	FormatText checksumName = lst_p 'last_solo_total_p%d' d = <Player>
-	if (ScreenElementExists {
-			id = <solotxt>
-		})
+	if ScreenElementExists id = <solotxt>
 		Bonus = ($<lsh_p> * $solo_bonus_pts)
 		perf = ((100 * $<lsh_p>)/ $<lst_p>)
 		DoScreenElementMorph id = <solotxt> time = 0.3 Scale = 1.8 relative_scale
@@ -320,48 +308,40 @@ script solo_ui_end\{Player = 1}
 			perf_text = 'PERFECT'
 		endif
 		FormatText textname = text '%t SOLO!' t = <perf_text>
-		if (ScreenElementExists {
-				id = <solotxt>
-			})
+		if ScreenElementExists id = <solotxt>
 			SetScreenElementProps id = <solotxt> text = <text>
 			DoScreenElementMorph id = <solotxt> Scale = 0
 			DoScreenElementMorph id = <solotxt> time = 0.1 Scale = 1
 		endif
-		wait 1.5 seconds
+		wait \{1.5 seconds}
 		FormatText textname = text '%d POINTS!' d = <Bonus>
-		if (ScreenElementExists {
-				id = <solotxt>
-			})
+		if ScreenElementExists id = <solotxt>
 			SetScreenElementProps id = <solotxt> text = <text>
 			DoScreenElementMorph id = <solotxt> Scale = 0
 			DoScreenElementMorph id = <solotxt> time = 0.1 Scale = 1
-			wait 1.5 seconds
+			wait \{1.5 seconds}
 			DoScreenElementMorph id = <solotxt> time = 0.1 Scale = 0
 		endif
-		wait 0.1 seconds
-		if (ScreenElementExists {
-				id = <solotxt>
-			})
-			DestroyScreenElement {
-				id = <solotxt>
-			}
+		wait \{0.1 seconds}
+		if ScreenElementExists id = <solotxt>
+			DestroyScreenElement id = <solotxt>
 		endif
 	endif
 endscript
 
 script solo_reset\{Player = 1}
 	if (<Player> = 1)
-		Change solo_active_p1 = 0
-		Change last_solo_hits_p1 = 0
-		Change last_solo_index_p1 = 0
-		Change last_solo_total_p1 = 0
-		Change note_index_p1 = 0
+		Change \{solo_active_p1 = 0}
+		Change \{last_solo_hits_p1 = 0}
+		Change \{last_solo_index_p1 = 0}
+		Change \{last_solo_total_p1 = 0}
+		Change \{note_index_p1 = 0}
 	elseif (<Player> = 2)
-		Change solo_active_p2 = 0
-		Change last_solo_hits_p2 = 0
-		Change last_solo_index_p2 = 0
-		Change last_solo_total_p2 = 0
-		Change note_index_p2 = 0
+		Change \{solo_active_p2 = 0}
+		Change \{last_solo_hits_p2 = 0}
+		Change \{last_solo_index_p2 = 0}
+		Change \{last_solo_total_p2 = 0}
+		Change \{note_index_p2 = 0}
 	endif
 	if (<Player> = 1)
 		GetArraySize \{$#"0x39c33a22"}
@@ -373,16 +353,12 @@ script solo_reset\{Player = 1}
 	i = 0
 	begin
 		SetArrayElement ArrayName = <array> GlobalArray index = <i> NewValue = 0
-		i = (<i> + 1)
+		Increment \{i}
 	repeat (<array_Size>)
-	if (GotParam reset_hud)
-		killspawnedscript name = solo_ui_end
-		if (ScreenElementExists {
-				id = <solotxt>
-			})
-			DestroyScreenElement {
-				id = <solotxt>
-			}
+	if GotParam \{reset_hud}
+		killspawnedscript \{name = solo_ui_end}
+		if ScreenElementExists id = <solotxt>
+			DestroyScreenElement id = <solotxt>
 		endif
 	endif
 endscript
@@ -400,10 +376,10 @@ script set_solo_hit_buffer\{Player = 1 1}
 	endif
 	hit_buffer = $<array>
 	i = 1
-	SetArrayElement ArrayName = <array> GlobalArray index = (<array_Size> - 1)NewValue = <#"0x00000000">
+	SetArrayElement ArrayName = <array> GlobalArray index = (<array_Size> - 1) NewValue = <#"0x00000000">
 	begin
-		SetArrayElement ArrayName = <array> GlobalArray index = (<i> - 1)NewValue = ($<array> [<i>])
-		i = (<i> + 1)
+		SetArrayElement ArrayName = <array> GlobalArray index = (<i> - 1) NewValue = ($<array>[<i>])
+		Increment \{i}
 	repeat (<array_Size> - 1)
 endscript
 last_solo_hits_p1 = 0
@@ -415,74 +391,8 @@ last_solo_index_p2 = 0
 solo_active_p1 = 0
 solo_active_p2 = 0
 solo_bonus_pts = 50
-solo_hit_buffer_p1 = [
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-]
-solo_hit_buffer_p2 = [
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-]
+solo_hit_buffer_p1 = []
+solo_hit_buffer_p2 = []
 note_index_p1 = 0
 note_index_p2 = 0
 solo_display_type = 0

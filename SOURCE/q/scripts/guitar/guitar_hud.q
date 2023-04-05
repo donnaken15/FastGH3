@@ -1,6 +1,5 @@
 
 script setup_sprites
-	ScreenElementSystemInit
 	setup_main_button_event_mappings
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = hud_window Pos = (0.0, 0.0) just = [left top]}
 	CreateScreenElement \{Type = TextElement parent = root_window id = song_failed_text font = #"0xba959ce0" Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Song Failed" z_priority = 5.0 alpha = 0}

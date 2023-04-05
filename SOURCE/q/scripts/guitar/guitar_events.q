@@ -318,21 +318,9 @@ script GuitarEvent_HitNote_Spawned
 	wait \{1 gameframe}
 	spawnscriptnow hit_note_fx params = {name = <fx_id> Pos = <Pos> player_text = <player_text> Star = ($<player_status>.star_power_used)Player = <Player>}
 endscript
-hit_particle_params = {
+base_particle_params = {
 	z_priority = 8.0
 	material = sys_Particle_Spark01_sys_Particle_Spark01
-	start_color = [
-		255
-		128
-		0
-		255
-	]
-	end_color = [
-		255
-		0
-		0
-		0
-	]
 	start_scale = (1.0, 1.0)
 	end_scale = (0.5, 0.5)
 	start_angle_spread = 0.0
@@ -346,63 +334,21 @@ hit_particle_params = {
 	velocity = 10.0
 	friction = (0.0, 50.0)
 	time = 0.25
+}
+hit_particle_params = {
+	$base_particle_params
+	start_color = [ 255 128 0 255 ]
+	end_color = [ 255 0 0 0 ]
 }
 star_hit_particle_params = {
-	z_priority = 8.0
-	material = sys_Particle_Spark01_sys_Particle_Spark01
-	start_color = [
-		0
-		255
-		255
-		255
-	]
-	end_color = [
-		0
-		255
-		255
-		0
-	]
-	start_scale = (1.0, 1.0)
-	end_scale = (0.5, 0.5)
-	start_angle_spread = 0.0
-	min_rotation = 0.0
-	max_rotation = 360.0
-	emit_start_radius = 0.0
-	emit_radius = 1.0
-	Emit_Rate = 0.02
-	emit_dir = 0.0
-	emit_spread = 160.0
-	velocity = 10.0
-	friction = (0.0, 50.0)
-	time = 0.25
+	$base_particle_params
+	start_color = [ 0 255 255 255 ]
+	end_color = [ 0 255 255 0 ]
 }
 whammy_particle_params = {
-	z_priority = 8.0
-	material = sys_Particle_Spark01_sys_Particle_Spark01
-	start_color = [
-		255
-		128
-		0
-		255
-	]
-	end_color = [
-		255
-		0
-		0
-		0
-	]
-	start_scale = (1.0, 1.0)
-	end_scale = (0.5, 0.5)
-	start_angle_spread = 0.0
-	min_rotation = 0.0
-	max_rotation = 360.0
-	emit_start_radius = 0.0
-	emit_radius = 1.0
-	Emit_Rate = 0.02
-	emit_dir = 0.0
-	emit_spread = 160.0
-	velocity = 10.0
-	friction = (0.0, 50.0)
+	$base_particle_params
+	start_color = [ 255 128 0 255 ]
+	end_color = [ 255 0 0 0 ]
 	time = 0.5
 }
 
@@ -412,16 +358,16 @@ script hit_note_fx
 	endif
 	NoteFX <...>
 	if ($disable_particles = 0)
-		wait 100 #"0x8d07dc15"
+		wait \{100 #"0x8d07dc15"}
 		Destroy2DParticleSystem id = <particle_id> kill_when_empty
 	endif
 	if ($disable_particles = 1)
 		Destroy2DParticleSystem id = <particle_id>
-		wait 100 #"0x8d07dc15"
+		wait \{100 #"0x8d07dc15"}
 	endif
 	if ($disable_particles < 2)
-		wait 167 #"0x8d07dc15"
-		if (ScreenElementExists id = <fx_id>)
+		wait \{167 #"0x8d07dc15"}
+		if ScreenElementExists id = <fx_id>
 			DestroyScreenElement id = <fx_id>
 		endif
 	endif
@@ -1402,8 +1348,8 @@ script wait_and_play_you_rock_movie
 endscript
 
 script waitandkillhighway
-	wait \{0.5 seconds}
-	SoundEvent \{event = Crowd_Fast_Surge_Cheer}
+	//wait \{0.5 seconds}
+	//SoundEvent \{event = Crowd_Fast_Surge_Cheer}
 	disable_bg_viewport
 endscript
 GuitarEvent_crowd_poor_medium = $EmptyScript
@@ -1420,10 +1366,10 @@ script GuitarEvent_StarSequenceBonus
 			Destroy2DParticleSystem id = <fx2_id>
 			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = ($<player_status>.text)e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx3_id>
-			i = (<i> + 1)
+			Increment \{i}
 		repeat (5)
 		spawnscriptnow {
-			#"0x76536adf"
+			StarSequenceFX
 			params = {
 				<...>
 			}
@@ -1431,7 +1377,7 @@ script GuitarEvent_StarSequenceBonus
 	endif
 	if ($disable_particles = 1)
 		spawnscriptnow {
-			#"0x76536adf"
+			StarSequenceFX
 			params = {
 				<...>
 			}
@@ -1444,12 +1390,12 @@ script GuitarEvent_StarSequenceBonus
 			Destroy2DParticleSystem id = <fx2_id>
 			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = ($<player_status>.text)e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx3_id>
-			i = (<i> + 1)
+			Increment \{i}
 		repeat (5)
 	endif
 endscript
 
-script #"0x76536adf"
+script StarSequenceFX
 	if ($is_attract_mode = 1)
 		return
 	endif
@@ -1493,7 +1439,7 @@ script #"0x76536adf"
 				parent = <container_id>
 				start_color = [0 128 255 255]
 				end_color = [0 128 128 0]
-				start_scale = (0.550000011920929, 0.550000011920929)
+				start_scale = (0.55, 0.55)
 				end_scale = (0.25, 0.25)
 				start_angle_spread = 360.0
 				min_rotation = -120.0
@@ -1577,42 +1523,11 @@ script #"0x76536adf"
 	repeat <array_Size>
 endscript
 GuitarEvent_StarMissNote = $EmptyScript
-
-script GuitarEvent_Multiplier4xOn
-endscript
-
-script GuitarEvent_Multiplier4xOn_Spawned
-endscript
-
-script GuitarEvent_Multiplier3xOn
-endscript
-
-script GuitarEvent_Multiplier2xOn
-endscript
-
-script kill_4x_fx
-	killspawnedscript \{name = GuitarEvent_Multiplier4xOn_Spawned}
-	if IsCreated ($<player_status>.FourX_FingerFXID01)
-		($<player_status>.FourX_FingerFXID01)::EmitRate rate = 0
-		($<player_status>.FourX_FingerFXID01)::Destroy ifEmpty = 1
-	endif
-	if IsCreated ($<player_status>.FourX_FingerFXID02)
-		($<player_status>.FourX_FingerFXID02)::EmitRate rate = 0
-		($<player_status>.FourX_FingerFXID02)::Destroy ifEmpty = 1
-	endif
-	if IsCreated ($<player_status>.FourX_FingerFXID03)
-		($<player_status>.FourX_FingerFXID03)::EmitRate rate = 0
-		($<player_status>.FourX_FingerFXID03)::Destroy ifEmpty = 1
-	endif
-	if IsCreated ($<player_status>.FourX_FingerFXID04)
-		($<player_status>.FourX_FingerFXID04)::EmitRate rate = 0
-		($<player_status>.FourX_FingerFXID04)::Destroy ifEmpty = 1
-	endif
-	Change StructureName = <player_status> FourX_FingerFXID01 = JOW_NIL
-	Change StructureName = <player_status> FourX_FingerFXID02 = JOW_NIL
-	Change StructureName = <player_status> FourX_FingerFXID03 = JOW_NIL
-	Change StructureName = <player_status> FourX_FingerFXID04 = JOW_NIL
-endscript
+GuitarEvent_Multiplier4xOn = $EmptyScript
+GuitarEvent_Multiplier4xOn_Spawned = $EmptyScript
+GuitarEvent_Multiplier3xOn = $EmptyScript
+GuitarEvent_Multiplier2xOn = $EmptyScript
+kill_4x_fx = $EmptyScript
 
 script GuitarEvent_Multiplier4xOff
 	SoundEvent \{event = UI_SFX_Lose_Multiplier_4X}
@@ -1660,7 +1575,7 @@ script GuitarEvent_ExitVenue
 endscript
 
 script GuitarEvent_CreateFirstGem
-	spawnscriptnow first_gem_fx params = {<...> }
+	spawnscriptnow first_gem_fx params = { <...> }
 endscript
 #"0xe7b89f4f" = 1
 
@@ -1746,69 +1661,56 @@ script #"0x49b1c3d0"\{Player = 1 player_status = player1_status}
 	if ($disable_particles > 1)
 		return
 	endif
-	wait $button_sink_time seconds
+	wait \{$button_sink_time seconds}
+	//ProfilingStart
 	GetSongTimeMs
-	#"0x4cbb04c9" = [240 , 199 , 255 , 255]
-	#"0xd5b25573" = [212 , 0 , 255 , 255]
+	open_color1 = [240 199 255 255]
+	open_color2 = [212 0 255 255]
 	if ($<player_status>.star_power_used = 1)
-		#"0x4cbb04c9" = [199 , 252 , 255 , 255]
-		#"0xd5b25573" = [0 , 247 , 255 , 255]
+		open_color1 = [199 252 255 255]
+		open_color2 = [0 247 255 255]
 	endif
-	#"0x71ad30cb" = 'open_particle'
-	#"0x3ca6c49a" = '%f%dp%p_%t'
-	FormatText checksumName = container_id 'gem_container%p' p = ($<player_status>.text)
-	FormatText checksumName = fx_id <#"0x3ca6c49a"> f = <#"0x71ad30cb"> d = 1 p = <Player> t = <time>
-	FormatText checksumName = fx2_id <#"0x3ca6c49a"> f = <#"0x71ad30cb"> d = 2 p = <Player> t = <time>
-	#"0x90925f07" = (1.0, 1.0)
-	#"0xa17a459a" = (2.200000047683716, 2.4000000953674316)
+	ExtendCrc gem_container ($<player_status>.text) out = container_id
+	ExtendCrc open_particle ($<player_status>.text) out = fx_id
+	FormatText textname = timestr '%t' t = <time> // I NEED AUTOID!!!
+	ExtendCrc <fx_id> <timestr> out = fx_id
+	ExtendCrc <fx_id> '2' out = fx2_id
+	fx1_scale = (1.0, 1.0)
+	fx2_scale = (2.2, 2.4)
 	if ($current_num_players = 2)
-		#"0x90925f07" = (0.7599999904632568, 0.8999999761581421)
-		#"0xa17a459a" = (1.7000000476837158, 2.4000000953674316)
+		fx1_scale = (0.76, 0.9)
+		fx2_scale = (1.7, 2.4)
 	endif
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <container_id>
 		id = <fx_id>
-		Scale = <#"0x90925f07">
-		rgba = <#"0x4cbb04c9">
-		just = [center , center]
+		Scale = <fx1_scale>
+		rgba = <open_color1>
 		z_priority = 30
 		Pos = (640.0, 619.0)
-		alpha = 1
-		material = #"0x3ef8573e"
+		material = sys_openfx1_sys_openfx1
 	}
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <container_id>
 		id = <fx2_id>
-		Scale = <#"0xa17a459a">
-		rgba = <#"0xd5b25573">
-		just = [center , center]
+		Scale = <fx2_scale>
+		rgba = <open_color2>
+		just = [center center]
 		z_priority = 30
 		Pos = (640.0, 630.0)
-		alpha = 1
-		material = #"0x1a3b6a4a"
+		material = sys_openfx2_sys_openfx2
 	}
-	time = (0.085 / ($current_speedfactor))
-	id = <fx_id>
-	DoScreenElementMorph id = <id> time = <time> alpha = 0 Scale = (1.0, 1.7000000476837158) relative_scale
-	id = <fx2_id>
-	DoScreenElementMorph id = <id> time = <time> alpha = 0 Scale = 1.4 relative_scale
+	//ProfilingEnd <...> 'Open_NoteFX'
+	time = (0.085 / $current_speedfactor)
+	DoScreenElementMorph id = <fx_id> time = <time> alpha = 0 Scale = (1.0, 1.7) relative_scale
+	DoScreenElementMorph id = <fx2_id> time = <time> alpha = 0 Scale = 1.4 relative_scale
 	wait <time> seconds
-	id = <fx_id>
-	if (ScreenElementExists {
-			id = <fx_id>
-		})
-		DestroyScreenElement {
-			id = <fx_id>
-		}
+	if ScreenElementExists id = <fx_id>
+		DestroyScreenElement id = <fx_id>
 	endif
-	id = <fx2_id>
-	if (ScreenElementExists {
-			id = <fx2_id>
-		})
-		DestroyScreenElement {
-			id = <fx2_id>
-		}
+	if ScreenElementExists id = <fx2_id>
+		DestroyScreenElement id = <fx2_id>
 	endif
 endscript

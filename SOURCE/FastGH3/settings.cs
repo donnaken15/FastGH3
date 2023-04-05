@@ -1059,6 +1059,11 @@ public partial class settings : Form
 		sQC(QbKey.Create(0xD8F8D2DE), Convert.ToInt32(dCtrl.Value));
 	}
 
+	private void showmods(object sender, EventArgs e)
+	{
+		new moddiag().ShowDialog();
+	}
+
 	private void spVC(object sender, EventArgs e)
 	{
 		sQC(QbKey.Create(0x16D91BC1), float.Parse((speed.Value / 100).ToString()));

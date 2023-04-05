@@ -15,6 +15,8 @@ public partial class dllman : Form
 	{
 		InitializeComponent();
 		Height += new DirectoryInfo(folder + plugins).GetFiles("*.dll", SearchOption.AllDirectories).Length * 9;
+		if (!Directory.Exists(disabled_))
+			Directory.CreateDirectory(disabled_);
 		dllrefresh();
 	}
 
@@ -39,7 +41,7 @@ public partial class dllman : Form
 	private void dllselected(object sender, System.ComponentModel.CancelEventArgs e)
 	{
 		foreach (string file in dllopen.FileNames)
-			if (Path.GetPathRoot(file) != folder + plugins)
+			if (Program.NP(Path.GetPathRoot(file)) != Program.NP(folder + plugins))
 				File.Copy(file, folder + plugins + Path.GetFileName(file), true);
 		dllrefresh();
 	}

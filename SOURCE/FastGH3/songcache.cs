@@ -19,7 +19,7 @@ public partial class songcache : Form
 			foreach (string s in Program.sn(i))
 			{
 				if (File.Exists(folder + s) &&
-					File.Exists(folder + Program.ini(s, "Audio", 0.ToString("X16"), 32, i)))
+					File.Exists(folder + Program.ini(s, "Audio", 0.ToString("X16"), 32, i).Substring(0,16)))
 				{
 					newRow = new DataGridViewRow();
 					newRow.CreateCells(c,
@@ -28,6 +28,7 @@ public partial class songcache : Form
 						Program.ini(s, "Title", "Untitled", 64, i),
 						fs(new FileInfo(folder + s).Length +
 							new FileInfo(folder +
+							//                                         why
 							Program.ini(s, "Audio", 0.ToString("X16"), 32, i)).Length),
 						Program.ini(s, "Length", "00:00", 10, i),
 						"Play"
@@ -61,8 +62,8 @@ public partial class songcache : Form
 	private void r(DataGridViewCellEventArgs e)
 	{
 		Program.killgame();
-		string cs = (string)c.Rows[e.RowIndex].Cells[0].Value;
-		string au = Program.ini(cs, "Audio", null, 17, i);
+		string cs = (string)c.Rows[e.RowIndex].Cells[0].Value; // kill me
+		string au = Program.ini(cs, "Audio", null, 33, i).Substring(0, 16);
 		string t = Program.ini(cs, "Title", null, 64, i);
 		string a = Program.ini(cs, "Author", null, 64, i);
 		string l = Program.ini(cs, "Length", "00:00", 8, i);

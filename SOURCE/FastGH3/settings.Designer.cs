@@ -62,6 +62,7 @@ partial class settings
             this.dCtrlLBL = new System.Windows.Forms.Label();
             this.modelbl = new System.Windows.Forms.Label();
             this.mode = new System.Windows.Forms.ComboBox();
+            this.modsbtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.RTnoi)).BeginInit();
@@ -666,11 +667,23 @@ partial class settings
             this.mode.Text = "Quickplay";
             this.mode.Visible = false;
             // 
+            // modsbtn
+            // 
+            this.modsbtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.modsbtn.Location = new System.Drawing.Point(205, 145);
+            this.modsbtn.Name = "modsbtn";
+            this.modsbtn.Size = new System.Drawing.Size(71, 19);
+            this.modsbtn.TabIndex = 50;
+            this.modsbtn.Text = "QB Mods";
+            this.modsbtn.UseVisualStyleBackColor = true;
+            this.modsbtn.Click += new System.EventHandler(this.showmods);
+            // 
             // settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(280, 476);
+            this.Controls.Add(this.modsbtn);
             this.Controls.Add(this.vlbl);
             this.Controls.Add(this.mode);
             this.Controls.Add(this.modelbl);
@@ -776,4 +789,5 @@ partial class settings
 	private NumericUpDown dCtrl;
 	private Label modelbl;
 	private ComboBox mode;
+    private Button modsbtn;
 }

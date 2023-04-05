@@ -3,16 +3,21 @@ battle_medium_drain_offset = 1500
 battle_hard_drain_offset = 3000
 battle_expert_drain_offset = 4500
 disable_attacks = 0
+powerup_base = {
+	weight = 10
+	weight_low = 0
+	weight_losing = 0
+	params = {
+	}
+	drain_time = 5000
+	fire_bolt = 1
+}
 battlemode_powerups = [
 	{
+		$powerup_base
 		name = Lightning
 		name_text = "Amp Overload"
-		weight = 10
-		weight_low = 0
-		weight_losing = 0
 		Scr = battle_lightning
-		params = {
-		}
 		card_texture = #"0xa016bc90"
 		easy_flicker = 2
 		medium_flicker = 2
@@ -20,120 +25,81 @@ battlemode_powerups = [
 		expert_flicker = 3
 		drain_time = 7500
 		immediate = 1
-		fire_bolt = 1
 	}
 	{
+		$powerup_base
 		name = DifficultyUp
 		name_text = "Difficulty Up"
-		weight = 10
-		weight_low = 0
-		weight_losing = 0
 		Scr = battle_up_difficulty
-		params = {
-		}
 		card_texture = #"0x56d83139"
-		drain_time = 5000
-		fire_bolt = 1
 	}
 	{
+		$powerup_base
 		name = DoubleNotes
 		name_text = "Double Notes"
-		weight = 10
-		weight_low = 0
-		weight_losing = 0
 		Scr = battle_double_notes
-		params = {
-		}
 		card_texture = #"0x624628dd"
-		drain_time = 5000
-		fire_bolt = 1
 	}
 	{
+		$powerup_base
 		name = starpower
 		name_text = "Star Power"
 		weight = 0
-		weight_low = 0
-		weight_losing = 0
 		Scr = #"0x7c9d1363"
-		params = {
-		}
 		card_texture = #"0x31b5184b"
 		drain_time = 10
 		fire_bolt = 0
 	}
 	{
+		$powerup_base
 		name = PowerUpSteal
 		name_text = "Powerup Steal"
-		weight = 10
-		weight_low = 0
 		weight_losing = 10
 		Scr = battle_steal
-		params = {
-		}
 		card_texture = #"0xd2df6a3d"
 		drain_time = 10
-		fire_bolt = 0
 	}
 	{
+		$powerup_base
 		name = LeftyNotes
 		name_text = "Lefty Flip"
 		alt_name_text = "Righty Flip"
-		weight = 10
-		weight_low = 0
 		weight_losing = 10
 		Scr = battle_lefty_notes
-		params = {
-		}
 		card_texture = #"0x953c3a17"
-		drain_time = 5000
-		fire_bolt = 1
 	}
 	{
+		$powerup_base
 		name = BrokenString
 		name_text = "Broken String"
-		weight = 10
-		weight_low = 0
-		weight_losing = 0
 		Scr = battle_broken_string
-		params = {
-		}
 		card_texture = #"0x58535872"
 		easy_repair = 6
 		medium_repair = 8
 		hard_repair = 10
 		expert_repair = 12
-		drain_time = 5000
 		immediate = 1
-		fire_bolt = 1
 	}
 	{
+		$powerup_base
 		name = WhammyAttack
 		name_text = "Whammy"
-		weight = 10
-		weight_low = 0
 		weight_losing = 10
 		Scr = battle_whammy_attack
-		params = {
-		}
 		card_texture = #"0xf2555eea"
 		easy_repair = 3
 		medium_repair = 4
 		hard_repair = 5
 		expert_repair = 6
-		drain_time = 5000
 		immediate = 1
 		no_ai_damage = 1
-		fire_bolt = 1
 	}
 	{
+		$powerup_base
 		name = DeathLick
 		name_text = "Death Drain"
 		weight = 0
-		weight_low = 0
-		weight_losing = 0
 		Scr = battle_death_lick
-		params = {
-		}
 		card_texture = #"0x8b34a33f"
 		easy_kill_rate = 0.4
 		medium_kill_rate = 0.3
@@ -897,9 +863,9 @@ script battle_death_lick\{death_speed = 0.2}
 		DestroyScreenElement id = <death_icon_checksum>
 	endif
 	deth_icon_texture = #"0xc183de2d"
-	if checksumequals a = ($current_song)b = bossslash
+	if checksumequals \{a = $current_song b = bossslash}
 		<deth_icon_texture> = #"0xfa94e38b"
-	elseif checksumequals a = ($current_song)b = bosstom
+	elseif checksumequals \{a = $current_song b = bosstom}
 		<deth_icon_texture> = #"0x117f8844"
 	endif
 	CreateScreenElement {
@@ -916,9 +882,8 @@ script battle_death_lick\{death_speed = 0.2}
 	}
 	killspawnedscript \{name = update_battle_death_meter}
 	killspawnedscript \{name = update_battle_death_meter_wings}
-	FormatText \{checksumName = death_meter 'battle_death_meter' AddToStringLookup = true}
-	if ScreenElementExists id = <death_meter>
-		DestroyScreenElement id = <death_meter>
+	if ScreenElementExists \{id = battle_death_meter}
+		DestroyScreenElement \{id = battle_death_meter}
 	endif
 	if ($<other_player_status>.death_lick_attack < 0)
 		spawnscriptnow death_text params = {other_player_status = <other_player_status>}
@@ -1028,7 +993,7 @@ script death_text
 		texture = #"0x0ee79aeb"
 		rgba = [255 255 255 255]
 		Pos = (55.0, 0.0)
-		Scale = (-0.800000011920929, 0.800000011920929)
+		Scale = (-0.8, 0.8)
 		rot_angle = 20
 		just = [right top]
 		z_priority = 52
@@ -1120,9 +1085,14 @@ script death_text_wing_flap
 			endif
 			<wing_count> = 0
 		endif
-		<wing_count> = (<wing_count> + 1)
-		GetRandomValue name = #"0x290a44ca" a = 0.0066667 b = 0.0188889
-		wait <#"0x290a44ca"> seconds
+		Increment \{wing_count}
+		GetRandomValue \{name = time a = 0.009 b = 0.0188889}
+		GetDeltaTime
+		if (<delta_time> < 0.013333)
+			wait <time> seconds
+		else
+			wait \{1 gameframe}
+		endif
 	repeat
 endscript
 

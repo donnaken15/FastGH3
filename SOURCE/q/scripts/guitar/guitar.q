@@ -345,402 +345,10 @@ Cheat_PrecisionMode = 0
 Cheat_BretMichaels = -1
 boss_wuss_out = 0
 crowd_model_array = None
-p1_last_song_detailed_stats = [
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-]
-p2_last_song_detailed_stats = [
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-]
-p1_last_song_detailed_stats_max = [
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-]
-p2_last_song_detailed_stats_max = [
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-	0
-]
+p1_last_song_detailed_stats = []
+p2_last_song_detailed_stats = []
+p1_last_song_detailed_stats_max = []
+p2_last_song_detailed_stats_max = []
 failed_song_time = 0.0
 current_section_array = None
 current_section_array_entry = 0
@@ -756,7 +364,7 @@ enable_button_cheats = 1
 whammy_mania_achievement_invalidated = 0
 #"0xcefc2aef" = 0
 
-script FileExists \{#"0x00000000" = ''}
+/*script FileExists \{#"0x00000000" = ''}
 	StartWildcardSearch \{wildcard = <#"0x00000000">}
 	begin
 		if GetWildcardFile
@@ -768,112 +376,38 @@ script FileExists \{#"0x00000000" = ''}
 	repeat
 	EndWildcardSearch
 	return \{false}
-endscript
+endscript*/
 
+// thanks q
+script AllocArray \{set = 0 size = 10}
+	// basically memset lol
+	element = <set>
+	array = []
+	begin
+		AddArrayElement <...>
+	repeat <size>
+	change globalname = <#"0x00000000"> newvalue = <array>
+endscript
 script guitar_startup
+	HideLoadingScreen
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
-	/*Change \{AssertOnMissingScripts = 1}
-	legal_start_time = <startTime>
-	StopRendering
-	printf \{'Initializing Heaps'}
-	GetPlatform
-	switch <Platform>
-		case Xenon
-			<heap_size_globalpak> = (74 * 1024 * 1024)
-			<heap_size_globalpak_vram> = 0
-			<heap_size_audio> = (10540 * 1024)
-			<heap_size_audio_vram> = 0
-			<heap_size_musician> = (9001 * 1024)
-			<heap_size_musician_vram> = (0 * 1024)
-			<heap_size_guitarist_anim> = (12 * 1024 * 1024)
-			<heap_size_guitarist_anim_vram> = (0 * 1024)
-			<heap_size_drummer_anim> = (1 * 1024 * 1024)
-			<heap_size_drummer_anim_vram> = (0 * 1024 * 1024)
-			<heap_size_vocalist_anim> = (7 * 1024 * 1024)
-			<heap_size_vocalist_anim_vram> = (0 * 1024 * 1024)
-			<heap_size_instrument> = (1950 * 1024)
-			<heap_size_song> = (4500 * 1024)
-			<heap_size_instrument_vram> = (0 * 1024)
-			<heap_size_song_vram> = (0 * 1024)
-			<heap_size_zones> = (35 * 1024 * 1024)
-			<heap_size_zones_vram> = (0 * 1024)
-			<heap_size_downloads> = (1024 * 1024)
-			<heap_size_downloads_vram> = (0 * 1024)
-		default
-			ScriptAssert \{'Unrecognized platform for heap setup'}
-	endswitch
-	//PushMemProfile \{'Global Pak Heap'}
-	//MemInitHeap name = 'heap_global_pak' size = <heap_size_globalpak> vram_size = <heap_size_globalpak_vram>
-	//PopMemProfile
-	/*PushMemProfile \{'Characters'}
-	MemInitHeap name = 'heap_musician1' size = <heap_size_musician> vram_size = <heap_size_musician_vram>
-	MemInitHeap name = 'heap_musician2' size = <heap_size_musician> vram_size = <heap_size_musician_vram>
-	MemInitHeap name = 'heap_musician3' size = <heap_size_musician> vram_size = <heap_size_musician_vram>
-	MemInitHeap name = 'heap_musician4' size = <heap_size_musician> vram_size = <heap_size_musician_vram>
-	MemInitHeap name = 'heap_musician1_anim' size = <heap_size_guitarist_anim> vram_size = <heap_size_guitarist_anim_vram>
-	MemInitHeap name = 'heap_musician2_anim' size = <heap_size_guitarist_anim> vram_size = <heap_size_guitarist_anim_vram>
-	MemInitHeap name = 'heap_musician3_anim' size = <heap_size_drummer_anim> vram_size = <heap_size_drummer_anim_vram>
-	MemInitHeap name = 'heap_musician4_anim' size = <heap_size_vocalist_anim> vram_size = <heap_size_vocalist_anim_vram>
-	MemInitHeap name = 'heap_instrument1' size = <heap_size_instrument> vram_size = <heap_size_instrument_vram>
-	MemInitHeap name = 'heap_instrument2' size = <heap_size_instrument> vram_size = <heap_size_instrument_vram>
-	MemInitHeap name = 'heap_instrument3' size = <heap_size_instrument> vram_size = <heap_size_instrument_vram>
-	MemInitHeap name = 'heap_instrument4' size = <heap_size_instrument> vram_size = <heap_size_instrument_vram>
-	MemInitHeap name = 'heap_zones' size = <heap_size_zones> vram_size = <heap_size_zones_vram>
-	MemInitHeap name = 'heap_downloads' size = <heap_size_downloads> vram_size = <heap_size_downloads_vram>
-	MemInitHeap name = 'heap_song' size = <heap_size_song> vram_size = <heap_size_song_vram>
-	if IsFmodEnabled
-		MemInitHeap name = 'heap_audio' size = <heap_size_audio> vram_size = <heap_size_audio_vram>
-	endif
-	PopMemProfile*/
-	//printf \{'Initializing COIM'}
-	//PushMemProfile \{'COIM'}
-	//EmptyScript \{size = $#"0xc590c246" BlockAlign = $#"0xc5a1ea66" COIM_Min_Scratch_Blocks $#"0xbe4f02bf"}
-	//PopMemProfile
+	printf \{'Initializing unneeded stuff'}
 	CompositeObjectManager_startup
-	//printf \{'Initializing memory card system'}
-	//MemCardSystemInitialize
-	//printf \{'Initializing Anim Cache'}
-	//PushMemProfile \{'Animation Cache'}
+	//MemCardSystemInitialize // probably destroyed and broke save functionality
 	InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
-	//PopMemProfile
 	InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
-	//LightShow_AddNodeFlags
 	LightShow_Init \{notes = $#"0x104dfb2e" nodeflags = $#"0x74c1de3d" ColorOverrideExclusions = $#"0x5e1add82"}
-	//create_node_flags
 	printf \{'Initializing Replay buffer'}
-	GetPlatform
-	switch <Platform>
-		case Xenon
-			<replay_buffer_size> = (1024 * 5)
-		case PS3
-			<replay_buffer_size> = (1024 * 1)
-		default
-			ScriptAssert \{'Unrecognized platform for replay buffer setup'}
-	endswitch
-	AllocateDataBuffer name = replay kb = <replay_buffer_size>
-	//printf \{'Initializing Cutscenes'}
-	//engineconfig \{particlelod = 0}
-	//if ($is_demo_mode = 1)
-	//	Change \{enable_button_cheats = 0}
-	//	Change \{Musician_Profiles = $#"0x9e3ae226"}
-	//endif
-	//if ($enable_button_cheats = 1)
-	//	LaunchViewer
-	//	Change \{select_shift = 1}
-	//endif
+	AllocateDataBuffer \{name = replay kb = 5120}
 	printf \{'Creating sound busses'}
 	Master_SFX_Adding_Sound_Busses
-	printf \{'Calling user startup script'}
-	//if FileExists \{'config.qb.xen'}
-		LoadQB \{'config.qb'}
-	//endif
-	//if FileExists \{'bkgd.pak.xen'}
-		LoadPak \{'bkgd.pak' Heap = heap_global_pak}
-	//endif
+	printf \{'Loading user config'}
+	LoadQB \{'config.qb'}
+	LoadPak \{'bkgd.pak' Heap = heap_global_pak}
 	if ScriptExists \{startup}
 		startup
 	endif
-	printf \{'Loading mods'}
+	printf \{'Loading user mods'}
 	StartWildcardSearch \{wildcard = 'MODS\*.qb.xen'}
 	begin
 		if NOT GetWildcardFile
@@ -882,16 +416,41 @@ script guitar_startup
 		printf 'Loading %f.qb' f = <basename>
 		formattext textname = file 'MODS/%f.qb' f = <basename>
 		LoadQB <file>
+		formattext checksumname = mod_info_name '%f_mod_info' f = <basename>
+		mod_info = $<mod_info_name>
+		name = 'Untitled'
+		author = 'Unknown'
+		version = 'unknown'
+		if StructureContains \{structure=mod_info name}
+			name = (<mod_info>.name)
+		endif
+		if StructureContains \{structure=mod_info author}
+			author = (<mod_info>.author)
+		endif
+		if StructureContains \{structure=mod_info version}
+			version = (<mod_info>.version)
+		endif
+		printf "Mod info: %t by %a / version %v" t=(<mod_info>.name) a=(<mod_info>.author) v=(<mod_info>.version)
+		if StructureContains \{structure=mod_info desc}
+			printf "Description: %d" t=(<mod_info>.desc)
+		endif
 		formattext checksumname = startup_script '%f_startup' f = <basename>
 		if ScriptExists <startup_script>
 			SpawnScriptNow <startup_script> params = { filename = <filename> basename = <basename> }
+		else
+			if ScriptExists \{mod_startup}
+				SpawnScriptNow mod_startup params = { filename = <filename> basename = <basename> }
+			endif
 		endif
 	repeat
 	EndWildcardSearch
 	printf \{'Loading Paks'}
-	//ProfilingStart
+	
+	ProfilingStart
 	LoadPak \{'zones/global/global.pak' Heap = heap_global_pak splitfile}
-	//ProfilingEnd <...> 'LoadPak global.pak'
+	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
+	ProfilingEnd <...> 'LoadPak global.pak'
+	
 	LoadPak \{'zones/default.pak'}
 	SetFontProperties \{'text_A1' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'ButtonsXenon' buttons_font}
@@ -903,36 +462,43 @@ script guitar_startup
 	SetFontProperties \{'text_a10' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'text_a11' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'fontgrid_title_gh3' color_tab = $Default_Font_Colors}
+	
 	if IsFmodEnabled
-		//LoadFSB \{FileName = 'streams/streamall' numstreams = 4 noWait}
-		//Change streamall_fsb_index = <fsb_index>
 		EnableRemoveSoundEntry \{enable}
 		LoadPak \{'zones/global/global_sfx.pak' Heap = heap_audio}
 	endif
-	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
-	setup_models
-	//printf \{'Loading Zone'}
-	//MemPushContext \{heap_zones}
 	CreatePakManMap \{map = zones links = GH3Zones folder = 'zones/' uselinkslots}
-	//MemPopContext
-	printf \{'current_level = %s' s = $current_level}
-	//SetPakManCurrentBlock \{map = zones pak = None block_scripts = 1}
-	//AddEditableList \{ped_editable_list}
-	//if NOT CD
-	//	StartKeyboardHandler \{max_length = 128}
-	//endif
+	
+	printf \{'Initializing screen element system'}
+	ScreenElementSystemInit
+	SetShadowProjectionTexture \{texture = white}
+	CreateScreenElement \{Type = ContainerElement id = dead_particle_container parent = root_window Pos = (0.0, 0.0)}
+	Init2DParticles \{parent = dead_particle_container}
+	setup_sprites
+	
+	printf \{'Allocating new big arrays'}
+	// sick of seeing a bunch of zeroes :/
+	ProfilingStart
+	// {
+	AllocArray \{p1_last_song_detailed_stats set = 0 size = 97}
+	AllocArray \{p2_last_song_detailed_stats set = 0 size = 97}
+	AllocArray \{p1_last_song_detailed_stats_max set = 0 size = 97}
+	AllocArray \{p2_last_song_detailed_stats_max set = 0 size = 97}
+	// } ran for 0.3ms
+	AllocArray \{solo_hit_buffer_p1 set = 0 size = 32}
+	AllocArray \{solo_hit_buffer_p2 set = 0 size = 32}
+	AllocArray \{gem_time_table512 set = 0.0 size = $highway_lines}
+	AllocArray \{rowHeightNormalizedDistance set = 0.0 size = $highway_lines}
+	AllocArray \{rowHeight set = 0.0 size = $highway_lines}
+	AllocArray \{time_accum_table set = 0.0 size = $highway_lines}
+	ProfilingEnd <...> 'AllocArray x10'
+	// 5 ms (michael scott gif)
+	
 	printf \{'Done initializing - into game...'}
 	InitAtoms
 	SetProgressionMaxDifficulty \{difficulty = 3}
 	setup_globaltags
-	setup_sprites
 	kill_start_key_binding
-	//SetShadowRenderingFlags \{enable = 'true' object = 'skin'}
-	//SetShadowMapParams \{far = 16.0}
-	if NOT IsWinPort
-		setup_bg_viewport
-		restore_dummy_bg_camera
-	endif
 	Player = 1
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player> AddToStringLookup
@@ -940,7 +506,6 @@ script guitar_startup
 		SpawnScriptLater create_guitar_events params = { <...> }
 		Player = (<Player> + 1)
 	repeat $max_num_players
-	SetShadowProjectionTexture \{texture = white}
 	if ($autolaunch_startnow = 0)
 		start_flow_manager \{flow_state = bootup_sequence_fs}
 	else
@@ -954,9 +519,6 @@ script guitar_startup
 		destroy_band_member \{name = BASSIST}
 	endif
 	Change \{tutorial_disable_hud = 0}
-	CreateScreenElement \{Type = ContainerElement id = dead_particle_container parent = root_window Pos = (0.0, 0.0)}
-	Init2DParticles \{parent = dead_particle_container}
-	HideLoadingScreen
 endscript
 
 script autolaunch_spawned
@@ -1007,17 +569,18 @@ download_LevelZones = {
 LevelZoneArray = [
 	viewer
 ]
+dummy = {
+	zone = z_viewer
+	name = 'z_viewer'
+	title = "viewer"
+}
 LevelZones = {
 	$download_LevelZones
 	viewer = {
-		zone = z_viewer
-		name = 'z_viewer'
-		title = "viewer"
+		$dummy
 	}
 	load_z_viewer = {
-		zone = z_viewer
-		name = 'z_viewer'
-		title = "viewer"
+		$dummy
 	}
 }
 nullArray = [
@@ -1061,3 +624,6 @@ script StopRendering
 	StopRendering_C
 	Change \{pause_no_render = 1}
 endscript
+
+
+
