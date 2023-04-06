@@ -3,10 +3,8 @@ Musician_Profiles = [
 		name = 'Axel'
 	}
 ]
-Demo_Musician_Profiles = [
-]
-download_musician_profiles = [
-]
+Demo_Musician_Profiles = $nullArray
+download_musician_profiles = $nullArray
 
 script get_musician_profile_size
 	GetArraySize \{$#"0xdc911d21"}

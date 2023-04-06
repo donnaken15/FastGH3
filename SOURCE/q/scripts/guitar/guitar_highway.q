@@ -72,7 +72,7 @@ script setup_highway\{Player = 1}
 	if ($#"0xdf7ff31b" = 0)
 		<container_pos> = (<Pos> + (0.0, 720.0))
 	endif
-	FormatText checksumName = container_id 'gem_container%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc gem_container <player_text> out = container_id
 	CreateScreenElement {
 		Type = ContainerElement
 		id = <container_id>
@@ -85,7 +85,7 @@ script setup_highway\{Player = 1}
 	hpos = ((640.0 - ($highway_top_width / 2.0))* (1.0, 0.0))
 	hDims = ($highway_top_width * (1.0, 0.0))
 	<highway_material> = ($<player_status>.highway_material)
-	FormatText checksumName = highway_name 'Highway_2D%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc Highway_2D <player_text> out = highway_name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <highway_name>
@@ -111,7 +111,7 @@ script setup_highway\{Player = 1}
 	rangle = (0.0 - ($sidebar_angle))
 	Scale = (($sidebar_x_scale * (1.0, 0.0))+ ($sidebar_y_scale * (0.0, 1.0)))
 	rscale = (((0 - $sidebar_x_scale)* (1.0, 0.0))+ ($sidebar_y_scale * (0.0, 1.0)))
-	FormatText checksumName = cont 'sidebar_container_left%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_container_left <player_text> out = cont
 	CreateScreenElement {
 		Type = ContainerElement
 		id = <cont>
@@ -121,7 +121,7 @@ script setup_highway\{Player = 1}
 		just = [center bottom]
 		z_priority = 3
 	}
-	FormatText checksumName = name 'sidebar_left%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_left <player_text> out = name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <name>
@@ -134,7 +134,7 @@ script setup_highway\{Player = 1}
 		z_priority = 3
 	}
 	Set2DGemFade id = <name> Player = <Player>
-	FormatText checksumName = cont 'starpower_container_left%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc starpower_container_left <player_text> out = cont
 	CreateScreenElement {
 		Type = ContainerElement
 		id = <cont>
@@ -146,7 +146,7 @@ script setup_highway\{Player = 1}
 	}
 	starpower_pos = (((-55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
 	starpower_scale = (((1.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
-	FormatText checksumName = name 'sidebar_left_glow%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_left_glow <player_text> out = name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <name>
@@ -160,7 +160,7 @@ script setup_highway\{Player = 1}
 	}
 	starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
 	starpower_scale = (((-0.5 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-	FormatText checksumName = name 'sidebar_left_Lightning01%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_left_Lightning01 <player_text> out = name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <name>
@@ -175,7 +175,7 @@ script setup_highway\{Player = 1}
 	}
 	starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.0 * $starpower_fx_scale)* (0.0, 1.0)))
 	starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-	FormatText checksumName = name 'sidebar_left_Lightning02%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_left_Lightning02 <player_text> out = name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <name>
@@ -188,7 +188,7 @@ script setup_highway\{Player = 1}
 		just = [center top]
 		z_priority = 0.02
 	}
-	FormatText checksumName = cont 'sidebar_container_right%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_container_right <player_text> out = cont
 	CreateScreenElement {
 		Type = ContainerElement
 		id = <cont>
@@ -198,7 +198,7 @@ script setup_highway\{Player = 1}
 		just = [center bottom]
 		z_priority = 3
 	}
-	FormatText checksumName = name 'sidebar_right%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_right <player_text> out = name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <name>
@@ -211,7 +211,7 @@ script setup_highway\{Player = 1}
 		z_priority = 3
 	}
 	Set2DGemFade id = <name> Player = <Player>
-	FormatText checksumName = cont 'starpower_container_right%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc starpower_container_right <player_text> out = cont
 	CreateScreenElement {
 		Type = ContainerElement
 		id = <cont>
@@ -223,7 +223,7 @@ script setup_highway\{Player = 1}
 	}
 	starpower_pos = (((55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
 	starpower_scale = (((-1.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
-	FormatText checksumName = name 'sidebar_Right_glow%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_Right_glow <player_text> out = name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <name>
@@ -237,7 +237,7 @@ script setup_highway\{Player = 1}
 	}
 	starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
 	starpower_scale = (((0.5 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-	FormatText checksumName = name 'sidebar_Right_Lightning01%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_Right_Lightning01 <player_text> out = name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <name>
@@ -252,7 +252,7 @@ script setup_highway\{Player = 1}
 	}
 	starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.0 * $starpower_fx_scale)* (0.0, 1.0)))
 	starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-	FormatText checksumName = name 'sidebar_Right_Lightning02%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc sidebar_Right_Lightning02 <player_text> out = name
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <name>
@@ -265,9 +265,9 @@ script setup_highway\{Player = 1}
 		just = [center top]
 		z_priority = 0.02
 	}
-	FormatText checksumName = cont 'starpower_container_left%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc starpower_container_left <player_text> out = cont
 	DoScreenElementMorph id = <cont> alpha = 0
-	FormatText checksumName = cont 'starpower_container_right%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc starpower_container_right <player_text> out = cont
 	DoScreenElementMorph id = <cont> alpha = 0
 	GetArraySize \{$#"0xd4b50263"}
 	array_count = 0
@@ -372,15 +372,15 @@ endscript
 script destroy_highway
 	killspawnedscript \{name = MoveGem}
 	destroy_highway_prepass <...>
-	FormatText checksumName = name 'Highway_2D%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc Highway_2D <player_text> out = name
 	if ScreenElementExists id = <name>
 		DestroyScreenElement id = <name>
 	endif
-	FormatText checksumName = name 'gem_container%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc gem_container <player_text> out = name
 	if ScreenElementExists id = <name>
 		DestroyScreenElement id = <name>
 	endif
-	FormatText checksumName = name 'Gem_basebar%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc Gem_basebar <player_text> out = name
 	if ScreenElementExists id = <name>
 		DestroyScreenElement id = <name>
 	endif
@@ -389,7 +389,7 @@ script destroy_highway
 	begin
 		Color = ($gem_colors [<array_count>])
 		if StructureContains structure = ($button_up_models.<Color>)name = name_string
-			FormatText checksumName = name '%s%p' s = ($button_up_models.<Color>.name_string)p = <player_text> AddToStringLookup = true
+			ExtendCrc ($button_up_models.<Color>.name) <player_text> out = name
 			if ScreenElementExists id = <name>
 				DestroyScreenElement id = <name>
 			endif
@@ -695,7 +695,7 @@ script highway_pulse_multiplier_loss\{player_text = 'p1' multiplier = 1}
 	endif
 	if (<highway_pulse> = 0)
 		Change \{highway_pulse = 1}
-		FormatText checksumName = container_id 'gem_container%p' p = <player_text> AddToStringLookup = true
+		ExtendCrc gem_container <player_text> out = container_id
 		GetScreenElementPosition id = <container_id>
 		original_position = <ScreenElementPos>
 		GetRandomValue \{name = random_x a = -7 b = 7 integer}

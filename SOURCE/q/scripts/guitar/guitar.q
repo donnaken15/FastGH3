@@ -50,7 +50,7 @@ player1_status = {
 	scroll_time = 5.0
 	game_speed = 1.5
 	highway_speed = 0.0
-	highway_material = None
+	highway_material = #"0xce5b3c9f"
 	guitar_volume = 100
 	last_guitar_volume = 100
 	last_faceoff_note = 100
@@ -153,7 +153,7 @@ player2_status = {
 	scroll_time = 5.0
 	game_speed = 1.5
 	highway_speed = 0.0
-	highway_material = None
+	highway_material = #"0xce5b3c9f"
 	guitar_volume = 100
 	last_guitar_volume = 100
 	last_faceoff_note = 100
@@ -362,10 +362,10 @@ num_career_bands = 5
 streamall_fsb_index = -1
 enable_button_cheats = 1
 whammy_mania_achievement_invalidated = 0
-#"0xcefc2aef" = 0
+fps_max = 0
 
-/*script FileExists \{#"0x00000000" = ''}
-	StartWildcardSearch \{wildcard = <#"0x00000000">}
+script FileExists \{#"0x00000000" = ''}
+	StartWildcardSearch wildcard = <#"0x00000000">
 	begin
 		if GetWildcardFile
 			EndWildcardSearch
@@ -376,7 +376,7 @@ whammy_mania_achievement_invalidated = 0
 	repeat
 	EndWildcardSearch
 	return \{false}
-endscript*/
+endscript
 
 // thanks q
 script AllocArray \{set = 0 size = 10}
@@ -392,18 +392,22 @@ script guitar_startup
 	HideLoadingScreen
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
 	printf \{'Initializing unneeded stuff'}
-	CompositeObjectManager_startup
+	//CompositeObjectManager_startup
 	//MemCardSystemInitialize // probably destroyed and broke save functionality
 	InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
-	InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
+	//InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
 	LightShow_Init \{notes = $#"0x104dfb2e" nodeflags = $#"0x74c1de3d" ColorOverrideExclusions = $#"0x5e1add82"}
 	printf \{'Initializing Replay buffer'}
 	AllocateDataBuffer \{name = replay kb = 5120}
 	printf \{'Creating sound busses'}
 	Master_SFX_Adding_Sound_Busses
 	printf \{'Loading user config'}
-	LoadQB \{'config.qb'}
-	LoadPak \{'bkgd.pak' Heap = heap_global_pak}
+	if FileExists \{'config.qb.xen'}
+		LoadQB \{'config.qb'}
+	endif
+	if FileExists \{'bkgd.pak.xen'}
+		LoadPak \{'bkgd.pak' Heap = heap_global_pak}
+	endif
 	if ScriptExists \{startup}
 		startup
 	endif
@@ -413,11 +417,19 @@ script guitar_startup
 		if NOT GetWildcardFile
 			break
 		endif
+		change \{mod_info = {}}
 		printf 'Loading %f.qb' f = <basename>
 		formattext textname = file 'MODS/%f.qb' f = <basename>
 		LoadQB <file>
 		formattext checksumname = mod_info_name '%f_mod_info' f = <basename>
-		mod_info = $<mod_info_name>
+		if GlobalExists name = <mod_info_name> type = structure
+			mod_info = ($<mod_info_name>)
+		elseif GlobalExists \{name = mod_info type = structure}
+			mod_info = $mod_info
+		else
+			mod_info = {failed}
+		endif
+		//printstruct <mod_info>
 		name = 'Untitled'
 		author = 'Unknown'
 		version = 'unknown'
@@ -430,9 +442,9 @@ script guitar_startup
 		if StructureContains \{structure=mod_info version}
 			version = (<mod_info>.version)
 		endif
-		printf "Mod info: %t by %a / version %v" t=(<mod_info>.name) a=(<mod_info>.author) v=(<mod_info>.version)
+		printf "Mod info: %t by %a / version %v" t=<name> a=<author> v=<version>
 		if StructureContains \{structure=mod_info desc}
-			printf "Description: %d" t=(<mod_info>.desc)
+			printf "Description: %d" d=(<mod_info>.desc)
 		endif
 		formattext checksumname = startup_script '%f_startup' f = <basename>
 		if ScriptExists <startup_script>
@@ -450,8 +462,10 @@ script guitar_startup
 	LoadPak \{'zones/global/global.pak' Heap = heap_global_pak splitfile}
 	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
 	ProfilingEnd <...> 'LoadPak global.pak'
-	
+	ProfilingStart
 	LoadPak \{'zones/default.pak'}
+	ProfilingEnd <...> 'LoadPak default.pak'
+	
 	SetFontProperties \{'text_A1' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'ButtonsXenon' buttons_font}
 	SetFontProperties \{'text_a3' color_tab = $Default_Font_Colors}
@@ -512,13 +526,33 @@ script guitar_startup
 		StartRendering
 		SpawnScriptLater \{autolaunch_spawned}
 	endif
-	create_guitarist
+	load_highway
+	if FileExists \{'hway2.pak'}
+		load_highway \{player_status = player2_status filename = 'hway2.pak'}
+	else
+		load_highway \{player_status = player2_status}
+	endif
+	/*create_guitarist
 	destroy_band_member \{name = GUITARIST}
 	if ($max_num_players = 2)
 		create_guitarist \{name = BASSIST}
 		destroy_band_member \{name = BASSIST}
-	endif
+	endif*/
 	Change \{tutorial_disable_hud = 0}
+endscript
+
+script load_highway \{player_status = player1_status name = 'axel' filename = 'hway.pak'}
+	Formattext textname = xen '%s.xen' s = <filename>
+	if NOT FileExists <xen>
+		return \{FALSE}
+	endif
+	if NOT LoadPakAsync pak_name = <filename> Heap = none async = 0
+		return \{FALSE}
+	endif
+	FormatText textname = highway_name 'Guitarist_%n_Outfit%o_Style%s' n = <name> o = 1 s = 1
+	AddToMaterialLibrary scene = <highway_name>
+	FormatText checksumName = highway_material 'sys_%a_1_highway_sys_%a_1_highway' a = <name>
+	Change StructureName = <player_status> highway_material = <highway_material>
 endscript
 
 script autolaunch_spawned
@@ -562,10 +596,16 @@ script Is_LevelZone_Downloaded\{level_checksum = load_z_artdeco}
 		return \{download = 0 true}
 	endif
 endscript
-download_LevelZoneArray = [
+nullArray = [
 ]
-download_LevelZones = {
-}
+nullNoteArray = [
+	0
+	0
+	0
+]
+nullStruct = {}
+download_LevelZoneArray = $nullArray
+download_LevelZones = $nullStruct
 LevelZoneArray = [
 	viewer
 ]
@@ -583,17 +623,8 @@ LevelZones = {
 		$dummy
 	}
 }
-nullArray = [
-]
-nullNoteArray = [
-	0
-	0
-	0
-]
-Terrain_Actions = [
-]
-Terrain_Types = [
-]
+Terrain_Actions = $nullArray
+Terrain_Types = $nullArray
 
 script GetCurrentLevel
 	return \{level = $current_level}

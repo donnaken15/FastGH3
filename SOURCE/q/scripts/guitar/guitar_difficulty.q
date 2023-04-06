@@ -61,7 +61,7 @@ script difficulty_setup
 		scroll_time_factor = ($p2_scroll_time_factor)
 		game_speed_factor = ($p2_game_speed_factor)
 	endif
-	if ($Cheat_Hyperspeed > -10)
+	if ($Cheat_Hyperspeed > -11)
 		if NOT ($is_network_game)
 			hyperspeed_scale = -1
 			/*switch ($Cheat_Hyperspeed - 1)
@@ -76,7 +76,7 @@ script difficulty_setup
 				case 5
 					<hyperspeed_scale> = 0.68
 			endswitch*/
-			<hyperspeed_scale> = ($hyperspeed_scales[($Cheat_Hyperspeed + 11)])
+			<hyperspeed_scale> = ($hyperspeed_scales[($Cheat_Hyperspeed + 12)])
 			//printf 'current hyperspeed index: %h, real value: %g' h = $Cheat_Hyperspeed g = <hyperspeed_scale>
 			if (<hyperspeed_scale> > 0)
 				scroll_time_factor = (<scroll_time_factor> * <hyperspeed_scale>)
@@ -90,17 +90,18 @@ script difficulty_setup
 endscript
 hyperspeed_scales = [
 	// < 0
-	1.58
+	3.0
+	2.72
+	2.52
+	2.32
+	2.12
+	1.92
+	1.72
 	1.52
-	1.48
 	1.42
-	1.38
 	1.32
-	1.28
 	1.22
-	1.18
 	1.13
-	1.07
 	1.0
 	// >= 1
 	0.88
@@ -108,9 +109,9 @@ hyperspeed_scales = [
 	0.78
 	0.72
 	0.68
+	0.66
+	0.64
 	0.62
-	0.57
-	0.53
-	0.50
-	0.45
+	0.59
+	0.56
 ]

@@ -61,22 +61,10 @@ script lightshow_iterator
 endscript
 
 script LightShow_Shutdown
-	printf \{"LightShow_Shutdown starting"}
-	LightShow_SetActive \{Active = FALSE}
-	LightShow_SetProcessors \{CLEAR}
-	LightShow_SetMapping \{CLEAR}
-	killspawnedscript \{name = lightshow_iterator}
-	killspawnedscript \{id = LightShow}
-	killspawnedscript \{id = ScreenFlash}
-	printf \{"LightShow_Shutdown finished"}
 endscript
 
 script Kill_LightShow_FX
 endscript
 
 script LightShow_WaitAndEnableSpotlights
-	RequireParams \{[enable time] all}
-	printf "LightShow - spotlight toggle %s" s = <enable>
-	wait <time> seconds
-	LightShow_EnableSpotlights <enable>
 endscript

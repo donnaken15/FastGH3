@@ -3,6 +3,27 @@ script solo\{part = guitar diff = expert}
 	if ($game_mode = p2_battle || $enable_solos = 0)
 		return
 	endif
+	// for performance sake since S5 has the event for all difficulties
+	// and executes part of main for 6ms >:(
+	matched_player = 0
+	i = 1
+	begin
+		FormatText checksumName = player_status 'player%d_status' d = <i>
+		if (<i> = 1)
+			player_difficulty = current_difficulty
+		elseif (<i> = 2)
+			player_difficulty = current_difficulty2
+		endif
+		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
+			matched_player = 1
+		endif
+		Increment \{i}
+	repeat ($current_num_players)
+	if (<matched_player> = 0)
+		return
+	endif
+	
+	ProfilingStart
 	//get_song_prefix \{song = $current_song}
 	//FormatText checksumName = scripts_name '%d_scripts' d = <song_prefix>
 	ExtendCrc \{$current_song '_scripts' out = scripts_name}
@@ -50,7 +71,8 @@ script solo\{part = guitar diff = expert}
 	endif
 	Increment \{k}
 	found_soloend = 0
-	endtime = (<time> + 5000)
+	endtime = (<time> + 5000) // why did i even add this
+	
 	// find matching soloend in fastgh3_scripts
 	begin
 		// soloend.params.part == %part then endtime = soloend.time
@@ -82,6 +104,7 @@ script solo\{part = guitar diff = expert}
 			break
 		endif
 	repeat <array_Size>
+	ProfilingEnd <...> 'solo find scripts'
 	// wrote because general section events (not just section markers) appeared in Soulless 1
 	// quit if soloend for this script's part can't be found
 	if (<found_soloend> = 0)
@@ -103,10 +126,11 @@ script solo\{part = guitar diff = expert}
 			//song_array = ($($<player_status>.current_song_gem_array))
 			GetArraySize \{song_array}
 			// find index with >= %time
+			ProfilingStart
 			solo_first_note = 0
 			// while ([i*3] < %time && i < sizeof)
 			begin
-				if (<song_array> [<solo_first_note>] >= <time>)
+				if (<song_array>[<solo_first_note>] >= <time>)
 					break
 				endif
 				solo_first_note = (<solo_first_note> + 3)
@@ -126,12 +150,13 @@ script solo\{part = guitar diff = expert}
 				// find first playable note (if skipped into song)
 				startTime = $current_starttime
 				begin
-					if (<song_array> [<current_first_note>] >= <startTime>)
+					if (<song_array>[<current_first_note>] >= <startTime>)
 						break
 					endif
 					current_first_note = (<current_first_note> + 3)
 				repeat <array_Size>
 			//}
+			ProfilingEnd <...> 'solo find first note'
 			//			  first solo note, first playable note
 			note_index = (<note_index> + <current_first_note> + 3)
 			// count notes hit before this executed

@@ -36,7 +36,7 @@ script script_postcallback_script
 		Update2DParticleSystems delta_time = <delta_time>
 		RunQueuedPulseEvents
 		CheckBossCutoff
-		if ($output_gpu_log = 1)
+		/*if ($output_gpu_log = 1)
 			if isps3
 				GetProfileData \{cpu = 2 name = gpu}
 			else
@@ -46,7 +46,7 @@ script script_postcallback_script
 			getsongtime
 			FormatText textname = text "GPU Time; %s; %m" s = <songtime> m = <milliseconds> DontAssertForChecksums
 			TextOutput text = <text>
-		endif
+		endif*/
 	endif
 endscript
 

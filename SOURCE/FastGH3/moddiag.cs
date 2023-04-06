@@ -341,9 +341,9 @@ public partial class moddiag : Form
 						else
 							required_maybe.Add(zfile);
 					}
-					foreach (ZipEntry f in required_maybe) // uhhhh
+					foreach (string a in required)
 					{
-						foreach (string a in required)
+						foreach (ZipEntry f in required_maybe) // uhhhh
 						{
 							//Console.WriteLine(f.FileName.ToUpper() + "==" + a.ToUpper());
 							if (f.FileName.ToUpper() == a.ToUpper())

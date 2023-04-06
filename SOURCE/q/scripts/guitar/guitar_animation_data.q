@@ -17,26 +17,16 @@ drummer_arm_blend_out_delay = 0.25
 drummer_clear_arm_twist_value_delay = 0.0
 min_walk_dist = 0.75
 max_walk_camera_cut_delay = 1000
-guitarist_finger_anims_small = {
-}
-guitarist_finger_anims_medium = {
-}
-guitarist_finger_anims_large = {
-}
-fret_anims = {
-}
-fret_anims_sml = {
-}
-fret_anims_med = {
-}
-fret_anims_lrg = {
-}
-drummer_anims = {
-}
-drummer_left_arm_twist_factors = {
-}
-drummer_right_arm_twist_factors = {
-}
+guitarist_finger_anims_small = $nullStruct
+guitarist_finger_anims_medium = $nullStruct
+guitarist_finger_anims_large = $nullStruct
+fret_anims = $nullStruct
+fret_anims_sml = $nullStruct
+fret_anims_med = $nullStruct
+fret_anims_lrg = $nullStruct
+drummer_anims = $nullStruct
+drummer_left_arm_twist_factors = $nullStruct
+drummer_right_arm_twist_factors = $nullStruct
 cymbal_anims = [
 	#"0x0864b6ce"
 	#"0x916de774"

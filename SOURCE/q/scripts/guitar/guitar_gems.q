@@ -36,7 +36,7 @@ scripts_array = [
 		name = 'scripts'
 		lead_ms = 0
 	}
-	{
+	/*{
 		name = 'anim'
 		lead_ms = 0
 	}
@@ -63,7 +63,7 @@ scripts_array = [
 	{
 		name = 'performance'
 		lead_ms = 0
-	}
+	}*/
 ]
 fretbar_end_scale = 0.48
 button_models = {
@@ -139,11 +139,6 @@ button_models = {
 	}
 }
 
-script setup_models
-	tod_manager_create_perm_lights
-	LightShow_CreatePermModels
-endscript
-
 script setup_gemarrays
 	get_song_struct song = <song_name>
 	if (($<player_status>.part)= rhythm)
@@ -154,6 +149,7 @@ script setup_gemarrays
 	if ($game_mode = p2_career || $game_mode = p2_coop ||
 		($game_mode = training & ($<player_status>.part = rhythm)))
 		if StructureContains structure = <song_struct> use_coop_notetracks
+		// make packed struct ? ^
 			if (($<player_status>.part)= rhythm)
 				<part> = 'rhythmcoop_'
 			else
@@ -163,8 +159,12 @@ script setup_gemarrays
 	endif
 	get_song_prefix song = <song_name>
 	get_difficulty_text_nl difficulty = <difficulty>
-	FormatText checksumName = gem_array '%s_%t_%p%d' s = <song_prefix> t = 'song' p = <part> d = <difficulty_text_nl> AddToStringLookup
-	FormatText checksumName = fretbar_array '%s_fretbars' s = <song_prefix> AddToStringLookup
+	//FormatText checksumName = gem_array '%s_%t_%p%d' s = <song_prefix> t = 'song' p = <part> d = <difficulty_text_nl> AddToStringLookup
+	ExtendCrc \{$current_song '_song_' out = gem_array}
+	ExtendCrc <gem_array> <part> out = gem_array
+	ExtendCrc <gem_array> <difficulty_text_nl> out = gem_array
+	//FormatText checksumName = fretbar_array '%s_fretbars' s = <song_prefix> AddToStringLookup
+	ExtendCrc \{$current_song '_fretbars' out = fretbar_array}
 	Change StructureName = <player_status> current_song_gem_array = <gem_array>
 	Change StructureName = <player_status> current_song_fretbar_array = <fretbar_array>
 	Change StructureName = <player_status> current_song_beat_time = ($<fretbar_array> [1])
@@ -217,7 +217,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	endif
 	Change StructureName = <player_status> check_time_early = ($check_time_early * $current_speedfactor)
 	Change StructureName = <player_status> check_time_late = ($check_time_late * $current_speedfactor)
-	FormatText checksumName = input_array 'input_array%p' p = <player_text>
+	ExtendCrc input_array <player_text> out = input_array
 	printf \{"-----------------------------------"}
 	printf \{"-----------------------------------"}
 	printf \{"-----------------------------------"}
@@ -258,7 +258,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	GetGlobalTags \{user_options}
 	<input_offset> = (<input_offset> - <lag_calibration>)
 	if (<training_mode> = 0)
-		SpawnScriptLater Strum_iterator params = {song_name = <song_name> difficulty = expert
+		/*SpawnScriptLater Strum_iterator params = {song_name = <song_name> difficulty = expert
 			time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
 			part = <part> target = (<player_status>.band_member)}
 		SpawnScriptLater FretFingers_iterator params = {song_name = <song_name> difficulty = expert
@@ -266,14 +266,14 @@ script gem_scroller\{Player = 1 training_mode = 0}
 			part = <part> target = (<player_status>.band_member)}
 		SpawnScriptLater FretPos_iterator params = {song_name = <song_name>
 			time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
-			part = ($<player_status>.part)target = (<player_status>.band_member)}
+			part = ($<player_status>.part)target = (<player_status>.band_member)}*/
 		if (<Player> = 1)
-			SpawnScriptLater Drum_iterator params = {song_name = <song_name> difficulty = <difficulty>
+			/*SpawnScriptLater Drum_iterator params = {song_name = <song_name> difficulty = <difficulty>
 				time_offset = (<gem_offset> + $drum_anim_lead_time)skipleadin = 0
 				Player = <Player> player_status = <player_status> player_text = <player_text>}
 			SpawnScriptLater Drum_cymbal_iterator params = {song_name = <song_name> difficulty = <difficulty>
 				time_offset = <gem_offset> skipleadin = 0
-				Player = <Player> player_status = <player_status> player_text = <player_text>}
+				Player = <Player> player_status = <player_status> player_text = <player_text>}*/
 			if ($current_num_players = 1)
 				bassist_song_part = 'rhythm_'
 				bassist_part = rhythm
@@ -284,7 +284,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 						bassist_part = guitar
 					endif
 				endif
-				SpawnScriptLater Strum_iterator params = {song_name = <song_name> difficulty = expert
+				/*SpawnScriptLater Strum_iterator params = {song_name = <song_name> difficulty = expert
 					time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
 					part = <bassist_song_part> target = BASSIST}
 				SpawnScriptLater FretFingers_iterator params = {song_name = <song_name> difficulty = expert
@@ -292,11 +292,11 @@ script gem_scroller\{Player = 1 training_mode = 0}
 					part = <bassist_song_part> target = BASSIST}
 				SpawnScriptLater FretPos_iterator params = {song_name = <song_name> difficulty = <difficulty>
 					time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
-					part = <bassist_part> target = BASSIST}
+					part = <bassist_part> target = BASSIST}*/
 			endif
 		endif
 	endif
-	FormatText checksumName = input_array 'input_array%p' p = <player_text>
+	//FormatText checksumName = input_array 'input_array%p' p = <player_text>
 	SpawnScriptLater gem_iterator params = {iterator_text = 'fill_array' song_name = <song_name> difficulty = <difficulty> part = <part> input_array = <input_array>
 		time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)strum_function = fill_input_array skipleadin = ($<player_status>.scroll_time * 1000.0)
 		Player = <Player> player_status = <player_status> player_text = <player_text>}
@@ -382,8 +382,8 @@ script gem_scroller\{Player = 1 training_mode = 0}
 				time_offset = (<gem_offset> - ($check_time_late * 1000.0))fretbar_function = GuitarEvent_Fretbar_Late skipleadin = 0
 				Player = <Player> player_status = <player_status> player_text = <player_text>}
 		endif
-		SpawnScriptLater lightshow_iterator params = {song_name = <song_name> time_offset = (<gem_offset> + $lightshow_offset_ms)skipleadin = 0}
-		SpawnScriptLater cameracuts_iterator params = {song_name = <song_name> time_offset = <gem_offset> skipleadin = 0}
+		//SpawnScriptLater lightshow_iterator params = {song_name = <song_name> time_offset = (<gem_offset> + $lightshow_offset_ms)skipleadin = 0}
+		//SpawnScriptLater cameracuts_iterator params = {song_name = <song_name> time_offset = <gem_offset> skipleadin = 0}
 		GetArraySize \{$#"0xbc0ae6c6"}
 		array_count = 0
 		begin
@@ -425,9 +425,11 @@ script get_song_end_time_for_array
 endscript
 
 script get_song_end_time
-	get_song_prefix song = <song>
-	FormatText checksumName = song_expert '%s_song_expert' s = <song_prefix> AddToStringLookup
-	FormatText checksumName = rhythm_expert '%s_song_rhythm_expert' s = <song_prefix> AddToStringLookup
+	//get_song_prefix song = <song>
+	//FormatText checksumName = song_expert '%s_song_expert' s = <song_prefix> AddToStringLookup
+	//FormatText checksumName = rhythm_expert '%s_song_rhythm_expert' s = <song_prefix> AddToStringLookup
+	ExtendCrc \{$current_song '_song_expert' out = song_expert}
+	ExtendCrc \{$current_song '_song_rhythm_expert' out = rhythm_expert}
 	total_end_time = 2.0
 	get_song_end_time_for_array total_end_time = <total_end_time> song_array = <song_expert>
 	get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythm_expert>
@@ -499,15 +501,16 @@ endscript
 script load_songqpak\{async = 0}
 	if NOT (<song_name> = $current_song_qpak)
 		unload_songqpak
-		get_song_prefix song = <song_name>
-		is_song_downloaded song_checksum = <song_name>
+		//get_song_prefix song = <song_name>
+		/*is_song_downloaded song_checksum = <song_name>
 		if (<download> = 1)
 			FormatText textname = songqpak 'song.pak' i = <song_prefix>
 		else
 			FormatText textname = songqpak 'pak/song.pak' i = <song_prefix>
-		endif
-		printf "Loading Song q pak FGH3" i = <songqpak>
-		if NOT LoadPakAsync pak_name = <songqpak> Heap = heap_song no_vram async = <async>
+		endif*/
+		//songqpak = 'pak/song.pak'
+		printf \{"Loading Song q pak"}
+		if NOT LoadPakAsync pak_name = 'pak/song.pak' Heap = heap_song no_vram async = <async>
 			DownloadContentLost
 			return
 		endif
@@ -523,15 +526,16 @@ endscript
 
 script unload_songqpak
 	if NOT ($current_song_qpak = None)
-		get_song_prefix song = ($current_song_qpak)
+		/*get_song_prefix song = ($current_song_qpak)
 		is_song_downloaded song_checksum = ($current_song_qpak)
 		if (<download> = 1)
 			FormatText textname = songqpak 'song.pak' i = <song_prefix>
 		else
 			FormatText textname = songqpak 'pak/song.pak' i = <song_prefix>
-		endif
-		printf "UnLoading Song q pak FGH3" i = <songqpak>
-		UnLoadPak <songqpak>
+		endif*/
+		//songqpak = 'pak/song.pak'
+		printf \{"UnLoading Song q pak"}
+		UnLoadPak \{'pak/song.pak'}
 		Change \{current_song_qpak = None}
 	endif
 endscript
@@ -646,39 +650,6 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	#"0xcf3057c9"
 	#"0x7714e89d"
 	#"0x7714e89d"
-	Change \{StructureName = guitarist_info stance = None}
-	Change \{StructureName = guitarist_info next_stance = None}
-	Change \{StructureName = guitarist_info current_anim = None}
-	Change \{StructureName = guitarist_info cycle_anim = FALSE}
-	Change \{StructureName = guitarist_info next_anim = None}
-	Change \{StructureName = guitarist_info playing_missed_note = FALSE}
-	Change \{StructureName = guitarist_info waiting_for_cameracut = FALSE}
-	Change \{StructureName = bassist_info stance = None}
-	Change \{StructureName = bassist_info next_stance = None}
-	Change \{StructureName = bassist_info current_anim = None}
-	Change \{StructureName = bassist_info cycle_anim = FALSE}
-	Change \{StructureName = bassist_info next_anim = None}
-	Change \{StructureName = bassist_info playing_missed_note = FALSE}
-	Change \{StructureName = bassist_info waiting_for_cameracut = FALSE}
-	Change \{StructureName = vocalist_info stance = None}
-	Change \{StructureName = vocalist_info next_stance = None}
-	Change \{StructureName = vocalist_info current_anim = None}
-	Change \{StructureName = vocalist_info cycle_anim = FALSE}
-	Change \{StructureName = vocalist_info next_anim = None}
-	Change \{StructureName = drummer_info stance = None}
-	Change \{StructureName = drummer_info next_stance = None}
-	Change \{StructureName = drummer_info current_anim = None}
-	Change \{StructureName = drummer_info cycle_anim = FALSE}
-	Change \{StructureName = drummer_info next_anim = None}
-	Change \{StructureName = drummer_info TWIST = 0.0}
-	Change \{StructureName = drummer_info desired_twist = 0.0}
-	Change \{StructureName = drummer_info last_left_arm_note = 0}
-	Change \{StructureName = drummer_info last_right_arm_note = 0}
-	if (<training_mode> = 0)
-		if NOT create_band \{async = 1}
-			DownloadContentLost
-		endif
-	endif
 	if ($game_mode = training)
 		practicemode_init
 	endif
@@ -979,8 +950,8 @@ script kill_gem_scroller\{no_render = 0}
 	new_net_logic_deinit
 	destroy_net_popup
 	destroy_gamertags
-	LightShow_Shutdown
-	Kill_LightShow_FX
+	//LightShow_Shutdown
+	//Kill_LightShow_FX
 	DestroyParticlesByGroupID \{groupID = zoneparticles}
 	Transition_KillAll
 	killspawnedscript \{name = GuitarEvent_SongFailed_Spawned}
@@ -998,24 +969,12 @@ script kill_gem_scroller\{no_render = 0}
 		<zone_killsong>
 	endif
 	Destroy_AllWhammyFX
-	LS_ResetVenueLights
+	//LS_ResetVenueLights
 	destroy_movie_viewport
 	destroy_crowd_models
 	destroy_bg_viewport
 	destroy_intro
 	destroy_band
-	Change \{StructureName = guitarist_info stance = stance_FrontEnd}
-	Change \{StructureName = guitarist_info next_stance = stance_FrontEnd}
-	Change \{StructureName = guitarist_info current_anim = Idle}
-	Change \{StructureName = guitarist_info cycle_anim = true}
-	Change \{StructureName = guitarist_info next_anim = None}
-	Change \{StructureName = guitarist_info playing_missed_note = FALSE}
-	Change \{StructureName = bassist_info stance = stance_FrontEnd}
-	Change \{StructureName = bassist_info next_stance = stance_FrontEnd}
-	Change \{StructureName = bassist_info current_anim = Idle}
-	Change \{StructureName = bassist_info cycle_anim = true}
-	Change \{StructureName = bassist_info next_anim = None}
-	Change \{StructureName = bassist_info playing_missed_note = FALSE}
 	destroy_debug_measure_text
 	kill_character_scripts
 	Change \{check_for_unplugged_controllers = 0}

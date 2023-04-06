@@ -9,8 +9,7 @@ musician_instrument = [
 	{
 	}
 ]
-download_musician_body = [
-]
+download_musician_body = $nullArray
 
 script get_musician_body_size
 	GetArraySize \{musician_body GlobalArray}
@@ -30,8 +29,7 @@ script get_musician_body_struct
 		return info_struct = ($download_musician_body [(<index> - <array_Size>)])
 	endif
 endscript
-download_musician_instrument = [
-]
+download_musician_instrument = $nullArray
 
 script get_musician_instrument_size
 	GetArraySize \{musician_instrument GlobalArray}
