@@ -1,4 +1,6 @@
 
+hudless = 0
+
 script setup_sprites
 	setup_main_button_event_mappings
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = hud_window Pos = (0.0, 0.0) just = [left top]}
@@ -120,30 +122,67 @@ script setup_hud
 		}
 		array_entry = (<array_entry> + 1)
 	repeat <array_Size>
-	if ((<player_status>.is_local_client)& (<player_status>.highway_layout = solo_highway))
-		net_setup_solo_hud player_status = <player_status> hud_destroygroup = <hud_destroygroup> Player = <Player>
-	else
-		if ($game_mode = p2_career || $game_mode = p2_coop)
-			Change \{g_hud_2d_struct_used = coop_career_hud_2d_elements}
-		elseif ($game_mode = p2_faceoff || game_mode = p2_pro_faceoff)
-			Change \{g_hud_2d_struct_used = faceoff_hud_2d_elements}
-		elseif ($game_mode = p2_battle || ($boss_battle = 1))
-			Change \{g_hud_2d_struct_used = battle_hud_2d_elements}
+	if ($hudless = 0)
+		if ((<player_status>.is_local_client)& (<player_status>.highway_layout = solo_highway))
+			net_setup_solo_hud player_status = <player_status> hud_destroygroup = <hud_destroygroup> Player = <Player>
 		else
-			Change \{g_hud_2d_struct_used = career_hud_2d_elements}
+			if ($game_mode = p2_career || $game_mode = p2_coop)
+				Change \{g_hud_2d_struct_used = coop_career_hud_2d_elements}
+			elseif ($game_mode = p2_faceoff || game_mode = p2_pro_faceoff)
+				Change \{g_hud_2d_struct_used = faceoff_hud_2d_elements}
+			elseif ($game_mode = p2_battle || ($boss_battle = 1))
+				Change \{g_hud_2d_struct_used = battle_hud_2d_elements}
+			else
+				Change \{g_hud_2d_struct_used = career_hud_2d_elements}
+			endif
+			ExtendCrc HUD_2D_Container <player_text> out = new_2d_container
+			if NOT ScreenElementExists id = <new_2d_container>
+				CreateScreenElement {
+					Type = ContainerElement
+					parent = root_window
+					Pos = (0.0, 0.0)
+					just = [left top]
+					id = <new_2d_container>
+					Scale = (($g_hud_2d_struct_used).Scale)
+				}
+			endif
+			create_2d_hud_elements parent = <new_2d_container> player_text = <player_text> elements_structure = $g_hud_2d_struct_used
 		endif
+	else
+		//create_menu_backdrop \{texture = gameplay_BG}
+		/*
+		{
+			parent_container
+			element_id = #"0xa90fc148"
+			pos_type = #"0x936bb5fe"
+		}
+		{
+			element_id = #"0x99dd87cc"
+			element_parent = #"0xa90fc148"
+			texture = $#"0x1d52cdca"
+			dims = $#"0x8d974f74"
+			rot = -0.1
+			just = [
+				left
+				top
+			]
+			rgba = $#"0x902ecc17"
+			zoff = -2147483648
+		}*/
 		ExtendCrc HUD_2D_Container <player_text> out = new_2d_container
-		if NOT ScreenElementExists id = <new_2d_container>
-			CreateScreenElement {
-				Type = ContainerElement
-				parent = root_window
-				Pos = (0.0, 0.0)
-				just = [left top]
-				id = <new_2d_container>
-				Scale = (($g_hud_2d_struct_used).Scale)
-			}
-		endif
-		create_2d_hud_elements parent = <new_2d_container> player_text = <player_text> elements_structure = $g_hud_2d_struct_used
+		CreateScreenElement {
+			type = spriteelement
+			id = <new_2d_container>
+			parent = root_window
+			pos = $#"0x28381025"
+			just = [left top]
+			texture = $#"0x1d52cdca"
+			dims = $#"0x8d974f74"
+			rot = -0.1
+			rgba = $#"0x902ecc17"
+			alpha = 1
+			z_priority = -2147483648
+		}
 	endif
 	if ($display_debug_input = 1)
 		ExtendCrc input_text <player_text> out = input_id
@@ -208,10 +247,16 @@ script reset_hud
 endscript
 
 script move_hud_to_default\{time = 0.01}
+	if ($hudless = 1)
+		return
+	endif
 	spawnscriptnow move_2d_elements_to_default params = {morph_time = <time>}
 endscript
 
 script move_2d_elements_to_default
+	if ($hudless = 1)
+		return
+	endif
 	move_time = (<morph_time> * 1000.0)
 	GetSongTimeMs
 	initial_time = (<time> * 1.0)
@@ -257,6 +302,9 @@ script move_2d_elements_to_default
 endscript
 
 script #"0x9ca8d62c"
+	if ($hudless = 1)
+		return
+	endif
 	move_time = (<morph_time> * 1000.0)
 	GetSongTimeMs
 	initial_time = (<time> * 1.0)
@@ -285,6 +333,9 @@ script #"0x9ca8d62c"
 endscript
 
 script morph_2d_hud_elements\{off_set = (0.0, 0.0) off_set_drop = (0.0, 0.0) time_to_move = 0 rot = 0}
+	if ($hudless = 1)
+		return
+	endif
 	if ($current_num_players = 2)
 		if ($game_mode = p2_career || $game_mode = p2_coop)
 			intro_rock_pos = offscreen_rock_pos
@@ -410,7 +461,7 @@ script split_text_into_array_elements\{text = "OOPS" text_pos = (0.0, 0.0) space
 			just = [center center]
 			Pos = <text_pos>
 			alpha = (<flags>.alpha)
-			Scale = (<flags>.Scale * (1.2999999523162842, 1.2000000476837158) * <fit_scale>)
+			Scale = (<flags>.Scale * (1.3, 1.2) * <fit_scale>)
 		}
 		<text_pos> = (<text_pos> + <space_between>)
 		<i> = (<i> + 1)

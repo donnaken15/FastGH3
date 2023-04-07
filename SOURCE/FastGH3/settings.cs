@@ -275,6 +275,7 @@ public partial class settings : Form
 		NoIntro,
 		NoParticles,
 		NoFail,
+		NoHUD,
 		EasyExpert,
 		Precision,
 		//Performance,
@@ -329,6 +330,7 @@ public partial class settings : Form
 		QbKey.Create(0xDF7FF31B),
 		QbKey.Create(0xD403A7A7),
 		QbKey.Create(0x3E5FD611),
+		QbKey.Create(0x1F65243F),
 		QbKey.Create(0x404B1EF4),
 		QbKey.Create(0x3CA38921),
 		//QbKey.Create(0x392E3940), // perf
@@ -872,6 +874,7 @@ public partial class settings : Form
 				break;
 			case t.ExitOnSongEnd: // exit_on_song_end
 			case t.DebugMenu: // enable_button_cheats
+			case t.NoHUD: // hudless
 			case t.EasyExpert: // Cheat_EasyExpert
 			case t.Precision: // Cheat_PrecisionMode
 			case t.BkgdVideo: // enable_video

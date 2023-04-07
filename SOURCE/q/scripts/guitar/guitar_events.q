@@ -1401,7 +1401,7 @@ script StarSequenceFX
 	endif
 	Change StructureName = <player_status> sp_phrases_hit = ($<player_status>.sp_phrases_hit + 1)
 	SoundEvent \{event = Star_Power_Awarded_SFX}
-	FormatText checksumName = container_id 'gem_container%p' p = ($<player_status>.text)AddToStringLookup = true
+	ExtendCrc gem_container ($<player_status>.text) out = container_id
 	GetArraySize \{$#"0xd4b50263"}
 	gem_count = 0
 	begin
@@ -1502,12 +1502,12 @@ script StarSequenceFX
 				time = 1.0
 			}
 		endif
-		gem_count = (<gem_count> + 1)
+		Increment \{gem_count}
 	repeat <array_Size>
 	wait \{$#"0xe91f8a7f" seconds}
 	gem_count = 0
 	begin
-		<note> = ($<song> [<array_entry>] [(<gem_count> + 1)])
+		<note> = ($<song>[<array_entry>][(<gem_count> + 1)])
 		if (<note> > 0)
 			FormatText checksumName = name 'big_bolt%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
 			DestroyScreenElement id = <name>
@@ -1519,7 +1519,7 @@ script StarSequenceFX
 			Destroy2DParticleSystem id = <fx3_id> kill_when_empty
 			wait \{1 gameframe}
 		endif
-		gem_count = (<gem_count> + 1)
+		Increment \{gem_count}
 	repeat <array_Size>
 endscript
 GuitarEvent_StarMissNote = $EmptyScript

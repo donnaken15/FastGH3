@@ -219,6 +219,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>res.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="settings.resx">
+      <DependentUpon>settings.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Queenbee\Qb\Script\" />

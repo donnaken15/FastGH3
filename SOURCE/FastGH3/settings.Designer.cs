@@ -474,12 +474,13 @@ partial class settings
             "No intro",
             "No particles",
             "No fail",
+            "No HUD",
             "Easy expert",
             "Precision",
             "Background video",
             "Hide hit gems",
             "Early sustain activation",
-            "Disable note streak notif"});
+            "No note streak notif"});
             this.tLb.Location = new System.Drawing.Point(7, 167);
             this.tLb.Name = "tLb";
             this.tLb.Size = new System.Drawing.Size(149, 275);
