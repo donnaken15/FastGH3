@@ -262,85 +262,14 @@ script create_newspaper_menu\{for_practice = 0}
 			Change \{g_ss_mag_number = 0}
 	endswitch
 	if NOT ($game_mode = p1_career || $game_mode = p2_career || $game_mode = p2_coop || $game_mode = p1_quickplay || <for_practice> = 1)
-		if NOT ($g_ss_mag_number = 7)
-			create_menu_backdrop \{texture = #"0xaa5ae5d2"}
-		else
-			create_menu_backdrop \{texture = #"0xd21ed638"}
-		endif
-		switch $g_ss_mag_number
-			case 0
-				<ss_logo> = #"0x61b82314"
-				<ss_logo_sm> = #"0x30cd194f"
-				<ss_sidebar> = #"0xac3bdc65"
-				<ss_percent_color> = $g_ss_black
-				<ss_score_color> = $g_ss_black
-				<ss_notestreak_fill_color> = $g_ss_black
-				<ss_notestreak_color> = $g_ss_offwhite
-				<ss_notestreak_text_color> = $g_ss_offwhite
-			case 1
-				<ss_logo> = #"0x26481258"
-				<ss_logo_sm> = #"0x32ad9802"
-				<ss_sidebar> = #"0x4987df2d"
-				<ss_percent_color> = $g_ss_black
-				<ss_score_color> = $g_ss_black
-				<ss_notestreak_fill_color> = $g_ss_black
-				<ss_notestreak_color> = $g_ss_offwhite
-				<ss_notestreak_text_color> = $g_ss_offwhite
-			case 2
-				<ss_logo> = #"0xecb207ac"
-				<ss_logo_sm> = #"0xeabdbed2"
-				<ss_sidebar> = #"0x5b2f5bdd"
-				<ss_percent_color> = $g_ss_Paste_maroonish
-				<ss_score_color> = $g_ss_Paste_brownish
-				<ss_notestreak_fill_color> = $g_ss_Paste_beigeish
-				<ss_notestreak_color> = $g_ss_Paste_maroonish
-				<ss_notestreak_text_color> = $g_ss_Paste_brownish
-			case 3
-				<ss_logo> = #"0x0f84cceb"
-				<ss_logo_sm> = #"0x78dcbe68"
-				<ss_sidebar> = #"0x5b7d2e1e"
-				<ss_percent_color> = $g_ss_decibel_magentaish
-				<ss_score_color> = $g_ss_black
-				<ss_notestreak_fill_color> = $g_ss_decibel_greenish
-				<ss_notestreak_color> = $g_ss_decibel_magentaish
-				<ss_notestreak_text_color> = $g_ss_black
-			case 4
-				<ss_logo> = #"0xd0bf8773"
-				<ss_logo_sm> = #"0x295a2815"
-				<ss_sidebar> = #"0xaf0513a5"
-				<ss_percent_color> = $g_ss_AP_reddish
-				<ss_score_color> = $g_ss_AP_blueish
-				<ss_notestreak_fill_color> = $g_ss_AP_reddish
-				<ss_notestreak_color> = $g_ss_AP_yellowish
-				<ss_notestreak_text_color> = $g_ss_AP_yellowish
-			case 5
-				<ss_logo> = #"0x55346cb4"
-				<ss_logo_sm> = #"0x7a5ad8da"
-				<ss_sidebar> = #"0x01cd8e41"
-				<ss_percent_color> = $g_ss_black
-				<ss_score_color> = $g_ss_Kerrang_reddish
-				<ss_notestreak_fill_color> = $g_ss_black
-				<ss_notestreak_color> = $g_ss_offwhite
-				<ss_notestreak_text_color> = $g_ss_offwhite
-			case 6
-				<ss_logo> = #"0xc0ef8b92"
-				<ss_logo_sm> = #"0x46a48c6a"
-				<ss_sidebar> = #"0x94166967"
-				<ss_percent_color> = $g_ss_GP_greyish
-				<ss_score_color> = $g_ss_GP_blueish
-				<ss_notestreak_fill_color> = $g_ss_GP_greyish
-				<ss_notestreak_color> = $g_ss_offwhite
-				<ss_notestreak_text_color> = $g_ss_offwhite
-			case 7
-				<ss_logo> = #"0x9d67cbc0"
-				<ss_logo_sm> = #"0x3a8632fe"
-				<ss_sidebar> = #"0xbd6781be"
-				<ss_percent_color> = $g_ss_black
-				<ss_score_color> = [100 15 5 255]
-				<ss_notestreak_fill_color> = $g_ss_black
-				<ss_notestreak_color> = [150 65 55 255]
-				<ss_notestreak_text_color> = $g_ss_HELL_lighter_reddish
-		endswitch
+		<ss_logo> = none
+		<ss_logo_sm> = none
+		<ss_sidebar> = none
+		<ss_percent_color> = $g_ss_black
+		<ss_score_color> = $g_ss_black
+		<ss_notestreak_fill_color> = $g_ss_black
+		<ss_notestreak_color> = $g_ss_offwhite
+		<ss_notestreak_text_color> = $g_ss_offwhite
 		if ($game_mode = p2_battle)
 			if (<p2_health> > <p1_health>)
 				<winner> = "2"
@@ -1059,125 +988,19 @@ script create_newspaper_menu\{for_practice = 0}
 			spawnscriptnow \{np_2p_hilites_p2}
 		endif
 	else
-		if NOT ($g_ss_mag_number = 7)
-			create_menu_backdrop \{texture = #"0x40db0274"}
-		else
-			create_menu_backdrop \{texture = #"0xe806f7f9"}
-		endif
-		switch $g_ss_mag_number
-			case 0
-				<ss_logo> = #"0x61b82314"
-				<ss_sidebar> = #"0xac3bdc65"
-				<ss_percent_fill> = #"0xd644f401"
-				<ss_percent_color> = $g_ss_black
-				<ss_star_good_color> = $g_ss_offwhite
-				<ss_star_bad_color> = [100 100 100 255]
-				<ss_score_fill_L_color> = $g_ss_black
-				<ss_score_color> = $g_ss_offwhite
-				<ss_score_fill_R_color> = $g_ss_offwhite
-				<ss_score_text_color> = $g_ss_black
-				<ss_notestreak_fill_color> = $g_ss_offwhite
-				<ss_notestreak_color> = $g_ss_black
-				<ss_notestreak_text_color> = $g_ss_black
-			case 1
-				<ss_logo> = #"0x26481258"
-				<ss_sidebar> = #"0x4987df2d"
-				<ss_percent_fill> = #"0xf21a905a"
-				<ss_percent_color> = $g_ss_black
-				<ss_star_good_color> = $g_ss_offwhite
-				<ss_star_bad_color> = [100 100 100 255]
-				<ss_score_fill_L_color> = $g_ss_black
-				<ss_score_color> = $g_ss_offwhite
-				<ss_score_fill_R_color> = $g_ss_GP_greyish
-				<ss_score_text_color> = $g_ss_offwhite
-				<ss_notestreak_fill_color> = $g_ss_GP_greyish
-				<ss_notestreak_color> = $g_ss_offwhite
-				<ss_notestreak_text_color> = $g_ss_offwhite
-			case 2
-				<ss_logo> = #"0xecb207ac"
-				<ss_sidebar> = #"0x5b2f5bdd"
-				<ss_percent_fill> = #"0xdd325370"
-				<ss_percent_color> = $g_ss_Paste_beigeish
-				<ss_star_good_color> = $g_ss_Paste_brownish
-				<ss_star_bad_color> = $g_ss_offwhite
-				<ss_score_fill_L_color> = $g_ss_Paste_beigeish
-				<ss_score_color> = $g_ss_Paste_maroonish
-				<ss_score_fill_R_color> = $g_ss_Paste_brownish
-				<ss_score_text_color> = $g_ss_Paste_beigeish
-				<ss_notestreak_fill_color> = $g_ss_Paste_beigeish
-				<ss_notestreak_color> = $g_ss_Paste_maroonish
-				<ss_notestreak_text_color> = $g_ss_Paste_brownish
-			case 3
-				<ss_logo> = #"0x0f84cceb"
-				<ss_sidebar> = #"0x5b7d2e1e"
-				<ss_percent_fill> = #"0x4e0fe295"
-				<ss_percent_color> = $g_ss_decibel_magentaish
-				<ss_star_good_color> = $g_ss_orangeish
-				<ss_star_bad_color> = $g_ss_offwhite
-				<ss_score_fill_L_color> = $g_ss_black
-				<ss_score_color> = $g_ss_decibel_yellowish
-				<ss_score_fill_R_color> = $g_ss_decibel_greenish
-				<ss_score_text_color> = $g_ss_decibel_magentaish
-				<ss_notestreak_fill_color> = $g_ss_decibel_greenish
-				<ss_notestreak_color> = $g_ss_decibel_magentaish
-				<ss_notestreak_text_color> = $g_ss_black
-			case 4
-				<ss_logo> = #"0xd0bf8773"
-				<ss_sidebar> = #"0xaf0513a5"
-				<ss_percent_fill> = #"0x390d6710"
-				<ss_percent_color> = $g_ss_AP_yellowish
-				<ss_star_good_color> = $g_ss_AP_reddish
-				<ss_star_bad_color> = $g_ss_offwhite
-				<ss_score_fill_L_color> = $g_ss_AP_blueish
-				<ss_score_color> = $g_ss_AP_yellowish
-				<ss_score_fill_R_color> = $g_ss_AP_reddish
-				<ss_score_text_color> = $g_ss_AP_yellowish
-				<ss_notestreak_fill_color> = $g_ss_AP_reddish
-				<ss_notestreak_color> = $g_ss_AP_yellowish
-				<ss_notestreak_text_color> = $g_ss_AP_yellowish
-			case 5
-				<ss_logo> = #"0x55346cb4"
-				<ss_sidebar> = #"0x01cd8e41"
-				<ss_percent_fill> = #"0x14bf42ca"
-				<ss_percent_color> = $g_ss_offwhite
-				<ss_star_good_color> = $g_ss_orangeish
-				<ss_star_bad_color> = $g_ss_offwhite
-				<ss_score_fill_L_color> = $g_ss_black
-				<ss_score_color> = $g_ss_offwhite
-				<ss_score_fill_R_color> = $g_ss_offwhite
-				<ss_score_text_color> = $g_ss_black
-				<ss_notestreak_fill_color> = $g_ss_black
-				<ss_notestreak_color> = $g_ss_offwhite
-				<ss_notestreak_text_color> = $g_ss_offwhite
-			case 6
-				<ss_logo> = #"0xc0ef8b92"
-				<ss_sidebar> = #"0x94166967"
-				<ss_percent_fill> = #"0x8164a5ec"
-				<ss_percent_color> = $g_ss_GP_blueish
-				<ss_star_good_color> = $g_ss_orangeish
-				<ss_star_bad_color> = $g_ss_offwhite
-				<ss_score_fill_L_color> = $g_ss_GP_blueish
-				<ss_score_color> = $g_ss_offwhite
-				<ss_score_fill_R_color> = $g_ss_GP_greyish
-				<ss_score_text_color> = $g_ss_offwhite
-				<ss_notestreak_fill_color> = $g_ss_offwhite
-				<ss_notestreak_color> = $g_ss_GP_blueish
-				<ss_notestreak_text_color> = $g_ss_GP_greyish
-			case 7
-				<ss_logo> = #"0x9d67cbc0"
-				<ss_sidebar> = #"0xbd6781be"
-				<ss_percent_fill> = #"0x73bdf86e"
-				<ss_percent_color> = $g_ss_HELL_darker_reddish
-				<ss_star_good_color> = $g_ss_orangeish
-				<ss_star_bad_color> = $g_ss_offwhite
-				<ss_score_fill_L_color> = $g_ss_black
-				<ss_score_color> = $g_ss_HELL_lighter_reddish
-				<ss_score_fill_R_color> = $g_ss_HELL_darker_reddish
-				<ss_score_text_color> = $g_ss_black
-				<ss_notestreak_fill_color> = $g_ss_HELL_darker_reddish
-				<ss_notestreak_color> = $g_ss_black
-				<ss_notestreak_text_color> = $g_ss_black
-		endswitch
+		<ss_logo> = none
+		<ss_sidebar> = none
+		<ss_percent_fill> = none
+		<ss_percent_color> = $g_ss_offwhite
+		<ss_star_good_color> = $g_ss_offwhite
+		<ss_star_bad_color> = [100 100 100 255]
+		<ss_score_fill_L_color> = $g_ss_black
+		<ss_score_color> = $g_ss_offwhite
+		<ss_score_fill_R_color> = $g_ss_offwhite
+		<ss_score_text_color> = $g_ss_black
+		<ss_notestreak_fill_color> = $g_ss_black
+		<ss_notestreak_color> = $g_ss_offwhite
+		<ss_notestreak_text_color> = $g_ss_offwhite
 		displaySprite {
 			parent = newspaper_container
 			tex = <ss_logo>
@@ -1508,7 +1331,7 @@ script destroy_newspaper_menu
 		killspawnedscript \{name = np_2p_hilites_p2}
 		destroy_menu \{menu_id = newspaper_scroll}
 		destroy_menu \{menu_id = newspaper_container}
-		destroy_menu_backdrop
+		//destroy_menu_backdrop
 		net_destroy_newspaper_menu
 		Change \{g_np_options_index = 0}
 	endif
@@ -1635,32 +1458,8 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 	retail_menu_unfocus \{id = np_option_1}
 	retail_menu_unfocus \{id = np_option_2}
 	retail_menu_unfocus \{id = np_option_3}
-	switch $g_ss_mag_number
-		case 0
-			<ss_hilite_color> = $g_ss_black
-			<ss_menu_icon> = #"0x86a4c515"
-		case 1
-			<ss_hilite_color> = [109 76 44 255]
-			<ss_menu_icon> = #"0x7a2bc558"
-		case 2
-			<ss_hilite_color> = $g_ss_Paste_brownish
-			<ss_menu_icon> = #"0xf4051cb8"
-		case 3
-			<ss_hilite_color> = $g_ss_decibel_magentaish
-			<ss_menu_icon> = #"0xab4fcae5"
-		case 4
-			<ss_hilite_color> = $g_ss_AP_blueish
-			<ss_menu_icon> = #"0x000283c8"
-		case 5
-			<ss_hilite_color> = $g_ss_Kerrang_reddish
-			<ss_menu_icon> = #"0xf1ff6aba"
-		case 6
-			<ss_hilite_color> = $g_ss_GP_blueish
-			<ss_menu_icon> = #"0x64248d9c"
-		case 7
-			<ss_hilite_color> = $g_ss_HELL_darker_reddish
-			<ss_menu_icon> = #"0x9d3ba817"
-	endswitch
+	<ss_hilite_color> = $g_ss_black
+	<ss_menu_icon> = none
 	displaySprite {
 		id = ss_menu_hilite_id
 		parent = newspaper_container

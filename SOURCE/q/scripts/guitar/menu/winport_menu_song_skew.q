@@ -93,13 +93,6 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 		just = [center center]
 		z_priority = (<z> - 1)
 	}
-	displaySprite {
-		parent = winport_cl_container
-		tex = #"0x0bf92b88"
-		Pos = (385.0, -100.0)
-		dims = (610.0, 892.0)
-		z = (<z> -2)
-	}
 	<tape_offset> = (90.0, 325.0)
 	displaySprite {
 		parent = winport_cl_container

@@ -210,19 +210,7 @@ script create_select_difficulty_menu
 	Change \{sd_highlight_menuitem_morph = 1}
 	Change \{disable_menu_sounds = 0}
 	Change \{sd_highlight_time = 0.05}
-	if English
-		select_diff_tex = #"0x82389cb4"
-	elseif French
-		select_diff_tex = #"0xbd149338"
-	elseif Spanish
-		select_diff_tex = #"0x64af1400"
-	elseif German
-		select_diff_tex = #"0x0cf1747d"
-	elseif Italian
-		select_diff_tex = #"0xd3ef2ac2"
-	elseif #"0x6eaa363c"
-		select_diff_tex = #"0x82389cb4"
-	endif
+	select_diff_tex = #"0x82389cb4"
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = sd_container
@@ -621,19 +609,7 @@ script create_mp_select_difficulty_menu
 		endif
 	endif
 	if NOT ($game_mode = p2_career)
-		if English
-			select_diff_tex = #"0x82389cb4"
-		elseif French
-			select_diff_tex = #"0xbd149338"
-		elseif Spanish
-			select_diff_tex = #"0x64af1400"
-		elseif German
-			select_diff_tex = #"0x0cf1747d"
-		elseif Italian
-			select_diff_tex = #"0xd3ef2ac2"
-		elseif #"0x6eaa363c"
-			select_diff_tex = #"0x82389cb4"
-		endif
+		select_diff_tex = #"0x82389cb4"
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = sd_container

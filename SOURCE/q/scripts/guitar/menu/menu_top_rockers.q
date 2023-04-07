@@ -35,7 +35,7 @@ endscript
 
 script menu_top_rockers_create_poster
 	displaySprite \{parent = tr_container tex = #"0xf6c8349f" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
-	CreateScreenElement \{Type = SpriteElement parent = tr_container texture = #"0x1c8a86f3" Pos = (740.0, 30.0) just = [right top] dims = (620.0, 620.0) z_priority = 1.2 rot_angle = -3}
+	//CreateScreenElement \{Type = SpriteElement parent = tr_container texture = #"0x1c8a86f3" Pos = (740.0, 30.0) just = [right top] dims = (620.0, 620.0) z_priority = 1.2 rot_angle = -3}
 	FormatText \{textname = Rockers_title "\c9%T\c0%R" t = "TOP" r = "ROCKERS"}
 	CreateScreenElement {
 		Type = TextElement

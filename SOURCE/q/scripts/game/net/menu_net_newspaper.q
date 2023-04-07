@@ -57,32 +57,8 @@ script np_net_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu
 	SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 	retail_menu_focus \{id = np_option_0}
 	retail_menu_unfocus \{id = np_option_1}
-	switch $g_ss_mag_number
-		case 0
-			<ss_hilite_color> = $g_ss_black
-			<ss_menu_icon> = #"0x86a4c515"
-		case 1
-			<ss_hilite_color> = [109 76 44 255]
-			<ss_menu_icon> = #"0x7a2bc558"
-		case 2
-			<ss_hilite_color> = $g_ss_Paste_brownish
-			<ss_menu_icon> = #"0xf4051cb8"
-		case 3
-			<ss_hilite_color> = $g_ss_decibel_magentaish
-			<ss_menu_icon> = #"0xab4fcae5"
-		case 4
-			<ss_hilite_color> = $g_ss_AP_blueish
-			<ss_menu_icon> = #"0x000283c8"
-		case 5
-			<ss_hilite_color> = $g_ss_Kerrang_reddish
-			<ss_menu_icon> = #"0xf1ff6aba"
-		case 6
-			<ss_hilite_color> = $g_ss_GP_blueish
-			<ss_menu_icon> = #"0x64248d9c"
-		case 7
-			<ss_hilite_color> = $g_ss_HELL_darker_reddish
-			<ss_menu_icon> = #"0x9d3ba817"
-	endswitch
+	<ss_hilite_color> = $g_ss_black
+	<ss_menu_icon> = none
 	displaySprite {
 		id = ss_menu_hilite_id
 		parent = newspaper_container

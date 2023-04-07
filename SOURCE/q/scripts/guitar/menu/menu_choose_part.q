@@ -66,10 +66,10 @@ script create_choose_part_menu
 	endif
 	displaySprite \{id = si_hilite_p1 parent = select_intsrument_container tex = #"0x27a29bc7" Pos = $#"0x8c59897e" dims = (216.0, 64.0) rgba = [5 30 35 255] z = 4}
 	displaySprite \{id = si_hilite_p2 parent = select_intsrument_container tex = #"0x27a29bc7" Pos = $#"0xcbf9f3ae" dims = (216.0, 64.0) rgba = [65 25 10 255] z = 4 flip_h rot_angle = 8}
-	displaySprite id = si_hilite_bookend_p1a parent = select_intsrument_container tex = #"0xcdf38dca" Pos = ($g_si_hilitep1_pos + (0.0, 10.0))z = 4.5
-	displaySprite id = si_hilite_bookend_p1b parent = <id> tex = #"0x54fadc70" Pos = (180.0, 10.0)
-	displaySprite id = si_hilite_bookend_p2a parent = select_intsrument_container tex = #"0xe6dede09" Pos = ($g_si_hilitep2_pos + (0.0, 20.0))z = 4.5
-	displaySprite id = si_hilite_bookend_p2b parent = <id> tex = #"0x7fd78fb3" Pos = (180.0, 20.0)
+	//displaySprite id = si_hilite_bookend_p1a parent = select_intsrument_container tex = #"0xcdf38dca" Pos = ($g_si_hilitep1_pos + (0.0, 10.0))z = 4.5
+	//displaySprite id = si_hilite_bookend_p1b parent = <id> tex = #"0x54fadc70" Pos = (180.0, 10.0)
+	//displaySprite id = si_hilite_bookend_p2a parent = select_intsrument_container tex = #"0xe6dede09" Pos = ($g_si_hilitep2_pos + (0.0, 20.0))z = 4.5
+	//displaySprite id = si_hilite_bookend_p2b parent = <id> tex = #"0x7fd78fb3" Pos = (180.0, 20.0)
 	select_instrument_randomize_bookends \{Player = 1}
 	select_instrument_randomize_bookends \{Player = 2}
 	displaySprite \{parent = select_intsrument_container tex = #"0xe78837f3" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}

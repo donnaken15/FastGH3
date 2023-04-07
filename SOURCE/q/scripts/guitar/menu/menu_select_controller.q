@@ -81,14 +81,6 @@ script create_select_controller_menu
 	displayText \{parent = msc_container text = "Select Controller" Pos = (690.0, 140.0) Scale = 1.4 just = [center center] rgba = [90 25 20 255] font = #"0xba959ce0" z = 100 noshadow}
 	CreateScreenElement \{Type = TextElement parent = msc_container text = "Move the desired controller" Pos = (620.0, 570.0) Scale = 0.7 just = [center center] rgba = [90 25 20 255] font = #"0xcd92ac76" z = 100 Shadow shadow_rgba = [185 180 135 255] shadow_offs = (2.0, 2.0)}
 	CreateScreenElement \{Type = TextElement parent = msc_container text = "to your side of the screen." Pos = (620.0, 610.0) Scale = 0.7 just = [center center] rgba = [90 25 20 255] font = #"0xcd92ac76" z = 100 Shadow shadow_rgba = [185 180 135 255] shadow_offs = (2.0, 2.0)}
-	displaySprite \{parent = msc_container id = peasant_01 tex = #"0x5cf4670c" rgba = [220 145 100 255] dims = (192.0, 192.0) Pos = (60.0, 570.0) z = 10}
-	displaySprite \{parent = msc_container id = peasant_02 tex = #"0xc5fd36b6" rgba = [220 145 100 255] dims = (192.0, 192.0) Pos = (160.0, 570.0) z = 10}
-	displaySprite \{parent = msc_container id = peasant_03 tex = #"0x2c9e9383" rgba = [220 145 100 255] dims = (192.0, 192.0) Pos = (240.0, 620.0) z = 10}
-	displaySprite \{parent = msc_container id = peasant_04 tex = #"0xb2fa0620" rgba = [220 145 100 255] dims = (192.0, 192.0) Pos = (320.0, 570.0) z = 10}
-	displaySprite \{parent = msc_container id = peasant_05 tex = #"0x5cf4670c" rgba = [170 180 215 255] dims = (192.0, 192.0) Pos = (760.0, 570.0) z = 10}
-	displaySprite \{parent = msc_container id = peasant_06 tex = #"0xc5fd36b6" rgba = [170 180 215 255] dims = (192.0, 192.0) Pos = (860.0, 570.0) z = 10}
-	displaySprite \{parent = msc_container id = peasant_07 tex = #"0xb2fa0620" rgba = [170 180 215 255] dims = (192.0, 192.0) Pos = (940.0, 570.0) z = 10}
-	displaySprite \{parent = msc_container id = peasant_08 tex = #"0x2c9e9383" rgba = [170 180 215 255] dims = (192.0, 192.0) Pos = (1020.0, 570.0) z = 10}
 	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow1 texture = #"0xbe14c2a7" rgba = [240 140 80 255] dims = (64.0, 128.0) Pos = (450.0, 270.0) just = [left top] rot_angle = -20}
 	<id> ::SetTags old_pos = (450.0, 270.0)
 	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow2 texture = #"0xbe14c2a7" rgba = [130 90 205 255] dims = (64.0, 128.0) Pos = (705.0, 445.0) just = [left top] flip_v flip_h rot_angle = -20}
@@ -144,42 +136,6 @@ script cs_bounce_arrows
 endscript
 
 script jump_up_and_down_peasants
-	i = 1
-	begin
-		FormatText checksumName = peasant_id 'peasant_0%d' d = <i>
-		if ScreenElementExists id = <peasant_id>
-			GetScreenElementProps id = <peasant_id>
-			GetRandomValue \{a = 0.05 b = 0.15 name = rand_time}
-			<peasant_id> ::SetTags old_pos = <Pos> rand_time = <rand_time>
-		endif
-		<i> = (<i> + 1)
-	repeat 8
-	begin
-		<i> = 1
-		begin
-			FormatText checksumName = peasant_id 'peasant_0%d' d = <i>
-			if ScreenElementExists id = <peasant_id>
-				GetRandomValue \{a = 0 b = 42 name = pos_off_y integer}
-				<peasant_id> ::GetTags
-				new_pos = (<old_pos> - (<pos_off_y> * (0.0, 1.0)))
-				DoScreenElementMorph id = <peasant_id> Pos = <new_pos> time = <rand_time>
-			endif
-			<i> = (<i> + 1)
-		repeat 8
-		GetRandomValue \{a = 0.1 b = 0.2 name = rand_wait_time}
-		wait <rand_wait_time> seconds
-		<i> = 1
-		begin
-			FormatText checksumName = peasant_id 'peasant_0%d' d = <i>
-			if ScreenElementExists id = <peasant_id>
-				<peasant_id> ::GetTags
-				DoScreenElementMorph id = <peasant_id> Pos = <old_pos> time = <rand_time>
-			endif
-			<i> = (<i> + 1)
-		repeat 8
-		GetRandomValue \{a = 0.1 b = 0.2 name = rand_wait_time}
-		wait <rand_wait_time> seconds
-	repeat
 endscript
 
 script menu_select_controller_poll_for_controllers\{wait_to_drop_controller = 0}

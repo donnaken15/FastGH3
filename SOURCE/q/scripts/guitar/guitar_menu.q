@@ -204,19 +204,20 @@ script create_main_menu_backdrop
 		shadow_rgba = [0 0 0 255]
 		z_priority = 60
 	}
-	CreateScreenElement \{Type = SpriteElement id = #"0xe8054a04" parent = main_menu_bg_container texture = #"0xe8054a04" Pos = (335.0, 0.0) dims = (720.0, 720.0) just = [left top] z_priority = 1}
-	RunScriptOnScreenElement id = #"0xe8054a04" glow_menu_element params = {time = 1 id = <id>}
-	CreateScreenElement \{Type = SpriteElement parent = main_menu_bg_container texture = #"0xf4e50517" Pos = (0.0, 0.0) dims = (1280.0, 720.0) just = [left top] z_priority = 2}
-	CreateScreenElement \{Type = SpriteElement id = eyes_BL parent = main_menu_bg_container texture = #"0xac82272b" Pos = (93.0, 676.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	RunScriptOnScreenElement id = eyes_BL glow_menu_element params = {time = 1.0 id = <id>}
-	CreateScreenElement \{Type = SpriteElement id = eyes_BR parent = main_menu_bg_container texture = #"0x568d1a48" Pos = (1176.0, 659.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	RunScriptOnScreenElement id = eyes_BR glow_menu_element params = {time = 1.0 id = <id>}
-	CreateScreenElement \{Type = SpriteElement id = eyes_C parent = main_menu_bg_container texture = #"0x49d95bd1" Pos = (406.0, 398.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	RunScriptOnScreenElement id = eyes_C glow_menu_element params = {time = 1.5 id = <id>}
-	CreateScreenElement \{Type = SpriteElement id = eyes_TL parent = main_menu_bg_container texture = #"0xb01a92fc" Pos = (271.0, 215.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	RunScriptOnScreenElement id = eyes_TL glow_menu_element params = {time = 1.7 id = <id>}
-	CreateScreenElement \{Type = SpriteElement id = eyes_TR parent = main_menu_bg_container texture = #"0x4a15af9f" Pos = (995.0, 71.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	RunScriptOnScreenElement id = eyes_TR glow_menu_element params = {time = 1.0 id = <id>}
+	//CreateScreenElement \{Type = SpriteElement id = #"0xe8054a04" parent = main_menu_bg_container texture = #"0xe8054a04" Pos = (335.0, 0.0) dims = (720.0, 720.0) just = [left top] z_priority = 1}
+	//RunScriptOnScreenElement id = #"0xe8054a04" glow_menu_element params = {time = 1 id = <id>}
+	//CreateScreenElement \{Type = SpriteElement parent = main_menu_bg_container texture = #"0xf4e50517" Pos = (0.0, 0.0) dims = (1280.0, 720.0) just = [left top] z_priority = 2}
+	//CreateScreenElement \{Type = SpriteElement id = eyes_BL parent = main_menu_bg_container texture = #"0xac82272b" Pos = (93.0, 676.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
+	//RunScriptOnScreenElement id = eyes_BL glow_menu_element params = {time = 1.0 id = <id>}
+	//CreateScreenElement \{Type = SpriteElement id = eyes_BR parent = main_menu_bg_container texture = #"0x568d1a48" Pos = (1176.0, 659.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
+	//RunScriptOnScreenElement id = eyes_BR glow_menu_element params = {time = 1.0 id = <id>}
+	//CreateScreenElement \{Type = SpriteElement id = eyes_C parent = main_menu_bg_container texture = #"0x49d95bd1" Pos = (406.0, 398.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
+	//RunScriptOnScreenElement id = eyes_C glow_menu_element params = {time = 1.5 id = <id>}
+	//CreateScreenElement \{Type = SpriteElement id = eyes_TL parent = main_menu_bg_container texture = #"0xb01a92fc" Pos = (271.0, 215.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
+	//RunScriptOnScreenElement id = eyes_TL glow_menu_element params = {time = 1.7 id = <id>}
+	//CreateScreenElement \{Type = SpriteElement id = eyes_TR parent = main_menu_bg_container texture = #"0x4a15af9f" Pos = (995.0, 71.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
+	//RunScriptOnScreenElement id = eyes_TR glow_menu_element params = {time = 1.0 id = <id>}
+	
 endscript
 
 script WinPortCreateLaptopUi

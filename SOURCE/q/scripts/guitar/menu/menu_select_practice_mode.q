@@ -12,7 +12,7 @@ script create_select_practice_mode_menu
 		exclusive_device = ($primary_controller)
 	}
 	create_menu_backdrop \{texture = #"0xc5a54934"}
-	displaySprite \{texture = #"0x638dac7b" id = spm_poster parent = spm_container Pos = (640.0, 340.0) dims = (600.0, 600.0) rot_angle = -5 just = [center center]}
+	//displaySprite \{texture = #"0x638dac7b" id = spm_poster parent = spm_container Pos = (640.0, 340.0) dims = (600.0, 600.0) rot_angle = -5 just = [center center]}
 	displaySprite \{tex = #"0x987a6319" parent = spm_container Pos = (710.0, 240.0) dims = (192.0, 75.0) rot_angle = -5 just = [center center] rgba = [0 0 0 255] z = 5}
 	displaySprite \{tex = #"0x017332a3" parent = spm_container Pos = (555.0, 320.0) dims = (220.0, 75.0) rot_angle = -5 just = [center center] rgba = [0 0 0 255] z = 5}
 	displaySprite \{tex = #"0x28091e67" parent = spm_container Pos = (775.0, 60.0) dims = (160.0, 64.0) rot_angle = -20 just = [center center] z = 7}
@@ -107,9 +107,9 @@ endscript
 
 script update_training_menu
 	if ($training_mode = tutorials)
-		if ScreenElementExists \{id = spm_poster}
-			SetScreenElementProps \{id = spm_poster texture = #"0xfa84fdc1"}
-		endif
+		//if ScreenElementExists \{id = spm_poster}
+		//	SetScreenElementProps \{id = spm_poster texture = #"0xfa84fdc1"}
+		//endif
 		if ScreenElementExists \{id = tutorials_text}
 			SetScreenElementProps \{id = tutorials_text rgba = [150 140 200 255] Scale = 0.75}
 		endif
@@ -117,9 +117,9 @@ script update_training_menu
 			SetScreenElementProps \{id = practice_text rgba = [145 145 145 255] Scale = 0.6}
 		endif
 	else
-		if ScreenElementExists \{id = spm_poster}
-			SetScreenElementProps \{id = spm_poster texture = #"0x638dac7b"}
-		endif
+		//if ScreenElementExists \{id = spm_poster}
+		//	SetScreenElementProps \{id = spm_poster texture = #"0x638dac7b"}
+		//endif
 		if ScreenElementExists \{id = tutorials_text}
 			SetScreenElementProps \{id = tutorials_text rgba = [145 145 145 255] Scale = 0.6}
 		endif

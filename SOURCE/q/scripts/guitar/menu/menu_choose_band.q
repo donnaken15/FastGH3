@@ -65,7 +65,7 @@ script create_choose_band_menu
 		Scale = 1.75
 	}
 	fit_text_in_rectangle id = <id> dims = (850.0, 200.0) Pos = (510.0, 75.0)
-	CreateScreenElement \{Type = SpriteElement parent = big_blue_box just = [right bottom] id = logo_vault_image texture = #"0x80fdc82d" Pos = (660.0, 96.0) dims = (128.0, 128.0) blend = subtract}
+	//CreateScreenElement \{Type = SpriteElement parent = big_blue_box just = [right bottom] id = logo_vault_image texture = #"0x80fdc82d" Pos = (660.0, 96.0) dims = (128.0, 128.0) blend = subtract}
 	<cb_hlBar_pos> = [(6.0, 96.0) (6.0, 145.0) (6.0, 204.0) (8.0, 255.0) (9.0, 312.0)]
 	<cb_hlBar_dims> = [(656.0, 48.0) (656.0, 58.0) (656.0, 48.0) (654.0, 58.0) (653.0, 54.0)]
 	displaySprite {

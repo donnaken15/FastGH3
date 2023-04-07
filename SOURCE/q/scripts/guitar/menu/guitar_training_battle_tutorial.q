@@ -179,12 +179,12 @@ script training_3_2_show_lesson
 	Change \{StructureName = player1_status last_selected_attack = -1}
 	training_play_sound \{Sound = 'Tutorial_3B_01_Lou'}
 	wait \{25.5 seconds ignoreslomo}
-	CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = #"0xe63215c3" Pos = (400.0, 400.0) rot_angle = 45 rgba = [255 255 255 255] Scale = (0.800000011920929, 0.800000011920929) z_priority = 50}
+	//CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = #"0xe63215c3" Pos = (400.0, 400.0) rot_angle = 45 rgba = [255 255 255 255] Scale = (0.800000011920929, 0.800000011920929) z_priority = 50}
 	wait \{2.5 seconds ignoreslomo}
-	DoScreenElementMorph \{id = guitar_sprite rot_angle = 0 time = 1.0}
+	//DoScreenElementMorph \{id = guitar_sprite rot_angle = 0 time = 1.0}
 	wait \{3.5 seconds ignoreslomo}
-	safe_hide \{id = guitar_sprite}
-	DoScreenElementMorph \{id = guitar_sprite rot_angle = 45 time = 0.0}
+	//safe_hide \{id = guitar_sprite}
+	//DoScreenElementMorph \{id = guitar_sprite rot_angle = 45 time = 0.0}
 	training_wait_for_sound \{Sound = 'Tutorial_3B_01_Lou'}
 	training_set_task_header_body \{text = "Tilt guitar upward to unleash attack"}
 	training_show_task_header

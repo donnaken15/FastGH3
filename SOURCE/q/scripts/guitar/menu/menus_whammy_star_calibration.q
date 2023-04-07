@@ -306,19 +306,7 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 		rot_angle = 20
 		z = (<z> + 2)
 	}
-	if English
-		starpower_pow_tex = #"0xb5104050"
-	elseif French
-		starpower_pow_tex = #"0x6b3ec4d8"
-	elseif Spanish
-		starpower_pow_tex = #"0xb28543e0"
-	elseif German
-		starpower_pow_tex = #"0xdadb239d"
-	elseif Italian
-		starpower_pow_tex = #"0x6b3ec4d8"
-	elseif #"0x6eaa363c"
-		starpower_pow_tex = #"0xb5104050"
-	endif
+	starpower_pow_tex = #"0xb5104050"
 	displaySprite {
 		id = spc_pow
 		parent = spc_container

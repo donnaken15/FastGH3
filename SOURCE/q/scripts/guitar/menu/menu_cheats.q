@@ -496,8 +496,8 @@ script destroy_cheats_menu
 	endif
 endscript
 
+	//CreateScreenElement \{parent = cheats_container Type = SpriteElement id = guitar_sprite just = [left center] texture = #"0x8e29fb9d" Pos = (1200.0, 545.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (1.0, 1.0) z_priority = 2}
 script cheats_create_guitar
-	CreateScreenElement \{parent = cheats_container Type = SpriteElement id = guitar_sprite just = [left center] texture = #"0x8e29fb9d" Pos = (1200.0, 545.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (1.0, 1.0) z_priority = 2}
 endscript
 
 script cheats_create_pressed_notes

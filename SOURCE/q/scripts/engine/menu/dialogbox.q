@@ -116,7 +116,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 	GetScreenElementDims id = <title_id>
 	if GotParam \{use_goalmenu_bg}
 		bg_rgba = [20 30 40 80]
-		CreateScreenElement {
+		/*CreateScreenElement {
 			Type = SpriteElement
 			parent = {<vmenu_id> child = dbox_title}
 			texture = #"0xc94d6a2a"
@@ -148,7 +148,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 			Scale = (2.125, 1.0)
 			z_priority = (<z_priority> -1)
 			flip_v
-		}
+		}*/
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = {<vmenu_id> child = dbox_title}
@@ -159,7 +159,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 			Scale = (1.5, 1.0)
 			z_priority = (<z_priority> -1)
 		}
-		CreateScreenElement {
+		/*CreateScreenElement {
 			Type = SpriteElement
 			parent = {<vmenu_id> child = dbox_title}
 			texture = #"0x5c93cccc"
@@ -168,7 +168,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 			rgba = [5 15 25 100]
 			Scale = (2.125, 0.25)
 			z_priority = (<z_priority> -1)
-		}
+		}*/
 	endif
 	CreateScreenElement {
 		Type = TextBlockElement
@@ -267,7 +267,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		centered_pos = <forced_pos>
 	endif
 	<bg_x_scale> = 1.2
-	CreateScreenElement {
+	/*CreateScreenElement {
 		Type = SpriteElement
 		parent = <anchor_id>
 		Pos = <centered_pos>
@@ -276,7 +276,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		Scale = ((1.0, 0.0) * <bg_x_scale> + (0.0, 1.0))
 		rgba = <bg_rgba>
 		z_priority = 38
-	}
+	}*/
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <anchor_id>
@@ -287,7 +287,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		rgba = <bg_rgba>
 		z_priority = 38
 	}
-	CreateScreenElement {
+	/*CreateScreenElement {
 		Type = SpriteElement
 		parent = <anchor_id>
 		Pos = (<centered_pos> + (0.0, 1.0) * (<height>)+ (0.0, 15.0))
@@ -296,7 +296,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		Scale = ((1.0, 0.0) * <bg_x_scale> + (0.0, 1.0))
 		rgba = <bg_rgba>
 		z_priority = 38
-	}
+	}*/
 	kill_start_key_binding
 	if ObjectExists \{id = no_button}
 		LaunchEvent Type = focus target = <vmenu_id> data = {child_id = no_button}
@@ -821,7 +821,7 @@ script create_speech_box_guts\{Pos = (640.0, 560.0) bg_rgba = [8 15 24 50] text_
 	<speech_text> = <id>
 	GetScreenElementDims id = <speech_text>
 	speech_text_height = <height>
-	CreateScreenElement {
+	/*CreateScreenElement {
 		Type = SpriteElement
 		parent = <anchor_id>
 		just = [center top]
@@ -837,7 +837,7 @@ script create_speech_box_guts\{Pos = (640.0, 560.0) bg_rgba = [8 15 24 50] text_
 		texture = #"0xc94d6a2a"
 		Scale = ((1.0, 0.0) * <bg_x_scale> + (0.0, 1.0))
 		rgba = <bg_rgba>
-	}
+	}*/
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <anchor_id>

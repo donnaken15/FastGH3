@@ -3,7 +3,7 @@ beat_game_message = "Think you've got what it takes to really\n blow their minds
 beat_game_message_expert = "Wow. You've mastered expert -- Go start a band already! Take it to the next level with the \c1%n\c0! Cheats can be unlocked in the options menu."
 
 script create_beat_game_menu
-	create_menu_backdrop \{texture = #"0x7db2638a"}
+	//create_menu_backdrop \{texture = #"0x7db2638a"}
 	menu_font = fontgrid_title_gh3
 	get_current_band_info
 	GetGlobalTags <band_info> param = name
@@ -119,7 +119,7 @@ endscript
 script destroy_beat_game_menu
 	clean_up_user_control_helpers
 	destroy_menu \{menu_id = beat_game_container}
-	destroy_menu_backdrop
+	//destroy_menu_backdrop
 	killspawnedscript \{name = scroll_band_name}
 endscript
 

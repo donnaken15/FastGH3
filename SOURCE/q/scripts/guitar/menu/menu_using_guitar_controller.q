@@ -6,36 +6,11 @@ script create_using_guitar_controller_menu\{keyboard = 0}
 	create_menu_backdrop \{texture = #"0x767cd482"}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = ugc_container Pos = (0.0, 0.0)}
 	guitar_tex = #"0x4de11b10"
-	GetPlatform
-	switch <Platform>
-		case PS3
-			<guitar_tex> = #"0x733fd809"
-	endswitch
 	if ($menu_using_guitar_controller_kb = 1)
 		if NotIsMacPort
 			guitar_tex = #"0x4b646edf"
-			if German
-				guitar_tex = #"0x425f6b8b"
-			elseif French
-				guitar_tex = #"0x35585b1d"
-			elseif Italian
-				guitar_tex = #"0xa5e7468c"
-			elseif Spanish
-				guitar_tex = #"0x5885bff6"
-			elseif #"0x6eaa363c"
-				guitar_tex = #"0x4be927a0"
-			endif
 		else
 			guitar_tex = #"0x125cf8ca"
-			if German
-				guitar_tex = #"0x6c86e2d6"
-			elseif French
-				guitar_tex = #"0x1b81d240"
-			elseif Italian
-				guitar_tex = #"0x8b3ecfd1"
-			elseif Spanish
-				guitar_tex = #"0x765c36ab"
-			endif
 		endif
 	endif
 	if ($menu_using_guitar_controller_kb = 1)
@@ -132,7 +107,7 @@ script menu_using_guitar_controller_add_text_start
 		rgba = [0 0 0 255]
 		font = ($menu_using_guitar_controller_font)
 		just = [right top]
-		Scale = (0.699999988079071, 0.699999988079071)
+		Scale = (0.7, 0.7)
 	}
 	GetScreenElementDims id = <id>
 	if (<width> > 80)
@@ -172,7 +147,7 @@ script menu_using_guitar_controller_add_text_back
 		rgba = [0 0 0 255]
 		font = ($menu_using_guitar_controller_font)
 		just = [left top]
-		Scale = (0.699999988079071, 0.699999988079071)
+		Scale = (0.7, 0.7)
 	}
 	CreateScreenElement {
 		Type = TextElement
@@ -206,7 +181,7 @@ script menu_using_guitar_controller_add_text_continue
 		rgba = [0 0 0 255]
 		font = ($menu_using_guitar_controller_font)
 		just = [right top]
-		Scale = (0.699999988079071, 0.699999988079071)
+		Scale = (0.7, 0.7)
 	}
 	GetScreenElementDims id = <id>
 	if (<width> > 125)
@@ -239,7 +214,7 @@ script menu_using_guitar_controller_add_text_up_down
 		rgba = [0 0 0 255]
 		font = ($menu_using_guitar_controller_font)
 		just = [center top]
-		Scale = (0.699999988079071, 0.699999988079071)
+		Scale = (0.7, 0.7)
 	}
 	GetScreenElementDims id = <id>
 	if (<width> > 180)
@@ -276,7 +251,7 @@ script menu_using_guitar_controller_add_text_tilt_starpower
 		rgba = [0 0 0 255]
 		font = ($menu_using_guitar_controller_font)
 		just = [left top]
-		Scale = (0.699999988079071, 0.699999988079071)
+		Scale = (0.7, 0.7)
 	}
 	GetScreenElementDims id = <id>
 	if (<width> > 180)
@@ -318,7 +293,7 @@ script menu_using_guitar_controller_add_text_header
 		rgba = [100 110 145 255]
 		font = ($menu_using_guitar_controller_font)
 		just = [center top]
-		Scale = (1.399999976158142, 1.0)
+		Scale = (1.4, 1.0)
 	}
 	CreateScreenElement {
 		Type = TextElement
@@ -328,6 +303,6 @@ script menu_using_guitar_controller_add_text_header
 		rgba = [0 0 0 255]
 		font = ($menu_using_guitar_controller_font)
 		just = [center top]
-		Scale = (0.8999999761581421, 0.699999988079071)
+		Scale = (0.9, 0.7)
 	}
 endscript

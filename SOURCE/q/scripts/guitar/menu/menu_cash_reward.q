@@ -31,8 +31,8 @@ script create_cash_reward_menu
 	Change \{StructureName = player1_status new_cash = 0}
 	venue_name = (($LevelZones.($current_level)).title)
 	GetUpperCaseString <venue_name>
-	CreateScreenElement \{Type = SpriteElement parent = cash_reward_container texture = #"0xaa5ae5d2" Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0) z_priority = -100}
-	create_menu_backdrop \{texture = #"0x84d3e6d3"}
+	CreateScreenElement \{Type = SpriteElement parent = cash_reward_container texture = none Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0) z_priority = -100}
+	//create_menu_backdrop \{texture = #"0x84d3e6d3"}
 	CreateScreenElement {
 		Type = TextElement
 		parent = cash_reward_container
@@ -150,7 +150,8 @@ endscript
 
 script destroy_cash_reward_menu
 	destroy_menu \{menu_id = cash_reward_container}
-	destroy_menu_backdrop
+	//destroy_menu_backdrop
+	
 endscript
 cash_reward_font = #"0x35c0114b"
 

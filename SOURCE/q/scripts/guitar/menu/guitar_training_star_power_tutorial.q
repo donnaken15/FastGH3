@@ -340,7 +340,7 @@ script training_2_2_show_whammy
 	training_set_lesson_header_body \{text = ""}
 	training_show_lesson_header
 	safe_show \{id = lou_icon}
-	CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = #"0x93f6bad9" Pos = (300.0, 350.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (0.6000000238418579, 0.6000000238418579) z_priority = 20}
+	//CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = #"0x93f6bad9" Pos = (300.0, 350.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (0.6000000238418579, 0.6000000238418579) z_priority = 20}
 	training_create_whammy_sprites
 	training_create_whammy_arrows
 	if IsWinPort

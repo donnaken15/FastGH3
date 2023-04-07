@@ -98,13 +98,6 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = cl_container
-		tex = #"0x0bf92b88"
-		Pos = (600.0, -100.0)
-		dims = (610.0, 892.0)
-		z = (<z> -2)
-	}
-	displaySprite {
-		parent = cl_container
 		tex = #"0x640f83c4"
 		Pos = (720.0, -100.0)
 		dims = (180.0, 80.0)

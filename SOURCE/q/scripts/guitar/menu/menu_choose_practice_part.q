@@ -11,7 +11,7 @@ script create_choose_practice_part_menu
 	new_menu scrollid = cpp_scroll vmenuid = cpp_vmenu menu_pos = <menu_pos> spacing = -45
 	create_menu_backdrop \{texture = #"0xc5a54934"}
 	CreateScreenElement \{Type = SpriteElement parent = cpp_container texture = #"0xf6c8349f" Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
-	displaySprite \{parent = cpp_container tex = #"0x148a9ced" Pos = (186.0, 15.0) dims = (672.0, 672.0) rot_angle = -2 z = 1}
+	//displaySprite \{parent = cpp_container tex = #"0x148a9ced" Pos = (186.0, 15.0) dims = (672.0, 672.0) rot_angle = -2 z = 1}
 	displaySprite \{parent = cpp_container tex = #"0x640f83c4" Pos = (500.0, 650.0) z = 3 rot_angle = -12 flip_v}
 	displaySprite \{parent = cpp_container tex = #"0xfd06d27e" Pos = (565.0, -95.0) z = 3 rot_angle = 80}
 	displaySprite \{parent = cpp_container tex = #"0x640f83c4" Pos = (500.0, -85.0) z = 3 rot_angle = 80}
