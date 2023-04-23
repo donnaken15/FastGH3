@@ -30,12 +30,14 @@ script bot_star_power\{player_status = player1_status}
 endscript
 
 script check_buttons_bot
-	FormatText checksumName = input_array 'input_array%p' p = <player_text>
-	song = <input_array>
-	GetStrumPattern song = <song> entry = <array_entry>
-	do_hammer = ($<song> [<array_entry>] [6])
-	Change StructureName = <player_status> bot_pattern = <strum>
-	Change StructureName = <player_status> bot_strum = 1
+	if NOT ($input_mode = Play)
+		FormatText checksumName = input_array 'input_array%p' p = <player_text>
+		song = <input_array>
+		GetStrumPattern song = <song> entry = <array_entry>
+		do_hammer = ($<song> [<array_entry>] [6])
+		Change StructureName = <player_status> bot_pattern = <strum>
+		Change StructureName = <player_status> bot_strum = 1
+	endif
 endscript
 
 script strip_single_note_strum
@@ -297,6 +299,8 @@ endscript
 script reset_whammy_pitchshift
 	set_whammy_pitchshift control = 0.0 player_status = <player_status>
 	SetAllWhammyValues value = 1.0 Player = <Player>
+	change \{wibble_lagp1 = 0.0}
+	change \{wibble_lagp2 = 0.0}
 endscript
 
 script boss_play_on
@@ -317,10 +321,16 @@ endscript
 
 playback_next_frame = 0.0
 playback_do_frame = 0
+playback_pattern_p1 = 0
+playback_pattern_p2 = 0
+playback_ctrl1 = 0
+playback_ctrl2 = 0
 script playback_timer
-	//if ($replay_suspend = 1)
+	if ($replay_suspend = 1)
 		//return
-	//endif
+		SetInput controller = ($player1_status.controller) pattern = ($playback_pattern_p1) strum = 0
+		SetInput controller = ($player2_status.controller) pattern = ($playback_pattern_p2) strum = 0
+	endif
 	if GameIsPaused
 		return
 	endif
@@ -331,6 +341,8 @@ script playback_timer
 			change playback_next_frame = <float>
 			change playback_do_frame = 1
 			// set time to wait to play next frame
+			//printf \{'frame %d' d = $playback_next_frame}
+			
 		endif
 	endif
 endscript

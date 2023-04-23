@@ -584,6 +584,10 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	Change current_endtime = <endtime>
 	Change \{boss_play = 0}
 	Change \{showing_raise_axe = 0}
+	//if ($input_mode = play)
+	//	Change \{StructureName = player1_status bot_play = 1}
+	//	Change \{StructureName = player2_status bot_play = 1}
+	//endif
 	Progression_SetProgressionNodeFlags
 	get_song_struct song = <song_name>
 	if StructureContains structure = <song_struct> boss
@@ -613,6 +617,10 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		Change StructureName = player1_status controller = <controller>
 		printf \{channel = log "Starting bot for player 1"}
 	endif
+	//if ($input_mode = play)
+	//	Change \{StructureName = player1_status bot_play = 0}
+	//	Change \{StructureName = player2_status bot_play = 0}
+	//endif
 	if ($game_mode = p2_battle)
 		printf \{"Initiating Battlemode"}
 		battlemode_init
@@ -703,7 +711,9 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 			TextOutputStart
 		endif
 		if NOT GotParam \{no_score_update}
-			SpawnScriptLater update_score_fast params = {<...> }
+			if ($hudless = 0)
+				SpawnScriptLater update_score_fast params = {<...> }
+			endif
 		endif
 		if (($is_network_game)& ($player1_status.highway_layout = solo_highway))
 			SpawnScriptLater \{update_score_fast params = {player_status = player2_status}}
@@ -1009,8 +1019,10 @@ script restart_gem_scroller\{no_render = 0}
 			Change current_num_players = <int>
 			DataBufferGetInt \{name = replay}
 			Change p1_ctrl = <int>
+			change playback_ctrl1 = <int>
 			DataBufferGetInt \{name = replay}
 			Change p2_ctrl = <int>
+			change playback_ctrl2 = <int>
 			DataBufferGetChecksum \{name = replay}
 			//Change StructureName = player1_status part = <int>
 			Change p1_part = <checksum>
@@ -1302,7 +1314,7 @@ script kill_object_later
 	if ($#"0xc50e4995" = 1)
 		if (ScreenElementExists id = <gem_id>)
 			if ($#"0xf88a8d5d" = 0)
-				SetScreenElementProps id = <gem_id> rgba = [255 , 255 , 255 , 0]
+				SetScreenElementProps id = <gem_id> alpha = 0
 			else
 				DestroyGem name = <gem_id>
 				return

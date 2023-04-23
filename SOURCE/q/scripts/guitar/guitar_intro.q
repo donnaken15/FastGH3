@@ -331,6 +331,11 @@ script play_outro
 	killspawnedscript \{name = hud_show_note_streak_combo}
 	killspawnedscript \{name = play_intro}
 	killspawnedscript \{name = begin_song_after_intro}
+	killspawnedscript \{name = solo}
+	killspawnedscript \{name = soloend}
+	killspawnedscript \{name = solo_ui_create}
+	killspawnedscript \{name = solo_ui_update}
+	killspawnedscript \{name = solo_ui_end}
 	if GotParam \{kill_cameracuts_iterator}
 		killspawnedscript \{name = cameracuts_iterator}
 	endif

@@ -286,9 +286,6 @@ script unnecessary_note
 endscript
 
 script update_score_fast
-	if ($hudless = 1)
-		return
-	endif
 	UpdateScoreFastInit player_status = <player_status>
 	begin
 		GetSongTimeMs

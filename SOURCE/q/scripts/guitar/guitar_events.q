@@ -1662,7 +1662,7 @@ script #"0x49b1c3d0"\{Player = 1 player_status = player1_status}
 		return
 	endif
 	wait \{$button_sink_time seconds}
-	//ProfilingStart
+	ProfilingStart
 	GetSongTimeMs
 	open_color1 = [240 199 255 255]
 	open_color2 = [212 0 255 255]
@@ -1670,11 +1670,9 @@ script #"0x49b1c3d0"\{Player = 1 player_status = player1_status}
 		open_color1 = [199 252 255 255]
 		open_color2 = [0 247 255 255]
 	endif
-	ExtendCrc gem_container ($<player_status>.text) out = container_id
-	ExtendCrc open_particle ($<player_status>.text) out = fx_id
-	FormatText textname = timestr '%t' t = <time> // I NEED AUTOID!!!
-	ExtendCrc <fx_id> <timestr> out = fx_id
-	ExtendCrc <fx_id> '2' out = fx2_id
+	FormatText checksumName = container_id 'gem_container%p' p = ($<player_status>.text)
+	FormatText checksumName = fx_id '%fp%p_%t' f = 'open_particle' p = <Player> t = <time>
+	ExtendCrc <fx_id> '_2' out = fx2_id
 	fx1_scale = (1.0, 1.0)
 	fx2_scale = (2.2, 2.4)
 	if ($current_num_players = 2)
@@ -1702,7 +1700,7 @@ script #"0x49b1c3d0"\{Player = 1 player_status = player1_status}
 		Pos = (640.0, 630.0)
 		material = sys_openfx2_sys_openfx2
 	}
-	//ProfilingEnd <...> 'Open_NoteFX'
+	ProfilingEnd <...> 'Open_NoteFX'
 	time = (0.085 / $current_speedfactor)
 	DoScreenElementMorph id = <fx_id> time = <time> alpha = 0 Scale = (1.0, 1.7) relative_scale
 	DoScreenElementMorph id = <fx2_id> time = <time> alpha = 0 Scale = 1.4 relative_scale

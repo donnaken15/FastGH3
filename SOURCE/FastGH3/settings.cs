@@ -354,7 +354,7 @@ public partial class settings : Form
 	const int modc = 6;
 	static string modN(int i)
 	{
-		return ((t)i).ToString();
+		return ((mods)i).ToString();
 	}
 
 	const bool FFQ = true; // framerate from QB, set accordingly in the FastGH3 plugin
