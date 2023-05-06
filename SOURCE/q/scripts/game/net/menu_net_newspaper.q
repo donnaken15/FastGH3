@@ -2,7 +2,7 @@ g_np_player1_ready = 0
 g_np_player2_ready = 0
 np_safe = 0
 
-script net_create_newspaper_menu
+/*script net_create_newspaper_menu
 	printscriptinfo \{"MJS --- net_create_newspaper_menu"}
 	Change \{np_safe = 0}
 	Change \{g_np_player1_ready = 0}
@@ -124,7 +124,7 @@ script net_np_ready_for_next_song\{Player = 1}
 		update_np_timer
 		drop_in_ready_sign Player = <Player>
 	endif
-endscript
+endscript*/
 
 script net_np_create_timer\{Player = 1}
 	timer_z = 3.0999999

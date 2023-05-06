@@ -316,6 +316,7 @@ script startpreloadpaused_song
 	endif
 endscript
 
+no_sync = 1
 script begin_song_after_intro
 	WinPortGetSongSkew
 	begin
@@ -327,7 +328,7 @@ script begin_song_after_intro
 		wait \{1 gameframe}
 	repeat
 	begin_song
-	if IsWinPort
+	if ($no_sync = 0)
 		WinPortSongHighwaySync \{sync = 1}
 	endif
 endscript

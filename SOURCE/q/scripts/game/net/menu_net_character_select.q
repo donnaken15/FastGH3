@@ -1,5 +1,5 @@
 
-script create_leaving_lobby_dialog\{menu_id = leaving_lobby_dialog_menu vmenu_id = leaving_lobby_dialog_vmenu pad_back_script = leaving_lobby_select_cancel pad_choose_script = leaving_lobby_select_yes Pos = (640.0, 520.0) z = 110}
+/*script create_leaving_lobby_dialog\{menu_id = leaving_lobby_dialog_menu vmenu_id = leaving_lobby_dialog_vmenu pad_back_script = leaving_lobby_select_cancel pad_choose_script = leaving_lobby_select_yes Pos = (640.0, 520.0) z = 110}
 	if (($ui_flow_manager_state [0])= online_pause_fs)
 		clean_up_user_control_helpers
 	endif
@@ -289,4 +289,4 @@ script pause_menu_really_quit_net_game
 	leaving_lobby_dialog_unfocus
 	destroy_leaving_lobby_dialog
 	ui_flow_manager_respond_to_action \{action = select_quit create_params = {Player = 1}}
-endscript
+endscript*/

@@ -1,4 +1,4 @@
-current_page = 0
+/*current_page = 0
 current_cpu = 0
 
 script handle_keyboard_input
@@ -95,4 +95,4 @@ script handle_keyboard_input
 			MoveProfileCursor cpu = ($current_cpu)down
 		endif
 	endif
-endscript
+endscript*/

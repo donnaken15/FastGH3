@@ -1,6 +1,6 @@
 save_changes_message = "You are about to exit the Player Options. Any changes made will not be saved if you continue. Would you like to SAVE your changes first?"
 
-script create_online_options_menu\{menu_title = "OPTIONS" menu_subtitle = "ONLINE OPTIONS" menu_id = online_options_menu vmenu_id = online_options_vmenu}
+/*script create_online_options_menu\{menu_title = "OPTIONS" menu_subtitle = "ONLINE OPTIONS" menu_id = online_options_menu vmenu_id = online_options_vmenu}
 	setup_options_globals
 	CreateScreenElement {
 		Type = VScrollingMenu
@@ -694,4 +694,4 @@ script remove_save_dialog
 	if ScreenElementExists \{id = quickmatch_options_vmenu}
 		LaunchEvent \{Type = focus target = quickmatch_options_vmenu}
 	endif
-endscript
+endscript*/

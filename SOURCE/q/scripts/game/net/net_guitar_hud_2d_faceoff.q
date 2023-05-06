@@ -1,4 +1,4 @@
-net_faceoff_hud_2d_elements_solo = {
+/*net_faceoff_hud_2d_elements_solo = {
 	offscreen_rock_pos = (660.0, -600.0)
 	rock_pos = (660.0, 60.0)
 	offscreen_score_pos = (-750.0, 100.0)
@@ -564,4 +564,4 @@ net_faceoff_hud_2d_elements_solo = {
 			alpha = 0
 		}
 	]
-}
+}*/

@@ -1,5 +1,5 @@
 
-script create_select_num_songs_menu\{menu_title = "CREATE MATCH" menu_subtitle = "NUMBER OF SONGS" menu_id = create_num_songs_menu vmenu_id = create_num_songs_vmenu}
+/*script create_select_num_songs_menu\{menu_title = "CREATE MATCH" menu_subtitle = "NUMBER OF SONGS" menu_id = create_num_songs_menu vmenu_id = create_num_songs_vmenu}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = online_menu_ui_container Pos = (0.0, 0.0)}
 	CreateScreenElement {
 		Type = VScrollingMenu
@@ -173,4 +173,4 @@ endscript
 script select_num_songs
 	Change num_songs = <Type>
 	ui_flow_manager_respond_to_action \{action = continue}
-endscript
+endscript*/

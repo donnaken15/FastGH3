@@ -1,5 +1,5 @@
 
-script UpdateDebuggerMousePosition
+/*script UpdateDebuggerMousePosition
 	if NOT ScreenElementExists \{id = mouse_cursor}
 		SetScreenElementLock \{id = root_window OFF}
 		CreateScreenElement \{Type = SpriteElement parent = root_window id = mouse_cursor texture = mouse_cursor rgba = [128 128 128 85] just = [left top] z_priority = 3000003 tags = {hide_from_debugger}}
@@ -40,4 +40,4 @@ script DoMouseClickEffect
 	if ScreenElementExists \{id = mouse_text}
 		RunScriptOnScreenElement \{id = mouse_text MouseClickEffect}
 	endif
-endscript
+endscript*/

@@ -4,11 +4,11 @@ jowOrange = -6149377
 jowRed = -15061505
 jowYellow = -3267073
 
-script JOW_Stars
+/*script JOW_Stars
 	printf \{"*******************************************************************"}
 	printf <...>
 	printf \{"*******************************************************************"}
-endscript
+endscript*/
 
 script SafeGetUniqueCompositeObjectID\{preferredID = safeFXID01}
 	if NOT GotParam \{objID}

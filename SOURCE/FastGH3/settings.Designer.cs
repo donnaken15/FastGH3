@@ -475,6 +475,7 @@ partial class settings
             "No particles",
             "No fail",
             "No HUD",
+            "FC mode",
             "Easy expert",
             "Precision",
             "Background video",

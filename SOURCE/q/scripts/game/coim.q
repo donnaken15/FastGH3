@@ -1,4 +1,4 @@
-COIM_Priority_Permanent = 0
+/*COIM_Priority_Permanent = 0
 COIM_Priority_PermanentCleanup = 1
 COIM_Priority_NonPermanent = 2
 COIM_Priority_DroppedWeapons = 3
@@ -38,4 +38,4 @@ script COIM_PreAllocate
 	else
 		ReserveCOIMBlocksForPermObjects \{$#"0x504b997b"}
 	endif
-endscript
+endscript*/

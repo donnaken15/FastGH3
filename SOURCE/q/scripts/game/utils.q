@@ -21,7 +21,7 @@ script reload_zones
 	endif
 endscript
 
-script DisplayAnimCacheState
+/*script DisplayAnimCacheState
 	priority_ranges = [
 		{Range = (0.0, 10.0) bar = CachedRange0}
 		{Range = (11.0, 50.0) bar = CachedRange1}
@@ -308,4 +308,4 @@ endscript
 
 script launch_toggle_feeler_stats\{display_offset = (0.0, 0.0)}
 	DisplayFeelerStats <...>
-endscript
+endscript*?

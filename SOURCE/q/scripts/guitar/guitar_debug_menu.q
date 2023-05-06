@@ -5,16 +5,16 @@ script create_debugging_menu
 	CreateScreenElement \{Type = VScrollingMenu parent = pause_menu id = debug_scrolling_menu just = [left top] dims = (400.0, 480.0) Pos = $#"0xe787d761"}
 	CreateScreenElement \{Type = VMenu parent = debug_scrolling_menu id = debug_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back back_to_retail_ui_flow}]}
 	disable_pause
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Screenshot" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose playday_unlockall}]}
+	//CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Screenshot" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose playday_unlockall}]}
 	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Repeat Last Song" z_priority = 100.0 just = [left top] Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_start_song params = {uselaststarttime}}]}
 	CreateScreenElement \{Type = TextElement parent = debug_vmenu id = toggle_playermode_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Play Song: 1p_quickplay" z_priority = 100.0 just = [left top] Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left toggle_playermode_left}{pad_right toggle_playermode_right}{pad_choose select_playermode}]}
 	toggle_playermode_setprop
 	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Settings" z_priority = 100.0 just = [left top] Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_settings_menu}]}
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Character Select" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_character_viewer_menu}]}
+	//CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Character Select" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_character_viewer_menu}]}
 	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Skip Into Song" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipintosong_menu}]}
 	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Save Replay Buffer" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
 	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Load Replay" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Play Credits" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
+	//CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Play Credits" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
 	LaunchEvent \{Type = focus target = debug_vmenu}
 endscript
 
@@ -25,41 +25,31 @@ script destroy_debugging_menu
 	destroy_generic_backdrop
 endscript
 
-script back_to_debug_menu
+script kill_debug_menus
 	destroy_replay_menu
 	destroy_songversion_menu
 	destroy_settings_menu
-	destroy_character_viewer_menu
+	//destroy_character_viewer_menu
 	destroy_skipintosong_menu
-	destroy_cameracut_menu
+	//destroy_cameracut_menu
 	destroy_difficulty_menu
 	destroy_skipbytime_menu
 	destroy_skipbymarker_menu
 	destroy_skipbymeasure_menu
 	destroy_looppoint_menu
+endscript
+
+script back_to_debug_menu
+	kill_debug_menus
 	create_debugging_menu
 endscript
 
 script destroy_all_debug_menus
-	destroy_replay_menu
-	destroy_songversion_menu
-	destroy_settings_menu
-	destroy_character_viewer_menu
-	destroy_skipintosong_menu
-	destroy_cameracut_menu
-	destroy_difficulty_menu
-	destroy_skipbytime_menu
-	destroy_skipbymarker_menu
-	destroy_skipbymeasure_menu
-	destroy_looppoint_menu
+	kill_debug_menus
 	destroy_debugging_menu
 endscript
-debug_playcredits_active = 0
 
-script debug_playcredits
-endscript
-
-script playday_unlockall
+script screen_shot
 	get_song_title
 	getsongtime
 	FormatText textname = FileName 'screen_%s_%t' s = <song_title> t = <songtime>
@@ -271,16 +261,16 @@ script create_settings_menu
 		Pos = ($menu_pos - (30.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = settings_scrolling_menu id = settings_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Venue" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changevenue_menu}]}
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Guitar" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = guitar}}]}
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Bass" just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = bass}}]}
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_visibility_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle visibility" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_togglevisibility_menu}]}
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Venue" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changevenue_menu}]}
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Guitar" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = guitar}}]}
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Bass" just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = bass}}]}
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_visibility_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle visibility" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_togglevisibility_menu}]}
 	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = select_slomo_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Select Slomo : 1.0" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_slomo}]}
 	select_slomo_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_showmeasures_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Measures" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showmeasures}]}
-	toggle_showmeasures_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_showcameraname_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Camera Name" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showcameraname}]}
-	toggle_showcameraname_setprop
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_showmeasures_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Measures" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showmeasures}]}
+	//toggle_showmeasures_setprop
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_showcameraname_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Camera Name" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showcameraname}]}
+	//toggle_showcameraname_setprop
 	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_inputlog_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Input Log" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_inputlog}]}
 	toggle_inputlog_setprop
 	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_botp1_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle Bot P1" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_botp1}]}
@@ -289,24 +279,24 @@ script create_settings_menu
 	toggle_botp2_setprop
 	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = edit_inputlog_lines_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Input Log Lines" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left edit_inputlog_lines_left}{pad_right edit_inputlog_lines_right}]}
 	edit_inputlog_lines_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_tilt_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Input Log" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_tilt}]}
-	toggle_tilt_setprop
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_tilt_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Input Log" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_tilt}]}
+	//toggle_tilt_setprop
 	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_leftyflip_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Leftyflip" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_leftyflip}]}
 	toggle_leftyflip_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = create_cameracut_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Select CameraCut" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_cameracut_menu}]}
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle GPU Time" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_gpu_time}}]}
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle CPU Time" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_cpu_time}}]}
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = create_cameracut_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Select CameraCut" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_cameracut_menu}]}
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle GPU Time" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_gpu_time}}]}
+	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle CPU Time" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_cpu_time}}]}
 	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_forcescore_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Force Score" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_forcescore}]}
 	toggle_forcescore_setprop
 	LaunchEvent \{Type = focus target = settings_vmenu}
 endscript
 
 script back_to_settings_menu
-	destroy_changevenue_menu
-	destroy_changehighway_menu
-	destroy_changeguitar_menu
+	//destroy_changevenue_menu
+	//destroy_changehighway_menu
+	//destroy_changeguitar_menu
 	destroy_togglevisibility_menu
-	destroy_cameracut_menu
+	//destroy_cameracut_menu
 	create_settings_menu
 endscript
 
@@ -320,7 +310,7 @@ CameraCutPrefixArray = [
 	''
 ]
 
-script create_cameracut_menu
+/*script create_cameracut_menu
 	ui_menu_select_sfx
 	destroy_settings_menu
 	CreateScreenElement {
@@ -373,23 +363,23 @@ script create_cameracut_menu
 		camera_count = (<camera_count> + 1)
 	repeat <camera_array_size>
 	LaunchEvent \{Type = focus target = selectcameracut_vmenu}
-endscript
+endscript*/
 
-script back_to_cameracut_menu
-	create_cameracut_menu
-endscript
+//script back_to_cameracut_menu
+//	create_cameracut_menu
+//endscript
 
-script destroy_cameracut_menu
+/*script destroy_cameracut_menu
 	if ScreenElementExists \{id = selectcameracut_scrolling_menu}
 		DestroyScreenElement \{id = selectcameracut_scrolling_menu}
 	endif
 	destroy_generic_backdrop
-endscript
+endscript*/
 debug_camera_array = None
 debug_camera_array_pakname = None
 debug_camera_array_count = 0
 
-script select_cameracut
+/*script select_cameracut
 	ui_menu_select_sfx
 	Change debug_camera_array = <Camera_Array>
 	Change debug_camera_array_pakname = <Camera_Array_pakname>
@@ -638,7 +628,7 @@ script destroy_changedrummer_menu
 		DestroyScreenElement \{id = changedrummer_scrolling_menu}
 	endif
 	destroy_generic_backdrop
-endscript
+endscript*/
 
 script select_playermode
 	Change player1_device = <device_num>
@@ -787,7 +777,8 @@ script select_slomo_setprop
 endscript
 debug_showmeasures = OFF
 
-script toggle_showmeasures
+// what does this do
+/*script toggle_showmeasures
 	ui_menu_select_sfx
 	if ($debug_showmeasures = OFF)
 		Change \{debug_showmeasures = On}
@@ -819,7 +810,7 @@ script toggle_showcameraname
 	endif
 	toggle_showcameraname_setprop
 	CameraCuts_UpdateDebugCameraName
-endscript
+endscript*/
 
 script toggle_inputlog
 	ui_menu_select_sfx
@@ -881,13 +872,13 @@ script toggle_tilt
 	init_play_log
 endscript
 
-script toggle_showcameraname_setprop
+/*script toggle_showcameraname_setprop
 	if ($debug_showcameraname = OFF)
 		toggle_showcameraname_menuitem ::SetProps \{text = "Show Camera Name : off"}
 	else
 		toggle_showcameraname_menuitem ::SetProps \{text = "Show Camera Name : on"}
 	endif
-endscript
+endscript*/
 
 script toggle_inputlog_setprop
 	if ($show_play_log = 0)
@@ -983,7 +974,7 @@ script toggle_forcescore_setprop
 	endswitch
 endscript
 
-script create_changevenue_menu
+/*script create_changevenue_menu
 	ui_menu_select_sfx
 	destroy_settings_menu
 	create_generic_backdrop
@@ -1101,7 +1092,7 @@ script next_peds
 			Change \{debug_ped_row = -1}
 		endif
 	repeat
-endscript
+endscript*/
 
 script back_to_changehighway_menu
 	create_changehighway_menu
@@ -1114,7 +1105,7 @@ script destroy_changehighway_menu
 	destroy_generic_backdrop
 endscript
 
-script create_changeguitar_menu\{Type = guitar}
+/*script create_changeguitar_menu\{Type = guitar}
 	ui_menu_select_sfx
 	destroy_settings_menu
 	create_generic_backdrop
@@ -1176,7 +1167,7 @@ script select_guitar\{Type = guitar}
 		Change current_bass_model = (<info_struct>.desc_id)
 	endif
 	select_start_song
-endscript
+endscript*/
 HideByType_List = [
 	'real_crowd'
 	'stage'
@@ -1854,13 +1845,13 @@ debug_menu_mode = 1
 
 script switch_to_retail_menu
 	destroy_all_debug_menus
-	Change debug_menu_mode = (0)
+	Change \{debug_menu_mode = 0}
 	start_flow_manager
 endscript
 
 script switch_to_debug_menu
 	shut_down_flow_manager
-	Change debug_menu_mode = (1)
+	Change \{debug_menu_mode = 1}
 	destroy_all_debug_menus
 	create_debugging_menu
 endscript

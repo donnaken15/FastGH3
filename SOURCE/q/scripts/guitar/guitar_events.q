@@ -302,6 +302,9 @@ script GuitarEvent_HitNotes
 	if (GuitarEvent_HitNotes_CFunc)
 		UpdateGuitarVolume
 	endif
+	if ($FC_MODE = 1)
+		Change StructureName = <player_status> current_health = 0.0000000000000000001
+	endif
 	if (GotParam open)
 		#"0x49b1c3d0" Player = <Player> player_status = <player_status>
 	endif

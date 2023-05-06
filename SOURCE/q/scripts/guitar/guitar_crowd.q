@@ -4,8 +4,11 @@ total_crowd = 0.0
 max_crowd = 0.0
 crowd_scale = 2.0
 health_scale = 2.0
+last_hscale = -1.0
 crowd_debug_mode = 0
 viewercam_nofail = 0
+
+FC_MODE = 0
 
 script crowd_reset
 	if ($game_mode = tutorial)
@@ -46,6 +49,18 @@ script crowd_reset
 	endif
 	if ($game_mode = p2_battle & $battle_sudden_death = 1)
 		Change StructureName = <player_status> current_health = ($<player_status>.save_health)
+	endif
+	if ($FC_MODE = 1)
+		if ($last_hscale = -1.0)
+			Change last_hscale = ($health_scale)
+		endif
+		Change \{health_scale = 0.00000000000000001}
+		Change StructureName = <player_status> current_health = 0.0000000000000000001
+	else
+		if NOT ($last_hscale = -1.0)
+			Change health_scale = ($last_hscale)
+			Change {last_hscale = -1.0}
+		endif
 	endif
 	CrowdReset
 endscript

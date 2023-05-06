@@ -6,7 +6,7 @@ PS3_AnimLODInterleave4 = 12
 Xenon_AnimLODInterleave2 = 20
 Xenon_AnimLODInterleave4 = 12
 
-script autolaunch
+/*script autolaunch
 	if GotParam \{level}
 		Change current_level = <level>
 		startnow = 2
@@ -54,7 +54,7 @@ endscript
 
 script change_level
 	script_assert \{"This is now gone..."}
-endscript
+endscript*/
 
 script KillElement3d
 	wait \{1 gameframe}
@@ -73,7 +73,7 @@ script nullscript
 endscript
 
 script DumpMetrics
-	GetMetrics
+	GetMetrics // crashing
 	printf
 	printf \{"Dumping Metrics Structure"}
 	printstruct <...>
@@ -155,7 +155,7 @@ script RefreshPakManCurrent
 	SetPakManCurrentBlock map = <map> pak = <pak> pakname = <pakname>
 endscript
 
-script Zones_PakMan_Init
+/*script Zones_PakMan_Init
 	printf \{"Zones_PakMan_Init"}
 	zone_name = <pak_name>
 	zone_string_name = <pak_string_name>
@@ -231,4 +231,4 @@ script Zones_PakMan_DeInit
 	DestroyZoneEntities zone_name = <zone_name> zone_string_name = <zone_string_name>
 	UpdatePakManVisibility \{map = zones}
 	printf \{"Zones_PakMan_DeInit end"}
-endscript
+endscript*/

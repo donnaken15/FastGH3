@@ -7,7 +7,7 @@ ClassicModeNavMeshLoaded = 0
 dont_call_zone_init_hack = 0
 levels_initialize_goals = 1
 
-script zone_init
+/*script zone_init
 	printf "zone_init: %s" s = <zone_string_name>
 	if (<zone_string_name> = 'z_viewer')
 		printf \{"AssertOnMissingScripts = 0"}
@@ -205,4 +205,4 @@ script UnloadLODPaks
 		repeat <array_Size>
 		Change \{LOD_LoadedPaks = []}
 	endif
-endscript
+endscript*/

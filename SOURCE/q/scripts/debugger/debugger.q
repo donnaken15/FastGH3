@@ -1,5 +1,5 @@
 
-script RunRemoteScript_ExecuteAndReturnResult\{LocalCallback = NULL}
+/*script RunRemoteScript_ExecuteAndReturnResult\{LocalCallback = NULL}
 	if NOT GotParam \{scriptname}
 		script_assert \{"Expected a ScriptName!"}
 		return
@@ -31,4 +31,4 @@ endscript
 
 script SendToWindow
 	RunRemoteScript scriptname = printstruct params = {<...> SendToWindow}
-endscript
+endscript*/

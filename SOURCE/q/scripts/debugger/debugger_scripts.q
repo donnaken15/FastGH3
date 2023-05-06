@@ -1,5 +1,5 @@
 
-script OnDebuggerStartup
+/*script OnDebuggerStartup
 	printf \{"Starting up debugger scripts..."}
 	SendScriptFunctionsToDebugger
 	debuggersendmodetext
@@ -230,4 +230,4 @@ script ClearSpritePreview_KillPreviewElement
 		printf \{"destroying element with no sprite unload"}
 		DestroyScreenElement id = <id>
 	endif
-endscript
+endscript*/

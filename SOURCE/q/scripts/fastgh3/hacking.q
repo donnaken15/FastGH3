@@ -9,7 +9,9 @@ script #"0xc662b917"
 endscript
 
 script #"0x1766ab99"
-	printf \{"--- create_winport_account_management_screen"}
+	// keyboard input hack
+	// TODO: better one
+	/*printf \{"--- create_winport_account_management_screen"}
 	z = 110
 	create_menu_backdrop \{texture = #"0x4fb4b5e9"}
 	if ((GotParam yellowButtonAction)& (GotParam blueButtonAction))
@@ -157,7 +159,7 @@ script #"0x1766ab99"
 			ui_flow_manager_respond_to_action \{action = executeOption2}
 		case loginAborted
 			cancel_winport_account_management_screen mode = <mode>
-	endswitch
+	endswitch*/
 endscript
 #"0x4faef07e" = ''
 #"0x8232b0dc" = ''
@@ -174,14 +176,6 @@ endscript
 	create = #"0xc662b917"
 	Destroy = destroy_winport_account_login_screen
 	actions = [
-		{
-			action = account_create
-			flow_state = online_winport_start_account_create_fs
-		}
-		{
-			action = account_change
-			flow_state = online_winport_start_account_change_fs
-		}
 		{
 			action = executeLogin
 			func = #"0xad13e27c"
@@ -231,6 +225,29 @@ script wait_beats\{1}
 	return
 endscript
 
+script everyone_deploy // :P
+	
+	player = 1
+	begin
+		formattext checksumname = player_status 'player%d_status' d = <player>
+		if ($<player_status>.bot_play = 1)
+			if ($<player_status>.star_power_used = 0)
+				if ($<player_status>.star_power_amount >= 50.0)
+					spawnscriptnow star_power_activate_and_drain params = {
+						player_status = <player_status>
+						Player = <player>
+						player_text = ($<player_status>.text)
+					}
+				endif
+			endif
+		endif
+		player = (<player> + 1)
+	repeat $current_num_players
+endscript
+
+fastgh3_path_triggers = []
+// soulless 1 path from CHOpt
+//fastgh3_path_triggers = [9446 18638 37851 57127 85851 151148 191936 265276 298148 334978]
 script muh_arby_bot_star
 	if ($player1_status.bot_play = 0 && $player2_status.bot_play = 0)
 		//printf \{'bot not turned on!!!!!!!!!!!!!'}
@@ -239,30 +256,34 @@ script muh_arby_bot_star
 	if (($game_mode = p2_career || $game_mode = p2_coop) && ($player1_status.bot_play = 0 || $player2_status.bot_play = 0))
 		return
 	endif
-	begin
-		wait_beats \{16}
-		player = 1
+	getarraysize \{fastgh3_path_triggers}
+	if (<array_size> = 0)
 		begin
-			formattext checksumname = player_status 'player%d_status' d = <player>
-			if ($<player_status>.bot_play = 1)
-				if ($<player_status>.star_power_used = 0)
-					if ($<player_status>.star_power_amount >= 50.0)
-						spawnscriptnow star_power_activate_and_drain params = {
-							player_status = <player_status>
-							Player = <player>
-							player_text = ($<player_status>.text)
-						}
-					endif
+			wait_beats \{16}
+			everyone_deploy
+		repeat
+	else
+		i = 0
+		begin
+			begin
+				GetSongTimeMs
+				if ($fastgh3_path_triggers[<i>] < <time>)
+					break
 				endif
-			endif
-			player = (<player> + 1)
-		repeat $current_num_players
-	repeat
+				Wait \{1 gameframe}
+			repeat
+			Increment \{i}
+			player = 1
+			begin
+				everyone_deploy
+			repeat $current_num_players
+		repeat <array_size>
+	endif
 endscript
 
 // TODO: only print necessary info
 script PrintPlayer\{player_status = player1_status}
-	player_status = $<player_status>
+	/**player_status = $<player_status>
 	printstruct {
 		player = {
 			controller = (<player_status>.controller)
@@ -328,8 +349,9 @@ script PrintPlayer\{player_status = player1_status}
 			last_playline_song_beat_time = (<player_status>.last_playline_song_beat_time)
 			last_playline_song_beat_change_time = (<player_status>.last_playline_song_beat_change_time)
 		}
-	}
-	printstruct $<player_status>
+	}/**/
+	//printstruct $<player_status>
+	
 endscript
 
 script #"0xbee285d9"
@@ -341,7 +363,7 @@ script #"0xbee285d9"
 		Pos = (128.0, 64.0)
 		just = [left , top]
 		Scale = (1.0, 1.0)
-		rgba = [255 , 255 , 255 , 255]
+		rgba = [255 255 255 255]
 		text = 'test'
 		z_priority = 1000
 		alpha = 1

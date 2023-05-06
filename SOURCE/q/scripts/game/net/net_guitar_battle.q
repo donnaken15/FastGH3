@@ -2,7 +2,7 @@ net_attack_pending = 0
 BATTLE_STEAL_INDEX = 3
 BATTLE_BREAK_STRING_INDEX = 5
 
-script net_battle_attempt_powerup
+/*script net_battle_attempt_powerup
 	<player_status> = player1_status
 	<other_player_status> = player2_status
 	<other_player_difficulty> = $current_difficulty2
@@ -161,7 +161,7 @@ script net_battle_steal
 		battlemode_ready player_status = <player_status> battle_gem = <select> steal = 1
 	endif
 	Change StructureName = <other_player_status> stealing_powerup = ($<other_player_status>.stealing_powerup - 1)
-endscript
+endscript*/
 
 script animate_open_hand
 	FormatText checksumName = steal_hand_open_checksum 'steal_hand_open_%i_%p' i = ($<other_player_status>.stealing_powerup)p = ($<other_player_status>.Player)
@@ -259,7 +259,7 @@ script animate_stealing_hand
 	endif
 endscript
 
-script net_choose_and_break_p2_string
+/*script net_choose_and_break_p2_string
 	repair_ammount = 5
 	switch <difficulty>
 		case easy
@@ -511,4 +511,4 @@ script net_whammy_shake
 		endif
 		wait \{1 gameframe}
 	repeat
-endscript
+endscript*/

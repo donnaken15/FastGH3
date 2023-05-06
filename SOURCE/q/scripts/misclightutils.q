@@ -1,4 +1,4 @@
-curReviewLighting = 0
+/*curReviewLighting = 0
 
 script CycleReviewLighting
 	Change curReviewLighting = ($curReviewLighting + 1)
@@ -43,7 +43,7 @@ script SafeCreate
 			create name = <nodeName>
 		endif
 	endif
-endscript
+endscript*/
 
 script SafeKill
 	if IsCreated <nodeName>
@@ -51,7 +51,7 @@ script SafeKill
 	endif
 endscript
 
-script ScreenFlash\{time = 1}
+/*script ScreenFlash\{time = 1}
 	killspawnedscript \{id = ScreenFlash}
 	SpawnScriptLater ScreenFlashOn id = ScreenFlash params = {time = <time>}
 endscript
@@ -145,4 +145,4 @@ script Do_ScreenToBlack
 			endif
 		endif
 	endif
-endscript
+endscript*/
