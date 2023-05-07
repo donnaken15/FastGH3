@@ -1,4 +1,4 @@
-base_deduction_index_array = [
+/*base_deduction_index_array = [
 	0
 ]
 
@@ -151,7 +151,6 @@ endscript
 script destroy_cash_reward_menu
 	destroy_menu \{menu_id = cash_reward_container}
 	//destroy_menu_backdrop
-	
 endscript
 cash_reward_font = #"0x35c0114b"
 
@@ -276,4 +275,4 @@ script create_you_get_text\{value = 1200 Scale = 1 Pos = (630.0, 320.0)}
 	GetScreenElementDims \{id = payment_text_id}
 	you_get_pos = (<Pos> - (1.0, 0.0) * (<width> * 1.1))
 	SetScreenElementProps id = you_get_id Pos = <you_get_pos>
-endscript
+endscript*/

@@ -351,7 +351,6 @@ script PrintPlayer\{player_status = player1_status}
 		}
 	}/**/
 	//printstruct $<player_status>
-	
 endscript
 
 script #"0xbee285d9"
@@ -396,12 +395,10 @@ script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time>
 		return profile_time = <____profiling_time>
 	endif
-	<____profiling_i> = (<____profiling_i> + 1)
-	if (<____profiling_i> > <____profiling_interval>)
-		<____profiling_i> = 0
+	<____profiling_i> = (<____profiling_i> + 1) //
+	if (<____profiling_i> > <____profiling_interval>) //
+		<____profiling_i> = 0 //
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
-		// also another error here, putting a comment right before endif causes newline to be removed
-		
 	endif
 	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
 endscript

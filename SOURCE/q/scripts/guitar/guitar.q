@@ -518,7 +518,7 @@ script guitar_startup
 		FormatText checksumName = player_status 'player%i_status' i = <Player> AddToStringLookup
 		FormatText textname = player_text 'p%i' i = <Player> AddToStringLookup
 		SpawnScriptLater create_guitar_events params = { <...> }
-		Player = (<Player> + 1)
+		Increment \{player}
 	repeat $max_num_players
 	if ($autolaunch_startnow = 0)
 		start_flow_manager \{flow_state = bootup_sequence_fs}
@@ -528,6 +528,7 @@ script guitar_startup
 	endif
 	load_highway
 	if FileExists \{'hway2.pak'}
+		// wait, how did this even work if there's conflicting material names
 		load_highway \{player_status = player2_status filename = 'hway2.pak'}
 	else
 		load_highway \{player_status = player2_status}

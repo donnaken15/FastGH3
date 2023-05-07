@@ -72,7 +72,6 @@ script solo\{part = guitar diff = expert}
 	Increment \{k}
 	found_soloend = 0
 	endtime = (<time> + 5000) // why did i even add this
-	
 	// find matching soloend in fastgh3_scripts
 	begin
 		// soloend.params.part == %part then endtime = soloend.time

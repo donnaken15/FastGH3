@@ -47,6 +47,7 @@ loading_screen_tips = [
 	'Switch up the style and get yourself some c00l zonez by going to donnaken15.tk/fastgh3/zones.html'
 	'6 MEGABYTE ZONES'
 	'fastgh3'
+	'FastGH3'
 	'FASTGH3'
 	'C:\\windows\\fastgh3'
 	''
@@ -65,9 +66,9 @@ loading_screen_tips = [
 	''
 	'ScreenShot Paused\n\b0\nScreen\b1\b2Drop	 \n\b3\nViewer'
 	'For more fun with GH3 in general, check out progress on GH3+ at github.com/donnaken15/GH3-Plus'
-	'4 PAK files? WHAT?!?'
+	'3 PAK files? WHAT?!?'
 	'ASPIRING TO REKT ASPYR'
-	'FROM 4.7 GB TO 14.8 MB! WOW!'
+	'FROM 4.7 GB TO 13.0 MB! WOW!'
 	'Hey look, it works now! I think...'
 	'IS THIS WORKING?!?!'
 	'DON\'T CRASH!!'
@@ -94,7 +95,11 @@ loading_screen_tips = [
 	'\c9INVISIBLE INK'
 	'are you actually reading these?'
 	'CHARTS ON DEMAND'
-	'FITS 4479 TIMES ON A FLASH DRIVE!'
+	'FITS 5013 TIMES ON A FLASH DRIVE!'
+	/* formula: 1024/((13708051/1024/1024)/64)
+	64 = usual flash drive GB capacity
+	"DO THE MATH"
+	Reverse of original calc: (15*4346)/1024 */
 	'uber song fc'
 	'NAIL THE 540'
 	'58,473 X 4\nStar Power + BS 360 Riff + Kissed the Sustain + FS Solo + FS 1440 GRYBRYBO'
@@ -105,9 +110,11 @@ loading_screen_tips = [
 	'It looks like you\'re trying to hit the note. Would you like help with:\n\b3 Strumming\n\b2 Holding down the frets'
 	'!!!!!!! Guitarist not found !!!!!!!'
 	'{UNKNOWN OPCODE 0}{UNKNOWN OPCODE 0}{UNKNOWN OPCODE 0}{UNKNOWN OPCODE 0}{UNKNOWN OPCODE 0}'
+	'LEXER ERROR [3268]: Unknown token in array:   ()'
 	'A.K.A: GH3DE, GH3DX, or GH3++'
 	'__FASTcall void initGH3(int*)'
 	'dummy'
+	'This game is practically a mod of Tony Hawk\'s Project 8'
 	'Powered by Tony Hawk'
 	'\c2I WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED'
 ]

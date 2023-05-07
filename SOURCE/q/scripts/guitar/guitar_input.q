@@ -342,7 +342,6 @@ script playback_timer
 			change playback_do_frame = 1
 			// set time to wait to play next frame
 			//printf \{'frame %d' d = $playback_next_frame}
-			
 		endif
 	endif
 endscript

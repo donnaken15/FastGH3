@@ -217,7 +217,6 @@ script create_main_menu_backdrop
 	//RunScriptOnScreenElement id = eyes_TL glow_menu_element params = {time = 1.7 id = <id>}
 	//CreateScreenElement \{Type = SpriteElement id = eyes_TR parent = main_menu_bg_container texture = #"0x4a15af9f" Pos = (995.0, 71.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
 	//RunScriptOnScreenElement id = eyes_TR glow_menu_element params = {time = 1.0 id = <id>}
-	
 endscript
 
 script WinPortCreateLaptopUi
