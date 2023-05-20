@@ -1,6 +1,5 @@
 JUNK
 JUNK*
-JUNK3
 /__QDB
 /TOOLS
 /TOOLS/*
@@ -18,6 +17,7 @@ JUNK3
 *.log
 PLUGINS/disabled
 PLUGINS/disabled3
+/PLUGINS/RichPresence.dll
 DATA/CACHE
 *_*.idb
 bin/
@@ -62,19 +62,25 @@ DATA/ZONES/__themes/*/
 *_original.*
 /PLUGINS/Logger.dll
 /DATA/MOVIES/BIK/lastvid
-/DATA/PAK/__highways/*.dds
-/DATA/PAK/__highways/*.png
-/DATA/PAK/__highways/*.jpg
+/DATA/PAK/__highways/*.*
 /DATA/PAK/__highways/*/
+!/DATA/PAK/__highways/black.dds
 /DATA/MOVIES/BIK/*.bik
 /DATA/MOVIES/BIK/*.bik.xen
-!/DATA/MOVIES/BIK/backgrnd_video.bik.xen
 /DATA/*.png
 /DATA/*.jpg
 /DATA/replays/*.rep
 /DATA/ZONES/__themes/*.gfx
 /DATA/ZONES/__themes/*.gfx.xen
 /DATA/ZONES/__themes/*.zip
+/DATA/ZONES/__themes/*
+SOURCE/.editorconfig
 
 # if i add items to this list that were already committed before, will it remove it from the repo?
 PLUGINS/Logger.dll
+
+# i put this and its showing these as untracked still
+/DATA/MOVIES/BIK/backgrnd_video.bik.xen
+/DATA/MUSIC/fastgh3.fsb.xen
+/DATA/PAK/player.pak.xen
+/DATA/PAK/song.pak.xen

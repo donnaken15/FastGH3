@@ -23,10 +23,15 @@ PLAY NOW!
 * [Download (portable)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.zip)
 * [Latest Dev Build](https://github.com/donnaken15/FastGH3/archive/refs/heads/main.zip)
 <br>![last commit](https://img.shields.io/github/last-commit/donnaken15/FastGH3)
+* [New Experimental Branch (Q Unpack)](https://github.com/donnaken15/FastGH3/tree/unpak)
+  * [Download](https://github.com/donnaken15/FastGH3/archive/refs/heads/unpak.zip)
+<br>![last commit](https://img.shields.io/github/last-commit/donnaken15/FastGH3/unpak)
 * [Previous Releases + Changelog](https://donnaken15.tk/fastgh3/dev.html)
 * [Previous Dev Builds](https://donnaken15.tk/fastgh3/unstab.html)
 
 [Features/Planned list](https://github.com/users/donnaken15/projects/3)
+
+![FastGH3 Gameplay](https://github.com/donnaken15/FastGH3/assets/20864393/507890a7-a593-4029-8e65-f61a45285d7c)
 
 ## Instructions
 
