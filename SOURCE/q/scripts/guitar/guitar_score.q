@@ -286,6 +286,18 @@ script unnecessary_note
 endscript
 
 script update_score_fast
+	if ($Cheat_PerformanceMode = 1 || hudless = 1)
+		if ($game_mode = training)
+			begin
+				GetSongTimeMs
+				if (<time> > $current_section_array[($current_section_array_entry + 1)].time)
+					change current_section_array_entry = ($current_section_array_entry + 1)
+				endif
+				wait \{1 gameframe}
+			repeat
+		endif
+		return
+	endif
 	UpdateScoreFastInit player_status = <player_status>
 	begin
 		GetSongTimeMs

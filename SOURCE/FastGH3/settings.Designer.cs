@@ -478,6 +478,7 @@ partial class settings
             "FC mode",
             "Easy expert",
             "Precision",
+            "Performance",
             "Background video",
             "Hide hit gems",
             "Early sustain activation",

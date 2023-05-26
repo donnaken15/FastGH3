@@ -111,6 +111,72 @@ practice_select_difficulty_fs = {
 		}
 	]
 }
+practice_last_mode = p1_quickplay
+script return_from_practice
+	restore_start_key_binding
+	change game_mode = ($practice_last_mode)
+	return \{flow_state = enter_mode_fs}
+endscript
+script enter_mode
+	printstruct <...>
+	action = quickplay
+	// dont know if i can have a fallback action
+	switch $game_mode
+		case p1_quickplay
+			action = quickplay
+		case p1_career
+			action = career
+		case p2_battle
+			action = career
+		case p2_faceoff
+			action = faceoff
+		case p2_coop
+			action = coop
+		case p2_career
+			action = coop
+		case training
+			action = practice
+	endswitch
+	spawnscriptnow ui_flow_manager_respond_to_action params = {
+		action = <action>
+		play_sound = 0
+		device_num = ($primary_controller)
+	}
+endscript
+enter_mode_fs = {
+	create = enter_mode
+	Destroy = EmptyScript
+	actions = [
+		{
+			$quickplay_play_song_action
+			action = quickplay
+		}
+		{
+			action = career
+			transition_screen = default_loading_screen
+			func = start_song
+			flow_state = career_play_song_fs
+		}
+		{
+			action = coop
+			func = start_song
+			transition_screen = default_loading_screen
+			flow_state = coop_career_play_song_fs
+		}
+		{
+			action = faceoff
+			func = start_song
+			transition_screen = default_loading_screen
+			flow_state = mp_faceoff_play_song_fs
+		}
+		{
+			action = practice
+			func = practice_start_song
+			transition_screen = default_loading_screen
+			flow_state = practice_play_song_fs
+		}
+	]
+}
 practice_select_song_section_fs = {
 	create = create_choose_practice_section_menu
 	Destroy = destroy_choose_practice_section_menu
@@ -121,7 +187,8 @@ practice_select_song_section_fs = {
 		}
 		{
 			action = go_back
-			flow_state = #"0x2616eb19"
+			func = return_from_practice
+			flow_state = enter_mode_fs
 		}
 	]
 }
@@ -147,11 +214,11 @@ script practice_start_song\{device_num = 0}
 	Change \{current_transition = practice}
 	start_song startTime = ($practice_start_time)device_num = <device_num> practice_intro = 1 endtime = ($practice_end_time)
 	Change \{practice_audio_muted = 0}
-	if ($current_speedfactor = 1.0)
+	/*if ($current_speedfactor = 1.0)
 		menu_audio_settings_update_band_volume \{vol = 7}
 	else
 		menu_audio_settings_update_band_volume \{vol = 0}
-	endif
+	endif*/
 	SetSoundBussParams \{Crowd = {vol = -100.0}}
 	spawnscriptnow \{practice_update}
 	#"0x29a63aa1"
@@ -162,11 +229,11 @@ script practice_restart_song
 	Change \{current_transition = practice}
 	restart_song practice_intro = 1 startTime = ($practice_start_time)endtime = ($practice_end_time)
 	Change \{practice_audio_muted = 0}
-	if ($current_speedfactor = 1.0)
+	/*if ($current_speedfactor = 1.0)
 		menu_audio_settings_update_band_volume \{vol = 7}
 	else
 		menu_audio_settings_update_band_volume \{vol = 0}
-	endif
+	endif*/
 	SetSoundBussParams \{Crowd = {vol = -100.0}}
 	spawnscriptnow \{practice_update}
 endscript
@@ -178,7 +245,7 @@ script #"0x29a63aa1"
 endscript
 
 script #"0xd0d74dce"
-	printf \{"+++KILL SELECT KEY   "}
+	printf \{"+++KILL SELECT KEY"}
 	Change #"0xdf7ff31b" = ($#"0x736a45df")
 	SetScreenElementProps \{id = root_window event_handlers = [{pad_select null_script}] replace_handlers}
 endscript
@@ -215,6 +282,7 @@ endscript
 practice_audio_muted = 0
 
 script practice_audio_filter
+	return
 	GetSongTimeMs
 	if ((<time> > ($practice_start_time))& (<time> < ($practice_end_time)))
 		if ($practice_audio_muted = 1)
@@ -267,12 +335,16 @@ practice_pause_fs = {
 			flow_state = practice_restart_warning_fs
 		}
 		{
-			action = select_change_speed
-			flow_state = practice_change_speed_fs
+			action = select_return
+			flow_state = practice_return_warning_fs
 		}
 		{
 			action = select_options
 			flow_state = practice_options_fs
+		}
+		{
+			action = select_change_speed
+			flow_state = practice_change_speed_fs
 		}
 		{
 			action = select_change_section
@@ -447,6 +519,27 @@ practice_restart_warning_fs = {
 		}
 	]
 }
+practice_return_warning_fs = {
+	create = create_quit_warning_menu
+	create_params = {
+		option2_text = "RETURN TO GAME"
+		menu_pos = (470.0, 475.0)
+		bg_dims = (400.0, 80.0)
+		no_joiners
+	}
+	Destroy = destroy_quit_warning_menu
+	actions = [
+		{
+			action = continue
+			func = return_from_practice
+			flow_state = enter_mode_fs
+		}
+		{
+			action = go_back
+			use_last_flow_state
+		}
+	]
+}
 practice_quit_warning_fs = {
 	create = create_quit_warning_menu
 	Destroy = destroy_quit_warning_menu
@@ -579,9 +672,9 @@ practice_newspaper_fs = {
 		}
 		{
 			action = back_2_setlist
-			func = quickplay_start_song
+			func = return_from_practice
+			flow_state = enter_mode_fs
 			transition_screen = default_loading_screen
-			flow_state = quickplay_play_song_fs
 		}
 		{
 			action = #"0xb7294ebb"

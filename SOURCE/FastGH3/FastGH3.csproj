@@ -137,11 +137,23 @@
     <Compile Include="keyEdit.Designer.cs">
       <DependentUpon>keyEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="modcfg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="modcfg.Designer.cs">
+      <DependentUpon>modcfg.cs</DependentUpon>
+    </Compile>
     <Compile Include="moddiag.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="moddiag.Designer.cs">
       <DependentUpon>moddiag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="modovrddiag.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="modovrddiag.Designer.cs">
+      <DependentUpon>modovrddiag.cs</DependentUpon>
     </Compile>
     <Compile Include="P\res.Designer.cs">
       <AutoGen>True</AutoGen>

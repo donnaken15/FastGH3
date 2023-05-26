@@ -378,7 +378,11 @@ script FileExists \{#"0x00000000" = ''}
 	return \{false}
 endscript
 
+// fancifying
+// @script | AllocArray | create new array with a defined size and element to fill with
 // thanks q
+// @parm name | set | the element and it's type to set the array with
+// @parm name | size | size of the array
 script AllocArray \{set = 0 size = 10}
 	// basically memset lol
 	element = <set>
@@ -388,6 +392,7 @@ script AllocArray \{set = 0 size = 10}
 	repeat <size>
 	change globalname = <#"0x00000000"> newvalue = <array>
 endscript
+// @script | guitar_startup | Initialization script
 script guitar_startup
 	HideLoadingScreen
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
@@ -461,6 +466,7 @@ script guitar_startup
 	ProfilingStart
 	LoadPak \{'zones/global/global.pak' Heap = heap_global_pak splitfile}
 	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
+	// test time to load
 	ProfilingEnd <...> 'LoadPak global.pak'
 	ProfilingStart
 	LoadPak \{'zones/default.pak'}
@@ -498,6 +504,8 @@ script guitar_startup
 	AllocArray \{p2_last_song_detailed_stats set = 0 size = 97}
 	AllocArray \{p1_last_song_detailed_stats_max set = 0 size = 97}
 	AllocArray \{p2_last_song_detailed_stats_max set = 0 size = 97}
+	AllocArray \{WhammyWibble0 set = 1.0 size = 136}
+	AllocArray \{WhammyWibble1 set = 1.0 size = 136}
 	// } ran for 0.3ms
 	AllocArray \{solo_hit_buffer_p1 set = 0 size = 32}
 	AllocArray \{solo_hit_buffer_p2 set = 0 size = 32}
@@ -505,7 +513,7 @@ script guitar_startup
 	AllocArray \{rowHeightNormalizedDistance set = 0.0 size = $highway_lines}
 	AllocArray \{rowHeight set = 0.0 size = $highway_lines}
 	AllocArray \{time_accum_table set = 0.0 size = $highway_lines}
-	ProfilingEnd <...> 'AllocArray x10'
+	ProfilingEnd <...> 'AllocArray x12'
 	// 5 ms (michael scott gif)
 	
 	printf \{'Done initializing - into game...'}
@@ -541,7 +549,10 @@ script guitar_startup
 	endif*/
 	Change \{tutorial_disable_hud = 0}
 endscript
-
+// @script | load_highway | load highway pak
+// @parm name | axel | name of the highway,
+// wrapped in sys_(name)_1_highway_sys_(name)_1_highway
+// @parm name | filename | path of the pak
 script load_highway \{player_status = player1_status name = 'axel' filename = 'hway.pak'}
 	Formattext textname = xen '%s.xen' s = <filename>
 	if NOT FileExists <xen>
@@ -627,7 +638,7 @@ LevelZones = {
 Terrain_Actions = $nullArray
 Terrain_Types = $nullArray
 
-script GetCurrentLevel
+/*script GetCurrentLevel
 	return \{level = $current_level}
 endscript
 
@@ -641,7 +652,7 @@ script get_level_prefix
 	printf \{'!!!!!!!!!!!!!!!!!!!!!!!!!!!!'}
 	printf \{'!!!!!!!!!!!!!!!!!!!!!!!!!!!!'}
 	return \{prefix = 'z_unknown' prefix_crc = z_unknown}
-endscript
+endscript*/
 
 script InFrontEnd
 	return \{FALSE}

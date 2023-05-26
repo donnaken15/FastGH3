@@ -64,7 +64,7 @@ loading_screen_tips = [
 	'I\nI\nO\n$\nV'
 	'Aligning pointers...'
 	''
-	'ScreenShot Paused\n\b0\nScreen\b1\b2Drop	 \n\b3\nViewer'
+	'ScreenShot Paused\n\b0\nScreen\b1\b2Drop    \n\b3\nViewer'
 	'For more fun with GH3 in general, check out progress on GH3+ at github.com/donnaken15/GH3-Plus'
 	'3 PAK files? WHAT?!?'
 	'ASPIRING TO REKT ASPYR'

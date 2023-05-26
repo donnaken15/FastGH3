@@ -12,7 +12,7 @@ script disable_pause
 endscript
 
 script enable_pause
-	printscriptinfo \{"enable_pause"}
+	//printscriptinfo \{"enable_pause"}
 	restore_start_key_binding
 	Change \{winport_block_pause = 0}
 endscript
@@ -67,7 +67,7 @@ endscript
 last_start_pressed_device = 0
 
 script gh3_start_pressed\{device_num = -1}
-	printscriptinfo \{"gh3_start_pressed"}
+	//printscriptinfo \{"gh3_start_pressed"}
 	if (<device_num> = -1)
 		if ($player1_status.bot_play = 1)
 			start_pressed_device = ($primary_controller)

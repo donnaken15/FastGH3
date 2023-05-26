@@ -1,4 +1,4 @@
-Drums_AutoNoteMapping = [
+/*Drums_AutoNoteMapping = [
 	{
 		MidiNote = 70
 		Scr = Countoff_NoteMap
@@ -84,4 +84,4 @@ script notemap_iterator
 			repeat <event_array_size>
 		endif
 	endif
-endscript
+endscript*/

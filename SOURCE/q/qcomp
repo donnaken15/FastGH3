@@ -2,7 +2,7 @@
 
 echo -e "\e[93m(not as fake) qcomp\e[0m"
 # no args
-[ $# -eq 0 ] && { echo -e "usage: qcomp [folder]"; exit 1; }
+[ $# -eq 0 ] && { echo -e "usage: qcomp [folder] [output]"; exit 1; }
 # non existent input dir arg
 [ ! -d "$1" ] && { echo "invalid path"; exit 1; }
 indir=$1; find=/usr/bin/find

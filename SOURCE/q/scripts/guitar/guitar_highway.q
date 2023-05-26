@@ -52,7 +52,12 @@ button_up_models = {
 }
 
 script setup_highway\{Player = 1}
-	generate_pos_table
+	if ($Cheat_PerformanceMode = 1)
+		disable_bg_viewport
+	else
+		enable_bg_viewport
+		generate_pos_table
+	endif
 	SetScreenElementLock \{id = root_window OFF}
 	if ($current_num_players = 1)
 		<Pos> = (0.0, 0.0)
@@ -134,60 +139,62 @@ script setup_highway\{Player = 1}
 		z_priority = 3
 	}
 	Set2DGemFade id = <name> Player = <Player>
-	ExtendCrc starpower_container_left <player_text> out = cont
-	CreateScreenElement {
-		Type = ContainerElement
-		id = <cont>
-		parent = <container_id>
-		Pos = <lpos>
-		rot_angle = <langle>
-		just = [center bottom]
-		z_priority = 3
-	}
-	starpower_pos = (((-55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
-	starpower_scale = (((1.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
-	ExtendCrc sidebar_left_glow <player_text> out = name
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <name>
-		parent = <cont>
-		material = sys_Starpower_SDGLOW_sys_Starpower_SDGLOW
-		rgba = [255 255 255 255]
-		Pos = <starpower_pos>
-		Scale = <starpower_scale>
-		just = [center bottom]
-		z_priority = 0
-	}
-	starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
-	starpower_scale = (((-0.5 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-	ExtendCrc sidebar_left_Lightning01 <player_text> out = name
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <name>
-		parent = <cont>
-		material = sys_Big_Bolt01_sys_Big_Bolt01
-		rgba = [0 0 128 128]
-		Pos = <starpower_pos>
-		rot_angle = (180)
-		Scale = <starpower_scale>
-		just = [center top]
-		z_priority = 4
-	}
-	starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.0 * $starpower_fx_scale)* (0.0, 1.0)))
-	starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-	ExtendCrc sidebar_left_Lightning02 <player_text> out = name
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <name>
-		parent = <cont>
-		material = sys_Big_Bolt01_sys_Big_Bolt01
-		rgba = [255 255 255 255]
-		Pos = <starpower_pos>
-		rot_angle = (180)
-		Scale = <starpower_scale>
-		just = [center top]
-		z_priority = 0.02
-	}
+	if ($Cheat_PerformanceMode = 0)
+		ExtendCrc starpower_container_left <player_text> out = cont
+		CreateScreenElement {
+			Type = ContainerElement
+			id = <cont>
+			parent = <container_id>
+			Pos = <lpos>
+			rot_angle = <langle>
+			just = [center bottom]
+			z_priority = 3
+		}
+		starpower_pos = (((-55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_scale = (((1.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
+		ExtendCrc sidebar_left_glow <player_text> out = name
+		CreateScreenElement {
+			Type = SpriteElement
+			id = <name>
+			parent = <cont>
+			material = sys_Starpower_SDGLOW_sys_Starpower_SDGLOW
+			rgba = [255 255 255 255]
+			Pos = <starpower_pos>
+			Scale = <starpower_scale>
+			just = [center bottom]
+			z_priority = 0
+		}
+		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_scale = (((-0.5 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
+		ExtendCrc sidebar_left_Lightning01 <player_text> out = name
+		CreateScreenElement {
+			Type = SpriteElement
+			id = <name>
+			parent = <cont>
+			material = sys_Big_Bolt01_sys_Big_Bolt01
+			rgba = [0 0 128 128]
+			Pos = <starpower_pos>
+			rot_angle = (180)
+			Scale = <starpower_scale>
+			just = [center top]
+			z_priority = 4
+		}
+		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.0 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
+		ExtendCrc sidebar_left_Lightning02 <player_text> out = name
+		CreateScreenElement {
+			Type = SpriteElement
+			id = <name>
+			parent = <cont>
+			material = sys_Big_Bolt01_sys_Big_Bolt01
+			rgba = [255 255 255 255]
+			Pos = <starpower_pos>
+			rot_angle = (180)
+			Scale = <starpower_scale>
+			just = [center top]
+			z_priority = 0.02
+		}
+	endif
 	ExtendCrc sidebar_container_right <player_text> out = cont
 	CreateScreenElement {
 		Type = ContainerElement
@@ -211,64 +218,66 @@ script setup_highway\{Player = 1}
 		z_priority = 3
 	}
 	Set2DGemFade id = <name> Player = <Player>
-	ExtendCrc starpower_container_right <player_text> out = cont
-	CreateScreenElement {
-		Type = ContainerElement
-		id = <cont>
-		parent = <container_id>
-		Pos = <rpos>
-		rot_angle = <rangle>
-		just = [center bottom]
-		z_priority = 3
-	}
-	starpower_pos = (((55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
-	starpower_scale = (((-1.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
-	ExtendCrc sidebar_Right_glow <player_text> out = name
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <name>
-		parent = <cont>
-		material = sys_Starpower_SDGLOW_sys_Starpower_SDGLOW
-		rgba = [255 255 255 255]
-		Pos = <starpower_pos>
-		Scale = <starpower_scale>
-		just = [center bottom]
-		z_priority = 0
-	}
-	starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
-	starpower_scale = (((0.5 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-	ExtendCrc sidebar_Right_Lightning01 <player_text> out = name
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <name>
-		parent = <cont>
-		material = sys_Big_Bolt01_sys_Big_Bolt01
-		rgba = [0 0 128 128]
-		Pos = <starpower_pos>
-		rot_angle = (180)
-		Scale = <starpower_scale>
-		just = [center top]
-		z_priority = 4
-	}
-	starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.0 * $starpower_fx_scale)* (0.0, 1.0)))
-	starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-	ExtendCrc sidebar_Right_Lightning02 <player_text> out = name
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <name>
-		parent = <cont>
-		material = sys_Big_Bolt01_sys_Big_Bolt01
-		rgba = [255 255 255 255]
-		Pos = <starpower_pos>
-		rot_angle = (180)
-		Scale = <starpower_scale>
-		just = [center top]
-		z_priority = 0.02
-	}
-	ExtendCrc starpower_container_left <player_text> out = cont
-	DoScreenElementMorph id = <cont> alpha = 0
-	ExtendCrc starpower_container_right <player_text> out = cont
-	DoScreenElementMorph id = <cont> alpha = 0
+	if ($Cheat_PerformanceMode = 0)
+		ExtendCrc starpower_container_right <player_text> out = cont
+		CreateScreenElement {
+			Type = ContainerElement
+			id = <cont>
+			parent = <container_id>
+			Pos = <rpos>
+			rot_angle = <rangle>
+			just = [center bottom]
+			z_priority = 3
+		}
+		starpower_pos = (((55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_scale = (((-1.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
+		ExtendCrc sidebar_Right_glow <player_text> out = name
+		CreateScreenElement {
+			Type = SpriteElement
+			id = <name>
+			parent = <cont>
+			material = sys_Starpower_SDGLOW_sys_Starpower_SDGLOW
+			rgba = [255 255 255 255]
+			Pos = <starpower_pos>
+			Scale = <starpower_scale>
+			just = [center bottom]
+			z_priority = 0
+		}
+		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_scale = (((0.5 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
+		ExtendCrc sidebar_Right_Lightning01 <player_text> out = name
+		CreateScreenElement {
+			Type = SpriteElement
+			id = <name>
+			parent = <cont>
+			material = sys_Big_Bolt01_sys_Big_Bolt01
+			rgba = [0 0 128 128]
+			Pos = <starpower_pos>
+			rot_angle = (180)
+			Scale = <starpower_scale>
+			just = [center top]
+			z_priority = 4
+		}
+		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.0 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
+		ExtendCrc sidebar_Right_Lightning02 <player_text> out = name
+		CreateScreenElement {
+			Type = SpriteElement
+			id = <name>
+			parent = <cont>
+			material = sys_Big_Bolt01_sys_Big_Bolt01
+			rgba = [255 255 255 255]
+			Pos = <starpower_pos>
+			rot_angle = (180)
+			Scale = <starpower_scale>
+			just = [center top]
+			z_priority = 0.02
+		}
+		ExtendCrc starpower_container_left <player_text> out = cont
+		DoScreenElementMorph id = <cont> alpha = 0
+		ExtendCrc starpower_container_right <player_text> out = cont
+		DoScreenElementMorph id = <cont> alpha = 0
+	endif
 	GetArraySize \{$#"0xd4b50263"}
 	array_count = 0
 	begin
@@ -450,6 +459,7 @@ script enable_highway_prepass
 endscript
 start_2d_move = 0
 
+//PC_HIGHWAY_ANIM = 0
 script move_highway_2d
 	Change \{start_2d_move = 0}
 	begin
@@ -458,32 +468,83 @@ script move_highway_2d
 		endif
 		wait \{1 gameframe}
 	repeat
-	highway_start_y = 720
-	pos_start_orig = 0
-	pos_add = -720
-	elapsed_time = 0.0
-	begin
-		<Pos> = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<highway_start_y> * (0.0, 1.0)))
-		SetScreenElementProps id = <container_id> Pos = <Pos>
+	//if ($PC_HIGHWAY_ANIM = 0)
+		// a bit slow
 		GetDeltaTime \{ignore_slomo}
-		<elapsed_time> = (<elapsed_time> + <delta_time>)
-		<scaled_time> = (<elapsed_time> / 1.3)
-		if (<scaled_time> > 1.0)
-			<scaled_time> = 1.0
+		interval = (1.0/<delta_time>/$current_speedfactor)
+		if (<interval> < 60)
+			interval = 60
 		endif
-		ln (1.005 - <scaled_time>)
-		<speed_modifier> = ((<ln> * 0.25)+ 1.0)
-		if (<speed_modifier> < 0.05)
-			<speed_modifier> = 0.05
+		if (<interval> > 144)
+			interval = 144
 		endif
-		<highway_start_y> = (<highway_start_y> + (<pos_add> * <delta_time> * <speed_modifier>))
-		if (<highway_start_y> <= <pos_start_orig>)
-			<Pos> = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<pos_start_orig> * (0.0, 1.0)))
+		highway_start_y = 720
+		pos_start_orig = 0
+		GetSongTimeMs
+		start_time = (<time> - 400) // instantly appear animating into screen
+		last_time = -1
+		begin
+			GetSongTimeMs
+			highway_start_y = 720
+			pos_add = -720
+			pos_sub = 1.0
+			MathPow ((<interval>)/60.0) exp = 2
+			pos_sub_add = (0.0004386 / <pow>)
+			time2 = ((<time> - <start_time>) / (1000.0 / <interval>))
+			CastToInteger \{time2}
+			if NOT (<last_time> = <time2>)
+				//ProfilingStart
+				last_time = <time2>
+				if (<time2> > 0)
+					begin
+						// there needs to be some optimization for this sort of thing
+						<highway_start_y> = (<highway_start_y> + (<pos_add> * (1.0/<interval>)))
+						<pos_add> = (<pos_add> * <pos_sub>)
+						<pos_sub> = (<pos_sub> - <pos_sub_add>)
+						if (<highway_start_y> <= <pos_start_orig> || <pos_add> >= -0.002)
+							break
+						endif
+					repeat <time2>
+					//printf '%d' d = <highway_start_y>
+				endif
+				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<highway_start_y> * (0.0, 1.0)))
+				//ProfilingEnd <...> 'highway move'
+			endif
+			if (<highway_start_y> <= <pos_start_orig> || <pos_add> >= -0.002)
+				//printf '%d' d = <highway_start_y>
+				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<pos_start_orig> * (0.0, 1.0)))
+				break
+			endif
+			wait \{1 gameframe}
+		repeat
+	/*else
+		highway_start_y = 720
+		pos_start_orig = 0
+		pos_add = -720
+		elapsed_time = 0.0
+		begin
+			<Pos> = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<highway_start_y> * (0.0, 1.0)))
 			SetScreenElementProps id = <container_id> Pos = <Pos>
-			break
-		endif
-		wait \{1 gameframe}
-	repeat
+			GetDeltaTime \{ignore_slomo}
+			<elapsed_time> = (<elapsed_time> + <delta_time>)
+			<scaled_time> = (<elapsed_time> / 1.3)
+			if (<scaled_time> > 1.0)
+				<scaled_time> = 1.0
+			endif
+			ln (1.005 - <scaled_time>)
+			<speed_modifier> = ((<ln> * 0.25)+ 1.0)
+			if (<speed_modifier> < 0.05)
+				<speed_modifier> = 0.05
+			endif
+			<highway_start_y> = (<highway_start_y> + (<pos_add> * <delta_time> * <speed_modifier>))
+			if (<highway_start_y> <= <pos_start_orig>)
+				<Pos> = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<pos_start_orig> * (0.0, 1.0)))
+				SetScreenElementProps id = <container_id> Pos = <Pos>
+				break
+			endif
+			wait \{1 gameframe}
+		repeat
+	endif*///
 endscript
 
 script move_highway_camera_to_default\{Player = 1}
@@ -668,6 +729,9 @@ highway_pulse_p1 = 0
 highway_pulse_p2 = 0
 
 script highway_pulse_multiplier_loss\{player_text = 'p1' multiplier = 1}
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	if ($game_mode = p2_battle || $boss_battle = 1)
 		return
 	endif

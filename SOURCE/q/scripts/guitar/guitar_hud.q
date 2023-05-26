@@ -122,7 +122,7 @@ script setup_hud
 		}
 		array_entry = (<array_entry> + 1)
 	repeat <array_Size>
-	if ($hudless = 0)
+	if ($hudless = 0 || $Cheat_PerformanceMode = 0)
 		if ((<player_status>.is_local_client)& (<player_status>.highway_layout = solo_highway))
 			net_setup_solo_hud player_status = <player_status> hud_destroygroup = <hud_destroygroup> Player = <Player>
 		else
@@ -247,14 +247,14 @@ script reset_hud
 endscript
 
 script move_hud_to_default\{time = 0.01}
-	if ($hudless = 1)
+	if ($hudless = 1 || $Cheat_PerformanceMode = 1)
 		return
 	endif
 	spawnscriptnow move_2d_elements_to_default params = {morph_time = <time>}
 endscript
 
 script move_2d_elements_to_default
-	if ($hudless = 1)
+	if ($hudless = 1 || $Cheat_PerformanceMode = 1)
 		return
 	endif
 	move_time = (<morph_time> * 1000.0)
@@ -302,7 +302,7 @@ script move_2d_elements_to_default
 endscript
 
 script #"0x9ca8d62c"
-	if ($hudless = 1)
+	if ($hudless = 1 || $Cheat_PerformanceMode = 1)
 		return
 	endif
 	move_time = (<morph_time> * 1000.0)
@@ -333,7 +333,7 @@ script #"0x9ca8d62c"
 endscript
 
 script morph_2d_hud_elements\{off_set = (0.0, 0.0) off_set_drop = (0.0, 0.0) time_to_move = 0 rot = 0}
-	if ($hudless = 1)
+	if ($hudless = 1 || $Cheat_PerformanceMode = 1)
 		return
 	endif
 	if ($current_num_players = 2)

@@ -279,7 +279,7 @@ public partial class settings : Form
 		FCmode,
 		EasyExpert,
 		Precision,
-		//Performance,
+		Performance,
 		//NoShake,
 		//Lefty,
 		BkgdVideo,
@@ -289,32 +289,8 @@ public partial class settings : Form
 	}
 	static string tStr(int i)
 	{
-		return ((t)i).ToString();
+		return ((t)i).ToString(); // ez INI section name thing
 	}
-	/*static string[] tStr = new string[]
-	{
-		"SongCaching",
-		"VerboseLog",
-		"PreserveLog",
-		"DisableVsync",
-		"NoStartupMsg",
-		"",
-		"",
-		"",
-		"Windowed",
-		"Borderless",
-		"",
-		"",
-		"",
-		"",
-		"",
-		//"Performance",
-		//"NoShake",
-		//"Lefty",
-		"",
-		"",
-		""
-	};*/
 
 	public QbKey[] tK = new QbKey[]
 	{
@@ -335,7 +311,7 @@ public partial class settings : Form
 		QbKey.Create(0x0858E407),
 		QbKey.Create(0x404B1EF4),
 		QbKey.Create(0x3CA38921),
-		//QbKey.Create(0x392E3940), // perf
+		QbKey.Create(0x392E3940), // perf
 		//NoShake,
 		//Lefty,
 		QbKey.Create(0x633E187F),
@@ -382,8 +358,7 @@ public partial class settings : Form
 		else
 			xml.LoadXml(xmlDefault);
 		//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
-		DialogResult = DialogResult.OK;
-
+		//DialogResult = DialogResult.OK;
 		InitializeComponent();
 		vlbl.Text = "Version      : "+Program.version;
 		// kill me
@@ -447,9 +422,12 @@ public partial class settings : Form
 			tLb.SetItemCheckState((int)t.NoParticles, state);
 		}
 		for (int i = 0; i < tK.Length; i++)
-			if (tK[i].Crc != 0 && i != (int)t.KeyboardMode && i != (int)t.NoParticles)
+			if (tK[i].Crc != 0 &&
+				i != (int)t.KeyboardMode &&
+				i != (int)t.NoParticles)
 			tLb.SetItemChecked(i, (int)gQC(tK[i], 0) == 1);
 		tLb.SetItemChecked((int)t.KeyboardMode, (int)gQC(QbKey.Create(0x32025D94), 1) == 0); // autolaunch_startnow
+		//tLb.SetItemChecked((int)t.Performance, (int)gQC(QbKey.Create(0x392E3940), 0) == 0); // Cheat_PerformanceMode
 		/*tLb.SetItemChecked((int)t.NoIntro, (int)gQC(tK[(int)t.NoIntro], 0) == 1); // disable_intro
 		tLb.SetItemChecked((int)t.NoFail, (int)gQC(tK[(int)t.NoFail], 0) == 1); // Cheat_NoFail
 		tLb.SetItemChecked((int)t.EasyExpert, (int)gQC(tK[(int)t.EasyExpert], 0) == 1);
@@ -629,6 +607,83 @@ public partial class settings : Form
 		// also looks redundant when i could use a loop maybe
 		}*/
 		aqlvl.Value = Convert.ToInt32(Program.cfg("Misc", "AB", "128"));
+
+		{
+			Program.vl("Loading scripts for override checks...");
+			moddiag.built_in_items = new List<moddiag.OverrideItem>();
+			string dbgf = Program.pakf + "dbg.pak.xen";
+			if (!File.Exists(dbgf))
+				dbgf = "";
+			PakFormat O_PF = new PakFormat(
+				Program.pakf + "qb.pak.xen", Program.pakf + "qb.pab.xen", dbgf, PakFormatType.PC, false);
+			if (dbgf != "")
+			{
+				PakFormat D_PF = new PakFormat(dbgf, dbgf, "", PakFormatType.PC, false);
+				PakEditor D_PE = new PakEditor(D_PF, false);
+				foreach (PakHeaderItem f in D_PE.Headers.Values)
+				{
+					switch (f.FileType.Crc)
+					{
+						case 0x559566CC: // .dbg
+							try
+							{
+								QbFile.PopulateDebugNames(D_PE.ExtractFileToString(f.Filename));
+							}
+							catch (Exception ex) {}
+							break;
+						default:
+							continue;
+					}
+				}
+			}
+			if (false)
+			{
+				PakEditor O_PE = new PakEditor(O_PF, false);
+				foreach (PakHeaderItem f in O_PE.Headers.Values)
+				{
+					switch (f.FileType.Crc)
+					{
+						// cringe C# "constant value expected" STFU I DO WHAT I WANT
+						case 0xA7F505C4: // .qb
+							try
+							{
+								QbFile qb = O_PE.ReadQbFile(f.Filename);
+								moddiag.Overrides_AddDefaultItems(qb);
+								break;
+							}
+							catch (Exception ex)
+							{
+								Program.vl("Failed to load " + f.Filename);
+								Program.vl(ex);
+								continue;
+							}
+						default:
+							continue;
+					}
+				}
+			}
+			else
+			{
+				PakFormat nullPF = new PakFormat("", "", "", PakFormatType.PC);
+				foreach (string fn in Directory.GetFiles(Program.dataf + "SCRIPTS\\", "*.qb.xen", SearchOption.AllDirectories))
+				{
+					//Program.vl(fn);
+					try
+					{
+						QbFile qb = new QbFile(fn, nullPF);
+						moddiag.Overrides_AddDefaultItems(qb);
+					}
+					catch (Exception ex)
+					{
+						string test = Program.NP(fn);
+						Program.vl("Failed to load " + test.Substring(test.IndexOf(Program.NP(Program.dataf))));
+						Program.vl(ex);
+					}
+				}
+			}
+			Program.vl("done");
+		}
+
 		disableEvents = false;
 	}
 
@@ -919,23 +974,23 @@ public partial class settings : Form
 				break;
 			case t.NoFail: // Cheat_NoFail
 				sQC(tK[(int)t.NoFail], e.NewValue == CheckState.Checked ? 1 : 0);
-				int[] zoffs = { 20, 21 };
-				int _invert = (e.NewValue == CheckState.Checked ? 1 : -1);
+				//int[] zoffs = { 20, 21 };
+				//int _invert = (e.NewValue == CheckState.Checked ? 1 : -1);
 				/*QbItemInteger thiscodesucks =
 				(QbItemInteger)
 					(userqb.FindItem(QbKey.Create(0x67CF1F5D), false));
 				QbItemInteger thiscodesucks2 =
 				(QbItemInteger)
 					(userqb.FindItem(QbKey.Create(0xDD6AB3D6), false));*/
-				sQC(QbKey.Create(0x67CF1F5D), zoffs[0] * _invert);
-				sQC(QbKey.Create(0xDD6AB3D6), zoffs[0] * _invert);
+				//sQC(QbKey.Create(0x67CF1F5D), zoffs[0] * _invert);
+				//sQC(QbKey.Create(0xDD6AB3D6), zoffs[1] * _invert);
 				//thiscodesucks.Values[0] = zoffs[0] * _invert;
 				//thiscodesucks2.Values[0] = zoffs[1] * _invert;
 				//svQB();
 				break;
-			//case Tweaks.Performance:
-				//setQBConfig(QbKey.Create(0x392E3940), e.NewValue == CheckState.Checked ? 1 : 0); // Cheat_PerformanceMode
-				//break;
+			case t.Performance:
+				sQC(QbKey.Create(0x392E3940), e.NewValue == CheckState.Checked ? 1 : 0); // Cheat_PerformanceMode
+				break;
 			//case Tweaks.Lefty:
 				//setQBConfig(QbKey.Create(0xBBABFA47), e.NewValue == CheckState.Checked ? 1 : 0); // p1_lefty
 				//break;

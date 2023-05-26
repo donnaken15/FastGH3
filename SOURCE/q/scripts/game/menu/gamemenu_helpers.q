@@ -554,7 +554,7 @@ endscript
 disable_menu_sounds = 0
 
 script generic_menu_up_or_down_sound\{menu_id = current_menu}
-	printf \{"--- generic_menu_up_or_down_sound"}
+	//printf \{"--- generic_menu_up_or_down_sound"}
 	if ($disable_menu_sounds = 0)
 		SoundEvent \{event = ui_sfx_scroll}
 		SoundEvent \{event = ui_sfx_scroll_add}

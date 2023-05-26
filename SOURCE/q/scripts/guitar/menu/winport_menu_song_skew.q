@@ -342,7 +342,8 @@ script winport_menu_calibrate_lag_create_circles
 	begin
 		FormatText checksumName = circle_id 'circle%d' d = <circle_index>
 		circle_pos = (($winport_calibrate_lag_menu_circle_inital_pos)- ((0.0, 1.0) * <circle_index> * ($winport_calibrate_lag_menu_circle_separation)))
-		<one_frame> = ((1.0 / 60.0)* $winport_calibrate_lag_menu_circle_velocity)
+		GetDeltaTime
+		<one_frame> = (<delta_time> * $winport_calibrate_lag_menu_circle_velocity)
 		casttointeger \{one_frame}
 		<y_off> = ($winport_calibrate_lag_menu_line_pos.(0.0, 1.0) - <circle_pos>.(0.0, 1.0))
 		<steps> = (<y_off> / <one_frame>)
@@ -363,7 +364,7 @@ script winport_menu_calibrate_lag_create_circles
 		}
 		<circle_id> ::SetTags existence = 0 hit = 0 check = 1
 		<circle_id> ::SetTags initial_position = <circle_pos>
-		<circle_id> ::SetTags time_requirement = (<steps> * (1.0 / 60.0))
+		<circle_id> ::SetTags time_requirement = (<steps> * <delta_time>)
 		<circle_index> = (<circle_index> + 1)
 	repeat ($winport_calibrate_lag_menu_num_circles)
 	LaunchEvent \{Type = unfocus target = root_window}
@@ -407,7 +408,9 @@ script winport_do_calibration_update
 	begin
 		circle_index = 0
 		num_circles_gone = 0
-		delta_time = (1.0 / 60.0)
+		// WHY ISNT THIS CODE CHANGING!!?@!??@?@!?!@?!@?!?/
+		GetDeltaTime
+		printf '%d' d = <delta_time>
 		begin
 			FormatText checksumName = circle_id 'circle%d' d = <circle_index>
 			<circle_id> ::GetTags

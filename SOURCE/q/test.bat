@@ -1,4 +1,5 @@
 :# REQUIRES (AND USES CYGWIN) SH
 @sh ./qcomp scripts ../../DATA/scripts
 @cd ../..
-@start "" game
+game
+:# doesnt focus if i use start

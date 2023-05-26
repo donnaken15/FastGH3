@@ -11,10 +11,8 @@ mp_select_controller_fs = {
 			flow_state_func = bootup_check_autologin
 		}
 		{
+			$quickplay_play_song_action
 			action = #"0xf3556d9d"
-			func = quickplay_start_song
-			transition_screen = default_loading_screen
-			flow_state = quickplay_play_song_fs
 		}
 		{
 			action = go_back

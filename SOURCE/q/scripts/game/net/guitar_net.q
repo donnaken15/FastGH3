@@ -54,7 +54,7 @@ prev_len = 0
 bPS3SingleSignOnCheckComplete = 0
 
 script xenon_singleplayer_session_init\{ps3_signin_callback = xenon_singleplayer_session_init}
-	printscriptinfo \{"--- MJS xenon_singleplayer_session_init"}
+	//printscriptinfo \{"--- MJS xenon_singleplayer_session_init"}
 	if CheckForSignIn
 		if ($is_network_game = 1)
 			NetSessionFunc \{func = motd_uninit}

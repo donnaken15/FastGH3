@@ -288,7 +288,7 @@ script lefty_flip_func
 	endif
 	Change StructureName = player2_status lefthanded_gems = <lefty_flip_p2>
 	Change StructureName = player2_status lefthanded_button_ups = <lefty_flip_p2>
-	career_restart_song
+	//career_restart_song
 endscript
 
 script career_restart_song
@@ -505,6 +505,7 @@ career_practice_warning_fs = {
 
 script career_go_to_practice_setup
 	progression_push_current
+	Change practice_last_mode = ($game_mode)
 	Change \{came_to_practice_from = career}
 	Change came_to_practice_difficulty = ($current_difficulty)
 	kill_gem_scroller

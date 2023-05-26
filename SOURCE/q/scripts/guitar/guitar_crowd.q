@@ -79,24 +79,3 @@ script forcescore
 	Change StructureName = <player_status> current_health = <health>
 	Change current_crowd = <health>
 endscript
-
-script create_crowd_models
-endscript
-
-script update_crowd_model_cam
-endscript
-
-script destroy_crowd_models
-endscript
-set_crowd_hand = $EmptyScript
-Crowd_SetHand = $EmptyScript
-Crowd_StartLighters = $EmptyScript
-crowd_monitor_performance = $EmptyScript
-Crowd_StopLighters = $EmptyScript
-Crowd_AllSetHand = $EmptyScript
-Crowd_AllPlayAnim = $EmptyScript
-Crowd_PlayAnim = $EmptyScript
-Crowd_Create_Lighters = $EmptyScript
-Crowd_ToggleLighters = $EmptyScript
-Crowd_StageDiver_Hide = $EmptyScript
-Crowd_StageDiver_Jump = $EmptyScript

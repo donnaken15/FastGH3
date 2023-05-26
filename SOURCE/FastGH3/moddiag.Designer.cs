@@ -28,10 +28,11 @@
 	{
             this.modslist = new System.Windows.Forms.ListBox();
             this.splitter1 = new System.Windows.Forms.SplitContainer();
-            this.togglecbx = new System.Windows.Forms.CheckBox();
             this.refbtn = new System.Windows.Forms.Button();
+            this.togglecbx = new System.Windows.Forms.CheckBox();
             this.rembtn = new System.Windows.Forms.Button();
             this.addbtn = new System.Windows.Forms.Button();
+            this.modcfgbtn = new System.Windows.Forms.Button();
             this.warnings = new System.Windows.Forms.TextBox();
             this.warningslbl = new System.Windows.Forms.Label();
             this.modovers = new System.Windows.Forms.Button();
@@ -79,6 +80,7 @@
             // 
             // splitter1.Panel2
             // 
+            this.splitter1.Panel2.Controls.Add(this.modcfgbtn);
             this.splitter1.Panel2.Controls.Add(this.warnings);
             this.splitter1.Panel2.Controls.Add(this.warningslbl);
             this.splitter1.Panel2.Controls.Add(this.modovers);
@@ -94,6 +96,19 @@
             this.splitter1.SplitterWidth = 3;
             this.splitter1.TabIndex = 1;
             // 
+            // refbtn
+            // 
+            this.refbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.refbtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.refbtn.Font = new System.Drawing.Font("MS PGothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refbtn.Location = new System.Drawing.Point(141, 303);
+            this.refbtn.Name = "refbtn";
+            this.refbtn.Size = new System.Drawing.Size(20, 23);
+            this.refbtn.TabIndex = 3;
+            this.refbtn.Text = "↺";
+            this.refbtn.UseVisualStyleBackColor = true;
+            this.refbtn.Click += new System.EventHandler(this.modrefresh);
+            // 
             // togglecbx
             // 
             this.togglecbx.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -107,19 +122,6 @@
             this.togglecbx.Text = "Disable (*)";
             this.togglecbx.UseVisualStyleBackColor = true;
             this.togglecbx.CheckedChanged += new System.EventHandler(this.togglemod);
-            // 
-            // refbtn
-            // 
-            this.refbtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.refbtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.refbtn.Font = new System.Drawing.Font("MS PGothic", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refbtn.Location = new System.Drawing.Point(141, 303);
-            this.refbtn.Name = "refbtn";
-            this.refbtn.Size = new System.Drawing.Size(20, 23);
-            this.refbtn.TabIndex = 3;
-            this.refbtn.Text = "↺";
-            this.refbtn.UseVisualStyleBackColor = true;
-            this.refbtn.Click += new System.EventHandler(this.modrefresh);
             // 
             // rembtn
             // 
@@ -145,6 +147,18 @@
             this.addbtn.UseVisualStyleBackColor = true;
             this.addbtn.Click += new System.EventHandler(this.addmod_diag);
             // 
+            // modcfgbtn
+            // 
+            this.modcfgbtn.Enabled = false;
+            this.modcfgbtn.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.modcfgbtn.Location = new System.Drawing.Point(100, 169);
+            this.modcfgbtn.Name = "modcfgbtn";
+            this.modcfgbtn.Size = new System.Drawing.Size(75, 23);
+            this.modcfgbtn.TabIndex = 9;
+            this.modcfgbtn.Text = "User Settings";
+            this.modcfgbtn.UseVisualStyleBackColor = true;
+            this.modcfgbtn.Click += new System.EventHandler(this.openmodcfg);
+            // 
             // warnings
             // 
             this.warnings.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -153,7 +167,7 @@
             this.warnings.Multiline = true;
             this.warnings.Name = "warnings";
             this.warnings.ReadOnly = true;
-            this.warnings.Size = new System.Drawing.Size(240, 113);
+            this.warnings.Size = new System.Drawing.Size(243, 113);
             this.warnings.TabIndex = 8;
             // 
             // warningslbl
@@ -168,13 +182,15 @@
             // 
             // modovers
             // 
+            this.modovers.Enabled = false;
             this.modovers.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.modovers.Location = new System.Drawing.Point(2, 169);
             this.modovers.Name = "modovers";
-            this.modovers.Size = new System.Drawing.Size(75, 23);
+            this.modovers.Size = new System.Drawing.Size(91, 23);
             this.modovers.TabIndex = 6;
             this.modovers.Text = "Overrides...";
             this.modovers.UseVisualStyleBackColor = true;
+            this.modovers.Click += new System.EventHandler(this.showOvrds);
             // 
             // modlu
             // 
@@ -207,7 +223,7 @@
             this.descbox.Multiline = true;
             this.descbox.Name = "descbox";
             this.descbox.ReadOnly = true;
-            this.descbox.Size = new System.Drawing.Size(242, 62);
+            this.descbox.Size = new System.Drawing.Size(245, 62);
             this.descbox.TabIndex = 3;
             // 
             // moddesc
@@ -290,4 +306,5 @@
 	private System.Windows.Forms.Button refbtn;
 	private System.Windows.Forms.CheckBox togglecbx;
     private System.Windows.Forms.OpenFileDialog OFD;
+    private System.Windows.Forms.Button modcfgbtn;
 }

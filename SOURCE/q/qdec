@@ -1,24 +1,14 @@
 #!/bin/sh
 
 # no args
-if [ $# -eq 0 ]; then
-	echo -e "enter a path to decompile"
-	exit 1
-fi
+[ $# -eq 0 ] && { echo -e "enter a path to decompile"; exit 1; }
 # non existent dir arg
-if [ ! -d "$1" ]; then
-	echo invalid path
-	exit 1
-fi
-indir=$1
-find=/usr/bin/find
-outdir=decomp/
+[ ! -d "$1" ] && { echo "invalid path"; exit 1; }
+indir=$1; find=/usr/bin/find; outdir=decomp/
+[ -z "$2" ] && outdir="$1_decomp/" || outdir="$2/"
 rm "$outdir" -rf
-if	[ ! "$(dirname "$0")" = "." ]; then
-	bin=$(realpath "$0")/ # ???
-else
-	bin=$(which "$0")/ # required when script is pathed
-fi
+[ ! "$(dirname "$0")" = "." ] && bin="$(realpath "$0")/" || bin="$(which "$0")/"
+								#???						# required when script is pathed
 bin=$(dirname "$bin")
 wbin=$(cygpath -w "$bin")
 NL=$'\n'

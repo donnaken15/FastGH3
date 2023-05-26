@@ -201,12 +201,23 @@ endscript
 }
 
 script lefty_toggle\{player_status = player1_status}
-	leftt = 1
-	if ($<player_status>.lefthanded_gems = 1)
-		leftt = 0
+	GetGlobalTags \{user_options}
+	if (<lefty_flip_p1> = 0)
+		SetGlobalTags \{user_options params = {lefty_flip_p1 = 1}}
+	else
+		SetGlobalTags \{user_options params = {lefty_flip_p1 = 0}}
 	endif
+	GetGlobalTags \{user_options}
+	leftt = <lefty_flip_p1>
 	Change StructureName = <player_status> lefthanded_gems = <leftt>
-	wait 0.95 seconds
+	begin
+		if NOT GameIsPaused
+			break
+		endif
+		wait \{1 gameframe}
+	repeat
+	Change StructureName = <player_status> lefthanded_gems = <leftt>
+	wait ((0.28 / $current_speedfactor) * $<player_status>.scroll_time) seconds
 	animate_lefty_flip other_player_status = <player_status>
 	Change StructureName = <player_status> lefthanded_button_ups = <leftt>
 endscript
@@ -226,7 +237,6 @@ script wait_beats\{1}
 endscript
 
 script everyone_deploy // :P
-	
 	player = 1
 	begin
 		formattext checksumname = player_status 'player%d_status' d = <player>
@@ -249,20 +259,23 @@ fastgh3_path_triggers = []
 // soulless 1 path from CHOpt
 //fastgh3_path_triggers = [9446 18638 37851 57127 85851 151148 191936 265276 298148 334978]
 script muh_arby_bot_star
-	if ($player1_status.bot_play = 0 && $player2_status.bot_play = 0)
-		//printf \{'bot not turned on!!!!!!!!!!!!!'}
+	if ($player1_status.bot_play = 0 & $player2_status.bot_play = 0)
+		printf \{'bot not turned on!!!!!!!!!!!!!'}
 		return
 	endif
-	if (($game_mode = p2_career || $game_mode = p2_coop) && ($player1_status.bot_play = 0 || $player2_status.bot_play = 0))
+	if (($game_mode = p2_career || $game_mode = p2_coop) & ($player1_status.bot_play = 0 || $player2_status.bot_play = 0))
+		printf \{'co-op with bot, manual triggering by player enabled'}
 		return
 	endif
-	getarraysize \{fastgh3_path_triggers}
+	getarraysize \{$fastgh3_path_triggers}
 	if (<array_size> = 0)
+		printf \{'star power bot: triggering every 16 beats'}
 		begin
 			wait_beats \{16}
 			everyone_deploy
 		repeat
 	else
+		printf \{'star power bot: using provided path'}
 		i = 0
 		begin
 			begin
@@ -273,10 +286,7 @@ script muh_arby_bot_star
 				Wait \{1 gameframe}
 			repeat
 			Increment \{i}
-			player = 1
-			begin
-				everyone_deploy
-			repeat $current_num_players
+			everyone_deploy
 		repeat <array_size>
 	endif
 endscript
@@ -384,20 +394,22 @@ endscript
 
 script ProfilingStart
 	//return
+	AddParams \{time = 0.0} // fallback if ProfileTime is not patched by FastGH3 plugin
 	ProfileTime
 	return ____profiling_checkpoint_1 = <time>
 endscript
 script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____profiling_interval = 60 }
 	//return
+	AddParams \{time = 0.0}
 	ProfileTime
 	<____profiling_time> = ((<time> - <____profiling_checkpoint_1>) * 0.0001)
 	if NOT GotParam \{ loop }
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time>
 		return profile_time = <____profiling_time>
 	endif
-	<____profiling_i> = (<____profiling_i> + 1) //
-	if (<____profiling_i> > <____profiling_interval>) //
-		<____profiling_i> = 0 //
+	Increment \{____profiling_i}
+	if (<____profiling_i> > <____profiling_interval>)
+		<____profiling_i> = 0
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
 	endif
 	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>

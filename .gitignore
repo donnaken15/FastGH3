@@ -76,4 +76,7 @@ DATA/MOVIES/BIK/lastvid
 /DATA/ZONES/__themes/*.gfx.xen
 /DATA/ZONES/__themes/*.zip
 
+SOURCE/q/test
+
 # if i add items to this list that were already committed before, will it remove it from the repo?
+stats_*.txt

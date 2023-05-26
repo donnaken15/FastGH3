@@ -57,6 +57,9 @@ endscript
 #"0x736a45df" = 0
 
 script #"0x9c9f988b"
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	printf \{"Intro... NOT!"}
 	printstruct <...>
 	if ($show_boss_helper_screen = 1)
@@ -275,8 +278,6 @@ script play_outro
 	killspawnedscript \{name = highway_pulse_black}
 	killspawnedscript \{name = GuitarEvent_HitNote_Spawned}
 	killspawnedscript \{name = hit_note_fx}
-	killspawnedscript \{name = Do_StarPower_StageFX}
-	killspawnedscript \{name = Do_StarPower_Camera}
 	killspawnedscript \{name = first_gem_fx}
 	killspawnedscript \{name = gem_iterator}
 	killspawnedscript \{name = gem_array_stepper}

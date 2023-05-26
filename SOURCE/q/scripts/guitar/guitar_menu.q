@@ -1,6 +1,4 @@
 gh3_button_font = #"0x0d53096f"
-bunny_flame_index = 1
-g_anim_flame = 1
 default_event_handlers = [
 	{
 		pad_up
@@ -35,6 +33,13 @@ script menu_flow_go_back\{Player = 1 create_params = {}destroy_params = {}}
 	ui_flow_manager_respond_to_action action = go_back Player = <Player> create_params = <create_params> destroy_params = <destroy_params>
 endscript
 
+// @script | new_menu | Creates a new menu with id current_menu_anchor
+// @parm name | menu_id | id of this menu
+// @parm name | vmenu_id | id of the vmenu
+// @parm struct | event_handlers | group of actions to respond to when a button is pressed
+// @parmopt vector | dims | (400,480) | dimensions of the menu
+// @parmopt array | internal_just | [left top] | justification of elements within the
+// menu
 script new_menu\{menu_pos = $#"0xe787d761" event_handlers = $#"0xc3d3907e" use_backdrop = 0 z = 1 dims = (400.0, 480.0) font = #"0x45aae5c4" font_size = 0.75 default_colors = 1 just = [left top] no_focus = 0 internal_just = [center top]}
 	if ScreenElementExists id = <scrollid>
 		printf "script new_menu - %s Already exists." s = <scrollid>
@@ -63,7 +68,7 @@ script new_menu\{menu_pos = $#"0xe787d761" event_handlers = $#"0xc3d3907e" use_b
 			font = <font>
 			Pos = (0.0, -45.0)
 			Scale = <font_size>
-			rgba = [210 210 210 250]
+			rgba = [127 127 127 127]
 			text = <name>
 			just = <just>
 			Shadow
@@ -108,7 +113,7 @@ script new_menu\{menu_pos = $#"0xe787d761" event_handlers = $#"0xc3d3907e" use_b
 			exclusive_device = <exclusive_device>
 		}
 	endif
-	if GotParam \{tierlist}
+	/*if GotParam \{tierlist}
 		Tier = 0
 		begin
 			<Tier> = (<Tier> + 1)
@@ -152,7 +157,7 @@ script new_menu\{menu_pos = $#"0xe787d761" event_handlers = $#"0xc3d3907e" use_b
 				endif
 			endif
 		repeat ($<tierlist>.num_tiers)
-	endif
+	endif*/
 	if (<default_colors>)
 		set_focus_color rgba = ($default_menu_focus_color)
 		set_unfocus_color rgba = ($default_menu_unfocus_color)
@@ -204,19 +209,6 @@ script create_main_menu_backdrop
 		shadow_rgba = [0 0 0 255]
 		z_priority = 60
 	}
-	//CreateScreenElement \{Type = SpriteElement id = #"0xe8054a04" parent = main_menu_bg_container texture = #"0xe8054a04" Pos = (335.0, 0.0) dims = (720.0, 720.0) just = [left top] z_priority = 1}
-	//RunScriptOnScreenElement id = #"0xe8054a04" glow_menu_element params = {time = 1 id = <id>}
-	//CreateScreenElement \{Type = SpriteElement parent = main_menu_bg_container texture = #"0xf4e50517" Pos = (0.0, 0.0) dims = (1280.0, 720.0) just = [left top] z_priority = 2}
-	//CreateScreenElement \{Type = SpriteElement id = eyes_BL parent = main_menu_bg_container texture = #"0xac82272b" Pos = (93.0, 676.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	//RunScriptOnScreenElement id = eyes_BL glow_menu_element params = {time = 1.0 id = <id>}
-	//CreateScreenElement \{Type = SpriteElement id = eyes_BR parent = main_menu_bg_container texture = #"0x568d1a48" Pos = (1176.0, 659.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	//RunScriptOnScreenElement id = eyes_BR glow_menu_element params = {time = 1.0 id = <id>}
-	//CreateScreenElement \{Type = SpriteElement id = eyes_C parent = main_menu_bg_container texture = #"0x49d95bd1" Pos = (406.0, 398.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	//RunScriptOnScreenElement id = eyes_C glow_menu_element params = {time = 1.5 id = <id>}
-	//CreateScreenElement \{Type = SpriteElement id = eyes_TL parent = main_menu_bg_container texture = #"0xb01a92fc" Pos = (271.0, 215.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	//RunScriptOnScreenElement id = eyes_TL glow_menu_element params = {time = 1.7 id = <id>}
-	//CreateScreenElement \{Type = SpriteElement id = eyes_TR parent = main_menu_bg_container texture = #"0x4a15af9f" Pos = (995.0, 71.0) dims = (128.0, 64.0) just = [center center] z_priority = 3}
-	//RunScriptOnScreenElement id = eyes_TR glow_menu_element params = {time = 1.0 id = <id>}
 endscript
 
 script WinPortCreateLaptopUi
@@ -289,63 +281,6 @@ main_menu_created = 0
 script create_main_menu
 endscript
 
-script guitar_menu_highlighter\{zPri = 50}
-	if GotParam \{text_id}
-		GetScreenElementDims id = <text_id>
-		hilite_dims = (<width> * (1.0, 0.0) + <height> * (0.0, 0.699999988079071) + (20.0, -1.0))
-		bookend_dims = (<height> * (0.5, 0.5))
-		hilite_pos = ((<hlInfoList> [<hlIndex>]).posH - (5.0, 0.0))
-		SetScreenElementProps {
-			id = <wthlID>
-			Pos = <hilite_pos>
-			dims = <hilite_dims>
-			z_priority = <zPri>
-		}
-		SetScreenElementProps {
-			id = <be1ID>
-			Pos = (<hilite_pos> - <bookend_dims>.(1.0, 0.0) * (0.6000000238418579, 0.0) + <height> * (0.0, 0.10000000149011612))
-			dims = <bookend_dims>
-			z_priority = <zPri>
-		}
-		SetScreenElementProps {
-			id = <be2ID>
-			Pos = (<hilite_pos> + (<hilite_dims>.(1.0, 0.0) * (1.0, 0.0))+ <height> * (0.0, 0.10000000149011612) - (<bookend_dims>.(1.0, 0.0) * (0.10000000149011612, 0.0)))
-			dims = <bookend_dims>
-			z_priority = <zPri>
-			flip_h
-		}
-	else
-		SetScreenElementProps {
-			id = <be1ID>
-			Pos = ((<hlInfoList> [<hlIndex>]).posL)
-			dims = ((<hlInfoList> [<hlIndex>]).beDims)
-			z_priority = <zPri>
-		}
-		SetScreenElementProps {
-			id = <be2ID>
-			Pos = ((<hlInfoList> [<hlIndex>]).posR)
-			dims = ((<hlInfoList> [<hlIndex>]).beDims)
-			z_priority = <zPri>
-		}
-		SetScreenElementProps {
-			id = <wthlID>
-			Pos = ((<hlInfoList> [<hlIndex>]).posH)
-			dims = ((<hlInfoList> [<hlIndex>]).hDims)
-			z_priority = <zPri>
-		}
-	endif
-endscript
-
-script glow_menu_element\{time = 1}
-	if NOT ScreenElementExists id = <id>
-		return
-	endif
-	wait randomrange (0.0, 2.0) seconds
-	begin
-		<id> ::DoMorph alpha = 1 time = <time> motion = smooth
-		<id> ::DoMorph alpha = 0 time = <time> motion = smooth
-	repeat
-endscript
 winport_is_in_online_menu_system = 0
 
 script main_menu_select_winport_online
@@ -376,6 +311,76 @@ script isSinglePlayerGame
 endscript
 winport_in_top_pause_menu = 0
 
+menu_unfocus_color = [ 255 255 255 191 ]
+menu_focus_color = [ 255 127 0 224 ]
+default_menu_unfocus_color = [ 255 255 255 191 ]
+default_menu_focus_color = [ 255 127 0 224 ]
+
+script new_pause_menu_button \{cont_params = {} event_handlers = []}
+	id2 = <id>
+	CreateScreenElement {
+		<cont_params>
+		event_handlers = <event_handlers>
+	}
+	CreateScreenElement {
+		Type = TextElement
+		parent = <id>
+		font = <font>
+		Scale = <scale>
+		rgba = $menu_unfocus_color
+		text = <text>
+		id = <id2>
+		just = [left top]
+		z_priority = <z>
+		exclusive_device = <player_device>
+	}
+	GetScreenElementDims id = <id>
+	fit_text_in_rectangle {
+		id = <id>
+		dims = ((250.0, 0.0) + <height> * (0.0, 1.0))
+		only_if_larger_x = 1
+		start_x_scale = (<scale>.(1.0, 0.0))
+		start_y_scale = (<scale>.(0.0, 1.0))
+	}
+endscript
+
+script checkbox_sound
+	s = 'Check_'
+	if (<#"0x00000000">)
+		s = ''
+	endif
+	FormatText checksumName = sound_event 'Checkbox_%sSFX' s = <s>
+	SoundEvent event = <sound_event>
+endscript
+
+script pause_lefty_toggle \{player = 1}
+	FormatText checksumName = player_status 'player%d_status' d = <Player>
+	sound_event = Checkbox_
+	if ($<player_status>.lefthanded_gems = 1)
+		SetScreenElementProps \{id = pause_lefty_check texture = #"0xdd70901e"}
+		Change \{pad_event_up_inversion = true}
+	else
+		extendcrc <sound_event> 'Check_' out = sound_event
+		SetScreenElementProps \{id = pause_lefty_check texture = #"0xa986bfc3"}
+		Change \{pad_event_up_inversion = false}
+	endif
+	extendcrc <sound_event> 'SFX' out = sound_event
+	if NOT isSinglePlayerGame
+		FormatText checksumName = append '_P%d' s = <s> d = <Player>
+		extendcrc <sound_event> <append> out = <sound_event>
+	endif
+	SoundEvent event = <sound_event>
+	killspawnedscript \{name = lefty_toggle}
+	spawnscriptnow lefty_toggle params = {player_status = <player_status>}
+endscript
+
+script set_focus_color\{rgba = $menu_focus_color}
+	Change menu_focus_color = <rgba>
+endscript
+
+script set_unfocus_color\{rgba = $menu_unfocus_color}
+	Change menu_unfocus_color = <rgba>
+endscript
 script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 	player_device = ($last_start_pressed_device)
 	if ($player1_device = <player_device>)
@@ -400,32 +405,32 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 	if IsWinPort
 		Change \{winport_in_top_pause_menu = 1}
 	endif
-	Change \{bunny_flame_index = 1}
-	pause_z = 10000
-	spacing = -65
-	if (<for_options> = 0)
-		menu_pos = (640.0, 220.0)
-		if (<for_practice> = 1)
-			<menu_pos> = (640.0, 190.0)
-			<spacing> = -65
-		endif
-	else
-		<spacing> = -65
-		if IsGuitarController controller = <player_device>
-			if WinPortSioIsKeyboard deviceNum = <player_device>
-				menu_pos = (640.0, 260.0)
-			else
-				menu_pos = (640.0, 225.0)
-			endif
-		else
-			menu_pos = (640.0, 260.0)
-		endif
-	endif
+	pause_z = 11000000
+	spacing = -59
+	menu_pos = (150.0, 210.0)
+	//if (<for_options> = 0)
+		//menu_pos = (230.0, 240.0)
+		//if (<for_practice> = 1)
+			//<menu_pos> = (230.0, 240.0)
+			//<spacing> = -30
+		//endif
+	//else
+		//<spacing> = -30
+		//if IsGuitarController controller = <player_device>
+			//if WinPortSioIsKeyboard deviceNum = <player_device>
+			//	menu_pos = (230.0, 240.0)
+			//else
+			//	menu_pos = (230.0, 240.0)
+			//endif
+		//else
+			//menu_pos = (230.0, 240.0)
+		//endif
+	//endif
 	new_menu {
 		scrollid = scrolling_pause
 		vmenuid = vmenu_pause
 		menu_pos = <menu_pos>
-		rot_angle = 2
+		rot_angle = 0
 		event_handlers = <flame_handlers>
 		spacing = <spacing>
 		use_backdrop = (0)
@@ -433,352 +438,107 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 	}
 	create_pause_menu_frame z = (<pause_z> - 10)
 	if ($is_network_game = 0)
-		CreateScreenElement {
-			Type = SpriteElement
-			parent = pause_menu_frame_container
-			texture = #"0x9995fe99"
-			Pos = (640.0, 540.0)
-			just = [center center]
-			z_priority = (<pause_z> + 100)
-		}
 		if GotParam \{banner_text}
 			pause_player_text = <banner_text>
-			if GotParam \{banner_scale}
-				pause_player_scale = <banner_scale>
-			else
-				pause_player_scale = (1.0, 1.0)
-			endif
 		else
 			if (<for_options> = 0)
 				if (<for_practice> = 1)
-					<pause_player_text> = "PAUSED"
+					<pause_player_text> = "Paused"
 				else
 					if NOT isSinglePlayerGame
-						FormatText textname = pause_player_text "P%d PAUSED" d = <Player>
+						FormatText textname = pause_player_text "Player %d paused" d = <Player>
 					else
-						<pause_player_text> = "PAUSED"
+						<pause_player_text> = "Paused"
 					endif
 				endif
-				pause_player_scale = (0.6000000238418579, 0.75)
 			else
-				pause_player_text = "OPTIONS"
-				pause_player_scale = (0.75, 0.75)
+				pause_player_text = "Options"
 			endif
 		endif
 	endif
+	text_scale = (0.9, 0.9)
+	font = fontgrid_title_gh3
 	CreateScreenElement {
 		Type = TextElement
-		parent = <id>
+		parent = pause_menu_frame_container
 		text = <pause_player_text>
-		font = #"0xdbce7067"
-		Pos = (125.0, 53.0)
-		Scale = <pause_player_scale>
-		rgba = [170 90 30 255]
-		Scale = 0.8
+		font = <font>
+		just = [left top]
+		Pos = (<menu_pos> + (270,-17))
+		Scale = 1.2
+		rgba = [255 255 255 255]
 	}
-	text_scale = (0.8999999761581421, 0.8999999761581421)
+	CreateScreenElement {
+		Type = SpriteElement
+		parent = pause_menu_frame_container
+		texture = FastGH3_logo
+		just = [left top]
+		Pos = (<menu_pos> - (10,30))
+		Scale = 0.5
+	}
 	container_params = {Type = ContainerElement parent = vmenu_pause dims = (0.0, 100.0)}
+	params_params = { // Sonic's Sonic
+		cont_params = <container_params>
+		font = <font>
+		scale = <text_scale>
+		z = <pause_z>
+		exclusive_device = <player_device>
+	}
 	if (<for_options> = 0)
-		if (<for_practice> = 1)
-			if English
-			else
-				text_scale = (0.7199999690055847, 0.7199999690055847)
-			endif
-			CreateScreenElement {
-				<container_params>
+		if (<for_practice> = 0)
+			new_pause_menu_button {
+				<params_params>
+				id = pause_resume
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_resume}}
 					{unfocus retail_menu_unfocus params = {id = pause_resume}}
 					{pad_choose gh3_start_pressed}
 				]
+				text = 'Resume'
 			}
-			CreateScreenElement {
-				Type = TextElement
-				parent = <id>
-				font = fontgrid_title_gh3
-				Scale = <text_scale>
-				rgba = [210 130 0 250]
-				id = pause_resume
-				text = "RESUME"
-				just = [center top]
-				Shadow
-				shadow_offs = (3.0, 3.0)
-				shadow_rgba [0 0 0 255]
-				z_priority = <pause_z>
-				exclusive_device = <player_device>
-			}
-			GetScreenElementDims id = <id>
-			fit_text_in_rectangle id = <id> dims = ((300.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-			CreateScreenElement {
-				<container_params>
-				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_restart}}
-					{unfocus retail_menu_unfocus params = {id = pause_restart}}
-					{pad_choose ui_flow_manager_respond_to_action params = {action = select_restart}}
-				]
-			}
-			CreateScreenElement {
-				Type = TextElement
-				parent = <id>
-				font = fontgrid_title_gh3
-				Scale = <text_scale>
-				rgba = [210 130 0 250]
-				text = "RESTART"
-				id = pause_restart
-				just = [center top]
-				Shadow
-				shadow_offs = (3.0, 3.0)
-				shadow_rgba [0 0 0 255]
-				z_priority = <pause_z>
-				exclusive_device = <player_device>
-			}
-			GetScreenElementDims id = <id>
-			fit_text_in_rectangle id = <id> dims = ((300.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-			CreateScreenElement {
-				<container_params>
-				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_options}}
-					{unfocus retail_menu_unfocus params = {id = pause_options}}
-					{pad_choose ui_flow_manager_respond_to_action params = {action = select_options create_params = {player_device = <player_device>}}}
-				]
-			}
-			CreateScreenElement {
-				Type = TextElement
-				parent = <id>
-				font = fontgrid_title_gh3
-				Scale = <text_scale>
-				rgba = [210 130 0 250]
-				text = "OPTIONS"
-				id = pause_options
-				just = [center top]
-				Shadow
-				shadow_offs = (3.0, 3.0)
-				shadow_rgba [0 0 0 255]
-				z_priority = <pause_z>
-				exclusive_device = <player_device>
-			}
-			GetScreenElementDims id = <id>
-			fit_text_in_rectangle id = <id> dims = ((300.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-			CreateScreenElement {
-				<container_params>
-				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_change_speed}}
-					{unfocus retail_menu_unfocus params = {id = pause_change_speed}}
-					{pad_choose ui_flow_manager_respond_to_action params = {action = select_change_speed}}
-				]
-			}
-			CreateScreenElement {
-				Type = TextElement
-				parent = <id>
-				font = fontgrid_title_gh3
-				Scale = <text_scale>
-				rgba = [210 130 0 250]
-				text = "CHANGE SPEED"
-				id = pause_change_speed
-				just = [center top]
-				Shadow
-				shadow_offs = (3.0, 3.0)
-				shadow_rgba [0 0 0 255]
-				z_priority = <pause_z>
-				exclusive_device = <player_device>
-			}
-			GetScreenElementDims id = <id>
-			fit_text_in_rectangle id = <id> dims = ((300.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-			CreateScreenElement {
-				<container_params>
-				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_change_section}}
-					{unfocus retail_menu_unfocus params = {id = pause_change_section}}
-					{pad_choose ui_flow_manager_respond_to_action params = {action = select_change_section}}
-				]
-			}
-			CreateScreenElement {
-				Type = TextElement
-				parent = <id>
-				font = fontgrid_title_gh3
-				Scale = <text_scale>
-				rgba = [210 130 0 250]
-				text = "CHANGE SECTION"
-				id = pause_change_section
-				just = [center top]
-				Shadow
-				shadow_offs = (3.0, 3.0)
-				shadow_rgba [0 0 0 255]
-				z_priority = <pause_z>
-				exclusive_device = <player_device>
-			}
-			GetScreenElementDims id = <id>
-			fit_text_in_rectangle id = <id> dims = ((300.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-			if ($came_to_practice_from = main_menu)
-				CreateScreenElement {
-					<container_params>
-					event_handlers = [
-						{focus retail_menu_focus params = {id = pause_new_song}}
-						{unfocus retail_menu_unfocus params = {id = pause_new_song}}
-						{pad_choose ui_flow_manager_respond_to_action params = {action = select_new_song}}
-					]
-				}
-				CreateScreenElement {
-					Type = TextElement
-					parent = <id>
-					font = fontgrid_title_gh3
-					Scale = <text_scale>
-					rgba = [210 130 0 250]
-					text = "NEW SONG"
-					id = pause_new_song
-					just = [center top]
-					Shadow
-					shadow_offs = (3.0, 3.0)
-					shadow_rgba [0 0 0 255]
-					z_priority = <pause_z>
-					exclusive_device = <player_device>
-				}
-				GetScreenElementDims id = <id>
-				fit_text_in_rectangle id = <id> dims = ((300.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-			endif
-			CreateScreenElement {
-				<container_params>
-				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_quit}}
-					{unfocus retail_menu_unfocus params = {id = pause_quit}}
-					{pad_choose ui_flow_manager_respond_to_action params = {action = select_quit}}
-				]
-			}
-			CreateScreenElement {
-				Type = TextElement
-				parent = <id>
-				font = fontgrid_title_gh3
-				Scale = <text_scale>
-				rgba = [210 130 0 250]
-				text = "QUIT"
-				id = pause_quit
-				just = [center top]
-				Shadow
-				shadow_offs = (3.0, 3.0)
-				shadow_rgba [0 0 0 255]
-				z_priority = <pause_z>
-				exclusive_device = <player_device>
-			}
-			GetScreenElementDims id = <id>
-			fit_text_in_rectangle id = <id> dims = ((300.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-			add_user_control_helper \{text = "SELECT" button = green z = 100000}
-			add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100000}
-		else
-			if English
-			else
-				container_params = {Type = ContainerElement parent = vmenu_pause dims = (0.0, 105.0)}
-				text_scale = (0.800000011920929, 0.800000011920929)
-			endif
-			CreateScreenElement {
-				<container_params>
-				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_resume}}
-					{unfocus retail_menu_unfocus params = {id = pause_resume}}
-					{pad_choose gh3_start_pressed}
-				]
-			}
-			CreateScreenElement {
-				Type = TextElement
-				parent = <id>
-				font = fontgrid_title_gh3
-				Scale = <text_scale>
-				rgba = [210 130 0 250]
-				text = "RESUME"
-				id = pause_resume
-				just = [center top]
-				Shadow
-				shadow_offs = (3.0, 3.0)
-				shadow_rgba [0 0 0 255]
-				z_priority = <pause_z>
-				exclusive_device = <player_device>
-			}
-			GetScreenElementDims id = <id>
-			fit_text_in_rectangle id = <id> dims = ((250.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
 			if ($is_network_game = 0)
-				if NOT ($end_credits = 1)
-					CreateScreenElement {
-						<container_params>
+				new_pause_menu_button {
+					<params_params>
+					id = pause_restart
+					event_handlers = [
+						{focus retail_menu_focus params = {id = pause_restart}}
+						{unfocus retail_menu_unfocus params = {id = pause_restart}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = select_restart}}
+					]
+					text = 'Restart'
+				}
+				if (($game_mode = p1_career & $boss_battle = 0)|| ($game_mode = p1_quickplay))
+					new_pause_menu_button {
+						<params_params>
+						id = pause_practice
 						event_handlers = [
-							{focus retail_menu_focus params = {id = pause_restart}}
-							{unfocus retail_menu_unfocus params = {id = pause_restart}}
-							{pad_choose ui_flow_manager_respond_to_action params = {action = select_restart}}
+							{focus retail_menu_focus params = {id = pause_practice}}
+							{unfocus retail_menu_unfocus params = {id = pause_practice}}
+							{pad_choose ui_flow_manager_respond_to_action params = {action = select_practice}}
 						]
+						text = 'Practice'
 					}
-					CreateScreenElement {
-						Type = TextElement
-						parent = <id>
-						font = fontgrid_title_gh3
-						Scale = <text_scale>
-						rgba = [210 130 0 250]
-						text = "RESTART"
-						id = pause_restart
-						just = [center top]
-						Shadow
-						shadow_offs = (3.0, 3.0)
-						shadow_rgba [0 0 0 255]
-						z_priority = <pause_z>
-						exclusive_device = <player_device>
-					}
-					GetScreenElementDims id = <id>
-					fit_text_in_rectangle id = <id> dims = ((250.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-					if ($is_demo_mode = 1)
-						demo_mode_disable = {rgba = [80 80 80 255] not_focusable}
-					else
-						demo_mode_disable = {}
-					endif
-					if (($game_mode = p1_career & $boss_battle = 0)|| ($game_mode = p1_quickplay))
-						CreateScreenElement {
-							<container_params>
-							event_handlers = [
-								{focus retail_menu_focus params = {id = pause_practice}}
-								{unfocus retail_menu_unfocus params = {id = pause_practice}}
-								{pad_choose ui_flow_manager_respond_to_action params = {action = select_practice}}
-							]
-						}
-						CreateScreenElement {
-							Type = TextElement
-							parent = <id>
-							font = fontgrid_title_gh3
-							Scale = <text_scale>
-							rgba = [210 130 0 250]
-							text = "PRACTICE"
-							id = pause_practice
-							just = [center top]
-							Shadow
-							shadow_offs = (3.0, 3.0)
-							shadow_rgba [0 0 0 255]
-							z_priority = <pause_z>
-							exclusive_device = <player_device>
-						}
-						GetScreenElementDims id = <id>
-						fit_text_in_rectangle id = <id> dims = ((260.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-					endif
-					CreateScreenElement {
-						<container_params>
-						event_handlers = [
-							{focus retail_menu_focus params = {id = pause_options}}
-							{unfocus retail_menu_unfocus params = {id = pause_options}}
-							{pad_choose ui_flow_manager_respond_to_action params = {action = select_options create_params = {player_device = <player_device>}}}
-						]
-					}
-					CreateScreenElement {
-						Type = TextElement
-						parent = <id>
-						font = fontgrid_title_gh3
-						Scale = <text_scale>
-						rgba = [210 130 0 250]
-						text = "OPTIONS"
-						id = pause_options
-						just = [center top]
-						Shadow
-						shadow_offs = (3.0, 3.0)
-						shadow_rgba [0 0 0 255]
-						z_priority = <pause_z>
-						exclusive_device = <player_device>
-					}
-					GetScreenElementDims id = <id>
-					fit_text_in_rectangle id = <id> dims = ((260.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
 				endif
+				/*new_pause_menu_button {
+					<params_params>
+					id = pause_extras
+					event_handlers = [
+						{focus retail_menu_focus params = {id = pause_extras}}
+						{unfocus retail_menu_unfocus params = {id = pause_extras}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = select_extras create_params = {player_device = <player_device>}}}
+					]
+					text = 'Extras'
+				}*/
+				new_pause_menu_button {
+					<params_params>
+					id = pause_options
+					event_handlers = [
+						{focus retail_menu_focus params = {id = pause_options}}
+						{unfocus retail_menu_unfocus params = {id = pause_options}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = select_options create_params = {player_device = <player_device>}}}
+					]
+					text = 'Options'
+				}
 			endif
 			quit_script = ui_flow_manager_respond_to_action
 			quit_script_params = {action = select_quit create_params = {Player = <Player>}}
@@ -791,184 +551,172 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 					z = 300
 				}
 			endif
-			CreateScreenElement {
-				<container_params>
+			new_pause_menu_button {
+				<params_params>
+				id = pause_quit
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_quit}}
 					{unfocus retail_menu_unfocus params = {id = pause_quit}}
 					{pad_choose <quit_script> params = <quit_script_params>}
 				]
+				text = 'Exit'
 			}
-			CreateScreenElement {
-				Type = TextElement
-				parent = <id>
-				font = fontgrid_title_gh3
-				Scale = <text_scale>
-				rgba = [210 130 0 250]
-				text = "QUIT"
-				id = pause_quit
-				just = [center top]
-				Shadow
-				shadow_offs = (3.0, 3.0)
-				shadow_rgba [0 0 0 255]
-				z_priority = <pause_z>
-				exclusive_device = <player_device>
-			}
-			GetScreenElementDims id = <id>
-			fit_text_in_rectangle id = <id> dims = ((270.0, 0.0) + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
 			if ($enable_button_cheats = 1)
-				CreateScreenElement {
-					<container_params>
+				new_pause_menu_button {
+					<params_params>
+					id = pause_debug_menu
 					event_handlers = [
 						{focus retail_menu_focus params = {id = pause_debug_menu}}
 						{unfocus retail_menu_unfocus params = {id = pause_debug_menu}}
 						{pad_choose ui_flow_manager_respond_to_action params = {action = select_debug_menu}}
 					]
-				}
-				CreateScreenElement {
-					Type = TextElement
-					parent = <id>
-					font = fontgrid_title_gh3
-					Scale = <text_scale>
-					rgba = [210 130 0 250]
-					text = "DEBUG MENU"
-					id = pause_debug_menu
-					just = [center top]
-					Shadow
-					shadow_offs = (3.0, 3.0)
-					shadow_rgba [0 0 0 255]
-					z_priority = <pause_z>
-					exclusive_device = <player_device>
+					text = '__debug'
 				}
 			endif
-			add_user_control_helper \{text = "SELECT" button = green z = 100000}
-			add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100000}
+		else
+			new_pause_menu_button {
+				<params_params>
+				id = pause_resume
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_resume}}
+					{unfocus retail_menu_unfocus params = {id = pause_resume}}
+					{pad_choose gh3_start_pressed}
+				]
+				text = 'Resume'
+			}
+			new_pause_menu_button {
+				<params_params>
+				id = pause_restart
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_restart}}
+					{unfocus retail_menu_unfocus params = {id = pause_restart}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_restart}}
+				]
+				text = 'Restart'
+			}
+			FormatText textname = text 'Return to %s' s = ($richpres_modes.$practice_last_mode.#"0x00000000") // ez
+			new_pause_menu_button {
+				<params_params>
+				id = pause_return
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_return}}
+					{unfocus retail_menu_unfocus params = {id = pause_return}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_return}}
+				]
+				text = <text>
+			}
+			new_pause_menu_button {
+				<params_params>
+				id = pause_options
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_options}}
+					{unfocus retail_menu_unfocus params = {id = pause_options}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_options create_params = {player_device = <player_device>}}}
+				]
+				text = 'Options'
+			}
+			new_pause_menu_button {
+				<params_params>
+				id = pause_change_speed
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_change_speed}}
+					{unfocus retail_menu_unfocus params = {id = pause_change_speed}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_change_speed}}
+				]
+				text = 'Change Speed'
+			}
+			new_pause_menu_button {
+				<params_params>
+				id = pause_change_section
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_change_section}}
+					{unfocus retail_menu_unfocus params = {id = pause_change_section}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_change_section}}
+				]
+				text = 'Change Section'
+			}
+			new_pause_menu_button {
+				<params_params>
+				id = pause_quit
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_quit}}
+					{unfocus retail_menu_unfocus params = {id = pause_quit}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_quit}}
+				]
+				text = 'Quit'
+			}
 		endif
+		add_user_control_helper \{text = "Select" button = green z = 100000}
+		add_user_control_helper \{text = "Unpause" button = start z = 100000}
+		add_user_control_helper \{text = "Up/Down" button = strumbar z = 100000}
 	else
 		<fit_dims> = (400.0, 0.0)
-		CreateScreenElement {
-			Type = ContainerElement
-			parent = vmenu_pause
-			dims = (0.0, 100.0)
+		params_params = {
+			cont_params = {
+				Type = ContainerElement
+				parent = vmenu_pause
+				dims = (0.0, 100.0)
+			}
+			font = <font>
+			scale = <text_scale>
+			z = <pause_z>
+			exclusive_device = <player_device>
+		}
+		new_pause_menu_button {
+			<params_params>
+			id = options_audio
 			event_handlers = [
 				{focus retail_menu_focus params = {id = options_audio}}
 				{focus generic_menu_up_or_down_sound}
 				{unfocus retail_menu_unfocus params = {id = options_audio}}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = select_audio_settings create_params = {Player = <Player>}}}
 			]
+			text = 'Volume'
 		}
-		CreateScreenElement {
-			Type = TextElement
-			parent = <id>
-			font = fontgrid_title_gh3
-			Scale = <text_scale>
-			rgba = [210 130 0 250]
-			text = "SET AUDIO"
-			id = options_audio
-			just = [center center]
-			Shadow
-			shadow_offs = (3.0, 3.0)
-			shadow_rgba [0 0 0 255]
-			z_priority = <pause_z>
-			exclusive_device = <player_device>
-		}
-		GetScreenElementDims id = <id>
-		fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-		CreateScreenElement {
-			Type = ContainerElement
-			parent = vmenu_pause
-			dims = (0.0, 100.0)
+		new_pause_menu_button {
+			<params_params>
+			id = options_calibrate_lag
 			event_handlers = [
 				{focus retail_menu_focus params = {id = options_calibrate_lag}}
 				{focus generic_menu_up_or_down_sound}
 				{unfocus retail_menu_unfocus params = {id = options_calibrate_lag}}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = select_calibrate_lag create_params = {Player = <Player>}}}
 			]
+			text = 'Calibrate video lag'
 		}
-		CreateScreenElement {
-			Type = TextElement
-			parent = <id>
-			font = fontgrid_title_gh3
-			Scale = <text_scale>
-			rgba = [210 130 0 250]
-			text = "CALIBRATE VIDEO LAG"
-			id = options_calibrate_lag
-			just = [center center]
-			Shadow
-			shadow_offs = (3.0, 3.0)
-			shadow_rgba [0 0 0 255]
-			z_priority = <pause_z>
-			exclusive_device = <player_device>
-		}
-		GetScreenElementDims id = <id>
-		fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-		CreateScreenElement {
-			Type = ContainerElement
-			parent = vmenu_pause
-			dims = (0.0, 100.0)
+		new_pause_menu_button {
+			<params_params>
+			id = winport_options_calibrate_lag
 			event_handlers = [
 				{focus retail_menu_focus params = {id = winport_options_calibrate_lag}}
 				{focus generic_menu_up_or_down_sound}
 				{unfocus retail_menu_unfocus params = {id = winport_options_calibrate_lag}}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = winport_select_calibrate_lag create_params = {Player = <Player>}}}
 			]
+			text = 'Calibrate audio lag'
 		}
-		CreateScreenElement {
-			Type = TextElement
-			parent = <id>
-			font = fontgrid_title_gh3
-			Scale = <text_scale>
-			rgba = [210 130 0 250]
-			text = "CALIBRATE AUDIO LAG"
-			id = winport_options_calibrate_lag
-			just = [center center]
-			Shadow
-			shadow_offs = (3.0, 3.0)
-			shadow_rgba [0 0 0 255]
-			z_priority = <pause_z>
-			exclusive_device = <player_device>
-		}
-		GetScreenElementDims id = <id>
-		fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
 		if IsGuitarController controller = <player_device>
 			if NOT WinPortSioIsKeyboard deviceNum = <player_device>
-				CreateScreenElement {
-					Type = ContainerElement
-					parent = vmenu_pause
-					dims = (0.0, 100.0)
+				new_pause_menu_button {
+					<params_params>
+					id = options_calibrate_whammy
 					event_handlers = [
 						{focus retail_menu_focus params = {id = options_calibrate_whammy}}
 						{focus generic_menu_up_or_down_sound}
 						{unfocus retail_menu_unfocus params = {id = options_calibrate_whammy}}
 						{pad_choose ui_flow_manager_respond_to_action params = {action = select_calibrate_whammy_bar create_params = {Player = <Player> popup = 1}}}
 					]
+					text = 'Calibrate whammy'
 				}
-				CreateScreenElement {
-					Type = TextElement
-					parent = <id>
-					font = fontgrid_title_gh3
-					Scale = <text_scale>
-					rgba = [210 130 0 250]
-					text = "CALIBRATE WHAMMY"
-					id = options_calibrate_whammy
-					just = [center center]
-					Shadow
-					shadow_offs = (3.0, 3.0)
-					shadow_rgba [0 0 0 255]
-					z_priority = <pause_z>
-					exclusive_device = <player_device>
-				}
-				GetScreenElementDims id = <id>
-				fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
 			endif
 		endif
 		if isSinglePlayerGame
-			lefty_flip_text = "LEFTY FLIP:"
+			lefty_flip_text = "Lefty flip:"
 		else
 			if (<Player> = 1)
-				lefty_flip_text = "P1 LEFTY FLIP:"
+				lefty_flip_text = "P1 Lefty:"
 			else
-				lefty_flip_text = "P2 LEFTY FLIP:"
+				lefty_flip_text = "P2 Lefty:"
 			endif
 		endif
 		CreateScreenElement {
@@ -979,7 +727,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				{focus retail_menu_focus params = {id = pause_options_lefty}}
 				{focus generic_menu_up_or_down_sound}
 				{unfocus retail_menu_unfocus params = {id = pause_options_lefty}}
-				{pad_choose ui_flow_manager_respond_to_action params = {action = select_lefty_flip create_params = {Player = <Player>}}}
+				{pad_choose pause_lefty_toggle params = {player = <player>}}
 			]
 		}
 		<lefty_container> = <id>
@@ -987,38 +735,30 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 			Type = TextElement
 			parent = <lefty_container>
 			id = pause_options_lefty
-			font = fontgrid_title_gh3
+			font = <font>
 			Scale = <text_scale>
-			rgba = [210 130 0 250]
+			rgba = $menu_unfocus_color
 			text = <lefty_flip_text>
-			just = [center center]
-			Shadow
-			shadow_offs = (3.0, 3.0)
-			shadow_rgba [0 0 0 255]
+			just = [left top]
 			z_priority = <pause_z>
 			exclusive_device = <player_device>
 		}
 		GetScreenElementDims id = <id>
 		fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-		CreateScreenElement \{Type = ContainerElement parent = vmenu_pause dims = (0.0, 100.0) event_handlers = [{focus retail_menu_focus params = {id = options_exit}}{focus generic_menu_up_or_down_sound}{unfocus retail_menu_unfocus params = {id = options_exit}}{pad_choose ui_flow_manager_respond_to_action params = {action = go_back}}]}
-		CreateScreenElement {
-			Type = TextElement
-			parent = <id>
-			font = fontgrid_title_gh3
-			Scale = <text_scale>
-			rgba = [210 130 0 250]
-			text = "EXIT"
+		new_pause_menu_button {
+			<params_params>
 			id = options_exit
-			just = [center center]
-			Shadow
-			shadow_offs = (3.0, 3.0)
-			shadow_rgba [0 0 0 255]
-			z_priority = <pause_z>
-			exclusive_device = <player_device>
+			event_handlers = [
+				{focus retail_menu_focus params = {id = options_exit}}
+				{focus generic_menu_up_or_down_sound}
+				{unfocus retail_menu_unfocus params = {id = options_exit}}
+				{pad_choose ui_flow_manager_respond_to_action params = {action = go_back}}
+			]
+			text = 'Back'
 		}
-		GetScreenElementDims id = <id>
-		fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-		GetGlobalTags \{user_options}
+		//GetGlobalTags \{user_options}
+		lefty_flip_p1 = ($player1_status.lefthanded_gems)
+		lefty_flip_p2 = ($player2_status.lefthanded_gems)
 		if (<Player> = 1)
 			if (<lefty_flip_p1> = 1)
 				lefty_tex = #"0xa986bfc3"
@@ -1035,14 +775,15 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		displaySprite {
 			parent = <lefty_container>
 			tex = <lefty_tex>
+			id = pause_lefty_check
 			just = [center center]
 			z = (<pause_z> + 10)
 		}
 		GetScreenElementDims \{id = pause_options_lefty}
-		<id> ::SetProps Pos = (<width> * (0.5, 0.0) + (22.0, 0.0))
-		add_user_control_helper \{text = "SELECT" button = green z = 100000}
-		add_user_control_helper \{text = "BACK" button = red z = 100000}
-		add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100000}
+		<id> ::SetProps Pos = (<width> * (1.0, 0.0) + (22.0, 24.0))
+		add_user_control_helper \{text = "Select" button = green z = 100000}
+		add_user_control_helper \{text = "Back" button = red z = 100000}
+		add_user_control_helper \{text = "Up/Down" button = strumbar z = 100000}
 	endif
 	if ($is_network_game = 0)
 		if NOT isSinglePlayerGame
@@ -1065,7 +806,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 					rgba = [186 105 0 255]
 					Scale = (0.45000001788139343, 0.6000000238418579)
 					z = (<pause_z> + 11)
-					font = #"0xdbce7067"
+					font = <font>
 				}
 				GetScreenElementDims id = <id>
 				bg_dims = (<width> * (1.0, 0.0) + (0.0, 32.0))
@@ -1091,9 +832,6 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		endif
 	endif
 	Change \{menu_choose_practice_destroy_previous_menu = 1}
-	if (<for_options> = 0 & <for_practice> = 0)
-		spawnscriptnow \{animate_bunny_flame}
-	endif
 endscript
 
 script destroy_pause_menu
@@ -1101,8 +839,7 @@ script destroy_pause_menu
 	clean_up_user_control_helpers
 	destroy_pause_menu_frame
 	destroy_menu \{menu_id = scrolling_pause}
-	destroy_menu \{menu_id = pause_menu_frame_container}
-	killspawnedscript \{name = animate_bunny_flame}
+	//destroy_menu \{menu_id = pause_menu_frame_container}
 	if ScreenElementExists \{id = warning_message_container}
 		DestroyScreenElement \{id = warning_message_container}
 	endif
@@ -1152,38 +889,6 @@ endscript
 
 script destroy_pause_menu_frame\{container_id = pause_menu_frame_container}
 	destroy_menu menu_id = <container_id>
-endscript
-default_menu_focus_color = [
-	210
-	210
-	210
-	250
-]
-default_menu_unfocus_color = [
-	210
-	130
-	0
-	250
-]
-menu_focus_color = [
-	210
-	210
-	210
-	250
-]
-menu_unfocus_color = [
-	210
-	130
-	0
-	250
-]
-
-script set_focus_color\{rgba = [210 210 210 250]}
-	Change menu_focus_color = <rgba>
-endscript
-
-script set_unfocus_color\{rgba = [210 130 0 250]}
-	Change menu_unfocus_color = <rgba>
 endscript
 
 script retail_menu_focus

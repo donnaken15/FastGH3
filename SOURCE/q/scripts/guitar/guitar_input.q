@@ -114,6 +114,9 @@ script check_note_hold
 		endif
 		wait \{1 gameframe}
 	repeat
+	if ($FC_MODE = 1)
+		Change StructureName = <player_status> current_health = 0.0000000000000000001
+	endif
 	CheckNoteHoldEnd Player = <Player>
 	SetArrayElement ArrayName = currently_holding GlobalArray index = <index> NewValue = 0
 endscript
@@ -348,13 +351,16 @@ endscript
 
 script save_replay
 	destroy_debugging_menu
-	CreateScreenElement \{Type = TextElement parent = root_window id = info_text font = #"0x45aae5c4" Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Saving replay" z_priority = 1.0}
-	wait \{2 gameframes}
-	get_difficulty_text_nl difficulty = ($current_difficulty)
-	get_song_prefix song = ($current_song)
-	FormatText textname = FileName "replay_%s_%d" s = <song_prefix> d = <difficulty_text_nl>
+	//CreateScreenElement \{Type = TextElement parent = root_window id = info_text font = #"0x45aae5c4" Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Saving replay" z_priority = 1.0}
+	//wait \{2 gameframes}
+	//get_difficulty_text_nl difficulty = ($current_difficulty)
+	//get_song_prefix song = ($current_song)
+	get_song_title \{song = $current_song}
+	timestamp
+	FormatText textname = FileName "fgh3_%t_%s_" t = <song_title> s = <timestamp>
 	WriteDataBuffer name = replay FileName = <FileName>
-	DestroyScreenElement \{id = info_text}
+	printf 'fgh3_%t_%s.rep saved' t = <song_title> s = <timestamp>
+	//DestroyScreenElement \{id = info_text}
 	create_debugging_menu
 endscript
 

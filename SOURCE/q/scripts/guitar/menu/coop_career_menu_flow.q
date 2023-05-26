@@ -598,6 +598,7 @@ coop_career_practice_warning_fs = {
 
 script coop_career_go_to_practice_setup
 	progression_push_current
+	Change practice_last_mode = ($game_mode)
 	Change \{came_to_practice_from = coop_career}
 	Change came_to_practice_difficulty = ($current_difficulty)
 	Change came_to_practice_difficulty2 = ($current_difficulty2)

@@ -36,34 +36,6 @@ scripts_array = [
 		name = 'scripts'
 		lead_ms = 0
 	}
-	/*{
-		name = 'anim'
-		lead_ms = 0
-	}
-	{
-		name = 'triggers'
-		lead_ms = 0
-	}
-	{
-		name = 'cameras'
-		lead_ms = 0
-	}
-	{
-		name = 'lightshow'
-		lead_ms = $#"0x18ff6ebb"
-	}
-	{
-		name = 'crowd'
-		lead_ms = 0
-	}
-	{
-		name = 'drums'
-		lead_ms = $#"0x89202c0e"
-	}
-	{
-		name = 'performance'
-		lead_ms = 0
-	}*/
 ]
 fretbar_end_scale = 0.48
 button_models = {
@@ -200,6 +172,12 @@ script calc_health_invincible_time
 	endif
 endscript
 
+script create_gem
+	// wont appear but somehow exit game func being
+	// set as gem_function works
+	printstruct <...>
+endscript
+
 script gem_scroller\{Player = 1 training_mode = 0}
 	setup_gemarrays song_name = <song_name> difficulty = <difficulty> player_status = <player_status>
 	calc_health_invincible_time song = <song_name> player_status = <player_status>
@@ -258,22 +236,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	GetGlobalTags \{user_options}
 	<input_offset> = (<input_offset> - <lag_calibration>)
 	if (<training_mode> = 0)
-		/*SpawnScriptLater Strum_iterator params = {song_name = <song_name> difficulty = expert
-			time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
-			part = <part> target = (<player_status>.band_member)}
-		SpawnScriptLater FretFingers_iterator params = {song_name = <song_name> difficulty = expert
-			time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
-			part = <part> target = (<player_status>.band_member)}
-		SpawnScriptLater FretPos_iterator params = {song_name = <song_name>
-			time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
-			part = ($<player_status>.part)target = (<player_status>.band_member)}*/
 		if (<Player> = 1)
-			/*SpawnScriptLater Drum_iterator params = {song_name = <song_name> difficulty = <difficulty>
-				time_offset = (<gem_offset> + $drum_anim_lead_time)skipleadin = 0
-				Player = <Player> player_status = <player_status> player_text = <player_text>}
-			SpawnScriptLater Drum_cymbal_iterator params = {song_name = <song_name> difficulty = <difficulty>
-				time_offset = <gem_offset> skipleadin = 0
-				Player = <Player> player_status = <player_status> player_text = <player_text>}*/
 			if ($current_num_players = 1)
 				bassist_song_part = 'rhythm_'
 				bassist_part = rhythm
@@ -284,15 +247,6 @@ script gem_scroller\{Player = 1 training_mode = 0}
 						bassist_part = guitar
 					endif
 				endif
-				/*SpawnScriptLater Strum_iterator params = {song_name = <song_name> difficulty = expert
-					time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
-					part = <bassist_song_part> target = BASSIST}
-				SpawnScriptLater FretFingers_iterator params = {song_name = <song_name> difficulty = expert
-					time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
-					part = <bassist_song_part> target = BASSIST}
-				SpawnScriptLater FretPos_iterator params = {song_name = <song_name> difficulty = <difficulty>
-					time_offset = (<gem_offset> + $strum_anim_lead_time)skipleadin = 0
-					part = <bassist_part> target = BASSIST}*/
 			endif
 		endif
 	endif
@@ -391,10 +345,10 @@ script gem_scroller\{Player = 1 training_mode = 0}
 			SpawnScriptLater event_iterator params = {song_name = <song_name> difficulty = <difficulty>
 				event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
 				Player = <Player> player_status = <player_status> player_text = <player_text>}
-			SpawnScriptLater notemap_startiterator params = {song_name = <song_name> difficulty = <difficulty>
-				event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
-				Player = <Player> player_status = <player_status> player_text = <player_text>}
-			array_count = (<array_count> + 1)
+			//SpawnScriptLater notemap_startiterator params = {song_name = <song_name> difficulty = <difficulty>
+			//	event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
+			//	Player = <Player> player_status = <player_status> player_text = <player_text>}
+			Increment \{array_count}
 		repeat <array_Size>
 	endif
 	SpawnScriptLater win_song params = {<...> }
@@ -502,12 +456,6 @@ script load_songqpak\{async = 0}
 	if NOT (<song_name> = $current_song_qpak)
 		unload_songqpak
 		//get_song_prefix song = <song_name>
-		/*is_song_downloaded song_checksum = <song_name>
-		if (<download> = 1)
-			FormatText textname = songqpak 'song.pak' i = <song_prefix>
-		else
-			FormatText textname = songqpak 'pak/song.pak' i = <song_prefix>
-		endif*/
 		//songqpak = 'pak/song.pak'
 		printf \{"Loading Song q pak"}
 		if NOT LoadPakAsync pak_name = 'pak/song.pak' Heap = heap_song no_vram async = <async>
@@ -526,13 +474,6 @@ endscript
 
 script unload_songqpak
 	if NOT ($current_song_qpak = None)
-		/*get_song_prefix song = ($current_song_qpak)
-		is_song_downloaded song_checksum = ($current_song_qpak)
-		if (<download> = 1)
-			FormatText textname = songqpak 'song.pak' i = <song_prefix>
-		else
-			FormatText textname = songqpak 'pak/song.pak' i = <song_prefix>
-		endif*/
 		//songqpak = 'pak/song.pak'
 		printf \{"UnLoading Song q pak"}
 		UnLoadPak \{'pak/song.pak'}
@@ -711,9 +652,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 			TextOutputStart
 		endif
 		if NOT GotParam \{no_score_update}
-			if ($hudless = 0)
-				SpawnScriptLater update_score_fast params = {<...> }
-			endif
+			SpawnScriptLater update_score_fast params = {<...> }
 		endif
 		if (($is_network_game)& ($player1_status.highway_layout = solo_highway))
 			SpawnScriptLater \{update_score_fast params = {player_status = player2_status}}
@@ -853,6 +792,7 @@ script kill_gem_scroller\{no_render = 0}
 	LaunchGemEvent \{event = kill_objects}
 	destroy_credits_menu
 	destroy_battle_alert_frames
+	killspawnedscript \{name = lefty_toggle}
 	killspawnedscript \{name = move_2d_elements_to_default}
 	killspawnedscript \{name = wait_and_play_you_rock_movie}
 	killspawnedscript \{name = update_score_fast}
@@ -909,8 +849,6 @@ script kill_gem_scroller\{no_render = 0}
 	killspawnedscript \{name = highway_pulse_black}
 	killspawnedscript \{name = GuitarEvent_HitNote_Spawned}
 	killspawnedscript \{name = hit_note_fx}
-	killspawnedscript \{name = Do_StarPower_StageFX}
-	killspawnedscript \{name = Do_StarPower_Camera}
 	killspawnedscript \{name = first_gem_fx}
 	killspawnedscript \{name = gem_iterator}
 	killspawnedscript \{name = gem_array_stepper}
@@ -1087,10 +1025,6 @@ script fill_input_array
 	FillInputArray <...>
 endscript
 
-script create_gem
-	Create2DGem <...>
-endscript
-
 script gem_iterator\{song_name = test difficulty = easy array_type = "song" Player = 1}
 	get_difficulty_text_nl difficulty = <difficulty>
 	spawnscriptnow gem_array_events params = {<...> difficulty_text_nl = <difficulty_text_nl>}
@@ -1226,7 +1160,7 @@ endscript
 script start_song\{device_num = 0 practice_intro = 0 endtime = 999999999}
 	mark_unsafe_for_shutdown
 	set_rich_presence_game_mode
-	MassiveInit \{sku = 'atvi_guitar_hero_3_pc_na' startZone = 'GlobalZone'}
+	//MassiveInit \{sku = 'atvi_guitar_hero_3_pc_na' startZone = 'GlobalZone'}
 	Load_Venue
 	Transition_SelectTransition practice_intro = <practice_intro>
 	if NOT (($game_mode = p2_faceoff)|| ($game_mode = p2_pro_faceoff)|| ($game_mode = p2_coop)|| ($game_mode = p2_battle)|| ($game_mode = p2_career))

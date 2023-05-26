@@ -24,6 +24,9 @@ fretbar_prefix_type = {
 
 script create_fretbar\{Scale = (40.0, 0.25)}
 	Create2DFretbar <...>
+	//if ($debug_showmeasures = ON)
+	//	create_debug_measure_text <...>
+	//endif
 endscript
 
 script fretbar_iterator
@@ -69,10 +72,25 @@ script fretbar_update_hammer_on_tolerance
 	fretbar_update_hammer_on_tolerance_CFunc_Cleanup
 endscript
 
+/* // not working, why
+script debugNoteCRC \{name = 'gem' color = 'green' array_entry = 0 player = 1}
+	formattext checksumName = debug_id '%n_%d_%s_p%p' n = <name> d = <array_entry> s = <color> p = <player>
+	//printf '%n_%d_%s_p%p' n = <name> d = <array_entry> s = <color> p = <player>
+	// taking narrow blinded guess how this is generated in cfuncs for highway
+	return debug_id = <debug_id>
+endscript
+
 script create_debug_measure_text
-	if NOT (<fretbar_scale> = thick)
-		return
+	debugNoteCRC name = 'fret' color = ($fretbar_prefix_type.<fretbar_scale>) array_entry = <array_entry> player = <player>
+	//printstruct <...>
+	fretbar_id = <debug_id>
+	if NOT ScreenElementExists <fretbar_id>
+		printf 'why'
+		//printstruct <...>
 	endif
+	//if NOT (<fretbar_scale> = thick)
+	//	return
+	//endif
 	if NOT ScreenElementExists \{id = hud_destroygroup_windowp1}
 		return
 	endif
@@ -86,7 +104,7 @@ script create_debug_measure_text
 		parent = debug_measure_window
 		id = <measure_checksum>
 		font = #"0x45aae5c4"
-		Pos = (2000.0, 32.0)
+		Pos = (200.0, 32.0)
 		just = [center top]
 		Scale = 1.0
 		rgba = [210 210 210 250]
@@ -98,12 +116,10 @@ endscript
 
 script move_debug_measure_text
 	begin
-		if CompositeObjectExists <fretbar_id>
-			<fretbar_id> ::Obj_GetPosition
-			Pos = (<Pos> + (2.0, 0.0, 0.0))
-			GetViewport2DPosFrom3D viewport = 1 Pos = <Pos>
-			Pos = (<PosX> * (1.0, 0.0) + <PosY> * (0.0, 1.0))
-			<measure_checksum> ::DoMorph Pos = <Pos>
+		if ScreenElementExists <fretbar_id>
+			GetScreenElementPosition <fretbar_id>
+			Pos = (<screenelementpos> + (2.0, 0.0))
+			DoScreenElementMorph <measure_checksum> Pos = <Pos>
 			wait \{1 gameframe}
 		else
 			DestroyScreenElement id = <measure_checksum>
@@ -117,4 +133,4 @@ script destroy_debug_measure_text
 		DestroyScreenElement \{id = debug_measure_window}
 	endif
 	killspawnedscript \{id = debug_measure_text}
-endscript
+endscript*/

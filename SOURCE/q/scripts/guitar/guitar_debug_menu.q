@@ -1,20 +1,31 @@
-menu_pos = (675.0, 100.0)
+menu_pos = (200.0, 200.0)
+debug_menu_params = {
+	type = textelement
+	font = text_a1
+	scale = 0.75
+	rgba = [127 127 127 191]
+	just = [left top]
+	z_priority = 100.0
+	//Shadow
+	//shadow_offs = (3.0, 3.0)
+	//shadow_rgba = [0 0 0 255]
+}
 
 script create_debugging_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement \{Type = VScrollingMenu parent = pause_menu id = debug_scrolling_menu just = [left top] dims = (400.0, 480.0) Pos = $#"0xe787d761"}
 	CreateScreenElement \{Type = VMenu parent = debug_scrolling_menu id = debug_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back back_to_retail_ui_flow}]}
 	disable_pause
-	//CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Screenshot" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose playday_unlockall}]}
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Repeat Last Song" z_priority = 100.0 just = [left top] Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_start_song params = {uselaststarttime}}]}
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu id = toggle_playermode_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Play Song: 1p_quickplay" z_priority = 100.0 just = [left top] Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left toggle_playermode_left}{pad_right toggle_playermode_right}{pad_choose select_playermode}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Repeat Last Song' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_start_song params = {uselaststarttime}}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu id = toggle_playermode_menuitem text = 'Play Song: 1p_quickplay' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left toggle_playermode_left}{pad_right toggle_playermode_right}{pad_choose select_playermode}]}
 	toggle_playermode_setprop
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Settings" z_priority = 100.0 just = [left top] Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_settings_menu}]}
-	//CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Character Select" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_character_viewer_menu}]}
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Skip Into Song" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipintosong_menu}]}
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Save Replay Buffer" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
-	CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Load Replay" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
-	//CreateScreenElement \{Type = TextElement parent = debug_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Play Credits" just = [left top] z_priority = 100.0 Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Settings' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_settings_menu}]}
+	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Character Select" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_character_viewer_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Skip Into Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipintosong_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Screenshot" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose screen_shot}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Save Replay Buffer" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Load Replay" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
+	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Play Credits" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
 	LaunchEvent \{Type = focus target = debug_vmenu}
 endscript
 
@@ -22,7 +33,7 @@ script destroy_debugging_menu
 	if ScreenElementExists \{id = debug_scrolling_menu}
 		DestroyScreenElement \{id = debug_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script kill_debug_menus
@@ -49,10 +60,36 @@ script destroy_all_debug_menus
 	destroy_debugging_menu
 endscript
 
+script pad_2 \{#"0x00000000" = 0 pad = '0'}
+	if (<#"0x00000000"> >= 10)
+		pad = ''
+	endif
+	formattext textname = text '%p%d' p = <pad> d = <#"0x00000000">
+	return pad = <text>
+endscript
+script timestamp
+	GetLocalSystemTime
+	AddParams <localsystemtime>
+	pad_2 <month>
+	month = <pad>
+	pad_2 <dayofmonth>
+	dayofmonth = <pad>
+	pad_2 <hour>
+	hour = <pad>
+	pad_2 <minute>
+	minute = <pad>
+	pad_2 <second>
+	second = <pad>
+	FormatText { textname = timestamp "%y-%m-%d_%h-%n-%s"
+		y = <year> m = <month> d = <dayofmonth> h = <hour> n = <minute> s = <second> }
+	return timestamp = <timestamp>
+endscript
+
 script screen_shot
-	get_song_title
-	getsongtime
-	FormatText textname = FileName 'screen_%s_%t' s = <song_title> t = <songtime>
+	get_song_title \{song = $current_song}
+	get_song_artist \{song = $current_song with_year = 0}
+	timestamp
+	formattext textname = filename '..\..\stats_%a_-_%t_%n' a = <song_artist> t = <song_title> n = <timestamp>
 	ScreenShot FileName = <FileName>
 endscript
 
@@ -66,7 +103,7 @@ endscript
 script create_songversion_menu
 	ui_menu_select_sfx
 	destroy_debugging_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -76,9 +113,9 @@ script create_songversion_menu
 		Pos = ($menu_pos + (40.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = songversion_scrolling_menu id = songversion_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
-	CreateScreenElement \{Type = TextElement parent = songversion_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Play GH3 Song" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh3}}]}
-	CreateScreenElement \{Type = TextElement parent = songversion_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Play GH2 Song" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh2}}]}
-	CreateScreenElement \{Type = TextElement parent = songversion_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Play GH1 Song" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh1}}]}
+	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = "Play GH3 Song" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh3}}]}
+	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = "Play GH2 Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh2}}]}
+	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = "Play GH1 Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh1}}]}
 	LaunchEvent \{Type = focus target = songversion_vmenu}
 endscript
 
@@ -91,13 +128,13 @@ script destroy_songversion_menu
 	if ScreenElementExists \{id = songversion_scrolling_menu}
 		DestroyScreenElement \{id = songversion_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script create_song_menu\{version = gh3}
 	ui_menu_select_sfx
 	destroy_songversion_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	x_pos = 450
 	if (<version> = gh1)
 		<x_pos> = 455
@@ -125,14 +162,9 @@ script create_song_menu\{version = gh3}
 		if ((<song_struct>.version)= <version>)
 			get_song_title song = <song_checksum>
 			CreateScreenElement {
-				Type = TextElement
+				$debug_menu_params
 				parent = song_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
 				text = <song_title>
-				just = [left top]
-				z_priority = 100.0
 				event_handlers = [
 					{focus menu_focus}
 					{unfocus menu_unfocus}
@@ -154,13 +186,13 @@ script destroy_song_menu
 	if ScreenElementExists \{id = song_scrolling_menu}
 		DestroyScreenElement \{id = song_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script create_difficulty_menu
 	destroy_song_menu
 	destroy_difficulty_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -187,14 +219,9 @@ script create_difficulty_menu
 		get_difficulty_text difficulty = <difficulty_count>
 		if (<Player> = 2)
 			CreateScreenElement {
-				Type = TextElement
+				$debug_menu_params
 				parent = difficulty_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
 				text = <difficulty_text>
-				z_priority = 100.0
-				just = [left top]
 				event_handlers = [
 					{focus menu_focus}
 					{unfocus menu_unfocus}
@@ -204,14 +231,9 @@ script create_difficulty_menu
 		else
 			if ($current_num_players = 2)
 				CreateScreenElement {
-					Type = TextElement
+					$debug_menu_params
 					parent = difficulty_vmenu
-					font = #"0x45aae5c4"
-					Scale = 0.75
-					rgba = [210 210 210 250]
 					text = <difficulty_text>
-					just = [left top]
-					z_priority = 100.0
 					event_handlers = [
 						{focus menu_focus}
 						{unfocus menu_unfocus}
@@ -220,14 +242,9 @@ script create_difficulty_menu
 				}
 			else
 				CreateScreenElement {
-					Type = TextElement
+					$debug_menu_params
 					parent = difficulty_vmenu
-					font = #"0x45aae5c4"
-					Scale = 0.75
-					rgba = [210 210 210 250]
 					text = <difficulty_text>
-					just = [left top]
-					z_priority = 100.0
 					event_handlers = [
 						{focus menu_focus}
 						{unfocus menu_unfocus}
@@ -245,13 +262,13 @@ script destroy_difficulty_menu
 	if ScreenElementExists \{id = difficulty_menu}
 		DestroyScreenElement \{id = difficulty_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script create_settings_menu
 	ui_menu_select_sfx
 	destroy_debugging_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -261,32 +278,32 @@ script create_settings_menu
 		Pos = ($menu_pos - (30.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = settings_scrolling_menu id = settings_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Venue" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changevenue_menu}]}
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Guitar" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = guitar}}]}
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Bass" just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = bass}}]}
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_visibility_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle visibility" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_togglevisibility_menu}]}
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = select_slomo_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Select Slomo : 1.0" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_slomo}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Change Venue" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changevenue_menu}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Change Guitar" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = guitar}}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Change Bass" just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = bass}}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_visibility_menuitem text = "Toggle visibility" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_togglevisibility_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = select_slomo_menuitem text = "Select Slomo : 1.0" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_slomo}]}
 	select_slomo_setprop
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_showmeasures_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Measures" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showmeasures}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showmeasures_menuitem text = "Show Measures" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showmeasures}]}
 	//toggle_showmeasures_setprop
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_showcameraname_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Camera Name" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showcameraname}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showcameraname_menuitem text = "Show Camera Name" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showcameraname}]}
 	//toggle_showcameraname_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_inputlog_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Input Log" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_inputlog}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_inputlog_menuitem text = "Show Input Log" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_inputlog}]}
 	toggle_inputlog_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_botp1_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle Bot P1" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_botp1}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_botp1_menuitem text = "Toggle Bot P1" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_botp1}]}
 	toggle_botp1_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_botp2_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle Bot P2" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_botp2}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_botp2_menuitem text = "Toggle Bot P2" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_botp2}]}
 	toggle_botp2_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = edit_inputlog_lines_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Input Log Lines" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left edit_inputlog_lines_left}{pad_right edit_inputlog_lines_right}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = edit_inputlog_lines_menuitem text = "Input Log Lines" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left edit_inputlog_lines_left}{pad_right edit_inputlog_lines_right}]}
 	edit_inputlog_lines_setprop
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_tilt_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Show Input Log" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_tilt}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_tilt_menuitem text = "Show Input Log" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_tilt}]}
 	//toggle_tilt_setprop
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_leftyflip_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Leftyflip" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_leftyflip}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_leftyflip_menuitem text = "Leftyflip" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_leftyflip}]}
 	toggle_leftyflip_setprop
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu id = create_cameracut_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Select CameraCut" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_cameracut_menu}]}
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle GPU Time" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_gpu_time}}]}
-	//CreateScreenElement \{Type = TextElement parent = settings_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle CPU Time" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_cpu_time}}]}
-	CreateScreenElement \{Type = TextElement parent = settings_vmenu id = toggle_forcescore_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Force Score" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_forcescore}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = create_cameracut_menuitem text = "Select CameraCut" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_cameracut_menu}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Toggle GPU Time" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_gpu_time}}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Toggle CPU Time" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_cpu_time}}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_forcescore_menuitem text = "Force Score" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_forcescore}]}
 	toggle_forcescore_setprop
 	LaunchEvent \{Type = focus target = settings_vmenu}
 endscript
@@ -304,331 +321,15 @@ script destroy_settings_menu
 	if ScreenElementExists \{id = settings_scrolling_menu}
 		DestroyScreenElement \{id = settings_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 CameraCutPrefixArray = [
 	''
 ]
 
-/*script create_cameracut_menu
-	ui_menu_select_sfx
-	destroy_settings_menu
-	CreateScreenElement {
-		Type = VScrollingMenu
-		parent = pause_menu
-		id = selectcameracut_scrolling_menu
-		just = [left top]
-		dims = (400.0, 480.0)
-		Pos = ($menu_pos - (30.0, 0.0))
-	}
-	CreateScreenElement \{Type = VMenu parent = selectcameracut_scrolling_menu id = selectcameracut_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_settings_menu}}]}
-	CreateScreenElement \{Type = TextElement parent = selectcameracut_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "off" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_cameracut params = {Camera_Array_pakname = None Camera_Array = None array_count = None}}]}
-	GetPakManCurrentName \{map = zones}
-	camera_count = 0
-	GetArraySize \{$#"0x1e755dd6"}
-	camera_array_size = <array_Size>
-	begin
-		FormatText checksumName = Camera_Array '%s_%p' s = <pakname> p = ($CameraCutPrefixArray [<camera_count>])
-		if GlobalExists name = <Camera_Array>
-			GetArraySize $<Camera_Array>
-			array_count = 0
-			begin
-				FormatText textname = Camera_Name "%s_%p_%i" s = <pakname> p = ($CameraCutPrefixArray [<camera_count>])i = <array_count>
-				if StructureContains structure = ($<Camera_Array> [<array_count>])name
-					FormatText textname = Camera_Name "%s" s = ($<Camera_Array> [<array_count>].name)DontAssertForChecksums
-				elseif StructureContains structure = ($<Camera_Array> [<array_count>])params
-					if StructureContains structure = ($<Camera_Array> [<array_count>].params)name
-						FormatText textname = Camera_Name "%s" s = ($<Camera_Array> [<array_count>].params.name)DontAssertForChecksums
-					endif
-				endif
-				CreateScreenElement {
-					Type = TextElement
-					parent = selectcameracut_vmenu
-					font = #"0x45aae5c4"
-					Scale = 0.75
-					rgba = [210 210 210 250]
-					text = <Camera_Name>
-					z_priority = 100.0
-					just = [left top]
-					event_handlers = [
-						{focus menu_focus}
-						{unfocus menu_unfocus}
-						{pad_choose select_cameracut params = {Camera_Array_pakname = <pakname> Camera_Array = ($CameraCutPrefixArray [<camera_count>])array_count = <array_count>}}
-						{pad_square select_cameracut params = {Camera_Array_pakname = <pakname> Camera_Array = ($CameraCutPrefixArray [<camera_count>])array_count = <array_count> jumptoviewer}}
-					]
-				}
-				<array_count> = (<array_count> + 1)
-			repeat <array_Size>
-		endif
-		camera_count = (<camera_count> + 1)
-	repeat <camera_array_size>
-	LaunchEvent \{Type = focus target = selectcameracut_vmenu}
-endscript*/
-
-//script back_to_cameracut_menu
-//	create_cameracut_menu
-//endscript
-
-/*script destroy_cameracut_menu
-	if ScreenElementExists \{id = selectcameracut_scrolling_menu}
-		DestroyScreenElement \{id = selectcameracut_scrolling_menu}
-	endif
-	destroy_generic_backdrop
-endscript*/
 debug_camera_array = None
 debug_camera_array_pakname = None
 debug_camera_array_count = 0
-
-/*script select_cameracut
-	ui_menu_select_sfx
-	Change debug_camera_array = <Camera_Array>
-	Change debug_camera_array_pakname = <Camera_Array_pakname>
-	Change debug_camera_array_count = <array_count>
-	destroy_cameracuts
-	wait \{3 gameframes}
-	create_cameracuts
-	if GotParam \{jumptoviewer}
-		destroy_all_debug_menus
-		unpausegh3
-		enable_pause
-		Change \{viewer_buttons_enabled = 1}
-		ToggleViewMode
-	endif
-endscript
-
-script create_character_viewer_menu
-	ui_menu_select_sfx
-	destroy_debugging_menu
-	create_generic_backdrop
-	CreateScreenElement {
-		Type = VScrollingMenu
-		parent = pause_menu
-		id = character_viewer_scrolling_menu
-		just = [left top]
-		dims = (400.0, 480.0)
-		Pos = ($menu_pos - (30.0, 0.0))
-	}
-	CreateScreenElement \{Type = VMenu parent = character_viewer_scrolling_menu id = character_viewer_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
-	CreateScreenElement \{Type = TextElement parent = character_viewer_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Guitarist" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitarist_menu}]}
-	CreateScreenElement \{Type = TextElement parent = character_viewer_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Bassist" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changebassist_menu}]}
-	CreateScreenElement \{Type = TextElement parent = character_viewer_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Vocalist" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changevocalist_menu}]}
-	CreateScreenElement \{Type = TextElement parent = character_viewer_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Change Drummer" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changedrummer_menu}]}
-	LaunchEvent \{Type = focus target = character_viewer_vmenu}
-endscript
-
-script back_to_character_viewer_menu
-	destroy_changeguitarist_menu
-	destroy_changebassist_menu
-	destroy_changevocalist_menu
-	destroy_changedrummer_menu
-	create_character_viewer_menu
-endscript
-
-script destroy_character_viewer_menu
-	if ScreenElementExists \{id = character_viewer_scrolling_menu}
-		DestroyScreenElement \{id = character_viewer_scrolling_menu}
-	endif
-	destroy_generic_backdrop
-endscript
-
-script create_changeguitarist_menu
-	ui_menu_select_sfx
-	destroy_character_viewer_menu
-	create_generic_backdrop
-	CreateScreenElement {
-		Type = VScrollingMenu
-		parent = pause_menu
-		id = changeguitarist_scrolling_menu
-		just = [left top]
-		dims = (400.0, 480.0)
-		Pos = ($menu_pos + (70.0, 0.0))
-	}
-	CreateScreenElement \{Type = VMenu parent = changeguitarist_scrolling_menu id = changeguitarist_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_character_viewer_menu}}]}
-	get_musician_profile_size
-	index = 0
-	begin
-		get_musician_profile_struct index = <index>
-		Type = (<profile_struct>.Type)
-		if ((<Type> = GUITARIST)|| (<Type> = any))
-			CreateScreenElement {
-				Type = TextElement
-				parent = changeguitarist_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
-				text = (<profile_struct>.fullname)
-				just = [left top]
-				z_priority = 100.0
-				event_handlers = [
-					{focus menu_focus}
-					{unfocus menu_unfocus}
-					{pad_choose debug_menu_choose_guitarist params = {index = <index>}}
-				]
-			}
-		endif
-		index = (<index> + 1)
-	repeat <array_Size>
-	LaunchEvent \{Type = focus target = changeguitarist_vmenu}
-endscript
-
-script destroy_changeguitarist_menu
-	if ScreenElementExists \{id = changeguitarist_scrolling_menu}
-		DestroyScreenElement \{id = changeguitarist_scrolling_menu}
-	endif
-	destroy_generic_backdrop
-endscript
-
-script debug_menu_choose_guitarist
-	kill_gem_scroller
-	get_musician_profile_struct index = <index>
-	FormatText checksumName = guitarist_id '%s' s = (<profile_struct>.name)
-	Change StructureName = player1_status character_id = <guitarist_id>
-	if NOT create_guitarist \{useoldpos}
-		DownloadContentLost
-	endif
-	restart_gem_scroller song_name = ($current_song)difficulty = ($current_difficulty)difficulty2 = ($current_difficulty2)startTime = ($current_starttime)device_num = <device_num>
-endscript
-
-script create_changebassist_menu
-	ui_menu_select_sfx
-	destroy_character_viewer_menu
-	create_generic_backdrop
-	CreateScreenElement {
-		Type = VScrollingMenu
-		parent = pause_menu
-		id = changebassist_scrolling_menu
-		just = [left top]
-		dims = (400.0, 480.0)
-		Pos = ($menu_pos + (70.0, 0.0))
-	}
-	CreateScreenElement \{Type = VMenu parent = changebassist_scrolling_menu id = changebassist_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_character_viewer_menu}}]}
-	get_musician_profile_size
-	index = 0
-	begin
-		get_musician_profile_struct index = <index>
-		Type = (<profile_struct>.Type)
-		if ((<Type> = BASSIST)|| (<Type> = any))
-			CreateScreenElement {
-				Type = TextElement
-				parent = changebassist_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
-				text = (<profile_struct>.name)
-				just = [left top]
-				z_priority = 100.0
-				event_handlers = [
-					{focus menu_focus}
-					{unfocus menu_unfocus}
-					{pad_choose create_bassist params = {profile_name = (<info_struct>.name)useoldpos}}
-				]
-			}
-		endif
-		index = (<index> + 1)
-	repeat <array_Size>
-	LaunchEvent \{Type = focus target = changebassist_vmenu}
-endscript
-
-script destroy_changebassist_menu
-	if ScreenElementExists \{id = changebassist_scrolling_menu}
-		DestroyScreenElement \{id = changebassist_scrolling_menu}
-	endif
-	destroy_generic_backdrop
-endscript
-
-script create_changevocalist_menu
-	ui_menu_select_sfx
-	destroy_character_viewer_menu
-	create_generic_backdrop
-	CreateScreenElement {
-		Type = VScrollingMenu
-		parent = pause_menu
-		id = changevocalist_scrolling_menu
-		just = [left top]
-		dims = (400.0, 480.0)
-		Pos = ($menu_pos + (70.0, 0.0))
-	}
-	CreateScreenElement \{Type = VMenu parent = changevocalist_scrolling_menu id = changevocalist_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_character_viewer_menu}}]}
-	get_musician_profile_size
-	index = 0
-	begin
-		get_musician_profile_struct index = <index>
-		Type = (<profile_struct>.Type)
-		if ((<Type> = vocalist)|| (<Type> = any))
-			CreateScreenElement {
-				Type = TextElement
-				parent = changevocalist_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
-				text = (<profile_struct>.name)
-				just = [left top]
-				z_priority = 100.0
-				event_handlers = [
-					{focus menu_focus}
-					{unfocus menu_unfocus}
-					{pad_choose create_vocalist params = {profile_name = (<info_struct>.name)useoldpos}}
-				]
-			}
-		endif
-		index = (<index> + 1)
-	repeat <array_Size>
-	LaunchEvent \{Type = focus target = changevocalist_vmenu}
-endscript
-
-script destroy_changevocalist_menu
-	if ScreenElementExists \{id = changevocalist_scrolling_menu}
-		DestroyScreenElement \{id = changevocalist_scrolling_menu}
-	endif
-	destroy_generic_backdrop
-endscript
-
-script create_changedrummer_menu
-	ui_menu_select_sfx
-	destroy_character_viewer_menu
-	create_generic_backdrop
-	CreateScreenElement {
-		Type = VScrollingMenu
-		parent = pause_menu
-		id = changedrummer_scrolling_menu
-		just = [left top]
-		dims = (400.0, 480.0)
-		Pos = ($menu_pos + (70.0, 0.0))
-	}
-	CreateScreenElement \{Type = VMenu parent = changedrummer_scrolling_menu id = changedrummer_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_character_viewer_menu}}]}
-	get_musician_profile_size
-	index = 0
-	begin
-		get_musician_profile_struct index = <index>
-		Type = (<profile_struct>.Type)
-		if ((<Type> = drummer)|| (<Type> = any))
-			CreateScreenElement {
-				Type = TextElement
-				parent = changedrummer_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
-				text = (<profile_struct>.name)
-				just = [left top]
-				z_priority = 100.0
-				event_handlers = [
-					{focus menu_focus}
-					{unfocus menu_unfocus}
-					{pad_choose create_drummer params = {profile_name = (<info_struct>.name)useoldpos}}
-				]
-			}
-		endif
-		index = (<index> + 1)
-	repeat <array_Size>
-	LaunchEvent \{Type = focus target = changedrummer_vmenu}
-endscript
-
-script destroy_changedrummer_menu
-	if ScreenElementExists \{id = changedrummer_scrolling_menu}
-		DestroyScreenElement \{id = changedrummer_scrolling_menu}
-	endif
-	destroy_generic_backdrop
-endscript*/
 
 script select_playermode
 	Change player1_device = <device_num>
@@ -777,41 +478,6 @@ script select_slomo_setprop
 endscript
 debug_showmeasures = OFF
 
-// what does this do
-/*script toggle_showmeasures
-	ui_menu_select_sfx
-	if ($debug_showmeasures = OFF)
-		Change \{debug_showmeasures = On}
-	else
-		Change \{debug_showmeasures = OFF}
-	endif
-	toggle_showmeasures_setprop
-endscript
-
-script toggle_showmeasures_setprop
-	if ($debug_showmeasures = OFF)
-		toggle_showmeasures_menuitem ::SetProps \{text = "Show Measures : off"}
-	else
-		toggle_showmeasures_menuitem ::SetProps \{text = "Show Measures : on"}
-	endif
-endscript
-debug_showcameraname = OFF
-
-script toggle_showcameraname
-	ui_menu_select_sfx
-	if ScreenElementExists \{id = debug_camera_name_text}
-		DestroyScreenElement \{id = debug_camera_name_text}
-	endif
-	if ($debug_showcameraname = OFF)
-		Change \{debug_showcameraname = On}
-		CreateScreenElement \{Type = TextElement parent = root_window id = debug_camera_name_text font = #"0x45aae5c4" Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Camera Name" z_priority = 100.0 z_priority = 1.0 alpha = 1}
-	else
-		Change \{debug_showcameraname = OFF}
-	endif
-	toggle_showcameraname_setprop
-	CameraCuts_UpdateDebugCameraName
-endscript*/
-
 script toggle_inputlog
 	ui_menu_select_sfx
 	kill_debug_elements
@@ -872,14 +538,6 @@ script toggle_tilt
 	init_play_log
 endscript
 
-/*script toggle_showcameraname_setprop
-	if ($debug_showcameraname = OFF)
-		toggle_showcameraname_menuitem ::SetProps \{text = "Show Camera Name : off"}
-	else
-		toggle_showcameraname_menuitem ::SetProps \{text = "Show Camera Name : on"}
-	endif
-endscript*/
-
 script toggle_inputlog_setprop
 	if ($show_play_log = 0)
 		toggle_inputlog_menuitem ::SetProps \{text = "Show Input Log : off"}
@@ -926,8 +584,8 @@ script toggle_leftyflip
 		SetGlobalTags \{user_options params = {lefty_flip_p1 = 0}}
 	endif
 	GetGlobalTags \{user_options}
-	Change StructureName = <player_status> lefthanded_gems = <lefty_flip_p1>
-	Change StructureName = <player_status> lefthanded_button_ups = <lefty_flip_p1>
+	Change StructureName = player1_status lefthanded_gems = <lefty_flip_p1>
+	Change StructureName = player1_status lefthanded_button_ups = <lefty_flip_p1>
 	toggle_leftyflip_setprop
 endscript
 
@@ -974,126 +632,6 @@ script toggle_forcescore_setprop
 	endswitch
 endscript
 
-/*script create_changevenue_menu
-	ui_menu_select_sfx
-	destroy_settings_menu
-	create_generic_backdrop
-	CreateScreenElement {
-		Type = VScrollingMenu
-		parent = pause_menu
-		id = changevenue_scrolling_menu
-		just = [left top]
-		dims = (400.0, 480.0)
-		Pos = ($menu_pos + (70.0, 0.0))
-	}
-	CreateScreenElement \{Type = VMenu parent = changevenue_scrolling_menu id = changevenue_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_settings_menu}}]}
-	get_LevelZoneArray_size
-	array_count = 0
-	begin
-		get_LevelZoneArray_checksum index = <array_count>
-		CreateScreenElement {
-			Type = TextElement
-			parent = changevenue_vmenu
-			font = #"0x45aae5c4"
-			Scale = 0.75
-			rgba = [210 210 210 250]
-			text = ($LevelZones.<level_checksum>.title)
-			just = [left top]
-			z_priority = 100.0
-			event_handlers = [
-				{focus menu_focus}
-				{unfocus menu_unfocus}
-				{pad_choose select_venue params = {level = <level_checksum> norestart}}
-			]
-		}
-		<array_count> = (<array_count> + 1)
-	repeat <array_Size>
-	LaunchEvent \{Type = focus target = changevenue_vmenu}
-endscript
-
-script back_to_changevenue_menu
-	create_changevenue_menu
-endscript
-
-script destroy_changevenue_menu
-	if ScreenElementExists \{id = changevenue_scrolling_menu}
-		DestroyScreenElement \{id = changevenue_scrolling_menu}
-	endif
-	destroy_generic_backdrop
-endscript
-
-script select_venue
-	ui_menu_select_sfx
-	kill_gem_scroller
-	ResetWaypoints
-	if GotParam \{level}
-		Change current_level = <level>
-	endif
-	SetPakManCurrentBlock \{map = zones pak = None block_scripts = 1}
-	ChangeNodeFlag \{LS_3_5_PRE 1}
-	ChangeNodeFlag \{LS_3_5_POST 0}
-	ChangeNodeFlag \{LS_ENCORE_PRE 1}
-	ChangeNodeFlag \{LS_ENCORE_POST 0}
-	Load_Venue \{block_scripts = 1}
-	setup_bg_viewport
-	restore_dummy_bg_camera
-	disable_bg_viewport_properties
-	create_movie_viewport
-	if ($current_level = load_z_testlevel_peds)
-		spawnscriptnow \{testlevel_debug}
-	else
-		if NOT create_band
-			DownloadContentLost
-		endif
-		create_crowd_models
-		crowd_reset \{player_status = player1_status Player = 1}
-	endif
-	enable_pause
-	restore_start_key_binding
-	if NOT GotParam \{norestart}
-		gh3_start_pressed
-		restart_gem_scroller song_name = ($current_song)difficulty = ($current_difficulty)difficulty2 = ($current_difficulty2)startTime = ($current_starttime)device_num = <device_num>
-	else
-		ToggleViewMode
-		ToggleViewMode
-	endif
-endscript
-
-script testlevel_debug
-	begin
-		if ControllerMake \{Circle 0}
-			next_peds
-		endif
-		if ControllerMake \{Circle 1}
-			next_peds
-		endif
-		wait \{1 gameframe}
-	repeat
-endscript
-debug_ped_row = 0
-
-script next_peds
-	kill \{prefix = Z_TestLevel_Peds_Row0}
-	kill \{prefix = Z_TestLevel_Peds_Row1}
-	kill \{prefix = Z_TestLevel_Peds_Row2}
-	kill \{prefix = Z_TestLevel_Peds_Row3}
-	kill \{prefix = Z_TestLevel_Peds_Row4}
-	kill \{prefix = Z_TestLevel_Peds_Row5}
-	kill \{prefix = Z_TestLevel_Peds_Row6}
-	kill \{prefix = Z_TestLevel_Peds_Row7}
-	wait \{1 gameframe}
-	begin
-		Change debug_ped_row = ($debug_ped_row + 1)
-		FormatText checksumName = row 'Z_TestLevel_Peds_row%r' r = ($debug_ped_row)
-		create prefix = <row>
-		if IsAlive prefix = <row>
-			break
-		else
-			Change \{debug_ped_row = -1}
-		endif
-	repeat
-endscript*/
-
 script back_to_changehighway_menu
 	create_changehighway_menu
 endscript
@@ -1102,72 +640,9 @@ script destroy_changehighway_menu
 	if ScreenElementExists \{id = changehighway_scrolling_menu}
 		DestroyScreenElement \{id = changehighway_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
-/*script create_changeguitar_menu\{Type = guitar}
-	ui_menu_select_sfx
-	destroy_settings_menu
-	create_generic_backdrop
-	CreateScreenElement {
-		Type = VScrollingMenu
-		parent = pause_menu
-		id = changeguitar_scrolling_menu
-		just = [left top]
-		dims = (400.0, 480.0)
-		Pos = ($menu_pos + (70.0, 0.0))
-	}
-	CreateScreenElement \{Type = VMenu parent = changeguitar_scrolling_menu id = changeguitar_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_settings_menu}}]}
-	get_musician_instrument_size
-	array_count = 0
-	begin
-		get_musician_instrument_struct index = <array_count>
-		if (<Type> = (<info_struct>.Type))
-			printf "Creating %i" i = (<info_struct>.name)
-			CreateScreenElement {
-				Type = TextElement
-				parent = changeguitar_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
-				text = (<info_struct>.name)
-				just = [left top]
-				z_priority = 100.0
-				event_handlers = [
-					{focus menu_focus}
-					{unfocus menu_unfocus}
-					{pad_choose select_guitar params = {guitar = <array_count> Type = <Type>}}
-				]
-			}
-		endif
-		<array_count> = (<array_count> + 1)
-	repeat <array_Size>
-	LaunchEvent \{Type = focus target = changeguitar_vmenu}
-endscript
-
-script back_to_changeguitar_menu
-	create_changeguitar_menu
-endscript
-
-script destroy_changeguitar_menu
-	if ScreenElementExists \{id = changeguitar_scrolling_menu}
-		DestroyScreenElement \{id = changeguitar_scrolling_menu}
-	endif
-	destroy_generic_backdrop
-endscript
-
-script select_guitar\{Type = guitar}
-	ui_menu_select_sfx
-	kill_gem_scroller
-	if (<Type> = guitar)
-		get_musician_instrument_struct index = <guitar>
-		Change StructureName = player1_status instrument_id = (<info_struct>.desc_id)
-	else
-		get_musician_instrument_struct index = <guitar>
-		Change current_bass_model = (<info_struct>.desc_id)
-	endif
-	select_start_song
-endscript*/
 HideByType_List = [
 	'real_crowd'
 	'stage'
@@ -1182,7 +657,7 @@ HideByType_Visible = [
 script create_togglevisibility_menu
 	ui_menu_select_sfx
 	destroy_settings_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -1192,7 +667,7 @@ script create_togglevisibility_menu
 		Pos = ($menu_pos + (70.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = togglevisibility_scrolling_menu id = togglevisibility_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_settings_menu}}]}
-	CreateScreenElement \{Type = TextElement parent = togglevisibility_vmenu id = toggle_bandvisible_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle band" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_bandvisible}]}
+	CreateScreenElement \{$debug_menu_params parent = togglevisibility_vmenu id = toggle_bandvisible_menuitem text = "Toggle band" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_bandvisible}]}
 	toggle_bandvisible_setprop
 	GetArraySize \{$#"0x8e8106d0"}
 	array_count = 0
@@ -1200,15 +675,10 @@ script create_togglevisibility_menu
 		FormatText checksumName = type_checksum '%s' s = ($HideByType_List [<array_count>])
 		FormatText checksumName = menuitem_checksum 'toggle_hidebytype_menuitem_%s' s = ($HideByType_List [<array_count>])
 		CreateScreenElement {
-			Type = TextElement
+			$debug_menu_params
 			parent = togglevisibility_vmenu
 			id = <menuitem_checksum>
-			font = #"0x45aae5c4"
-			Scale = 0.75
-			rgba = [210 210 210 250]
 			text = ""
-			just = [left top]
-			z_priority = 100.0
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -1218,7 +688,7 @@ script create_togglevisibility_menu
 		array_count = (<array_count> + 1)
 	repeat <array_Size>
 	toggle_hidebytype_setprop
-	CreateScreenElement \{Type = TextElement parent = togglevisibility_vmenu id = toggle_highway_menuitem font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Toggle highway" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_highway}]}
+	CreateScreenElement \{$debug_menu_params parent = togglevisibility_vmenu id = toggle_highway_menuitem text = "Toggle highway" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_highway}]}
 	toggle_highway_setprop
 	LaunchEvent \{Type = focus target = togglevisibility_vmenu}
 endscript
@@ -1231,7 +701,7 @@ script destroy_togglevisibility_menu
 	if ScreenElementExists \{id = togglevisibility_scrolling_menu}
 		DestroyScreenElement \{id = togglevisibility_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 highwayvisible = On
 
@@ -1269,44 +739,9 @@ endscript
 bandvisible = On
 
 script toggle_bandvisible
-	ui_menu_select_sfx
-	if ($bandvisible = OFF)
-		Change \{bandvisible = On}
-	else
-		Change \{bandvisible = OFF}
-	endif
-	set_bandvisible
-	toggle_bandvisible_setprop
 endscript
 
 script set_bandvisible
-	if ($bandvisible = OFF)
-		if CompositeObjectExists \{GUITARIST}
-			GUITARIST ::Hide
-		endif
-		if CompositeObjectExists \{vocalist}
-			vocalist ::Hide
-		endif
-		if CompositeObjectExists \{BASSIST}
-			BASSIST ::Hide
-		endif
-		if CompositeObjectExists \{drummer}
-			drummer ::Hide
-		endif
-	else
-		if CompositeObjectExists \{GUITARIST}
-			GUITARIST ::unhide
-		endif
-		if CompositeObjectExists \{vocalist}
-			vocalist ::unhide
-		endif
-		if CompositeObjectExists \{BASSIST}
-			BASSIST ::unhide
-		endif
-		if CompositeObjectExists \{drummer}
-			drummer ::unhide
-		endif
-	endif
 endscript
 
 script toggle_bandvisible_setprop
@@ -1360,7 +795,7 @@ endscript
 script create_skipintosong_menu
 	ui_menu_select_sfx
 	destroy_debugging_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -1370,10 +805,10 @@ script create_skipintosong_menu
 		Pos = ($menu_pos + (20.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = skipintosong_scrolling_menu id = skipintosong_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
-	CreateScreenElement \{Type = TextElement parent = skipintosong_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Skip By Time" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbytime_menu}]}
-	CreateScreenElement \{Type = TextElement parent = skipintosong_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Skip By Marker" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymarker_menu}]}
-	CreateScreenElement \{Type = TextElement parent = skipintosong_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Skip By Measure" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymeasure_menu}]}
-	CreateScreenElement \{Type = TextElement parent = skipintosong_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Set Loop Point" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_looppoint_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = "Skip By Time" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbytime_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = "Skip By Marker" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymarker_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = "Skip By Measure" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymeasure_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = "Set Loop Point" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_looppoint_menu}]}
 	LaunchEvent \{Type = focus target = skipintosong_vmenu}
 endscript
 
@@ -1389,7 +824,7 @@ script destroy_skipintosong_menu
 	if ScreenElementExists \{id = skipintosong_scrolling_menu}
 		DestroyScreenElement \{id = skipintosong_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script create_skipbytime_menu
@@ -1401,7 +836,7 @@ script create_skipbytime_menu
 		destroy_skipintosong_menu
 		callback = back_to_skipintosong_menu
 	endif
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -1425,14 +860,9 @@ script create_skipbytime_menu
 	if GotParam \{looppoint}
 		menu_func = set_looppoint
 		CreateScreenElement {
-			Type = TextElement
+			$debug_menu_params
 			parent = skipbytime_vmenu
-			font = #"0x45aae5c4"
-			Scale = 0.75
-			rgba = [210 210 210 250]
 			text = "No Loop Point"
-			just = [left top]
-			z_priority = 100.0
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -1449,14 +879,9 @@ script create_skipbytime_menu
 		FormatText textname = menu_itemname "Time %ss" s = <current_time>
 		if (<current_time> < <max_time>)
 			CreateScreenElement {
-				Type = TextElement
+				$debug_menu_params
 				parent = skipbytime_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
 				text = <menu_itemname>
-				just = [left top]
-				z_priority = 100.0
 				event_handlers = [
 					{focus menu_focus}
 					{unfocus menu_unfocus}
@@ -1479,7 +904,7 @@ script destroy_skipbytime_menu
 	if ScreenElementExists \{id = skipbytime_scrolling_menu}
 		DestroyScreenElement \{id = skipbytime_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script create_skipbymarker_menu
@@ -1491,7 +916,7 @@ script create_skipbymarker_menu
 		destroy_skipintosong_menu
 		callback = back_to_skipintosong_menu
 	endif
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -1515,14 +940,9 @@ script create_skipbymarker_menu
 	if GotParam \{looppoint}
 		menu_func = set_looppoint
 		CreateScreenElement {
-			Type = TextElement
+			$debug_menu_params
 			parent = skipbymarker_vmenu
-			font = #"0x45aae5c4"
-			Scale = 0.75
-			rgba = [210 210 210 250]
 			text = "No Loop Point"
-			just = [left top]
-			z_priority = 100.0
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -1535,14 +955,9 @@ script create_skipbymarker_menu
 	GetArraySize $<marker_array>
 	if (<array_Size> = 0)
 		CreateScreenElement {
-			Type = TextElement
+			$debug_menu_params
 			parent = skipbymarker_vmenu
-			font = #"0x45aae5c4"
-			Scale = 0.75
-			rgba = [210 210 210 250]
 			text = "start"
-			just = [left top]
-			z_priority = 100.0
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -1554,14 +969,9 @@ script create_skipbymarker_menu
 		begin
 			FormatText textname = menu_itemname "%m (%ss)" m = ($<marker_array> [<marker_count>].marker)s = (($<marker_array> [<marker_count>].time)/ 1000)
 			CreateScreenElement {
-				Type = TextElement
+				$debug_menu_params
 				parent = skipbymarker_vmenu
-				font = #"0x45aae5c4"
-				Scale = 0.75
-				rgba = [210 210 210 250]
 				text = <menu_itemname>
-				just = [left top]
-				z_priority = 100.0
 				event_handlers = [
 					{focus menu_focus}
 					{unfocus menu_unfocus}
@@ -1582,7 +992,7 @@ script destroy_skipbymarker_menu
 	if ScreenElementExists \{id = skipbymarker_scrolling_menu}
 		DestroyScreenElement \{id = skipbymarker_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script create_skipbymeasure_menu
@@ -1594,7 +1004,7 @@ script create_skipbymeasure_menu
 		destroy_skipintosong_menu
 		callback = back_to_skipintosong_menu
 	endif
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -1618,14 +1028,9 @@ script create_skipbymeasure_menu
 	if GotParam \{looppoint}
 		menu_func = set_looppoint
 		CreateScreenElement {
-			Type = TextElement
+			$debug_menu_params
 			parent = skipbymeasure_vmenu
-			font = #"0x45aae5c4"
-			Scale = 0.75
-			rgba = [210 210 210 250]
 			text = "No Loop Point"
-			just = [left top]
-			z_priority = 100.0
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -1684,14 +1089,9 @@ script create_skipbymeasure_menu
 				FormatText textname = menu_itemname "Measure %m (%ss)" s = (<time> / 1000.0)m = <measure_count>
 				printf "%m" m = <menu_itemname>
 				CreateScreenElement {
-					Type = TextElement
+					$debug_menu_params
 					parent = skipbymeasure_vmenu
-					font = #"0x45aae5c4"
-					Scale = 0.75
-					rgba = [210 210 210 250]
 					text = <menu_itemname>
-					just = [left top]
-					z_priority = 100.0
 					event_handlers = [
 						{focus menu_focus}
 						{unfocus menu_unfocus}
@@ -1719,13 +1119,13 @@ script destroy_skipbymeasure_menu
 	if ScreenElementExists \{id = skipbymeasure_scrolling_menu}
 		DestroyScreenElement \{id = skipbymeasure_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script create_looppoint_menu
 	ui_menu_select_sfx
 	destroy_skipintosong_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	CreateScreenElement {
 		Type = VScrollingMenu
 		parent = pause_menu
@@ -1735,9 +1135,9 @@ script create_looppoint_menu
 		Pos = ($menu_pos + (20.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = looppoint_scrolling_menu id = looppoint_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_skipintosong_menu}}]}
-	CreateScreenElement \{Type = TextElement parent = looppoint_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Loop By Time" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbytime_menu params = {looppoint}}]}
-	CreateScreenElement \{Type = TextElement parent = looppoint_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Loop By Marker" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymarker_menu params = {looppoint}}]}
-	CreateScreenElement \{Type = TextElement parent = looppoint_vmenu font = #"0x45aae5c4" Scale = 0.75 rgba = [210 210 210 250] text = "Loop By Measure" just = [left top] z_priority = 100.0 event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymeasure_menu params = {looppoint}}]}
+	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = "Loop By Time" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbytime_menu params = {looppoint}}]}
+	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = "Loop By Marker" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymarker_menu params = {looppoint}}]}
+	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = "Loop By Measure" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymeasure_menu params = {looppoint}}]}
 	LaunchEvent \{Type = focus target = looppoint_vmenu}
 endscript
 
@@ -1752,7 +1152,7 @@ script destroy_looppoint_menu
 	if ScreenElementExists \{id = looppoint_scrolling_menu}
 		DestroyScreenElement \{id = looppoint_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script set_looppoint
@@ -1764,7 +1164,7 @@ endscript
 script create_replay_menu
 	ui_menu_select_sfx
 	destroy_debugging_menu
-	create_generic_backdrop
+	//create_generic_backdrop
 	x_pos = 450
 	CreateScreenElement \{Type = VScrollingMenu parent = pause_menu id = replay_scrolling_menu just = [left top] dims = (400.0, 250.0) Pos = (450.0, 120.0)}
 	CreateScreenElement \{Type = VMenu parent = replay_scrolling_menu id = replay_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
@@ -1775,14 +1175,9 @@ script create_replay_menu
 			break
 		endif
 		CreateScreenElement {
-			Type = TextElement
+			$debug_menu_params
 			parent = replay_vmenu
-			font = #"0x45aae5c4"
-			Scale = 0.75
-			rgba = [210 210 210 250]
 			text = <basename>
-			just = [left top]
-			z_priority = 100.0
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -1799,7 +1194,7 @@ script destroy_replay_menu
 	if ScreenElementExists \{id = replay_scrolling_menu}
 		DestroyScreenElement \{id = replay_scrolling_menu}
 	endif
-	destroy_generic_backdrop
+	//destroy_generic_backdrop
 endscript
 
 script select_start_song
@@ -1831,15 +1226,14 @@ script ui_menu_select_sfx
 	SoundEvent \{event = ui_sfx_select}
 endscript
 
-script menu_focus
+script menu_focus \{rgba = [255 255 255 255]}
 	GetTags
-	printstruct <...>
-	SetScreenElementProps id = <id> rgba = [210 130 0 250]
+	SetScreenElementProps id = <id> rgba = <rgba>
 endscript
 
-script menu_unfocus
+script menu_unfocus \{rgba = [127 127 127 191]}
 	GetTags
-	SetScreenElementProps id = <id> rgba = [210 210 210 250]
+	SetScreenElementProps id = <id> rgba = <rgba>
 endscript
 debug_menu_mode = 1
 

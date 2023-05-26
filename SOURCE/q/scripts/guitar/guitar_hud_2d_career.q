@@ -147,16 +147,18 @@ career_hud_2d_elements = {
 		{
 			element_id = #"0x87004517"
 			element_parent = HUD2D_rock_body
-			texture = #"0x03ef05a1"
+			texture = HUD_rock_bg_null
 			pos_off = (0.0, 0.0)
-			zoff = $#"0x67cf1f5d"
+			zoff = 20
+			alpha = $Cheat_NoFail // why didnt i do it like this before
 		}
 		{
 			element_id = #"0x5b77b0ef"
 			element_parent = HUD2D_rock_body
-			texture = #"0x79a0865d"
+			texture = HUD_rock_lights_all
 			pos_off = (0.0, 0.0)
-			zoff = $#"0xdd6ab3d6"
+			zoff = 21
+			alpha = $Cheat_NoFail
 		}
 		{
 			parent_container

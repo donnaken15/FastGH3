@@ -184,60 +184,6 @@ generic_helper_text_left_right_up_down = {
 		}
 	]
 }
-generic_helper_text_color_menu = {
-	helper_text_elements = [
-		{
-			text = "\b7/\b4 SELECT"
-		}
-		{
-			text = "\b6/\b5 ADJUST"
-		}
-		{
-			text = "\m1 BACK"
-		}
-		{
-			text = "\m0 ACCEPT"
-		}
-		{
-			text = "\be/\bf ROTATE"
-		}
-	]
-}
-generic_helper_text_color_menu_z = {
-	helper_text_elements = [
-		{
-			text = "\b7/\b4 SELECT"
-		}
-		{
-			text = "\b6/\b5 ADJUST"
-		}
-		{
-			text = "\m1 BACK"
-		}
-		{
-			text = "\be/\bf ROTATE"
-		}
-		{
-			text = "\mj ZOOM"
-		}
-	]
-}
-generic_helper_text_color_menu_reset = {
-	helper_text_elements = [
-		{
-			text = "\m1 BACK"
-		}
-		{
-			text = "\be/\bf ROTATE"
-		}
-		{
-			text = "\mn RESET"
-		}
-		{
-			text = "\mj ZOOM"
-		}
-	]
-}
 generic_dialog_helper_text = {
 	helper_text_elements = [
 		{

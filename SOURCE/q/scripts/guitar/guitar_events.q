@@ -356,6 +356,9 @@ whammy_particle_params = {
 }
 
 script hit_note_fx
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	if ($disable_particles > 1)
 		return
 	endif
@@ -378,8 +381,6 @@ endscript
 
 script GuitarEvent_StarPowerOn
 	GH_Star_Power_Verb_On
-	FormatText checksumName = scriptID '%p_StarPower_StageFX' p = <player_text>
-	SpawnScriptLater Do_StarPower_StageFX id = <scriptID> params = {<...> }
 	StarPowerOn Player = <Player>
 endscript
 
@@ -387,15 +388,15 @@ script GuitarEvent_StarPowerOff
 	GH_Star_Power_Verb_Off
 	spawnscriptnow rock_meter_star_power_off params = {player_text = <player_text>}
 	SpawnScriptLater Kill_StarPower_StageFX params = {<...> }
-	FormatText checksumName = cont 'starpower_container_left%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc starpower_container_left <player_text> out = cont
 	if ScreenElementExists id = <cont>
 		DoScreenElementMorph id = <cont> alpha = 0
 	endif
-	FormatText checksumName = cont 'starpower_container_right%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc starpower_container_right <player_text> out = cont
 	if ScreenElementExists id = <cont>
 		DoScreenElementMorph id = <cont> alpha = 0
 	endif
-	FormatText checksumName = highway 'Highway_2D%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc Highway_2D <player_text> out = highway
 	if ScreenElementExists id = <highway>
 		SetScreenElementProps id = <highway> rgba = ($highway_normal)
 	endif
@@ -421,6 +422,9 @@ endscript
 beat_flip = 0
 
 script GuitarEvent_Fretbar
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	if ($current_num_players = 2)
 		if ($game_mode = p2_battle || $boss_battle)
 			<dying> = 0
@@ -462,6 +466,9 @@ script GuitarEvent_Fretbar
 endscript
 
 script set_sidebar_flash
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	FormatText checksumName = left 'sidebar_left%p' p = ($<player_status>.text)AddToStringLookup = true
 	FormatText checksumName = right 'sidebar_right%p' p = ($<player_status>.text)AddToStringLookup = true
 	if ($<player_status>.star_power_used = 1)
@@ -560,26 +567,6 @@ script GuitarEvent_Note_Window_Close
 		SoundEvent \{event = GH_SFX_BeatWindowCloseSoundEvent}
 	endif
 endscript
-blueWhammyFXID01p1 = JOW_NIL
-blueWhammyFXID02p1 = JOW_NIL
-greenWhammyFXID01p1 = JOW_NIL
-greenWhammyFXID02p1 = JOW_NIL
-orangeWhammyFXID01p1 = JOW_NIL
-orangeWhammyFXID02p1 = JOW_NIL
-redWhammyFXID01p1 = JOW_NIL
-redWhammyFXID02p1 = JOW_NIL
-yellowWhammyFXID01p1 = JOW_NIL
-yellowWhammyFXID02p1 = JOW_NIL
-blueWhammyFXID01p2 = JOW_NIL
-blueWhammyFXID02p2 = JOW_NIL
-greenWhammyFXID01p2 = JOW_NIL
-greenWhammyFXID02p2 = JOW_NIL
-orangeWhammyFXID01p2 = JOW_NIL
-orangeWhammyFXID02p2 = JOW_NIL
-redWhammyFXID01p2 = JOW_NIL
-redWhammyFXID02p2 = JOW_NIL
-yellowWhammyFXID01p2 = JOW_NIL
-yellowWhammyFXID02p2 = JOW_NIL
 
 script Destroy_AllWhammyFX
 	WhammyFXOffAll \{player_status = player1_status}
@@ -587,12 +574,18 @@ script Destroy_AllWhammyFX
 endscript
 
 script GuitarEvent_WhammyOn
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	if ($disable_particles < 2)
 		WhammyFXOn <...>
 	endif
 endscript
 
 script GuitarEvent_WhammyOff
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	if ($disable_particles < 2)
 		WhammyFXOff <...>
 	endif
@@ -765,14 +758,16 @@ script GuitarEvent_SongWon\{battle_win = 0}
 				endif
 				TextOutput text = <text>
 				if (($<player_status>.total_notes) = 0)
-					FormatText \{textname = text "Notes Hit Percentage: n/a"}
+					FormatText \{textname = text "Notes Hit Percentage: n/a"} // lol
 				else
 					FormatText textname = text "Notes Hit Percentage: %s" s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
 				endif
 				TextOutput text = <text>
-				i = (<i> + 1)
+				Increment \{i}
 			repeat $current_num_players
-			TextOutputEnd \{output_text FileName = '..\..\stats'}
+			timestamp
+			formattext textname = filename '..\..\stats_%a_-_%t_%n' a = <song_artist> t = <song_title> n = <timestamp>
+			TextOutputEnd output_text FileName = <filename>
 		endif
 	//endif
 	if ($current_num_players = 2)
@@ -1362,6 +1357,10 @@ GuitarEvent_crowd_good_medium = $EmptyScript
 GuitarEvent_StarHitNote = $EmptyScript
 
 script GuitarEvent_StarSequenceBonus
+	SoundEvent \{event = Star_Power_Awarded_SFX}
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	if ($disable_particles = 0)
 		i = 0
 		begin
@@ -1403,7 +1402,6 @@ script StarSequenceFX
 		return
 	endif
 	Change StructureName = <player_status> sp_phrases_hit = ($<player_status>.sp_phrases_hit + 1)
-	SoundEvent \{event = Star_Power_Awarded_SFX}
 	ExtendCrc gem_container ($<player_status>.text) out = container_id
 	GetArraySize \{$#"0xd4b50263"}
 	gem_count = 0
@@ -1583,6 +1581,9 @@ endscript
 #"0xe7b89f4f" = 1
 
 script first_gem_fx
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	if ($#"0xe7b89f4f" != 1)
 		return
 	endif
@@ -1660,12 +1661,15 @@ endscript
 script GuitarEvent_TransitionBoss
 endscript
 
-script #"0x49b1c3d0"\{Player = 1 player_status = player1_status}
+script Open_NoteFX\{Player = 1 player_status = player1_status}
+	if ($Cheat_PerformanceMode = 1)
+		return
+	endif
 	if ($disable_particles > 1)
 		return
 	endif
 	wait \{$button_sink_time seconds}
-	ProfilingStart
+	//ProfilingStart
 	GetSongTimeMs
 	open_color1 = [240 199 255 255]
 	open_color2 = [212 0 255 255]
@@ -1703,7 +1707,7 @@ script #"0x49b1c3d0"\{Player = 1 player_status = player1_status}
 		Pos = (640.0, 630.0)
 		material = sys_openfx2_sys_openfx2
 	}
-	ProfilingEnd <...> 'Open_NoteFX'
+	//ProfilingEnd <...> 'Open_NoteFX'
 	time = (0.085 / $current_speedfactor)
 	DoScreenElementMorph id = <fx_id> time = <time> alpha = 0 Scale = (1.0, 1.7) relative_scale
 	DoScreenElementMorph id = <fx2_id> time = <time> alpha = 0 Scale = 1.4 relative_scale

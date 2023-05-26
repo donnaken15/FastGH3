@@ -25,10 +25,7 @@ bootup_press_any_button_fs = {
 	Destroy = EmptyScript
 	actions = [
 		{
-			action = continue
-			func = quickplay_start_song
-			transition_screen = default_loading_screen
-			flow_state = quickplay_play_song_fs
+			$quickplay_play_song_action
 		}
 	]
 }
@@ -124,6 +121,7 @@ script process_signin_complete
 			endif
 		repeat
 	endif
+	WinPortCreateLaptopUi
 	return \{flow_state = #"0x2616eb19"}
 endscript
 'SO HACKY!!!'

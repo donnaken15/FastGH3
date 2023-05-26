@@ -3,6 +3,8 @@ script mod_startup
 	AddParams \{element = 0.0 time_since_refresh = 0.0 size = 1000 array = [] i = 0}
 	if NOT ($fps_max = 0)
 		array_size = ($fps_max * 2)
+	else
+		array_size = 500
 	endif
 	begin
 		AddArrayElement <...>

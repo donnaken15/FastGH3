@@ -80,16 +80,12 @@ script richpres_stop_song
 	Change \{rp_song_active = 0}
 endscript
 
-// why can't i make this stuff packed
-// breaks discord display when i do
 script richpres_timeleft
-	song = $current_song
 	getsongtime
 	time = (<time> + $current_starttime)
-	get_song_end_time song = <song>
-	total_end_time = (<total_end_time> / 1000)
-	casttointeger songtime
-	SetRichPresenceMode startTime = <songtime> endtime = <total_end_time>
+	get_song_end_time \{song = $current_song}
+	casttointeger \{songtime}
+	SetRichPresenceMode startTime = <songtime> endtime = (<total_end_time> / 1000)
 endscript
 
 script richpres_timeoff
