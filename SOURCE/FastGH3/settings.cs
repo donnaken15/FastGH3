@@ -132,7 +132,7 @@ public partial class settings : Form
 
 	bool vl2;
 
-	private void svQB()
+	private static void svQB()
 	{
 		userqb.AlignPointers();
 		//qbedit.ReplaceFile("config.qb", userqb);
@@ -1000,7 +1000,7 @@ public partial class settings : Form
 		}
 	}
 
-	object gQC(QbKey key, object def)
+	public static object gQC(QbKey key, object def)
 	{
 		// find matching item's value or use a default
 		// we're only accessing global/root items with this
@@ -1022,10 +1022,11 @@ public partial class settings : Form
 		return def;
 	}
 
-	void sQC(QbKey key, object value)
+	public static void sQC(QbKey key, object value)
 	{
 		// find or create value
 		object _item = (userqb.FindItem(key, false));
+		if (value == null) return;
 		Type type = value.GetType();
 		if (_item == null)
 		{

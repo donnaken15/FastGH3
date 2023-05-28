@@ -78,6 +78,7 @@ public partial class moddiag : Form
 		QbFile qb;
 		QbItemStruct modinfo;
 		public string filename;
+		public bool unique;
 		object ModInfoItem(QbKey key)
 		{
 			if (modinfo == null)
@@ -195,7 +196,12 @@ public partial class moddiag : Form
 			filename = filename.Substring(0, filename.LastIndexOf(".qb.xen"));
 			modinfo = (QbItemStruct)getItem(QbKey.Create(filename + "_mod_info"));
 			if (modinfo == null)
+			{
+				unique = false;
 				modinfo = (QbItemStruct)getItem(QbKey.Create("mod_info"));
+			}
+			else
+				unique = true;
 			if (modinfo == null) // bruh
 			{
 				warnings.Add("Can't find the mod info struct (" + filename + "_info) with a matching mod name or an ambiguously named mod info struct (mod_info). Is the file not properly named?");
@@ -204,11 +210,18 @@ public partial class moddiag : Form
 			else
 			{
 				// why
-				config_defaults = ((QbItemStructArray)modinfo.FindItem(QbKey.Create("params"), false).Items[0]);
+				QbItemArray array = (QbItemArray)modinfo.FindItem(QbKey.Create("params"), false);
+				if (array != null)
+					config_defaults = (QbItemStructArray)array.Items[0];
+				/*else
+				{
+					config_defaults = new QbItemStructArray(qb);
+					config_defaults.Create(QbItemType.ArrayStruct);
+				}*/
 				//config_defaults = ModInfoItem(QbKey.Create("params")) as QbItemStructArray;
 				//if (ModInfoItem(QbKey.Create("params")) != null)
-					//config_defaults = (ModInfoItem(QbKey.Create("params")) as QbItemArray)
-						//.Items.ConvertAll(new Converter<QbItemBase, QbItemStruct>(why));
+				//config_defaults = (ModInfoItem(QbKey.Create("params")) as QbItemArray)
+				//.Items.ConvertAll(new Converter<QbItemBase, QbItemStruct>(why));
 			}
 		}
 		/*public QbItemStruct why(QbItemBase b)
@@ -357,7 +370,7 @@ public partial class moddiag : Form
 					warnings.Text += a + " is a required file but does not exist.\r\n";
 			modovers.Text = "Overrides...(" + selectedmod.overrides.Count + ")";
 			modovers.Enabled = selectedmod.overrides.Count > 0;
-			modcfgbtn.Enabled = true;// selectedmod.config_defaults != null;
+			modcfgbtn.Enabled = selectedmod.config_defaults != null;
 		}
 		catch (Exception ex) { Console.WriteLine(ex); }
 	}
@@ -485,6 +498,10 @@ public partial class moddiag : Form
 
 	private void openmodcfg(object sender, EventArgs e)
 	{
-		new modcfg(selectedmod.config_defaults).ShowDialog();
+		string nonuniqueprefix = "";
+		if (!selectedmod.unique)
+			nonuniqueprefix = selectedmod.filename + ".qb_";
+		//Program.print(nonuniqueprefix);
+		new modcfg(selectedmod.config_defaults, nonuniqueprefix).ShowDialog();
 	}
 }

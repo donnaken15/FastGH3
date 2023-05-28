@@ -1202,17 +1202,17 @@ script select_start_song
 	SpawnScriptLater start_song params = <...>
 	switch ($game_mode)
 		case p1_career
-			ui_flow_manager_respond_to_action \{action = set_p1_career}
+			ui_flow_manager_respond_to_action \{play_sound = 0 action = set_p1_career}
 		case p2_career
-			ui_flow_manager_respond_to_action \{action = set_p2_career}
+			ui_flow_manager_respond_to_action \{play_sound = 0 action = set_p2_career}
 		case p1_quickplay
-			ui_flow_manager_respond_to_action \{action = set_p1_quickplay}
+			ui_flow_manager_respond_to_action \{play_sound = 0 action = set_p1_quickplay}
 		case p2_faceoff
 		case p2_battle
 		case p2_pro_faceoff
-			ui_flow_manager_respond_to_action \{action = set_p2_general}
+			ui_flow_manager_respond_to_action \{play_sound = 0 action = set_p2_general}
 		case training
-			ui_flow_manager_respond_to_action \{action = set_p1_training}
+			ui_flow_manager_respond_to_action \{play_sound = 0 action = set_p1_training}
 	endswitch
 	destroy_all_debug_menus
 endscript

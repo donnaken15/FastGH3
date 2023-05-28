@@ -202,9 +202,10 @@ script intro_highway_move
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player> AddToStringLookup
 		FormatText textname = player_text 'p%i' i = <Player> AddToStringLookup
-		move_highway_camera_to_default <...> time = ($current_intro.highway_move_time / 1000.0)
 		Player = (<Player> + 1)
 	repeat $current_num_players
+	move_highway_camera_to_default // <...> time = ($current_intro.highway_move_time / 1000.0)
+	// doesn't even do anything with players
 endscript
 
 script intro_hud_move

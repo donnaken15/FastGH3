@@ -55,22 +55,107 @@ public partial class modcfg : Form
 			return 0;
 	}
 
+
+	public string nonunique;
+
 	void resetParam(object sender, EventArgs e)
 	{
-
+		Control s = (Control)sender;
+		QbItemStruct qs = (QbItemStruct)s.Parent.Tag;
+		string name = (string)getItem(qs, QbKey.Create("name"));
+		Control target = (s.Parent.Controls.Find(name, false)[0]);
+		object value = getItem(qs, QbKey.Create("default"));
+		uint ctrlType = 0;
+		if (getItem(qs, QbKey.Create("type")) != null)
+			ctrlType = ((QbKey)getItem(qs, QbKey.Create("type"))).Crc;
+		switch (ctrlType)
+			//there needs to be something simpler for all this
+		{
+			// uses int
+			case 0xAA7EC96D: // bool
+			case 0x8C79023A: // bool3
+				(target as CheckBox).CheckState = (CheckState)value;
+				break;
+			case 0x3038EFF8: // slider
+				(target as TrackBar).Value = (int)value;
+				(target.Parent.Controls.Find(name + "_disp", false)[0] as Label).Text = value.ToString();
+				break;
+			default:
+				QbItemBase defaultItem = qs.FindItem(QbKey.Create("default"), false);
+				object def = moddiag.getItemObject(defaultItem);
+				if (defaultItem != null)
+				{
+					switch (defaultItem.QbItemType)
+					{
+						case QbItemType.StructItemString:
+						case QbItemType.StructItemStringW:
+							(target as TextBox).Text = (string)def;
+							break;
+						case QbItemType.StructItemInteger:
+						case QbItemType.StructItemFloat:
+							(target as NumericUpDown).Value = Convert.ToDecimal(def);
+							break;
+					}
+				}
+				break;
+		}
 	}
 	void setParamValue(object sender, EventArgs e)
 	{
-		string name = ((Control)sender).Name;
+		Control s = (Control)sender;
+		string name = s.Name;
+		QbItemStruct qs = (QbItemStruct)s.Parent.Tag;
+		object value = null;
+		uint ctrlType = 0;
+		if (getItem(qs, QbKey.Create("type")) != null)
+			ctrlType = ((QbKey)getItem(qs, QbKey.Create("type"))).Crc;
+		switch (ctrlType)
+		{
+			// uses int
+			case 0xAA7EC96D: // bool
+			case 0x8C79023A: // bool3
+				value = (int)(s as CheckBox).CheckState;
+				break;
+			case 0x3038EFF8: // slider
+				value = (s as TrackBar).Value;
+				(s.Parent.Controls.Find(name + "_disp", false)[0] as Label).Text = value.ToString();
+				break;
+			default:
+				QbItemBase defaultItem = qs.FindItem(QbKey.Create("default"), false);
+				if (defaultItem != null)
+				{
+					switch (defaultItem.QbItemType)
+					{
+						case QbItemType.StructItemString:
+						case QbItemType.StructItemStringW:
+							value = (s as TextBox).Text;
+							break;
+						case QbItemType.StructItemInteger:
+							value = (s as NumericUpDown).Value;
+							break;
+						case QbItemType.StructItemFloat:
+							value = (s as NumericUpDown).Value;
+							break;
+					}
+				}
+				break;
+		}
+		settings.sQC(QbKey.Create(nonunique+name), value);
 	}
 
-	public modcfg(QbItemStructArray _params)
+	public modcfg(QbItemStructArray _params, string nonunique)
 	{
 		InitializeComponent();
 		Font font = new Font("Microsoft Sans Serif", 11.25f, GraphicsUnit.Point);
 		int j = 0;
+		this.nonunique = nonunique;
 		foreach (QbItemStruct i in _params.Items)
 		{
+			/*QbItemString nonuniqueprefix = new QbItemString(i.Root);
+			nonuniqueprefix.ItemQbKey = QbKey.Create("ununique"); // :P
+			nonuniqueprefix.Create(QbItemType.StructItemStringW);
+			nonuniqueprefix.Strings = new string[] { nonunique };
+			i.AddItem(nonuniqueprefix);*/
 			Panel newParam = new Panel() {
 				Size = new Size(306, 44),
 				Location = new Point(6, 4 + (j++ * 48)),
@@ -82,6 +167,9 @@ public partial class modcfg : Form
 				tooltip.SetToolTip(newParam, structString(i, QbKey.Create("desc")));
 			//i.FindItem(QbKey.Create("name"), false);
 			string paramTitle = structString(i, QbKey.Create("name"));
+			//string qname = paramTitle;
+			//if (nonunique != "")
+				//qname = nonunique + qname;
 			Label paramName = new Label() {
 				Font = font,
 				Location = new Point(2,0),
@@ -96,18 +184,20 @@ public partial class modcfg : Form
 				FlatStyle = FlatStyle.System,
 				Text = "Reset"
 			};
+			paramReset.Click += new EventHandler(resetParam);
 			Control paramCtrl;
 			uint ctrlType = 0;
 			if (getItem(i, QbKey.Create("type")) != null)
 				ctrlType = ((QbKey)getItem(i, QbKey.Create("type"))).Crc;
 			QbItemBase defaultItem = (i.FindItem(QbKey.Create("default"), false));
 			object def = moddiag.getItemObject(defaultItem);
+			object setordef = settings.gQC(QbKey.Create(nonunique + paramTitle), def);
 			switch (ctrlType)
 			{
 				// uses int
 				case 0xAA7EC96D: // bool
 				case 0x8C79023A: // bool3
-					if (def == null) def = 0;
+					if (setordef == null) setordef = 0;
 					/*if (defaultItem.QbItemType != QbItemType.StructItemInteger ||
 						((defaultItem.QbItemType != QbItemType.StructItemQbKey &&
 						(((QbKey)def).Crc != 0x0203B372) && (((QbKey)def).Crc != 0xD43297CF))))
@@ -119,22 +209,22 @@ public partial class modcfg : Form
 						FlatStyle = FlatStyle.System,
 						ThreeState = ctrlType == 0x8C79023A,
 						Text = "Toggle",
-						CheckState = (CheckState)def,
+						CheckState = (CheckState)setordef,
 						Name = paramTitle
 					};
 					(paramCtrl as CheckBox).CheckStateChanged += new EventHandler(setParamValue);
 					newParam.Height -= 4;
 					break;
 				case 0x3038EFF8: // slider
-					if (def == null) def = 0;
+					if (setordef == null) setordef = 0;
 					paramCtrl = new TrackBar()
 					{
 						Location = new Point(2, 20),
 						Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right,
 						Width = 220,
-						Value = (int)def,
 						Maximum = structInt(i, QbKey.Create("max")),
 						Minimum = structInt(i, QbKey.Create("min")),
+						Value = (int)setordef,
 						Name = paramTitle
 					};
 					(paramCtrl as TrackBar).ValueChanged += new EventHandler(setParamValue);
@@ -143,7 +233,7 @@ public partial class modcfg : Form
 						Font = font,
 						Location = new Point(paramCtrl.Width + 5, 23),
 						FlatStyle = FlatStyle.System,
-						Text = structInt(i, QbKey.Create("default")).ToString(),
+						Text = setordef.ToString(),
 						AutoSize = true,
 						Name = paramTitle+"_disp"
 					};
@@ -167,7 +257,7 @@ public partial class modcfg : Form
 								{
 									Location = new Point(2, 23),
 									Size = new Size(302, 0),
-									Text = (string)def,
+									Text = (string)setordef,
 									Name = paramTitle
 								};
 								(paramCtrl as TextBox).TextChanged += new EventHandler(setParamValue);
@@ -177,9 +267,9 @@ public partial class modcfg : Form
 								{
 									Location = new Point(2, 23),
 									Width = 302,
-									Value = (int)def,
 									Maximum = structInt(i, QbKey.Create("max")),
 									Minimum = structInt(i, QbKey.Create("min")),
+									Value = (int)setordef,
 									Name = paramTitle
 								};
 								(paramCtrl as NumericUpDown).ValueChanged += new EventHandler(setParamValue);
@@ -189,10 +279,10 @@ public partial class modcfg : Form
 								{
 									Location = new Point(2, 23),
 									Width = 302,
-									Value = Convert.ToDecimal((float)def),
 									DecimalPlaces = 4,
 									Maximum = Convert.ToDecimal(getItem(i, QbKey.Create("max"))), // to accept int/float ranges
 									Minimum = Convert.ToDecimal(getItem(i, QbKey.Create("min"))), // in case of not explicit decimal
+									Value = Convert.ToDecimal((float)setordef),
 									Name = paramTitle
 								};
 								(paramCtrl as NumericUpDown).ValueChanged += new EventHandler(setParamValue);

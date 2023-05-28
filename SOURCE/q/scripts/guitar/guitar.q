@@ -392,6 +392,20 @@ script AllocArray \{set = 0 size = 10}
 	repeat <size>
 	change globalname = <#"0x00000000"> newvalue = <array>
 endscript
+script FSZ \{1024}
+	units = [' ' 'K' 'M' 'G']
+	u = 0
+	begin
+		if (<#"0x00000000"> >= 1024)
+			<#"0x00000000"> = (<#"0x00000000"> / 1024.0)
+			Increment \{u}
+		else
+			FormatText textname=text '%d%ub' d = <#"0x00000000"> u = (<units>[<u>])
+			break
+		endif
+	repeat
+	return textsize = <text>
+endscript
 // @script | guitar_startup | Initialization script
 script guitar_startup
 	HideLoadingScreen
@@ -447,7 +461,8 @@ script guitar_startup
 		if StructureContains \{structure=mod_info version}
 			version = (<mod_info>.version)
 		endif
-		printf "Mod info: %t by %a / version %v" t=<name> a=<author> v=<version>
+		FSZ <filesize>
+		printf "Mod info: %t by %a / version %v, size: %s" t=<name> a=<author> v=<version> s=<textsize>
 		if StructureContains \{structure=mod_info desc}
 			printf "Description: %d" d=(<mod_info>.desc)
 		endif

@@ -731,6 +731,8 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	endif
 	Change \{wibble_lagp1 = 0}
 	Change \{wibble_lagp2 = 0}
+	change \{highway_pulse_p1 = 0}
+	change \{highway_pulse_p2 = 0}
 	mark_safe_for_shutdown
 	#"0x03c898f5"
 	richpres_start_song

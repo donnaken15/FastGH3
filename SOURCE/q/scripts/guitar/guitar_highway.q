@@ -478,22 +478,27 @@ script move_highway_2d
 		if (<interval> > 144)
 			interval = 144
 		endif
-		highway_start_y = 720
 		pos_start_orig = 0
 		GetSongTimeMs
-		start_time = (<time> - 400) // instantly appear animating into screen
+		MathPow ((<interval>)/60.0) exp = 2
+		movetime = ($current_intro.highway_move_time / 2200.0)
+		if (<movetime> < 0.001)
+			SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))
+			return
+		endif
+		i1000 = (1000.0 / <interval>)
+		start_time = (<time> - (400.0 * <movetime>)) // instantly appear animating into screen
 		last_time = -1
 		begin
 			GetSongTimeMs
-			highway_start_y = 720
-			pos_add = -720
-			pos_sub = 1.0
-			MathPow ((<interval>)/60.0) exp = 2
-			pos_sub_add = (0.0004386 / <pow>)
-			time2 = ((<time> - <start_time>) / (1000.0 / <interval>))
+			time2 = (((<time> - <start_time>) / <i1000>) / <movetime>)
 			CastToInteger \{time2}
 			if NOT (<last_time> = <time2>)
 				//ProfilingStart
+				highway_start_y = 720
+				pos_add = -720
+				pos_sub = 1.0
+				pos_sub_add = (0.0004386 / <pow>)
 				last_time = <time2>
 				if (<time2> > 0)
 					begin
@@ -752,34 +757,32 @@ script highway_pulse_multiplier_loss\{player_text = 'p1' multiplier = 1}
 	if (($game_mode = p2_faceoff)|| ($game_mode = p2_pro_faceoff)|| ($game_mode = p2_career)|| ($game_mode = p2_coop))
 		<push_pos> = (<push_pos> * 0.6)
 	endif
-	if (<player_text> = 'p1')
-		highway_pulse = $highway_pulse_p1
-	else
-		highway_pulse = $highway_pulse_p2
+	extendcrc highway_pulse_ <player_text> out = pulse_var
+	highway_pulse = $<pulse_var>
+	if (<highway_pulse> = 1)
+		return
 	endif
-	if (<highway_pulse> = 0)
-		Change \{highway_pulse = 1}
-		ExtendCrc gem_container <player_text> out = container_id
-		GetScreenElementPosition id = <container_id>
-		original_position = <ScreenElementPos>
-		GetRandomValue \{name = random_x a = -7 b = 7 integer}
-		DoScreenElementMorph {id = <container_id> Pos = (<original_position> + <push_pos> + ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
-		wait <time> seconds
-		GetRandomValue \{name = random_x a = -7 b = 7 integer}
-		DoScreenElementMorph {id = <container_id> Pos = (<original_position> - (<push_pos> * 0.7)+ ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
-		wait <time> seconds
-		GetRandomValue \{name = random_x a = -5 b = 5 integer}
-		DoScreenElementMorph {id = <container_id> Pos = (<original_position> + (<push_pos> * 0.4)+ ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
-		wait <time> seconds
-		GetRandomValue \{name = random_x a = -5 b = 5 integer}
-		DoScreenElementMorph {id = <container_id> Pos = (<original_position> - (<push_pos> * 0.3)+ ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
-		wait <time> seconds
-		GetRandomValue \{name = random_x a = -3 b = 3 integer}
-		DoScreenElementMorph {id = <container_id> Pos = (<original_position> + (<push_pos> * 0.2)+ ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
-		wait <time> seconds
-		DoScreenElementMorph {id = <container_id> Pos = <original_position> just = [center bottom] time = <time>}
-	endif
-	Change \{highway_pulse = 0}
+	change globalname = <pulse_var> newvalue = 1
+	ExtendCrc gem_container <player_text> out = container_id
+	GetScreenElementPosition id = <container_id>
+	original_position = <ScreenElementPos>
+	GetRandomValue \{name = random_x a = -7 b = 7 integer}
+	DoScreenElementMorph {id = <container_id> Pos = (<original_position> + <push_pos> + ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
+	wait <time> seconds
+	GetRandomValue \{name = random_x a = -7 b = 7 integer}
+	DoScreenElementMorph {id = <container_id> Pos = (<original_position> - (<push_pos> * 0.7)+ ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
+	wait <time> seconds
+	GetRandomValue \{name = random_x a = -5 b = 5 integer}
+	DoScreenElementMorph {id = <container_id> Pos = (<original_position> + (<push_pos> * 0.4)+ ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
+	wait <time> seconds
+	GetRandomValue \{name = random_x a = -5 b = 5 integer}
+	DoScreenElementMorph {id = <container_id> Pos = (<original_position> - (<push_pos> * 0.3)+ ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
+	wait <time> seconds
+	GetRandomValue \{name = random_x a = -3 b = 3 integer}
+	DoScreenElementMorph {id = <container_id> Pos = (<original_position> + (<push_pos> * 0.2)+ ((1.0, 0.0) * <random_x>))just = [center bottom] time = <time>}
+	wait <time> seconds
+	DoScreenElementMorph {id = <container_id> Pos = <original_position> just = [center bottom] time = <time>}
+	change globalname = <pulse_var> newvalue = 0
 endscript
 
 script highway_visible
