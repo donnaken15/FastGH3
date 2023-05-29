@@ -159,7 +159,7 @@ script #"0x1766ab99"
 			ui_flow_manager_respond_to_action \{action = executeOption2}
 		case loginAborted
 			cancel_winport_account_management_screen mode = <mode>
-	endswitch*/
+	endswitch*///
 endscript
 #"0x4faef07e" = ''
 #"0x8232b0dc" = ''
