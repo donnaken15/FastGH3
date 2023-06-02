@@ -108,7 +108,7 @@ script winport_gfx_set_value
 endscript
 
 script winport_gfx_load_values
-	GetArraySize \{$#"0x8c045b1d"}
+	GetArraySize \{$winport_gfx_values_old}
 	valueCount = <array_Size>
 	i = 0
 	begin
@@ -118,12 +118,12 @@ script winport_gfx_load_values
 		endif
 		i = (<i> + 1)
 	repeat <valueCount>
-	Change \{winport_gfx_values_new = $#"0x8c045b1d"}
+	Change \{winport_gfx_values_new = $winport_gfx_values_old}
 	Change \{winport_gfx_need_restart = 0}
 endscript
 
 script winport_gfx_save_values
-	GetArraySize \{$#"0xd8bacbbd"}
+	GetArraySize \{$winport_gfx_values_new}
 	valueCount = <array_Size>
 	i = 0
 	begin
@@ -137,13 +137,13 @@ script winport_gfx_save_values
 		endif
 		i = (<i> + 1)
 	repeat <valueCount>
-	Change \{winport_gfx_values_old = $#"0xd8bacbbd"}
+	Change \{winport_gfx_values_old = $winport_gfx_values_new}
 	WinPortGfxApplyOptions
 	destroy_bg_viewport
 endscript
 
 script winport_gfx_reset_values
-	GetArraySize \{$#"0xd8bacbbd"}
+	GetArraySize \{$winport_gfx_values_new}
 	valueCount = <array_Size>
 	i = 0
 	begin
@@ -197,7 +197,7 @@ script winport_create_gfx_settings_menu
 	}
 	menuTextProps = {
 		Type = TextElement
-		font = #"0x35c0114b"
+		font = text_a4
 		Scale = 0.7
 		rgba = $winport_gfx_text_color
 		z_priority = 20
@@ -205,7 +205,7 @@ script winport_create_gfx_settings_menu
 		shadow_rgba = $winport_gfx_text_dropshadow_color
 		shadow_offs = (-1.5, 1.5)
 	}
-	GetArraySize \{$#"0x2482f7cc"}
+	GetArraySize \{$winport_gfx_menuItems}
 	menuItemCount = <array_Size>
 	i = 0
 	begin
@@ -232,7 +232,7 @@ script winport_create_gfx_settings_menu
 				Type = SpriteElement
 				id = <hiliteId>
 				parent = <itemId>
-				texture = #"0x682c214a"
+				texture = graphics_options_highlight
 				Pos = <menuItemHilitePos>
 				dims = <menuItemHiliteDim>
 				rot_angle = <menuItemHiliteRot>
@@ -329,7 +329,7 @@ script winport_gfx_back_handler
 endscript
 
 script winport_gfx_update_value_items
-	GetArraySize \{$#"0x2482f7cc"}
+	GetArraySize \{$winport_gfx_menuItems}
 	menuItemCount = <array_Size>
 	i = 0
 	begin

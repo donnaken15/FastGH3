@@ -19,7 +19,7 @@ battle_explanation_bullet_materials = [
 ]
 battle_explanation_text = {
 	fastgh3 = {
-		image = #"0x767a45d7"
+		image = black
 		title = "BOSS TIME!"
 		bullets = [
 			{
@@ -79,9 +79,9 @@ script create_battle_helper_menu\{device_num = 0 popup = 0}
 	endif
 	menu_z = 10
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = battle_explanation_container}
-	CreateScreenElement \{Type = SpriteElement parent = battle_explanation_container id = battle_explanation_screen Pos = (640.0, 360.0) texture = #"0x9c6ca60a" rgba = [223 223 223 255] just = [center center] dims = (1280.0, 720.0) z_priority = 0}
+	CreateScreenElement \{Type = SpriteElement parent = battle_explanation_container id = battle_explanation_screen Pos = (640.0, 360.0) texture = battle_help_bg rgba = [223 223 223 255] just = [center center] dims = (1280.0, 720.0) z_priority = 0}
 	CreateScreenElement \{parent = battle_explanation_container Type = VMenu id = bullet_spacer Pos = (545.0, 205.0) just = [left top] internal_just = [left top]}
-	GetArraySize \{$#"0xb4f147fa"}
+	GetArraySize \{$battle_explanation_bullet_materials}
 	<num_materials> = <array_Size>
 	GetArraySize (<boss_structure>.bullets)
 	<num_bullets> = <array_Size>
@@ -100,7 +100,7 @@ script create_battle_helper_menu\{device_num = 0 popup = 0}
 			rgba = $battle_explanation_color_white
 			z_priority = 50
 			line_spacing = 0.9
-			font = #"0x35c0114b"
+			font = text_a4
 			just = [left top]
 			internal_just = [left top]
 			internal_scale = 0.625
@@ -166,7 +166,7 @@ script create_battle_helper_menu\{device_num = 0 popup = 0}
 	<title_offset> = (-10.0, -20.0)
 	displaySprite {
 		parent = battle_explanation_container
-		tex = #"0x549393a8"
+		tex = battle_help_flourish
 		Pos = ((770.0, 165.0) + <title_offset>)
 		dims = (384.0, 96.0)
 		just = [center bottom]
@@ -175,7 +175,7 @@ script create_battle_helper_menu\{device_num = 0 popup = 0}
 	<id> ::DoMorph alpha = 0.5
 	displaySprite {
 		parent = battle_explanation_container
-		tex = #"0x549393a8"
+		tex = battle_help_flourish
 		Pos = ((770.0, 145.0) + <title_offset>)
 		just = [center top]
 		dims = (384.0, 96.0)
@@ -188,7 +188,7 @@ script create_battle_helper_menu\{device_num = 0 popup = 0}
 		parent = battle_explanation_container
 		id = who_wants_to_battle_text
 		text = (<boss_structure>.title)
-		font = #"0xba959ce0"
+		font = text_a10
 		Scale = 1
 		Pos = ((770.0, 120.0) + <title_offset>)
 		rgba = [237 169 0 255]
@@ -207,7 +207,7 @@ script create_battle_helper_menu\{device_num = 0 popup = 0}
 	displayText {
 		parent = bullet_spacer
 		text = (<boss_structure>.prompt)
-		font = #"0x35c0114b"
+		font = text_a4
 		Scale = 0.7
 		Pos = (575.0, 580.0)
 		rgba = [237 169 0 255]
@@ -258,5 +258,5 @@ script wait_and_show_ready
 	DoMorph \{alpha = 0}
 	wait \{2.8 seconds}
 	DoMorph \{time = 0.2 motion = ease_in rgba = [255 255 255 255] alpha = 1}
-	DoMorph \{time = 0.1 motion = ease_in rgba = $#"0x7d84dbc4"}
+	DoMorph \{time = 0.1 motion = ease_in rgba = $battle_explanation_color_yellow}
 endscript

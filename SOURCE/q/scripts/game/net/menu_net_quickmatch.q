@@ -15,7 +15,7 @@ script create_quickmatch_searching_dialog{
 		CreateScreenElement {
 			Type = TextElement
 			parent = <vmenu_id>
-			font = #"0x45aae5c4"
+			font = text_a1
 			Scale = 0.5
 			rgba = [210 210 210 250]
 			text = "Online"
@@ -27,7 +27,7 @@ script create_quickmatch_searching_dialog{
 		CreateScreenElement {
 			Type = TextElement
 			parent = <vmenu_id>
-			font = #"0x45aae5c4"
+			font = text_a1
 			Scale = 0.5
 			rgba = [210 210 210 250]
 			text = "Online"
@@ -39,7 +39,7 @@ script create_quickmatch_searching_dialog{
 	CreateScreenElement {
 		Type = TextElement
 		parent = <vmenu_id>
-		font = #"0x45aae5c4"
+		font = text_a1
 		Scale = 0.5
 		rgba = [210 210 210 250]
 		text = "Finding sessions..."
@@ -50,7 +50,7 @@ script create_quickmatch_searching_dialog{
 	CreateScreenElement {
 		Type = TextElement
 		parent = <vmenu_id>
-		font = #"0x45aae5c4"
+		font = text_a1
 		Scale = 0.5
 		rgba = [210 210 210 250]
 		text = "CANCEL"
@@ -88,7 +88,7 @@ script create_quickmatch_create_match_dialog{
 		CreateScreenElement {
 			Type = TextElement
 			parent = <vmenu_id>
-			font = #"0x45aae5c4"
+			font = text_a1
 			Scale = 0.5
 			rgba = [210 210 210 250]
 			text = "Online"
@@ -100,7 +100,7 @@ script create_quickmatch_create_match_dialog{
 		CreateScreenElement {
 			Type = TextElement
 			parent = <vmenu_id>
-			font = #"0x45aae5c4"
+			font = text_a1
 			Scale = 0.5
 			rgba = [210 210 210 250]
 			text = "PLAYSTATION®Network"
@@ -112,7 +112,7 @@ script create_quickmatch_create_match_dialog{
 	CreateScreenElement {
 		Type = TextElement
 		parent = <vmenu_id>
-		font = #"0x45aae5c4"
+		font = text_a1
 		Scale = 0.5
 		rgba = [210 210 210 250]
 		text = "No sessions are available. Would you like to Create a Match?"
@@ -123,7 +123,7 @@ script create_quickmatch_create_match_dialog{
 	CreateScreenElement {
 		Type = TextElement
 		parent = <vmenu_id>
-		font = #"0x45aae5c4"
+		font = text_a1
 		Scale = 0.5
 		rgba = [210 210 210 250]
 		text = "CREATE MATCH"
@@ -138,7 +138,7 @@ script create_quickmatch_create_match_dialog{
 	CreateScreenElement {
 		Type = TextElement
 		parent = <vmenu_id>
-		font = #"0x45aae5c4"
+		font = text_a1
 		Scale = 0.5
 		rgba = [210 210 210 250]
 		text = "CANCEL"

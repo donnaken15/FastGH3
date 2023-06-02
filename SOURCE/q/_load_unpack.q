@@ -42,8 +42,6 @@ script init
 		'fx/particle_default_params'
 		'fx/particle_scripts'
 		'fx/particle_update_scripts'
-		'fx/shatter_data'
-		'fx/splat_data'
 		'game/animevents'
 		'game/coim'
 		'game/load_level'

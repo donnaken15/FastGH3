@@ -148,7 +148,7 @@ script coop_career_select_difficulty_flow_state_func
 		get_progression_globals game_mode = ($game_mode)
 		if NOT (<progression_global> = None)
 			RegisterAtoms name = Progression $<progression_global>
-			RegisterAtoms \{name = achievement $#"0x8c6642ab"}
+			RegisterAtoms \{name = achievement $Achievement_Atoms}
 			updateatoms \{name = Progression}
 		endif
 	endif

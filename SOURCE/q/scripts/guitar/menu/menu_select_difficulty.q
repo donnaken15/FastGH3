@@ -16,7 +16,7 @@ script create_select_difficulty_menu
 	main_menu_font = fontgrid_title_gh3
 	menu_vspacing = 20
 	completion_scale = 0.5
-	menu_font = #"0xdbce7067"
+	menu_font = text_a6
 	if (($player1_status.bot_play = 1)|| ($is_network_game))
 		exclusive_device = ($primary_controller)
 	else
@@ -48,8 +48,8 @@ script create_select_difficulty_menu
 	set_unfocus_color \{rgba = [210 210 210 250]}
 	SetScreenElementProps \{id = vmenu_select_difficulty internal_just = [left top]}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = sd_container Pos = (0.0, 0.0)}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
-	displaySprite \{parent = sd_container tex = #"0x7e3a69bf" Pos = (640.0, 0.0) just = [center top] dims = (920.0, 720.0) z = 1}
+	create_menu_backdrop \{texture = venue_bg}
+	displaySprite \{parent = sd_container tex = 1p_difficulty_poster Pos = (640.0, 0.0) just = [center top] dims = (920.0, 720.0) z = 1}
 	p1_diff_index = 8
 	displaySprite id = sd_white_p1 parent = sd_container tex = white Pos = ($g_sd_hilite_props [<p1_diff_index>].Pos)dims = (300.0, 37.0) rgba = [225 120 60 255]
 	displaySprite \{parent = sd_container tex = #"0xfd06d27e" Pos = (1150.0, 0.0) dims = (212.0, 128.0) z = 50 rot_angle = 90}
@@ -210,7 +210,7 @@ script create_select_difficulty_menu
 	Change \{sd_highlight_menuitem_morph = 1}
 	Change \{disable_menu_sounds = 0}
 	Change \{sd_highlight_time = 0.05}
-	select_diff_tex = #"0x82389cb4"
+	select_diff_tex = difficulty_title_en
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = sd_container
@@ -307,10 +307,10 @@ script create_mp_select_difficulty_menu
 	if ($game_mode = p2_career)
 		Change \{rich_presence_context = presence_main_menu}
 	endif
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	create_menu_backdrop \{texture = venue_bg}
 	menu_pos_p1 = (240.0, 280.0)
 	menu_pos_p2 = (850.0, 280.0)
-	menu_font = #"0xdbce7067"
+	menu_font = text_a6
 	if ($is_network_game = 1)
 		event_handlers_p1 = [
 			{pad_up select_difficulty_generic_sound params = {Player = 1 up}}
@@ -381,15 +381,15 @@ script create_mp_select_difficulty_menu
 			SetScreenElementProps id = <id> Scale = 1
 			fit_text_in_rectangle id = <id> dims = ((150.0, 0.0) + ((0.0, 1.0) * <height>))Pos = (860.0, 160.0)
 		endif
-		displayText \{parent = sd_container text = "1" font = #"0x8403d4f6" Pos = (320.0, 180.0) Scale = 1 rgba = [205 105 50 255] noshadow}
-		displayText \{parent = sd_container text = "2" font = #"0x8403d4f6" Pos = (920.0, 180.0) Scale = 1 rgba = [205 105 50 255] noshadow}
+		displayText \{parent = sd_container text = "1" font = text_a11_large Pos = (320.0, 180.0) Scale = 1 rgba = [205 105 50 255] noshadow}
+		displayText \{parent = sd_container text = "2" font = text_a11_large Pos = (920.0, 180.0) Scale = 1 rgba = [205 105 50 255] noshadow}
 	endif
 	displaySprite id = sd_white_p1 parent = sd_container tex = white Pos = ($g_sd_hilite_props [<p1_diff_index>].Pos)dims = (228.0, 48.0) rgba = [225 120 60 255]
 	displaySprite id = sd_white_p2 parent = sd_container tex = white Pos = ($g_sd_hilite_props [<p2_diff_index>].Pos)dims = (228.0, 48.0) rgba = [225 120 60 255]
-	displaySprite \{parent = sd_container tex = #"0xfd06d27e" Pos = (1150.0, 0.0) dims = (212.0, 128.0) z = 50 rot_angle = 90}
-	displaySprite \{parent = sd_container tex = #"0xfd06d27e" Pos = (1155.0, 3.0) dims = (212.0, 128.0) rgba = [0 0 0 100] z = 49 rot_angle = 90}
-	displaySprite \{parent = sd_container tex = #"0x640f83c4" Pos = (230.0, 550.0) z = 50 rot_angle = 90 dims = (212.0, 128.0)}
-	displaySprite \{parent = sd_container tex = #"0x640f83c4" Pos = (235.0, 553.0) rgba = [0 0 0 100] z = 49 rot_angle = 90 dims = (212.0, 128.0)}
+	displaySprite \{parent = sd_container tex = tape_01 Pos = (1150.0, 0.0) dims = (212.0, 128.0) z = 50 rot_angle = 90}
+	displaySprite \{parent = sd_container tex = tape_01 Pos = (1155.0, 3.0) dims = (212.0, 128.0) rgba = [0 0 0 100] z = 49 rot_angle = 90}
+	displaySprite \{parent = sd_container tex = tape_02 Pos = (230.0, 550.0) z = 50 rot_angle = 90 dims = (212.0, 128.0)}
+	displaySprite \{parent = sd_container tex = tape_02 Pos = (235.0, 553.0) rgba = [0 0 0 100] z = 49 rot_angle = 90 dims = (212.0, 128.0)}
 	if ($game_mode = p2_career)
 		get_diff_completion_text \{for_p2_career = 1}
 		initial_pos = (635.0, 592.0)
@@ -399,7 +399,7 @@ script create_mp_select_difficulty_menu
 			parent = sd_container
 			Pos = <initial_pos>
 			Scale = 0.75
-			font = #"0xdbce7067"
+			font = text_a6
 			rgba = [240 220 175 255]
 			rot = <rot>
 			just = [center center]
@@ -436,7 +436,7 @@ script create_mp_select_difficulty_menu
 			just = [left center]
 			z = 10
 		}
-		displayText \{parent = sd_container id = sd_combined_diff_text Pos = (640.0, 500.0) just = [center center] font = #"0xdbce7067" rgba = [225 120 60 255] Scale = 1.25 noshadow z = 15}
+		displayText \{parent = sd_container id = sd_combined_diff_text Pos = (640.0, 500.0) just = [center center] font = text_a6 rgba = [225 120 60 255] Scale = 1.25 noshadow z = 15}
 	endif
 	if ($is_network_game = 1)
 		<choose_script> = net_request_difficulty
@@ -566,7 +566,7 @@ script create_mp_select_difficulty_menu
 	endif
 	if ($game_mode = p2_career)
 		displaySprite \{parent = sd_container id = diff_select_helper tex = white Pos = (640.0, 620.0) just = [center center] rgba = [240 215 175 255] z = 10}
-		displayText \{parent = sd_container Pos = (640.0, 622.0) just = [center center] text = "Don't wimp out! Lowest difficulty determines cash and unlocks!" rgba = [225 120 60 255] Scale = (0.5, 0.6000000238418579) z = 11 font = #"0xdbce7067" noshadow}
+		displayText \{parent = sd_container Pos = (640.0, 622.0) just = [center center] text = "Don't wimp out! Lowest difficulty determines cash and unlocks!" rgba = [225 120 60 255] Scale = (0.5, 0.6000000238418579) z = 11 font = text_a6 noshadow}
 		GetScreenElementDims id = <id>
 		if (<width> > 400)
 			SetScreenElementProps id = <id> Scale = (0.5, 0.6000000238418579)
@@ -609,7 +609,7 @@ script create_mp_select_difficulty_menu
 		endif
 	endif
 	if NOT ($game_mode = p2_career)
-		select_diff_tex = #"0x82389cb4"
+		select_diff_tex = difficulty_title_en
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = sd_container

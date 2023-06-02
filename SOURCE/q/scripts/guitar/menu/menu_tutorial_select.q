@@ -1,4 +1,4 @@
-tutorial_select_menu_font = #"0x35c0114b"
+tutorial_select_menu_font = text_a4
 menu_tutorial_select_num_items = 3
 winport_in_tutorial = 0
 
@@ -12,23 +12,23 @@ script create_tutorial_select_menu
 		Pos = (0.0, 0.0)
 		exclusive_device = ($primary_controller)
 	}
-	new_menu \{scrollid = ts_scroll vmenuid = ts_vmenu font = $#"0x11383803" menu_pos = (300.0, 405.0) spacing = 2 text_left}
+	new_menu \{scrollid = ts_scroll vmenuid = ts_vmenu font = $video_settings_menu_font menu_pos = (300.0, 405.0) spacing = 2 text_left}
 	Change \{menu_focus_color = [115 10 10 255]}
 	Change \{menu_unfocus_color = [150 170 215 255]}
-	displayText \{parent = ts_container Pos = (800.0, 560.0) just = [center center] text = "TUTORIALS" Scale = 1.5 rgba = [180 180 180 255] font = $#"0x11383803" noshadow}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
-	displaySprite \{parent = ts_container tex = #"0xc50d7c44" Pos = (640.0, 365.0) dims = (1024.0, 512.0) just = [center center] z = 1 font = $#"0x11383803"}
-	displaySprite \{tex = #"0x28091e67" parent = ts_container Pos = (275.0, 120.0) dims = (160.0, 64.0) rot_angle = -40 just = [center center] z = 7}
+	displayText \{parent = ts_container Pos = (800.0, 560.0) just = [center center] text = "TUTORIALS" Scale = 1.5 rgba = [180 180 180 255] font = $video_settings_menu_font noshadow}
+	create_menu_backdrop \{texture = venue_bg}
+	displaySprite \{parent = ts_container tex = options_video_poster Pos = (640.0, 365.0) dims = (1024.0, 512.0) just = [center center] z = 1 font = $video_settings_menu_font}
+	displaySprite \{tex = tape_h_02 parent = ts_container Pos = (275.0, 120.0) dims = (160.0, 64.0) rot_angle = -40 just = [center center] z = 7}
 	displaySprite {
-		tex = #"0x28091e67"
+		tex = tape_h_02
 		parent = <id>
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 6
 	}
-	displaySprite \{tex = #"0x28091e67" parent = ts_container Pos = (980.0, 110.0) dims = (160.0, 64.0) rot_angle = 20 just = [center center] z = 7}
+	displaySprite \{tex = tape_h_02 parent = ts_container Pos = (980.0, 110.0) dims = (160.0, 64.0) rot_angle = 20 just = [center center] z = 7}
 	displaySprite {
-		tex = #"0x28091e67"
+		tex = tape_h_02
 		parent = <id>
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]

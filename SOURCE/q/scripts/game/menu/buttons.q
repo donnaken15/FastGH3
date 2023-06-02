@@ -64,8 +64,8 @@ script debug_show_buttons\{Scale = 0.8 z_priority = 100 padding_scale = 1.5}
 		return
 	endif
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = button_container Pos = (320.0, 240.0) dims = (640.0, 480.0) event_handlers = [{pad_back debug_kill_buttons params = {}}]}
-	CreateScreenElement \{Type = SpriteElement parent = button_container texture = #"0x34d3e9ce" rgba = [0 0 0 100] Scale = (80.0, 30.0) Pos = (320.0, 210.0)}
-	CreateScreenElement \{Type = TextElement parent = button_container text = "buttons" font = #"0x45aae5c4" Scale = 1 Pos = (320.0, 120.0) z_priority = 101}
+	CreateScreenElement \{Type = SpriteElement parent = button_container texture = white2 rgba = [0 0 0 100] Scale = (80.0, 30.0) Pos = (320.0, 210.0)}
+	CreateScreenElement \{Type = TextElement parent = button_container text = "buttons" font = text_a1 Scale = 1 Pos = (320.0, 120.0) z_priority = 101}
 	CreateScreenElement {
 		Type = HMenu
 		parent = button_container
@@ -86,7 +86,7 @@ script debug_show_buttons\{Scale = 0.8 z_priority = 100 padding_scale = 1.5}
 		create_debug_button_item text = <text> button = <button> parent = debug_buttons
 		index = (<index> + 1)
 	repeat <array_Size>
-	CreateScreenElement \{Type = TextElement parent = button_container text = "meta chars" font = #"0x45aae5c4" Scale = 1 Pos = (320.0, 200.0) z_priority = 101}
+	CreateScreenElement \{Type = TextElement parent = button_container text = "meta chars" font = text_a1 Scale = 1 Pos = (320.0, 200.0) z_priority = 101}
 	CreateScreenElement {
 		Type = HMenu
 		parent = button_container
@@ -142,7 +142,7 @@ script create_debug_button_item
 		Type = TextElement
 		parent = <parent_id>
 		text = <text>
-		font = #"0x45aae5c4"
+		font = text_a1
 		Pos = (0.0, 0.0)
 		just = [center center]
 	}
@@ -150,7 +150,7 @@ script create_debug_button_item
 		Type = TextElement
 		parent = <parent_id>
 		text = <button>
-		font = #"0x45aae5c4"
+		font = text_a1
 		Pos = (0.0, 15.0)
 		just = [center center]
 	}

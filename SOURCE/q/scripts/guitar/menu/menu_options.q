@@ -9,21 +9,21 @@ script create_options_menu
 	bluish = [130 160 175 255]
 	set_focus_color \{rgba = [223 223 223 255]}
 	set_unfocus_color rgba = <red>
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	create_menu_backdrop \{texture = venue_bg}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = om_container Scale = 1.1 Pos = (-20.0, -20.0)}
 	set_focus_color \{rgba = [220 220 220 255]}
 	set_unfocus_color \{rgba = [0 0 0 255]}
 	Change \{options_menu_index = 1}
 	rot = 3
-	displaySprite parent = om_container tex = #"0xf6c14827" Pos = (640.0, 340.0) dims = (600.0, 600.0) just = [center center] rot_angle = <rot>
-	displaySprite parent = om_container id = om_black_bg tex = #"0xe2efcfab" Pos = (500.0, 210.0) dims = (180.0, 30.0) rgba = [50 0 0 255] z = 9 just = [center center] rot_angle = <rot>
+	displaySprite parent = om_container tex = options_main_poster Pos = (640.0, 340.0) dims = (600.0, 600.0) just = [center center] rot_angle = <rot>
+	displaySprite parent = om_container id = om_black_bg tex = options_main_highlight Pos = (500.0, 210.0) dims = (180.0, 30.0) rgba = [50 0 0 255] z = 9 just = [center center] rot_angle = <rot>
 	titleScale = 1.7
 	if ((German)|| (Spanish))
 		titleScale = 1.5
 	endif
-	displayText parent = om_container text = "OPTIONS" Pos = (733.0, 110.0) Scale = <titleScale> just = [center center] rgba = [50 0 0 255] font = #"0x8403d4f6" z = 10 rot = (<rot> -3)noshadow
-	displayText parent = om_container text = "OPTIONS" Pos = (728.0, 115.0) Scale = <titleScale> just = [center center] rgba = [160 130 105 255] font = #"0x8403d4f6" z = 9 rot = (<rot> -2)noshadow
-	displaySprite parent = om_container id = options_monster tex = #"0x003ebf66" Pos = (735.0, 320.0) dims = (256.0, 512.0) z = 15 just = [center center] rot_angle = <rot>
+	displayText parent = om_container text = "OPTIONS" Pos = (733.0, 110.0) Scale = <titleScale> just = [center center] rgba = [50 0 0 255] font = text_a11_large z = 10 rot = (<rot> -3)noshadow
+	displayText parent = om_container text = "OPTIONS" Pos = (728.0, 115.0) Scale = <titleScale> just = [center center] rgba = [160 130 105 255] font = text_a11_large z = 9 rot = (<rot> -2)noshadow
+	displaySprite parent = om_container id = options_monster tex = options_main_monster Pos = (735.0, 320.0) dims = (256.0, 512.0) z = 15 just = [center center] rot_angle = <rot>
 	RunScriptOnScreenElement \{id = options_monster anim_float}
 	text_params = {parent = om_container Type = TextElement font = ($options_menu_font)rgba = ($menu_unfocus_color)Scale = <font_size> rot_angle = <rot> z_priority = 10 exclusive_device = ($primary_controller)}
 	CreateScreenElement {
@@ -291,26 +291,26 @@ script create_options_menu
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> dims = (170.0, 35.0) Pos = (480.0, 560.0)
 	endif
-	displaySprite \{parent = om_container tex = #"0x5f0e2ef1" Pos = (420.0, 590.0) Scale = 0.5 z = 20}
+	displaySprite \{parent = om_container tex = tape_h_03 Pos = (420.0, 590.0) Scale = 0.5 z = 20}
 	displaySprite {
 		parent = <id>
-		tex = #"0x5f0e2ef1"
+		tex = tape_h_03
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 19
 	}
-	displaySprite \{parent = om_container tex = #"0xc16abb52" Pos = (325.0, 70.0) Scale = 0.5 z = 20 rot_angle = -20}
+	displaySprite \{parent = om_container tex = tape_h_04 Pos = (325.0, 70.0) Scale = 0.5 z = 20 rot_angle = -20}
 	displaySprite {
 		parent = <id>
-		tex = #"0xc16abb52"
+		tex = tape_h_04
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 19
 	}
-	displaySprite \{parent = om_container tex = #"0x98cf3ecb" Pos = (840.0, 380.0) Scale = 0.5 z = 20}
+	displaySprite \{parent = om_container tex = tape_v_02 Pos = (840.0, 380.0) Scale = 0.5 z = 20}
 	displaySprite {
 		parent = <id>
-		tex = #"0x98cf3ecb"
+		tex = tape_v_02
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 19

@@ -12,7 +12,7 @@ script improv2mode_startup
 	X_Counter = 0
 	Solo_Score = 0
 	if NOT ScreenElementExists \{id = solo_text}
-		CreateScreenElement \{Type = TextElement parent = hud_window id = solo_text font = #"0x45aae5c4" Pos = (48.0, 530.0) just = [left top] Scale = 1.0 rgba = [210 210 210 250] text = "Solo Score: 0" z_priority = 100.0}
+		CreateScreenElement \{Type = TextElement parent = hud_window id = solo_text font = text_a1 Pos = (48.0, 530.0) just = [left top] Scale = 1.0 rgba = [210 210 210 250] text = "Solo Score: 0" z_priority = 100.0}
 	endif
 	FormatText textname = run "Solo Score: %b" b = <Solo_Score>
 	SetScreenElementProps id = solo_text text = <run>

@@ -79,7 +79,7 @@ guitar_events = [
 
 script create_guitar_events
 	printf "create_guitar_events %a .........." a = <player_text>
-	GetArraySize \{$#"0x796c727d"}
+	GetArraySize \{$guitar_events}
 	array_entry = 0
 	begin
 		//printf \{"adding..."}
@@ -406,7 +406,7 @@ winport_clap_delay = 0.18
 
 script GuitarEvent_PreFretbar
 	if ($winport_clap_delay > 0)
-		wait \{$#"0x884bcddd" seconds}
+		wait \{$winport_clap_delay seconds}
 		if ($<player_status>.star_power_used = 1)
 			if ($game_mode != tutorial)
 				printf \{channel = SFX "Clap"}
@@ -685,7 +685,7 @@ script GuitarEvent_SongFailed_Spawned
 				rgba = [255 255 255 255]
 				Scale = <winner_scale>
 				z_priority = 95
-				font = #"0xba959ce0"
+				font = text_a10
 				rgba = [223 223 223 255]
 				just = [center center]
 				alpha = 1
@@ -730,7 +730,7 @@ script GuitarEvent_SongWon\{battle_win = 0}
 			TextOutputEnd output_text FileName = <FileName>
 		endif
 		if ($output_song_stats = 1)
-			//FormatText \{textname = FileName "..\..\stats_%s" s = $#"0x03a17838" DontAssertForChecksums}
+			//FormatText \{textname = FileName "..\..\stats_%s" s = $current_song DontAssertForChecksums}
 			TextOutputStart
 			get_song_title \{song = $current_song}
 			get_song_artist \{song = $current_song with_year = 0}
@@ -781,8 +781,8 @@ script GuitarEvent_SongWon\{battle_win = 0}
 	endif
 	if ($game_mode = p2_battle)
 		if NOT (<battle_win> = 1)
-			Change \{save_current_powerups_p1 = $#"0x41ea4a8b"}
-			Change \{save_current_powerups_p2 = $#"0xd8e31b31"}
+			Change \{save_current_powerups_p1 = $current_powerups_p1}
+			Change \{save_current_powerups_p2 = $current_powerups_p2}
 			Change \{current_powerups_p1 = [0 0 0]}
 			Change \{current_powerups_p2 = [0 0 0]}
 			Change StructureName = player1_status save_num_powerups = ($player1_status.current_num_powerups)
@@ -1000,7 +1000,7 @@ script GuitarEvent_SongWon_Spawned
 			rgba = [255 255 255 255]
 			Scale = <winner_scale>
 			z_priority = 95
-			font = #"0x2274df42"
+			font = text_a10_large
 			rgba = [223 223 223 255]
 			just = [center center]
 			alpha = 1
@@ -1018,7 +1018,7 @@ script GuitarEvent_SongWon_Spawned
 				rgba = [255 255 255 255]
 				Scale = <winner_scale>
 				z_priority = 95
-				font = #"0xba959ce0"
+				font = text_a10
 				rgba = [223 223 223 255]
 				just = [center center]
 				alpha = 1
@@ -1038,7 +1038,7 @@ script GuitarEvent_SongWon_Spawned
 					rgba = [255 255 255 255]
 					Scale = <winner_scale>
 					z_priority = 95
-					font = #"0xba959ce0"
+					font = text_a10
 					rgba = [223 223 223 255]
 					just = [center center]
 					alpha = 1
@@ -1218,7 +1218,7 @@ script Sudden_Death_Helper_Text
 		parent = <parent_id>
 		Pos = (640.0, 500.0)
 		text = "All powerups are death drain attacks!"
-		font = #"0x35c0114b"
+		font = text_a4
 		Scale = 0.8
 		rgba = [255 255 255 255]
 		just = [center bottom]
@@ -1231,7 +1231,7 @@ script Sudden_Death_Helper_Text
 		parent = <parent_id>
 		Pos = (640.0, 540.0)
 		text = "Launch a devastating DEATH DRAIN!"
-		font = #"0x35c0114b"
+		font = text_a4
 		Scale = 0.8
 		rgba = [255 255 255 255]
 		just = [center bottom]
@@ -1274,7 +1274,7 @@ script Boss_Unlocked_Text
 		parent = <parent_id>
 		Pos = <Pos>
 		text = <text>
-		font = #"0xcd92ac76"
+		font = text_a11
 		Scale = 0.8
 		rgba = [255 255 255 255]
 		just = [center bottom]
@@ -1316,7 +1316,7 @@ endscript
 
 script devil_finish_anim
 	wait \{1 gameframe}
-	BASSIST ::Obj_SwitchScript \{Transition_PlayAnim_Spawned params = {anim = #"0xe441280e"}}
+	BASSIST ::Obj_SwitchScript \{Transition_PlayAnim_Spawned params = {anim = gh3_guit_satn_a_lose02}}
 	Change \{CameraCuts_AllowNoteScripts = FALSE}
 	Change \{CameraCuts_ForceTime = 3.2}
 	CameraCuts_SetArrayPrefix \{prefix = 'cameras_boss_finish' length = 0 changenow}
@@ -1403,7 +1403,7 @@ script StarSequenceFX
 	endif
 	Change StructureName = <player_status> sp_phrases_hit = ($<player_status>.sp_phrases_hit + 1)
 	ExtendCrc gem_container ($<player_status>.text) out = container_id
-	GetArraySize \{$#"0xd4b50263"}
+	GetArraySize \{$gem_colors}
 	gem_count = 0
 	begin
 		<note> = ($<song> [<array_entry>] [(<gem_count> + 1)])
@@ -1505,7 +1505,7 @@ script StarSequenceFX
 		endif
 		Increment \{gem_count}
 	repeat <array_Size>
-	wait \{$#"0xe91f8a7f" seconds}
+	wait \{$star_power_bolt_time seconds}
 	gem_count = 0
 	begin
 		<note> = ($<song>[<array_entry>][(<gem_count> + 1)])
@@ -1571,8 +1571,8 @@ script GuitarEvent_EnterVenue
 endscript
 
 script GuitarEvent_ExitVenue
-	setsoundbusseffects \{effect = $#"0xaff5fc6e"}
-	setsoundbusseffects \{effect = $#"0xff737f83"}
+	setsoundbusseffects \{effect = $Echo_Crowd_Buss}
+	setsoundbusseffects \{effect = $Reverb_Crowd_Buss}
 endscript
 
 script GuitarEvent_CreateFirstGem

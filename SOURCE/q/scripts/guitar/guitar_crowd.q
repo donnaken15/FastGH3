@@ -26,7 +26,7 @@ script crowd_reset
 	Change \{last_time_in_lead = 0.0}
 	Change \{last_time_in_lead_player = -1}
 	if (<Player> = 1)
-		StopSoundEvent \{$#"0x3a716cc4"}
+		StopSoundEvent \{$CurrentlyPlayingOneShotSoundEvent}
 		if ($game_mode = training)
 			BG_Crowd_Front_End_Silence \{immediate = 1}
 		elseif ($end_credits = 1 ||

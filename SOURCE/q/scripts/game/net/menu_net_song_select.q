@@ -22,7 +22,7 @@ script #"0x1851973a"{= gh3 {
 				Type = TextElement
 				parent = <vmenu_id>
 				id = <temp_id>
-				font = #"0x45aae5c4"
+				font = text_a1
 				Scale = 0.75
 				rgba = [210 210 210 250]
 				text = <title>
@@ -230,7 +230,7 @@ endscript
 
 script check_for_matching_song
 	if (<local> = true)
-		GetArraySize \{$#"0xf9adc94c"}
+		GetArraySize \{$RemotePlayerSongList}
 		array_count = 0
 		begin
 			if (($RemotePlayerSongList [<array_count>])= <index>)
@@ -239,7 +239,7 @@ script check_for_matching_song
 			<array_count> = (<array_count> + 1)
 		repeat <array_Size>
 	else
-		GetArraySize \{$#"0x8dffdcf2"}
+		GetArraySize \{$LocalPlayerSongList}
 		array_count = 0
 		begin
 			if (($LocalPlayerSongList [<array_count>])= <index>)

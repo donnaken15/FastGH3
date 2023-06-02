@@ -1,6 +1,6 @@
 
 script net_setup_solo_hud
-	GetArraySize \{$#"0xc3fc0bc3"}
+	GetArraySize \{$hud_screen_elements}
 	array_entry = 0
 	get_num_players_by_gamemode
 	begin
@@ -18,7 +18,7 @@ script net_setup_solo_hud
 		CreateScreenElement {
 			Type = TextElement
 			parent = <hud_destroygroup>
-			font = #"0xdbce7067"
+			font = text_a6
 			just = [left top]
 			Scale = 1.0
 			rgba = [210 210 210 250]

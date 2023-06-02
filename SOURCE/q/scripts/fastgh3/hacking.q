@@ -55,8 +55,8 @@ script #"0x1766ab99"
 		event_handlers = <Handlers>
 	}
 	NetSessionFunc func = InitializeLoginFields params = {loginMode = <mode>}
-	displaySprite parent = <container> tex = #"0x7464ad56" dims = (300.0, 230.0) z = 9 Pos = (640.0, 40.0) just = [right top] flip_v
-	displaySprite parent = <container> tex = #"0x7464ad56" dims = (300.0, 230.0) z = 9 Pos = (640.0, 40.0) just = [left top]
+	displaySprite parent = <container> tex = dialog_title_bg dims = (300.0, 230.0) z = 9 Pos = (640.0, 40.0) just = [right top] flip_v
+	displaySprite parent = <container> tex = dialog_title_bg dims = (300.0, 230.0) z = 9 Pos = (640.0, 40.0) just = [left top]
 	CreateScreenElement {
 		Type = TextElement
 		parent = <container>
@@ -76,7 +76,7 @@ script #"0x1766ab99"
 		Type = TextElement
 		parent = <container>
 		id = capsLockField
-		font = #"0x35c0114b"
+		font = text_a4
 		Scale = 0.6
 		rgba = [255 0 0 255]
 		text = "(Caps Lock Is On)"
@@ -368,7 +368,7 @@ script #"0xbee285d9"
 		Type = TextElement
 		parent = root_window
 		id = #"0xd968b859"
-		font = #"0x45aae5c4"
+		font = text_a1
 		Pos = (128.0, 64.0)
 		just = [left , top]
 		Scale = (1.0, 1.0)

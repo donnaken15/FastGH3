@@ -21,11 +21,11 @@ script sysnotify_wait_until_safe
 			<should_wait> = 1
 			printf \{"WAITING FOR SYSTEM UI"}
 		endif
-		if IsTrue \{$#"0xe997db9f"}
+		if IsTrue \{$is_changing_levels}
 			<should_wait> = 1
 			printf \{"WAITING FOR ISCHANGINGLEVELS"}
 		endif
-		if IsTrue \{$#"0x2ba74930"}
+		if IsTrue \{$igc_playing}
 			<should_wait> = 1
 			printf \{"WAITING FOR IGC"}
 		endif
@@ -204,7 +204,7 @@ script fade_overlay_on\{alpha = 0.9}
 				Type = SpriteElement
 				id = pause_fader
 				parent = root_window
-				texture = #"0x767a45d7"
+				texture = black
 				rgba = [0 0 0 255]
 				Pos = (640.0, 360.0)
 				dims = (1280.0, 720.0)
@@ -360,11 +360,11 @@ script notify_box\{scale1 = 0.75 scale2 = 0.6 container_pos = (0.0, 0.0)}
 	}
 	menu_font = fontgrid_title_gh3
 	if GotParam \{line3}
-		displaySprite parent = <container_id> tex = #"0xdb44b36c" Pos = (640.0, 24.0) Scale = (3.0, 2.0) z = <menu_z> just = [center top]
-		displaySprite parent = <container_id> tex = #"0xdb44b36c" flip_h Pos = (640.0, 120.0) Scale = (3.0, 2.0) z = <menu_z> just = [center top]
+		displaySprite parent = <container_id> tex = dialog_menu_bg Pos = (640.0, 24.0) Scale = (3.0, 2.0) z = <menu_z> just = [center top]
+		displaySprite parent = <container_id> tex = dialog_menu_bg flip_h Pos = (640.0, 120.0) Scale = (3.0, 2.0) z = <menu_z> just = [center top]
 	else
-		displaySprite parent = <container_id> tex = #"0xdb44b36c" Pos = (640.0, 32.0) Scale = (3.0, 1.5) z = <menu_z> just = [center top]
-		displaySprite parent = <container_id> tex = #"0xdb44b36c" flip_h Pos = (640.0, 112.0) Scale = (3.0, 1.5) z = <menu_z> just = [center top]
+		displaySprite parent = <container_id> tex = dialog_menu_bg Pos = (640.0, 32.0) Scale = (3.0, 1.5) z = <menu_z> just = [center top]
+		displaySprite parent = <container_id> tex = dialog_menu_bg flip_h Pos = (640.0, 112.0) Scale = (3.0, 1.5) z = <menu_z> just = [center top]
 	endif
 	CreateScreenElement {
 		Type = TextElement

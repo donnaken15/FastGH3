@@ -1,4 +1,4 @@
-menu_mp_select_mode_font = #"0x35c0114b"
+menu_mp_select_mode_font = text_a4
 coop_dlc_active = 0
 
 script create_mp_select_mode_menu

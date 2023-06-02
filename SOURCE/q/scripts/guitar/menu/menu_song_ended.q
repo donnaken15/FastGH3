@@ -30,8 +30,8 @@ script create_song_ended_menu\{Player = 1}
 	create_pause_menu_frame z = (<z> - 10)
 	SetScreenElementProps \{id = song_ended_vmenu internal_just = [center center]}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = song_ended_static_text_container internal_just = [center center] Pos = (0.0, 0.0) z_priority = 2}
-	displaySprite parent = song_ended_static_text_container tex = #"0x7464ad56" flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = <z>
-	displaySprite parent = song_ended_static_text_container tex = #"0x7464ad56" Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = <z>
+	displaySprite parent = song_ended_static_text_container tex = dialog_title_bg flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = <z>
+	displaySprite parent = song_ended_static_text_container tex = dialog_title_bg Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = <z>
 	CreateScreenElement {
 		Type = TextElement
 		parent = song_ended_static_text_container

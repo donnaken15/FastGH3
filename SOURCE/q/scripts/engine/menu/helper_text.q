@@ -1,5 +1,5 @@
 
-script create_helper_text\{anchor_id = helper_text_anchor parent = root_window helper_pos = (640.0, 720.0) spacing_between = 3 bg_rgba = [2 0 1 98] z_priority = 1000 font = #"0x45aae5c4"}
+script create_helper_text\{anchor_id = helper_text_anchor parent = root_window helper_pos = (640.0, 720.0) spacing_between = 3 bg_rgba = [2 0 1 98] z_priority = 1000 font = text_a1}
 	if ObjectExists id = <anchor_id>
 		DestroyScreenElement id = <anchor_id>
 	endif
@@ -16,7 +16,7 @@ script create_helper_text\{anchor_id = helper_text_anchor parent = root_window h
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = <anchor_id>
-			texture = #"0x34d3e9ce"
+			texture = white2
 			Pos = <helper_pos>
 			just = [center bottom]
 			rgba = [0 0 0 255]

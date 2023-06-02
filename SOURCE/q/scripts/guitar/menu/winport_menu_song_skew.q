@@ -71,13 +71,13 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 	Change \{winport_calibrate_lag_end_checks = 0}
 	Change \{winport_calibrate_lag_started_finish = 0}
 	set_focus_color \{rgba = [230 230 230 255]}
-	set_unfocus_color \{rgba = $#"0xacb5832a"}
+	set_unfocus_color \{rgba = $winport_calibrate_lag_hilite_unselected}
 	z = 100
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = winport_cl_container Pos = (0.0, 0.0)}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	create_menu_backdrop \{texture = venue_bg}
 	displaySprite {
 		parent = winport_cl_container
-		tex = #"0xc5a54934"
+		tex = venue_bg
 		Pos = (640.0, 360.0)
 		dims = (1280.0, 720.0)
 		just = [center center]
@@ -96,7 +96,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 	<tape_offset> = (90.0, 325.0)
 	displaySprite {
 		parent = winport_cl_container
-		tex = #"0x01c66f71"
+		tex = tape_v_01
 		Pos = ((755.0, 50.0) + <tape_offset>)
 		dims = (96.0, 192.0)
 		z = (<z> + 2)
@@ -105,7 +105,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = winport_cl_container
-		tex = #"0x01c66f71"
+		tex = tape_v_01
 		rgba = [0 0 0 128]
 		Pos = ((760.0, 48.0) + <tape_offset>)
 		dims = (96.0, 192.0)
@@ -115,7 +115,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = winport_cl_container
-		tex = #"0x28091e67"
+		tex = tape_h_02
 		Pos = (440.0, 40.0)
 		dims = (132.0, 64.0)
 		z = (<z> + 2)
@@ -123,7 +123,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = winport_cl_container
-		tex = #"0x28091e67"
+		tex = tape_h_02
 		rgba = [0 0 0 128]
 		Pos = (432.0, 46.0)
 		dims = (132.0, 64.0)
@@ -136,7 +136,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 		parent = winport_cl_container
 		Pos = (465.0, 60.0)
 		text = <upper_helper>
-		font = #"0xdbce7067"
+		font = text_a6
 		dims = (740.0, 0.0)
 		allow_expansion
 		rgba = [60 40 115 255]
@@ -161,7 +161,7 @@ script winport_calibrate_lag_fill_options\{z = 100}
 	else
 		<controller> = ($primary_controller)
 	endif
-	displaySprite parent = winport_cl_container id = winport_calibrate_lag_hilite tex = #"0x44ca1a1c" Pos = $winport_calibrate_lag_hilite_pos0 rgba = $winport_calibrate_lag_hilite_unselected z = <z>
+	displaySprite parent = winport_cl_container id = winport_calibrate_lag_hilite tex = options_calibrate_highlight Pos = $winport_calibrate_lag_hilite_pos0 rgba = $winport_calibrate_lag_hilite_unselected z = <z>
 	calib_eh = [
 		{pad_back winport_menu_calibrate_go_back}
 	]
@@ -256,16 +256,16 @@ script winport_menu_calibrate_focus
 	wait \{1 gameframes}
 	if (<index> = 0)
 		retail_menu_focus
-		SetScreenElementProps \{id = winport_calibrate_lag_hilite Pos = $#"0x4dedb5dd" dims = $#"0xa3118f52"}
+		SetScreenElementProps \{id = winport_calibrate_lag_hilite Pos = $winport_calibrate_lag_hilite_pos0 dims = $winport_calibrate_lag_hilite_dims0}
 	elseif (<index> = 1)
 		retail_menu_focus
-		SetScreenElementProps \{id = winport_calibrate_lag_hilite Pos = $#"0x3aea854b" dims = $#"0xd416bfc4"}
+		SetScreenElementProps \{id = winport_calibrate_lag_hilite Pos = $winport_calibrate_lag_hilite_pos1 dims = $winport_calibrate_lag_hilite_dims1}
 	else
 		Obj_GetID
 		retail_menu_focus id = {<objID> child = 0}
-		SetScreenElementProps \{id = winport_calibrate_lag_hilite Pos = $#"0xa3e3d4f1" dims = $#"0x4d1fee7e"}
-		DoScreenElementMorph \{id = winport_cl_manual_adjust_up_arrow rgba = $#"0x657bbe2c"}
-		DoScreenElementMorph \{id = winport_cl_manual_adjust_down_arrow rgba = $#"0x657bbe2c"}
+		SetScreenElementProps \{id = winport_calibrate_lag_hilite Pos = $winport_calibrate_lag_hilite_pos2 dims = $winport_calibrate_lag_hilite_dims2}
+		DoScreenElementMorph \{id = winport_cl_manual_adjust_up_arrow rgba = $menu_focus_color}
+		DoScreenElementMorph \{id = winport_cl_manual_adjust_down_arrow rgba = $menu_focus_color}
 	endif
 endscript
 
@@ -306,7 +306,7 @@ script winport_menu_calibrate_lag_create_circles
 	displaySprite {
 		id = winport_cl_countdown_circle
 		parent = winport_cl_container
-		tex = #"0xcbbb28dc"
+		tex = 2p_song_summary_circle
 		Pos = ($winport_calibrate_lag_menu_line_pos + (13.0, 14.0))
 		rgba = [220 220 220 208]
 		dims = (72.0, 72.0)
@@ -353,7 +353,7 @@ script winport_menu_calibrate_lag_create_circles
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = winport_cl_container
-			texture = #"0xfcc0611f"
+			texture = options_calibrate_note
 			id = <circle_id>
 			Pos = <circle_pos>
 			dims = ($winport_calibrate_lag_menu_circle_dims)
@@ -621,7 +621,7 @@ script winport_menu_calibrate_lag_reset_lag
 endscript
 
 script winport_menu_calibrate_lag_manual_choose
-	SetScreenElementProps \{id = winport_calibrate_lag_hilite rgba = $#"0xf4a4e7a9"}
+	SetScreenElementProps \{id = winport_calibrate_lag_hilite rgba = $winport_calibrate_lag_hilite_selected}
 	SetScreenElementProps \{id = winport_cl_vmenu block_events}
 	CreateScreenElement \{Type = ContainerElement parent = winport_cl_container id = winport_cl_manual_adjust_handler event_handlers = [{pad_up winport_menu_calibrate_lag_manual_up}{pad_down winport_menu_calibrate_lag_manual_down}{pad_choose winport_menu_calibrate_lag_manual_back}{pad_back winport_menu_calibrate_lag_manual_back}]}
 	LaunchEvent \{Type = focus target = winport_cl_manual_adjust_handler}
@@ -629,7 +629,7 @@ script winport_menu_calibrate_lag_manual_choose
 endscript
 
 script winport_menu_calibrate_lag_manual_back
-	SetScreenElementProps \{id = winport_calibrate_lag_hilite rgba = $#"0xacb5832a"}
+	SetScreenElementProps \{id = winport_calibrate_lag_hilite rgba = $winport_calibrate_lag_hilite_unselected}
 	SetScreenElementProps \{id = winport_cl_vmenu unblock_events}
 	DestroyScreenElement \{id = winport_cl_manual_adjust_handler}
 	generic_menu_pad_choose_sound
@@ -673,10 +673,10 @@ script winport_create_audio_calibrate_reminder
 	WinPortSetConfigNumber \{name = "AudioLagReminderShown" value = 1}
 	z = 100
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = winport_cl_container Pos = (0.0, 0.0)}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	create_menu_backdrop \{texture = venue_bg}
 	displaySprite {
 		parent = winport_cl_container
-		tex = #"0xc5a54934"
+		tex = venue_bg
 		Pos = (640.0, 360.0)
 		dims = (1280.0, 720.0)
 		just = [center center]
@@ -694,7 +694,7 @@ script winport_create_audio_calibrate_reminder
 	}
 	displaySprite {
 		parent = winport_cl_container
-		tex = #"0x078111df"
+		tex = audio_calib_reminder_amp
 		Pos = (540.0, 340.0)
 		just = [center center]
 		Scale = 1.42
@@ -703,7 +703,7 @@ script winport_create_audio_calibrate_reminder
 	textProps = {
 		Type = TextBlockElement
 		parent = winport_cl_container
-		font = #"0x35c0114b"
+		font = text_a4
 		rgba = [0 21 132 255]
 		z_priority = <z>
 		just = [center center]

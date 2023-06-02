@@ -28,9 +28,9 @@ script create_panel_message_layer_if_needed
 	endif
 endscript
 
-script create_panel_message\{text = "Default panel message" Pos = (320.0, 70.0) rgba = [100 90 80 255] font_face = #"0x45aae5c4" time = 1500 z_priority = -5 just = [center center] parent = panel_message_layer Scale = 0.65}
-	if NOT (<font_face> = #"0x45aae5c4")
-		<font_face> = #"0x45aae5c4"
+script create_panel_message\{text = "Default panel message" Pos = (320.0, 70.0) rgba = [100 90 80 255] font_face = text_a1 time = 1500 z_priority = -5 just = [center center] parent = panel_message_layer Scale = 0.65}
+	if NOT (<font_face> = text_a1)
+		<font_face> = text_a1
 	endif
 	if GotParam \{id}
 		kill_panel_message_if_it_exists id = <id>
@@ -98,7 +98,7 @@ script create_panel_sprite\{Pos = (320.0, 60.0) rgba = [128 128 128 100] z_prior
 	endif
 endscript
 
-script create_panel_block\{text = "Default panel message" Pos = (320.0, 240.0) dims = (250.0, 0.0) rgba = [100 90 80 255] font_face = #"0x45aae5c4" time = 2000 just = [center center] internal_just = [center center] z_priority = -5 Scale = 0.125 parent = panel_message_layer}
+script create_panel_block\{text = "Default panel message" Pos = (320.0, 240.0) dims = (250.0, 0.0) rgba = [100 90 80 255] font_face = text_a1 time = 2000 just = [center center] internal_just = [center center] z_priority = -5 Scale = 0.125 parent = panel_message_layer}
 	create_panel_message_layer_if_needed
 	SetScreenElementLock id = <parent> OFF
 	if GotParam \{id}
@@ -138,7 +138,7 @@ script create_panel_block\{text = "Default panel message" Pos = (320.0, 240.0) d
 	endif
 endscript
 
-script create_intro_panel_block\{text = "Default intro panel message" Pos = (320.0, 60.0) dims = (250.0, 0.0) rgba = [100 90 80 255] font_face = #"0x45aae5c4" time = 2000 just = [center center] internal_just = [center center] z_priority = -5 Scale = 0.5 parent = panel_message_layer}
+script create_intro_panel_block\{text = "Default intro panel message" Pos = (320.0, 60.0) dims = (250.0, 0.0) rgba = [100 90 80 255] font_face = text_a1 time = 2000 just = [center center] internal_just = [center center] z_priority = -5 Scale = 0.5 parent = panel_message_layer}
 	create_panel_message_layer_if_needed
 	SetScreenElementLock id = <parent> OFF
 	if GotParam \{id}

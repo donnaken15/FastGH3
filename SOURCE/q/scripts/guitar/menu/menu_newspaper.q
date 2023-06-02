@@ -139,8 +139,8 @@ script create_newspaper_menu\{for_practice = 0}
 		my_song = ($old_song)
 		Change \{old_song = None}
 	endif
-	set_focus_color \{rgba = $#"0xa15c39fe"}
-	set_unfocus_color \{rgba = $#"0xcf85adf5"}
+	set_focus_color \{rgba = $g_ss_offwhite}
+	set_unfocus_color \{rgba = $g_ss_black}
 	show_replay = 1
 	replay_flow_params = {action = try_again}
 	if ($game_mode = p1_quickplay)
@@ -311,7 +311,7 @@ script create_newspaper_menu\{for_practice = 0}
 				just = [left top]
 				Pos = (256.0, 264.0)
 				Scale = 0.75
-				font = #"0xcd92ac76"
+				font = text_a11
 				rgba = <winner_color>
 				rot = -7.5
 				noshadow
@@ -333,7 +333,7 @@ script create_newspaper_menu\{for_practice = 0}
 				just = [left top]
 				Pos = (262.0, 302.0)
 				Scale = 0.75
-				font = #"0xcd92ac76"
+				font = text_a11
 				rgba = <winner_color>
 				rot = -7.5
 				noshadow
@@ -406,7 +406,7 @@ script create_newspaper_menu\{for_practice = 0}
 				Pos = (270.0, 345.0)
 				Scale = 0.7
 				text = <who_won_text>
-				font = #"0xcd92ac76"
+				font = text_a11
 				rgba = <winner_color>
 				dims = (350.0, 200.0)
 				line_spacing = 0.85
@@ -433,7 +433,7 @@ script create_newspaper_menu\{for_practice = 0}
 			Pos = (270.0, 352.0)
 			Scale = (0.550000011920929, 0.550000011920929)
 			text = <uppercasestring>
-			font = #"0xcd92ac76"
+			font = text_a11
 			rgba = $g_ss_2p_song_title_whiteish
 			dims = (400.0, 134.0)
 			line_spacing = 0.85
@@ -464,7 +464,7 @@ script create_newspaper_menu\{for_practice = 0}
 			Pos = <artist_pos>
 			Scale = (0.45000001788139343, 0.45000001788139343)
 			text = <band_name>
-			font = #"0x35c0114b"
+			font = text_a4
 			rgba = <band_name_color>
 			dims = (400.0, 134.0)
 			line_spacing = 0.85
@@ -483,7 +483,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p1_difficulty_text>
 			Pos = (298.0, 522.0)
 			Scale = (0.5, 0.550000011920929)
-			font = #"0xcd92ac76"
+			font = text_a11
 			rgba = $g_ss_p1_orangeish
 			rot = -7.5
 			noshadow
@@ -500,7 +500,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p2_difficulty_text>
 			Pos = (302.0, 552.0)
 			Scale = (0.5, 0.550000011920929)
-			font = #"0xcd92ac76"
+			font = text_a11
 			rgba = $g_ss_p2_violetish
 			rot = -7.5
 			noshadow
@@ -535,7 +535,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "1"
 			Pos = (<p1_stats_pos> + (23.0, 3.0))
 			Scale = (0.8999999761581421, 0.6000000238418579)
-			font = #"0xcd92ac76"
+			font = text_a11
 			rgba = $g_ss_2p_song_title_whiteish
 			z = 9
 		}
@@ -544,7 +544,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "2"
 			Pos = (<p2_stats_pos> + (21.0, 3.0))
 			Scale = (0.8999999761581421, 0.6000000238418579)
-			font = #"0xcd92ac76"
+			font = text_a11
 			rgba = $g_ss_2p_song_title_whiteish
 			z = 9
 		}
@@ -603,14 +603,14 @@ script create_newspaper_menu\{for_practice = 0}
 		displaySprite {
 			id = ss_p1_note_streak_fill
 			parent = newspaper_container
-			tex = #"0x9c316f8d"
+			tex = song_summary_notestreak_fill
 			Pos = (<p1_stats_pos> + (-8.0, 44.0))
 			rgba = <ss_notestreak_fill_color>
 		}
 		displaySprite {
 			id = ss_p2_note_streak_fill
 			parent = newspaper_container
-			tex = #"0x9c316f8d"
+			tex = song_summary_notestreak_fill
 			Pos = (<p2_stats_pos> + (61.0, 174.0))
 			rgba = <ss_notestreak_fill_color>
 			rot_angle = 182
@@ -634,7 +634,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p1_note_streak_text>
 			Pos = <ss_p1_notestreak_pos>
 			Scale = <ss_notestreak_scale>
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_notestreak_color>
 			noshadow
@@ -646,7 +646,7 @@ script create_newspaper_menu\{for_practice = 0}
 			just = [center center]
 			Pos = (<p1_stats_pos> + (52.0, 130.0))
 			Scale = (0.550000011920929, 0.699999988079071)
-			font = #"0xcd92ac76"
+			font = text_a11
 			z = 4
 			rgba = <ss_notestreak_text_color>
 			noshadow
@@ -672,7 +672,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p2_note_streak_text>
 			Pos = <ss_p2_notestreak_pos>
 			Scale = <ss_notestreak_scale>
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_notestreak_color>
 			noshadow
@@ -684,7 +684,7 @@ script create_newspaper_menu\{for_practice = 0}
 			just = [center center]
 			Pos = (<p2_stats_pos> + (-2.0, 130.0))
 			Scale = (0.550000011920929, 0.699999988079071)
-			font = #"0xcd92ac76"
+			font = text_a11
 			z = 4
 			rgba = <ss_notestreak_text_color>
 			noshadow
@@ -730,7 +730,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "Score"
 			Pos = (<p1_stats_pos> + (10.0, 155.0))
 			Scale = (0.699999988079071, 0.5)
-			font = #"0xcd92ac76"
+			font = text_a11
 			z = 4
 			rgba = $g_ss_2p_song_title_whiteish
 			noshadow
@@ -742,7 +742,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "Score"
 			Pos = (<p2_stats_pos> + (-50.0, 155.0))
 			Scale = (0.699999988079071, 0.5)
-			font = #"0xcd92ac76"
+			font = text_a11
 			z = 4
 			rgba = $g_ss_2p_song_title_whiteish
 			noshadow
@@ -755,7 +755,7 @@ script create_newspaper_menu\{for_practice = 0}
 			just = [center center]
 			Pos = (<p1_stats_pos> + (48.0, 200.0))
 			Scale = (0.800000011920929, 1.0)
-			font = #"0x35c0114b"
+			font = text_a4
 			rgba = <ss_score_color>
 			z = 3
 			noshadow
@@ -767,7 +767,7 @@ script create_newspaper_menu\{for_practice = 0}
 			just = [center center]
 			Pos = (<p2_stats_pos> + (-12.0, 200.0))
 			Scale = (0.800000011920929, 1.0)
-			font = #"0x35c0114b"
+			font = text_a4
 			rgba = <ss_score_color>
 			z = 3
 			noshadow
@@ -789,7 +789,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p1_notes_hit>
 			Pos = <ss_percent_pos>
 			Scale = <ss_percent_scale>
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_percent_color>
 			noshadow
@@ -811,7 +811,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p2_notes_hit>
 			Pos = <ss_percent_pos>
 			Scale = <ss_percent_scale>
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_percent_color>
 			noshadow
@@ -821,7 +821,7 @@ script create_newspaper_menu\{for_practice = 0}
 			parent = newspaper_container
 			text = "%"
 			Pos = (<p1_stats_pos> + (60.0, 226.0))
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_percent_color>
 			rot = 50
@@ -834,7 +834,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "\u0NOTES"
 			Pos = (<p1_stats_pos> + (66.0, 232.0))
 			Scale = (0.4000000059604645, 0.699999988079071)
-			font = #"0xaba484e8"
+			font = text_a3
 			z = 4
 			rgba = <ss_percent_color>
 			noshadow
@@ -847,7 +847,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "\u0HIT"
 			Pos = (<p1_stats_pos> + (67.0, 257.0))
 			Scale = (0.4000000059604645, 0.6000000238418579)
-			font = #"0xaba484e8"
+			font = text_a3
 			z = 4
 			rgba = <ss_percent_color>
 			noshadow
@@ -859,7 +859,7 @@ script create_newspaper_menu\{for_practice = 0}
 			parent = newspaper_container
 			text = "%"
 			Pos = (<p2_stats_pos> + (-12.0, 226.0))
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_percent_color>
 			rot = 50
@@ -872,7 +872,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "\u0NOTES"
 			Pos = (<p2_stats_pos> + (-6.0, 232.0))
 			Scale = (0.4000000059604645, 0.699999988079071)
-			font = #"0xaba484e8"
+			font = text_a3
 			z = 4
 			rgba = <ss_percent_color>
 			noshadow
@@ -885,7 +885,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "\u0HIT"
 			Pos = (<p2_stats_pos> + (-5.0, 257.0))
 			Scale = (0.4000000059604645, 0.6000000238418579)
-			font = #"0xaba484e8"
+			font = text_a3
 			z = 4
 			rgba = <ss_percent_color>
 			noshadow
@@ -905,7 +905,7 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_icon_skull
 				parent = newspaper_container
-				tex = #"0xc698568b"
+				tex = 2p_song_summary_icon_loser
 				Pos = (<p2_stats_pos> + (-55.0, 294.0))
 				rgba = $g_ss_p2_violetish
 				dims = (64.0, 64.0)
@@ -914,7 +914,7 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_icon_thumb
 				parent = newspaper_container
-				tex = #"0xac4522a1"
+				tex = 2p_song_summary_icon_winner
 				Pos = (<p2_stats_pos> + (-16.0, 320.0))
 				rgba = $g_ss_p2_violetish
 				just = [center center]
@@ -924,7 +924,7 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_icon_skull
 				parent = newspaper_container
-				tex = #"0xc698568b"
+				tex = 2p_song_summary_icon_loser
 				Pos = (<p1_stats_pos> + (22.0, 294.0))
 				rgba = $g_ss_p1_orangeish
 				dims = (64.0, 64.0)
@@ -1029,7 +1029,7 @@ script create_newspaper_menu\{for_practice = 0}
 			Pos = <mypos>
 			Scale = 0.75
 			text = <song_title>
-			font = #"0xcd92ac76"
+			font = text_a11
 			rgba = $g_ss_offwhite
 			dims = (300.0, 200.0)
 			line_spacing = 0.85
@@ -1051,7 +1051,7 @@ script create_newspaper_menu\{for_practice = 0}
 			Pos = <artist_pos>
 			Scale = (0.5, 0.550000011920929)
 			text = <band_name>
-			font = #"0x35c0114b"
+			font = text_a4
 			rgba = <band_name_color>
 			dims = (400.0, 134.0)
 			line_spacing = 0.85
@@ -1079,7 +1079,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p1_notes_hit>
 			Pos = <ss_percent_pos>
 			Scale = <ss_percent_scale>
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_percent_color>
 			rot = -10
@@ -1089,7 +1089,7 @@ script create_newspaper_menu\{for_practice = 0}
 			parent = newspaper_container
 			text = "%"
 			Pos = (364.0, 500.0)
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_percent_color>
 			rot = -10
@@ -1105,7 +1105,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "\u0NOTES HIT"
 			Pos = (403.0, 522.0)
 			Scale = (0.4399999976158142, 0.699999988079071)
-			font = #"0xaba484e8"
+			font = text_a3
 			z = 4
 			rgba = <np_notes_hit_color>
 			rot = -10
@@ -1119,7 +1119,7 @@ script create_newspaper_menu\{for_practice = 0}
 		endif
 		displaySprite {
 			parent = newspaper_container
-			tex = #"0x5fee1e20"
+			tex = song_summary_score_fill_l
 			Pos = (674.0, 90.0)
 			rgba = <ss_score_fill_L_color>
 			dims = (268.0, 67.0)
@@ -1149,7 +1149,7 @@ script create_newspaper_menu\{for_practice = 0}
 						parent = newspaper_container
 						Pos = (<star_pos> + <star_offset>)
 						Scale = 0.65
-						tex = #"0xa486be3a"
+						tex = song_summary_score_star
 						z = 4
 						rgba = <star_color>
 						rot_angle = <star_rot>
@@ -1165,7 +1165,7 @@ script create_newspaper_menu\{for_practice = 0}
 				just = [right center]
 				Pos = (926.0, 116.0)
 				Scale = (0.8999999761581421, 0.6500000357627869)
-				font = #"0x35c0114b"
+				font = text_a4
 				rgba = <ss_score_color>
 				z = 3
 				noshadow
@@ -1185,7 +1185,7 @@ script create_newspaper_menu\{for_practice = 0}
 				text = <difficulty_text>
 				Pos = (946.0, 133.0)
 				Scale = (0.699999988079071, 0.6000000238418579)
-				font = #"0xcd92ac76"
+				font = text_a11
 				z = 4
 				rgba = <ss_score_text_color>
 				noshadow
@@ -1203,7 +1203,7 @@ script create_newspaper_menu\{for_practice = 0}
 				just = [right center]
 				Pos = (911.0, 117.0)
 				Scale = (0.8999999761581421, 0.6500000357627869)
-				font = #"0x35c0114b"
+				font = text_a4
 				rgba = <ss_score_color>
 				z = 3
 				noshadow
@@ -1217,7 +1217,7 @@ script create_newspaper_menu\{for_practice = 0}
 				text = "NOTES"
 				Pos = (946.0, 98.0)
 				Scale = (0.699999988079071, 0.6000000238418579)
-				font = #"0xcd92ac76"
+				font = text_a11
 				z = 4
 				rgba = <ss_score_text_color>
 				noshadow
@@ -1228,14 +1228,14 @@ script create_newspaper_menu\{for_practice = 0}
 		endif
 		displaySprite {
 			parent = newspaper_container
-			tex = #"0xa5e12343"
+			tex = song_summary_score_fill_r
 			Pos = (934.0, 83.0)
 			rgba = <ss_score_fill_R_color>
 			dims = (134.0, 67.0)
 		}
 		displaySprite {
 			parent = newspaper_container
-			tex = #"0x9c316f8d"
+			tex = song_summary_notestreak_fill
 			Pos = (719.0, 359.0)
 			rgba = <ss_notestreak_fill_color>
 		}
@@ -1257,7 +1257,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p1_note_streak_text>
 			Pos = <ss_notestreak_pos>
 			Scale = <ss_notestreak_scale>
-			font = #"0x35c0114b"
+			font = text_a4
 			z = 4
 			rgba = <ss_notestreak_color>
 			noshadow
@@ -1267,7 +1267,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = "note streak"
 			Pos = (732.0, 425.0)
 			Scale = (0.4399999976158142, 0.550000011920929)
-			font = #"0xcd92ac76"
+			font = text_a11
 			z = 4
 			rgba = <ss_notestreak_text_color>
 			noshadow
@@ -1419,10 +1419,10 @@ script np_create_text\{Pos = (200.0, 200.0) rot = 0 text = "No text given" paren
 	endif
 endscript
 
-script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_font = #"0xcd92ac76" for_practice = 0}
+script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_font = text_a11 for_practice = 0}
 	SetScreenElementProps id = newspaper_scroll Pos = <Pos>
-	set_focus_color \{rgba = $#"0xa15c39fe"}
-	set_unfocus_color \{rgba = $#"0xcf85adf5"}
+	set_focus_color \{rgba = $g_ss_offwhite}
+	set_unfocus_color \{rgba = $g_ss_black}
 	if (<for_practice> = 1)
 		<menu_offset> = (0.0, -6.0)
 	elseif NOT ($game_mode = p1_career || $game_mode = p2_career || $game_mode = p2_coop || $game_mode = p1_quickplay)
@@ -1463,7 +1463,7 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 	displaySprite {
 		id = ss_menu_hilite_id
 		parent = newspaper_container
-		tex = #"0xe588836f"
+		tex = song_summary_menu_hilite
 		Pos = <initial_hl_pos>
 		rgba = <ss_hilite_color>
 		rot_angle = (($g_np_option_props [$g_np_options_index].rot)+ 0.5)
@@ -1630,7 +1630,7 @@ script np_scroll_down\{for_practice = 0}
 	if (<for_practice> = 1)
 		FormatText checksumName = option_id 'np_option_%d' d = ($g_np_options_index - 4)
 	else
-		FormatText \{checksumName = option_id 'np_option_%d' d = $#"0x32e67f11"}
+		FormatText \{checksumName = option_id 'np_option_%d' d = $g_np_options_index}
 	endif
 	retail_menu_unfocus id = <option_id>
 	Change g_np_options_index = ($g_np_options_index + 1)
@@ -1650,7 +1650,7 @@ script np_scroll_down\{for_practice = 0}
 				Change \{g_np_options_index = 0}
 			endif
 		endif
-		FormatText \{checksumName = option_id 'np_option_%d' d = $#"0x32e67f11"}
+		FormatText \{checksumName = option_id 'np_option_%d' d = $g_np_options_index}
 	endif
 	retail_menu_focus id = <option_id>
 	DoScreenElementMorph {
@@ -1685,7 +1685,7 @@ script np_scroll_up\{for_practice = 0}
 	if (<for_practice> = 1)
 		FormatText checksumName = option_id 'np_option_%d' d = ($g_np_options_index - 4)
 	else
-		FormatText \{checksumName = option_id 'np_option_%d' d = $#"0x32e67f11"}
+		FormatText \{checksumName = option_id 'np_option_%d' d = $g_np_options_index}
 	endif
 	retail_menu_unfocus id = <option_id>
 	Change g_np_options_index = ($g_np_options_index -1)
@@ -1704,7 +1704,7 @@ script np_scroll_up\{for_practice = 0}
 				Change \{g_np_options_index = 1}
 			endif
 		endif
-		FormatText \{checksumName = option_id 'np_option_%d' d = $#"0x32e67f11"}
+		FormatText \{checksumName = option_id 'np_option_%d' d = $g_np_options_index}
 	endif
 	retail_menu_focus id = <option_id>
 	DoScreenElementMorph {
@@ -1746,7 +1746,7 @@ script scale_textblock\{reset_scale = 0}
 endscript
 
 script np_2p_hilite_sections
-	#"0x767a45d7" = [0 0 0 255]
+	black = [0 0 0 255]
 	time = 1
 	begin
 		i = 0
@@ -1757,8 +1757,8 @@ script np_2p_hilite_sections
 			else
 				<j> = 2
 			endif
-			np_set_section_color p = 1 i = <i> j = <j> Color = <#"0x767a45d7">
-			np_set_section_color p = 2 i = <i> j = <j> Color = <#"0x767a45d7">
+			np_set_section_color p = 1 i = <i> j = <j> Color = <black>
+			np_set_section_color p = 2 i = <i> j = <j> Color = <black>
 			wait <time> seconds
 			np_set_section_color p = 1 i = <i> j = <j> Color = $g_grey
 			np_set_section_color p = 2 i = <i> j = <j> Color = $g_grey

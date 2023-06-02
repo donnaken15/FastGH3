@@ -1,10 +1,10 @@
-login_settings_menu_font = #"0xba959ce0"
+login_settings_menu_font = text_a10
 
 script create_login_settings_menu
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	create_menu_backdrop \{texture = venue_bg}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = login_settings_container}
 	rot = -3
-	displaySprite parent = login_settings_container tex = #"0xa8873a68" Pos = (640.0, 360.0) dims = (384.0, 768.0) just = [center center] rot_angle = <rot>
+	displaySprite parent = login_settings_container tex = data_settings_poster Pos = (640.0, 360.0) dims = (384.0, 768.0) just = [center center] rot_angle = <rot>
 	Change \{menu_unfocus_color = [60 60 30 255]}
 	Change \{menu_focus_color = [235 240 200 255]}
 	text_params = {
@@ -48,7 +48,7 @@ script create_login_settings_menu
 	SetScreenElementLock \{id = login_prompt_id On}
 	GetScreenElementDims \{id = login_prompt_id}
 	fit_text_in_rectangle id = login_prompt_id dims = ((140.0, 0.0) + (0.0, 1.0) * <height>)only_if_larger_x = 1
-	<checkmark_tex> = #"0xacd245ab"
+	<checkmark_tex> = data_settings_checkmark
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = login_settings_container
@@ -65,7 +65,7 @@ script create_login_settings_menu
 		Pos = ($login_settings_hilite_pos.loginOn)
 		id = ds_hilite
 		just = [center center]
-		texture = #"0x04cc9e03"
+		texture = data_settings_hilite
 		z_priority = 4
 		rgba = [180 55 25 255]
 		rot_angle = <rot>
@@ -74,7 +74,7 @@ script create_login_settings_menu
 		Type = TextElement
 		parent = login_settings_container
 		text = "AUTO LOGIN SETTING"
-		font = #"0xba959ce0"
+		font = text_a10
 		Pos = (650.0, 600.0)
 		just = [center center]
 		z_priority = 5
@@ -83,31 +83,31 @@ script create_login_settings_menu
 	}
 	GetScreenElementDims id = <id>
 	fit_text_in_rectangle id = <id> dims = ((240.0, 0.0) + (0.0, 1.0) * <height>)Pos = (650.0, 600.0) only_if_larger_x = 1
-	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = #"0x28091e67" Pos = (480.0, 90.0) z_priority = 20 dims = (128.0, 64.0) flip_h flip_v}
+	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = tape_h_02 Pos = (480.0, 90.0) z_priority = 20 dims = (128.0, 64.0) flip_h flip_v}
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <id>
-		texture = #"0x28091e67"
+		texture = tape_h_02
 		Pos = (10.0, 10.0)
 		rgba = [0 0 0 128]
 		just = [left top]
 		z_priority = 19
 	}
-	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = #"0x28091e67" Pos = (800.0, 630.0) z_priority = 20 dims = (128.0, 64.0) rot_angle = -25}
+	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = tape_h_02 Pos = (800.0, 630.0) z_priority = 20 dims = (128.0, 64.0) rot_angle = -25}
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <id>
-		texture = #"0x28091e67"
+		texture = tape_h_02
 		Pos = (10.0, 10.0)
 		rgba = [0 0 0 128]
 		just = [left top]
 		z_priority = 19
 	}
-	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = #"0x98cf3ecb" Pos = (820.0, 260.0) z_priority = 20 dims = (64.0, 128.0) rot_angle = -25 flip_v}
+	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = tape_v_02 Pos = (820.0, 260.0) z_priority = 20 dims = (64.0, 128.0) rot_angle = -25 flip_v}
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <id>
-		texture = #"0x98cf3ecb"
+		texture = tape_v_02
 		Pos = (-20.0, 20.0)
 		rgba = [0 0 0 128]
 		just = [left top]

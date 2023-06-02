@@ -5,7 +5,7 @@ skater_cam_1_mode = 2
 screenshotmode = 0
 select_text = root_text
 
-script set_select_text\{text = $#"0x83a9e10f"}
+script set_select_text\{text = $root_text}
 endscript
 
 script refresh_analog_options

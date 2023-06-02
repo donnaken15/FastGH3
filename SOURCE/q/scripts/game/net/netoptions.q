@@ -107,11 +107,11 @@ endscript
 script back_from_net_options_menu
 	go_to_sub_menu = 0
 	PauseMusicAndStreams
-	if IsTrue \{$#"0xf842ef7f"}
+	if IsTrue \{$InNetOptionsFromNetPlay}
 		printf \{"********************* InNetOptionsFromNetPlay *******************"}
 		go_to_sub_menu = 1
 	else
-		if IsTrue \{$#"0x54857f0d"}
+		if IsTrue \{$InNetOptionsFromFaceDownload}
 			printf \{"********************* InNetOptionsFromFaceDownload *******************"}
 			go_to_sub_menu = 1
 		endif
@@ -120,7 +120,7 @@ script back_from_net_options_menu
 		GetPreferenceChecksum \{pref_type = network device_type}
 		switch <checksum>
 			case device_none
-				if IsTrue \{$#"0xf842ef7f"}
+				if IsTrue \{$InNetOptionsFromNetPlay}
 					create_ss_menu
 				else
 					face_back_from_net_setup
@@ -129,7 +129,7 @@ script back_from_net_options_menu
 				if ObjectExists \{id = current_menu_anchor}
 					DestroyScreenElement \{id = current_menu_anchor}
 				endif
-				if IsTrue \{$#"0xf842ef7f"}
+				if IsTrue \{$InNetOptionsFromNetPlay}
 					do_network_setup \{error_script = back_from_startup_error_dialog success_script = net_setup_from_net_play_successful need_setup_script = create_net_startup_need_setup_dialog}
 				else
 					do_network_setup \{error_script = face_back_from_net_setup success_script = create_face_download_menu_from_net_setup need_setup_script = face_create_net_startup_need_setup_dialog}

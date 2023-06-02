@@ -18,7 +18,7 @@ battlemode_powerups = [
 		name = Lightning
 		name_text = "Amp Overload"
 		Scr = battle_lightning
-		card_texture = #"0xa016bc90"
+		card_texture = icon_attack_blast
 		easy_flicker = 2
 		medium_flicker = 2
 		hard_flicker = 3
@@ -31,14 +31,14 @@ battlemode_powerups = [
 		name = DifficultyUp
 		name_text = "Difficulty Up"
 		Scr = battle_up_difficulty
-		card_texture = #"0x56d83139"
+		card_texture = icon_attack_difficulty
 	}
 	{
 		$powerup_base
 		name = DoubleNotes
 		name_text = "Double Notes"
 		Scr = battle_double_notes
-		card_texture = #"0x624628dd"
+		card_texture = icon_attack_addnote
 	}
 	{
 		$powerup_base
@@ -56,7 +56,7 @@ battlemode_powerups = [
 		name_text = "Powerup Steal"
 		weight_losing = 10
 		Scr = battle_steal
-		card_texture = #"0xd2df6a3d"
+		card_texture = icon_attack_drain
 		drain_time = 10
 	}
 	{
@@ -66,14 +66,14 @@ battlemode_powerups = [
 		alt_name_text = "Righty Flip"
 		weight_losing = 10
 		Scr = battle_lefty_notes
-		card_texture = #"0x953c3a17"
+		card_texture = icon_attack_leftyrighty
 	}
 	{
 		$powerup_base
 		name = BrokenString
 		name_text = "Broken String"
 		Scr = battle_broken_string
-		card_texture = #"0x58535872"
+		card_texture = icon_attack_string
 		easy_repair = 6
 		medium_repair = 8
 		hard_repair = 10
@@ -86,7 +86,7 @@ battlemode_powerups = [
 		name_text = "Whammy"
 		weight_losing = 10
 		Scr = battle_whammy_attack
-		card_texture = #"0xf2555eea"
+		card_texture = icon_attack_whammy
 		easy_repair = 3
 		medium_repair = 4
 		hard_repair = 5
@@ -100,7 +100,7 @@ battlemode_powerups = [
 		name_text = "Death Drain"
 		weight = 0
 		Scr = battle_death_lick
-		card_texture = #"0x8b34a33f"
+		card_texture = icon_attack_deth
 		easy_kill_rate = 0.4
 		medium_kill_rate = 0.3
 		hard_kill_rate = 0.25
@@ -248,7 +248,7 @@ script battlemode_select\{player_status = player1_status}
 			<next_attack> = ($current_powerups_p2 [($<player_status>.current_num_powerups - 1)])
 		endif
 	endif
-	GetArraySize \{$#"0xab5dd1f9"}
+	GetArraySize \{$battlemode_powerups}
 	array_count = 0
 	begin
 		if NOT ((<other_player_difficulty> = expert)& ($battlemode_powerups [<array_count>].name = DifficultyUp))
@@ -307,14 +307,14 @@ small_scale = 0.4
 
 script print_powerup_arrays
 	printf "Current powerups p1(%a):" a = ($player1_status.current_num_powerups)
-	GetArraySize \{$#"0x41ea4a8b"}
+	GetArraySize \{$current_powerups_p1}
 	array_count = 0
 	begin
 		printf "	%c: %p" c = <array_count> p = ($current_powerups_p1 [<array_count>])
 		<array_count> = (<array_count> + 1)
 	repeat <array_Size>
 	printf "Current powerups p2(%a):" a = ($player2_status.current_num_powerups)
-	GetArraySize \{$#"0xd8e31b31"}
+	GetArraySize \{$current_powerups_p2}
 	<array_count> = 0
 	begin
 		printf "	%c: %p" c = <array_count> p = ($current_powerups_p2 [<array_count>])
@@ -439,7 +439,7 @@ script attack_ready_text
 			parent = battlemode_container
 			Pos = <text_pos>
 			text = <attack_name>
-			font = #"0x35c0114b"
+			font = text_a4
 			Scale = 0.6
 			rgba = [255 255 255 255]
 			just = [left bottom]
@@ -453,7 +453,7 @@ script attack_ready_text
 			parent = battlemode_container
 			Pos = <text_pos>
 			text = <attack_name>
-			font = #"0x35c0114b"
+			font = text_a4
 			Scale = 0.6
 			rgba = [255 255 255 255]
 			just = [right bottom]
@@ -862,11 +862,11 @@ script battle_death_lick\{death_speed = 0.2}
 	if ScreenElementExists id = <death_icon_checksum>
 		DestroyScreenElement id = <death_icon_checksum>
 	endif
-	deth_icon_texture = #"0xc183de2d"
+	deth_icon_texture = icon_attack_deth_128
 	if checksumequals \{a = $current_song b = bossslash}
-		<deth_icon_texture> = #"0xfa94e38b"
+		<deth_icon_texture> = icon_attack_boss_slash
 	elseif checksumequals \{a = $current_song b = bosstom}
-		<deth_icon_texture> = #"0x117f8844"
+		<deth_icon_texture> = icon_attack_boss_morello
 	endif
 	CreateScreenElement {
 		Type = SpriteElement
@@ -966,7 +966,7 @@ script death_text
 		Type = SpriteElement
 		id = <text_bg_checksum>
 		parent = battlemode_container
-		texture = #"0x944e6e60"
+		texture = battle_alert_death
 		rgba = [255 255 255 255]
 		Pos = <text_start_pos>
 		Scale = 0.7
@@ -978,7 +978,7 @@ script death_text
 		Type = SpriteElement
 		id = <text_wing_r_checksum>
 		parent = <text_bg_checksum>
-		texture = #"0x0ee79aeb"
+		texture = battle_alert_death_wing
 		rgba = [255 255 255 255]
 		Pos = (205.0, 0.0)
 		Scale = 0.8
@@ -990,7 +990,7 @@ script death_text
 		Type = SpriteElement
 		id = <text_wing_l_checksum>
 		parent = <text_bg_checksum>
-		texture = #"0x0ee79aeb"
+		texture = battle_alert_death_wing
 		rgba = [255 255 255 255]
 		Pos = (55.0, 0.0)
 		Scale = (-0.8, 0.8)
@@ -1004,7 +1004,7 @@ script death_text
 		parent = <text_bg_checksum>
 		Pos = (130.0, -53.0)
 		text = "DEATH"
-		font = #"0xba959ce0"
+		font = text_a10
 		Scale = 1
 		rgba = [255 255 255 255]
 		just = [center bottom]
@@ -1019,7 +1019,7 @@ script death_text
 		parent = <text_bg_checksum>
 		Pos = (130.0, 5.0)
 		text = "DRAIN"
-		font = #"0xba959ce0"
+		font = text_a10
 		Scale = 1.6
 		rgba = [255 255 255 255]
 		just = [center bottom]
@@ -1508,7 +1508,7 @@ script animate_steal
 		Type = SpriteElement
 		id = <steal_hand_open_checksum>
 		parent = battlemode_container
-		texture = #"0x5bb89306"
+		texture = battle_hud_steal_hand_open
 		rgba = [255 255 255 255]
 		Pos = (<morph_to_pos> + <hand_y_offset>)
 		Scale = <hand_scale>
@@ -1564,7 +1564,7 @@ script animate_steal
 			Type = SpriteElement
 			id = <steal_hand_checksum>
 			parent = battlemode_container
-			texture = #"0x410250f9"
+			texture = battle_hud_steal_hand
 			rgba = [255 255 255 255]
 			Pos = (<start_pos> + <hand_y_offset> - <hand_x_offset>)
 			Scale = <hand_scale>
@@ -1574,7 +1574,7 @@ script animate_steal
 		}
 		DoScreenElementMorph {
 			id = <steal_hand_checksum>
-			texture = #"0x410250f9"
+			texture = battle_hud_steal_hand
 			Pos = (<morph_to_pos> + <hand_y_offset> - <hand_x_offset>)
 			time = 0.5
 		}
@@ -1739,7 +1739,7 @@ script battle_whammy_attack
 		else
 			net_whammy_attack player_text = <player_text> other_player_status = <other_player_status> difficulty = <difficulty>
 		endif
-		GetArraySize \{$#"0xd4b50263"}
+		GetArraySize \{$gem_colors}
 		array_count = 0
 		begin
 			broken_string_id = ($broken_strings [<array_count>])
@@ -1904,7 +1904,7 @@ script battle_broken_string
 	if (($is_network_game)& ($<other_player_status>.Player = 1))
 		X = <string_to_break>
 	else
-		GetArraySize \{$#"0xd4b50263"}
+		GetArraySize \{$gem_colors}
 		gem_color = 0
 		non_broken_index = 0
 		non_broken_strings = [-1 -1 -1 -1 -1]
@@ -1979,7 +1979,7 @@ script battle_broken_string
 	endif
 	GetHeldPattern controller = ($<other_player_status>.controller)nobrokenstring
 	total_broken_strings = 1
-	GetArraySize \{$#"0xd4b50263"}
+	GetArraySize \{$gem_colors}
 	begin
 		last_hold_pattern = <hold_pattern>
 		GetHeldPattern controller = ($<other_player_status>.controller)nobrokenstring
@@ -2113,7 +2113,7 @@ script #"0x7c9d1363"
 endscript
 
 script animate_lefty_flip
-	GetArraySize \{$#"0xd4b50263"}
+	GetArraySize \{$gem_colors}
 	array_count = 0
 	ExtendCrc button_up_pixel_array ($<other_player_status>.text)out = pixel_array
 	begin
@@ -2172,7 +2172,7 @@ script update_training_whammy_bar
 		Type = SpriteElement
 		id = <training_whammy_checksum>
 		parent = battlemode_container
-		texture = #"0xd8dcfbb6"
+		texture = battle_hud_whammy_bar
 		rgba = [255 255 255 255]
 		Pos = <training_whammy_pos>
 		rot_angle = <training_whammy_angle>
@@ -2188,7 +2188,7 @@ script update_training_whammy_bar
 		Pos = (120.0, 145.0)
 		text = "WHAMMY"
 		rot_angle = 53
-		font = #"0x35c0114b"
+		font = text_a4
 		rgba = [255 255 255 255]
 		just = [center bottom]
 		Scale = 1.2
@@ -2200,7 +2200,7 @@ endscript
 script animate_whammy_bar
 	pulse_on = 0
 	begin
-		GetArraySize \{$#"0xd4b50263"}
+		GetArraySize \{$gem_colors}
 		array_count = 0
 		begin
 			Color = ($gem_colors [<array_count>])
@@ -2269,7 +2269,7 @@ script animate_whammy_bar
 				time = 0.3
 			}
 			wait \{0.15 seconds}
-			GetArraySize \{$#"0xd4b50263"}
+			GetArraySize \{$gem_colors}
 			array_count = 0
 			begin
 				Color = ($gem_colors [<array_count>])
@@ -2351,7 +2351,7 @@ script update_broken_string_arrows
 		Type = SpriteElement
 		id = <arrow_checksum>
 		parent = battlemode_container
-		texture = #"0x04151980"
+		texture = battle_hud_arrow
 		rgba = [255 255 255 255]
 		Pos = <start_pos>
 		alpha = 1
@@ -2367,7 +2367,7 @@ script update_broken_string_arrows
 		id = <text_checksum>
 		Pos = ((53.0, 150.0) + (<x_offset> * (1.0, 0.0)))
 		text = "PUSH"
-		font = #"0x35c0114b"
+		font = text_a4
 		rgba = [255 255 255 255]
 		just = [center bottom]
 		Scale = 2

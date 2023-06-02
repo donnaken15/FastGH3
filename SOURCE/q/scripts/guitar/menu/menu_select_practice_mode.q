@@ -11,29 +11,29 @@ script create_select_practice_mode_menu
 		Pos = (0.0, 0.0)
 		exclusive_device = ($primary_controller)
 	}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
-	//displaySprite \{texture = #"0x638dac7b" id = spm_poster parent = spm_container Pos = (640.0, 340.0) dims = (600.0, 600.0) rot_angle = -5 just = [center center]}
-	displaySprite \{tex = #"0x987a6319" parent = spm_container Pos = (710.0, 240.0) dims = (192.0, 75.0) rot_angle = -5 just = [center center] rgba = [0 0 0 255] z = 5}
-	displaySprite \{tex = #"0x017332a3" parent = spm_container Pos = (555.0, 320.0) dims = (220.0, 75.0) rot_angle = -5 just = [center center] rgba = [0 0 0 255] z = 5}
-	displaySprite \{tex = #"0x28091e67" parent = spm_container Pos = (775.0, 60.0) dims = (160.0, 64.0) rot_angle = -20 just = [center center] z = 7}
+	create_menu_backdrop \{texture = venue_bg}
+	//displaySprite \{texture = practice_poster_2 id = spm_poster parent = spm_container Pos = (640.0, 340.0) dims = (600.0, 600.0) rot_angle = -5 just = [center center]}
+	displaySprite \{tex = practice_typebar_1 parent = spm_container Pos = (710.0, 240.0) dims = (192.0, 75.0) rot_angle = -5 just = [center center] rgba = [0 0 0 255] z = 5}
+	displaySprite \{tex = practice_typebar_2 parent = spm_container Pos = (555.0, 320.0) dims = (220.0, 75.0) rot_angle = -5 just = [center center] rgba = [0 0 0 255] z = 5}
+	displaySprite \{tex = tape_h_02 parent = spm_container Pos = (775.0, 60.0) dims = (160.0, 64.0) rot_angle = -20 just = [center center] z = 7}
 	displaySprite {
-		tex = #"0x28091e67"
+		tex = tape_h_02
 		parent = <id>
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 6
 	}
-	displaySprite \{tex = #"0x28091e67" parent = spm_container Pos = (500.0, 640.0) dims = (160.0, 64.0) rot_angle = 20 just = [center center] z = 7 flip_v}
+	displaySprite \{tex = tape_h_02 parent = spm_container Pos = (500.0, 640.0) dims = (160.0, 64.0) rot_angle = 20 just = [center center] z = 7 flip_v}
 	displaySprite {
-		tex = #"0x28091e67"
+		tex = tape_h_02
 		parent = <id>
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 6
 	}
-	displaySprite \{tex = #"0x98cf3ecb" parent = spm_container Pos = (430.0, 120.0) dims = (160.0, 96.0) rot_angle = 280 just = [center center] z = 7}
+	displaySprite \{tex = tape_v_02 parent = spm_container Pos = (430.0, 120.0) dims = (160.0, 96.0) rot_angle = 280 just = [center center] z = 7}
 	displaySprite {
-		tex = #"0x98cf3ecb"
+		tex = tape_v_02
 		parent = <id>
 		Pos = (-5.0, 5.0)
 		rgba = [0 0 0 128]
@@ -49,7 +49,7 @@ script create_select_practice_mode_menu
 		parent = spm_container
 		id = tutorials_text
 		text = "tutorials"
-		font = #"0xdbce7067"
+		font = text_a6
 		Pos = (555.0, 320.0)
 		Scale = 0.7
 		rot_angle = -5
@@ -63,8 +63,8 @@ script create_select_practice_mode_menu
 		z_priority = 10
 		<demo_mode_disable>
 	}
-	displayText \{id = practice_text parent = spm_container text = "practice" font = #"0xdbce7067" Pos = (710.0, 245.0) Scale = 0.7 just = [center center] rot = -5 z = 10}
-	displayText \{parent = spm_container text = "Select practice mode" font = #"0xcd92ac76" Pos = (655.0, 540.0) rgba = [255 195 20 255] rot = -5 z = 10 noshadow just = [center center]}
+	displayText \{id = practice_text parent = spm_container text = "practice" font = text_a6 Pos = (710.0, 245.0) Scale = 0.7 just = [center center] rot = -5 z = 10}
+	displayText \{parent = spm_container text = "Select practice mode" font = text_a11 Pos = (655.0, 540.0) rgba = [255 195 20 255] rot = -5 z = 10 noshadow just = [center center]}
 	fit_text_in_rectangle id = <id> only_if_larger_x = 1 dims = (320.0, 70.0)
 	LaunchEvent \{Type = focus target = tutorials_text}
 	update_training_menu
@@ -108,7 +108,7 @@ endscript
 script update_training_menu
 	if ($training_mode = tutorials)
 		//if ScreenElementExists \{id = spm_poster}
-		//	SetScreenElementProps \{id = spm_poster texture = #"0xfa84fdc1"}
+		//	SetScreenElementProps \{id = spm_poster texture = practice_poster_1}
 		//endif
 		if ScreenElementExists \{id = tutorials_text}
 			SetScreenElementProps \{id = tutorials_text rgba = [150 140 200 255] Scale = 0.75}
@@ -118,7 +118,7 @@ script update_training_menu
 		endif
 	else
 		//if ScreenElementExists \{id = spm_poster}
-		//	SetScreenElementProps \{id = spm_poster texture = #"0x638dac7b"}
+		//	SetScreenElementProps \{id = spm_poster texture = practice_poster_2}
 		//endif
 		if ScreenElementExists \{id = tutorials_text}
 			SetScreenElementProps \{id = tutorials_text rgba = [145 145 145 255] Scale = 0.6}

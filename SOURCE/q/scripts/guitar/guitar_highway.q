@@ -278,7 +278,7 @@ script setup_highway\{Player = 1}
 		ExtendCrc starpower_container_right <player_text> out = cont
 		DoScreenElementMorph id = <cont> alpha = 0
 	endif
-	GetArraySize \{$#"0xd4b50263"}
+	GetArraySize \{$gem_colors}
 	array_count = 0
 	begin
 		Color = ($gem_colors [<array_count>])
@@ -393,7 +393,7 @@ script destroy_highway
 	if ScreenElementExists id = <name>
 		DestroyScreenElement id = <name>
 	endif
-	GetArraySize \{$#"0xd4b50263"}
+	GetArraySize \{$gem_colors}
 	array_count = 0
 	begin
 		Color = ($gem_colors [<array_count>])
@@ -608,7 +608,7 @@ script enable_bg_viewport_properties
 		SetViewportProperties \{viewport = bg_viewport no_resolve_depthstencilbuffer = true}
 		SetViewportProperties \{viewport = bg_viewport no_resolve_colorbuffer = true}
 	endif
-	TOD_Proxim_Update_LightFX_Viewport \{fxParam = $#"0xc45de82c" viewport = bg_viewport time = 0}
+	TOD_Proxim_Update_LightFX_Viewport \{fxParam = $Default_TOD_Manager viewport = bg_viewport time = 0}
 endscript
 
 script enable_highway
@@ -669,15 +669,15 @@ script setup_bg_viewport
 	destroy_bg_viewport
 	if isXenon
 		if ($current_num_players = 1)
-			AddParams \{$#"0x4a9aa4ac"}
+			AddParams \{$Highway_Fader_Params}
 		else
-			AddParams \{$#"0xd046eb39"}
+			AddParams \{$Highway_Fader_Params_2p}
 		endif
 	else
 		if ($current_num_players = 1)
-			AddParams \{$#"0xb836a598"}
+			AddParams \{$Highway_Fader_Params_ps3}
 		else
-			AddParams \{$#"0x74398eba"}
+			AddParams \{$Highway_Fader_Params_2p_ps3}
 		endif
 	endif
 	Pos = (2000.0, 300.0)
@@ -705,7 +705,7 @@ script setup_bg_viewport
 				rgba = [255 255 255 255]
 				alpha = 1
 				z_priority = 110
-				texture = #"0x34d3e9ce"
+				texture = white2
 				rot_angle = -180
 			}
 			elements = [
@@ -713,7 +713,7 @@ script setup_bg_viewport
 					parent = ui_clip_root
 					Type = ViewportElement
 					id = bg_viewport
-					texture = #"0x3a2a835f"
+					texture = viewport0
 					Pos = <bg_pos>
 					just = [left top]
 					dims = <rt_size>

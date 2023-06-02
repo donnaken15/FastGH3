@@ -1,27 +1,27 @@
-menu_using_guitar_controller_font = #"0x35c0114b"
+menu_using_guitar_controller_font = text_a4
 menu_using_guitar_controller_kb = 0
 
 script create_using_guitar_controller_menu\{keyboard = 0}
 	Change menu_using_guitar_controller_kb = <keyboard>
-	create_menu_backdrop \{texture = #"0x767cd482"}
+	create_menu_backdrop \{texture = boot_usingguitar_bg}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = ugc_container Pos = (0.0, 0.0)}
-	guitar_tex = #"0x4de11b10"
+	guitar_tex = boot_usingguitar_gtr_lespaul
 	if ($menu_using_guitar_controller_kb = 1)
 		if NotIsMacPort
-			guitar_tex = #"0x4b646edf"
+			guitar_tex = boot_usingkeyboard
 		else
-			guitar_tex = #"0x125cf8ca"
+			guitar_tex = boot_usingmackeyboard
 		endif
 	endif
 	if ($menu_using_guitar_controller_kb = 1)
 		displaySprite parent = ugc_container tex = <guitar_tex> Pos = (665.0, 510.0) just = [center center] z = 1 Scale = (1.2000000476837158, 1.2000000476837158)
-		displaySprite \{parent = ugc_container tex = #"0x25ea173f" Pos = (640.0, 240.0) just = [center center] z = 1}
+		displaySprite \{parent = ugc_container tex = boot_usingkeyboard_illo Pos = (640.0, 240.0) just = [center center] z = 1}
 	else
 		displaySprite parent = ugc_container tex = <guitar_tex> Pos = (660.0, 530.0) just = [center center] z = 1
-		displaySprite \{parent = ugc_container tex = #"0x471aaafa" Pos = (640.0, 270.0) just = [center center] z = 1}
+		displaySprite \{parent = ugc_container tex = boot_usingguitar_illo Pos = (640.0, 270.0) just = [center center] z = 1}
 	endif
 	displaySprite \{parent = ugc_container id = bg_helper tex = white rgba = [83 95 147 255] dims = (221.0, 40.0) just = [center top] z = 0.5}
-	displayText \{parent = ugc_container id = bg_helper_text font = #"0x35c0114b" rgba = [223 223 223 255] Scale = 0.5 just = [center top] z = 0.6 noshadow}
+	displayText \{parent = ugc_container id = bg_helper_text font = text_a4 rgba = [223 223 223 255] Scale = 0.5 just = [center top] z = 0.6 noshadow}
 	if ($menu_using_guitar_controller_kb = 0)
 		menu_using_guitar_controller_add_text_start
 		menu_using_guitar_controller_add_text_back
@@ -273,7 +273,7 @@ script menu_using_guitar_controller_add_text_tilt_starpower
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> only_if_larger_x = 1 dims = ((180.0, 0.0) + <height> * (0.0, 1.0))
 	endif
-	CreateScreenElement \{Type = SpriteElement parent = ugc_container texture = #"0x05400020" Pos = (275.0, 480.0) just = [right center]}
+	CreateScreenElement \{Type = SpriteElement parent = ugc_container texture = boot_usingguitar_arrow Pos = (275.0, 480.0) just = [right center]}
 endscript
 
 script menu_using_guitar_controller_add_text_header

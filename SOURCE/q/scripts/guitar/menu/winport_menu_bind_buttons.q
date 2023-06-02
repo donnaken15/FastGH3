@@ -96,7 +96,7 @@ script winport_null_script
 endscript
 
 script winport_create_bind_buttons
-	Change \{winport_bb_menuItems = $#"0xf96eb371"}
+	Change \{winport_bb_menuItems = $winport_bb_kb_menuItems}
 	menuDim = (600.0, 500.0)
 	menuPos = (640.0, 370.0)
 	menuItemDim = (600.0, 32.0)
@@ -131,7 +131,7 @@ script winport_create_bind_buttons
 	}
 	menuTextProps = {
 		Type = TextElement
-		font = #"0xcd92ac76"
+		font = text_a11
 		Scale = (0.699999988079071, 0.5)
 		rgba = $winport_bb_text_color
 		z_priority = 20
@@ -139,7 +139,7 @@ script winport_create_bind_buttons
 		shadow_rgba = $winport_bb_text_dropshadow_color
 		shadow_offs = (-1.5, 1.5)
 	}
-	GetArraySize \{$#"0x23caa815"}
+	GetArraySize \{$winport_bb_menuItems}
 	i = 0
 	begin
 		FormatText checksumName = itemId 'item%d' d = <i>
@@ -164,7 +164,7 @@ script winport_create_bind_buttons
 			Type = SpriteElement
 			id = <hiliteId>
 			parent = <itemId>
-			texture = #"0x8040f1b7"
+			texture = controller_config_highlight
 			Pos = <menuItemHilitePos>
 			dims = <menuItemHiliteDim>
 			just = <menuItemHiliteJust>
@@ -212,7 +212,7 @@ script winport_destroy_bind_buttons
 endscript
 
 script winport_bb_update_option_values
-	GetArraySize \{$#"0x23caa815"}
+	GetArraySize \{$winport_bb_menuItems}
 	i = 0
 	begin
 		FormatText checksumName = controlId 'control%d' d = <i>
@@ -242,7 +242,7 @@ script winport_bb_choose_control
 endscript
 
 script winport_bb_reset_to_config1
-	GetArraySize \{$#"0x23caa815"}
+	GetArraySize \{$winport_bb_menuItems}
 	i = 0
 	begin
 		if StructureContains structure = ($winport_bb_menuItems [<i>])name = actionNum
@@ -254,7 +254,7 @@ script winport_bb_reset_to_config1
 endscript
 
 script winport_bb_reset_to_config2
-	GetArraySize \{$#"0x23caa815"}
+	GetArraySize \{$winport_bb_menuItems}
 	i = 0
 	begin
 		if StructureContains structure = ($winport_bb_menuItems [<i>])name = actionNum

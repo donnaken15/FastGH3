@@ -5,7 +5,7 @@ script create_press_any_button_menu
 	Change \{main_menu_movie_first_time = 0}
 	SoundEvent \{event = Menu_Guitar_Lick_SFX}
 	spawnscriptnow \{Menu_Music_On params = {waitforguitarlick = 1}}
-	create_menu_backdrop \{texture = #"0x767a45d7"}
+	create_menu_backdrop \{texture = black}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = pab_container Pos = (0.0, 0.0)}
 	menu_press_any_button_create_obvious_text
 	spawnscriptnow \{check_for_any_input}
@@ -39,7 +39,7 @@ script create_attract_mode
 	SoundBussLock \{Guitar_Balance}
 	SoundBussLock \{Band_Balance}
 	kill_start_key_binding
-	GetArraySize \{$#"0x17c1708b"}
+	GetArraySize \{$Attract_Mode_Info}
 	if (<array_Size> = 1)
 		attract_mode_index = 0
 	else
@@ -111,7 +111,7 @@ script create_attract_mode_text
 		shadow_offs = (3.0, 3.0)
 		shadow_rgba = [110 20 80 250]
 	}
-	CreateScreenElement \{Type = SpriteElement parent = am_container texture = #"0xda2408b2" dims = (225.0, 225.0) Pos = (640.0, 490.0) just = [center center]}
+	CreateScreenElement \{Type = SpriteElement parent = am_container texture = logo_gh3_lor_256 dims = (225.0, 225.0) Pos = (640.0, 490.0) just = [center center]}
 endscript
 
 script destroy_attract_mode_text
@@ -162,7 +162,7 @@ script check_for_any_input\{button1 = {}button2 = {}}
 		if NOT IsWinPort
 			if IsStandardGuitarControllerPluggedIn
 				notify_box scale1 = (0.6000000238418579, 0.75) scale2 = (0.5, 0.6000000238418579) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "An unsupported guitar peripheral has been detected." line2 = "Connect either a Guitar Hero guitar or" line3 = "Xbox 360 controller and press START to continue." menu_z = 510000
-				CreateScreenElement \{Type = SpriteElement id = controller_fader parent = root_window texture = #"0x767a45d7" rgba = [0 0 0 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 509000 alpha = 0.7}
+				CreateScreenElement \{Type = SpriteElement id = controller_fader parent = root_window texture = black rgba = [0 0 0 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 509000 alpha = 0.7}
 				Change \{invalid_controller_lock = 1}
 				begin
 					if NOT IsStandardGuitarControllerPluggedIn

@@ -1,6 +1,6 @@
 
 script create_gamma_brightness_menu\{popup = 0}
-	header_font = #"0x42c721dd"
+	header_font = text_a5
 	menu_font = fontgrid_title_gh3
 	menu_pos = (0.0, 340.0)
 	z = 100.0
@@ -66,7 +66,7 @@ script gamma_brightness_menu_change
 			Change \{SE_Brightness = 0}
 		endif
 	endif
-	SetGlobalTags \{user_options params = {gamma_brightness = $#"0x96fe2558"}}
+	SetGlobalTags \{user_options params = {gamma_brightness = $SE_Brightness}}
 	if ViewportExists \{id = bg_viewport}
 		TOD_Proxim_Update_Global_Brightness \{viewport = bg_viewport}
 	endif

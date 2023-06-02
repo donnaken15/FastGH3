@@ -48,13 +48,13 @@ script create_controller_disconnect_menu
 			rgba = [210 210 210 250]
 			z_priority = <menu_z>
 		}
-		displaySprite parent = cd_static_text_container tex = #"0xdb44b36c" Pos = (448.0, 470.0) Scale = (1.5, 1.5) z = <menu_z>
-		displaySprite parent = cd_static_text_container tex = #"0xdb44b36c" flip_h Pos = (448.0, 550.0) Scale = (1.5, 1.5) z = <menu_z>
+		displaySprite parent = cd_static_text_container tex = dialog_menu_bg Pos = (448.0, 470.0) Scale = (1.5, 1.5) z = <menu_z>
+		displaySprite parent = cd_static_text_container tex = dialog_menu_bg flip_h Pos = (448.0, 550.0) Scale = (1.5, 1.5) z = <menu_z>
 		displaySprite parent = cd_static_text_container tex = white Pos = (462.0, 550.0) Scale = (89.0, 7.5) z = (<menu_z> + 0.1)rgba = <offwhite>
-		displaySprite parent = cd_static_text_container tex = #"0xacf2f335" Pos = (448.0, 540.0) rot_angle = 5 Scale = (1.8899999856948853, 1.875) z = (<menu_z> + 0.2)
-		displaySprite parent = cd_static_text_container tex = #"0xacf2f335" Pos = (770.0, 547.0) flip_v rot_angle = -5 Scale = (1.8899999856948853, 1.875) z = (<menu_z> + 0.2)
-		displaySprite id = hi_right parent = cd_static_text_container tex = #"0x0b444b41" Pos = (770.0, 553.0) Scale = (1.25, 1.25) z = (<menu_z> + 0.3)
-		displaySprite id = hi_left parent = cd_static_text_container tex = #"0x0b444b41" flip_v Pos = (500.0, 553.0) Scale = (1.25, 1.25) z = (<menu_z> + 0.3)
+		displaySprite parent = cd_static_text_container tex = dialog_frame_joiner Pos = (448.0, 540.0) rot_angle = 5 Scale = (1.8899999856948853, 1.875) z = (<menu_z> + 0.2)
+		displaySprite parent = cd_static_text_container tex = dialog_frame_joiner Pos = (770.0, 547.0) flip_v rot_angle = -5 Scale = (1.8899999856948853, 1.875) z = (<menu_z> + 0.2)
+		displaySprite id = hi_right parent = cd_static_text_container tex = dialog_menu_hilight Pos = (770.0, 553.0) Scale = (1.25, 1.25) z = (<menu_z> + 0.3)
+		displaySprite id = hi_left parent = cd_static_text_container tex = dialog_menu_hilight flip_v Pos = (500.0, 553.0) Scale = (1.25, 1.25) z = (<menu_z> + 0.3)
 		set_focus_color \{rgba = [180 50 50 255]}
 		set_unfocus_color \{rgba = [0 0 0 255]}
 		text_scale = (1.2000000476837158, 1.25)
@@ -107,7 +107,7 @@ script create_controller_disconnect_menu
 			Pos = (<blinker_pos> + (0.0, -5.0))
 			just = [center center]
 			z = 101
-			font = #"0xba959ce0"
+			font = text_a10
 			Scale = 0.7
 			rgba = [223 223 223 255]
 		}
@@ -117,7 +117,7 @@ endscript
 
 script menu_controller_disconnect_wait_for_reconnect
 	begin
-		if GuitarGetAnalogueInfo \{controller = $#"0x2da0d0c3"}
+		if GuitarGetAnalogueInfo \{controller = $unplugged_controller}
 			break
 		endif
 		wait \{1 gameframe}

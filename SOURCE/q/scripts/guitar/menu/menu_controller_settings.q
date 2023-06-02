@@ -140,7 +140,7 @@ script create_controller_settings_menu\{popup = 0}
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = cs_container
-			texture = #"0x9995fe99"
+			texture = menu_pause_frame_banner
 			Pos = (640.0, 540.0)
 			just = [center center]
 			z_priority = (<z> + 100)
@@ -149,7 +149,7 @@ script create_controller_settings_menu\{popup = 0}
 			Type = TextElement
 			parent = <id>
 			text = "PAUSED"
-			font = #"0xdbce7067"
+			font = text_a6
 			Pos = (125.0, 53.0)
 			rgba = [170 90 30 255]
 			Scale = 0.8
@@ -178,7 +178,7 @@ script create_controller_settings_menu\{popup = 0}
 			Pos = (465.0, 571.0)
 			Scale = (0.6500000357627869, 0.800000011920929)
 			text = "Controller"
-			font = #"0xdbce7067"
+			font = text_a6
 			rgba = ($menu_unfocus_color)
 			z_priority = 6
 			rot_angle = -1.5
@@ -190,25 +190,25 @@ script create_controller_settings_menu\{popup = 0}
 			Pos = (460.0, 293.0)
 			Scale = (0.5, 0.4000000059604645)
 			text = "Options"
-			font = #"0xdbce7067"
+			font = text_a6
 			rgba = ($menu_unfocus_color)
 			z_priority = 6
 			rot_angle = -16
 		}
-		displaySprite \{parent = cs_container tex = #"0x3f147ec8" Pos = (945.0, 190.0) z = 4 flip_h rot_angle = -5 Scale = 0.7}
-		displaySprite \{parent = cs_container id = cs_check_1 tex = #"0xdd70901e" Pos = (975.0, 197.0) z = 6 Scale = 0.7}
-		displaySprite \{parent = cs_container tex = #"0x3f147ec8" Pos = (950.0, 236.0) z = 5 rot_angle = -5 Scale = 0.7}
-		displaySprite \{parent = cs_container id = cs_check_2 tex = #"0xdd70901e" Pos = (970.0, 230.0) z = 6 Scale = 0.7}
+		displaySprite \{parent = cs_container tex = options_controller_checkbg Pos = (945.0, 190.0) z = 4 flip_h rot_angle = -5 Scale = 0.7}
+		displaySprite \{parent = cs_container id = cs_check_1 tex = options_controller_x Pos = (975.0, 197.0) z = 6 Scale = 0.7}
+		displaySprite \{parent = cs_container tex = options_controller_checkbg Pos = (950.0, 236.0) z = 5 rot_angle = -5 Scale = 0.7}
+		displaySprite \{parent = cs_container id = cs_check_2 tex = options_controller_x Pos = (970.0, 230.0) z = 6 Scale = 0.7}
 		displaySprite {
 			parent = cs_container
 			id = cs_highlighter
-			tex = #"0x98544e5b"
+			tex = options_controller_highlight
 			Pos = ($cs_highlighter_positions [0])
 			dims = (460.0, 58.0)
 			z = 4
 			rot_angle = 1
 		}
-		font = #"0xdbce7067"
+		font = text_a6
 		z = 5
 		text_params = {parent = cs_vmenu Type = TextElement font = <font> Scale = 0.7 rgba = ($menu_unfocus_color)z_priority = <z> rot_angle = 1.5}
 		<exclusive_params> = {exclusive_device = ($primary_controller)}
@@ -350,14 +350,14 @@ endscript
 script controller_settings_menu_update_lefty_flip_p1_value\{lefty_flip_p1 = 0}
 	if (<lefty_flip_p1>)
 		if NOT ($cs_is_popup)
-			SetScreenElementProps \{id = cs_check_1 texture = #"0xa986bfc3"}
+			SetScreenElementProps \{id = cs_check_1 texture = options_controller_check}
 			Change \{pad_event_up_inversion = true}
 		else
 			SetScreenElementProps \{id = lefty_flip_p1_se text = "P1 Lefty Flip: ON"}
 		endif
 	else
 		if NOT ($cs_is_popup)
-			SetScreenElementProps \{id = cs_check_1 texture = #"0xdd70901e"}
+			SetScreenElementProps \{id = cs_check_1 texture = options_controller_x}
 			Change \{pad_event_up_inversion = FALSE}
 		else
 			SetScreenElementProps \{id = lefty_flip_p1_se text = "P1 Lefty Flip: OFF"}
@@ -368,13 +368,13 @@ endscript
 script controller_settings_menu_update_lefty_flip_p2_value\{lefty_flip_p2 = 0}
 	if (<lefty_flip_p2>)
 		if NOT ($cs_is_popup)
-			SetScreenElementProps \{id = cs_check_2 texture = #"0xa986bfc3"}
+			SetScreenElementProps \{id = cs_check_2 texture = options_controller_check}
 		else
 			SetScreenElementProps \{id = lefty_flip_p2_se text = "P2 Lefty Flip: ON"}
 		endif
 	else
 		if NOT ($cs_is_popup)
-			SetScreenElementProps \{id = cs_check_2 texture = #"0xdd70901e"}
+			SetScreenElementProps \{id = cs_check_2 texture = options_controller_x}
 		else
 			SetScreenElementProps \{id = lefty_flip_p2_se text = "P2 Lefty Flip: OFF"}
 		endif
@@ -388,10 +388,10 @@ script controller_settings_menu_choose_lefty_flip_p1
 		GetGlobalTags \{user_options}
 		if (<lefty_flip_p1> = 1)
 			<lefty_flip_p1> = 0
-			SoundEvent \{event = #"0x6ad98932"}
+			SoundEvent \{event = checkbox_sfx}
 		else
 			<lefty_flip_p1> = 1
-			SoundEvent \{event = #"0x9c39a697"}
+			SoundEvent \{event = checkbox_check_sfx}
 		endif
 		SetGlobalTags user_options params = {lefty_flip_p1 = <lefty_flip_p1>}
 		controller_settings_menu_update_lefty_flip_p1_value lefty_flip_p1 = <lefty_flip_p1>
@@ -405,10 +405,10 @@ script controller_settings_menu_choose_lefty_flip_p2
 		GetGlobalTags \{user_options}
 		if (<lefty_flip_p2> = 1)
 			<lefty_flip_p2> = 0
-			SoundEvent \{event = #"0x6ad98932"}
+			SoundEvent \{event = checkbox_sfx}
 		else
 			<lefty_flip_p2> = 1
-			SoundEvent \{event = #"0x9c39a697"}
+			SoundEvent \{event = checkbox_check_sfx}
 		endif
 		SetGlobalTags user_options params = {lefty_flip_p2 = <lefty_flip_p2>}
 		controller_settings_menu_update_lefty_flip_p2_value lefty_flip_p2 = <lefty_flip_p2>

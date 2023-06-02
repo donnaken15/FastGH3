@@ -1,5 +1,5 @@
 
-script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id = dialog_box_anchor vmenu_id = dialog_box_vmenu container_id = dialog_box_container title_font = #"0x45aae5c4" font = #"0x45aae5c4" text_font = #"0x45aae5c4" Pos = (320.0, 230.0) just = [center top] Scale = 0.8 line_spacing = 1 title_scale = 0.7 text_scale = 0.6 text_dims = (530.0, 0.0) exclusive_device = -1 pos_tweak = (0.0, -50.0) bg_rgba = [8 15 24 170] title_rgba = [90 90 70 255] text_rgba = [90 70 50 255] bg_scale = 1 hmenu_pos = (0.0, 50.0) z_priority = 40 no_bg destroy_on_event = 1}
+script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id = dialog_box_anchor vmenu_id = dialog_box_vmenu container_id = dialog_box_container title_font = text_a1 font = text_a1 text_font = text_a1 Pos = (320.0, 230.0) just = [center top] Scale = 0.8 line_spacing = 1 title_scale = 0.7 text_scale = 0.6 text_dims = (530.0, 0.0) exclusive_device = -1 pos_tweak = (0.0, -50.0) bg_rgba = [8 15 24 170] title_rgba = [90 90 70 255] text_rgba = [90 70 50 255] bg_scale = 1 hmenu_pos = (0.0, 50.0) z_priority = 40 no_bg destroy_on_event = 1}
 	if ScreenElementExists id = <anchor_id>
 		dialog_box_exit anchor_id = <anchor_id>
 	endif
@@ -119,7 +119,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		/*CreateScreenElement {
 			Type = SpriteElement
 			parent = {<vmenu_id> child = dbox_title}
-			texture = #"0xc94d6a2a"
+			texture = dialog_frame
 			just = [center top]
 			Pos = (85.0, -20.0)
 			rgba = [0 10 20 255]
@@ -130,7 +130,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = {<vmenu_id> child = dbox_title}
-			texture = #"0x729037cf"
+			texture = dialog_middle
 			just = [center top]
 			Pos = (85.0, 10.0)
 			rgba = [0 10 20 255]
@@ -141,7 +141,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = {<vmenu_id> child = dbox_title}
-			texture = #"0x5c93cccc"
+			texture = dialog_frame_b
 			just = [center top]
 			Pos = (85.0, 30.0)
 			rgba = [0 10 20 255]
@@ -162,7 +162,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		/*CreateScreenElement {
 			Type = SpriteElement
 			parent = {<vmenu_id> child = dbox_title}
-			texture = #"0x5c93cccc"
+			texture = dialog_frame_b
 			just = [center top]
 			Pos = (85.0, 103.0)
 			rgba = [5 15 25 100]
@@ -272,7 +272,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		parent = <anchor_id>
 		Pos = <centered_pos>
 		just = [center bottom]
-		texture = #"0xc94d6a2a"
+		texture = dialog_frame
 		Scale = ((1.0, 0.0) * <bg_x_scale> + (0.0, 1.0))
 		rgba = <bg_rgba>
 		z_priority = 38
@@ -280,7 +280,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <anchor_id>
-		texture = #"0x729037cf"
+		texture = dialog_middle
 		Pos = (<centered_pos> - (0.0, 16.0))
 		Scale = (((1.0, 0.0) * <bg_x_scale>)+ (0.0, 1.0) * (<height> / 16.0))
 		just = [center top]
@@ -292,7 +292,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		parent = <anchor_id>
 		Pos = (<centered_pos> + (0.0, 1.0) * (<height>)+ (0.0, 15.0))
 		just = [center bottom]
-		texture = #"0x5c93cccc"
+		texture = dialog_frame_b
 		Scale = ((1.0, 0.0) * <bg_x_scale> + (0.0, 1.0))
 		rgba = <bg_rgba>
 		z_priority = 38

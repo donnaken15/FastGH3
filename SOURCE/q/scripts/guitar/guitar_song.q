@@ -158,7 +158,7 @@ script SongUnLoadFSBIfDownloaded
 	GetContentFolderIndexFromFile ($song_fsb_name)
 	if NOT ($song_fsb_id = -1)
 		if (<device> = content)
-			UnLoadFSB \{fsb_index = $#"0x20b61a24"}
+			UnLoadFSB \{fsb_index = $song_fsb_id}
 			Downloads_CloseContentFolder content_index = <content_index>
 			Change \{song_fsb_id = -1}
 			Change \{song_fsb_name = 'none'}
@@ -169,7 +169,7 @@ endscript
 script SongUnLoadFSB
 	SongUnLoadFSBIfDownloaded
 	if NOT ($song_fsb_id = -1)
-		UnLoadFSB \{fsb_index = $#"0x20b61a24"}
+		UnLoadFSB \{fsb_index = $song_fsb_id}
 		Change \{song_fsb_id = -1}
 		Change \{song_fsb_name = 'none'}
 	endif
@@ -246,22 +246,22 @@ script setslomo_song
 	endif
 endscript
 Player1Effects = {
-	effect = $#"0x4015f089"
-	effect2 = $#"0xef7dac73"
-	effect3 = $#"0xea88bd8b"
-	effect4 = $#"0x2bfa6974"
-	effect5 = $#"0x0f4337db"
-	effect6 = $#"0x3a140ca8"
-	effect7 = $#"0xf1eab5f3"
+	effect = $PitchShiftEffect1
+	effect2 = $Flange_Default1
+	effect3 = $Chorus_Default1
+	effect4 = $Echo_Default1
+	effect5 = $HighPass_Default1
+	effect6 = $LowPass_Default1
+	effect7 = $EQ_Default1
 }
 Player2Effects = {
-	effect = $#"0xd91ca133"
-	effect2 = $#"0x7674fdc9"
-	effect3 = $#"0x7381ec31"
-	effect4 = $#"0xb2f338ce"
-	effect5 = $#"0x964a6661"
-	effect6 = $#"0xa31d5d12"
-	effect7 = $#"0x68e3e449"
+	effect = $PitchShiftEffect2
+	effect2 = $Flange_Default2
+	effect3 = $Chorus_Default2
+	effect4 = $Echo_Default2
+	effect5 = $HighPass_Default2
+	effect6 = $LowPass_Default2
+	effect7 = $EQ_Default2
 }
 PitchShiftEffect1 = {
 	effect = FastPitchShift
@@ -276,8 +276,8 @@ PitchShiftEffect2 = {
 	maxchannels = 0
 }
 Player1PracticeEffects = {
-	effect = $#"0x3370a847"
-	effect2 = $#"0x4015f089"
+	effect = $PitchShiftSlow1
+	effect2 = $PitchShiftEffect1
 }
 PitchShiftSlow1 = {
 	effect = PitchShift
@@ -406,20 +406,20 @@ script end_song\{song_failed_pitch_streams = 0}
 			SoundBussLock \{Band_Balance}
 			SoundBussLock \{Guitar_Balance}
 		endif
-		StopStream \{unique_id = $#"0x64956948"}
-		StopStream \{unique_id = $#"0xe02a5d12"}
+		StopStream \{unique_id = $song_unique_id}
+		StopStream \{unique_id = $guitar_player1_unique_id}
 	else
 		printf \{channel = SFX "We are pitching the stream down because we failed"}
 		spawnscriptnow \{Failed_Song_Pitch_Down}
 	endif
 	if NOT ($extra_unique_id = NULL)
-		StopStream \{unique_id = $#"0xee15a0aa"}
+		StopStream \{unique_id = $extra_unique_id}
 	endif
 	if NOT ($crowd_unique_id = NULL)
-		StopStream \{unique_id = $#"0xa4e26ce8"}
+		StopStream \{unique_id = $crowd_unique_id}
 	endif
 	if NOT ($guitar_player2_unique_id = NULL)
-		StopStream \{unique_id = $#"0x79c83b13"}
+		StopStream \{unique_id = $guitar_player2_unique_id}
 	endif
 	Change \{song_paused = 0}
 endscript

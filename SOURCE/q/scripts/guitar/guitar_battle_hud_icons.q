@@ -45,7 +45,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <parent_container>
 			id = <new_container_id>
-			texture = #"0x08e556fe"
+			texture = battle_alert_frame_end
 			Pos = (-48.0, 0.0)
 			dims = (32.0, 72.0)
 			just = [right center]
@@ -56,7 +56,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <parent_container>
 			id = <new_container_id>
-			texture = #"0x66e63e0a"
+			texture = battle_alert_frame_middle
 			Pos = (0.0, 0.0)
 			dims = (32.0, 72.0)
 			just = [center center]
@@ -66,7 +66,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <parent_container>
 			id = <new_container_id>
-			texture = #"0x08e556fe"
+			texture = battle_alert_frame_end
 			dims = (32.0, 72.0)
 			Pos = (48.0, 0.0)
 			just = [left center]
@@ -76,7 +76,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0xa5c770b4"
+			texture = battle_alert_fill_single
 			Pos = (0.0, 0.0)
 			dims = (128.0, 40.0)
 			just = [center center]
@@ -87,7 +87,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0x390401b6"
+			texture = battle_alert_fill_hard
 			Pos = (0.0, 0.0)
 			dims = (256.0, 40.0)
 			just = [center center]
@@ -98,7 +98,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0x375a9336"
+			texture = battle_alert_fill_hard
 			Pos = (0.0, 0.0)
 			dims = (256.0, 40.0)
 			just = [center center]
@@ -109,7 +109,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0xca7eec5f"
+			texture = battle_alert_fill_double
 			Pos = (0.0, 0.0)
 			dims = (256.0, 40.0)
 			just = [center center]
@@ -120,7 +120,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0x2b4c6bd3"
+			texture = battle_alert_fill_triple
 			Pos = (0.0, 0.0)
 			dims = (256.0, 40.0)
 			just = [center center]
@@ -131,7 +131,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0xcb217f9b"
+			texture = battle_alert_star_1
 			Pos = (0.0, -52.0)
 			just = [center center]
 			alpha = 0
@@ -141,7 +141,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0x52282e21"
+			texture = battle_alert_star_2
 			Pos = (0.0, -52.0)
 			just = [center center]
 			alpha = 0
@@ -151,7 +151,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0x252f1eb7"
+			texture = battle_alert_star_3
 			Pos = (0.0, -52.0)
 			just = [center center]
 			alpha = 0
@@ -161,7 +161,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0x56d83139"
+			texture = icon_attack_difficulty
 			dims = (40.0, 40.0)
 			just = [center center]
 			alpha = 0
@@ -171,7 +171,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0x624628dd"
+			texture = icon_attack_addnote
 			dims = (40.0, 40.0)
 			just = [center center]
 			alpha = 0
@@ -181,7 +181,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = #"0x953c3a17"
+			texture = icon_attack_leftyrighty
 			dims = (40.0, 40.0)
 			just = [center center]
 			alpha = 0
@@ -191,7 +191,7 @@ script create_battle_alert_frames
 			id = <battle_alert_text_id>
 			parent = <battle_alert_container_id>
 			text = <battle_text>
-			font = #"0xdbce7067"
+			font = text_a6
 			z = 52
 			Scale = 0.5
 			Pos = (1.5, 2.5)
@@ -317,13 +317,13 @@ script update_battle_alert_icon\{player_status = player1_status}
 		if ScreenElementExists id = <new_id>
 			DoScreenElementMorph id = <new_id> alpha = 1 time = 0.3 Scale = (1.2000000476837158, 1.0) relative_scale
 			if (<lefty>)
-				change_battle_alert_icon player_text = <player_text> num = 2 tex = #"0x953c3a17" Pos = battle_alert_icon_pos_off_2
+				change_battle_alert_icon player_text = <player_text> num = 2 tex = icon_attack_leftyrighty Pos = battle_alert_icon_pos_off_2
 				SetScreenElementProps id = <new_id> rgba = [55 170 130 255]
 			elseif (<double>)
-				change_battle_alert_icon num = 2 player_text = <player_text> tex = #"0x624628dd" Pos = battle_alert_icon_pos_off_2
+				change_battle_alert_icon num = 2 player_text = <player_text> tex = icon_attack_addnote Pos = battle_alert_icon_pos_off_2
 				SetScreenElementProps id = <new_id> rgba = [200 115 200 255]
 			elseif (<harder>)
-				change_battle_alert_icon num = 2 player_text = <player_text> tex = #"0x56d83139" Pos = battle_alert_icon_pos_off_2
+				change_battle_alert_icon num = 2 player_text = <player_text> tex = icon_attack_difficulty Pos = battle_alert_icon_pos_off_2
 				SetScreenElementProps id = <new_id> rgba = [210 210 210 255]
 			endif
 		endif
@@ -342,23 +342,23 @@ script update_battle_alert_icon\{player_status = player1_status}
 			if (<harder>)
 				if (<double>)
 					change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_triple Scale = (1.0, 1.0)
-					change_battle_alert_icon num = 1 player_text = <player_text> tex = #"0x56d83139" Pos = battle_alert_icon_pos_off_1
-					change_battle_alert_icon num = 2 player_text = <player_text> tex = #"0x624628dd" Pos = battle_alert_icon_pos_off_2
-					change_battle_alert_icon num = 3 player_text = <player_text> tex = #"0x953c3a17" Pos = battle_alert_icon_pos_off_3
+					change_battle_alert_icon num = 1 player_text = <player_text> tex = icon_attack_difficulty Pos = battle_alert_icon_pos_off_1
+					change_battle_alert_icon num = 2 player_text = <player_text> tex = icon_attack_addnote Pos = battle_alert_icon_pos_off_2
+					change_battle_alert_icon num = 3 player_text = <player_text> tex = icon_attack_leftyrighty Pos = battle_alert_icon_pos_off_3
 				else
 					change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_hard_lefty Scale = (1.100000023841858, 1.0)
-					change_battle_alert_icon num = 1 player_text = <player_text> tex = #"0x56d83139" Pos = battle_alert_icon_pos_off_4
-					change_battle_alert_icon num = 3 player_text = <player_text> tex = #"0x953c3a17" Pos = battle_alert_icon_pos_off_5
+					change_battle_alert_icon num = 1 player_text = <player_text> tex = icon_attack_difficulty Pos = battle_alert_icon_pos_off_4
+					change_battle_alert_icon num = 3 player_text = <player_text> tex = icon_attack_leftyrighty Pos = battle_alert_icon_pos_off_5
 				endif
 			else
 				change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_double_lefty Scale = (1.100000023841858, 1.0)
-				change_battle_alert_icon num = 2 player_text = <player_text> tex = #"0x624628dd" Pos = battle_alert_icon_pos_off_4
-				change_battle_alert_icon num = 3 player_text = <player_text> tex = #"0x953c3a17" Pos = battle_alert_icon_pos_off_5
+				change_battle_alert_icon num = 2 player_text = <player_text> tex = icon_attack_addnote Pos = battle_alert_icon_pos_off_4
+				change_battle_alert_icon num = 3 player_text = <player_text> tex = icon_attack_leftyrighty Pos = battle_alert_icon_pos_off_5
 			endif
 		else
 			change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_hard_double Scale = (1.100000023841858, 1.0)
-			change_battle_alert_icon num = 1 player_text = <player_text> tex = #"0x56d83139" Pos = battle_alert_icon_pos_off_4
-			change_battle_alert_icon num = 2 player_text = <player_text> tex = #"0x624628dd" Pos = battle_alert_icon_pos_off_5
+			change_battle_alert_icon num = 1 player_text = <player_text> tex = icon_attack_difficulty Pos = battle_alert_icon_pos_off_4
+			change_battle_alert_icon num = 2 player_text = <player_text> tex = icon_attack_addnote Pos = battle_alert_icon_pos_off_5
 		endif
 	endif
 	if (<num_icons>)

@@ -5,9 +5,9 @@ script create_bonus_videos_menu\{came_from_movie = 0}
 		spawnscriptnow \{Menu_Music_On}
 	endif
 	Change \{bv_id_index = 0}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	create_menu_backdrop \{texture = venue_bg}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = bv_container Pos = (0.0, 0.0)}
-	displaySprite \{parent = bv_container tex = #"0x8a73192c" just = [center center] Pos = (640.0, 320.0) dims = (850.0, 850.0) rot_angle = 3 z = 51}
+	displaySprite \{parent = bv_container tex = options_videos_poster just = [center center] Pos = (640.0, 320.0) dims = (850.0, 850.0) rot_angle = 3 z = 51}
 	displaySprite \{parent = bv_container tex = white rgba = [220 100 100 255] just = [center center] Pos = (640.0, 360.0) dims = (700.0, 700.0) rot_angle = 3}
 	displaySprite {
 		parent = bv_container
@@ -35,7 +35,7 @@ script create_bonus_videos_menu\{came_from_movie = 0}
 		displayText {
 			parent = bv_container
 			id = <text_id>
-			font = #"0xaba484e8"
+			font = text_a3
 			text = ($bv_text_array [<i>].text)
 			rgba = [255 245 225 255]
 			z = 50
@@ -74,7 +74,7 @@ script create_bonus_videos_menu\{came_from_movie = 0}
 		event_handlers = <event_handlers>
 		no_focus = 1
 	}
-	text_params = {parent = mbv_vmenu Type = TextElement font = #"0xaba484e8" rgba = [255 245 225 255] z_priority = -50 rot_angle = 3 Scale = 1.2}
+	text_params = {parent = mbv_vmenu Type = TextElement font = text_a3 rgba = [255 245 225 255] z_priority = -50 rot_angle = 3 Scale = 1.2}
 	CreateScreenElement {
 		<text_params>
 		event_handlers = [

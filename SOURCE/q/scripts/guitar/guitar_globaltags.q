@@ -81,7 +81,7 @@ default_songtags = {
 }
 
 script setup_songtags
-	GetArraySize \{$#"0x6c609315"}
+	GetArraySize \{$difficulty_list}
 	num_difficulty = <array_Size>
 	array_count = 0
 	begin
@@ -241,7 +241,7 @@ default_bandtags = {
 script setup_bandtags
 	band_count = 0
 	begin
-		GetArraySize \{$#"0x6c609315"}
+		GetArraySize \{$difficulty_list}
 		array_count = 0
 		begin
 			get_difficulty_text_nl difficulty = ($difficulty_list [<array_count>])
@@ -257,7 +257,7 @@ script setup_bandtags
 		repeat <array_Size>
 		<band_count> = (<band_count> + 1)
 	repeat ($num_career_bands + 1)
-	GetArraySize \{$#"0x6c609315"}
+	GetArraySize \{$difficulty_list}
 	array_count = 0
 	begin
 		get_difficulty_text_nl difficulty = ($difficulty_list [<array_count>])
@@ -410,61 +410,61 @@ endscript
 script GlobalTags_UnlockAll\{songs_only = 0}
 	if NOT (<songs_only> = 1)
 		array_count = 0
-		GetArraySize \{$#"0x6b999e82"}
+		GetArraySize \{$Bonus_Guitars}
 		begin
 			SetGlobalTags ($Bonus_Guitars [<array_count>].id)params = {unlocked = 1 unlocked_for_purchase = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0x5e190e34"}
+		GetArraySize \{$Bonus_Guitar_Finishes}
 		begin
 			SetGlobalTags ($Bonus_Guitar_Finishes [<array_count>].id)params = {unlocked = 1 unlocked_for_purchase = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0xbc02c6ad"}
+		GetArraySize \{$Secret_Guitars}
 		begin
 			SetGlobalTags ($Secret_Guitars [<array_count>].id)params = {unlocked = 1 unlocked_for_purchase = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0x1ee2823e"}
+		GetArraySize \{$Bonus_Basses}
 		begin
 			SetGlobalTags ($Bonus_Basses [<array_count>].id)params = {unlocked = 1 unlocked_for_purchase = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0x9088f262"}
+		GetArraySize \{$Bonus_Bass_Finishes}
 		begin
 			SetGlobalTags ($Bonus_Bass_Finishes [<array_count>].id)params = {unlocked = 1 unlocked_for_purchase = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0x886843df"}
+		GetArraySize \{$Secret_Basses}
 		begin
 			SetGlobalTags ($Secret_Basses [<array_count>].id)params = {unlocked = 1 unlocked_for_purchase = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0x1c11400a"}
+		GetArraySize \{$Secret_Characters}
 		begin
 			SetGlobalTags ($Secret_Characters [<array_count>].id)params = {unlocked = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0x625feafc"}
+		GetArraySize \{$Bonus_Outfits}
 		begin
 			SetGlobalTags ($Bonus_Outfits [<array_count>].id)params = {unlocked = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0x06af4fdb"}
+		GetArraySize \{$Bonus_Styles}
 		begin
 			SetGlobalTags ($Bonus_Styles [<array_count>].id)params = {unlocked = 1}
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		array_count = 0
-		GetArraySize \{$#"0x995fd11c"}
+		GetArraySize \{$Bonus_videos}
 		begin
 			SetGlobalTags ($Bonus_videos [<array_count>].id)params = {unlocked = 1}
 			array_count = (<array_count> + 1)

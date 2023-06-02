@@ -1,5 +1,5 @@
 menu_choose_practice_destroy_previous_menu = 1
-menu_choose_practice_speed_font = #"0xaba484e8"
+menu_choose_practice_speed_font = text_a3
 
 script create_choose_practice_speed_menu
 	disable_pause
@@ -28,15 +28,15 @@ script create_choose_practice_speed_menu
 	}
 	menu_z = 500
 	CreateScreenElement \{Type = ContainerElement id = cps_speed_container parent = root_window Pos = (0.0, 0.0)}
-	displaySprite \{parent = cps_speed_container Pos = (640.0, 360.0) just = [right bottom] tex = #"0x0d5b4718" dims = (320.0, 320.0) z = 600 flip_v}
-	displaySprite \{parent = cps_speed_container Pos = (640.0, 360.0) just = [left bottom] tex = #"0x0d5b4718" dims = (320.0, 320.0) z = 600}
-	displaySprite \{parent = cps_speed_container Pos = (640.0, 360.0) just = [left top] tex = #"0x0d5b4718" dims = (320.0, 320.0) z = 600 flip_h}
-	CreateScreenElement \{Type = SpriteElement parent = cps_speed_container Pos = (640.0, 360.0) just = [right top] texture = #"0x0d5b4718" dims = (320.0, 320.0) z_priority = 600 flip_v flip_h}
+	displaySprite \{parent = cps_speed_container Pos = (640.0, 360.0) just = [right bottom] tex = practice_speed_bg dims = (320.0, 320.0) z = 600 flip_v}
+	displaySprite \{parent = cps_speed_container Pos = (640.0, 360.0) just = [left bottom] tex = practice_speed_bg dims = (320.0, 320.0) z = 600}
+	displaySprite \{parent = cps_speed_container Pos = (640.0, 360.0) just = [left top] tex = practice_speed_bg dims = (320.0, 320.0) z = 600 flip_h}
+	CreateScreenElement \{Type = SpriteElement parent = cps_speed_container Pos = (640.0, 360.0) just = [right top] texture = practice_speed_bg dims = (320.0, 320.0) z_priority = 600 flip_v flip_h}
 	displaySprite \{parent = cps_speed_container id = cps_hilite tex = white z = 550 rgba = [215 120 40 255] just = [center center] z = 699}
-	displaySprite \{parent = cps_speed_container id = cps_hilite_be1 tex = #"0x40f8daf3" z = 550 rgba = [215 120 40 255] just = [right center] z = 699}
-	displaySprite \{parent = cps_speed_container id = cps_hilite_be2 tex = #"0x40f8daf3" z = 550 rgba = [215 120 40 255] just = [left center] z = 699}
-	CreateScreenElement \{Type = SpriteElement parent = cps_speed_container texture = #"0x1a376488" rgba = [0 0 0 180] Pos = (0.0, 0.0) dims = (1280.0, 720.0) just = [left top] z_priority = 500}
-	CreateScreenElement \{Type = TextElement parent = cps_speed_container text = "Select Speed" font = #"0xba959ce0" rgba = [215 120 40 255] Scale = 1.5 Pos = (640.0, 240.0) just = [center center] z_priority = 700}
+	displaySprite \{parent = cps_speed_container id = cps_hilite_be1 tex = character_hub_hilite_bookend z = 550 rgba = [215 120 40 255] just = [right center] z = 699}
+	displaySprite \{parent = cps_speed_container id = cps_hilite_be2 tex = character_hub_hilite_bookend z = 550 rgba = [215 120 40 255] just = [left center] z = 699}
+	CreateScreenElement \{Type = SpriteElement parent = cps_speed_container texture = gradient_128 rgba = [0 0 0 180] Pos = (0.0, 0.0) dims = (1280.0, 720.0) just = [left top] z_priority = 500}
+	CreateScreenElement \{Type = TextElement parent = cps_speed_container text = "Select Speed" font = text_a10 rgba = [215 120 40 255] Scale = 1.5 Pos = (640.0, 240.0) just = [center center] z_priority = 700}
 	CreateScreenElement {
 		<text_params>
 		Type = ContainerElement

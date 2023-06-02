@@ -1,4 +1,4 @@
-gh3_button_font = #"0x0d53096f"
+gh3_button_font = buttonsxenon
 default_event_handlers = [
 	{
 		pad_up
@@ -40,7 +40,7 @@ endscript
 // @parmopt vector | dims | (400,480) | dimensions of the menu
 // @parmopt array | internal_just | [left top] | justification of elements within the
 // menu
-script new_menu\{menu_pos = $#"0xe787d761" event_handlers = $#"0xc3d3907e" use_backdrop = 0 z = 1 dims = (400.0, 480.0) font = #"0x45aae5c4" font_size = 0.75 default_colors = 1 just = [left top] no_focus = 0 internal_just = [center top]}
+script new_menu\{menu_pos = $menu_pos event_handlers = $default_event_handlers use_backdrop = 0 z = 1 dims = (400.0, 480.0) font = text_a1 font_size = 0.75 default_colors = 1 just = [left top] no_focus = 0 internal_just = [center top]}
 	if ScreenElementExists id = <scrollid>
 		printf "script new_menu - %s Already exists." s = <scrollid>
 		return
@@ -178,7 +178,7 @@ endscript
 
 script create_main_menu_backdrop
 	Change \{coop_dlc_active = 0}
-	create_menu_backdrop \{texture = #"0x9ab2c5f2"}
+	create_menu_backdrop \{texture = menu_main_bg}
 	base_menu_pos = (730.0, 90.0)
 	CreateScreenElement {
 		Type = ContainerElement
@@ -217,7 +217,7 @@ script WinPortCreateLaptopUi
 		Type = SpriteElement
 		id = batteryElem
 		parent = root_window
-		texture = #"0x013e3f9b"
+		texture = battery_charging
 		Pos = (65.0, 721.0)
 		Scale = (0.6600000262260437, 0.6600000262260437)
 		just = [left bottom]
@@ -228,7 +228,7 @@ script WinPortCreateLaptopUi
 		Type = SpriteElement
 		id = batteryLevelElem
 		parent = root_window
-		texture = #"0xb701b78f"
+		texture = battery_level0
 		Pos = (65.0, 721.0)
 		Scale = (0.6600000262260437, 0.6600000262260437)
 		just = [left bottom]
@@ -239,7 +239,7 @@ script WinPortCreateLaptopUi
 		Type = SpriteElement
 		id = wirelessElem
 		parent = root_window
-		texture = #"0xdca434cd"
+		texture = wifi_bar0
 		Pos = (1201.0, 716.0)
 		Scale = (0.6600000262260437, 0.6600000262260437)
 		just = [right bottom]
@@ -254,9 +254,9 @@ script WinPortUpdateLaptopUi
 		WinPortGetLaptopInfo
 		if (<batteryPercent> > -1)
 			if (<batteryCharging> = 1)
-				SetScreenElementProps \{id = batteryElem unhide texture = #"0x013e3f9b"}
+				SetScreenElementProps \{id = batteryElem unhide texture = battery_charging}
 			else
-				SetScreenElementProps \{id = batteryElem unhide texture = #"0x2fd10b51"}
+				SetScreenElementProps \{id = batteryElem unhide texture = battery}
 			endif
 			MathFloor ((<batteryPercent> + 1)/ 12.5)
 			FormatText checksumName = batteryLevelImage 'battery_level%a' a = <floor>
@@ -357,11 +357,11 @@ script pause_lefty_toggle \{player = 1}
 	FormatText checksumName = player_status 'player%d_status' d = <Player>
 	sound_event = Checkbox_
 	if ($<player_status>.lefthanded_gems = 1)
-		SetScreenElementProps \{id = pause_lefty_check texture = #"0xdd70901e"}
+		SetScreenElementProps \{id = pause_lefty_check texture = options_controller_x}
 		Change \{pad_event_up_inversion = true}
 	else
 		extendcrc <sound_event> 'Check_' out = sound_event
-		SetScreenElementProps \{id = pause_lefty_check texture = #"0xa986bfc3"}
+		SetScreenElementProps \{id = pause_lefty_check texture = options_controller_check}
 		Change \{pad_event_up_inversion = false}
 	endif
 	extendcrc <sound_event> 'SFX' out = sound_event
@@ -761,15 +761,15 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		lefty_flip_p2 = ($player2_status.lefthanded_gems)
 		if (<Player> = 1)
 			if (<lefty_flip_p1> = 1)
-				lefty_tex = #"0xa986bfc3"
+				lefty_tex = options_controller_check
 			else
-				lefty_tex = #"0xdd70901e"
+				lefty_tex = options_controller_x
 			endif
 		else
 			if (<lefty_flip_p2> = 1)
-				lefty_tex = #"0xa986bfc3"
+				lefty_tex = options_controller_check
 			else
-				lefty_tex = #"0xdd70901e"
+				lefty_tex = options_controller_x
 			endif
 		endif
 		displaySprite {
@@ -792,7 +792,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				displaySprite {
 					parent = pause_menu_frame_container
 					id = pause_helper_text_bg
-					tex = #"0x237d7770"
+					tex = helper_pill_body
 					Pos = (640.0, 600.0)
 					just = [center center]
 					rgba = [96 0 0 255]
@@ -813,7 +813,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				pause_helper_text_bg ::SetProps dims = <bg_dims>
 				displaySprite {
 					parent = pause_menu_frame_container
-					tex = #"0xb844e84a"
+					tex = helper_pill_end
 					Pos = ((640.0, 600.0) - <width> * (0.5, 0.0))
 					rgba = [96 0 0 255]
 					just = [right center]
@@ -822,7 +822,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				}
 				displaySprite {
 					parent = pause_menu_frame_container
-					tex = #"0xb844e84a"
+					tex = helper_pill_end
 					Pos = ((640.0, 601.0) + <width> * (0.5, 0.0))
 					rgba = [96 0 0 255]
 					just = [left center]
@@ -852,7 +852,7 @@ script destroy_pause_menu
 	endif
 endscript
 
-script create_menu_backdrop\{texture = #"0xc5a54934" rgba = [255 255 255 255]}
+script create_menu_backdrop\{texture = venue_bg rgba = [255 255 255 255]}
 	if ScreenElementExists \{id = menu_backdrop_container}
 		DestroyScreenElement \{id = menu_backdrop_container}
 	endif
@@ -1558,7 +1558,7 @@ endscript
 winport_confirm_exit_msg = "Are you sure you want to exit?"
 
 script winport_create_confirm_exit_popup
-	create_popup_warning_menu \{textblock = {text = $#"0xf310b402"}menu_pos = (640.0, 490.0) dialog_dims = (288.0, 64.0) options = [{func = {ui_flow_manager_respond_to_action params = {action = continue}}text = "Yes" Scale = (1.0, 1.0)}{func = {ui_flow_manager_respond_to_action params = {action = go_back}}text = "No" Scale = (1.0, 1.0)}]}
+	create_popup_warning_menu \{textblock = {text = $winport_confirm_exit_msg}menu_pos = (640.0, 490.0) dialog_dims = (288.0, 64.0) options = [{func = {ui_flow_manager_respond_to_action params = {action = continue}}text = "Yes" Scale = (1.0, 1.0)}{func = {ui_flow_manager_respond_to_action params = {action = go_back}}text = "No" Scale = (1.0, 1.0)}]}
 endscript
 
 script winport_destroy_confirm_exit_popup

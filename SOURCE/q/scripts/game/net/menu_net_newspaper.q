@@ -62,7 +62,7 @@ script np_net_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu
 	displaySprite {
 		id = ss_menu_hilite_id
 		parent = newspaper_container
-		tex = #"0xe588836f"
+		tex = song_summary_menu_hilite
 		Pos = (($g_np_option_props [0].Pos)+ ($g_np_option_props [0].offset)+ <menu_offset>)
 		rgba = <ss_hilite_color>
 		rot_angle = (($g_np_option_props [$g_np_options_index].rot)+ 0.5)
@@ -145,7 +145,7 @@ script net_np_create_timer\{Player = 1}
 		Scale = (1.75, 1.75)
 		text = "20"
 		Pos = (640.0, 341.0)
-		font = #"0x35c0114b"
+		font = text_a4
 		rgba = [125 0 0 255]
 		z_priority = (<timer_z> + 5)
 	}

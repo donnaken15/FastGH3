@@ -1,4 +1,4 @@
-manage_band_menu_font = #"0x35c0114b"
+manage_band_menu_font = text_a4
 
 script create_manage_band_menu
 	get_band_game_mode_name
@@ -6,7 +6,7 @@ script create_manage_band_menu
 	GetGlobalTags <bandname_id>
 	FormatText textname = the_bands_name "''%n''" n = <name>
 	new_menu \{scrollid = mb_scroll vmenuid = mb_vmenu use_backdrop = 0 menu_pos = (732.0, 314.0) rot_angle = -2 spacing = 1}
-	create_menu_backdrop \{texture = #"0xc9cd1c15"}
+	create_menu_backdrop \{texture = toprockers_bg}
 	CreateScreenElement \{Type = ContainerElement id = mb_helper_container parent = root_window Pos = (0.0, 0.0)}
 	CreateScreenElement \{Type = ContainerElement id = mb_menu_container parent = mb_vmenu Pos = (0.0, 0.0) not_focusable}
 	CreateScreenElement \{Type = SpriteElement parent = mb_helper_container id = light_overlay texture = #"0xf6c8349f" Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
@@ -15,7 +15,7 @@ script create_manage_band_menu
 		Type = SpriteElement
 		parent = mb_helper_container
 		id = mb_random_image
-		texture = #"0x494b5879"
+		texture = band_name_graphic03
 		rgba = [255 255 255 255]
 		Pos = (($enter_band_name_big_vals).right_side_img_pos)
 		dims = (($enter_band_name_big_vals).right_side_img_dims)
@@ -24,18 +24,18 @@ script create_manage_band_menu
 	<rand> = 0
 	GetRandomValue \{name = rand integer a = 0 b = 2}
 	if (<rand> = 0)
-		SetScreenElementProps \{id = mb_random_image texture = #"0xa7453955"}
+		SetScreenElementProps \{id = mb_random_image texture = band_name_graphic01}
 	elseif (<rand> = 1)
-		SetScreenElementProps \{id = mb_random_image texture = #"0x3e4c68ef"}
+		SetScreenElementProps \{id = mb_random_image texture = band_name_graphic02}
 	elseif (<rand> = 2)
-		SetScreenElementProps \{id = mb_random_image texture = #"0x494b5879"}
+		SetScreenElementProps \{id = mb_random_image texture = band_name_graphic03}
 	endif
 	<manage_band_pos> = (725.0, 190.0)
 	CreateScreenElement {
 		Type = TextElement
 		parent = mb_helper_container
 		Pos = <manage_band_pos>
-		font = #"0x2274df42"
+		font = text_a10_large
 		rgba = [90 25 5 255]
 		text = "MANAGE BAND"
 		Scale = 1.75

@@ -191,7 +191,7 @@ script net_stats_calculate_wins
 endscript
 
 script print_scores
-	GetArraySize \{$#"0x7f438ff8"}
+	GetArraySize \{$g_p1_scores}
 	printf \{"===1=== ===2==="}
 	index = 0
 	begin

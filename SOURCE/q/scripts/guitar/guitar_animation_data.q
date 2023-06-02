@@ -28,10 +28,10 @@ drummer_anims = $nullStruct
 drummer_left_arm_twist_factors = $nullStruct
 drummer_right_arm_twist_factors = $nullStruct
 cymbal_anims = [
-	#"0x0864b6ce"
-	#"0x916de774"
-	#"0xe66ad7e2"
-	#"0x54c48476"
+	test_drum_cymbal_1
+	test_drum_cymbal_2
+	test_drum_cymbal_3
+	test_drum_cymbal_hh
 ]
 player1_battlemode_anims = {
 	Lightning = {

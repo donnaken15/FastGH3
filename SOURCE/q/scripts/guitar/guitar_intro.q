@@ -12,9 +12,9 @@ intro_sequence_props = {
 	hud_start_time = -300
 	hud_move_time = 200
 }
-fastintro_sequence_props = $#"0x36d85faf"
-practice_sequence_props = $#"0x36d85faf"
-immediate_sequence_props = $#"0x36d85faf"
+fastintro_sequence_props = $intro_sequence_props
+practice_sequence_props = $intro_sequence_props
+immediate_sequence_props = $intro_sequence_props
 current_intro = fast_intro_sequence_props
 
 script play_intro
@@ -135,7 +135,7 @@ script intro_buttonup_ripple
 	if ($current_intro.button_ripple_per_button_time = 0)
 		return
 	endif
-	GetArraySize \{$#"0xd4b50263"}
+	GetArraySize \{$gem_colors}
 	SoundEvent \{event = Notes_Ripple_Up_SFX}
 	ExtendCrc button_up_pixel_array ($<player_status>.text)out = pixel_array
 	buttonup_count = 0

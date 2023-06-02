@@ -7,8 +7,8 @@ script create_confirm_band_delete_menu
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = cbd_container Pos = (0.0, 0.0) just = [left top]}
 	offwhite = [223 223 223 255]
 	z = 100
-	displaySprite parent = cbd_container tex = #"0x7464ad56" flip_v Pos = (416.0, 60.0) Scale = (1.75, 1.75) z = <z>
-	displaySprite parent = cbd_container tex = #"0x7464ad56" Pos = (640.0, 60.0) Scale = (1.75, 1.75) z = <z>
+	displaySprite parent = cbd_container tex = dialog_title_bg flip_v Pos = (416.0, 60.0) Scale = (1.75, 1.75) z = <z>
+	displaySprite parent = cbd_container tex = dialog_title_bg Pos = (640.0, 60.0) Scale = (1.75, 1.75) z = <z>
 	displaySprite parent = cbd_container tex = white Pos = (525.0, 524.0) Scale = (58.0, 6.0) z = (<z> + 0.1)rgba = <offwhite>
 	displaySprite parent = cbd_container tex = #"0xacf2f335" Pos = (510.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
 	displaySprite parent = cbd_container tex = #"0xacf2f335" Pos = (723.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
@@ -114,7 +114,7 @@ endscript
 
 script menu_confirm_band_delete_select_yes
 	band_count = ($current_band)
-	GetArraySize \{$#"0x6c609315"}
+	GetArraySize \{$difficulty_list}
 	array_count = 0
 	begin
 		get_difficulty_text_nl difficulty = ($difficulty_list [<array_count>])
@@ -133,7 +133,7 @@ script menu_confirm_band_delete_select_yes
 		array_count = (<array_count> + 1)
 	repeat <array_Size>
 	if IsWinPort
-		SaveToMemoryCard \{FileName = $#"0xd80f11db" filetype = Progress usepaddingslot = Always}
+		SaveToMemoryCard \{FileName = $memcard_file_name filetype = Progress usepaddingslot = Always}
 	endif
 	ui_flow_manager_respond_to_action \{action = continue}
 endscript

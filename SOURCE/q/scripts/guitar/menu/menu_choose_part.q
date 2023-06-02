@@ -19,13 +19,13 @@ script create_choose_part_menu
 	if ($is_network_game)
 		net_choose_part_screen_elements
 	else
-		CreateScreenElement \{Type = VMenu parent = si_scrolling_menu id = si_vmenu_p1 event_handlers = [{pad_up select_instrument_scroll params = {Player = 1 Dir = up}}{pad_down select_instrument_scroll params = {Player = 1 Dir = down}}{pad_choose choose_part_menu_select_part params = {Player = 1}}{pad_back select_instrument_go_back params = {Player = 1}}] exclusive_device = $#"0xab76e33e"}
+		CreateScreenElement \{Type = VMenu parent = si_scrolling_menu id = si_vmenu_p1 event_handlers = [{pad_up select_instrument_scroll params = {Player = 1 Dir = up}}{pad_down select_instrument_scroll params = {Player = 1 Dir = down}}{pad_choose choose_part_menu_select_part params = {Player = 1}}{pad_back select_instrument_go_back params = {Player = 1}}] exclusive_device = $player1_device}
 		LaunchEvent \{Type = focus target = si_vmenu_p1}
-		CreateScreenElement \{Type = VMenu parent = si_scrolling_menu id = si_vmenu_p2 event_handlers = [{pad_up select_instrument_scroll params = {Player = 2 Dir = up}}{pad_down select_instrument_scroll params = {Player = 2 Dir = down}}{pad_choose choose_part_menu_select_part params = {Player = 2}}{pad_back select_instrument_go_back params = {Player = 2}}] exclusive_device = $#"0x25f9e4dd"}
+		CreateScreenElement \{Type = VMenu parent = si_scrolling_menu id = si_vmenu_p2 event_handlers = [{pad_up select_instrument_scroll params = {Player = 2 Dir = up}}{pad_down select_instrument_scroll params = {Player = 2 Dir = down}}{pad_choose choose_part_menu_select_part params = {Player = 2}}{pad_back select_instrument_go_back params = {Player = 2}}] exclusive_device = $player2_device}
 		LaunchEvent \{Type = focus target = si_vmenu_p2}
 	endif
-	menu_font = #"0x42c721dd"
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	menu_font = text_a5
+	create_menu_backdrop \{texture = venue_bg}
 	CreateScreenElement \{Type = ContainerElement id = select_intsrument_container parent = root_window Pos = (0.0, 0.0)}
 	displaySprite \{parent = select_intsrument_container tex = #"0x8be93fac" Pos = (250.0, 0.0) dims = (768.0, 768.0) z = 1}
 	displaySprite \{parent = select_intsrument_container tex = #"0xb1004fdd" Pos = (190.0, 260.0) dims = (192.0, 96.0) z = 10 rot_angle = -80}
@@ -33,8 +33,8 @@ script create_choose_part_menu
 	displaySprite \{parent = select_intsrument_container tex = #"0x01c66f71" Pos = (960.0, 386.0) dims = (116.0, 232.0) z = 10 flip_v rot_angle = -6}
 	displaySprite \{parent = select_intsrument_container tex = #"0x01c66f71" rgba = [0 0 0 128] Pos = (966.0, 392.0) dims = (116.0, 232.0) z = 10 flip_v rot_angle = -6}
 	if NOT ($is_network_game)
-		displayText \{parent = select_intsrument_container Pos = (420.0, 96.0) Scale = 1 font = #"0xdbce7067" rgba = [185 220 230 255] rot = -3 z = 5 text = "Player 1"}
-		displayText \{parent = select_intsrument_container Pos = (650.0, 538.0) Scale = 1 font = #"0xdbce7067" rgba = [215 220 175 255] rot = -3 z = 5 text = "Player 2"}
+		displayText \{parent = select_intsrument_container Pos = (420.0, 96.0) Scale = 1 font = text_a6 rgba = [185 220 230 255] rot = -3 z = 5 text = "Player 1"}
+		displayText \{parent = select_intsrument_container Pos = (650.0, 538.0) Scale = 1 font = text_a6 rgba = [215 220 175 255] rot = -3 z = 5 text = "Player 2"}
 	endif
 	get_song_rhythm_track song = ($current_song)
 	if (<rhythm_track> = 1)
@@ -245,7 +245,7 @@ script select_instrument_scroll\{Dir = down overridelock = 0}
 			SetScreenElementProps id = si_hilite_bookend_p1a Pos = ($g_si_hilitep1_pos + (0.0, 60.0))
 		else
 			Change \{g_si_player1_index = 0}
-			SetScreenElementProps \{id = si_hilite_p1 Pos = $#"0x8c59897e"}
+			SetScreenElementProps \{id = si_hilite_p1 Pos = $g_si_hilitep1_pos}
 			SetScreenElementProps id = si_hilite_bookend_p1a Pos = ($g_si_hilitep1_pos + (0.0, 10.0))
 		endif
 	else
@@ -258,7 +258,7 @@ script select_instrument_scroll\{Dir = down overridelock = 0}
 			SetScreenElementProps id = si_hilite_bookend_p2a Pos = ($g_si_hilitep2_pos + (0.0, 64.0))
 		else
 			Change \{g_si_player2_index = 0}
-			SetScreenElementProps \{id = si_hilite_p2 Pos = $#"0xcbf9f3ae" flip_h}
+			SetScreenElementProps \{id = si_hilite_p2 Pos = $g_si_hilitep2_pos flip_h}
 			SetScreenElementProps id = si_hilite_bookend_p2a Pos = ($g_si_hilitep2_pos + (0.0, 20.0))
 		endif
 	endif
@@ -320,9 +320,9 @@ script create_ready_icons\{pos1 = (440.0, 120.0) pos2 = (720.0, 580.0)}
 			Scale = 1
 			alpha = 0
 		}
-		displaySprite \{parent = ready_container_p1 tex = #"0x7464ad56" flip_v dims = (128.0, 128.0)}
-		displaySprite parent = <id> tex = #"0x7464ad56" Pos = (128.0, 0.0) dims = (128.0, 128.0)
-		displayText \{parent = ready_container_p1 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.8999999761581421) font = #"0x35c0114b" z = 100 rgba = [223 223 223 255]}
+		displaySprite \{parent = ready_container_p1 tex = dialog_title_bg flip_v dims = (128.0, 128.0)}
+		displaySprite parent = <id> tex = dialog_title_bg Pos = (128.0, 0.0) dims = (128.0, 128.0)
+		displayText \{parent = ready_container_p1 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.8999999761581421) font = text_a4 z = 100 rgba = [223 223 223 255]}
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> dims = (160.0, 42.0)
 	endif
@@ -339,9 +339,9 @@ script create_ready_icons\{pos1 = (440.0, 120.0) pos2 = (720.0, 580.0)}
 			Scale = 1
 			alpha = 0
 		}
-		displaySprite \{parent = ready_container_p2 tex = #"0x7464ad56" flip_v dims = (128.0, 128.0)}
-		displaySprite parent = <id> tex = #"0x7464ad56" Pos = (128.0, 0.0) dims = (128.0, 128.0)
-		displayText \{parent = ready_container_p2 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.8999999761581421) font = #"0x35c0114b" z = 100 rgba = [223 223 223 255]}
+		displaySprite \{parent = ready_container_p2 tex = dialog_title_bg flip_v dims = (128.0, 128.0)}
+		displaySprite parent = <id> tex = dialog_title_bg Pos = (128.0, 0.0) dims = (128.0, 128.0)
+		displayText \{parent = ready_container_p2 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.8999999761581421) font = text_a4 z = 100 rgba = [223 223 223 255]}
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> dims = (160.0, 42.0)
 	endif

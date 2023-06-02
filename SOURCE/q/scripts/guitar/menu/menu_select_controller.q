@@ -75,15 +75,15 @@ script create_select_controller_menu
 	Change \{menu_select_controller_p1_controller_id = -1}
 	Change \{menu_select_controller_p2_controller_id = -1}
 	Change \{player_controls_valid = 0}
-	menu_font = #"0x42c721dd"
+	menu_font = text_a5
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = msc_container Pos = (0.0, 0.0)}
-	create_menu_backdrop \{texture = #"0x1fa62617"}
-	displayText \{parent = msc_container text = "Select Controller" Pos = (690.0, 140.0) Scale = 1.4 just = [center center] rgba = [90 25 20 255] font = #"0xba959ce0" z = 100 noshadow}
-	CreateScreenElement \{Type = TextElement parent = msc_container text = "Move the desired controller" Pos = (620.0, 570.0) Scale = 0.7 just = [center center] rgba = [90 25 20 255] font = #"0xcd92ac76" z = 100 Shadow shadow_rgba = [185 180 135 255] shadow_offs = (2.0, 2.0)}
-	CreateScreenElement \{Type = TextElement parent = msc_container text = "to your side of the screen." Pos = (620.0, 610.0) Scale = 0.7 just = [center center] rgba = [90 25 20 255] font = #"0xcd92ac76" z = 100 Shadow shadow_rgba = [185 180 135 255] shadow_offs = (2.0, 2.0)}
-	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow1 texture = #"0xbe14c2a7" rgba = [240 140 80 255] dims = (64.0, 128.0) Pos = (450.0, 270.0) just = [left top] rot_angle = -20}
+	create_menu_backdrop \{texture = controller_2p_bg}
+	displayText \{parent = msc_container text = "Select Controller" Pos = (690.0, 140.0) Scale = 1.4 just = [center center] rgba = [90 25 20 255] font = text_a10 z = 100 noshadow}
+	CreateScreenElement \{Type = TextElement parent = msc_container text = "Move the desired controller" Pos = (620.0, 570.0) Scale = 0.7 just = [center center] rgba = [90 25 20 255] font = text_a11 z = 100 Shadow shadow_rgba = [185 180 135 255] shadow_offs = (2.0, 2.0)}
+	CreateScreenElement \{Type = TextElement parent = msc_container text = "to your side of the screen." Pos = (620.0, 610.0) Scale = 0.7 just = [center center] rgba = [90 25 20 255] font = text_a11 z = 100 Shadow shadow_rgba = [185 180 135 255] shadow_offs = (2.0, 2.0)}
+	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow1 texture = controller_2p_arrow rgba = [240 140 80 255] dims = (64.0, 128.0) Pos = (450.0, 270.0) just = [left top] rot_angle = -20}
 	<id> ::SetTags old_pos = (450.0, 270.0)
-	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow2 texture = #"0xbe14c2a7" rgba = [130 90 205 255] dims = (64.0, 128.0) Pos = (705.0, 445.0) just = [left top] flip_v flip_h rot_angle = -20}
+	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow2 texture = controller_2p_arrow rgba = [130 90 205 255] dims = (64.0, 128.0) Pos = (705.0, 445.0) just = [left top] flip_v flip_h rot_angle = -20}
 	<id> ::SetTags old_pos = (680.0, 420.0)
 	spawnscriptnow \{cs_bounce_arrows}
 	spawnscriptnow \{jump_up_and_down_peasants}
@@ -166,15 +166,15 @@ script menu_select_controller_add_controllable_icon\{controller_index = 0 wait_t
 	if NOT ScreenElementExists id = <controller_icon_id>
 		if IsWinPort
 			if WinPortSioIsKeyboard deviceNum = <controller_index>
-				c_texture = #"0x15a1c042"
+				c_texture = controller_2p_keyboard
 				c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].c)
 			else
-				c_texture = #"0xd0d5753e"
+				c_texture = controller_2p_lespaul
 				c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].g)
 			endif
 		else
 			if IsGuitarController controller = <controller_index>
-				c_texture = #"0xd0d5753e"
+				c_texture = controller_2p_lespaul
 				c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].g)
 			else
 				GetPlatform
@@ -182,7 +182,7 @@ script menu_select_controller_add_controllable_icon\{controller_index = 0 wait_t
 					case Xenon
 						c_texture = #"0x6f1b200d"
 					case PS3
-						c_texture = #"0x944083d9"
+						c_texture = controller_2p_controller_ps3
 					default
 						ScriptAssert \{"Unrecognized platform for controller select"}
 				endswitch

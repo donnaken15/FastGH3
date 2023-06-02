@@ -1,7 +1,7 @@
 mp_select_controller_fs = {
 	create = create_select_controller_menu
 	create_params = {
-		Player = $#"0x8da97503"
+		Player = $primary_controller
 		#"0xd86acd5f" = 2
 	}
 	Destroy = destroy_select_controller_menu
@@ -23,7 +23,7 @@ mp_select_controller_fs = {
 mp_select_mode_fs = {
 	create = create_mp_select_mode_menu
 	create_params = {
-		Player = $#"0x8da97503"
+		Player = $primary_controller
 		#"0xd86acd5f" = 2
 	}
 	Destroy = destroy_mp_select_mode_menu

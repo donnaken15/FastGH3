@@ -415,7 +415,7 @@ script guitar_startup
 	//MemCardSystemInitialize // probably destroyed and broke save functionality
 	InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
 	//InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
-	LightShow_Init \{notes = $#"0x104dfb2e" nodeflags = $#"0x74c1de3d" ColorOverrideExclusions = $#"0x5e1add82"}
+	LightShow_Init \{notes = $LightShow_NoteMapping nodeflags = $LightShow_StateNodeFlags ColorOverrideExclusions = $LightShow_ColorOverrideExcludeLights}
 	printf \{'Initializing Replay buffer'}
 	AllocateDataBuffer \{name = replay kb = 5120}
 	printf \{'Creating sound busses'}

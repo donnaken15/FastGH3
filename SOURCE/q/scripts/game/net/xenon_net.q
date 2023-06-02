@@ -99,7 +99,7 @@ script xboxlive_menu_optimatch_results_item_add
 			Type = SpriteElement
 			parent = <container_element>
 			local_id = bookend_left
-			texture = #"0x40f8daf3"
+			texture = character_hub_hilite_bookend
 			dims = (35.0, 35.0)
 			rgba = ($online_light_blue)
 			Pos = (-5.0, -3.0)
@@ -112,7 +112,7 @@ script xboxlive_menu_optimatch_results_item_add
 			Type = SpriteElement
 			parent = <container_element>
 			local_id = bookend_right
-			texture = #"0x40f8daf3"
+			texture = character_hub_hilite_bookend
 			dims = (35.0, 35.0)
 			rgba = ($online_light_blue)
 			Pos = (632.0, -3.0)
@@ -124,7 +124,7 @@ script xboxlive_menu_optimatch_results_item_add
 		CreateScreenElement {
 			Type = TextElement
 			parent = <container_element>
-			font = #"0x42c721dd"
+			font = text_a5
 			local_id = server_name
 			Scale = (0.75, 0.6500000357627869)
 			rgba = ($online_light_blue)
@@ -138,7 +138,7 @@ script xboxlive_menu_optimatch_results_item_add
 		CreateScreenElement {
 			Type = TextElement
 			parent = <container_element>
-			font = #"0x42c721dd"
+			font = text_a5
 			local_id = mode
 			Scale = (0.75, 0.6500000357627869)
 			rgba = ($online_light_blue)
@@ -152,7 +152,7 @@ script xboxlive_menu_optimatch_results_item_add
 		CreateScreenElement {
 			Type = TextElement
 			parent = <container_element>
-			font = #"0x42c721dd"
+			font = text_a5
 			local_id = songs
 			Scale = (0.75, 0.6500000357627869)
 			rgba = ($online_light_blue)

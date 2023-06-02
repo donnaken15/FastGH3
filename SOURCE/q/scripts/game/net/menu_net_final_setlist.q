@@ -25,7 +25,7 @@ script create_final_set_list_menu{
 			Type = TextElement
 			parent = <vmenu_id>
 			id = <item_id>
-			font = #"0x45aae5c4"
+			font = text_a1
 			Scale = 0.75
 			rgba = [210 210 210 250]
 			text = <newtext>
@@ -37,7 +37,7 @@ script create_final_set_list_menu{
 		CreateScreenElement {
 			Type = TextElement
 			parent = <vmenu_id>
-			font = #"0x45aae5c4"
+			font = text_a1
 			Scale = 0.75
 			rgba = [210 210 210 250]
 			text = "Press A when the final song is selected"

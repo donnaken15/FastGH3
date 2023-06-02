@@ -10,7 +10,7 @@ script CreateMaskedScreenElements
 		<elements> = []
 	endif
 	GetScreenElementMaskParams
-	if NOT GotParam \{#"0x935ab858"}
+	if NOT GotParam \{debug}
 		CreateScreenElement {
 			<mask_element>
 			Type = SpriteElement

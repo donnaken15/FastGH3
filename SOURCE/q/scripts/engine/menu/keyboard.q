@@ -27,7 +27,7 @@ script handle_keyboard_input
 		ToggleMetrics \{mode = 4}
 	endif
 	GetMetricsMode
-	GetArraySize \{$#"0x285f8558"}
+	GetArraySize \{$Profile_Pages}
 	num_pages = <array_Size>
 	num_cpus = 7
 	if isps3
@@ -41,7 +41,7 @@ script handle_keyboard_input
 				if (<mode> = 2)
 					if ((<key> - 1)< <num_cpus>)
 						Change current_cpu = (<key> -1)
-						printf \{"Current CPU %c" c = $#"0x4c8350e7"}
+						printf \{"Current CPU %c" c = $current_cpu}
 						break
 					endif
 				endif

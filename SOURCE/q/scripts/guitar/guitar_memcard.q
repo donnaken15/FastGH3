@@ -73,7 +73,7 @@ script memcard_check_for_previously_used_folder
 		memcard_enum_folders
 		MC_LoadTOCInActiveFolder \{ValidatePrev}
 		if (<result> = true)
-			if MemCardFileExists \{FileName = $#"0xd80f11db" filetype = Progress}
+			if MemCardFileExists \{FileName = $memcard_file_name filetype = Progress}
 				printf \{"Card re-inserted, re-using old data!"}
 				return \{found = 1 corrupt = 0}
 			else
@@ -83,7 +83,7 @@ script memcard_check_for_previously_used_folder
 			if (<ErrorCode> = InvalidTOC)
 				return \{found = 0 corrupt = 0}
 			else
-				if MC_FolderExists \{FolderName = $#"0x628a4e84"}
+				if MC_FolderExists \{FolderName = $memcard_content_name}
 					return \{found = 1 corrupt = 1}
 				else
 					return \{found = 0 corrupt = 0}
@@ -115,13 +115,13 @@ script memcard_check_for_existing_save
 		memcard_enum_folders
 		MC_WaitAsyncOpsFinished
 		memcard_check_for_card
-		if MC_FolderExists \{FolderName = $#"0x628a4e84"}
-			MC_SetActiveFolder \{FolderName = $#"0x628a4e84"}
+		if MC_FolderExists \{FolderName = $memcard_content_name}
+			MC_SetActiveFolder \{FolderName = $memcard_content_name}
 			MC_LoadTOCInActiveFolder
 			if (<result> = FALSE)
 				return \{found = 1 corrupt = 1}
 			endif
-			if MemCardFileExists \{FileName = $#"0xd80f11db" filetype = Progress}
+			if MemCardFileExists \{FileName = $memcard_file_name filetype = Progress}
 				return \{found = 1 corrupt = 0}
 			else
 				return \{found = 1 corrupt = 1}
@@ -156,11 +156,11 @@ script memcard_save_file\{OverwriteConfirmed = 0}
 		memcard_check_for_card
 		ResetTimer
 		<overwrite> = 0
-		if MC_FolderExists \{FolderName = $#"0x628a4e84"}
+		if MC_FolderExists \{FolderName = $memcard_content_name}
 			if (<OverwriteConfirmed> = 1)
 				<overwrite> = 1
 				create_overwrite_menu
-				MC_SetActiveFolder \{FolderName = $#"0x628a4e84"}
+				MC_SetActiveFolder \{FolderName = $memcard_content_name}
 			else
 				Goto \{create_confirm_overwrite_menu}
 			endif
@@ -171,7 +171,7 @@ script memcard_save_file\{OverwriteConfirmed = 0}
 				endif
 			endif
 			create_save_menu
-			MC_CreateFolder \{name = $#"0x628a4e84" desc = GuitarContent}
+			MC_CreateFolder \{name = $memcard_content_name desc = GuitarContent}
 			if (<result> = FALSE)
 				if (<ErrorCode> = OutOfSpace)
 					memcard_error \{error = create_out_of_space_menu}
@@ -181,7 +181,7 @@ script memcard_save_file\{OverwriteConfirmed = 0}
 			endif
 		endif
 		memcard_pre_save_progress
-		SaveToMemoryCard \{FileName = $#"0xd80f11db" filetype = Progress usepaddingslot = Always}
+		SaveToMemoryCard \{FileName = $memcard_file_name filetype = Progress usepaddingslot = Always}
 		if (<result> = FALSE)
 			if (<ErrorCode> = OutOfSpace)
 				memcard_error \{error = create_out_of_space_menu}
@@ -230,7 +230,7 @@ script memcard_delete_file
 			fade_overlay_off
 		else
 			ResetTimer
-			MC_DeleteFolder \{FolderName = $#"0x628a4e84"}
+			MC_DeleteFolder \{FolderName = $memcard_content_name}
 			if (<result> = FALSE)
 				memcard_error \{error = create_delete_failed_menu}
 			endif
@@ -266,18 +266,18 @@ script memcard_load_file\{LoadConfirmed = 0}
 		MC_WaitAsyncOpsFinished
 		memcard_check_for_card
 		ResetTimer
-		if MC_FolderExists \{FolderName = $#"0x628a4e84"}
+		if MC_FolderExists \{FolderName = $memcard_content_name}
 			if (<LoadConfirmed> = 1)
-				MC_SetActiveFolder \{FolderName = $#"0x628a4e84"}
+				MC_SetActiveFolder \{FolderName = $memcard_content_name}
 			else
 				Goto \{create_confirm_load_menu}
 			endif
 		else
 			memcard_error \{error = create_no_save_found_menu}
 		endif
-		MC_SetActiveFolder \{FolderName = $#"0x628a4e84"}
+		MC_SetActiveFolder \{FolderName = $memcard_content_name}
 		create_load_file_menu
-		LoadFromMemoryCard \{FileName = $#"0xd80f11db" filetype = Progress}
+		LoadFromMemoryCard \{FileName = $memcard_file_name filetype = Progress}
 		if (<result> = FALSE)
 			if (<ErrorCode> = corrupt)
 				memcard_error \{error = create_corrupted_data_menu}

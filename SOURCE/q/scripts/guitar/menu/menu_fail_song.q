@@ -47,8 +47,8 @@ script create_fail_song_menu
 	create_pause_menu_frame z = (<z> - 10)
 	SetScreenElementProps \{id = fail_song_vmenu_id internal_just = [center center]}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = fail_song_static_text_container internal_just = [center center] Pos = (0.0, 0.0) z_priority = 2}
-	displaySprite parent = fail_song_static_text_container tex = #"0x7464ad56" flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = <z>
-	displaySprite parent = fail_song_static_text_container tex = #"0x7464ad56" Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = <z>
+	displaySprite parent = fail_song_static_text_container tex = dialog_title_bg flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = <z>
+	displaySprite parent = fail_song_static_text_container tex = dialog_title_bg Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = <z>
 	if ($is_boss_song = 1)
 		title = "BATTLE LOST"
 	else

@@ -216,27 +216,27 @@ script create_cheats_menu
 	disable_pause
 	if ($entering_cheat = 0)
 		CreateScreenElement \{Type = ContainerElement id = cheats_container parent = root_window Pos = (0.0, 0.0)}
-		create_menu_backdrop \{texture = #"0xc5a54934"}
-		displaySprite \{parent = cheats_container tex = #"0xc50d7c44" rot_angle = 1 Pos = (640.0, 215.0) dims = (820.0, 440.0) just = [center center] z = 1 font = $#"0x11383803"}
+		create_menu_backdrop \{texture = venue_bg}
+		displaySprite \{parent = cheats_container tex = options_video_poster rot_angle = 1 Pos = (640.0, 215.0) dims = (820.0, 440.0) just = [center center] z = 1 font = $video_settings_menu_font}
 		displayText \{parent = cheats_container Pos = (910.0, 402.0) just = [right center] text = "CHEATS" Scale = 1.5 rgba = [240 235 240 255] font = fontgrid_title_gh3 noshadow}
-		displaySprite \{parent = cheats_container tex = #"0x5f0e2ef1" Pos = (270.0, 185.0) rot_angle = -50 Scale = 0.5 z = 20}
+		displaySprite \{parent = cheats_container tex = tape_h_03 Pos = (270.0, 185.0) rot_angle = -50 Scale = 0.5 z = 20}
 		displaySprite {
 			parent = <id>
-			tex = #"0x5f0e2ef1"
+			tex = tape_h_03
 			Pos = (5.0, 5.0)
 			rgba = [0 0 0 128]
 			z = 19
 		}
-		displaySprite \{parent = cheats_container tex = #"0xc16abb52" Pos = (930.0, 380.0) rot_angle = -120 Scale = 0.5 z = 20}
+		displaySprite \{parent = cheats_container tex = tape_h_04 Pos = (930.0, 380.0) rot_angle = -120 Scale = 0.5 z = 20}
 		displaySprite {
 			parent = <id>
-			tex = #"0xc16abb52"
+			tex = tape_h_04
 			Pos = (5.0, 5.0)
 			rgba = [0 0 0 128]
 			z = 19
 		}
 		CreateScreenElement \{Type = ContainerElement id = cheats_warning_container parent = root_window alpha = 0 Scale = 0.5 Pos = (640.0, 540.0)}
-		displaySprite \{parent = cheats_warning_container id = cheats_warning tex = #"0x237d7770" Pos = (0.0, 0.0) just = [center center] rgba = [96 0 0 255] z = 100}
+		displaySprite \{parent = cheats_warning_container id = cheats_warning tex = helper_pill_body Pos = (0.0, 0.0) just = [center center] rgba = [96 0 0 255] z = 100}
 		GetPlatform
 		switch <Platform>
 			case Xenon
@@ -257,7 +257,7 @@ script create_cheats_menu
 			Type = TextBlockElement
 			id = first_warning
 			parent = cheats_warning_container
-			font = #"0xdbce7067"
+			font = text_a6
 			Scale = 1
 			text = <warning_text>
 			rgba = [186 105 0 255]
@@ -272,7 +272,7 @@ script create_cheats_menu
 		cheats_warning ::SetProps dims = <bg_dims>
 		displaySprite {
 			parent = cheats_warning_container
-			tex = #"0xb844e84a"
+			tex = helper_pill_end
 			Pos = (-1 * <width> * (0.5, 0.0))
 			rgba = [96 0 0 255]
 			dims = ((64.0, 0.0) + (<height> * (0.0, 1.0) + (0.0, 40.0)))
@@ -282,7 +282,7 @@ script create_cheats_menu
 		}
 		displaySprite {
 			parent = cheats_warning_container
-			tex = #"0xb844e84a"
+			tex = helper_pill_end
 			Pos = (<width> * (0.5, 0.0))
 			rgba = [96 0 0 255]
 			dims = ((64.0, 0.0) + (<height> * (0.0, 1.0) + (0.0, 40.0)))
@@ -294,7 +294,7 @@ script create_cheats_menu
 	show_cheat_warning
 	displaySprite \{parent = cheats_container id = cheats_hilite tex = white rgba = [40 60 110 255] rot_angle = 1 Pos = (349.0, 382.0) dims = (230.0, 30.0) z = 2}
 	new_menu \{scrollid = cheats_scroll vmenuid = cheats_vmenu menu_pos = (360.0, 191.0) text_left spacing = -12 rot_angle = 1}
-	text_params = {parent = cheats_vmenu Type = TextElement font = #"0xaba484e8" rgba = [255 245 225 255] z_priority = 50 rot_angle = 0 Scale = 1}
+	text_params = {parent = cheats_vmenu Type = TextElement font = text_a3 rgba = [255 245 225 255] z_priority = 50 rot_angle = 0 Scale = 1}
 	text_params2 = {parent = cheats_vmenu Type = TextElement font = fontgrid_title_gh3 rgba = [255 245 225 255] z_priority = 50 rot_angle = 0 Scale = 0.63}
 	GetGlobalTags \{user_options}
 	<text> = "locked"
@@ -496,7 +496,7 @@ script destroy_cheats_menu
 	endif
 endscript
 
-	//CreateScreenElement \{parent = cheats_container Type = SpriteElement id = guitar_sprite just = [left center] texture = #"0x8e29fb9d" Pos = (1200.0, 545.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (1.0, 1.0) z_priority = 2}
+	//CreateScreenElement \{parent = cheats_container Type = SpriteElement id = guitar_sprite just = [left center] texture = tutorial_guitar Pos = (1200.0, 545.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (1.0, 1.0) z_priority = 2}
 script cheats_create_guitar
 endscript
 
@@ -710,7 +710,7 @@ script create_cheat_guitar_strum
 			spawnscriptnow stop_guitar_strum params = {event = Cheat_Chord_Strum_12 pattern_to_stop = <hold_pattern>}
 		default
 	endswitch
-	GetArraySize \{$#"0xdcde8d7b"}
+	GetArraySize \{$guitar_hero_cheats}
 	num_of_cheats = <array_Size>
 	<index> = 0
 	begin
@@ -748,7 +748,7 @@ script cheat_award_text\{show_unlock = 1}
 		parent = cheats_container
 		Pos = (360.0, 360.0)
 		text = <award_text>
-		font = #"0xaba484e8"
+		font = text_a3
 		rot_angle = 1
 		Scale = 1
 		rgba = [255 255 255 255]
@@ -756,7 +756,7 @@ script cheat_award_text\{show_unlock = 1}
 		z_priority = 25
 	}
 	if (<show_unlock> = 1)
-		CreateScreenElement \{Type = TextElement id = awardtext_sub parent = awardtext Pos = (1.0, 57.0) text = "unlocked" font = #"0xaba484e8" Scale = 0.7 rgba = [255 255 255 255] just = [left center] z_priority = 25}
+		CreateScreenElement \{Type = TextElement id = awardtext_sub parent = awardtext Pos = (1.0, 57.0) text = "unlocked" font = text_a3 Scale = 0.7 rgba = [255 255 255 255] just = [left center] z_priority = 25}
 	endif
 	wait \{1.5 seconds}
 	DoScreenElementMorph \{id = awardtext alpha = 0 time = 1}
@@ -793,14 +793,14 @@ script unlock_cheat
 	endif
 	if (<cheat> = Cheat_EasyExpert)
 		if NOT ($Cheat_PrecisionMode = 1)
-			Change \{check_time_early = $#"0x8f62b310"}
-			Change \{check_time_late = $#"0x55a3bf0d"}
+			Change \{check_time_early = $original_check_time_early}
+			Change \{check_time_late = $original_check_time_late}
 		endif
 	endif
 	if (<cheat> = Cheat_PrecisionMode)
 		if NOT ($Cheat_EasyExpert = 1)
-			Change \{check_time_early = $#"0x8f62b310"}
-			Change \{check_time_late = $#"0x55a3bf0d"}
+			Change \{check_time_early = $original_check_time_early}
+			Change \{check_time_late = $original_check_time_late}
 		endif
 	endif
 	if NOT (<cheat> > 0)
@@ -859,8 +859,8 @@ script toggle_cheat
 			FormatText textname = text "%c : OFF" c = ($guitar_hero_cheats [<index>].name_text)
 			SetScreenElementProps id = <id> text = <text>
 			if ($Cheat_EasyExpert = 2 || $Cheat_PrecisionMode = 2)
-				Change \{check_time_early = $#"0x8f62b310"}
-				Change \{check_time_late = $#"0x55a3bf0d"}
+				Change \{check_time_early = $original_check_time_early}
+				Change \{check_time_late = $original_check_time_late}
 			endif
 		else
 			Change GlobalName = <cheat> NewValue = 1

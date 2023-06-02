@@ -618,7 +618,7 @@ practice_new_song_quit_warning_fs = {
 
 script end_practice_song_slomo
 	Change \{current_speedfactor = 1.0}
-	setslomo \{$#"0x16d91bc1"}
+	setslomo \{$current_speedfactor}
 	Change \{StructureName = PitchShiftSlow1 pitch = 1.0}
 endscript
 

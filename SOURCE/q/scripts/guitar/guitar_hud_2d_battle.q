@@ -50,7 +50,7 @@ battle_hud_2d_elements = {
 		{
 			element_id = HUD2D_rock_body
 			element_parent = HUD2D_rock_container
-			texture = #"0x5bb47148"
+			texture = hud_2p_battle_frame
 			pos_off = (0.0, 10.0)
 			zoff = 20
 			flags = {
@@ -61,35 +61,35 @@ battle_hud_2d_elements = {
 		{
 			element_id = HUD2D_rock_BG_green
 			element_parent = HUD2D_rock_container
-			texture = #"0x450cea2a"
+			texture = hud_rock_bg_green
 			pos_off = (0.0, 0.0)
 			zoff = 16
 		}
 		{
 			element_id = HUD2D_rock_BG_red
 			element_parent = HUD2D_rock_container
-			texture = #"0x08c26d99"
+			texture = hud_rock_bg_red
 			pos_off = (0.0, 0.0)
 			zoff = 14
 		}
 		{
 			element_id = HUD2D_rock_BG_yellow
 			element_parent = HUD2D_rock_container
-			texture = #"0x95414c9e"
+			texture = hud_rock_bg_yellow
 			pos_off = (0.0, 0.0)
 			zoff = 15
 		}
 		{
 			element_id = HUD2D_rock_lights_all
 			element_parent = HUD2D_rock_container
-			texture = #"0x79a0865d"
+			texture = hud_rock_lights_all
 			pos_off = (0.0, 0.0)
 			zoff = 17
 		}
 		{
 			element_id = HUD2D_rock_lights_green
 			element_parent = HUD2D_rock_container
-			texture = #"0x89194192"
+			texture = hud_rock_lights_green
 			pos_off = (128.0, 0.0)
 			zoff = 18
 			just = [
@@ -101,7 +101,7 @@ battle_hud_2d_elements = {
 		{
 			element_id = HUD2D_rock_lights_red
 			element_parent = HUD2D_rock_container
-			texture = #"0xb8d9a80f"
+			texture = hud_rock_lights_red
 			pos_off = (0.0, 0.0)
 			zoff = 18
 			just = [
@@ -113,7 +113,7 @@ battle_hud_2d_elements = {
 		{
 			element_id = HUD2D_rock_lights_yellow
 			element_parent = HUD2D_rock_container
-			texture = #"0x5037628b"
+			texture = hud_rock_lights_yellow
 			pos_off = (128.0, 0.0)
 			zoff = 18
 			just = [
@@ -125,7 +125,7 @@ battle_hud_2d_elements = {
 		{
 			element_id = HUD2D_rock_needle
 			element_parent = HUD2D_rock_container
-			texture = #"0x2438b25a"
+			texture = hud_rock_needle
 			pos_off = (132.0, 165.0)
 			zoff = 18.5
 			just = [
@@ -136,7 +136,7 @@ battle_hud_2d_elements = {
 		{
 			element_id = HUD2D_battle_default_icon2_1
 			element_parent = HUD2D_rock_container
-			texture = #"0x6f90ece8"
+			texture = icon_attack_default2
 			zoff = 18.8999996
 			pos_off = (90.0, 150.0)
 			dims = (74.0, 74.0)
@@ -144,7 +144,7 @@ battle_hud_2d_elements = {
 		{
 			element_id = HUD2D_battle_default_icon2_2
 			element_parent = HUD2D_rock_container
-			texture = #"0x6f90ece8"
+			texture = icon_attack_default2
 			zoff = 18.8999996
 			battle_pos
 			pos_type = card_default_2
@@ -157,7 +157,7 @@ battle_hud_2d_elements = {
 		{
 			element_id = HUD2D_battle_default_icon2_3
 			element_parent = HUD2D_rock_container
-			texture = #"0x6f90ece8"
+			texture = icon_attack_default2
 			zoff = 18.8999996
 			battle_pos
 			pos_type = card_default_3

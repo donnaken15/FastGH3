@@ -78,7 +78,7 @@ practice_font = fontgrid_title_gh3
 
 script practicemode_init
 	if NOT ($current_speedfactor = 1.0)
-		SetNoteMappings \{section = drums mapping = $#"0x4a606c57"}
+		SetNoteMappings \{section = drums mapping = $Practice_NoteMapping}
 	endif
 	Hide_Band
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = practice_container Pos = (0.0, 0.0)}

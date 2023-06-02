@@ -135,7 +135,7 @@ script bossbattle_deinit
 		Change \{boss_hammer_count = 0}
 		if ($current_song = bossdevil)
 			if ($save_lefty_flip_p2 = 1)
-				SetGlobalTags \{user_options params = {lefty_flip_p2 = $#"0x98a06c4e"}}
+				SetGlobalTags \{user_options params = {lefty_flip_p2 = $save_lefty_flip_p2}}
 			endif
 		endif
 	endif
@@ -164,7 +164,7 @@ script bossbattle_select\{player_status = player1_status}
 	endif
 	GetArraySize ($current_boss.PowerUps)
 	powerups_size = <array_Size>
-	GetArraySize \{$#"0xab5dd1f9"}
+	GetArraySize \{$battlemode_powerups}
 	array_count = 0
 	begin
 		powerup_enabled = 0
@@ -421,7 +421,7 @@ endscript
 script boss_battle_death_icon
 	boss_pos = (900.0, 150.0)
 	player_pos = (300.0, 183.0)
-	displaySprite parent = root_window tex = #"0x8b34a33f" Pos = <boss_pos> just = [center center] z = 500
+	displaySprite parent = root_window tex = icon_attack_deth Pos = <boss_pos> just = [center center] z = 500
 	DoScreenElementMorph id = <id> Pos = <player_pos> Scale = 3.1 relative_scale time = 1.0
 	wait \{2.0 seconds}
 	DoScreenElementMorph id = <id> alpha = 0 time = 2.0
@@ -447,11 +447,11 @@ script create_battle_death_meter
 	if ScreenElementExists \{id = battle_death_meter_wing_l}
 		DestroyScreenElement \{id = battle_death_meter_wing_l}
 	endif
-	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter parent = battlemode_container texture = #"0x9bb79e59" rgba = [255 255 255 255] Pos = (648.0, 900.0) Scale = 1 alpha = 1 just = [center center] z_priority = 0 }
-	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_marker parent = battle_death_meter texture = #"0xbf1771f5" rgba = [255 255 255 255] Pos = (29.0, 200.0) Scale = 0.9 alpha = 1 just = [center center] z_priority = 1 }
-	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_wing_r parent = battle_death_meter texture = #"0x0ee79aeb" rgba = [255 255 255 255] Pos = (13.0, 7.0) Scale = 0.5 rot_angle = 15 just = [left top] z_priority = 0 }
-	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_wing_l parent = battle_death_meter texture = #"0x0ee79aeb" rgba = [255 255 255 255] Pos = (39.0, 7.0) Scale = (-0.5, 0.5) rot_angle = -15 just = [right top] z_priority = 0 }
-	DoScreenElementMorph \{id = #"0x9bb79e59" Pos = (648.0, 500.0) time = 0.3}
+	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter parent = battlemode_container texture = battle_death_meter rgba = [255 255 255 255] Pos = (648.0, 900.0) Scale = 1 alpha = 1 just = [center center] z_priority = 0 }
+	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_marker parent = battle_death_meter texture = battle_death_meter_marker rgba = [255 255 255 255] Pos = (29.0, 200.0) Scale = 0.9 alpha = 1 just = [center center] z_priority = 1 }
+	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_wing_r parent = battle_death_meter texture = battle_alert_death_wing rgba = [255 255 255 255] Pos = (13.0, 7.0) Scale = 0.5 rot_angle = 15 just = [left top] z_priority = 0 }
+	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_wing_l parent = battle_death_meter texture = battle_alert_death_wing rgba = [255 255 255 255] Pos = (39.0, 7.0) Scale = (-0.5, 0.5) rot_angle = -15 just = [right top] z_priority = 0 }
+	DoScreenElementMorph \{id = battle_death_meter Pos = (648.0, 500.0) time = 0.3}
 	wait \{0.3 seconds}
 	spawnscriptnow \{update_battle_death_meter params = {death_meter_marker = battle_death_meter_marker}}
 	spawnscriptnow \{update_battle_death_meter_wings params = {wing_r = battle_death_meter_wing_r wing_l = battle_death_meter_wing_l}}

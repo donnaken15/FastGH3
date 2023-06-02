@@ -33,7 +33,7 @@ script create_audio_settings_menu\{popup = 0}
 		text_params = {
 			parent = as_vmenu
 			Type = TextElement
-			font = #"0xdbce7067"
+			font = text_a6
 			rgba = ($menu_unfocus_color)
 			z_priority = <z>
 			Scale = 0.7
@@ -44,7 +44,7 @@ script create_audio_settings_menu\{popup = 0}
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = aom_container
-			texture = #"0x9995fe99"
+			texture = menu_pause_frame_banner
 			Pos = (640.0, 540.0)
 			just = [center center]
 			z_priority = (<z> + 100)
@@ -53,7 +53,7 @@ script create_audio_settings_menu\{popup = 0}
 			Type = TextElement
 			parent = <id>
 			text = "AUDIO"
-			font = #"0xdbce7067"
+			font = text_a6
 			Pos = (125.0, 53.0)
 			rgba = [170 90 30 255]
 			Scale = 0.8
@@ -77,7 +77,7 @@ script create_audio_settings_menu\{popup = 0}
 				rgba = [186 105 0 255]
 				Scale = (0.45000001788139343, 0.6000000238418579)
 				z = (<z> + 11)
-				font = #"0xdbce7067"
+				font = text_a6
 			}
 			GetScreenElementDims id = <id>
 			bg_dims = (<width> * (1.0, 0.0) + (0.0, 32.0))
@@ -100,40 +100,40 @@ script create_audio_settings_menu\{popup = 0}
 				z = (<z> + 10)
 			}
 		endif
-		displaySprite \{parent = aom_container tex = #"0x26f9e23e" Pos = (725.0, 295.0) just = [center center] dims = (96.0, 96.0) rgba = [150 150 150 255] z = 150}
-		displaySprite \{parent = aom_container tex = #"0x26f9e23e" Pos = (825.0, 365.0) just = [center center] dims = (96.0, 96.0) rgba = [150 150 150 255] z = 150}
-		displaySprite \{parent = aom_container tex = #"0x26f9e23e" Pos = (725.0, 440.0) just = [center center] dims = (96.0, 96.0) rgba = [150 150 150 255] z = 150}
-		displaySprite \{parent = aom_container id = aom_knob_line_1 tex = #"0x51bf77df" Pos = (725.0, 295.0) dims = (48.0, 12.0) z = 151 rgba = [230 190 70 255] just = [1.0 0.0]}
-		displaySprite \{parent = aom_container id = aom_knob_line_2 tex = #"0x51bf77df" Pos = (825.0, 365.0) dims = (48.0, 12.0) z = 151 rgba = [230 190 70 255] just = [1.0 0.0]}
-		displaySprite \{parent = aom_container id = aom_knob_line_3 tex = #"0x51bf77df" Pos = (725.0, 440.0) dims = (48.0, 12.0) z = 151 rgba = [230 190 70 255] just = [1.0 0.0]}
+		displaySprite \{parent = aom_container tex = options_audio_knob Pos = (725.0, 295.0) just = [center center] dims = (96.0, 96.0) rgba = [150 150 150 255] z = 150}
+		displaySprite \{parent = aom_container tex = options_audio_knob Pos = (825.0, 365.0) just = [center center] dims = (96.0, 96.0) rgba = [150 150 150 255] z = 150}
+		displaySprite \{parent = aom_container tex = options_audio_knob Pos = (725.0, 440.0) just = [center center] dims = (96.0, 96.0) rgba = [150 150 150 255] z = 150}
+		displaySprite \{parent = aom_container id = aom_knob_line_1 tex = options_audio_knob_line Pos = (725.0, 295.0) dims = (48.0, 12.0) z = 151 rgba = [230 190 70 255] just = [1.0 0.0]}
+		displaySprite \{parent = aom_container id = aom_knob_line_2 tex = options_audio_knob_line Pos = (825.0, 365.0) dims = (48.0, 12.0) z = 151 rgba = [230 190 70 255] just = [1.0 0.0]}
+		displaySprite \{parent = aom_container id = aom_knob_line_3 tex = options_audio_knob_line Pos = (725.0, 440.0) dims = (48.0, 12.0) z = 151 rgba = [230 190 70 255] just = [1.0 0.0]}
 	else
 		Change \{as_is_popup = 0}
 		spacing = 105
 		new_menu scrollid = as_scroll vmenuid = as_vmenu spacing = <spacing> menu_pos = $aom_menu_pos exclusive_device = ($primary_controller)
-		create_menu_backdrop \{texture = #"0xc5a54934"}
-		CreateScreenElement \{Type = SpriteElement parent = aom_container id = as_light_overlay texture = #"0xf6c8349f" Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
+		create_menu_backdrop \{texture = venue_bg}
+		CreateScreenElement \{Type = SpriteElement parent = aom_container id = as_light_overlay texture = menu_venue_overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
 		set_focus_color \{rgba = [230 190 70 255]}
 		set_unfocus_color \{rgba = [150 150 150 255]}
-		displaySprite \{parent = aom_container tex = #"0xff55dd2f" Pos = (340.0, 40.0) dims = (672.0, 672.0)}
-		displaySprite \{parent = aom_container tex = #"0xb1004fdd" Pos = (360.0, 40.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
-		displaySprite \{parent = aom_container tex = #"0xb1004fdd" rgba = [0 0 0 128] Pos = (360.0, 48.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
-		displaySprite \{parent = aom_container tex = #"0x01c66f71" Pos = (870.0, 550.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
-		displaySprite \{parent = aom_container tex = #"0x01c66f71" rgba = [0 0 0 128] Pos = (875.0, 551.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
-		displaySprite parent = aom_container tex = #"0x26f9e23e" Pos = ($aom_menu_pos + (15.0, 50.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
-		displaySprite parent = aom_container tex = #"0x26f9e23e" Pos = ($aom_menu_pos + (15.0, 219.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
-		displaySprite parent = aom_container tex = #"0x26f9e23e" Pos = ($aom_menu_pos + (15.0, 386.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
-		displaySprite \{parent = aom_container id = aom_belly_strings tex = #"0x7ff08670" Pos = (744.0, 146.0) dims = (74.0, 318.0) z = 10}
-		displaySprite parent = aom_container id = aom_pointer tex = #"0xb435a532" Pos = ($as_pointer_pos [0])dims = (256.0, 128.0) relative_scale z = 10
-		displaySprite parent = aom_container id = aom_knob_line_1 tex = #"0x51bf77df" Pos = ($aom_menu_pos + (63.0, 94.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]
-		displaySprite parent = aom_container id = aom_knob_line_2 tex = #"0x51bf77df" Pos = ($aom_menu_pos + (63.0, 263.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]
-		displaySprite parent = aom_container id = aom_knob_line_3 tex = #"0x51bf77df" Pos = ($aom_menu_pos + (63.0, 430.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]
+		displaySprite \{parent = aom_container tex = options_audio_poster Pos = (340.0, 40.0) dims = (672.0, 672.0)}
+		displaySprite \{parent = aom_container tex = tape_h_01 Pos = (360.0, 40.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
+		displaySprite \{parent = aom_container tex = tape_h_01 rgba = [0 0 0 128] Pos = (360.0, 48.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
+		displaySprite \{parent = aom_container tex = tape_v_01 Pos = (870.0, 550.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
+		displaySprite \{parent = aom_container tex = tape_v_01 rgba = [0 0 0 128] Pos = (875.0, 551.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
+		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 50.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
+		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 219.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
+		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 386.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
+		displaySprite \{parent = aom_container id = aom_belly_strings tex = options_audio_bellystrings Pos = (744.0, 146.0) dims = (74.0, 318.0) z = 10}
+		displaySprite parent = aom_container id = aom_pointer tex = options_audio_pointer_v2 Pos = ($as_pointer_pos [0])dims = (256.0, 128.0) relative_scale z = 10
+		displaySprite parent = aom_container id = aom_knob_line_1 tex = options_audio_knob_line Pos = ($aom_menu_pos + (63.0, 94.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]
+		displaySprite parent = aom_container id = aom_knob_line_2 tex = options_audio_knob_line Pos = ($aom_menu_pos + (63.0, 263.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]
+		displaySprite parent = aom_container id = aom_knob_line_3 tex = options_audio_knob_line Pos = ($aom_menu_pos + (63.0, 430.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]
 		GetScreenElementProps id = <id>
 		text_params = {parent = as_vmenu Type = TextElement font = ($audio_settings_menu_font)rgba = ($menu_unfocus_color)}
 	endif
 	i = 0
 	begin
 		FormatText checksumName = ping_id 'aom_ping_%d' d = <i>
-		displaySprite parent = aom_container id = <ping_id> tex = #"0xcddfe1eb" alpha = 0 Scale = 1 z = 180 just = [center center]
+		displaySprite parent = aom_container id = <ping_id> tex = options_audio_ping alpha = 0 Scale = 1 z = 180 just = [center center]
 		<i> = (<i> + 1)
 	repeat 11
 	GetGlobalTags \{user_options}
@@ -141,8 +141,8 @@ script create_audio_settings_menu\{popup = 0}
 	if (<popup>)
 		FormatText textname = text "BAND: %d" d = <band_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
-		displaySprite \{parent = pause_menu_frame_container tex = #"0xf8927f37" rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (58.0, 58.0) just = [center center] z = 200}
-		displaySprite \{parent = pause_menu_frame_container id = band_yeller tex = #"0xf8927f37" rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (44.0, 44.0) just = [center center] z = 201}
+		displaySprite \{parent = pause_menu_frame_container tex = circle_64 rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (58.0, 58.0) just = [center center] z = 200}
+		displaySprite \{parent = pause_menu_frame_container id = band_yeller tex = circle_64 rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (44.0, 44.0) just = [center center] z = 201}
 		displayText {
 			parent = pause_menu_frame_container
 			id = band_volume_text_id
@@ -151,7 +151,7 @@ script create_audio_settings_menu\{popup = 0}
 			rgba = ($menu_unfocus_color)
 			z = 202
 			Scale = 0.8
-			font = #"0xdbce7067"
+			font = text_a6
 			text = <band_volume_text>
 			noshadow
 		}
@@ -180,8 +180,8 @@ script create_audio_settings_menu\{popup = 0}
 	if (<popup>)
 		FormatText textname = text "GUITAR: %d" d = <guitar_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
-		displaySprite \{parent = pause_menu_frame_container tex = #"0x985ea144" rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (58.0, 58.0) just = [center center] z = 200}
-		displaySprite \{parent = pause_menu_frame_container id = guitar_yeller tex = #"0xf8927f37" rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (44.0, 44.0) just = [center center] z = 201}
+		displaySprite \{parent = pause_menu_frame_container tex = hud_score_nixie_2a rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (58.0, 58.0) just = [center center] z = 200}
+		displaySprite \{parent = pause_menu_frame_container id = guitar_yeller tex = circle_64 rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (44.0, 44.0) just = [center center] z = 201}
 		displayText {
 			parent = pause_menu_frame_container
 			id = guitar_volume_text_id
@@ -190,7 +190,7 @@ script create_audio_settings_menu\{popup = 0}
 			rgba = ($menu_unfocus_color)
 			z = 202
 			Scale = 0.8
-			font = #"0xdbce7067"
+			font = text_a6
 			noshadow
 			text = <guitar_volume_text>
 		}
@@ -217,8 +217,8 @@ script create_audio_settings_menu\{popup = 0}
 	if (<popup>)
 		FormatText textname = text "FX: %d" d = <sfx_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
-		displaySprite \{parent = pause_menu_frame_container tex = #"0x985ea144" rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (58.0, 58.0) just = [center center] z = 200}
-		displaySprite \{parent = pause_menu_frame_container id = fx_yeller tex = #"0xf8927f37" rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (44.0, 44.0) just = [center center] z = 201}
+		displaySprite \{parent = pause_menu_frame_container tex = hud_score_nixie_2a rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (58.0, 58.0) just = [center center] z = 200}
+		displaySprite \{parent = pause_menu_frame_container id = fx_yeller tex = circle_64 rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (44.0, 44.0) just = [center center] z = 201}
 		displayText {
 			parent = pause_menu_frame_container
 			id = fx_volume_text_id
@@ -227,7 +227,7 @@ script create_audio_settings_menu\{popup = 0}
 			rgba = ($menu_unfocus_color)
 			z = 202
 			Scale = 0.8
-			font = #"0xdbce7067"
+			font = text_a6
 			text = <sfx_volume_text>
 			noshadow
 		}
@@ -430,7 +430,7 @@ script menu_audio_settings_lower_selection_volume
 			endif
 	endswitch
 	if (<do_ping>)
-		FormatText \{checksumName = ping_id 'aom_ping_%d' d = $#"0xad0c98fb"}
+		FormatText \{checksumName = ping_id 'aom_ping_%d' d = $as_ping_index}
 		Change as_ping_index = ($as_ping_index + 1)
 		if ($as_ping_index > 10)
 			Change \{as_ping_index = 0}
@@ -498,7 +498,7 @@ script menu_audio_settings_increase_selection_volume
 			endif
 	endswitch
 	if (<do_ping>)
-		FormatText \{checksumName = ping_id 'aom_ping_%d' d = $#"0xad0c98fb"}
+		FormatText \{checksumName = ping_id 'aom_ping_%d' d = $as_ping_index}
 		Change as_ping_index = ($as_ping_index + 1)
 		if ($as_ping_index > 10)
 			Change \{as_ping_index = 0}

@@ -67,7 +67,7 @@ script create_choose_practice_section_menu
 		FormatText checksumName = entry_id 'entry_%d' d = <entry>
 		CreateScreenElement {
 			Type = TextElement
-			font = #"0x35c0114b"
+			font = text_a4
 			parent = ds_container
 			id = <entry_id>
 			Pos = (<placement_pos> - (0.0, 21.0))

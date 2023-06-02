@@ -65,9 +65,9 @@ endscript
 
 script create_joining_screen
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = joining_screen_container Pos = (0.0, 0.0)}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	create_menu_backdrop \{texture = venue_bg}
 	CreateScreenElement \{Type = TextElement parent = joining_screen_container text = "JOINING GAME" just = [center center] Pos = (640.0, 340.0) rot_angle = 0 font = fontgrid_title_gh3 Scale = 2.0 rgba = [210 210 210 250] Shadow shadow_offs = (5.0, 5.0) shadow_rgba = [0 0 0 255] z_priority = 2.0}
-	CreateScreenElement \{Type = TextElement parent = joining_screen_container id = joining_dots_text font = #"0x42c721dd" Scale = 2.0 rgba = [210 210 210 250] text = "" just = [left top] z_priority = 2.0 Pos = (640.0, 450.0) Shadow shadow_offs = (5.0, 5.0) shadow_rgba = [0 0 0 255]}
+	CreateScreenElement \{Type = TextElement parent = joining_screen_container id = joining_dots_text font = text_a5 Scale = 2.0 rgba = [210 210 210 250] text = "" just = [left top] z_priority = 2.0 Pos = (640.0, 450.0) Shadow shadow_offs = (5.0, 5.0) shadow_rgba = [0 0 0 255]}
 	if ScreenElementExists \{id = joining_dots_text}
 		RunScriptOnScreenElement \{id = joining_dots_text animate_dots params = {id = joining_dots_text}}
 	endif

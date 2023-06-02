@@ -4,12 +4,12 @@ script create_video_settings_menu\{popup = 0}
 	kill_start_key_binding
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = vom_container Pos = (0.0, 0.0)}
 	if (<popup> = 0)
-		new_menu \{scrollid = vs_scroll vmenuid = vs_vmenu font = $#"0x11383803" menu_pos = (300.0, 400.0) spacing = 8 text_left}
+		new_menu \{scrollid = vs_scroll vmenuid = vs_vmenu font = $video_settings_menu_font menu_pos = (300.0, 400.0) spacing = 8 text_left}
 		Change \{menu_focus_color = [240 235 240 255]}
 		Change \{menu_unfocus_color = [235 120 135 255]}
-		displayText \{parent = vom_container Pos = (800.0, 550.0) just = [center center] text = "video options" Scale = 1.5 rgba = [240 235 240 255] font = $#"0x11383803" noshadow}
-		create_menu_backdrop \{texture = #"0xc5a54934"}
-		displaySprite \{parent = vom_container tex = #"0xc50d7c44" Pos = (640.0, 360.0) dims = (1024.0, 512.0) just = [center center] z = 1 font = $#"0x11383803"}
+		displayText \{parent = vom_container Pos = (800.0, 550.0) just = [center center] text = "video options" Scale = 1.5 rgba = [240 235 240 255] font = $video_settings_menu_font noshadow}
+		create_menu_backdrop \{texture = venue_bg}
+		displaySprite \{parent = vom_container tex = options_video_poster Pos = (640.0, 360.0) dims = (1024.0, 512.0) just = [center center] z = 1 font = $video_settings_menu_font}
 		GetGlobalTags \{user_options}
 		displaySprite \{parent = vom_container id = vom_hilite tex = white Pos = (285.0, 415.0) rgba = [40 60 110 255] dims = (275.0, 35.0) z = 2}
 		add_user_control_helper \{text = "SELECT" button = green z = 100}
@@ -46,7 +46,7 @@ script create_video_settings_menu\{popup = 0}
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = vom_container
-			texture = #"0x9995fe99"
+			texture = menu_pause_frame_banner
 			Pos = (640.0, 540.0)
 			just = [center center]
 			z_priority = (<z> + 100)
@@ -55,7 +55,7 @@ script create_video_settings_menu\{popup = 0}
 			Type = TextElement
 			parent = <id>
 			text = "PAUSED"
-			font = #"0xdbce7067"
+			font = text_a6
 			Pos = (125.0, 53.0)
 			rgba = [170 90 30 255]
 			Scale = 0.8

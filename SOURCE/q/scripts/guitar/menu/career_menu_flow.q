@@ -97,7 +97,7 @@ endscript
 script career_fail_song_fs_decider
 	if ($current_song = bosstom || $current_song = bossslash)
 		Change boss_wuss_out = ($boss_wuss_out + 2)
-		printf \{channel = trchen "Boss Wuss Out %s" s = $#"0xed7388d5"}
+		printf \{channel = trchen "Boss Wuss Out %s" s = $boss_wuss_out}
 		if ($current_song = bosstom)
 			FormatText \{checksumName = song_checksum 'career_song6_tier2' AddToStringLookup = true}
 		elseif ($current_song = bossslash)

@@ -37,12 +37,12 @@ script create_mp_select_match_type_menu\{menu_title = "CREATE MATCH" menu_subtit
 	displaySprite id = online_menu_box_bottom_fill parent = online_menu_ui_container tex = #"0xecab1ed6" rgba = [0 0 0 200] Pos = (($online_general_menu_pos)+ (0.0, 496.0))dims = (288.0, 64.0) just = [center top] z = 2 flip_h
 	displaySprite id = online_title_bar parent = online_menu_ui_container tex = #"0xec880166" rgba = ($online_light_blue)Pos = (($online_general_menu_pos)+ (0.0, 128.0))dims = (288.0, 128.0) just = [center center] z = 3
 	displaySprite id = online_highlight parent = online_menu_ui_container tex = white rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (632.0, 0.0))dims = (288.0, 40.0) just = [center top] z = 3
-	displaySprite id = online_bookend1 parent = online_menu_ui_container tex = #"0x40f8daf3" rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (470.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
-	displaySprite id = online_bookend2 parent = online_menu_ui_container tex = #"0x40f8daf3" rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (806.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
+	displaySprite id = online_bookend1 parent = online_menu_ui_container tex = character_hub_hilite_bookend rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (470.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
+	displaySprite id = online_bookend2 parent = online_menu_ui_container tex = character_hub_hilite_bookend rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (806.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
 	CreateScreenElement {
 		Type = TextElement
 		parent = online_menu_ui_container
-		font = #"0x35c0114b"
+		font = text_a4
 		Scale = (0.6500000357627869, 0.75)
 		rgba = ($online_medium_blue)
 		text = <menu_title>

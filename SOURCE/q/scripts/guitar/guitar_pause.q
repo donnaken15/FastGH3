@@ -165,7 +165,7 @@ endscript
 script #"0x924a920a"
 	if NOT ScreenElementExists \{id = generic_backdrop_container}
 		CreateScreenElement \{Type = ContainerElement parent = root_window id = generic_backdrop_container Pos = (0.0, 0.0) just = [left top]}
-		CreateScreenElement \{Type = SpriteElement id = pause_backdrop parent = generic_backdrop_container texture = #"0xc5a54934" rgba = [255 255 255 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 0 alpha = 1}
+		CreateScreenElement \{Type = SpriteElement id = pause_backdrop parent = generic_backdrop_container texture = venue_bg rgba = [255 255 255 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 0 alpha = 1}
 		DoScreenElementMorph \{id = hud_window alpha = 0 time = 0.5}
 	endif
 endscript

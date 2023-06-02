@@ -2,9 +2,9 @@
 script create_boss_confirmation_screen
 	new_menu \{scrollid = bc_scroll vmenuid = bc_vmenu tile_sprite = 0 menu_pos = (605.0, 380.0)}
 	create_pause_menu_frame
-	text_params = {parent = bc_vmenu Type = TextElement font = #"0x35c0114b" rgba = ($menu_unfocus_color)}
+	text_params = {parent = bc_vmenu Type = TextElement font = text_a4 rgba = ($menu_unfocus_color)}
 	CreateScreenElement {
-		parent = bc_scroll Type = TextElement font = #"0x35c0114b" rgba = ($menu_unfocus_color)
+		parent = bc_scroll Type = TextElement font = text_a4 rgba = ($menu_unfocus_color)
 		text = "PLAY BOSS BATTLE?"
 		Pos = {(35.0, -45.0) relative}
 	}

@@ -17,7 +17,7 @@ ZonePakOmit = [
 Download_Zones = {
 }
 GH3Zones = {
-	$#"0x554fc22b"
+	$Download_Zones
 	z_viewer = {
 		name = 'Z_Viewer'
 		extra_size = 0

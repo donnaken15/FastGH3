@@ -27,7 +27,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	displaySprite {
 		id = wbc_poster_1
 		parent = wbc_container
-		tex = #"0x413edec7"
+		tex = options_whammy_poster_1
 		Pos = (286.0, 15.0)
 		dims = (896.0, 896.0)
 		rot_angle = -2
@@ -36,7 +36,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	displaySprite {
 		id = wbc_poster_2
 		parent = wbc_container
-		tex = #"0xd8378f7d"
+		tex = options_whammy_poster_2
 		Pos = (286.0, 15.0)
 		dims = (896.0, 896.0)
 		rot_angle = -2
@@ -81,7 +81,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	<text_3> = "Repeat	the	 process  until	 you  see  the	\c1''Resting  position	calibrated'' \c0message	 every	time  you  return  the	whammy	bar	 to	 its  resting  position."
 	CreateScreenElement {
 		Type = TextBlockElement
-		font = #"0xaba484e8"
+		font = text_a3
 		Pos = <text_block_1_pos>
 		parent = wbc_container
 		text = <text_1>
@@ -97,7 +97,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	}
 	CreateScreenElement {
 		Type = TextBlockElement
-		font = #"0xaba484e8"
+		font = text_a3
 		Pos = <text_block_2_pos>
 		parent = wbc_container
 		text = <text_2>
@@ -113,7 +113,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	}
 	CreateScreenElement {
 		Type = TextBlockElement
-		font = #"0xaba484e8"
+		font = text_a3
 		Pos = <text_block_3_pos>
 		parent = wbc_container
 		text = <text_3>
@@ -129,7 +129,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	}
 	CreateScreenElement {
 		Type = TextElement
-		font = #"0x42c721dd"
+		font = text_a5
 		Pos = (760.0, 315.0)
 		parent = wbc_container
 		text = "Calibrate"
@@ -141,7 +141,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	}
 	CreateScreenElement {
 		Type = TextElement
-		font = #"0x42c721dd"
+		font = text_a5
 		Pos = (800.0, 365.0)
 		parent = wbc_container
 		text = "Whammy"
@@ -153,7 +153,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	}
 	CreateScreenElement {
 		Type = TextBlockElement
-		font = #"0xaba484e8"
+		font = text_a3
 		rgba = [140 235 170 255]
 		Pos = (810.0, 408.0)
 		text = "RESTING POSITION CALIBRATED"
@@ -240,7 +240,7 @@ script menu_whammy_bar_update_resting_message
 	begin
 		if is_whammy_resting controller = <controller>
 			if ($SHOULD_WE_PLAY_WHAMMY_SOUND = 0)
-				SoundEvent \{event = #"0x8b4a14dc"}
+				SoundEvent \{event = whammy_test_sfx}
 				Change \{SHOULD_WE_PLAY_WHAMMY_SOUND = 1}
 			endif
 			SetScreenElementProps \{id = resting_message unhide}
@@ -274,13 +274,13 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 		<z> = -4
 	endif
 	if NOT (<popup>)
-		create_menu_backdrop \{texture = #"0x13362d9f"}
+		create_menu_backdrop \{texture = options_calibrate_starpower_posterwall}
 	else
-		displaySprite \{parent = spc_container tex = #"0x13362d9f" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 107}
+		displaySprite \{parent = spc_container tex = options_calibrate_starpower_posterwall Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 107}
 	endif
 	displaySprite {
 		parent = spc_container
-		tex = #"0xb6a0992b"
+		tex = options_calibrate_starpower_bg
 		Pos = (326.0, 0.0)
 		dims = (512.0, 512.0)
 		rot_angle = -2
@@ -289,7 +289,7 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 	displaySprite {
 		id = spc_rotating_bg_lines
 		parent = spc_container
-		tex = #"0x64dd0859"
+		tex = options_calibrate_starpower_bg2
 		Pos = (578.0, 156.0)
 		dims = (640.0, 640.0)
 		just = [center center]
@@ -299,14 +299,14 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 	displaySprite {
 		id = spc_rotating_bg_planes
 		parent = spc_container
-		tex = #"0x13da38cf"
+		tex = options_calibrate_starpower_bg3
 		Pos = (568.0, 114.0)
 		dims = (512.0, 384.0)
 		just = [center center]
 		rot_angle = 20
 		z = (<z> + 2)
 	}
-	starpower_pow_tex = #"0xb5104050"
+	starpower_pow_tex = options_calibrate_starpower_pow
 	displaySprite {
 		id = spc_pow
 		parent = spc_container
@@ -327,7 +327,7 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 		Type = TextBlockElement
 		id = star_calibration_text
 		parent = spc_container
-		font = #"0xdbce7067"
+		font = text_a6
 		Pos = (608.0, 520.0)
 		just = [center top]
 		internal_just = [left top]
@@ -448,7 +448,7 @@ endscript
 script create_guitar_diagnostic_menu
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = gd_container Pos = (0.0, 0.0) just = [left top]}
 	CreateScreenElement \{Type = SpriteElement parent = gd_container Pos = (0.0, 0.0) just = [left top] dims = (1280.0, 1024.0) rgba = [80 80 80 255] z_priority = -1}
-	font = #"0x35c0114b"
+	font = text_a4
 	text_params = {Type = TextElement parent = gd_container font = <font> just = [left top]}
 	CreateScreenElement {
 		<text_params>

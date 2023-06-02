@@ -3,7 +3,7 @@ beat_game_message = "Think you've got what it takes to really\n blow their minds
 beat_game_message_expert = "Wow. You've mastered expert -- Go start a band already! Take it to the next level with the \c1%n\c0! Cheats can be unlocked in the options menu."
 
 script create_beat_game_menu
-	//create_menu_backdrop \{texture = #"0x7db2638a"}
+	//create_menu_backdrop \{texture = beat_game_bg}
 	menu_font = fontgrid_title_gh3
 	get_current_band_info
 	GetGlobalTags <band_info> param = name
@@ -69,7 +69,7 @@ script create_beat_game_menu
 	CreateScreenElement {
 		Type = TextBlockElement
 		parent = beat_game_container
-		font = #"0x35c0114b"
+		font = text_a4
 		text = <motivation_text>
 		dims = (1100.0, 700.0)
 		Pos = (640.0, 468.0)
@@ -94,7 +94,7 @@ script create_beat_game_menu
 			rgba = [250 245 145 255]
 		}
 	endif
-	button_font = #"0x0d53096f"
+	button_font = ButtonsXenon
 	displaySprite \{id = bgs_black_banner parent = beat_game_container tex = white Pos = (0.0, -2.0) dims = (1240.0, 100.0) rgba = [0 0 0 255] z = -2}
 	CreateScreenElement {
 		Type = TextElement

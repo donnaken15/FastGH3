@@ -209,7 +209,7 @@ script training_create_whammy_sprites
 		Type = SpriteElement
 		id = guitar_whammy_up
 		just = [center center]
-		texture = #"0x6b250f8a"
+		texture = tutorial_whammy_up
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -221,7 +221,7 @@ script training_create_whammy_sprites
 		Type = SpriteElement
 		id = guitar_whammy_down
 		just = [center center]
-		texture = #"0x647871ac"
+		texture = tutorial_whammy_dn
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -233,7 +233,7 @@ script training_create_whammy_sprites
 		Type = SpriteElement
 		id = guitar_whammy_turn1
 		just = [center center]
-		texture = #"0xd755751a"
+		texture = tutorial_whammy_turn_1
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -245,7 +245,7 @@ script training_create_whammy_sprites
 		Type = SpriteElement
 		id = guitar_whammy_turn2
 		just = [center center]
-		texture = #"0x4e5c24a0"
+		texture = tutorial_whammy_turn_2
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -270,7 +270,7 @@ script training_create_whammy_arrows
 		Type = SpriteElement
 		id = guitar_whammy_up_arrow
 		just = [center center]
-		texture = #"0x8abca6ec"
+		texture = tutorial_arrow_green_wham_start
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -282,7 +282,7 @@ script training_create_whammy_arrows
 		Type = SpriteElement
 		id = guitar_whammy_down_arrow
 		just = [center center]
-		texture = #"0x61b6620d"
+		texture = tutorial_arrow_green_wham_end
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -295,7 +295,7 @@ script training_create_whammy_arrows
 		Type = SpriteElement
 		id = training_arrow_red_start
 		just = [center center]
-		texture = #"0x08ee5daf"
+		texture = tutorial_arrow_red_wham_start
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -307,7 +307,7 @@ script training_create_whammy_arrows
 		Type = SpriteElement
 		id = training_arrow_red_middle
 		just = [center center]
-		texture = #"0x777b4282"
+		texture = tutorial_arrow_red_wham_middle
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -319,7 +319,7 @@ script training_create_whammy_arrows
 		Type = SpriteElement
 		id = training_arrow_red_end
 		just = [center center]
-		texture = #"0x6beb2ff3"
+		texture = tutorial_arrow_red_wham_end
 		Pos = <whammy_pos>
 		rot_angle = 0
 		rgba = [255 255 255 255]
@@ -340,7 +340,7 @@ script training_2_2_show_whammy
 	training_set_lesson_header_body \{text = ""}
 	training_show_lesson_header
 	safe_show \{id = lou_icon}
-	//CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = #"0x93f6bad9" Pos = (300.0, 350.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (0.6000000238418579, 0.6000000238418579) z_priority = 20}
+	//CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = tutorial_guitar_angle Pos = (300.0, 350.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (0.6000000238418579, 0.6000000238418579) z_priority = 20}
 	training_create_whammy_sprites
 	training_create_whammy_arrows
 	if IsWinPort
@@ -522,7 +522,7 @@ script training_2_3_explain
 	training_play_sound \{Sound = 'Tutorial_2C_01_lou'}
 	training_add_arrow \{id = training_arrow2 life = 6 Pos = (970.0, 430.0) Scale = 0.7 rot = 0}
 	wait \{7.0 seconds ignoreslomo}
-	CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = #"0xe63215c3" Pos = (630.0, 400.0) rot_angle = 45 rgba = [255 255 255 255] Scale = (0.800000011920929, 0.800000011920929) z_priority = 4}
+	CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = tutorial_controller_guitar Pos = (630.0, 400.0) rot_angle = 45 rgba = [255 255 255 255] Scale = (0.800000011920929, 0.800000011920929) z_priority = 4}
 	wait \{0.5 seconds ignoreslomo}
 	DoScreenElementMorph \{id = guitar_sprite rot_angle = 0 time = 1.0}
 	wait \{3.75 seconds ignoreslomo}
@@ -583,7 +583,7 @@ script training_2_3_watch_for_notes_hit
 		event_handlers = <event_handlers>
 	}
 	begin
-		printf \{channel = training "notes hit %a " a = $#"0x4c0d1319"}
+		printf \{channel = training "notes hit %a " a = $notes_hit}
 		Change \{StructureName = player1_status star_power_amount = 100}
 		if ($training_song_over = 1)
 			printf \{channel = training "done! "}
@@ -677,5 +677,5 @@ script lesson2_hit_note
 			training_play_sound \{Sound = 'Tutorial_God_Positive_02'}
 		endif
 	endif
-	training_display_notes_hit \{notes_hit = $#"0x4c0d1319"}
+	training_display_notes_hit \{notes_hit = $notes_hit}
 endscript

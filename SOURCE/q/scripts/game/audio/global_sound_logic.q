@@ -67,9 +67,9 @@ script DeRegisterSoundEvent
 endscript
 
 script Master_SFX_Adding_Sound_Busses
-	CreateBussSystem \{$#"0x13fd1c6c"}
-	SetSoundBussParams \{$#"0x097dd9d9"}
-	SetSoundBussParams \{$#"0x097dd9d9" time = 0.5}
+	CreateBussSystem \{$BussTree}
+	SetSoundBussParams \{$Default_BussSet}
+	SetSoundBussParams \{$Default_BussSet time = 0.5}
 	SoundBussLock \{Master}
 	SoundBussLock \{User_Guitar}
 	SoundBussLock \{User_Band}
@@ -80,8 +80,8 @@ script Master_SFX_Adding_Sound_Busses
 	SoundBussLock \{Band_Balance}
 	SoundBussLock \{Guitar_Balance}
 	SoundBussLock \{Music_Setlist}
-	createsoundbusseffects \{Guitar_Balance = {effect = $#"0x1fde89f4" effect2 = $#"0x6f75a929"}}
-	createsoundbusseffects \{Crowd_W_Reverb = {effect = $#"0xaff5fc6e" effect2 = $#"0xff737f83"}}
+	createsoundbusseffects \{Guitar_Balance = {effect = $Echo_Guitar_Buss_Dry effect2 = $Reverb_Guitar_Buss_Dry}}
+	createsoundbusseffects \{Crowd_W_Reverb = {effect = $Echo_Crowd_Buss effect2 = $Reverb_Crowd_Buss}}
 endscript
 
 script GH3_Change_crowd_reverb_settings_by_Venue
@@ -106,7 +106,7 @@ script PrintPushPopDebugInfo
 	printf "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= %a %b" a = <name> b = <pushPop>
 endscript
 
-script Generic_Reverb_Functionality_Script\{NewEchoSettings = $#"0x5c4704ee" EchoFadeTime = 0.5 NewReverbSettings = $#"0xdd5b2028" ReverbFadeTime = 0.5}
+script Generic_Reverb_Functionality_Script\{NewEchoSettings = $Echo_Generic_Outside_Slap EchoFadeTime = 0.5 NewReverbSettings = $Reverb_Generic_Outside_Verb ReverbFadeTime = 0.5}
 	if inside
 		if GotParam \{NewEchoSettings}
 			if GotParam \{EchoFadeTime}
@@ -150,27 +150,27 @@ script GH_Guitar_Battle_DSP_Effects_Player1
 	switch <attack_effect>
 		case double_note_flange
 			printf \{channel = SFX "setting to doublenote flange"}
-			setsoundbusseffects \{effect = $#"0x38f82605"}
+			setsoundbusseffects \{effect = $Flange_DoubleNotes1}
 			printf \{channel = SFX "changing p1 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 2}}
 		case overload_highpass
 			printf \{channel = SFX "setting to overload highpass"}
-			setsoundbusseffects \{effect = $#"0x0ecbecac"}
+			setsoundbusseffects \{effect = $HighPass_Thin1}
 			printf \{channel = SFX "changing p1 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 3}}
 		case brokenstring_chorus
 			printf \{channel = SFX "setting to broken string chorus"}
-			setsoundbusseffects \{effect = $#"0xe34be001"}
+			setsoundbusseffects \{effect = $Chorus_Generic1}
 			printf \{channel = SFX "changing p1 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 0}}
 		case lefty_eq
 			printf \{channel = SFX "setting to lefty eq"}
-			setsoundbusseffects \{effect = $#"0x98a76696"}
+			setsoundbusseffects \{effect = $LowPass_Muffled1}
 			printf \{channel = SFX "changing p1 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 6}}
 		case diffup_eq
 			printf \{channel = SFX "setting to diffup eq"}
-			setsoundbusseffects \{effect = $#"0x82271d1a"}
+			setsoundbusseffects \{effect = $EQ_Wah1}
 			printf \{channel = SFX "changing p1 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = -6}}
 		default
@@ -182,27 +182,27 @@ script GH_Guitar_Battle_DSP_Effects_Player2
 	switch <attack_effect>
 		case double_note_flange
 			printf \{channel = SFX "setting to doublenote flange"}
-			setsoundbusseffects \{effect = $#"0xa1f177bf"}
+			setsoundbusseffects \{effect = $Flange_DoubleNotes2}
 			printf \{channel = SFX "changing p2 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 2}}
 		case overload_highpass
 			printf \{channel = SFX "setting to overload highpass"}
-			setsoundbusseffects \{effect = $#"0x97c2bd16"}
+			setsoundbusseffects \{effect = $HighPass_Thin2}
 			printf \{channel = SFX "changing p2 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 3}}
 		case brokenstring_chorus
 			printf \{channel = SFX "setting to broken string chorus"}
-			setsoundbusseffects \{effect = $#"0x7a42b1bb"}
+			setsoundbusseffects \{effect = $Chorus_Generic2}
 			printf \{channel = SFX "changing p2 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 0}}
 		case lefty_eq
 			printf \{channel = SFX "setting to lefty eq"}
-			setsoundbusseffects \{effect = $#"0x01ae372c"}
+			setsoundbusseffects \{effect = $LowPass_Muffled2}
 			printf \{channel = SFX "changing p2 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 6}}
 		case diffup_eq
 			printf \{channel = SFX "setting to diffup eq"}
-			setsoundbusseffects \{effect = $#"0x1b2e4ca0"}
+			setsoundbusseffects \{effect = $EQ_Wah2}
 			printf \{channel = SFX "changing p2 balance buss"}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = -6}}
 		default
@@ -233,21 +233,21 @@ script Reset_Battle_DSP_Effects
 endscript
 
 script Reset_Battle_DSP_Effects_Player1
-	setsoundbusseffects \{effect = $#"0x3a140ca8" time = 0.15}
-	setsoundbusseffects \{effect = $#"0x0f4337db" time = 0.15}
-	setsoundbusseffects \{effect = $#"0xef7dac73" time = 0.15}
-	setsoundbusseffects \{effect = $#"0xea88bd8b" time = 0.15}
-	setsoundbusseffects \{effect = $#"0xf1eab5f3" time = 0.15}
+	setsoundbusseffects \{effect = $LowPass_Default1 time = 0.15}
+	setsoundbusseffects \{effect = $HighPass_Default1 time = 0.15}
+	setsoundbusseffects \{effect = $Flange_Default1 time = 0.15}
+	setsoundbusseffects \{effect = $Chorus_Default1 time = 0.15}
+	setsoundbusseffects \{effect = $EQ_Default1 time = 0.15}
 	printf \{channel = SFX "RESTTING p1 balance buss"}
 	SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 0}}
 endscript
 
 script Reset_Battle_DSP_Effects_Player2
-	setsoundbusseffects \{effect = $#"0xa31d5d12" time = 0.15}
-	setsoundbusseffects \{effect = $#"0x964a6661" time = 0.15}
-	setsoundbusseffects \{effect = $#"0x7674fdc9" time = 0.15}
-	setsoundbusseffects \{effect = $#"0x7381ec31" time = 0.15}
-	setsoundbusseffects \{effect = $#"0x68e3e449" time = 0.15}
+	setsoundbusseffects \{effect = $LowPass_Default2 time = 0.15}
+	setsoundbusseffects \{effect = $HighPass_Default2 time = 0.15}
+	setsoundbusseffects \{effect = $Flange_Default2 time = 0.15}
+	setsoundbusseffects \{effect = $Chorus_Default2 time = 0.15}
+	setsoundbusseffects \{effect = $EQ_Default2 time = 0.15}
 	printf \{channel = SFX "RESTTING p2 balance buss"}
 	SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 0}}
 endscript
@@ -274,7 +274,7 @@ script GH_Star_Power_Verb_On
 		SoundEvent \{event = Star_Power_Deployed_Cheer_SFX}
 	endif
 	PushSoundBussParams
-	SetSoundBussParams \{$#"0x2f073df9" time = 0.5}
+	SetSoundBussParams \{$Star_Power_BussSet time = 0.5}
 	get_song_tempo_cfunc
 	if (<beat_duration> > 400)
 		beat_duration = (<beat_duration> / 2)
@@ -303,8 +303,8 @@ script GH_Star_Power_Verb_Off
 endscript
 
 script GH3_Set_Guitar_Verb_And_Echo_to_Dry
-	setsoundbusseffects \{effect = $#"0x1fde89f4"}
-	setsoundbusseffects \{effect = $#"0x6f75a929"}
+	setsoundbusseffects \{effect = $Echo_Guitar_Buss_Dry}
+	setsoundbusseffects \{effect = $Reverb_Guitar_Buss_Dry}
 endscript
 
 script GH_SFX_Overloaded_Static_Player1
@@ -605,16 +605,16 @@ save_check_time_late = 0.0
 
 script Audio_Sync_Test_Disable_Highway
 	disable_bg_viewport
-	Change \{save_check_time_early = $#"0x82cdf5ca"}
-	Change \{save_check_time_late = $#"0x978f5b87"}
+	Change \{save_check_time_early = $check_time_early}
+	Change \{save_check_time_late = $check_time_late}
 	Change \{check_time_early = 1.0}
 	Change \{check_time_late = 1.0}
 endscript
 
 script Audio_Sync_Test_Enable_Highway
 	enable_bg_viewport
-	Change \{check_time_early = $#"0x5c7484a7"}
-	Change \{check_time_late = $#"0x9560f36a"}
+	Change \{check_time_early = $save_check_time_early}
+	Change \{check_time_late = $save_check_time_late}
 endscript
 
 script GH_SFX_Intro_WarmUp
@@ -659,7 +659,7 @@ script Battle_SFX_Repair_Broken_String
 				endswitch
 				<change_pitch> = (1.0 * <num_strums> / <total_strums>)
 				<local_pitch> = (100.0 - (10.0 * <change_pitch>))
-				PlaySound #"0xb1e017e9" vol = 50 pitch = <local_pitch> pan1x = <pan1x> pan1y = <pan1y> pan2x = <pan2x> pan2y = <pan2y>
+				PlaySound gh3_battlemode_stringtune_2 vol = 50 pitch = <local_pitch> pan1x = <pan1x> pan1y = <pan1y> pan2x = <pan2x> pan2y = <pan2y>
 			endif
 		endif
 	endif
@@ -756,47 +756,47 @@ script GH_SFX_Training_Tuning_Strings
 		case 0
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0xc29df532" vol = 90 pitch = 80}
+					PlaySound \{e_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0xc29df532" vol = 90 pitch = 90}
+					PlaySound \{e_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0xf837041d" vol = 90 pitch = 90}
+					PlaySound \{e_string vol = 90 pitch = 90}
 			endswitch
 		case 1
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0x46d7fbc8" vol = 90 pitch = 80}
+					PlaySound \{a_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0x46d7fbc8" vol = 90 pitch = 90}
+					PlaySound \{a_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0x7c7d0ae7" vol = 90 pitch = 90}
+					PlaySound \{a_string vol = 90 pitch = 90}
 			endswitch
 		case 2
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0x0e37f5ac" vol = 90 pitch = 80}
+					PlaySound \{d_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0x0e37f5ac" vol = 90 pitch = 90}
+					PlaySound \{d_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0x349d0483" vol = 90 pitch = 90}
+					PlaySound \{d_string vol = 90 pitch = 90}
 			endswitch
 		case 3
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0x80b8f24f" vol = 90 pitch = 80}
+					PlaySound \{g_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0x80b8f24f" vol = 90 pitch = 90}
+					PlaySound \{g_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0xba120360" vol = 90 pitch = 90}
+					PlaySound \{g_string vol = 90 pitch = 90}
 			endswitch
 		case 4
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0xc858fc2b" vol = 90 pitch = 80}
+					PlaySound \{b_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0xc858fc2b" vol = 90 pitch = 90}
+					PlaySound \{b_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0xf2f20d04" vol = 90 pitch = 90}
+					PlaySound \{b_string vol = 90 pitch = 90}
 			endswitch
 	endswitch
 endscript
@@ -830,114 +830,114 @@ script GH_SFX_Training_Hammer_On_Lesson_2
 		case 0
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0xc29df532" vol = 90 pitch = 80}
+					PlaySound \{e_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0xc29df532" vol = 90 pitch = 90}
+					PlaySound \{e_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0xf837041d" vol = 90 pitch = 90}
+					PlaySound \{e_string vol = 90 pitch = 90}
 			endswitch
 		case 1
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0x46d7fbc8" vol = 90 pitch = 80}
+					PlaySound \{a_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0x46d7fbc8" vol = 90 pitch = 90}
+					PlaySound \{a_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0x7c7d0ae7" vol = 90 pitch = 90}
+					PlaySound \{a_string vol = 90 pitch = 90}
 			endswitch
 		case 2
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0x0e37f5ac" vol = 90 pitch = 80}
+					PlaySound \{d_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0x0e37f5ac" vol = 90 pitch = 90}
+					PlaySound \{d_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0x349d0483" vol = 90 pitch = 90}
+					PlaySound \{d_string vol = 90 pitch = 90}
 			endswitch
 		case 3
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0x80b8f24f" vol = 90 pitch = 80}
+					PlaySound \{g_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0x80b8f24f" vol = 90 pitch = 90}
+					PlaySound \{g_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0xba120360" vol = 90 pitch = 90}
+					PlaySound \{g_string vol = 90 pitch = 90}
 			endswitch
 		case 4
 			switch <training_notes_strummed>
 				case 1
-					PlaySound \{#"0xc858fc2b" vol = 90 pitch = 80}
+					PlaySound \{b_tuning vol = 90 pitch = 80}
 				case 2
-					PlaySound \{#"0xc858fc2b" vol = 90 pitch = 90}
+					PlaySound \{b_tuning vol = 90 pitch = 90}
 				case 3
-					PlaySound \{#"0xf2f20d04" vol = 90 pitch = 90}
+					PlaySound \{b_string vol = 90 pitch = 90}
 			endswitch
 	endswitch
 endscript
 
 script StopNotes_01
-	if IsSoundEventPlaying \{#"0xddb0e0c0"}
-		SetSoundParams \{#"0xddb0e0c0" vol = 100}
+	if IsSoundEventPlaying \{tutorial_string_1_strum_free}
+		SetSoundParams \{tutorial_string_1_strum_free vol = 100}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0xddb0e0c0" vol = 50}
+		SetSoundParams \{tutorial_string_1_strum_free vol = 50}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0xddb0e0c0" vol = 10}
-		StopSoundEvent \{#"0xddb0e0c0"}
+		SetSoundParams \{tutorial_string_1_strum_free vol = 10}
+		StopSoundEvent \{tutorial_string_1_strum_free}
 	endif
 endscript
 
 script StopNotes_02
-	if IsSoundEventPlaying \{#"0x56867df9"}
-		SetSoundParams \{#"0x56867df9" vol = 100}
+	if IsSoundEventPlaying \{tutorial_string_2_hopo_free}
+		SetSoundParams \{tutorial_string_2_hopo_free vol = 100}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0x56867df9" vol = 50}
+		SetSoundParams \{tutorial_string_2_hopo_free vol = 50}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0x56867df9" vol = 10}
-		StopSoundEvent \{#"0x56867df9"}
+		SetSoundParams \{tutorial_string_2_hopo_free vol = 10}
+		StopSoundEvent \{tutorial_string_2_hopo_free}
 	endif
 endscript
 
 script StopNotes_03
-	if IsSoundEventPlaying \{#"0x9708a239"}
-		SetSoundParams \{#"0x9708a239" vol = 100}
+	if IsSoundEventPlaying \{tutorial_string_3_hopo_free}
+		SetSoundParams \{tutorial_string_3_hopo_free vol = 100}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0x9708a239" vol = 50}
+		SetSoundParams \{tutorial_string_3_hopo_free vol = 50}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0x9708a239" vol = 10}
-		StopSoundEvent \{#"0x9708a239"}
+		SetSoundParams \{tutorial_string_3_hopo_free vol = 10}
+		StopSoundEvent \{tutorial_string_3_hopo_free}
 	endif
 endscript
 
 script StopNotes_04
-	if IsSoundEventPlaying \{#"0x318b7e5f"}
-		SetSoundParams \{#"0x318b7e5f" vol = 100}
+	if IsSoundEventPlaying \{tutorial_string_3_strum_free}
+		SetSoundParams \{tutorial_string_3_strum_free vol = 100}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0x318b7e5f" vol = 50}
+		SetSoundParams \{tutorial_string_3_strum_free vol = 50}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0x318b7e5f" vol = 10}
-		StopSoundEvent \{#"0x318b7e5f"}
+		SetSoundParams \{tutorial_string_3_strum_free vol = 10}
+		StopSoundEvent \{tutorial_string_3_strum_free}
 	endif
 endscript
 
 script StopNotes_05
-	if IsSoundEventPlaying \{#"0x56867df9"}
-		SetSoundParams \{#"0x56867df9" vol = 100}
+	if IsSoundEventPlaying \{tutorial_string_2_hopo_free}
+		SetSoundParams \{tutorial_string_2_hopo_free vol = 100}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0x56867df9" vol = 50}
+		SetSoundParams \{tutorial_string_2_hopo_free vol = 50}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0x56867df9" vol = 10}
-		StopSoundEvent \{#"0x56867df9"}
+		SetSoundParams \{tutorial_string_2_hopo_free vol = 10}
+		StopSoundEvent \{tutorial_string_2_hopo_free}
 	endif
 endscript
 
 script StopNotes_06
-	if IsSoundEventPlaying \{#"0xcf641bf8"}
-		SetSoundParams \{#"0xcf641bf8" vol = 100}
+	if IsSoundEventPlaying \{tutorial_string_1_hopo_free}
+		SetSoundParams \{tutorial_string_1_hopo_free vol = 100}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0xcf641bf8" vol = 50}
+		SetSoundParams \{tutorial_string_1_hopo_free vol = 50}
 		wait \{0.05 seconds}
-		SetSoundParams \{#"0xcf641bf8" vol = 10}
-		StopSoundEvent \{#"0xcf641bf8"}
+		SetSoundParams \{tutorial_string_1_hopo_free vol = 10}
+		StopSoundEvent \{tutorial_string_1_hopo_free}
 	endif
 endscript
 

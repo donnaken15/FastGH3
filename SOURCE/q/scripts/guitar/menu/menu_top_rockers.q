@@ -4,7 +4,7 @@ g_tr_went_past_max_width = 0
 
 script create_top_rockers_menu\{for_options = 0}
 	disable_pause
-	create_menu_backdrop \{texture = #"0xc9cd1c15"}
+	create_menu_backdrop \{texture = toprockers_bg}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = tr_container Pos = (0.0, 0.0)}
 	menu_top_rockers_create_poster
 	new_score = -1
@@ -358,9 +358,9 @@ endscript
 script menu_tr_change_character_up
 	generic_menu_up_or_down_sound \{up}
 	SetArrayElement ArrayName = default_band_indexes GlobalArray index = $new_band_index NewValue = ($default_band_indexes [$new_band_index] + 1)
-	GetArraySize \{$#"0xa6b44fea"}
+	GetArraySize \{$default_band_characters}
 	if ($default_band_indexes [$new_band_index] > (<array_Size> -1))
-		SetArrayElement \{ArrayName = default_band_indexes GlobalArray index = $#"0x5e51c5ae" NewValue = 0}
+		SetArrayElement \{ArrayName = default_band_indexes GlobalArray index = $new_band_index NewValue = 0}
 	endif
 	SetArrayElement ArrayName = new_band_name GlobalArray index = $new_band_index NewValue = ($default_band_characters [($default_band_indexes [$new_band_index])])
 	menu_tr_refresh_band_name score_index = <score_index>
@@ -369,7 +369,7 @@ endscript
 script menu_tr_change_character_down
 	generic_menu_up_or_down_sound \{down}
 	SetArrayElement ArrayName = default_band_indexes GlobalArray index = $new_band_index NewValue = ($default_band_indexes [$new_band_index] -1)
-	GetArraySize \{$#"0xa6b44fea"}
+	GetArraySize \{$default_band_characters}
 	if ($default_band_indexes [$new_band_index] < 0)
 		SetArrayElement ArrayName = default_band_indexes GlobalArray index = $new_band_index NewValue = (<array_Size> -1)
 	endif

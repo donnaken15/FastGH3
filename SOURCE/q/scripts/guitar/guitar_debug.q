@@ -176,7 +176,7 @@ endscript
 script guitar_tilt_debug_display
 	if ($show_guitar_tilt = 1)
 		if NOT ScreenElementExists \{id = guitar_tilt_debug}
-			CreateScreenElement \{Type = TextElement parent = root_window id = guitar_tilt_debug font = #"0x935ab858" Pos = (640.0, 400.0) just = [center center] Scale = 2.0 rgba = [210 210 210 250] text = "Tilt!" z_priority = 10.0 alpha = 1}
+			CreateScreenElement \{Type = TextElement parent = root_window id = guitar_tilt_debug font = text_a1 Pos = (640.0, 400.0) just = [center center] Scale = 2.0 rgba = [210 210 210 250] text = "Tilt!" z_priority = 10.0 alpha = 1}
 		endif
 		FormatText \{textname = text_string " ???"}
 		controller = 0
@@ -194,7 +194,7 @@ endscript
 script guitar_sensor_debug
 	if ($show_sensor_debug)
 		if NOT ScreenElementExists \{id = guitar_sensor_debug}
-			CreateScreenElement \{Type = TextBlockElement parent = root_window id = guitar_sensor_debug font = #"0x935ab858" Scale = 0.75 Pos = (64.0, 64.0) dims = (256.0, 256.0) just = [left top] rgba = [210 210 210 255] z_priority = 10.0 alpha = 0.8}
+			CreateScreenElement \{Type = TextBlockElement parent = root_window id = guitar_sensor_debug font = text_a1 Scale = 0.75 Pos = (64.0, 64.0) dims = (256.0, 256.0) just = [left top] rgba = [210 210 210 255] z_priority = 10.0 alpha = 0.8}
 		endif
 		control = -1
 		if IsGuitarController \{controller = 0}
@@ -427,7 +427,7 @@ script FlexParticleWarning
 		DestroyScreenElement \{id = particle_warn_anchor}
 	endif
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = particle_warn_anchor Pos = (25.0, 80.0) just = [center center] internal_just = [left center]}
-	CreateScreenElement \{Type = TextElement parent = particle_warn_anchor id = particle_warn_text Pos = (0.0, 0.0) text = "Particle failed: Too many at once" font = #"0x45aae5c4" rgba = [255 0 0 255] just = [left top]}
+	CreateScreenElement \{Type = TextElement parent = particle_warn_anchor id = particle_warn_text Pos = (0.0, 0.0) text = "Particle failed: Too many at once" font = text_a1 rgba = [255 0 0 255] just = [left top]}
 	SetScreenElementLock \{id = root_window On}
 	wait \{2 seconds}
 	if ObjectExists \{id = particle_warn_anchor}

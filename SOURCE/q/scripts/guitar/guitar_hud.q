@@ -4,13 +4,13 @@ hudless = 0
 script setup_sprites
 	setup_main_button_event_mappings
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = hud_window Pos = (0.0, 0.0) just = [left top]}
-	CreateScreenElement \{Type = TextElement parent = root_window id = song_failed_text font = #"0xba959ce0" Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Song Failed" z_priority = 5.0 alpha = 0}
-	CreateScreenElement \{Type = TextElement parent = root_window id = song_won_text font = #"0xba959ce0" Pos = (640.0, 360.0) just = [center center] Scale = 4.0 rgba = [210 210 210 250] text = "You Rock!" z_priority = 71.0 alpha = 0}
-	CreateScreenElement \{Type = TextElement parent = root_window id = player1wins_text font = #"0xba959ce0" Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Player 1 Wins!" z_priority = 5.0 alpha = 0}
-	CreateScreenElement \{Type = TextElement parent = root_window id = player2wins_text font = #"0xba959ce0" Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Player 2 Wins!" z_priority = 5.0 alpha = 0}
-	CreateScreenElement \{Type = TextElement parent = root_window id = intro_song_info_text font = #"0xba959ce0" Pos = (480.0, 32.0) just = [left top] Scale = 1.23 rgba = [210 210 210 250] text = "Song Info" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
-	CreateScreenElement \{Type = TextElement parent = root_window id = intro_performed_by_text font = #"0xba959ce0" Pos = (480.0, 45.0) just = [left top] Scale = (1.0, 0.5) rgba = [230 205 160 255] text = "AS PERFORMED BY" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
-	CreateScreenElement \{Type = TextElement parent = root_window id = intro_artist_info_text font = #"0xba959ce0" Pos = (640.0, 32.0) just = [left top] Scale = 1.0 rgba = [255 190 70 255] text = "Song Artist" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
+	CreateScreenElement \{Type = TextElement parent = root_window id = song_failed_text font = text_a10 Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Song Failed" z_priority = 5.0 alpha = 0}
+	CreateScreenElement \{Type = TextElement parent = root_window id = song_won_text font = text_a10 Pos = (640.0, 360.0) just = [center center] Scale = 4.0 rgba = [210 210 210 250] text = "You Rock!" z_priority = 71.0 alpha = 0}
+	CreateScreenElement \{Type = TextElement parent = root_window id = player1wins_text font = text_a10 Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Player 1 Wins!" z_priority = 5.0 alpha = 0}
+	CreateScreenElement \{Type = TextElement parent = root_window id = player2wins_text font = text_a10 Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Player 2 Wins!" z_priority = 5.0 alpha = 0}
+	CreateScreenElement \{Type = TextElement parent = root_window id = intro_song_info_text font = text_a10 Pos = (480.0, 32.0) just = [left top] Scale = 1.23 rgba = [210 210 210 250] text = "Song Info" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
+	CreateScreenElement \{Type = TextElement parent = root_window id = intro_performed_by_text font = text_a10 Pos = (480.0, 45.0) just = [left top] Scale = (1.0, 0.5) rgba = [230 205 160 255] text = "AS PERFORMED BY" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
+	CreateScreenElement \{Type = TextElement parent = root_window id = intro_artist_info_text font = text_a10 Pos = (640.0, 32.0) just = [left top] Scale = 1.0 rgba = [255 190 70 255] text = "Song Artist" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
 	setup_pause
 endscript
 hud_screen_elements = [
@@ -93,7 +93,7 @@ script setup_hud
 		Pos = (0.0, 0.0)
 		just = [left top]
 	}
-	GetArraySize \{$#"0xc3fc0bc3"}
+	GetArraySize \{$hud_screen_elements}
 	array_entry = 0
 	get_num_players_by_gamemode
 	begin
@@ -111,7 +111,7 @@ script setup_hud
 		CreateScreenElement {
 			Type = TextElement
 			parent = <hud_destroygroup>
-			font = #"0xdbce7067"
+			font = text_a6
 			just = [left top]
 			Scale = 1.0
 			rgba = [210 210 210 250]
@@ -189,7 +189,7 @@ script setup_hud
 		CreateScreenElement {
 			Type = TextElement
 			parent = <hud_destroygroup>
-			font = #"0x45aae5c4"
+			font = text_a1
 			just = [left top]
 			Scale = 1.0
 			rgba = [210 210 210 250]
@@ -426,7 +426,7 @@ script split_text_into_array_elements\{text = "OOPS" text_pos = (0.0, 0.0) space
 			Type = TextElement
 			parent = <parent_container>
 			text = <text>
-			font = #"0x45aae5c4"
+			font = text_a1
 			Scale = (<flags>.Scale)
 		}
 		GetScreenElementDims id = <id>

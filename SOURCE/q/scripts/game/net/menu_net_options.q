@@ -39,12 +39,12 @@ save_changes_message = "You are about to exit the Player Options. Any changes ma
 	displaySprite id = online_menu_box_bottom_fill parent = online_menu_ui_container tex = #"0xecab1ed6" rgba = [0 0 0 200] Pos = (($online_general_menu_pos)+ (0.0, 496.0))dims = (256.0, 64.0) just = [center top] z = 2 flip_h
 	displaySprite id = online_title_bar parent = online_menu_ui_container tex = #"0xec880166" rgba = ($online_light_blue)Pos = (($online_general_menu_pos)+ (0.0, 128.0))dims = (256.0, 128.0) just = [center center] z = 3
 	displaySprite id = online_highlight parent = online_menu_ui_container tex = white rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (632.0, 0.0))dims = (256.0, 40.0) just = [center top] z = 3
-	displaySprite id = online_bookend1 parent = online_menu_ui_container tex = #"0x40f8daf3" rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (502.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
-	displaySprite id = online_bookend2 parent = online_menu_ui_container tex = #"0x40f8daf3" rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (774.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
+	displaySprite id = online_bookend1 parent = online_menu_ui_container tex = character_hub_hilite_bookend rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (502.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
+	displaySprite id = online_bookend2 parent = online_menu_ui_container tex = character_hub_hilite_bookend rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (774.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
 	CreateScreenElement {
 		Type = TextElement
 		parent = online_menu_ui_container
-		font = #"0x35c0114b"
+		font = text_a4
 		Scale = (0.6500000357627869, 0.75)
 		rgba = ($online_medium_blue)
 		text = <menu_title>
@@ -517,14 +517,14 @@ script create_online_options_changed_dialog\{menu_id = online_options_changed_me
 	Change \{menu_focus_color = [180 50 50 255]}
 	Change \{menu_unfocus_color = [0 0 0 255]}
 	create_pause_menu_frame \{parent = warning_message_container z = 16}
-	displaySprite \{parent = warning_message_container tex = #"0x7464ad56" Scale = (1.7000000476837158, 1.7000000476837158) z = 19 Pos = (640.0, 100.0) just = [right top] flip_v}
-	displaySprite \{parent = warning_message_container tex = #"0x7464ad56" Scale = (1.7000000476837158, 1.7000000476837158) z = 19 Pos = (640.0, 100.0) just = [left top]}
-	displaySprite \{parent = warning_message_container tex = #"0xacf2f335" Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = 19}
-	displaySprite \{parent = warning_message_container tex = #"0xacf2f335" Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = 19}
-	displaySprite \{parent = warning_message_container tex = #"0xdb44b36c" Pos = (480.0, 500.0) Scale = (1.25, 1.0) z = 19 just = [left botom]}
-	displaySprite \{parent = warning_message_container tex = #"0xdb44b36c" Pos = (480.0, 530.0) Scale = (1.25, 1.0) z = 19 just = [left top] flip_h}
+	displaySprite \{parent = warning_message_container tex = dialog_title_bg Scale = (1.7000000476837158, 1.7000000476837158) z = 19 Pos = (640.0, 100.0) just = [right top] flip_v}
+	displaySprite \{parent = warning_message_container tex = dialog_title_bg Scale = (1.7000000476837158, 1.7000000476837158) z = 19 Pos = (640.0, 100.0) just = [left top]}
+	displaySprite \{parent = warning_message_container tex = dialog_frame_joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = 19}
+	displaySprite \{parent = warning_message_container tex = dialog_frame_joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = 19}
+	displaySprite \{parent = warning_message_container tex = dialog_menu_bg Pos = (480.0, 500.0) Scale = (1.25, 1.0) z = 19 just = [left botom]}
+	displaySprite \{parent = warning_message_container tex = dialog_menu_bg Pos = (480.0, 530.0) Scale = (1.25, 1.0) z = 19 just = [left top] flip_h}
 	CreateScreenElement \{Type = TextElement parent = warning_message_container font = fontgrid_title_gh3 Scale = 1.3 rgba = [223 223 223 250] text = "WARNING" just = [center top] z_priority = 20.0 Pos = (640.0, 175.0) Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255]}
-	CreateScreenElement \{Type = TextBlockElement parent = warning_message_container font = fontgrid_title_gh3 Scale = 0.6 rgba = [210 210 210 250] text = $#"0xf4daeb49" just = [center top] internal_just = [center top] z_priority = 20.0 Pos = (640.0, 290.0) dims = (700.0, 320.0) line_spacing = 1.0}
+	CreateScreenElement \{Type = TextBlockElement parent = warning_message_container font = fontgrid_title_gh3 Scale = 0.6 rgba = [210 210 210 250] text = $save_changes_message just = [center top] internal_just = [center top] z_priority = 20.0 Pos = (640.0, 290.0) dims = (700.0, 320.0) line_spacing = 1.0}
 	CreateScreenElement \{Type = ContainerElement parent = online_options_changed_vmenu dims = (100.0, 50.0) event_handlers = [{focus net_warning_focus}{unfocus net_warning_unfocus}{pad_choose options_changed_select_save}]}
 	container_id = <id>
 	CreateScreenElement {

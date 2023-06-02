@@ -183,14 +183,14 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	calc_health_invincible_time song = <song_name> player_status = <player_status>
 	if ($Cheat_EasyExpert = 1)
 		if ($is_network_game || $game_mode = p1_career || $game_mode = p2_coop)
-			Change \{check_time_early = $#"0x8f62b310"}
-			Change \{check_time_late = $#"0x55a3bf0d"}
+			Change \{check_time_early = $original_check_time_early}
+			Change \{check_time_late = $original_check_time_late}
 		endif
 	endif
 	if ($Cheat_PrecisionMode = 1)
 		if ($is_network_game)
-			Change \{check_time_early = $#"0x8f62b310"}
-			Change \{check_time_late = $#"0x55a3bf0d"}
+			Change \{check_time_early = $original_check_time_early}
+			Change \{check_time_late = $original_check_time_late}
 		endif
 	endif
 	Change StructureName = <player_status> check_time_early = ($check_time_early * $current_speedfactor)
@@ -338,7 +338,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 		endif
 		//SpawnScriptLater lightshow_iterator params = {song_name = <song_name> time_offset = (<gem_offset> + $lightshow_offset_ms)skipleadin = 0}
 		//SpawnScriptLater cameracuts_iterator params = {song_name = <song_name> time_offset = <gem_offset> skipleadin = 0}
-		GetArraySize \{$#"0xbc0ae6c6"}
+		GetArraySize \{$scripts_array}
 		array_count = 0
 		begin
 			<lead_ms> = ($scripts_array [<array_count>].lead_ms)
@@ -437,8 +437,8 @@ script win_song
 			no_hold
 		}
 	endif
-	printf \{"Waiting %s seconds for extra song win delay." s = $#"0x68d51135"}
-	wait \{$#"0x68d51135" seconds}
+	printf \{"Waiting %s seconds for extra song win delay." s = $Song_Win_Delay}
+	wait \{$Song_Win_Delay seconds}
 	Change num_players_finished = ($num_players_finished + 1)
 	printf "win_song finished %i %f" i = ($num_players_finished)f = ($current_num_players)
 	if ($num_players_finished >= $current_num_players)
@@ -538,7 +538,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		Change boss_oldcontroller = ($player2_status.controller)
 		GetInputHandlerBotIndex \{Player = 2}
 		Change StructureName = player2_status controller = <controller>
-		if StructureContains \{structure = $#"0x0eb2f0a3" name = character_profile}
+		if StructureContains \{structure = $current_boss name = character_profile}
 			Profile = ($current_boss.character_profile)
 			Change StructureName = player2_status character_id = <Profile>
 			Change \{StructureName = player2_status outfit = 1}
@@ -576,7 +576,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	printf \{"-------------------------------------"}
 	printf \{"-------------------------------------"}
 	printf \{"-------------------------------------"}
-	printf \{"Now playing %s %d" s = $#"0x03a17838" d = $#"0x9b2f5962"}
+	printf \{"Now playing %s %d" s = $current_song d = $current_difficulty}
 	printf \{"-------------------------------------"}
 	printf \{"-------------------------------------"}
 	printf \{"-------------------------------------"}
@@ -706,7 +706,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	endif
 	StopRendering
 	destroy_loading_screen
-	setslomo \{$#"0x16d91bc1"}
+	setslomo \{$current_speedfactor}
 	if (($player2_present = 0)& ($is_network_game = 1))
 		if NOT ((ScreenElementExists id = net_popup_container)|| (ScriptIsRunning create_connection_lost_dialog))
 			spawnscriptnow \{create_connection_lost_dialog}
@@ -1081,9 +1081,9 @@ endscript
 
 script call_startup_scripts
 	Change \{current_startup_script = default_startup}
-	Change \{time_gem_offset = $#"0x07225f4f"}
+	Change \{time_gem_offset = $default_gem_offset}
 	GetGlobalTags \{user_options}
-	Change \{time_input_offset = $#"0x489759d8"}
+	Change \{time_input_offset = $default_input_offset}
 	get_song_struct song = <song_name>
 	if StructureContains structure = <song_struct> name = startup_Script
 		Change current_startup_script = (<song_struct>.startup_Script)
@@ -1101,7 +1101,7 @@ script call_startup_scripts
 	if StructureContains structure = <song_struct> name = hammer_on_measure_scale
 		Change hammer_on_measure_scale = (<song_struct>.hammer_on_measure_scale)
 	else
-		Change \{hammer_on_measure_scale = $#"0xc0e513de"}
+		Change \{hammer_on_measure_scale = $default_hammer_on_measure_scale}
 	endif
 	if ($game_mode = training & $in_menu_choose_practice_section = 0 & $current_speedfactor != 1.0)
 		if ($current_speedfactor >= 0.8)
@@ -1169,8 +1169,8 @@ script start_song\{device_num = 0 practice_intro = 0 endtime = 999999999}
 		Change player1_device = (<device_num>)
 		Change StructureName = player1_status controller = (<device_num>)
 	else
-		Change \{StructureName = player1_status controller = $#"0xab76e33e"}
-		Change \{StructureName = player2_status controller = $#"0x25f9e4dd"}
+		Change \{StructureName = player1_status controller = $player1_device}
+		Change \{StructureName = player2_status controller = $player2_device}
 		printf "Pads assigned: Player 1: %p Player 2: %q" p = ($player1_status.controller)q = ($player2_status.controller)
 	endif
 	Change \{battle_sudden_death = 0}
@@ -1223,7 +1223,7 @@ script restart_song\{practice_intro = 0 sudden_death = 0}
 	endif
 	if ($current_song = bosstom || $current_song = bossslash)
 		Change boss_wuss_out = ($boss_wuss_out + 1)
-		printf \{channel = trchen "Boss Wuss Out %s" s = $#"0xed7388d5"}
+		printf \{channel = trchen "Boss Wuss Out %s" s = $boss_wuss_out}
 	endif
 	StopSoundEvent \{Crowd_Fail_Song_SFX}
 	if (<practice_intro> = 0)

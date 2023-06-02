@@ -23,7 +23,7 @@ Generic_COIM_Params = {
 	COIM_Max_Peds_Remove_AtOnce = 2
 	COIM_Kill_Relevance = 0.0
 	COIM_Max_Distance = 200.0
-	COIM_Kill_Priority = $#"0x64b57da2"
+	COIM_Kill_Priority = $COIM_Priority_NonPermanent
 	COIM_Initial_Num_Perm_Objects = 36
 	COIM_Permanent_Cleanup_Relevance = 0.5
 	COIM_Type_ID = Generic
@@ -36,6 +36,6 @@ script COIM_PreAllocate
 	if GameModeEquals \{is_classic}
 		ReserveCOIMBlocksForPermObjects (<blocks> / 3)
 	else
-		ReserveCOIMBlocksForPermObjects \{$#"0x504b997b"}
+		ReserveCOIMBlocksForPermObjects \{$ClassicMode_ReservedCOIMBlocksForPermObjects}
 	endif
 endscript*/

@@ -6,7 +6,7 @@ script soft_assert
 	printstruct <...>
 	printf "SOFT ASSERT: %s" s = <reason>
 	if IsTrue \{$#"0x4f659345"}
-		if IsTrue \{$#"0x90b3225b"}
+		if IsTrue \{$soft_assert_active}
 			printf \{"Soft Assert already active, ignoring!"}
 		else
 			pause_game = 1
@@ -82,7 +82,7 @@ script soft_assert_message\{message = ""}
 	CreateScreenElement {
 		Type = TextElement
 		parent = soft_assert_anchor
-		font = #"0x45aae5c4"
+		font = text_a1
 		text = "\c2ASSERTION:"
 		rgba = [255 255 255 255]
 		alpha = 1
@@ -99,7 +99,7 @@ script soft_assert_message\{message = ""}
 	CreateScreenElement {
 		Type = TextBlockElement
 		parent = soft_assert_anchor
-		font = #"0x45aae5c4"
+		font = text_a1
 		text = <message>
 		rgba = [255 255 255 255]
 		alpha = 1
@@ -132,7 +132,7 @@ script soft_assert_message\{message = ""}
 			CreateScreenElement {
 				Type = TextBlockElement
 				parent = soft_assert_callstack
-				font = #"0x45aae5c4"
+				font = text_a1
 				text = (<callstack> [<i>])
 				rgba = [160 160 255 255]
 				Scale = <this_text_scale>

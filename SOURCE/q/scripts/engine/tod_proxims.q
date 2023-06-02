@@ -23,7 +23,7 @@ script toggle_default_sceenfx
 	toggle_screenfx_instances
 endscript
 
-script TOD_Proxim_Update_LightFX_Viewport\{fxParam = $#"0xc45de82c" viewport = 0 time = 1}
+script TOD_Proxim_Update_LightFX_Viewport\{fxParam = $Default_TOD_Manager viewport = 0 time = 1}
 	ScreenFX_ClearFXInstances viewport = <viewport>
 	if (<viewport> = 0)
 		TOD_Proxim_Update_Global_Brightness <...>
@@ -62,7 +62,7 @@ script TOD_Proxim_Update_LightFX_Viewport\{fxParam = $#"0xc45de82c" viewport = 0
 endscript
 
 script TOD_Proxim_Reapply_LightFX
-	TOD_Proxim_Update_LightFX \{fxParam = $#"0xc777a691" time = 0.0}
+	TOD_Proxim_Update_LightFX \{fxParam = $currentTODSettings time = 0.0}
 endscript
 
 script TOD_Proxim_Update_Global_Brightness\{viewport = 0}

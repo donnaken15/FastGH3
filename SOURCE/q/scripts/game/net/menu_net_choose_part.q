@@ -6,7 +6,7 @@ script net_create_choose_part_menu
 endscript
 
 script net_choose_part_screen_elements
-	CreateScreenElement \{Type = VMenu parent = si_scrolling_menu id = si_vmenu_p1 event_handlers = [{pad_up select_instrument_scroll params = {Player = 1 Dir = up}}{pad_down select_instrument_scroll params = {Player = 1 Dir = down}}{pad_choose net_request_instrument params = {Player = 1}}{pad_back net_instrument_go_back params = {Player = 1}}{pad_start menu_show_gamercard}] exclusive_device = $#"0xab76e33e"}
+	CreateScreenElement \{Type = VMenu parent = si_scrolling_menu id = si_vmenu_p1 event_handlers = [{pad_up select_instrument_scroll params = {Player = 1 Dir = up}}{pad_down select_instrument_scroll params = {Player = 1 Dir = down}}{pad_choose net_request_instrument params = {Player = 1}}{pad_back net_instrument_go_back params = {Player = 1}}{pad_start menu_show_gamercard}] exclusive_device = $player1_device}
 	CreateScreenElement \{Type = VMenu parent = si_scrolling_menu id = si_vmenu_p2}
 endscript
 
@@ -40,7 +40,7 @@ endscript
 script force_instrument_highlight
 	if (<Player> = 1)
 		if ($g_si_player1_index = 0)
-			SetScreenElementProps \{id = si_hilite_p1 Pos = $#"0x8c59897e"}
+			SetScreenElementProps \{id = si_hilite_p1 Pos = $g_si_hilitep1_pos}
 			SetScreenElementProps id = si_hilite_bookend_p1a Pos = ($g_si_hilitep1_pos + (0.0, 10.0))
 		else
 			SetScreenElementProps id = si_hilite_p1 Pos = ($g_si_hilitep1_pos + (0.0, 50.0))
@@ -48,7 +48,7 @@ script force_instrument_highlight
 		endif
 	else
 		if ($g_si_player2_index = 0)
-			SetScreenElementProps \{id = si_hilite_p2 Pos = $#"0xcbf9f3ae" flip_h}
+			SetScreenElementProps \{id = si_hilite_p2 Pos = $g_si_hilitep2_pos flip_h}
 			SetScreenElementProps id = si_hilite_bookend_p2a Pos = ($g_si_hilitep2_pos + (0.0, 20.0))
 		else
 			SetScreenElementProps id = si_hilite_p2 Pos = ($g_si_hilitep2_pos + (0.0, 50.0))flip_h

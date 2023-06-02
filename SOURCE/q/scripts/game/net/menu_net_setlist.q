@@ -135,7 +135,7 @@ script net_setlist_players_ready
 endscript
 
 script net_print_setlist
-	GetArraySize \{$#"0xc3b75622"}
+	GetArraySize \{$net_setlist_songs}
 	array_count = 0
 	begin
 		printf "%c" c = ($net_setlist_songs [<array_count>])
@@ -214,7 +214,7 @@ script reset_setlist
 	if (IsHost)
 		SetSongSelections
 	endif
-	GetArraySize \{$#"0xc3b75622"}
+	GetArraySize \{$net_setlist_songs}
 	array_count = 0
 	begin
 		SetArrayElement ArrayName = net_setlist_songs GlobalArray index = <array_count> NewValue = NULL
@@ -265,12 +265,12 @@ script create_setlist_popup_frames
 			frame_dims = (350.0, 16.0)
 			middle_dims = ((350.0, 0.0) + (0.0, 32.0) * <num_songs>)
 			bottom_pos = (<popup_pos> + (13.0, 16.0) + (0.0, 32.0) * <num_songs>)
-			displaySprite parent = net_setlist_popup_container tex = #"0xb532229b" Pos = (<popup_pos> + (13.0, 8.0))dims = <frame_dims> just = [center center] rgba = ($online_dark_blue)z = <setlist_popup_z>
-			displaySprite parent = net_setlist_popup_container tex = #"0x721db38e" Pos = (<popup_pos> + (13.0, 16.0))dims = <middle_dims> just = [center top] rgba = ($online_dark_blue)z = <setlist_popup_z>
-			displaySprite parent = net_setlist_popup_container tex = #"0xb532229b" Pos = <bottom_pos> dims = <frame_dims> just = [center top] rgba = ($online_dark_blue)z = <setlist_popup_z> flip_h
-			displaySprite parent = net_setlist_popup_container tex = #"0xecab1ed6" Pos = (<popup_pos> + (13.0, 8.0))dims = <frame_dims> just = [center center] rgba = ($online_trans_grey)z = <setlist_popup_z>
-			displaySprite parent = net_setlist_popup_container tex = #"0xae017b97" Pos = (<popup_pos> + (13.0, 16.0))dims = <middle_dims> just = [center top] rgba = ($online_trans_grey)z = <setlist_popup_z>
-			displaySprite parent = net_setlist_popup_container tex = #"0xecab1ed6" Pos = <bottom_pos> dims = <frame_dims> just = [center top] rgba = ($online_trans_grey)z = <setlist_popup_z> flip_h
+			displaySprite parent = net_setlist_popup_container tex = window_frame_cap Pos = (<popup_pos> + (13.0, 8.0))dims = <frame_dims> just = [center center] rgba = ($online_dark_blue)z = <setlist_popup_z>
+			displaySprite parent = net_setlist_popup_container tex = window_frame_body_tall Pos = (<popup_pos> + (13.0, 16.0))dims = <middle_dims> just = [center top] rgba = ($online_dark_blue)z = <setlist_popup_z>
+			displaySprite parent = net_setlist_popup_container tex = window_frame_cap Pos = <bottom_pos> dims = <frame_dims> just = [center top] rgba = ($online_dark_blue)z = <setlist_popup_z> flip_h
+			displaySprite parent = net_setlist_popup_container tex = window_fill_cap Pos = (<popup_pos> + (13.0, 8.0))dims = <frame_dims> just = [center center] rgba = ($online_trans_grey)z = <setlist_popup_z>
+			displaySprite parent = net_setlist_popup_container tex = window_fill_body_large Pos = (<popup_pos> + (13.0, 16.0))dims = <middle_dims> just = [center top] rgba = ($online_trans_grey)z = <setlist_popup_z>
+			displaySprite parent = net_setlist_popup_container tex = window_fill_cap Pos = <bottom_pos> dims = <frame_dims> just = [center top] rgba = ($online_trans_grey)z = <setlist_popup_z> flip_h
 			text_pos = (<popup_pos> + (0.0, 37.0))
 			array_count = 1
 			begin
@@ -284,7 +284,7 @@ script create_setlist_popup_frames
 					Pos = <text_pos>
 					Scale = (1.0, 1.0)
 					text = "..."
-					font = #"0x42c721dd"
+					font = text_a5
 					rgba = <Color>
 					z_priority = (<setlist_popup_z> + 0.2)
 				}

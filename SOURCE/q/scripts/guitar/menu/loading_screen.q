@@ -131,8 +131,8 @@ script create_loading_screen\{mode = play_song}
 	rand_tip = ($loading_screen_tips [<rand_num>])
 	if (<mode> = play_song || <mode> = play_encore || <mode> = play_boss || <mode> = restart_song)
 		killspawnedscript \{name = jiggle_text_array_elements}
-		if ScreenElementExists \{id = $#"0x0e5821a3"}
-			DestroyScreenElement \{id = $#"0x0e5821a3"}
+		if ScreenElementExists \{id = $g_loading_screen_split_container_id}
+			DestroyScreenElement \{id = $g_loading_screen_split_container_id}
 		endif
 		PlayMovieFromBuffer {
 			buffer_slot = <buffer_slot>
@@ -146,7 +146,7 @@ script create_loading_screen\{mode = play_song}
 			parent = root_window
 			id = loading_tip_text
 			text = <rand_tip>
-			font = #"0x35c0114b"
+			font = text_a4
 			Scale = 0.9
 			just = [center center]
 			dims = (350.0, 480.0)
@@ -157,21 +157,21 @@ script create_loading_screen\{mode = play_song}
 			shadow_offs = (5.0, 5.0)
 			shadow_rgba = [0 0 0 255]
 		}
-		split_text_into_array_elements \{text = "LOADING" text_pos = (400.0, 560.0) space_between = (40.0, 0.0) flags = {rgba = [255 255 255 255] Scale = 2.0 z_priority = 6000 font = #"0xba959ce0" just = [center center] alpha = 1}}
+		split_text_into_array_elements \{text = "LOADING" text_pos = (400.0, 560.0) space_between = (40.0, 0.0) flags = {rgba = [255 255 255 255] Scale = 2.0 z_priority = 6000 font = text_a10 just = [center center] alpha = 1}}
 		Change g_loading_screen_split_container_id = <container_id>
-		spawnscriptnow \{jiggle_text_array_elements params = {id = $#"0x0e5821a3" time = 1.0 wait_time = 3000 explode = 0}}
+		spawnscriptnow \{jiggle_text_array_elements params = {id = $g_loading_screen_split_container_id time = 1.0 wait_time = 3000 explode = 0}}
 	else
 		killspawnedscript \{name = destroy_loading_screen_spawned}
 		CreateScreenElement \{Type = ContainerElement parent = root_window id = loading_screen_container Pos = (0.0, 0.0)}
-		CreateScreenElement \{Type = SpriteElement parent = loading_screen_container texture = #"0xcbbcc379" Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0)}
+		CreateScreenElement \{Type = SpriteElement parent = loading_screen_container texture = loading_flying_static Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0)}
 	endif
 endscript
 
 script destroy_loading_screen
 	destroy_menu \{menu_id = loading_tip_text}
 	killspawnedscript \{name = jiggle_text_array_elements}
-	if ScreenElementExists \{id = $#"0x0e5821a3"}
-		DestroyScreenElement \{id = $#"0x0e5821a3"}
+	if ScreenElementExists \{id = $g_loading_screen_split_container_id}
+		DestroyScreenElement \{id = $g_loading_screen_split_container_id}
 	endif
 	spawnscriptnow \{destroy_loading_screen_spawned}
 	HideLoadingScreen

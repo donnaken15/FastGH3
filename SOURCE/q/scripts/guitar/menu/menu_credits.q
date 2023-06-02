@@ -1,4 +1,4 @@
-credits_menu_font = #"0x35c0114b"
+credits_menu_font = text_a4
 
 script create_credits_menu
 	if NOT ($end_credits = 1)
@@ -111,7 +111,7 @@ script scrolling_list_add_item\{i = 0}
 		Type = TextBlockElement
 		id = <item_id>
 		parent = credits_list_container
-		font = #"0x35c0114b"
+		font = text_a4
 		dims = <dims>
 		allow_expansion
 		Pos = (0.0, 0.0)
@@ -176,54 +176,54 @@ script scrolling_list_queue_next_item
 	repeat
 endscript
 team_photo_textures_l = [
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
 ]
 team_photo_textures_r = [
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
-	#"0x767a45d7"
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
+	black
 ]
 
 script start_team_photos

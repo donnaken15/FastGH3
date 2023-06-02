@@ -19,13 +19,13 @@ script screen_setup_standard
 endscript
 
 script screen_setup_widescreen
-	SetScreen \{Aspect = 1.7777778 angle = $#"0x946139a7" letterbox = 0}
+	SetScreen \{Aspect = 1.7777778 angle = $widescreen_camera_fov letterbox = 0}
 	Change \{current_screen_mode = widescreen_screen_mode}
 	printf \{"change to widescreen"}
 endscript
 
 script screen_setup_letterbox
-	SetScreen \{Aspect = 1.7777778 angle = $#"0x946139a7" letterbox = 1}
+	SetScreen \{Aspect = 1.7777778 angle = $widescreen_camera_fov letterbox = 1}
 	Change \{current_screen_mode = letterbox_screen_mode}
 	printf \{"change to letterbox"}
 endscript
@@ -41,7 +41,7 @@ script fake_letterboxing
 			case letterbox_screen_mode
 				Change \{last_screen_mode = letterbox_screen_mode}
 			default
-				printf \{"current screen mode = %d" d = $#"0xd65fe602"}
+				printf \{"current screen mode = %d" d = $current_screen_mode}
 				script_assert \{"Unrecognized screen mode"}
 		endswitch
 	else
@@ -49,13 +49,13 @@ script fake_letterboxing
 			case standard_screen_mode
 				fake_letterboxing_elements \{remove}
 			case widescreen_screen_mode
-				printf \{"last screen mode = %d" d = $#"0x28bd32d7"}
+				printf \{"last screen mode = %d" d = $last_screen_mode}
 				nullscript
 			case letterbox_screen_mode
-				printf \{"last screen mode = %d" d = $#"0x28bd32d7"}
+				printf \{"last screen mode = %d" d = $last_screen_mode}
 				nullscript
 			default
-				printf \{"last screen mode = %d" d = $#"0x28bd32d7"}
+				printf \{"last screen mode = %d" d = $last_screen_mode}
 				script_assert \{"Unrecognized screen mode"}
 		endswitch
 	endif
@@ -73,6 +73,6 @@ script fake_letterboxing_elements
 	endif
 	SetScreenElementLock \{id = root_window OFF}
 	CreateScreenElement \{Type = ContainerElement id = letterbox_anchor parent = root_window z_priority = 999 just = [center center] internal_just = [left top]}
-	CreateScreenElement \{Type = SpriteElement parent = letterbox_anchor texture = #"0x34d3e9ce" Scale = (100.0, 9.5) Pos = (0.0, -20.0) rgba = [0 0 0 128] just = [left top] z_priority = 15}
-	CreateScreenElement \{Type = SpriteElement parent = letterbox_anchor texture = #"0x34d3e9ce" Scale = (100.0, 12.0) Pos = (0.0, 392.0) rgba = [0 0 0 128] just = [left top] z_priority = 15}
+	CreateScreenElement \{Type = SpriteElement parent = letterbox_anchor texture = white2 Scale = (100.0, 9.5) Pos = (0.0, -20.0) rgba = [0 0 0 128] just = [left top] z_priority = 15}
+	CreateScreenElement \{Type = SpriteElement parent = letterbox_anchor texture = white2 Scale = (100.0, 12.0) Pos = (0.0, 392.0) rgba = [0 0 0 128] just = [left top] z_priority = 15}
 endscript

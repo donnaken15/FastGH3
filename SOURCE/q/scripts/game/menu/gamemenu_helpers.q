@@ -184,11 +184,11 @@ script handle_start_pressed
 	if NOT RenderingEnabled
 		return
 	endif
-	if IsTrue \{$#"0x39899380"}
+	if IsTrue \{$paused_for_hardware}
 		printf \{"handle_start_pressed: $paused_for_hardware is true, ending"}
 		return
 	endif
-	if IsTrue \{$#"0x75cb7691"}
+	if IsTrue \{$sysnotify_wait_in_progress}
 		printf \{"handle_start_pressed: $sysnotify_wait_in_progress is true, ending"}
 		return
 	endif
@@ -196,7 +196,7 @@ script handle_start_pressed
 		printf \{"handle_start_pressed: $is_changing_levels is true, ending"}
 		return
 	endif
-	if IsTrue \{$#"0x81927cef"}
+	if IsTrue \{$ingame_save_active}
 		printf \{"handle_start_pressed: $ingame_save_active is true, ending"}
 		return
 	endif
@@ -325,7 +325,7 @@ comp_texts = [
 ]
 
 script hide_comp_text
-	GetArraySize \{$#"0x27365d4e"}
+	GetArraySize \{$comp_texts}
 	<index> = 0
 	begin
 		<id> = ($comp_texts [<index>])
@@ -337,7 +337,7 @@ script hide_comp_text
 endscript
 
 script unhide_comp_text
-	GetArraySize \{$#"0x27365d4e"}
+	GetArraySize \{$comp_texts}
 	<index> = 0
 	begin
 		<id> = ($comp_texts [<index>])
@@ -661,7 +661,7 @@ script menu_get_sponsor_sound
 endscript
 
 script menu_setlist_bonus_tab_sound
-	printf \{"here %s" s = $#"0x409c5191"}
+	printf \{"here %s" s = $disable_menu_sounds}
 	if ($disable_menu_sounds = 0)
 		printf \{"sklajkjahsdflhasdlasdf"}
 		SoundEvent \{event = ui_sfx_select}
@@ -689,15 +689,15 @@ script reset_gamemode
 	GMan_ResetCareer
 	CareerFunc \{func = SetAppropriateNodeFlags}
 	training_reset_checkpoints
-	UnsetGlobalFlag \{flag = $#"0xa80886a9"}
-	GetArraySize \{$#"0x9fea7c63"}
+	UnsetGlobalFlag \{flag = $CAREER_STARTED}
+	GetArraySize \{$STORY_CLEAR_GLOBAL_FLAGS}
 	index = 0
 	begin
 		printf "clearing global flag %d" d = ($STORY_CLEAR_GLOBAL_FLAGS [<index>])
 		UnsetGlobalFlag flag = ($STORY_CLEAR_GLOBAL_FLAGS [<index>])
 		<index> = (<index> + 1)
 	repeat <array_Size>
-	if GetGlobalFlag \{flag = $#"0xfe89f0d9"}
+	if GetGlobalFlag \{flag = $CHEAT_CAS_VANS_UNLOCKED}
 		cheat_unlock_the_vans
 	endif
 endscript

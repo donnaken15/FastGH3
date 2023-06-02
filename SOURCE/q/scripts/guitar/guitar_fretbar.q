@@ -1,12 +1,12 @@
 thin_fretbar_timesigs = {
-	t2d4 = $#"0x6fb9512a"
-	t3d4 = $#"0x6fb9512a"
-	t4d4 = $#"0x6fb9512a"
-	t5d4 = $#"0x6fb9512a"
-	t6d4 = $#"0x6fb9512a"
-	t3d8 = $#"0x57848190"
-	t6d8 = $#"0x57848190"
-	t12d8 = $#"0x57848190"
+	t2d4 = $thin_fretbar_8note_params
+	t3d4 = $thin_fretbar_8note_params
+	t4d4 = $thin_fretbar_8note_params
+	t5d4 = $thin_fretbar_8note_params
+	t6d4 = $thin_fretbar_8note_params
+	t3d8 = $thin_fretbar_16note_params
+	t6d8 = $thin_fretbar_16note_params
+	t12d8 = $thin_fretbar_16note_params
 }
 thin_fretbar_8note_params = {
 	low_bpm = 1
@@ -103,7 +103,7 @@ script create_debug_measure_text
 		Type = TextElement
 		parent = debug_measure_window
 		id = <measure_checksum>
-		font = #"0x45aae5c4"
+		font = text_a1
 		Pos = (200.0, 32.0)
 		just = [center top]
 		Scale = 1.0

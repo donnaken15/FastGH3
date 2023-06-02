@@ -1,4 +1,4 @@
-detailed_stats_font = #"0xaba484e8"
+detailed_stats_font = text_a3
 detailed_stats_text_color = [
 	0
 	0
@@ -223,7 +223,7 @@ script create_detailed_stats_menu
 					Type = SpriteElement
 					parent = ds_container
 					Pos = (<circle_pos> [<better_player>])
-					texture = #"0xd9b54c95"
+					texture = circle_pen
 					just = [center center]
 					dims = ((1.7999999523162842, 0.0) * <width> + (0.0, 4.25) * <height>)
 					rgba = [60 70 115 100]
@@ -234,7 +234,7 @@ script create_detailed_stats_menu
 					parent = ds_container
 					Pos = (<best_pos> [<better_player>])
 					text = "BEST!"
-					font = #"0xaba484e8"
+					font = text_a3
 					rot_angle = (<rot_vals> [<better_player>])
 					id = best_text
 					z_priority = 7
@@ -500,7 +500,7 @@ script add_text_to_column{
 	GetUpperCaseString <text>
 	if (<for_practice> = 1)
 		<uppercasestring> = ""
-		font = #"0x35c0114b"
+		font = text_a4
 	endif
 	if GotParam \{dont_force_caps}
 		<display_string> = <text>

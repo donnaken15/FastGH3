@@ -11,29 +11,29 @@ Single_Player_Bad_Note_Guitar_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0xaae841af"
+			bad_note1
 			vol = 93
 		}
 		Sound2 = {
-			#"0x33e11015"
+			bad_note2
 			vol = 56
 			pitch = 95
 		}
 		Sound3 = {
-			#"0x44e62083"
+			bad_note3
 			vol = 87
 		}
 		Sound4 = {
-			#"0xda82b520"
+			bad_note4
 			vol = 87
 			pitch = 105
 		}
 		Sound5 = {
-			#"0xad8585b6"
+			bad_note5
 			vol = 81
 		}
 		Sound6 = {
-			#"0x348cd40c"
+			bad_note6
 			vol = 77
 		}
 	}
@@ -44,19 +44,19 @@ Single_Player_Bad_Note_Bass_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x732bc403"
+			bad_note_bass1
 			vol = 135
 		}
 		Sound2 = {
-			#"0xea2295b9"
+			bad_note_bass2
 			vol = 145
 		}
 		Sound3 = {
-			#"0x0341308c"
+			bad_note_bass4
 			vol = 115
 		}
 		Sound4 = {
-			#"0xed4f51a0"
+			bad_note_bass6
 			vol = 110
 		}
 	}
@@ -67,7 +67,7 @@ First_Player_Bad_Note_Guitar_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0xaae841af"
+			bad_note1
 			vol = 75
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -75,7 +75,7 @@ First_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.894
 		}
 		Sound2 = {
-			#"0x33e11015"
+			bad_note2
 			vol = 45
 			pitch = 95
 			pan1x = -0.762
@@ -84,7 +84,7 @@ First_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.894
 		}
 		Sound3 = {
-			#"0x44e62083"
+			bad_note3
 			vol = 70
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -92,7 +92,7 @@ First_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.894
 		}
 		Sound4 = {
-			#"0xda82b520"
+			bad_note4
 			vol = 70
 			pitch = 105
 			pan1x = -0.762
@@ -101,7 +101,7 @@ First_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.894
 		}
 		Sound5 = {
-			#"0xad8585b6"
+			bad_note5
 			vol = 65
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -109,7 +109,7 @@ First_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.894
 		}
 		Sound6 = {
-			#"0x348cd40c"
+			bad_note6
 			vol = 62
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -124,7 +124,7 @@ First_Player_Bad_Note_Bass_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x732bc403"
+			bad_note_bass1
 			vol = 135
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -132,7 +132,7 @@ First_Player_Bad_Note_Bass_container = {
 			pan2y = 0.894
 		}
 		Sound2 = {
-			#"0xea2295b9"
+			bad_note_bass2
 			vol = 145
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -140,7 +140,7 @@ First_Player_Bad_Note_Bass_container = {
 			pan2y = 0.894
 		}
 		Sound3 = {
-			#"0x0341308c"
+			bad_note_bass4
 			vol = 115
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -148,7 +148,7 @@ First_Player_Bad_Note_Bass_container = {
 			pan2y = 0.894
 		}
 		Sound4 = {
-			#"0xed4f51a0"
+			bad_note_bass6
 			vol = 110
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -170,7 +170,7 @@ Second_Player_Bad_Note_Guitar_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0xaae841af"
+			bad_note1
 			vol = 75
 			pan1x = 0.47
 			pan1y = 0.883
@@ -178,7 +178,7 @@ Second_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.685
 		}
 		Sound2 = {
-			#"0x33e11015"
+			bad_note2
 			vol = 45
 			pitch = 95
 			pan1x = 0.47
@@ -187,7 +187,7 @@ Second_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.685
 		}
 		Sound3 = {
-			#"0x44e62083"
+			bad_note3
 			vol = 70
 			pan1x = 0.47
 			pan1y = 0.883
@@ -195,7 +195,7 @@ Second_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.685
 		}
 		Sound4 = {
-			#"0xda82b520"
+			bad_note4
 			vol = 70
 			pitch = 105
 			pan1x = 0.47
@@ -204,7 +204,7 @@ Second_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.685
 		}
 		Sound5 = {
-			#"0xad8585b6"
+			bad_note5
 			vol = 65
 			pan1x = 0.47
 			pan1y = 0.883
@@ -212,7 +212,7 @@ Second_Player_Bad_Note_Guitar_container = {
 			pan2y = 0.685
 		}
 		Sound6 = {
-			#"0x348cd40c"
+			bad_note6
 			vol = 62
 			pan1x = 0.47
 			pan1y = 0.883
@@ -227,7 +227,7 @@ Second_Player_Bad_Note_Bass_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x732bc403"
+			bad_note_bass1
 			vol = 135
 			pan1x = 0.47
 			pan1y = 0.883
@@ -235,7 +235,7 @@ Second_Player_Bad_Note_Bass_container = {
 			pan2y = 0.685
 		}
 		Sound2 = {
-			#"0xea2295b9"
+			bad_note_bass2
 			vol = 145
 			pan1x = 0.47
 			pan1y = 0.883
@@ -243,7 +243,7 @@ Second_Player_Bad_Note_Bass_container = {
 			pan2y = 0.685
 		}
 		Sound3 = {
-			#"0x0341308c"
+			bad_note_bass4
 			vol = 115
 			pan1x = 0.47
 			pan1y = 0.883
@@ -251,7 +251,7 @@ Second_Player_Bad_Note_Bass_container = {
 			pan2y = 0.685
 		}
 		Sound4 = {
-			#"0xed4f51a0"
+			bad_note_bass6
 			vol = 110
 			pan1x = 0.47
 			pan1y = 0.883
@@ -273,7 +273,7 @@ Star_Power_Awarded_SFX_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x77399708"
+			sp_awarded1
 			vol = 90
 			pan1x = -0.5000002
 			pan1y = 0.8660253
@@ -288,7 +288,7 @@ Star_Power_Awarded_SFX_P1_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x77399708"
+			sp_awarded1
 			vol = 80
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -303,7 +303,7 @@ Star_Power_Awarded_SFX_P2_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x77399708"
+			sp_awarded1
 			vol = 80
 			pan1x = 0.47
 			pan1y = 0.883
@@ -318,7 +318,7 @@ Star_Power_Ready_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xc5987eeb"
+			sp_available1
 			vol = 55
 		}
 	}
@@ -329,7 +329,7 @@ Star_Power_Ready_SFX_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xc5987eeb"
+			sp_available1
 			vol = 42
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -344,7 +344,7 @@ Star_Power_Ready_SFX_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xc5987eeb"
+			sp_available1
 			vol = 42
 			pan1x = 0.47
 			pan1y = 0.883
@@ -359,7 +359,7 @@ Star_Power_Deployed_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x18e5a579"
+			sp_deployed
 			vol = 30
 		}
 	}
@@ -370,7 +370,7 @@ Star_Power_Deployed_SFX_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x18e5a579"
+			sp_deployed
 			vol = 25
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -385,7 +385,7 @@ Star_Power_Deployed_SFX_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x18e5a579"
+			sp_deployed
 			vol = 25
 			pan1x = 0.47
 			pan1y = 0.883
@@ -406,7 +406,7 @@ ui_sfx_scroll_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x12e8c17c"
+			scroll
 		}
 	}
 }
@@ -422,14 +422,14 @@ ui_sfx_select_container = {
 	Randomness = RandomNoRepeatLastTwoType
 	Sounds = {
 		Sound1 = {
-			#"0xe4e4d18e"
+			ui_sound_01
 		}
 		Sound2 = {
-			#"0xe3891597"
+			ui_sound_05
 			vol = 150
 		}
 		Sound3 = {
-			#"0x7a80442d"
+			ui_sound_06
 			vol = 150
 		}
 	}
@@ -446,7 +446,7 @@ ui_sfx_bandvol_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xd9494633"
+			bandvol
 			vol = 45
 		}
 	}
@@ -463,7 +463,7 @@ ui_sfx_crowdvol_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x4f47e931"
+			crowdvol
 			vol = 45
 		}
 	}
@@ -480,7 +480,7 @@ ui_sfx_guitvol_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xf10fa296"
+			guitvol
 			vol = 55
 		}
 	}
@@ -498,7 +498,7 @@ GH_SFX_BattleMode_Lightning_Player1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x0d9494d7"
+			gh3_battlemode_lightning
 			vol = 60
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -513,7 +513,7 @@ GH_SFX_BattleMode_Lightning_Player2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x0d9494d7"
+			gh3_battlemode_lightning
 			vol = 60
 			pan1x = 0.47
 			pan1y = 0.883
@@ -528,31 +528,31 @@ GH_SFX_Overloaded_Static_Player1_SE_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x625b5c80"
+			gh3_battlemode_static_01
 			vol = 120
 			pan1x = -0.514
 			pan1y = 0.8570001
 		}
 		Sound2 = {
-			#"0xfb520d3a"
+			gh3_battlemode_static_02
 			vol = 120
 			pan1x = -0.514
 			pan1y = 0.8570001
 		}
 		Sound3 = {
-			#"0x8c553dac"
+			gh3_battlemode_static_03
 			vol = 120
 			pan1x = -0.514
 			pan1y = 0.8570001
 		}
 		Sound4 = {
-			#"0x1231a80f"
+			gh3_battlemode_static_04
 			vol = 120
 			pan1x = -0.514
 			pan1y = 0.8570001
 		}
 		Sound5 = {
-			#"0x65369899"
+			gh3_battlemode_static_05
 			vol = 120
 			pan1x = -0.514
 			pan1y = 0.8570001
@@ -571,31 +571,31 @@ GH_SFX_Overloaded_Static_Player2_SE_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x625b5c80"
+			gh3_battlemode_static_01
 			vol = 120
 			pan1x = 0.521
 			pan1y = 0.854
 		}
 		Sound2 = {
-			#"0xfb520d3a"
+			gh3_battlemode_static_02
 			vol = 120
 			pan1x = 0.521
 			pan1y = 0.854
 		}
 		Sound3 = {
-			#"0x8c553dac"
+			gh3_battlemode_static_03
 			vol = 120
 			pan1x = 0.521
 			pan1y = 0.854
 		}
 		Sound4 = {
-			#"0x1231a80f"
+			gh3_battlemode_static_04
 			vol = 120
 			pan1x = 0.521
 			pan1y = 0.854
 		}
 		Sound5 = {
-			#"0x65369899"
+			gh3_battlemode_static_05
 			vol = 120
 			pan1x = 0.521
 			pan1y = 0.854
@@ -620,7 +620,7 @@ GH_SFX_BeatSoundEvent_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x1fa1adf4"
+			gh3_beat_sound
 			vol = 200
 		}
 	}
@@ -638,7 +638,7 @@ GH_SFX_BeatWindowOpenSoundEvent_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x1fa1adf4"
+			gh3_beat_sound
 			vol = 200
 			pitch = 150
 		}
@@ -650,7 +650,7 @@ GH_SFX_BeatWindowCloseSoundEvent_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x1fa1adf4"
+			gh3_beat_sound
 			vol = 200
 			pitch = 85
 		}
@@ -668,7 +668,7 @@ Menu_Warning_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x11d98e48"
+			menu_warning_01
 			vol = 50
 		}
 	}
@@ -686,11 +686,11 @@ Generic_Menu_Back_SFX_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0xea3f59bc"
+			ui_sound_09
 			vol = 270
 		}
 		Sound2 = {
-			#"0x8af8d059"
+			ui_sound_10
 			vol = 130
 		}
 	}
@@ -707,7 +707,7 @@ Notes_Ripple_Up_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xe41af3f4"
+			notes_ripple_up_01
 			vol = 65
 		}
 	}
@@ -718,11 +718,11 @@ Box_Check_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x9c39a697"
+			checkbox_check_sfx
 			vol = 80
 		}
 		Sound2 = {
-			#"0x6ad98932"
+			checkbox_sfx
 			vol = 80
 		}
 	}
@@ -733,11 +733,11 @@ Box_UnCheck_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x9c39a697"
+			checkbox_check_sfx
 			vol = 80
 		}
 		Sound2 = {
-			#"0x6ad98932"
+			checkbox_sfx
 			vol = 80
 		}
 	}
@@ -748,7 +748,7 @@ You_Rock_End_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xa39d36f7"
+			you_rock
 			vol = 0
 		}
 	}
@@ -759,7 +759,7 @@ UI_SFX_Lose_Multiplier_2X_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x278d8dd5"
+			ui_lose_multiplier
 			vol = 38
 			pitch = 110
 		}
@@ -771,7 +771,7 @@ UI_SFX_Lose_Multiplier_3X_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x278d8dd5"
+			ui_lose_multiplier
 			vol = 57
 			pitch = 105
 		}
@@ -783,7 +783,7 @@ UI_SFX_Lose_Multiplier_4X_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x278d8dd5"
+			ui_lose_multiplier
 			vol = 75
 			pitch = 100
 		}
@@ -795,7 +795,7 @@ Song_Intro_Kick_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xf9a98679"
+			ui_song_intro_kick
 			vol = 120
 		}
 	}
@@ -806,7 +806,7 @@ Song_Intro_Highway_Up_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xf7ad4bff"
+			highway_rise
 			vol = 115
 		}
 	}
@@ -824,7 +824,7 @@ GH_SFX_BattleMode_DeathOf_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x391b1376"
+			gh3_sudden_death
 			vol = 100
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -839,7 +839,7 @@ GH_SFX_BattleMode_DiffUp_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xa99d0729"
+			gh3_battle_difficultyrampup
 			vol = 40
 			pan1x = -0.5923904
 			pan1y = 0.805651
@@ -854,7 +854,7 @@ GH_SFX_BattleMode_DoubleNote_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xd33f2fa7"
+			gh3_battlemode_doublenoteattack
 			vol = 70
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -869,7 +869,7 @@ GH_SFX_BattleMode_Lefty_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xb8201263"
+			gh3_battlemode_leftyattack
 			pan1x = -0.762
 			pan1y = 0.6470001
 			pan2x = -0.448
@@ -883,7 +883,7 @@ GH_SFX_BattleMode_Steal_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x0516f505"
+			gh3_battlemode_stealpowerup
 			vol = 50
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -898,7 +898,7 @@ GH_SFX_BattleMode_StringBreak_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xfd2aab78"
+			gh3_battlemode_stringbreakattack
 			vol = 60
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -913,7 +913,7 @@ GH_SFX_BattleMode_WhammyAttack_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x0983c41d"
+			gh3_battlemode_whammyattack
 			vol = 40
 			pan1x = -0.5000002
 			pan1y = 0.8660253
@@ -928,7 +928,7 @@ GH_SFX_BattleMode_DeathOf_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x391b1376"
+			gh3_sudden_death
 			vol = 100
 			pan1x = 0.47
 			pan1y = 0.883
@@ -943,7 +943,7 @@ GH_SFX_BattleMode_DiffUp_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xa99d0729"
+			gh3_battle_difficultyrampup
 			vol = 40
 			pan1x = 0.47
 			pan1y = 0.883
@@ -958,7 +958,7 @@ GH_SFX_BattleMode_DoubleNote_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xd33f2fa7"
+			gh3_battlemode_doublenoteattack
 			vol = 70
 			pan1x = 0.47
 			pan1y = 0.883
@@ -973,7 +973,7 @@ GH_SFX_BattleMode_Lefty_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xb8201263"
+			gh3_battlemode_leftyattack
 			pan1x = 0.47
 			pan1y = 0.883
 			pan2x = 0.728
@@ -987,7 +987,7 @@ GH_SFX_BattleMode_Steal_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x0516f505"
+			gh3_battlemode_stealpowerup
 			vol = 50
 			pan1x = 0.47
 			pan1y = 0.883
@@ -1002,7 +1002,7 @@ GH_SFX_BattleMode_StringBreak_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xfd2aab78"
+			gh3_battlemode_stringbreakattack
 			vol = 60
 			pan1x = 0.47
 			pan1y = 0.883
@@ -1017,7 +1017,7 @@ GH_SFX_BattleMode_WhammyAttack_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x0983c41d"
+			gh3_battlemode_whammyattack
 			vol = 40
 			pan1x = 0.5
 			pan1y = 0.8660254
@@ -1032,7 +1032,7 @@ GH_SFX_BossBattle_PlayerDies_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xc5ea99c7"
+			gh3_battlemode_deathfromslash
 		}
 	}
 }
@@ -1042,7 +1042,7 @@ GH_SFX_You_Lose_Single_Player_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x391b1376"
+			gh3_sudden_death
 			vol = 75
 		}
 	}
@@ -1053,7 +1053,7 @@ GH_SFX_BattleMode_Attack_Over_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x75d174d4"
+			gh3_battlemode_attack_over
 			vol = 45
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -1068,7 +1068,7 @@ GH_SFX_BattleMode_Attack_Over_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x75d174d4"
+			gh3_battlemode_attack_over
 			vol = 45
 			pan1x = 0.47
 			pan1y = 0.883
@@ -1090,7 +1090,7 @@ Battle_Power_Awarded_SFX_P1_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x77399708"
+			sp_awarded1
 			vol = 90
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -1105,7 +1105,7 @@ Battle_Power_Awarded_SFX_P2_container = {
 	Randomness = RandomNoRepeatType
 	Sounds = {
 		Sound1 = {
-			#"0x77399708"
+			sp_awarded1
 			vol = 80
 			pan1x = 0.47
 			pan1y = 0.883
@@ -1120,7 +1120,7 @@ UI_1stPlayerWins_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xdf983d08"
+			multiplayer_win_screen
 			vol = 125
 			pan1x = -0.5000002
 			pan1y = 0.8660253
@@ -1135,7 +1135,7 @@ UI_2ndPlayerWins_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xdf983d08"
+			multiplayer_win_screen
 			vol = 125
 			pan1x = 0.5
 			pan1y = 0.8660254
@@ -1156,7 +1156,7 @@ GH_SFX_HitNoteSoundEvent_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x1fa1adf4"
+			gh3_beat_sound
 			vol = 200
 			pitch = 250
 		}
@@ -1168,7 +1168,7 @@ GH_SFX_BattleMode_WhammyAttack_Received_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x3c372545"
+			gh3_battlemode_whammyattack_received
 			vol = 35
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -1183,7 +1183,7 @@ GH_SFX_BattleMode_WhammyAttack_Received_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x3c372545"
+			gh3_battlemode_whammyattack_received
 			vol = 35
 			pan1x = 0.47
 			pan1y = 0.883
@@ -1205,7 +1205,7 @@ Checkbox_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x6ad98932"
+			checkbox_sfx
 			vol = 80
 		}
 	}
@@ -1216,7 +1216,7 @@ Checkbox_SFX_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x6ad98932"
+			checkbox_sfx
 			vol = 80
 			pan1x = -0.47
 			pan1y = 0.88
@@ -1229,7 +1229,7 @@ Checkbox_SFX_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x6ad98932"
+			checkbox_sfx
 			vol = 80
 			pan1x = 0.47
 			pan1y = 0.88
@@ -1242,7 +1242,7 @@ Whammy_Test_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x8b4a14dc"
+			whammy_test_sfx
 			vol = 70
 		}
 	}
@@ -1253,7 +1253,7 @@ CheckBox_Check_SFX_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x9c39a697"
+			checkbox_check_sfx
 			vol = 80
 		}
 	}
@@ -1264,7 +1264,7 @@ CheckBox_Check_SFX_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x9c39a697"
+			checkbox_check_sfx
 			vol = 80
 			pan1x = -0.47
 			pan1y = 0.88
@@ -1277,7 +1277,7 @@ CheckBox_Check_SFX_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x9c39a697"
+			checkbox_check_sfx
 			vol = 80
 			pan1x = 0.47
 			pan1y = 0.88
@@ -1290,7 +1290,7 @@ UI_SFX_100_Note_Streak_SinglePlayer_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x8c224d7e"
+			ui_sfx_100_note_streak
 			vol = 90
 		}
 	}
@@ -1301,7 +1301,7 @@ UI_SFX_50_Note_Streak_SinglePlayer_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x5c1fc6de"
+			ui_sfx_50_note_streak
 			vol = 90
 		}
 	}
@@ -1312,7 +1312,7 @@ UI_SFX_100_Note_Streak_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x8c224d7e"
+			ui_sfx_100_note_streak
 			vol = 90
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -1327,7 +1327,7 @@ UI_SFX_50_Note_Streak_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x5c1fc6de"
+			ui_sfx_50_note_streak
 			vol = 90
 			pan1x = -0.762
 			pan1y = 0.6470001
@@ -1342,7 +1342,7 @@ UI_SFX_100_Note_Streak_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x8c224d7e"
+			ui_sfx_100_note_streak
 			vol = 90
 			pan1x = 0.47
 			pan1y = 0.883
@@ -1357,7 +1357,7 @@ UI_SFX_50_Note_Streak_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x5c1fc6de"
+			ui_sfx_50_note_streak
 			vol = 90
 			pan1x = 0.47
 			pan1y = 0.883
@@ -1372,7 +1372,7 @@ GH_SFX_BattleMode_Death_Drain_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x5655bb13"
+			gh3_battlemode_death_drain
 			vol = 45
 			pan1x = -0.5000002
 			pan1y = 0.8660253
@@ -1387,7 +1387,7 @@ GH_SFX_BattleMode_Death_Drain_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x5655bb13"
+			gh3_battlemode_death_drain
 			vol = 45
 			pan1x = 0.5
 			pan1y = 0.8660254
@@ -1402,7 +1402,7 @@ GH_SFX_BattleMode_Sudden_Death_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xc5ea99c7"
+			gh3_battlemode_deathfromslash
 			vol = 80
 		}
 	}
@@ -1420,7 +1420,7 @@ Tutorial_Missed_HOPO_Free_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x19eed26a"
+			tutorial_missed_hopo_free
 			vol = 150
 		}
 	}
@@ -1431,7 +1431,7 @@ Tutorial_String_1_HOPO_Free_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xcf641bf8"
+			tutorial_string_1_hopo_free
 			vol = 150
 		}
 	}
@@ -1442,7 +1442,7 @@ Tutorial_String_1_Strum_Free_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xddb0e0c0"
+			tutorial_string_1_strum_free
 			vol = 150
 		}
 	}
@@ -1453,7 +1453,7 @@ Tutorial_String_2_HOPO_Free_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x56867df9"
+			tutorial_string_2_hopo_free
 			vol = 150
 		}
 	}
@@ -1464,7 +1464,7 @@ Tutorial_String_2_Strum_Free_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xaa2e3230"
+			tutorial_string_2_strum_free
 			vol = 150
 		}
 	}
@@ -1475,7 +1475,7 @@ Tutorial_String_3_HOPO_Free_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x9708a239"
+			tutorial_string_3_hopo_free
 			vol = 150
 		}
 	}
@@ -1486,7 +1486,7 @@ Tutorial_String_3_Strum_Free_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x318b7e5f"
+			tutorial_string_3_strum_free
 			vol = 150
 		}
 	}
@@ -1520,7 +1520,7 @@ Battlemode_HeartBeat_P1_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x86a0df9e"
+			gh3_battlemode_heartbeat
 			vol = 35
 			pan1x = -0.5000002
 			pan1y = 0.8660253
@@ -1536,7 +1536,7 @@ Battlemode_HeartBeat_P2_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0x86a0df9e"
+			gh3_battlemode_heartbeat
 			vol = 35
 			pan1x = 0.5000002
 			pan1y = 0.8660253
@@ -1552,7 +1552,7 @@ GH3_Score_FlyIn_Hit_container = {
 	Randomness = None
 	Sounds = {
 		Sound1 = {
-			#"0xf9a98679"
+			ui_song_intro_kick
 			vol = 40
 		}
 	}

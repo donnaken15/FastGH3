@@ -67,13 +67,13 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	Change \{calibrate_lag_end_checks = 0}
 	Change \{calibrate_lag_started_finish = 0}
 	set_focus_color \{rgba = [230 230 230 255]}
-	set_unfocus_color \{rgba = $#"0x631eb4a5"}
+	set_unfocus_color \{rgba = $calibrate_lag_hilite_unselected}
 	z = 100
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = cl_container Pos = (0.0, 0.0)}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
+	create_menu_backdrop \{texture = venue_bg}
 	displaySprite {
 		parent = cl_container
-		tex = #"0xc5a54934"
+		tex = venue_bg
 		Pos = (640.0, 360.0)
 		dims = (1280.0, 720.0)
 		just = [center center]
@@ -83,7 +83,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 		Type = SpriteElement
 		parent = cl_container
 		id = as_light_overlay
-		texture = #"0xf6c8349f"
+		texture = menu_venue_overlay
 		Pos = (640.0, 360.0)
 		dims = (1280.0, 720.0)
 		just = [center center]
@@ -91,14 +91,14 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = cl_container
-		tex = #"0xe881be77"
+		tex = options_calibrate_poster
 		Pos = (250.0, 0.0)
 		dims = (432.0, 954.0)
 		z = <z>
 	}
 	displaySprite {
 		parent = cl_container
-		tex = #"0x640f83c4"
+		tex = tape_02
 		Pos = (720.0, -100.0)
 		dims = (180.0, 80.0)
 		z = (<z> + 2)
@@ -106,7 +106,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = cl_container
-		tex = #"0x640f83c4"
+		tex = tape_02
 		rgba = [0 0 0 128]
 		Pos = (725.0, -102.0)
 		dims = (180.0, 80.0)
@@ -116,7 +116,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	<tape_offset> = (90.0, 325.0)
 	displaySprite {
 		parent = cl_container
-		tex = #"0x01c66f71"
+		tex = tape_v_01
 		Pos = ((970.0, 106.0) + <tape_offset>)
 		dims = (96.0, 192.0)
 		z = (<z> + 2)
@@ -125,7 +125,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = cl_container
-		tex = #"0x01c66f71"
+		tex = tape_v_01
 		rgba = [0 0 0 128]
 		Pos = ((975.0, 104.0) + <tape_offset>)
 		dims = (96.0, 192.0)
@@ -135,7 +135,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = cl_container
-		tex = #"0x28091e67"
+		tex = tape_h_02
 		Pos = (220.0, 566.0)
 		dims = (132.0, 64.0)
 		z = (<z> + 2)
@@ -143,7 +143,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	}
 	displaySprite {
 		parent = cl_container
-		tex = #"0x28091e67"
+		tex = tape_h_02
 		rgba = [0 0 0 128]
 		Pos = (212.0, 572.0)
 		dims = (132.0, 64.0)
@@ -158,7 +158,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 		parent = cl_container
 		Pos = (700.0, 80.0)
 		text = <upper_helper>
-		font = #"0xdbce7067"
+		font = text_a6
 		dims = (575.0, 0.0)
 		allow_expansion
 		rgba = [60 40 115 255]
@@ -174,7 +174,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 		parent = cl_container
 		Pos = (<ScreenElementPos> + (<height> * (0.0, 1.0))+ (0.0, 24.0))
 		text = <lower_helper>
-		font = #"0xdbce7067"
+		font = text_a6
 		dims = (575.0, 0.0)
 		allow_expansion
 		rgba = [60 40 115 255]
@@ -187,14 +187,14 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	displaySprite {
 		parent = cl_container
 		id = calibrate_lag_target
-		tex = #"0x839f9d79"
+		tex = options_calibrate_target
 		Pos = ($calibrate_lag_menu_line_pos + ($calibrate_lag_menu_circle_dims * 0.5))
 		just = [center center]
 		dims = (96.0, 96.0)
 		z = (<z> + 50)
 		alpha = 0.75
 	}
-	displaySprite \{parent = cl_container id = cl_ping_ID tex = #"0xcddfe1eb" alpha = 0 Scale = 5 z = 180 just = [center center] Pos = (468.0, 406.0)}
+	displaySprite \{parent = cl_container id = cl_ping_ID tex = options_audio_ping alpha = 0 Scale = 5 z = 180 just = [center center] Pos = (468.0, 406.0)}
 	cl_ping_ID ::DoMorph \{alpha = 0}
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
@@ -209,7 +209,7 @@ script calibrate_lag_fill_options\{z = 100}
 	else
 		<controller> = ($primary_controller)
 	endif
-	displaySprite parent = cl_container id = calibrate_lag_hilite tex = #"0x44ca1a1c" Pos = $calibrate_lag_hilite_pos0 rgba = $calibrate_lag_hilite_unselected z = <z>
+	displaySprite parent = cl_container id = calibrate_lag_hilite tex = options_calibrate_highlight Pos = $calibrate_lag_hilite_pos0 rgba = $calibrate_lag_hilite_unselected z = <z>
 	calib_eh = [
 		{pad_back menu_calibrate_go_back}
 	]
@@ -258,7 +258,7 @@ script calibrate_lag_fill_options\{z = 100}
 		Type = SpriteElement
 		id = cl_manual_adjust_up_arrow
 		parent = <container_id>
-		texture = #"0x1877d61c"
+		texture = xb_online_arrow
 		just = [center bottom]
 		Pos = (16.0, 16.0)
 		rgba = ($calibrate_lag_hilite_unselected)
@@ -271,7 +271,7 @@ script calibrate_lag_fill_options\{z = 100}
 		Type = SpriteElement
 		id = cl_manual_adjust_down_arrow
 		parent = <container_id>
-		texture = #"0x1877d61c"
+		texture = xb_online_arrow
 		just = [center top]
 		Pos = (16.0, 20.0)
 		rgba = ($calibrate_lag_hilite_unselected)
@@ -319,16 +319,16 @@ script menu_calibrate_focus
 	wait \{1 gameframes}
 	if (<index> = 0)
 		retail_menu_focus
-		SetScreenElementProps \{id = calibrate_lag_hilite Pos = $#"0xce74f036" dims = $#"0x944a2de7"}
+		SetScreenElementProps \{id = calibrate_lag_hilite Pos = $calibrate_lag_hilite_pos0 dims = $calibrate_lag_hilite_dims0}
 	elseif (<index> = 1)
 		retail_menu_focus
-		SetScreenElementProps \{id = calibrate_lag_hilite Pos = $#"0xb973c0a0" dims = $#"0xe34d1d71"}
+		SetScreenElementProps \{id = calibrate_lag_hilite Pos = $calibrate_lag_hilite_pos1 dims = $calibrate_lag_hilite_dims1}
 	else
 		Obj_GetID
 		retail_menu_focus id = {<objID> child = 0}
-		SetScreenElementProps \{id = calibrate_lag_hilite Pos = $#"0x207a911a" dims = $#"0x7a444ccb"}
-		DoScreenElementMorph \{id = cl_manual_adjust_up_arrow rgba = $#"0x657bbe2c"}
-		DoScreenElementMorph \{id = cl_manual_adjust_down_arrow rgba = $#"0x657bbe2c"}
+		SetScreenElementProps \{id = calibrate_lag_hilite Pos = $calibrate_lag_hilite_pos2 dims = $calibrate_lag_hilite_dims2}
+		DoScreenElementMorph \{id = cl_manual_adjust_up_arrow rgba = $menu_focus_color}
+		DoScreenElementMorph \{id = cl_manual_adjust_down_arrow rgba = $menu_focus_color}
 	endif
 endscript
 
@@ -415,7 +415,7 @@ script menu_calibrate_lag_create_circles
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = cl_container
-			texture = #"0xfcc0611f"
+			texture = options_calibrate_note
 			id = <circle_id>
 			Pos = <circle_pos>
 			dims = ($calibrate_lag_menu_circle_dims)
@@ -695,7 +695,7 @@ script menu_calibrate_lag_reset_lag
 endscript
 
 script menu_calibrate_lag_manual_choose
-	SetScreenElementProps \{id = calibrate_lag_hilite rgba = $#"0x57b98d72"}
+	SetScreenElementProps \{id = calibrate_lag_hilite rgba = $calibrate_lag_hilite_selected}
 	SetScreenElementProps \{id = cl_vmenu block_events}
 	CreateScreenElement \{Type = ContainerElement parent = cl_container id = cl_manual_adjust_handler event_handlers = [{pad_up menu_calibrate_lag_manual_up}{pad_down menu_calibrate_lag_manual_down}{pad_choose menu_calibrate_lag_manual_back}{pad_back menu_calibrate_lag_manual_back}]}
 	LaunchEvent \{Type = focus target = cl_manual_adjust_handler}
@@ -703,7 +703,7 @@ script menu_calibrate_lag_manual_choose
 endscript
 
 script menu_calibrate_lag_manual_back
-	SetScreenElementProps \{id = calibrate_lag_hilite rgba = $#"0x631eb4a5"}
+	SetScreenElementProps \{id = calibrate_lag_hilite rgba = $calibrate_lag_hilite_unselected}
 	SetScreenElementProps \{id = cl_vmenu unblock_events}
 	DestroyScreenElement \{id = cl_manual_adjust_handler}
 	generic_menu_pad_choose_sound

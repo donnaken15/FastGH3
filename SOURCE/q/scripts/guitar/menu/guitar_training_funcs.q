@@ -1,4 +1,4 @@
-training_font = #"0x35c0114b"
+training_font = text_a4
 training_text_scale = 0.6
 training_header_color = [
 	110
@@ -213,7 +213,7 @@ script training_add_arrow\{Pos = (640.0, 360.0) rot = 0 z = 5 Scale = 1.0}
 		parent = training_container
 		Type = SpriteElement
 		just = [center bottom]
-		texture = #"0xc62673d8"
+		texture = tutorial_arrow_blue
 		Pos = <Pos>
 		rot_angle = <rot>
 		Scale = <Scale>
@@ -345,10 +345,10 @@ training_prev_paused_title = None
 script training_create_pause_backdrop
 	if NOT ScreenElementExists \{id = training_backdrop_container}
 		Change \{tutorial_pause_current_item = 1}
-		create_pause_menu_frame \{z = $#"0x1b3a0ce4"}
+		create_pause_menu_frame \{z = $training_pause_z}
 		CreateScreenElement \{Type = ContainerElement parent = root_window id = training_backdrop_container Pos = (0.0, 0.0) just = [left top]}
-		displaySprite parent = training_backdrop_container tex = #"0x7464ad56" flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = ($training_pause_z + 10)
-		displaySprite parent = training_backdrop_container tex = #"0x7464ad56" Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = ($training_pause_z + 10)
+		displaySprite parent = training_backdrop_container tex = dialog_title_bg flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = ($training_pause_z + 10)
+		displaySprite parent = training_backdrop_container tex = dialog_title_bg Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = ($training_pause_z + 10)
 		if GotParam \{UseLastTitle}
 			if ($training_prev_paused_title = failed)
 				title = "SONG FAILED"
@@ -789,10 +789,10 @@ endscript
 script training_create_quit_warning_backdrop
 	if NOT ScreenElementExists \{id = training_backdrop_container}
 		Change \{tutorial_verify_quit_current_item = 1}
-		create_pause_menu_frame \{z = $#"0x1b3a0ce4"}
+		create_pause_menu_frame \{z = $training_pause_z}
 		CreateScreenElement \{Type = ContainerElement parent = root_window id = training_backdrop_container Pos = (0.0, 0.0) just = [left top]}
-		displaySprite parent = training_backdrop_container tex = #"0x7464ad56" flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = ($training_pause_z + 10)
-		displaySprite parent = training_backdrop_container tex = #"0x7464ad56" Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = ($training_pause_z + 10)
+		displaySprite parent = training_backdrop_container tex = dialog_title_bg flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = ($training_pause_z + 10)
+		displaySprite parent = training_backdrop_container tex = dialog_title_bg Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = ($training_pause_z + 10)
 		title = "WARNING"
 		CreateScreenElement {
 			Type = TextElement
@@ -839,8 +839,8 @@ script training_create_quit_warning_backdrop
 			just = [center top]
 			internal_just = [center center]
 		}
-		displaySprite parent = options_bg_id tex = #"0xdb44b36c" z = ($training_pause_z + 12)
-		displaySprite parent = options_bg_id tex = #"0xdb44b36c" flip_h z = ($training_pause_z + 12)
+		displaySprite parent = options_bg_id tex = dialog_menu_bg z = ($training_pause_z + 12)
+		displaySprite parent = options_bg_id tex = dialog_menu_bg flip_h z = ($training_pause_z + 12)
 		CreateScreenElement {
 			Type = TextElement
 			font = ($popup_warning_menu_font)

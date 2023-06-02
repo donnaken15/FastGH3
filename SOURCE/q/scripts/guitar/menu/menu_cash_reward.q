@@ -115,7 +115,7 @@ script create_cash_reward_menu
 		just = [right top]
 		z_priority = 3
 	}
-	button_font = #"0x0d53096f"
+	button_font = ButtonsXenon
 	CreateScreenElement {
 		Type = TextElement
 		parent = cash_reward_container
@@ -152,7 +152,7 @@ script destroy_cash_reward_menu
 	destroy_menu \{menu_id = cash_reward_container}
 	//destroy_menu_backdrop
 endscript
-cash_reward_font = #"0x35c0114b"
+cash_reward_font = text_a4
 
 script create_deductions_list\{Pos = (200.0, 200.0) Scale = 1 dims = (400.0, 400.0) received = 1200}
 	dl_width = ((1.0, 0.0).<dims>)

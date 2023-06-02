@@ -177,7 +177,7 @@ script animate_open_hand
 		Type = SpriteElement
 		id = <steal_hand_open_checksum>
 		parent = battlemode_container
-		texture = #"0x5bb89306"
+		texture = battle_hud_steal_hand_open
 		rgba = [255 255 255 255]
 		Pos = (<morph_to_pos> + <hand_y_offset>)
 		Scale = <hand_scale>
@@ -228,7 +228,7 @@ script animate_stealing_hand
 		Type = SpriteElement
 		id = <steal_hand_checksum>
 		parent = battlemode_container
-		texture = #"0x410250f9"
+		texture = battle_hud_steal_hand
 		rgba = [255 255 255 255]
 		Pos = (<start_pos> + <hand_y_offset> - <hand_x_offset>)
 		Scale = <hand_scale>
@@ -238,7 +238,7 @@ script animate_stealing_hand
 	}
 	DoScreenElementMorph {
 		id = <steal_hand_checksum>
-		texture = #"0x410250f9"
+		texture = battle_hud_steal_hand
 		Pos = (<morph_to_pos> + <hand_y_offset> - <hand_x_offset>)
 		time = 0.5
 	}
@@ -279,7 +279,7 @@ endscript
 	else
 		highest_value = 5
 	endif
-	GetArraySize \{$#"0xd4b50263"}
+	GetArraySize \{$gem_colors}
 	gem_color = 0
 	non_broken_index = 0
 	non_broken_strings = [-1 -1 -1 -1 -1]
@@ -413,7 +413,7 @@ endscript
 
 script net_repair_client_string
 	check_button = 65536
-	GetArraySize \{$#"0xd4b50263"}
+	GetArraySize \{$gem_colors}
 	array_count = 0
 	begin
 		broken_string_id = ($broken_strings [<array_count>])

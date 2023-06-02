@@ -13,7 +13,7 @@ debug_menu_params = {
 
 script create_debugging_menu
 	//create_generic_backdrop
-	CreateScreenElement \{Type = VScrollingMenu parent = pause_menu id = debug_scrolling_menu just = [left top] dims = (400.0, 480.0) Pos = $#"0xe787d761"}
+	CreateScreenElement \{Type = VScrollingMenu parent = pause_menu id = debug_scrolling_menu just = [left top] dims = (400.0, 480.0) Pos = $menu_pos}
 	CreateScreenElement \{Type = VMenu parent = debug_scrolling_menu id = debug_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back back_to_retail_ui_flow}]}
 	disable_pause
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Repeat Last Song' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_start_song params = {uselaststarttime}}]}
@@ -213,7 +213,7 @@ script create_difficulty_menu
 		]
 	}
 	array_entry = 0
-	GetArraySize \{$#"0x6c609315"}
+	GetArraySize \{$difficulty_list}
 	begin
 		difficulty_count = ($difficulty_list [<array_entry>])
 		get_difficulty_text difficulty = <difficulty_count>
@@ -461,8 +461,8 @@ script select_slomo
 endscript
 
 script update_slomo
-	setslomo \{$#"0x16d91bc1"}
-	setslomo_song \{slomo = $#"0x16d91bc1"}
+	setslomo \{$current_speedfactor}
+	setslomo_song \{slomo = $current_speedfactor}
 	Player = 1
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player>
@@ -473,7 +473,7 @@ script update_slomo
 endscript
 
 script select_slomo_setprop
-	FormatText \{textname = slomo_text "Select Slomo : %s" s = $#"0x16d91bc1"}
+	FormatText \{textname = slomo_text "Select Slomo : %s" s = $current_speedfactor}
 	select_slomo_menuitem ::SetProps text = <slomo_text>
 endscript
 debug_showmeasures = OFF
@@ -669,7 +669,7 @@ script create_togglevisibility_menu
 	CreateScreenElement \{Type = VMenu parent = togglevisibility_scrolling_menu id = togglevisibility_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_settings_menu}}]}
 	CreateScreenElement \{$debug_menu_params parent = togglevisibility_vmenu id = toggle_bandvisible_menuitem text = "Toggle band" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_bandvisible}]}
 	toggle_bandvisible_setprop
-	GetArraySize \{$#"0x8e8106d0"}
+	GetArraySize \{$HideByType_List}
 	array_count = 0
 	begin
 		FormatText checksumName = type_checksum '%s' s = ($HideByType_List [<array_count>])
@@ -764,7 +764,7 @@ script toggle_hidebytype
 endscript
 
 script set_hidebytype
-	GetArraySize \{$#"0x8e8106d0"}
+	GetArraySize \{$HideByType_List}
 	array_count = 0
 	begin
 		FormatText checksumName = type_checksum '%s' s = ($HideByType_List [<array_count>])
@@ -778,7 +778,7 @@ script set_hidebytype
 endscript
 
 script toggle_hidebytype_setprop
-	GetArraySize \{$#"0x8e8106d0"}
+	GetArraySize \{$HideByType_List}
 	array_count = 0
 	begin
 		if (($HideByType_Visible [<array_count>])= OFF)

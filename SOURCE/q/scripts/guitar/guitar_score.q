@@ -181,7 +181,7 @@ script calc_songscoreinfo\{player_status = player1_status}
 			max_notes = (<max_notes> + 1)
 			SetArrayElement ArrayName = <detailstats_array_max> GlobalArray index = <section_index> NewValue = (($<detailstats_array_max> [<section_index>])+ 1)
 		endif
-		GetArraySize \{$#"0xd4b50263"}
+		GetArraySize \{$gem_colors}
 		Color = 0
 		whammy_value = -1
 		length = ($<song> [(<array_count> + 1)])

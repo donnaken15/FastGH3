@@ -21,7 +21,7 @@ script create_encore_confirmation_menu
 	CreateScreenElement \{Type = ContainerElement id = ec_container parent = root_window Pos = (0.0, 0.0)}
 	offwhite = [223 223 223 255]
 	menu_z = 100
-	CreateScreenElement \{Type = SpriteElement id = encore_gradient parent = ec_container texture = #"0x1a376488" rgba = [0 0 0 180] Pos = (0.0, 0.0) dims = (1280.0, 720.0) just = [left top] z_priority = -1}
+	CreateScreenElement \{Type = SpriteElement id = encore_gradient parent = ec_container texture = gradient_128 rgba = [0 0 0 180] Pos = (0.0, 0.0) dims = (1280.0, 720.0) just = [left top] z_priority = -1}
 	get_song_struct song = ($current_song)
 	if (<song_struct>.checksum = bosstom)
 		bossText = "PLAY AN ENCORE WITH TOM MORELLO!"
@@ -72,7 +72,7 @@ script create_encore_confirmation_menu
 		repeat <str_len>
 		spawnscriptnow ec_raise_headline params = {str_len = <str_len>}
 	endif
-	displaySprite \{id = ec_flash parent = ec_container tex = #"0x2cbc8923" alpha = 0 dims = (128.0, 128.0) just = [center center]}
+	displaySprite \{id = ec_flash parent = ec_container tex = encore_flash alpha = 0 dims = (128.0, 128.0) just = [center center]}
 	arm_pos = (270.0, 300.0)
 	arm_add = (80.0, 0.0)
 	arm_z = [1 3 5 7 8 6 4 2]
@@ -112,7 +112,7 @@ script create_encore_confirmation_menu
 		starscale = 0.125
 		displayText {
 			id = ec_scoretext
-			font = #"0xdbce7067"
+			font = text_a6
 			parent = ec_container
 			rgba = [223 223 223 255]
 			Pos = (20000.0, 20000.0)
@@ -129,7 +129,7 @@ script create_encore_confirmation_menu
 				parent = ec_container
 				id = <starchecksum>
 				Pos = (20000.0, 20000.0)
-				tex = #"0x3ad7ef5c"
+				tex = encore_star_outline
 				just = [center center]
 				Scale = 10
 				rgba = [223 223 223 255]
@@ -142,7 +142,7 @@ script create_encore_confirmation_menu
 				parent = ec_container
 				id = <starchecksum>
 				Pos = (20000.0, 20000.0)
-				tex = #"0x3ad7ef5c"
+				tex = encore_star_outline
 				just = [center center]
 				Scale = 10
 				rgba = [110 30 20 255]
@@ -154,7 +154,7 @@ script create_encore_confirmation_menu
 		repeat <stars>
 		displayText {
 			id = ec_moneytext
-			font = #"0xdbce7067"
+			font = text_a6
 			parent = ec_container
 			rgba = [223 223 223 255]
 			Pos = (20000.0, 20000.0)
@@ -201,7 +201,7 @@ script create_encore_confirmation_menu
 		FormatText textname = moneytext "$%d" d = <cash> usecommas
 		displayText {
 			id = ec_moneytext
-			font = #"0xdbce7067"
+			font = text_a6
 			parent = ec_container
 			rgba = [223 223 223 255]
 			Pos = (20000.0, 20000.0)
@@ -216,10 +216,10 @@ script create_encore_confirmation_menu
 		DoScreenElementMorph \{id = ec_moneytext Scale = 1 time = 0.5 alpha = 1}
 		wait \{1 seconds}
 	endif
-	displaySprite parent = ec_container id = ec_crowd_1 Pos = (-2000.0, -2000.0) tex = #"0xdfd6f95e" just = [center center] Scale = 2 z = (<menu_z> + 50)
-	displaySprite parent = ec_container id = ec_crowd_2 Pos = (-2000.0, -2000.0) tex = #"0xdfd6f95e" just = [center center] Scale = 2 z = (<menu_z> + 50)
-	displaySprite parent = ec_container id = ec_crowd_3 Pos = (-2000.0, -2000.0) tex = #"0xdfd6f95e" just = [center center] Scale = 2 z = (<menu_z> + 50)
-	displaySprite parent = ec_container id = ec_crowd_4 Pos = (-2000.0, -2000.0) tex = #"0xdfd6f95e" just = [center center] Scale = 2 z = (<menu_z> + 50)
+	displaySprite parent = ec_container id = ec_crowd_1 Pos = (-2000.0, -2000.0) tex = encore_balloon just = [center center] Scale = 2 z = (<menu_z> + 50)
+	displaySprite parent = ec_container id = ec_crowd_2 Pos = (-2000.0, -2000.0) tex = encore_balloon just = [center center] Scale = 2 z = (<menu_z> + 50)
+	displaySprite parent = ec_container id = ec_crowd_3 Pos = (-2000.0, -2000.0) tex = encore_balloon just = [center center] Scale = 2 z = (<menu_z> + 50)
+	displaySprite parent = ec_container id = ec_crowd_4 Pos = (-2000.0, -2000.0) tex = encore_balloon just = [center center] Scale = 2 z = (<menu_z> + 50)
 	displayText id = ec_crowd_text_1 parent = ec_crowd_1 text = "yay!" Pos = (60.0, 35.0) rgba = [0 0 0 255] z = (<menu_z> + 51)just = [center center] Scale = 0.8 noshadow
 	displayText id = ec_crowd_text_2 parent = ec_crowd_2 text = "yay!" Pos = (60.0, 35.0) rgba = [0 0 0 255] z = (<menu_z> + 51)just = [center center] Scale = 0.8 noshadow
 	displayText id = ec_crowd_text_3 parent = ec_crowd_3 text = "yay!" Pos = (60.0, 35.0) rgba = [0 0 0 255] z = (<menu_z> + 51)just = [center center] Scale = 0.8 noshadow
@@ -227,7 +227,7 @@ script create_encore_confirmation_menu
 	spawnscriptnow \{encore_crowd_shout}
 	wait \{1 Second}
 	Change \{g_encore_ready = 1}
-	displaySprite parent = ec_container id = options_bg_1 tex = #"0x0dc7a3ad" Pos = (640.0, 550.0) dims = (384.0, 192.0) just = [center center] z = (<menu_z> + 50)
+	displaySprite parent = ec_container id = options_bg_1 tex = encore_menu_bg Pos = (640.0, 550.0) dims = (384.0, 192.0) just = [center center] z = (<menu_z> + 50)
 	set_focus_color \{rgba = [110 30 20 255]}
 	set_unfocus_color \{rgba = [135 170 200 255]}
 	if NOT GotParam \{exclusive_device}
@@ -280,8 +280,8 @@ script create_encore_confirmation_menu
 	if ((StructureContains structure = <song_struct> boss)|| $game_mode = p2_battle)
 		set_current_battle_first_play
 	endif
-	displaySprite id = ec_hi_left parent = ec_container tex = #"0x128ceb14" rgba = [110 30 20 255] z = (<menu_z> + 51)
-	displaySprite id = ec_hi_right parent = ec_container tex = #"0x128ceb14" rgba = [110 30 20 255] z = (<menu_z> + 51)
+	displaySprite id = ec_hi_left parent = ec_container tex = encore_menu_bookend rgba = [110 30 20 255] z = (<menu_z> + 51)
+	displaySprite id = ec_hi_right parent = ec_container tex = encore_menu_bookend rgba = [110 30 20 255] z = (<menu_z> + 51)
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
 	ec_yes_highlight_focus \{id = ec_play_encore}

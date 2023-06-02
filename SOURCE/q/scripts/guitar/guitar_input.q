@@ -351,7 +351,7 @@ endscript
 
 script save_replay
 	destroy_debugging_menu
-	//CreateScreenElement \{Type = TextElement parent = root_window id = info_text font = #"0x45aae5c4" Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Saving replay" z_priority = 1.0}
+	//CreateScreenElement \{Type = TextElement parent = root_window id = info_text font = text_a1 Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Saving replay" z_priority = 1.0}
 	//wait \{2 gameframes}
 	//get_difficulty_text_nl difficulty = ($current_difficulty)
 	//get_song_prefix song = ($current_song)

@@ -193,7 +193,7 @@ script LoadLODPaks
 endscript
 
 script UnloadLODPaks
-	GetArraySize \{$#"0x13e0579f"}
+	GetArraySize \{$LOD_LoadedPaks}
 	if NOT (<array_Size> = 0)
 		<index> = 0
 		begin
