@@ -1,1 +1,1 @@
-FastGH3 -settings
+FastGHWii -settings

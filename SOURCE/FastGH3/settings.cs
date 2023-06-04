@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Nanook.QueenBee.Parser;
-using System.Xml;
 using System.Security.Principal;
 using System.Collections.Generic;
 
@@ -96,13 +95,6 @@ public partial class settings : Form
             [In, Out]
             ref DEVMODE lpDevMode);
 
-    private static string xmlpath = Environment.GetEnvironmentVariable("USERPROFILE") + "\\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml",
-        xmlDefault = FastGH3.Properties.Resources.xmlDefault,
-        pak = "\\DATA\\PAK\\";
-    public XmlDocument xml = new XmlDocument();
-    public XmlNode xmlCfg;
-    public XmlNode xmlW, xmlH, xmlK;
-
     private static string[] bgcol, diffs = { "Easy", "Medium", "Hard", "Expert" };
     private static Color backcolor;
 
@@ -130,17 +122,6 @@ public partial class settings : Form
 
     private static IniFile ini = new IniFile();
 
-    void changeRes(string width, string height)
-    {
-        if (!disableEvents)
-        {
-            xmlW.InnerText = width;
-            xmlH.InnerText = height;
-            xml.Save(xmlpath);
-            // am i doing this right
-        }
-    }
-
     bool verboselog2;
 
     static void verbose(object text)
@@ -159,119 +140,6 @@ public partial class settings : Form
         qbedit.ReplaceFile("config.qb", userqb);
     }
 
-    static uint Eswap(uint value)
-    {
-        return ((value & 0xFF) << 24) |
-                ((value & 0xFF00) << 8) |
-                ((value & 0xFF0000) >> 8) |
-                ((value & 0xFF000000) >> 24);
-    }
-
-    static ushort Eswap(ushort value)
-    {
-        return (ushort)(((value & 0xFF) << 8) | ((value & 0xFF00) >> 8));
-    }
-
-    static byte LOBYTE(ushort value)
-    {
-        return (byte)(value & 0xFF);
-    }
-
-    static byte HIBYTE(ushort value)
-    {
-        return (byte)(value >> 8);
-    }
-
-    // https://www.c-sharpcorner.com/UploadFile/ishbandhu2009/resize-an-image-in-C-Sharp/
-    private static Image resizeImage(Image imgToResize, Size size)
-    {
-        int destWidth = size.Width;
-        int destHeight = size.Height;
-        Bitmap b = new Bitmap(destWidth, destHeight);
-        Graphics g = Graphics.FromImage(b);
-        g.DrawImage(imgToResize, 0, 0, destWidth, destHeight);
-        g.Dispose();
-        return b;
-    }
-
-    private static PakFormat globalPF;
-    private static PakEditor globalPE;
-    public static Image bgImg;
-    Image getBGIMG()
-    {
-        //if (globalPE == null)
-            //return null;
-        byte[] tmp = globalPE.ExtractFileToBytes("24535078");
-        //uint imgoff = 0x28;
-        //int imglen = tmp.Length - imgoff;
-        uint imgoff = Eswap(BitConverter.ToUInt32(tmp, 0x1C));
-        uint imglen = Eswap(BitConverter.ToUInt32(tmp, 0x20));
-        byte[] imgbytes = new byte[imglen];
-        Array.Copy(tmp,imgoff,imgbytes,0,imglen);
-        //Console.WriteLine(BitConverter.ToString(imgbytes, 0, 0x28));
-        if (BitConverter.ToUInt32(imgbytes, 0) != 0x20534444)
-            return Image.FromStream(new MemoryStream(imgbytes), true);
-        else
-            return DDS.DDSImage.Load(imgbytes).Images[0];
-    }
-    void setBGIMG(Image i, bool reconvert)
-    {
-        var ms = new MemoryStream();
-        ms.Write(
-            new byte[] {
-                0x0A, 0x28, 0x11, 0x00,
-                0x00, 0x00, 0x00, 0x00,
-            }, 0, 8);
-        byte[] dims = new byte[] {
-            HIBYTE((ushort)i.Width), LOBYTE((ushort)i.Width),
-            HIBYTE((ushort)i.Height), LOBYTE((ushort)i.Height),
-        };
-        ms.Write(dims, 0, 4);
-        ms.WriteByte(0x00);
-        ms.WriteByte(0x01);
-        ms.Write(dims, 0, 4);
-        ms.Write(
-            new byte[] {
-                0x00, 0x01, 0x01, 0x08, 0x05, 0x00
-            }, 0, 6);
-        ms.Write(
-            new byte[] {
-                0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x28,
-            }, 0, 8);
-        long lenptr = ms.Position;
-        ms.Write(
-            new byte[] {
-                0x00, 0x00, 0x00, 0x00,
-                0x00, 0x00, 0x00, 0x00,
-            }, 0, 8);
-        System.Drawing.Imaging.ImageFormat fmt = i.RawFormat;
-        if (reconvert)
-            fmt = System.Drawing.Imaging.ImageFormat.Jpeg;
-        i.Save(ms, fmt);
-        long strsize = ms.Position - 0x28;
-        ms.Position = lenptr;
-        ms.Write(BitConverter.GetBytes(Eswap((uint)strsize)),0,4);
-        globalPE.ReplaceFile("24535078", ms.ToArray());
-        //File.WriteAllBytes("DATA\\test22.img.xen",ms.ToArray());
-    }
-
-    int[] keyBinds = new int[] {
-        (int)KeyID.D1,
-        (int)KeyID.D2,
-        (int)KeyID.D3,
-        (int)KeyID.D4,
-        (int)KeyID.D5,
-        (int)KeyID.RShift,
-        (int)KeyID.Escape,
-        (int)KeyID.Back,
-        235,
-        (int)KeyID.Down,
-        (int)KeyID.Up,
-        (int)KeyID.Escape,
-        (int)KeyID.RCtrl,
-    };
-
     const bool FRAMERATE_FROM_QB = true; // set accordingly in the FastGH3 plugin
 
     public settings(IniFile _ini)
@@ -288,19 +156,11 @@ public partial class settings : Form
         }
         verboselog2 = ini.GetKeyValue("Misc", "VerboseLog", "0") == "1";
         verboseline("Loading QBs...");
-        pakformat = new PakFormat(folder + "\\DATA\\user.pak.xen", folder + "\\DATA\\user.pak.xen", "", PakFormatType.PC, false);
+        pakformat = new PakFormat(folder + "\\files\\user.pak.ngc", folder + "\\files\\user.pak.xen", "", PakFormatType.PC, false);
         qbedit = new PakEditor(pakformat, false);
         userqb = qbedit.ReadQbFile("config.qb");
         disableEvents = true;
-        if (File.Exists(xmlpath))
-        {
-            File.Open(xmlpath, FileMode.OpenOrCreate).Close();
-            //xml = File.ReadAllText(xmlpath);
-            xml.Load(xmlpath);
-        }
-        else
-            xml.LoadXml(xmlDefault);
-        //Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
+        Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
         backcolrgb = (QbItemInteger)
         userqb.FindItem(QbKey.Create("BGCol"), false).Items[0];
         backcolor = Color.FromArgb(255,
@@ -309,24 +169,12 @@ public partial class settings : Form
             backcolrgb.Values[2]);
         DialogResult = DialogResult.OK;
         InitializeComponent();
-
-        globalPF = new PakFormat(folder + "\\DATA\\ZONES\\global.pak.xen", folder + "\\DATA\\ZONES\\global.pab.xen", "", PakFormatType.PC, false);
-        globalPE = new PakEditor(globalPF, false);
-        pbxBg.Image = getBGIMG();
-        //setBGIMG(pbxBg.Image, false);
-
         SetForegroundWindow(Handle);
         verboseline("Reading settings...");
-        tweaksList.SetItemChecked((int)Tweaks.KeyboardMode, (int)getQBConfig(QbKey.Create(0x32025D94), 1) == 0); // autolaunch_startnow
+        //tweaksList.SetItemChecked((int)Tweaks.KeyboardMode, (int)getQBConfig(QbKey.Create(0x32025D94), 1) == 0); // autolaunch_startnow
         readytimeNoIntro.Value = (int)getQBConfig(QbKey.Create(0x5FB765A2), 400); // nointro_ready_time
-#pragma warning disable CS0162
-        if (FRAMERATE_FROM_QB)
-            maxFPS.Value = (int)getQBConfig(QbKey.Create(0xCEFC2AEF), 500); // fps_max
-        else
-            maxFPS.Value = Convert.ToInt32(ini.GetKeyValue("Player", "MaxFPS", "500"));
-#pragma warning restore CS0162
         hypers.Value = (int)getQBConfig(QbKey.Create(0xFD6B13B4), 0); // Cheat_Hyperspeed
-        tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(QbKey.Create(0xDF7FF31B), 0) == 1); // disable_intro
+        //tweaksList.SetItemChecked((int)Tweaks.NoIntro, (int)getQBConfig(QbKey.Create(0xDF7FF31B), 0) == 1); // disable_intro
         {
             int disable_particles = (int)getQBConfig(QbKey.Create(0xD403A7A7), 0); // disable_particles
             CheckState state = CheckState.Unchecked;
@@ -343,9 +191,9 @@ public partial class settings : Form
                     state = CheckState.Checked;
                     break;
             }
-            tweaksList.SetItemCheckState((int)Tweaks.NoParticles, state);
+            //tweaksList.SetItemCheckState((int)Tweaks.NoParticles, state);
         }
-        tweaksList.SetItemChecked((int)Tweaks.NoFail, (int)getQBConfig(QbKey.Create(0x3E5FD611), 0) == 1); // Cheat_NoFail
+        /*tweaksList.SetItemChecked((int)Tweaks.NoFail, (int)getQBConfig(QbKey.Create(0x3E5FD611), 0) == 1); // Cheat_NoFail
         if (tweaksList.GetItemChecked((int)Tweaks.NoIntro))
         {
             readytimeNoIntro.Enabled = true;
@@ -353,121 +201,21 @@ public partial class settings : Form
             readytimems.Enabled = true;
         }
         tweaksList.SetItemChecked((int)Tweaks.DebugMenu, (int)getQBConfig(QbKey.Create(0x2AF92804), 0) == 1); // enable_button_cheats
-        speed.Value = (decimal/*wtf*/)(float)getQBConfig(QbKey.Create(0x16D91BC1), 1.0f) * 100; // current_speedfactor
+        speed.Value = (decimal/*wtf*)(float)getQBConfig(QbKey.Create(0x16D91BC1), 1.0f) * 100; // current_speedfactor*/
         tweaksList.SetItemChecked((int)Tweaks.VerboseLog, verboselog2);
-        backgroundcolordiag.Color = backcolor;
+        /*backgroundcolordiag.Color = backcolor;
         colorpanel.BackColor = backcolor;
         tweaksList.SetItemChecked((int)Tweaks.ExitOnSongEnd, (int)getQBConfig(QbKey.Create(0x045713D3), 0) == 1); // exit_on_song_end
-        tweaksList.SetItemChecked((int)Tweaks.DisableVsync, ini.GetKeyValue("Misc", "VSync", "1") == "0");
+        tweaksList.SetItemChecked((int)Tweaks.DisableVsync, ini.GetKeyValue("Misc", "VSync", "1") == "0");*/
         tweaksList.SetItemChecked((int)Tweaks.SongCaching, ini.GetKeyValue("Misc", "SongCaching", "1") == "1");
         tweaksList.SetItemChecked((int)Tweaks.NoStartupMsg, ini.GetKeyValue("Misc", "NoStartupMsg", "0") == "1");
         tweaksList.SetItemChecked((int)Tweaks.PreserveLog, ini.GetKeyValue("Misc", "PreserveLog", "0") == "1");
-        tweaksList.SetItemChecked((int)Tweaks.BkgdVideo, (int)getQBConfig(QbKey.Create(0x633E187F), 0) == 1); // enable_video
-        tweaksList.SetItemChecked((int)Tweaks.Windowed, ini.GetKeyValue("Misc", "Windowed", "1") == "1");
-        tweaksList.SetItemChecked((int)Tweaks.Borderless, ini.GetKeyValue("Misc", "Borderless", "1") == "1");
-        tweaksList.SetItemChecked((int)Tweaks.KillHitGems, (int)getQBConfig(QbKey.Create(0xC50E4995), 0) == 1); // kill_gems_on_hit
-        tweaksList.SetItemChecked((int)Tweaks.EarlySustains, (int)getQBConfig(QbKey.Create(0xF88A8D5D), 0) == 1); // anytime_sustain_activation
+        //tweaksList.SetItemChecked((int)Tweaks.BkgdVideo, (int)getQBConfig(QbKey.Create(0x633E187F), 0) == 1); // enable_video
+        //tweaksList.SetItemChecked((int)Tweaks.Windowed, ini.GetKeyValue("Misc", "Windowed", "1") == "1");
+        //tweaksList.SetItemChecked((int)Tweaks.Borderless, ini.GetKeyValue("Misc", "Borderless", "1") == "1");
+        /*tweaksList.SetItemChecked((int)Tweaks.KillHitGems, (int)getQBConfig(QbKey.Create(0xC50E4995), 0) == 1); // kill_gems_on_hit
+        tweaksList.SetItemChecked((int)Tweaks.EarlySustains, (int)getQBConfig(QbKey.Create(0xF88A8D5D), 0) == 1); // anytime_sustain_activation*/
         //tweaksList.SetItemChecked((int)Tweaks.NoShake, (int)getQBConfig(QbKey.Create("disable_shake"), 0) == 1);
-        for (int i = 0; i < modNames.Length; i++)
-        {
-            modifiersList.SetItemChecked(i, ini.GetKeyValue("Modifiers", modNames[i], "0") == "1");
-        }
-        //<s id="6f1d2b61d5a011cfbfc7444553540000">201 202 203 204 205 311 999 219 235 400 401 999 307 </s>
-        xmlCfg = xml.GetElementsByTagName("r")[0];
-        foreach (XmlNode s in xmlCfg.ChildNodes)
-        {
-            switch (s.Attributes["id"].Value)
-            {
-                case "Video.Width":
-                    oldres.Width = Convert.ToInt32(s.InnerText);
-                    xmlW = s;
-                    break;
-                case "Video.Height":
-                    oldres.Height = Convert.ToInt32(s.InnerText);
-                    xmlH = s;
-                    break;
-                case "6f1d2b61d5a011cfbfc7444553540000":
-                    string[] keybindsStr = s.InnerText.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                    xmlK = s;
-                    for (int i = 0; i < keyBinds.Length; i++)
-                    {
-                        keyBinds[i] = Convert.ToInt32(keybindsStr[i]);
-                    }
-                    break;
-            }
-        }
-        if (xmlW == null)
-        {
-            xmlW = xml.CreateElement("s");
-            oldres.Width = 1024;
-            xmlW.InnerText = "1024";
-            XmlAttribute stupid2 = xml.CreateAttribute("id");
-            stupid2.Value = "Video.Width";
-            xmlW.Attributes.Append(stupid2);
-            xmlCfg.AppendChild(xmlW);
-        }
-        if (xmlH == null)
-        {
-            xmlH = xml.CreateElement("s");
-            oldres.Height = 768;
-            xmlH.InnerText = "768";
-            XmlAttribute stupid2 = xml.CreateAttribute("id");
-            stupid2.Value = "Video.Height";
-            xmlH.Attributes.Append(stupid2);
-            xmlCfg.AppendChild(xmlH);
-        }
-        if (xmlK == null)
-        {
-            xmlK = xml.CreateElement("s");
-            xmlK.InnerText = "201 202 203 204 205 311 999 219 235 400 401 999 307 ";
-            XmlAttribute stupid2 = xml.CreateAttribute("id");
-            stupid2.Value = "6f1d2b61d5a011cfbfc7444553540000";
-            xmlK.Attributes.Append(stupid2);
-            xmlCfg.AppendChild(xmlK);
-        }
-        DEVMODE mode = new DEVMODE();
-        mode.dmSize = (ushort)Marshal.SizeOf(mode);
-        int d = 0;
-        while (EnumDisplaySettings(null, d++, ref mode) == true) // Succeeded  
-        {
-            Size newSz = new Size((int)mode.dmPelsWidth, (int)mode.dmPelsHeight);
-            bool diff = true;
-            Size[] cantwork = { // why
-                new Size(640, 480),
-                new Size(720, 480),
-                new Size(720, 576),
-            };
-            foreach (Size res_ in resz)
-            {
-                if (res_ == newSz)
-                {
-                    diff = false;
-                    break;
-                }
-            }
-            foreach (Size res_ in cantwork)
-            {
-                if (res_ == newSz)
-                {
-                    diff = false;
-                    break;
-                }
-            }
-            if (diff)
-                resz.Add(newSz);
-        }
-        foreach (Size sz in resz)
-        {
-            res.Items.Add(sz.Width.ToString() + "x" + sz.Height.ToString());
-        }
-        res.Text = oldres.Width.ToString() + "x" + oldres.Height.ToString();
-        //if (ini.GetSection("Player") == null)
-        {
-            if (ini.GetKeyValue("Player", "MaxNotesAuto", "0") == "0")
-                maxnotes.Value = int.Parse(ini.GetKeyValue("Player", "MaxNotes", "1048576"));
-            else
-                maxnotes.Value = -1;
-        }
         //p1diff = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_diff"), false);
         //p2diff = (QbItemQbKey)userqb.FindItem(QbKey.Create("p2_diff"), false);
         //p1part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_part"), false);
@@ -515,11 +263,6 @@ public partial class settings : Form
         saveQb();
         ResumeLayout();
     }
-        
-    private void res_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        changeRes(resz[res.SelectedIndex].Width.ToString(), resz[res.SelectedIndex].Height.ToString());
-    }
 
     private void diff_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -529,7 +272,7 @@ public partial class settings : Form
     private void creditlink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
         Console.Clear();
-        Console.WriteLine(FastGH3.Properties.Resources.credits);
+        Console.WriteLine(FastGHWii.Properties.Resources.credits);
     }
 
     private void hypers_ValueChanged(object sender, EventArgs e)
@@ -589,7 +332,7 @@ public partial class settings : Form
 
     private void ctmpb_Click(object sender, EventArgs e)
     {
-        string tmpf = folder + "\\DATA\\CACHE";
+        string tmpf = folder + "\\files\\CACHE";
         string[] tmpds;
         //string[] tmpds = Directory.GetDirectories(tmpf, "*", SearchOption.TopDirectoryOnly);
         string[] tmpfs = Directory.GetFiles(Path.GetTempPath(), "*.tmp.fsp", SearchOption.TopDirectoryOnly);
@@ -612,10 +355,10 @@ public partial class settings : Form
         tmpfs = Directory.GetFiles(Path.GetTempPath(), "libSoX.tmp.*", SearchOption.TopDirectoryOnly);
         foreach (string file in tmpfs)
             File.Delete(file);
-        if (File.Exists(folder + "\\DATA\\CACHE\\.db.ini"))
+        if (File.Exists(folder + "\\files\\CACHE\\.db.ini"))
         {
             IniFile cache = new IniFile();
-            cache.Load(folder + "\\DATA\\CACHE\\.db.ini");
+            cache.Load(folder + "\\files\\CACHE\\.db.ini");
             int sectCount = 0;
             string[] stupidEnumerasdaewrhygio = new string[cache.Sections.Count];
             foreach (IniFile.IniSection sect in cache.Sections)
@@ -629,7 +372,7 @@ public partial class settings : Form
             for (int i = 0; i < sectCount; i++)
             {
                 cache.RemoveSection(stupidEnumerasdaewrhygio[i]);
-                cache.Save(folder + "\\DATA\\CACHE\\.db.ini");
+                cache.Save(folder + "\\files\\CACHE\\.db.ini");
             }
         }
     }
@@ -644,15 +387,9 @@ public partial class settings : Form
             Application.Exit();
         }
     }
-
-    private void pluginmanage_Click(object sender, EventArgs e)
-    {
-        new dllman().ShowDialog();
-    }
-
     private void viewsongcache_Click(object sender, EventArgs e)
     {
-        Directory.CreateDirectory(folder + "\\DATA\\CACHE");
+        Directory.CreateDirectory(folder + "\\files\\CACHE");
         new songcache().ShowDialog();
     }
 
@@ -684,39 +421,20 @@ public partial class settings : Form
         SongCaching,
         VerboseLog,
         PreserveLog,
-        DisableVsync,
         NoStartupMsg,
-        ExitOnSongEnd,
-        DebugMenu,
-        KeyboardMode,
-        Windowed,
-        Borderless,
-        NoIntro,
-        NoParticles,
-        NoFail,
-        //NoShake,
-        //Lefty,
-        BkgdVideo,
-        KillHitGems,
-        EarlySustains
+        //DebugMenu,
+        //NoIntro,
+        //NoParticles,
+        //NoFail,
+        ////NoShake,
+        ////Lefty,
+        //KillHitGems,
+        //EarlySustains
     }
 
     private void changereadytime(object sender, EventArgs e)
     {
         setQBConfig(QbKey.Create("nointro_ready_time"), (int)readytimeNoIntro.Value);
-    }
-
-    private void maxFPSchange(object sender, EventArgs e)
-    {
-#pragma warning disable CS0162 // Unreachable code detected
-        if (FRAMERATE_FROM_QB)
-            setQBConfig(QbKey.Create("fps_max"), (int)maxFPS.Value);
-        else
-        {
-            ini.SetKeyValue("Player", "MaxFPS", maxFPS.Value.ToString());
-            ini.Save("settings.ini");
-        }
-#pragma warning restore CS0162 // Unreachable code detected
     }
     public string[] modNames = new string[]
     {
@@ -738,59 +456,6 @@ public partial class settings : Form
         ColorShuffle
     }
 
-    private void showBgImg(object sender, EventArgs e)
-    {
-        new bgprev(getBGIMG()).ShowDialog();
-    }
-
-    private void setbgimg_Click(object sender, EventArgs e)
-    {
-        selectImage0.ShowDialog();
-    }
-
-    // https://math.stackexchange.com/a/3381750
-    int nearestPowOf2(int x)
-    {
-        // 2^round(log2(x))
-        return (int)Math.Pow(2,Math.Round(Math.Log(x, 2)));
-    }
-    bool IsPowerOfTwo(int x)
-    {
-        return (x & (x - 1)) == 0;
-    }
-    private void confirmImageReplace(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-        Image img = Image.FromFile(selectImage0.FileName);
-        bool needResizing = false;
-        int newWidth = img.Width;
-        int newHeight = img.Height;
-        if (!IsPowerOfTwo(img.Width))
-        {
-            needResizing = true;
-            newWidth = nearestPowOf2(img.Width);
-        }
-        if (!IsPowerOfTwo(img.Height))
-        {
-            needResizing = true;
-            newHeight = nearestPowOf2(img.Height);
-        }
-        if (needResizing)
-        {
-            img = resizeImage(img, new Size(newWidth, newHeight));
-        }
-        //img.Save("DATA\\test33.png");
-        pbxBg.Image = img;
-        setBGIMG(img,needResizing);
-    }
-
-    private void resetbgcol(object sender, EventArgs e)
-    {
-        backcolrgb.Values[0] = 255;
-        backcolrgb.Values[1] = 255;
-        backcolrgb.Values[2] = 255;
-        saveQb();
-    }
-
     private void modifierUpdate(object sender, ItemCheckEventArgs e)
     {
         if (disableEvents)
@@ -802,24 +467,6 @@ public partial class settings : Form
     private void updateModifiersList(object sender, EventArgs e)
     {
 
-    }
-
-    private void openKeybinds(object sender, EventArgs e)
-    {
-        keyEdit keyChange = new keyEdit(keyBinds);
-        //foreach (int a in keyBinds)
-            //MessageBox.Show(a.ToString());
-        if (keyChange.ShowDialog() == DialogResult.OK)
-        {
-            keyBinds = keyChange.keyBinds;
-            string keystring = "";
-            foreach (int k in keyBinds)
-            {
-                keystring += k.ToString() + " ";
-            }
-            xmlK.InnerText = keystring;
-            xml.Save(xmlpath);
-        }
     }
 
     private void inputChanged(object sender, ItemCheckEventArgs e)
@@ -842,19 +489,10 @@ public partial class settings : Form
             case Tweaks.NoStartupMsg:
                 ToggleINIItem(miscSection, "NoStartupMsg", e.NewValue == CheckState.Checked);
                 break;
-            case Tweaks.Windowed:
-                ToggleINIItem(miscSection, "Windowed", e.NewValue == CheckState.Checked);
-                break;
-            case Tweaks.Borderless:
-                ToggleINIItem(miscSection, "Borderless", e.NewValue == CheckState.Checked);
-                break;
-            case Tweaks.DisableVsync:
-                ToggleINIItem(miscSection, "VSync", e.NewValue == CheckState.Unchecked);
-                break;
             // try replacing these with like changeConfig(index)
             // and a string/key array accessed with index
             // and funnel these cases into it
-            case Tweaks.NoIntro:
+            /*case Tweaks.NoIntro:
                 readytimeNoIntro.Enabled = e.NewValue == CheckState.Checked;
                 readytimelbl.Enabled = e.NewValue == CheckState.Checked;
                 readytimems.Enabled = e.NewValue == CheckState.Checked;
@@ -918,18 +556,15 @@ public partial class settings : Form
             //case Tweaks.Lefty:
                 //setQBConfig(QbKey.Create("p1_lefty"), e.NewValue == CheckState.Checked ? 1 : 0);
                 //break;
-            case Tweaks.BkgdVideo:
-                setQBConfig(QbKey.Create(0x633E187F), e.NewValue == CheckState.Checked ? 1 : 0); // enable_video
-                break;
             /*case Tweaks.NoShake:
                 setQBConfig(QbKey.Create("disable_shake"), e.NewValue == CheckState.Checked ? 0 : 1);
-                break;*/
+                break;*
             case Tweaks.KillHitGems:
                 setQBConfig(QbKey.Create(0xC50E4995), e.NewValue == CheckState.Checked ? 1 : 0); // kill_gems_on_hit
                 break;
             case Tweaks.EarlySustains:
                 setQBConfig(QbKey.Create(0xF88A8D5D), e.NewValue == CheckState.Checked ? 1 : 0); // anytime_sustain_activation
-                break;
+                break;*/
         }
     }
 
@@ -1027,26 +662,6 @@ public partial class settings : Form
         saveQb();
     }
 
-    private void maxnotes_ValueChanged(object sender, EventArgs e)
-    {
-        if (disableEvents == false)
-        {
-            if (maxnotes.Value == 0)
-            {
-                ini.SetKeyValue("Player", "MaxNotes", "4000");
-                maxnotes.Value = 4000;
-            }
-            if (maxnotes.Value == -1)
-                ini.SetKeyValue("Player", "MaxNotesAuto", "1");
-            else
-            {
-                ini.SetKeyValue("Player", "MaxNotesAuto", "0");
-                ini.SetKeyValue("Player", "MaxNotes", maxnotes.Value.ToString());
-            }
-            ini.Save("settings.ini");
-        }
-    }
-
     private void speed_ValueChanged(object sender, EventArgs e)
     {
         SuspendLayout();
@@ -1058,7 +673,7 @@ public partial class settings : Form
     {
         Process gh3 = new Process();
         gh3.StartInfo.WorkingDirectory = folder + "\\";
-        gh3.StartInfo.FileName = folder + "\\game.exe";
+        gh3.StartInfo.FileName = folder + "\\play.bat";
         gh3.Start();
     }
 

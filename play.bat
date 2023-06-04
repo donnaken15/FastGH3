@@ -1,0 +1,1 @@
+start "" "%~dp0\bin\game" -b -e "%~dp0\sys\main.dol"

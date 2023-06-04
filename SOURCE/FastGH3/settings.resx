@@ -120,19 +120,8 @@
   <metadata name="tooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>9, 9</value>
   </metadata>
-  <data name="maxFPS.ToolTip" xml:space="preserve">
-    <value>Set max FPS, if not capped by Vsync.
-If set to 0, the frame rate limit will not take effect.
-As of now, it can only cap to 1ms / 1000 FPS.
-Warning: Some frame rates will make the game look
-choppy depending on the refresh rate your monitor supports,
-or depending on your GPU.</value>
-  </data>
   <metadata name="backgroundcolordiag.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>79, 7</value>
-  </metadata>
-  <metadata name="selectImage0.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>230, 9</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>39</value>

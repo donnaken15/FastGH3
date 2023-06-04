@@ -67,7 +67,7 @@ public partial class songcache : Form
         IniFile.IniSection cs = i.GetSection((string)cache.Rows[e.RowIndex].Cells[0].Value);
         File.Copy(folder + cs.Name, folder + "..\\PAK\\song.pak.xen", true);
         File.Copy(folder + cs.GetKey("Audio").Value, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
-        string title  = cs.GetKey("Title").Value;
+        string title = cs.GetKey("Title").Value;
         string author = cs.GetKey("Author").Value;
         string[] songParams = new string[] {
             author,

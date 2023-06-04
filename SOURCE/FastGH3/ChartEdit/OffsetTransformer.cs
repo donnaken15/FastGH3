@@ -98,57 +98,57 @@ namespace ChartEdit
 				int num2 = Notes.Count<Note>() - 1;
 				switch (num2)
 				{
-				case -1:
-				case 0:
-					result = 0;
-					break;
-				case 1:
-				{
-					int num3 = Math.Abs(Notes[0].Offset - Offset);
-					int num4 = Math.Abs(Notes[1].Offset - Offset);
-					if (num3 >= num4)
-					{
-						result = 1;
-					}
-					else
-					{
+					case -1:
+					case 0:
 						result = 0;
-					}
-					break;
-				}
-				default:
-				{
-					int num5 = num2 / 2;
-					while (Notes[num5].Offset != Offset)
-					{
-						num5 = (num + num2) / 2;
-						if (Notes[num5].Offset > Offset)
+						break;
+					case 1:
 						{
-							num2 = num5;
-						}
-						else
-						{
-							num = num5;
-						}
-						if (num2 - num <= 1)
-						{
-							int num6 = Math.Abs(Notes[num5].Offset - Offset);
-							int num7 = Math.Abs(Notes[num5 - 1].Offset - Offset);
-							int num8 = Math.Abs(Notes[num5 + 1].Offset - Offset);
-							if (num6 <= num7 && num6 <= num8)
+							int num3 = Math.Abs(Notes[0].Offset - Offset);
+							int num4 = Math.Abs(Notes[1].Offset - Offset);
+							if (num3 >= num4)
 							{
-								return num5;
+								result = 1;
 							}
-							if (num7 <= num8)
+							else
 							{
-								return num5 - 1;
+								result = 0;
 							}
-							return num5 + 1;
+							break;
 						}
-					}
-					result = num5;
-					break;
-				}
+					default:
+						{
+							int num5 = num2 / 2;
+							while (Notes[num5].Offset != Offset)
+							{
+								num5 = (num + num2) / 2;
+								if (Notes[num5].Offset > Offset)
+								{
+									num2 = num5;
+								}
+								else
+								{
+									num = num5;
+								}
+								if (num2 - num <= 1)
+								{
+									int num6 = Math.Abs(Notes[num5].Offset - Offset);
+									int num7 = Math.Abs(Notes[num5 - 1].Offset - Offset);
+									int num8 = Math.Abs(Notes[num5 + 1].Offset - Offset);
+									if (num6 <= num7 && num6 <= num8)
+									{
+										return num5;
+									}
+									if (num7 <= num8)
+									{
+										return num5 - 1;
+									}
+									return num5 + 1;
+								}
+							}
+							result = num5;
+							break;
+						}
 				}
 			}
 			return result;
@@ -167,57 +167,57 @@ namespace ChartEdit
 				int num2 = Notes.Count<Note>() - 1;
 				switch (num2)
 				{
-				case -1:
-				case 0:
-					result = 0;
-					break;
-				case 1:
-				{
-					int num3 = Math.Abs(Notes[0].Offset - Offset);
-					int num4 = Math.Abs(Notes[1].Offset - Offset);
-					if (num3 >= num4)
-					{
-						result = 1;
-					}
-					else
-					{
+					case -1:
+					case 0:
 						result = 0;
-					}
-					break;
-				}
-				default:
-				{
-					int num5 = num2 / 2;
-					while (Notes[num5].Offset != Offset)
-					{
-						num5 = (num + num2) / 2;
-						if (Notes[num5].Offset > Offset)
+						break;
+					case 1:
 						{
-							num2 = num5;
-						}
-						else
-						{
-							num = num5;
-						}
-						if (num2 - num <= 1)
-						{
-							int num6 = Math.Abs(Notes[num5].Offset - Offset);
-							int num7 = Math.Abs(Notes[num5 - 1].Offset - Offset);
-							int num8 = Math.Abs(Notes[num5 + 1].Offset - Offset);
-							if (num6 <= num7 && num6 <= num8)
+							int num3 = Math.Abs(Notes[0].Offset - Offset);
+							int num4 = Math.Abs(Notes[1].Offset - Offset);
+							if (num3 >= num4)
 							{
-								return num5;
+								result = 1;
 							}
-							if (num7 <= num8)
+							else
 							{
-								return num5 - 1;
+								result = 0;
 							}
-							return num5 + 1;
+							break;
 						}
-					}
-					result = num5;
-					break;
-				}
+					default:
+						{
+							int num5 = num2 / 2;
+							while (Notes[num5].Offset != Offset)
+							{
+								num5 = (num + num2) / 2;
+								if (Notes[num5].Offset > Offset)
+								{
+									num2 = num5;
+								}
+								else
+								{
+									num = num5;
+								}
+								if (num2 - num <= 1)
+								{
+									int num6 = Math.Abs(Notes[num5].Offset - Offset);
+									int num7 = Math.Abs(Notes[num5 - 1].Offset - Offset);
+									int num8 = Math.Abs(Notes[num5 + 1].Offset - Offset);
+									if (num6 <= num7 && num6 <= num8)
+									{
+										return num5;
+									}
+									if (num7 <= num8)
+									{
+										return num5 - 1;
+									}
+									return num5 + 1;
+								}
+							}
+							result = num5;
+							break;
+						}
 				}
 			}
 			return result;
@@ -236,57 +236,57 @@ namespace ChartEdit
 				int num2 = Notes.Count(fret) - 1;
 				switch (num2)
 				{
-				case -1:
-				case 0:
-					result = 0;
-					break;
-				case 1:
-				{
-					int num3 = Math.Abs(Notes[0, fret].Offset - Offset);
-					int num4 = Math.Abs(Notes[1, fret].Offset - Offset);
-					if (num3 >= num4)
-					{
-						result = 1;
-					}
-					else
-					{
+					case -1:
+					case 0:
 						result = 0;
-					}
-					break;
-				}
-				default:
-				{
-					int num5 = num2 / 2;
-					while (Notes[num5, fret].Offset != Offset)
-					{
-						num5 = (num + num2) / 2;
-						if (Notes[num5, fret].Offset > Offset)
+						break;
+					case 1:
 						{
-							num2 = num5;
-						}
-						else
-						{
-							num = num5;
-						}
-						if (num2 - num <= 1)
-						{
-							int num6 = Math.Abs(Notes[num5].Offset - Offset);
-							int num7 = Math.Abs(Notes[num5 - 1].Offset - Offset);
-							int num8 = Math.Abs(Notes[num5 + 1].Offset - Offset);
-							if (num6 <= num7 && num6 <= num8)
+							int num3 = Math.Abs(Notes[0, fret].Offset - Offset);
+							int num4 = Math.Abs(Notes[1, fret].Offset - Offset);
+							if (num3 >= num4)
 							{
-								return num5;
+								result = 1;
 							}
-							if (num7 <= num8)
+							else
 							{
-								return num5 - 1;
+								result = 0;
 							}
-							return num5 + 1;
+							break;
 						}
-					}
-					result = num5;
-					break;
-				}
+					default:
+						{
+							int num5 = num2 / 2;
+							while (Notes[num5, fret].Offset != Offset)
+							{
+								num5 = (num + num2) / 2;
+								if (Notes[num5, fret].Offset > Offset)
+								{
+									num2 = num5;
+								}
+								else
+								{
+									num = num5;
+								}
+								if (num2 - num <= 1)
+								{
+									int num6 = Math.Abs(Notes[num5].Offset - Offset);
+									int num7 = Math.Abs(Notes[num5 - 1].Offset - Offset);
+									int num8 = Math.Abs(Notes[num5 + 1].Offset - Offset);
+									if (num6 <= num7 && num6 <= num8)
+									{
+										return num5;
+									}
+									if (num7 <= num8)
+									{
+										return num5 - 1;
+									}
+									return num5 + 1;
+								}
+							}
+							result = num5;
+							break;
+						}
 				}
 			}
 			return result;
@@ -305,57 +305,57 @@ namespace ChartEdit
 				int num2 = Notes.Count<Note>() - 1;
 				switch (num2)
 				{
-				case -1:
-				case 0:
-					result = 0;
-					break;
-				case 1:
-				{
-					int num3 = Math.Abs(Notes[0].OffsetEnd - Offset);
-					int num4 = Math.Abs(Notes[1].OffsetEnd - Offset);
-					if (num3 >= num4)
-					{
-						result = 1;
-					}
-					else
-					{
+					case -1:
+					case 0:
 						result = 0;
-					}
-					break;
-				}
-				default:
-				{
-					int num5 = num2 / 2;
-					while (Notes[num5].OffsetEnd != Offset)
-					{
-						num5 = (num + num2) / 2;
-						if (Notes[num5].OffsetEnd > Offset)
+						break;
+					case 1:
 						{
-							num2 = num5;
-						}
-						else
-						{
-							num = num5;
-						}
-						if (num2 - num <= 1)
-						{
-							int num6 = Math.Abs(Notes[num5].OffsetEnd - Offset);
-							int num7 = Math.Abs(Notes[num5 - 1].OffsetEnd - Offset);
-							int num8 = Math.Abs(Notes[num5 + 1].OffsetEnd - Offset);
-							if (num6 <= num7 && num6 <= num8)
+							int num3 = Math.Abs(Notes[0].OffsetEnd - Offset);
+							int num4 = Math.Abs(Notes[1].OffsetEnd - Offset);
+							if (num3 >= num4)
 							{
-								return num5;
+								result = 1;
 							}
-							if (num7 <= num8)
+							else
 							{
-								return num5 - 1;
+								result = 0;
 							}
-							return num5 + 1;
+							break;
 						}
-					}
-					result = num5;
-					break;
-				}
+					default:
+						{
+							int num5 = num2 / 2;
+							while (Notes[num5].OffsetEnd != Offset)
+							{
+								num5 = (num + num2) / 2;
+								if (Notes[num5].OffsetEnd > Offset)
+								{
+									num2 = num5;
+								}
+								else
+								{
+									num = num5;
+								}
+								if (num2 - num <= 1)
+								{
+									int num6 = Math.Abs(Notes[num5].OffsetEnd - Offset);
+									int num7 = Math.Abs(Notes[num5 - 1].OffsetEnd - Offset);
+									int num8 = Math.Abs(Notes[num5 + 1].OffsetEnd - Offset);
+									if (num6 <= num7 && num6 <= num8)
+									{
+										return num5;
+									}
+									if (num7 <= num8)
+									{
+										return num5 - 1;
+									}
+									return num5 + 1;
+								}
+							}
+							result = num5;
+							break;
+						}
 				}
 			}
 			return result;
@@ -374,57 +374,57 @@ namespace ChartEdit
 				int num2 = Notes.Count(fret) - 1;
 				switch (num2)
 				{
-				case -1:
-				case 0:
-					result = 0;
-					break;
-				case 1:
-				{
-					int num3 = Math.Abs(Notes[0, fret].OffsetEnd - Offset);
-					int num4 = Math.Abs(Notes[1, fret].OffsetEnd - Offset);
-					if (num3 >= num4)
-					{
-						result = 1;
-					}
-					else
-					{
+					case -1:
+					case 0:
 						result = 0;
-					}
-					break;
-				}
-				default:
-				{
-					int num5 = num2 / 2;
-					while (Notes[num5, fret].OffsetEnd != Offset)
-					{
-						num5 = (num + num2) / 2;
-						if (Notes[num5, fret].OffsetEnd > Offset)
+						break;
+					case 1:
 						{
-							num2 = num5;
-						}
-						else
-						{
-							num = num5;
-						}
-						if (num2 - num <= 1)
-						{
-							int num6 = Math.Abs(Notes[num5, fret].OffsetEnd - Offset);
-							int num7 = Math.Abs(Notes[num5 - 1, fret].OffsetEnd - Offset);
-							int num8 = Math.Abs(Notes[num5 + 1, fret].OffsetEnd - Offset);
-							if (num6 <= num7 && num6 <= num8)
+							int num3 = Math.Abs(Notes[0, fret].OffsetEnd - Offset);
+							int num4 = Math.Abs(Notes[1, fret].OffsetEnd - Offset);
+							if (num3 >= num4)
 							{
-								return num5;
+								result = 1;
 							}
-							if (num7 <= num8)
+							else
 							{
-								return num5 - 1;
+								result = 0;
 							}
-							return num5 + 1;
+							break;
 						}
-					}
-					result = num5;
-					break;
-				}
+					default:
+						{
+							int num5 = num2 / 2;
+							while (Notes[num5, fret].OffsetEnd != Offset)
+							{
+								num5 = (num + num2) / 2;
+								if (Notes[num5, fret].OffsetEnd > Offset)
+								{
+									num2 = num5;
+								}
+								else
+								{
+									num = num5;
+								}
+								if (num2 - num <= 1)
+								{
+									int num6 = Math.Abs(Notes[num5, fret].OffsetEnd - Offset);
+									int num7 = Math.Abs(Notes[num5 - 1, fret].OffsetEnd - Offset);
+									int num8 = Math.Abs(Notes[num5 + 1, fret].OffsetEnd - Offset);
+									if (num6 <= num7 && num6 <= num8)
+									{
+										return num5;
+									}
+									if (num7 <= num8)
+									{
+										return num5 - 1;
+									}
+									return num5 + 1;
+								}
+							}
+							result = num5;
+							break;
+						}
 				}
 			}
 			return result;

@@ -562,20 +562,6 @@ namespace Nanook.QueenBee.Parser
 
         }
 
-        // copied and edited by wesley
-        // why is this not a thing
-        public void ReplaceFile(string qbFilename, byte[] filebytes)
-        {
-            using (Stream ms = new MemoryStream(filebytes))
-            {
-                replaceFile(qbFilename, ms.Length, false, delegate(Stream stream)
-                {
-                    copyData(ms, stream, ms.Length);
-                });
-            }
-
-        }
-
         public void ReplaceFile(string qbFilename, QbFile withQbFile)
         {
             replaceFile(qbFilename, withQbFile.Length, false, delegate(Stream stream)
