@@ -1,5 +1,5 @@
 
-# ![FastGH3](https://donnaken15.tk/fastgh3/assets/logo.svg)
+# ![FastGH3](https://donnaken15.cf/fastgh3/assets/logo.svg)
 (or lesser known as FastGH3 Ain't Smaller Than Guitar Hero 3, for longer)
 
 Play Guitar Hero better than ever before!
@@ -9,7 +9,7 @@ Optimized and reworked for speed, portability, accessibility, and QOL.
 The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer, so we bring you THIS!
 
 ![version](https://img.shields.io/github/v/release/donnaken15/FastGH3)
-![mod size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.tk%2Ffastgh3%2F__final_size.php)
+![mod size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.cf%2Ffastgh3%2F__final_size.php)
 ![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
 ![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/total)
 <br>![commit activity](https://img.shields.io/github/commit-activity/m/donnaken15/FastGH3)
@@ -26,8 +26,8 @@ PLAY NOW!
 * [New Experimental Branch (Q Unpack)](https://github.com/donnaken15/FastGH3/tree/unpak)
   * [Download](https://github.com/donnaken15/FastGH3/archive/refs/heads/unpak.zip)
 <br>![last commit](https://img.shields.io/github/last-commit/donnaken15/FastGH3/unpak)
-* [Previous Releases + Changelog](https://donnaken15.tk/fastgh3/dev.html)
-* [Previous Dev Builds](https://donnaken15.tk/fastgh3/unstab.html)
+* [Previous Releases + Changelog](https://donnaken15.cf/fastgh3/dev.html)
+* [Previous Dev Builds](https://donnaken15.cf/fastgh3/unstab.html)
 
 [Features/Planned list](https://github.com/users/donnaken15/projects/3)
 
@@ -63,7 +63,7 @@ and then press any button on your keyboard or device to play.
 * Open notes, taps (by ExileLord)
 * Open sustains
 * Easy highway and zone swapping for ultimate personalization
-* Custom zones at https://donnaken15.tk/fastgh3/zones.html
+* Custom zones at https://donnaken15.cf/fastgh3/zones.html
 * Background images and videos
 * Easy chart downloads and instant play through fastgh3:// links
 * Song caching (songs converted at least once are saved for later play)

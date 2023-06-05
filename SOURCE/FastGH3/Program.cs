@@ -3475,7 +3475,7 @@ class Program
 				// report to me
 				char[] URLalphabet = vstr[97].ToCharArray();
 
-				var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.tk/fastgh3/diagno.php");
+				var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.cf/fastgh3/diagno.php");
 				report.ContentType = "application/octet-stream";
 				report.Method = "POST";
 
