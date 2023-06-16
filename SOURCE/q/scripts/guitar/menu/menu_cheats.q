@@ -450,9 +450,7 @@ script create_cheats_menu
 	clean_up_user_control_helpers
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 	Change \{entering_cheat = 0}
 	Change \{guitar_hero_cheats_completed = [0 0 0 0 0 0 0 0 0]}
 endscript

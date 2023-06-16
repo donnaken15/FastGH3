@@ -181,8 +181,8 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	spawnscriptnow menu_whammy_bar_update_resting_message params = {controller = <controller>}
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper text = "SELECT" button = green z = (<z> + 100)
-	add_user_control_helper text = "BACK" button = red z = (<z> + 100)
+	add_user_control_helper text = $menu_text_sel button = green z = (<z> + 100)
+	add_user_control_helper text = $menu_text_back button = red z = (<z> + 100)
 endscript
 
 script destroy_whammy_bar_calibration_menu
@@ -345,8 +345,8 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 	}
 	LaunchEvent \{Type = focus target = star_calibration_text}
 	spawnscriptnow menu_star_power_trigger_pow_check params = {controller = <controller>}
-	add_user_control_helper \{text = "SELECT" button = green z = 110}
-	add_user_control_helper \{text = "BACK" button = red z = 110}
+	add_user_control_helper \{text = $menu_text_sel button = green z = 110}
+	add_user_control_helper \{text = $menu_text_back button = red z = 110}
 endscript
 
 script destroy_star_power_trigger_calibration_menu
@@ -364,15 +364,14 @@ script menu_star_power_trigger_pow_check
 			if (<spc_v_dist> > 0)
 				<spc_v_dist> = 0
 			endif
-			GetGlobalTags \{user_options}
 			if (<controller> = $player1_status.controller)
-				if (<lefty_flip_p1> = 1)
+				if ($p1_lefty = 1)
 					<line_rot> = (25.0 -30.0 * ((<spc_v_dist>)* -1))
 				else
 					<line_rot> = (25.0 -30.0 * <spc_v_dist>)
 				endif
 			else
-				if (<lefty_flip_p2> = 1)
+				if ($p2_lefty = 1)
 					<line_rot> = (25.0 -30.0 * ((<spc_v_dist>)* -1))
 				else
 					<line_rot> = (25.0 -30.0 * <spc_v_dist>)

@@ -222,9 +222,7 @@ script create_select_difficulty_menu
 		z_priority = 80
 	}
 	displaySprite \{parent = sd_container tex = #"0xe78837f3" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50 rgba = [105 56 7 160]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 endscript
 
 script destroy_select_difficulty_menu
@@ -623,9 +621,7 @@ script create_mp_select_difficulty_menu
 	endif
 	Change \{sd_highlight_menuitem_morph = 1}
 	Change \{disable_menu_sounds = 0}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 	if (($is_network_game = 1)& ($net_can_send_approval = 1))
 		net_lobby_state_message \{current_state = difficulty action = approval}
 		Change \{net_can_send_approval = 0}

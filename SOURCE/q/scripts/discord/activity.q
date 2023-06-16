@@ -40,16 +40,25 @@ richpres_modes = {
 // Song Name - Author
 // Quickplay
 // 1:00 left
+// Expert - Guitar
 script richpres_start_song
 	Change \{rp_song_active = 1}
-	text = 'Unknown mode'
-	smlimage = ''
-	lrgimage = 'main_icon' // fastgh3: main_icon // gh3+: slash_hat
-	smltxt = ''
+	// fastgh3: main_icon // gh3+: slash_hat
+	AddParams \{text = 'Unknown mode' smlimage = '' lrgimage = 'main_icon' smltxt = ''}
 	get_song_title \{song = $current_song}
 	get_song_artist \{song = $current_song with_year = 0}
-	FormatText textname = songtext '%a - %t' t = <song_title> a = <song_artist>
-	get_difficulty_text \{difficulty = $current_difficulty}
+	FormatText textname = songtext '%a - %b' b = <song_title> a = <song_artist>
+	if ($current_num_players = 1)
+		lrgtxt = ($difficulty_list_props.$current_difficulty.text)
+	else
+		FormatText {
+			textname = lrgtxt '%a - %b, %c - %d'
+			a = ($difficulty_list_props.($current_difficulty).text)
+			c = ($difficulty_list_props.($current_difficulty2).text)
+			b = ($part_names.($player1_status.part))
+			d = ($part_names.($player2_status.part))
+		}
+	endif
 	if StructureContains \{structure=$richpres_modes $game_mode}
 		mode_params = ($richpres_modes.$game_mode)
 		text = (<mode_params>.#"0x00000000")
@@ -61,7 +70,7 @@ script richpres_start_song
 			smlimage = 'battle'
 		endif
 	endif
-	SetRichPresenceMode state = <text> details = <songtext> smltxt = <smltxt> smlimage = <smlimage> lrgtxt = <difficulty_text> lrgimage = <lrgimage>
+	SetRichPresenceMode state = <text> details = <songtext> smltxt = <smltxt> smlimage = <smlimage> lrgtxt = <lrgtxt> lrgimage = <lrgimage>
 	spawnscriptnow \{richpres_update_song}
 endscript
 

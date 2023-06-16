@@ -150,9 +150,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 	winport_calibrate_lag_fill_options z = <z> from_in_game = <from_in_game>
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 endscript
 
 script winport_calibrate_lag_fill_options\{z = 100}

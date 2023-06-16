@@ -116,9 +116,7 @@ script create_login_settings_menu
 	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = #"0xf6c8349f" Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0) z_priority = 99 rgba = [255 255 255 255]}
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 	NetSessionFunc \{func = GetAutoLoginSetting}
 	switch <autoLoginSetting>
 		case autoLoginOff

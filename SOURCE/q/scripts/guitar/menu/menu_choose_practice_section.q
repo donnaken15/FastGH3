@@ -503,7 +503,5 @@ script practice_setup_bg
 		repeat <array_Size>
 	endif
 	menu_detailed_stats_add_paper_sprites
-	add_user_control_helper \{text = "CONTINUE" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{continue back nav}
 endscript

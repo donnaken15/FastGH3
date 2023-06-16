@@ -43,7 +43,7 @@ endscript
 
 script winport_create_p1_controller_popup
 	create_popup_warning_menu \{title = "Select Controller" textblock = {text = "Press any button on the controller to be used in single player mode and in the menus." dims = (800.0, 400.0) Scale = 0.55}no_background menu_pos = (640.0, 520.0) dialog_dims = (600.0, 80.0)}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
+	common_control_helpers \{back}
 	spawnscriptnow \{winport_wait_for_device_press params = {backScript = winport_p1_controller_back proceedScript = winport_p1_controller_proceed}}
 endscript
 
@@ -75,7 +75,7 @@ endscript
 
 script winport_create_bind_buttons_popup
 	create_popup_warning_menu \{title = "Select Controller" textblock = {text = "Press any button on the controller you want to configure." dims = (800.0, 400.0) Scale = 0.55}no_background menu_pos = (640.0, 520.0) dialog_dims = (600.0, 80.0)}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
+	common_control_helpers \{back}
 	spawnscriptnow \{winport_wait_for_device_press params = {bindable backScript = winport_bind_buttons_back proceedScript = winport_bind_buttons_proceed}}
 endscript
 
@@ -214,9 +214,7 @@ script create_controller_settings_menu\{popup = 0}
 		<exclusive_params> = {exclusive_device = ($primary_controller)}
 		Change \{user_control_pill_text_color = [0 0 0 255]}
 		Change \{user_control_pill_color = [180 180 180 255]}
-		add_user_control_helper \{text = "SELECT" button = green z = 100}
-		add_user_control_helper \{text = "BACK" button = red z = 100}
-		add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+		common_control_helpers \{select back nav}
 	endif
 	if (<popup>)
 		<p1_l_flip_text> = "P1 Lefty Flip: OFF"
@@ -263,9 +261,8 @@ script create_controller_settings_menu\{popup = 0}
 			fit_text_in_rectangle id = <id> only_if_larger_x = 1 dims = ((300.0, 0.0) + <height> * (0.0, 1.0))
 		endif
 	endif
-	GetGlobalTags \{user_options}
-	controller_settings_menu_update_lefty_flip_p1_value lefty_flip_p1 = <lefty_flip_p1>
-	controller_settings_menu_update_lefty_flip_p2_value lefty_flip_p2 = <lefty_flip_p2>
+	controller_settings_menu_update_lefty_flip_p1_value lefty_flip_p1 = $p1_lefty
+	controller_settings_menu_update_lefty_flip_p2_value lefty_flip_p2 = $p2_lefty
 	CreateScreenElement {
 		id = cs_calibrate_whammy_menu_item
 		<text_params>
@@ -385,15 +382,13 @@ script controller_settings_menu_choose_lefty_flip_p1
 	if (<popup>)
 		ui_flow_manager_respond_to_action \{action = select_lefty_flip create_params = {Player = 1}}
 	else
-		GetGlobalTags \{user_options}
-		if (<lefty_flip_p1> = 1)
-			<lefty_flip_p1> = 0
+		if ($p1_lefty = 1)
+			change \{p1_lefty = 0}
 			SoundEvent \{event = checkbox_sfx}
 		else
-			<lefty_flip_p1> = 1
+			change \{p1_lefty = 1}
 			SoundEvent \{event = checkbox_check_sfx}
 		endif
-		SetGlobalTags user_options params = {lefty_flip_p1 = <lefty_flip_p1>}
 		controller_settings_menu_update_lefty_flip_p1_value lefty_flip_p1 = <lefty_flip_p1>
 	endif
 endscript
@@ -403,14 +398,13 @@ script controller_settings_menu_choose_lefty_flip_p2
 		ui_flow_manager_respond_to_action \{action = select_lefty_flip create_params = {Player = 2}}
 	else
 		GetGlobalTags \{user_options}
-		if (<lefty_flip_p2> = 1)
-			<lefty_flip_p2> = 0
+		if ($p2_lefty = 1)
+			change \{p2_lefty = 0}
 			SoundEvent \{event = checkbox_sfx}
 		else
-			<lefty_flip_p2> = 1
+			change \{p2_lefty = 1}
 			SoundEvent \{event = checkbox_check_sfx}
 		endif
-		SetGlobalTags user_options params = {lefty_flip_p2 = <lefty_flip_p2>}
 		controller_settings_menu_update_lefty_flip_p2_value lefty_flip_p2 = <lefty_flip_p2>
 	endif
 endscript

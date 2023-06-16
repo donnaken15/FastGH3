@@ -87,9 +87,7 @@ script create_select_controller_menu
 	<id> ::SetTags old_pos = (680.0, 420.0)
 	spawnscriptnow \{cs_bounce_arrows}
 	spawnscriptnow \{jump_up_and_down_peasants}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 	create_ready_icons \{pos1 = (300.0, 450.0) pos2 = (835.0, 510.0)}
 	i = 0
 	begin

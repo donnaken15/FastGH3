@@ -118,9 +118,7 @@ script create_choose_band_menu
 		endif
 		<band_index> = (<band_index> + 1)
 	repeat <loop_count>
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 endscript
 
 script destroy_choose_band_menu

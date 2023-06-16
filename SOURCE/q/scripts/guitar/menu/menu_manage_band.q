@@ -144,9 +144,7 @@ script create_manage_band_menu
 			{pad_choose menu_manage_band_delete_band}
 		]
 	}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 endscript
 
 script manage_band_highlighter

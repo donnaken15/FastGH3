@@ -577,21 +577,14 @@ endscript
 
 script toggle_leftyflip
 	ui_menu_select_sfx
-	GetGlobalTags \{user_options}
-	if (<lefty_flip_p1> = 0)
-		SetGlobalTags \{user_options params = {lefty_flip_p1 = 1}}
-	else
-		SetGlobalTags \{user_options params = {lefty_flip_p1 = 0}}
-	endif
-	GetGlobalTags \{user_options}
-	Change StructureName = player1_status lefthanded_gems = <lefty_flip_p1>
-	Change StructureName = player1_status lefthanded_button_ups = <lefty_flip_p1>
+	toggle_global \{p1_lefty}
+	Change \{StructureName = player1_status lefthanded_gems = $p1_lefty}
+	Change \{StructureName = player1_status lefthanded_button_ups = $p1_lefty}
 	toggle_leftyflip_setprop
 endscript
 
 script toggle_leftyflip_setprop
-	GetGlobalTags \{user_options}
-	if (<lefty_flip_p1> = 0)
+	if ($p1_lefty = 0)
 		toggle_leftyflip_menuitem ::SetProps \{text = "Lefty Flip : off"}
 	else
 		toggle_leftyflip_menuitem ::SetProps \{text = "Lefty Flip : on"}
@@ -1257,12 +1250,9 @@ script back_to_retail_ui_flow
 endscript
 
 script toggle_global
-	printstruct <...>
-	if GotParam \{global_toggle}
-		if ($<global_toggle> = 1)
-			Change GlobalName = <global_toggle> NewValue = 0
-		else
-			Change GlobalName = <global_toggle> NewValue = 1
-		endif
+	if ($<#"0x00000000"> = 1)
+		Change GlobalName = <#"0x00000000"> NewValue = 0
+	else
+		Change GlobalName = <#"0x00000000"> NewValue = 1
 	endif
 endscript

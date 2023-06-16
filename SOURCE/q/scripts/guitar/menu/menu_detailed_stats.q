@@ -244,9 +244,7 @@ script create_detailed_stats_menu
 			endif
 		endif
 	endif
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "CONTINUE" button = green z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{continue back nav}
 endscript
 
 script destroy_detailed_stats_menu

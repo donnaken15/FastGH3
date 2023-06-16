@@ -200,9 +200,9 @@ script create_mp_select_mode_menu
 			]
 		}
 	endif
-	add_user_control_helper \{text = "SELECT" button = green}
-	add_user_control_helper \{text = "BACK" button = red}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar}
+	add_user_control_helper \{text = $menu_text_sel button = green}
+	add_user_control_helper \{text = $menu_text_back button = red}
+	add_user_control_helper \{text = $menu_text_nav button = strumbar}
 	LaunchEvent \{Type = focus target = vmenu_mp_select_mode_menu}
 endscript
 

@@ -201,5 +201,6 @@ script check_for_any_input\{button1 = {}button2 = {}}
 endscript
 
 script menu_press_any_button_create_obvious_text
-	CreateScreenElement \{ Type = TextBlockElement parent = pab_container font = fontgrid_title_gh3 text = 'PRESS ANY\nBUTTON TO PLAY' dims = (480.0, 320.0) Pos = (400.0, 256.0) just = [left top] internal_just = [center top] rgba = [255 255 255 255] Scale = 1.0 allow_expansion }
+	CreateScreenElement \{ Type = SpriteElement parent = pab_container texture = FastGH3_logo just = [center center] Pos = (640.0, 160.0) Scale = 1.2 }
+	CreateScreenElement \{ Type = TextBlockElement parent = pab_container font = fontgrid_title_gh3 text = 'PRESS ANY\nBUTTON TO PLAY' dims = (800.0, 320.0) Pos = (640.0, 320.0) just = [center top] internal_just = [center top] rgba = [255 255 255 255] Scale = 1.4 allow_expansion }
 endscript

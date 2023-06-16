@@ -112,6 +112,7 @@ public partial class settings : Form
 	}, partCRCs = {
 		QbKey.Create(0xBDC53CF2), QbKey.Create(0x7A7D1DCA)
 	};
+	private static string[] diffStr = { "Easy", "Medium", "Hard", "Expert" };
 	private static List<Size> resz = new List<Size>();
 	//private static PakFormat pakformat;
 	//private static PakEditor qbedit;
@@ -276,11 +277,11 @@ public partial class settings : Form
 		NoParticles,
 		NoFail,
 		NoHUD,
-		FCmode,
+		FCMode,
 		EasyExpert,
 		Precision,
 		Performance,
-		//NoShake,
+		NoShake,
 		//Lefty,
 		BkgdVideo,
 		KillHitGems,
@@ -291,34 +292,6 @@ public partial class settings : Form
 	{
 		return ((t)i).ToString(); // ez INI section name thing
 	}
-
-	public QbKey[] tK = new QbKey[]
-	{
-		QbKey.Create(0),
-		QbKey.Create(0),
-		QbKey.Create(0),
-		QbKey.Create(0),
-		QbKey.Create(0),
-		QbKey.Create(0x045713D3),
-		QbKey.Create(0x2AF92804),
-		QbKey.Create(0x32025D94),
-		QbKey.Create(0),
-		QbKey.Create(0),
-		QbKey.Create(0xDF7FF31B),
-		QbKey.Create(0xD403A7A7),
-		QbKey.Create(0x3E5FD611),
-		QbKey.Create(0x1F65243F),
-		QbKey.Create(0x0858E407),
-		QbKey.Create(0x404B1EF4),
-		QbKey.Create(0x3CA38921),
-		QbKey.Create(0x392E3940), // perf
-		//NoShake,
-		//Lefty,
-		QbKey.Create(0x633E187F),
-		QbKey.Create(0xC50E4995),
-		QbKey.Create(0xF88A8D5D),
-		QbKey.Create(0xC6257792),
-	};
 
 	public enum mods
 	{
@@ -342,7 +315,7 @@ public partial class settings : Form
 	public settings()
 	{
 		Console.SetWindowSize(80, 32);
-		vl2 = Program.cfg("Misc", t.VerboseLog.ToString(), 0) == 1;
+		vl2 = Program.cfg(Program.l, t.VerboseLog.ToString(), 0) == 1;
 		Program.vl("Loading QBs...");
 		//pakformat = new PakFormat(Program.dataf + "user.pak.xen", Program.dataf + "user.pak.xen", "", PakFormatType.PC, false);
 		//qbedit = new PakEditor(pakformat, false);
@@ -393,19 +366,16 @@ public partial class settings : Form
 
 		SFW(Handle);
 		Program.vl("Reading settings...");
-		dCtrl.Value = (int)gQC(QbKey.Create(0xD8F8D2DE), 0);
-		RTnoi.Value = (int)gQC(QbKey.Create(0x5FB765A2), 400); // nointro_ready_time
+		dCtrl.Value = Program.cfg("Player1", "Device", 0);
+		RTnoi.Value = Program.cfg("Player", "NoIntroReadyTime", 400); // nointro_ready_time
 #pragma warning disable CS0162
 		// people wanted unlimited FPS, but
 		// then autoplay will hit too early sometimes
-		if (FFQ)
-			maxFPS.Value = (int)gQC(QbKey.Create(0xCEFC2AEF), 1000); // fps_max
-		else
-			maxFPS.Value = Convert.ToInt32(Program.cfg("Player", "MaxFPS", 1000));
+		maxFPS.Value = Program.cfg("Player", "MaxFPS", 1000);
 #pragma warning restore CS0162
-		hypers.Value = (int)gQC(QbKey.Create(0xFD6B13B4), 0); // Cheat_Hyperspeed
+		hypers.Value = Program.cfg("Player", "Hyperspeed", 3); // Cheat_Hyperspeed
 		{
-			int disable_particles = (int)gQC(tK[(int)t.NoParticles], 0); // disable_particles
+			int disable_particles = Program.cfg("GFX", "NoParticles", 0); // disable_particles
 			CheckState state = CheckState.Unchecked;
 			switch (disable_particles)
 			{
@@ -421,39 +391,34 @@ public partial class settings : Form
 			}
 			tLb.SetItemCheckState((int)t.NoParticles, state);
 		}
-		for (int i = 0; i < tK.Length; i++)
-			if (tK[i].Crc != 0 &&
-				i != (int)t.KeyboardMode &&
-				i != (int)t.NoParticles)
-			tLb.SetItemChecked(i, (int)gQC(tK[i], 0) == 1);
-		tLb.SetItemChecked((int)t.KeyboardMode, (int)gQC(QbKey.Create(0x32025D94), 1) == 0); // autolaunch_startnow
-		//tLb.SetItemChecked((int)t.Performance, (int)gQC(QbKey.Create(0x392E3940), 0) == 0); // Cheat_PerformanceMode
-		/*tLb.SetItemChecked((int)t.NoIntro, (int)gQC(tK[(int)t.NoIntro], 0) == 1); // disable_intro
-		tLb.SetItemChecked((int)t.NoFail, (int)gQC(tK[(int)t.NoFail], 0) == 1); // Cheat_NoFail
-		tLb.SetItemChecked((int)t.EasyExpert, (int)gQC(tK[(int)t.EasyExpert], 0) == 1);
-		tLb.SetItemChecked((int)t.Precision, (int)gQC(tK[(int)t.Precision], 0) == 1);
-		tLb.SetItemChecked((int)t.DebugMenu, (int)gQC(tK[(int)t.DebugMenu], 0) == 1);
-		tLb.SetItemChecked((int)t.ExitOnSongEnd, (int)gQC(tK[(int)t.ExitOnSongEnd], 0) == 1); // exit_on_song_end
-		tLb.SetItemChecked((int)t.EasyExpert, (int)gQC(tK[(int)t.EasyExpert], 0) == 1); // enable_video
-		tLb.SetItemChecked((int)t.Precision, (int)gQC(tK[(int)t.Precision], 0) == 1); // enable_video
-		tLb.SetItemChecked((int)t.BkgdVideo, (int)gQC(tK[(int)t.BkgdVideo], 0) == 1); // enable_video
-		tLb.SetItemChecked((int)t.KillHitGems, (int)gQC(tK[(int)t.KillHitGems], 0) == 1); // kill_gems_on_hit
-		tLb.SetItemChecked((int)t.EarlySustains, (int)gQC(tK[(int)t.EarlySustains], 0) == 1);*/ // anytime_sustain_activation
-		tLb.SetItemChecked((int)t.DisableVsync, Program.cfg("Misc", "VSync", 1) == 0);
-		tLb.SetItemChecked((int)t.SongCaching, Program.cfg("Misc", t.SongCaching.ToString(), 1) == 1);
-		tLb.SetItemChecked((int)t.NoStartupMsg, Program.cfg("Misc", t.NoStartupMsg.ToString(), 0) == 1);
-		tLb.SetItemChecked((int)t.PreserveLog, Program.cfg("Misc", t.PreserveLog.ToString(), 0) == 1);
-		tLb.SetItemChecked((int)t.Windowed, Program.cfg("Misc", t.Windowed.ToString(), 1) == 1);
-		tLb.SetItemChecked((int)t.Borderless, Program.cfg("Misc", t.Borderless.ToString(), 1) == 1);
+		tLb.SetItemChecked((int)t.KeyboardMode, Program.cfg("Player", "Autostart", 1) == 0); // autolaunch_startnow
+		tLb.SetItemChecked((int)t.Performance, Program.cfg("Player", t.Performance.ToString(), 0) == 1); // Cheat_PerformanceMode
+		tLb.SetItemChecked((int)t.NoIntro, Program.cfg("Player", t.NoIntro.ToString(), 0) == 1); // disable_intro
+		tLb.SetItemChecked((int)t.NoFail, Program.cfg("Player", t.NoFail.ToString(), 0) == 1); // Cheat_NoFail
+		tLb.SetItemChecked((int)t.NoHUD, Program.cfg("Player", t.NoHUD.ToString(), 0) == 1); // hudless
+		tLb.SetItemChecked((int)t.FCMode, Program.cfg("Player", t.FCMode.ToString(), 0) == 1); // FC_MODE
+		tLb.SetItemChecked((int)t.EasyExpert, Program.cfg("Player", t.EasyExpert.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.Precision, Program.cfg("Player", t.Precision.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.DebugMenu, Program.cfg("Misc", "Debug", 0) == 1);
+		tLb.SetItemChecked((int)t.ExitOnSongEnd, Program.cfg("Player", t.ExitOnSongEnd.ToString(), 0) == 1); // exit_on_song_end
+		tLb.SetItemChecked((int)t.BkgdVideo, Program.cfg("Player", "BGVideo", 0) == 1); // enable_video
+		tLb.SetItemChecked((int)t.KillHitGems, Program.cfg("GFX", "KillHitGems", 0) == 1); // kill_gems_on_hit
+		tLb.SetItemChecked((int)t.EarlySustains, Program.cfg("Player", t.EarlySustains.ToString(), 0) == 1); // anytime_sustain_activation
+		tLb.SetItemChecked((int)t.DisableVsync, Program.cfg("GFX", "VSync", 1) == 0);
+		tLb.SetItemChecked((int)t.SongCaching, Program.cfg(Program.l, t.SongCaching.ToString(), 1) == 1);
+		tLb.SetItemChecked((int)t.NoStartupMsg, Program.cfg(Program.l, t.NoStartupMsg.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.PreserveLog, Program.cfg(Program.l, t.PreserveLog.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.Windowed, Program.cfg("GFX", t.Windowed.ToString(), 1) == 1);
+		tLb.SetItemChecked((int)t.Borderless, Program.cfg("GFX", t.Borderless.ToString(), 1) == 1);
 		if (tLb.GetItemChecked((int)t.NoIntro))
 		{
 			RTnoi.Enabled = true;
 			RTlbl.Enabled = true;
 			RTms.Enabled = true;
 		}
-		speed.Value = (decimal/*wtf*/)(float)gQC(QbKey.Create(0x16D91BC1), 1.0f) * 100; // current_speedfactor
+		speed.Value = (decimal/*wtf*/)Convert.ToSingle(Program.cfg("Player", "Speed", "1.0")) * 100; // current_speedfactor
 		tLb.SetItemChecked((int)t.VerboseLog, vl2);
-		//tweaksList.SetItemChecked((int)Tweaks.NoShake, (int)getQBConfig(QbKey.Create("disable_shake"), 0) == 1);
+		tLb.SetItemChecked((int)t.NoShake, Program.cfg("GFX", t.NoShake.ToString(), 0) == 1);
 		for (int i = 0; i < modc; i++)
 		{
 			modList.SetItemChecked(i, Program.cfg("Modifiers", modN(i), 0) == 1);
@@ -572,41 +537,13 @@ public partial class settings : Form
 			else
 				MaxN.Value = -1;
 		}
-		//p1diff = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_diff"), false);
-		//p2diff = (QbItemQbKey)userqb.FindItem(QbKey.Create("p2_diff"), false);
-		//p1part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p1_part"), false);
-		//p2part = (QbItemQbKey)userqb.FindItem(QbKey.Create("p2_part"), false);
-		// WTF C#
-		if ((QbKey)gQC(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[0].Crc)
-			diff.Text = "Easy";
-		else if ((QbKey)gQC(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[1].Crc)
-			diff.Text = "Medium";
-		else if ((QbKey)gQC(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[2].Crc)
-			diff.Text = "Hard";
-		else if ((QbKey)gQC(QbKey.Create(0x9FAAE40F), diffCRCs[3]) == diffCRCs[3].Crc)
-			diff.Text = "Expert";
-		if ((QbKey)gQC(QbKey.Create(0x93D5D362), QbKey.Create(0xBDC53CF2)) == partCRCs[0].Crc)
-			part.SelectedIndex = 0;
-		else// if (p1part.Values[0].Crc == partCRCs[1].Crc)
-			part.SelectedIndex = 1;
-		if ((QbKey)gQC(QbKey.Create(0x1541A1CC), QbKey.Create(0x7A7D1DCA)) == partCRCs[1].Crc)
+		diff.Text = diffStr[Program.cfg("Player1", "Diff", 3)];
+		part.SelectedIndex = Program.cfg("Player1", "Part", 0);
+		if (Program.cfg("Player2", "Part", 1) == 1)
 			p2partt.Checked = false;
 		else
 			p2partt.Checked = true;
-		// A CONSTANT VALUE IS EXPECTED STFU!!!!!!!!!
-		/*switch (p1diff.Values[0].Crc)
-		{
-			case diffCRCs[0].Crc:
-				break;
-			case diffCRCs[1].Crc:
-				break;
-			case diffCRCs[2].Crc:
-				break;
-			case diffCRCs[3].Crc:
-				break;
-		// also looks redundant when i could use a loop maybe
-		}*/
-		aqlvl.Value = Convert.ToInt32(Program.cfg("Misc", "AB", "128"));
+		aqlvl.Value = Convert.ToInt32(Program.cfg(Program.l, "AB", "128"));
 
 		{
 			Program.vl("Loading scripts for override checks...");
@@ -687,12 +624,11 @@ public partial class settings : Form
 		disableEvents = false;
 	}
 
-	void cDiff(int difficulty)
+	void cDiff(int d)
 	{
 		if (disableEvents)
 			return;
-		sQC(QbKey.Create(0x9FAAE40F), diffCRCs[difficulty]);
-		sQC(QbKey.Create(0x193E96A1), diffCRCs[difficulty]);
+		Program.cfgW("Player1","Diff",d);
 	}
 		
 	private void resC(object sender, EventArgs e)
@@ -716,7 +652,7 @@ public partial class settings : Form
 		if (disableEvents)
 			return;
 		{
-			sQC(QbKey.Create("Cheat_Hyperspeed"), Convert.ToInt32(hypers.Value));
+			Program.cfgW("Player", "Hyperspeed", Convert.ToInt32(hypers.Value));
 		}
 	}
 
@@ -795,11 +731,11 @@ public partial class settings : Form
 	private void stfO(object sender, EventArgs e)
 	{
 		// formatInterface
-		songtxtfmt FI = new songtxtfmt(Regex.Unescape(Program.cfg(m, Program.stf, "%a - %t")).Replace("\n","\r\n"));
+		songtxtfmt FI = new songtxtfmt(Regex.Unescape(Program.cfg(Program.l, Program.stf, "%a - %t")).Replace("\n","\r\n"));
 		FI.ShowDialog();
 		if (FI.DialogResult == DialogResult.OK)
 		{
-			Program.cfgW(m, Program.stf, Regex.Escape(FI.f.Replace("\r", "")));
+			Program.cfgW(Program.l, Program.stf, Regex.Escape(FI.f.Replace("\r", "")));
 		}
 	}
 
@@ -807,19 +743,14 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		sQC(QbKey.Create(0x5FB765A2), (int)RTnoi.Value);
+		Program.cfgW("GFX", "NoIntroReadyTime", (int)RTnoi.Value);
 	}
 
 	private void mxFPSc(object sender, EventArgs e)
 	{
-#pragma warning disable CS0162 // Unreachable code detected
-		if (FFQ)
-			sQC(QbKey.Create(0xCEFC2AEF), (int)maxFPS.Value);
-		else
-		{
-			Program.cfgW("Player", "MaxFPS", maxFPS.Value.ToString());
-		}
-#pragma warning restore CS0162 // Unreachable code detected
+		if (disableEvents)
+			return;
+		Program.cfgW("GFX", "MaxFPS", maxFPS.Value.ToString());
 	}
 
 	private void sBGi(object sender, EventArgs e)
@@ -873,7 +804,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("Misc","AB",aqlvl.Value.ToString());
+		Program.cfgW(Program.l, "AB", aqlvl.Value.ToString());
 	}
 
 	private void mU(object sender, ItemCheckEventArgs e)
@@ -911,12 +842,20 @@ public partial class settings : Form
 			case t.VerboseLog:
 			case t.PreserveLog:
 			case t.NoStartupMsg:
+				TI(Program.l, tStr(e.Index), e.NewValue == CheckState.Checked);
+				break;
 			case t.Windowed:
 			case t.Borderless:
-				TI(m, tStr(e.Index), e.NewValue == CheckState.Checked);
+			case t.BkgdVideo: // enable_video
+			case t.NoHUD: // hudless
+			case t.KillHitGems: // kill_gems_on_hit
+			case t.NoStreakDisp: // disable_notestreak_notif
+			case t.NoShake: // disable_shake
+			case t.Performance: // Cheat_PerformanceMode
+				TI("GFX", tStr(e.Index), e.NewValue == CheckState.Checked);
 				break;
 			case t.DisableVsync: // im stupid
-				TI(m, "VSync", e.NewValue == CheckState.Unchecked);
+				TI("GFX", "VSync", e.NewValue == CheckState.Unchecked);
 				break;
 			// try replacing these with like changeConfig(index)
 			// and a string/key array accessed with index
@@ -926,25 +865,21 @@ public partial class settings : Form
 				RTlbl.Enabled = e.NewValue == CheckState.Checked;
 				RTms.Enabled = e.NewValue == CheckState.Checked;
 				// "control cannot fall into another case" WHY
-				sQC(tK[(int)t.NoIntro], // disable_intro
-							(e.NewValue == CheckState.Checked) ? 1 : 0);
+				TI("GFX", tStr(e.Index), e.NewValue == CheckState.Checked);
+				break;
+			case t.DebugMenu: // enable_button_cheats
+				TI("Misc", tStr(e.Index), e.NewValue == CheckState.Checked);
 				break;
 			case t.ExitOnSongEnd: // exit_on_song_end
-			case t.DebugMenu: // enable_button_cheats
-			case t.NoHUD: // hudless
-			case t.FCmode: // FC_MODE
+			case t.FCMode: // FC_MODE
 			case t.EasyExpert: // Cheat_EasyExpert
 			case t.Precision: // Cheat_PrecisionMode
-			case t.BkgdVideo: // enable_video
-			case t.KillHitGems: // kill_gems_on_hit
 			case t.EarlySustains: // anytime_sustain_activation
-			case t.NoStreakDisp: // disable_notestreak_notif
-				sQC(tK[e.Index],
-							(e.NewValue == CheckState.Checked) ? 1 : 0);
+			case t.NoFail: // Cheat_NoFail
+				TI("Player", tStr(e.Index), e.NewValue == CheckState.Checked);
 				break;
 			case t.KeyboardMode:
-				sQC(tK[(int)t.KeyboardMode], // autolaunch_startnow
-							(e.NewValue == CheckState.Checked ? 0 : 1));
+				TI("Player", "Autostart", e.NewValue == CheckState.Unchecked); // autolaunch_startnow
 				break;
 			case t.NoParticles:
 				int disable_particles = 0;
@@ -970,33 +905,11 @@ public partial class settings : Form
 						break;
 						// HEY LOOK IT'S MINECRAFT!!11!!!1!
 				}
-				sQC(tK[(int)t.NoParticles], disable_particles);
+				Program.cfgW("GFX", "NoParticles", disable_particles);
 				break;
-			case t.NoFail: // Cheat_NoFail
-				sQC(tK[(int)t.NoFail], e.NewValue == CheckState.Checked ? 1 : 0);
-				//int[] zoffs = { 20, 21 };
-				//int _invert = (e.NewValue == CheckState.Checked ? 1 : -1);
-				/*QbItemInteger thiscodesucks =
-				(QbItemInteger)
-					(userqb.FindItem(QbKey.Create(0x67CF1F5D), false));
-				QbItemInteger thiscodesucks2 =
-				(QbItemInteger)
-					(userqb.FindItem(QbKey.Create(0xDD6AB3D6), false));*/
-				//sQC(QbKey.Create(0x67CF1F5D), zoffs[0] * _invert);
-				//sQC(QbKey.Create(0xDD6AB3D6), zoffs[1] * _invert);
-				//thiscodesucks.Values[0] = zoffs[0] * _invert;
-				//thiscodesucks2.Values[0] = zoffs[1] * _invert;
-				//svQB();
-				break;
-			case t.Performance:
-				sQC(QbKey.Create(0x392E3940), e.NewValue == CheckState.Checked ? 1 : 0); // Cheat_PerformanceMode
-				break;
-			//case Tweaks.Lefty:
+			//case t.Lefty:
 				//setQBConfig(QbKey.Create(0xBBABFA47), e.NewValue == CheckState.Checked ? 1 : 0); // p1_lefty
 				//break;
-			/*case Tweaks.NoShake:
-				setQBConfig(QbKey.Create("disable_shake"), e.NewValue == CheckState.Checked ? 0 : 1);
-				break;*/
 		}
 	}
 
@@ -1118,7 +1031,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		sQC(QbKey.Create(0xD8F8D2DE), Convert.ToInt32(dCtrl.Value));
+		Program.cfgW("Player1", "Device", (int)dCtrl.Value);
 	}
 
 	private void showmods(object sender, EventArgs e)
@@ -1128,7 +1041,7 @@ public partial class settings : Form
 
 	private void spVC(object sender, EventArgs e)
 	{
-		sQC(QbKey.Create(0x16D91BC1), float.Parse((speed.Value / 100).ToString()));
+		Program.cfgW("Player", "Speed", speed.Value / 100);
 	}
 
 	private void rGc(object sender, EventArgs e)

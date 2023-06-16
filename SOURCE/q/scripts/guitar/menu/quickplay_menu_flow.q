@@ -489,42 +489,6 @@ quickplay_autosave_fs = {
 	]
 }
 
-script get_total_num_venues
-	printf \{"get_total_num_venues"}
-	array_entry = 0
-	begin
-		if NOT get_valid_venue_index venue_index = <array_entry>
-			break
-		endif
-		get_LevelZoneArray_checksum index = <index>
-		printf ($LevelZones.<level_checksum>.name)
-		<array_entry> = (<array_entry> + 1)
-	repeat
-	return num_venues = <array_entry>
-endscript
-
-script get_valid_venue_index
-	get_LevelZoneArray_size
-	index = 0
-	begin
-		get_LevelZoneArray_checksum index = <index>
-		valid = 1
-		FormatText checksumName = venue_checksum 'venue_%s' s = ($LevelZones.<level_checksum>.name)
-		GetGlobalTags <venue_checksum>
-		if NOT (<unlocked> = 1)
-			valid = 0
-		endif
-		if (<valid> = 1)
-			if (<venue_index> = 0)
-				return index = <index> true
-			endif
-			venue_index = (<venue_index> - 1)
-		endif
-		index = (<index> + 1)
-	repeat <array_Size>
-	return \{FALSE}
-endscript
-
 script quickplay_start_song\{device_num = 0}
 	start_song device_num = <device_num>
 endscript

@@ -342,11 +342,10 @@ script create_newspaper_menu\{for_practice = 0}
 			if (<final_blow_powerup> > -1)
 				CreateScreenElement \{Type = TextBlockElement parent = newspaper_container just = [left top] Pos = (320.0, 415.0) rot_angle = -7.5 Scale = 0.45 text = "FINAL BLOW:" font = fontgrid_title_gh3 rgba = [223 223 223 255] dims = (300.0, 300.0)}
 				select = <final_blow_powerup>
-				GetGlobalTags \{user_options}
 				if (<winner> = "1")
-					is_lefty_flip = <lefty_flip_p2>
+					is_lefty_flip = $p2_lefty
 				else
-					is_lefty_flip = <lefty_flip_p1>
+					is_lefty_flip = $p1_lefty
 				endif
 				if (<select> = 4 & <is_lefty_flip> = 1)
 					GetUpperCaseString ($battlemode_powerups [<select>].alt_name_text)
@@ -1306,9 +1305,9 @@ script create_newspaper_menu\{for_practice = 0}
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
 	if ($is_network_game = 1)
-		add_user_control_helper \{text = "EXIT	  " button = green z = 100}
+		add_user_control_helper \{text = 'EXIT' button = green z = 100}
 	else
-		add_user_control_helper \{text = "SELECT" button = green z = 100}
+		common_control_helpers \{select}
 	endif
 	if ($is_network_game = 1)
 		get_number_of_songs
@@ -1317,7 +1316,7 @@ script create_newspaper_menu\{for_practice = 0}
 		endif
 	endif
 	if NOT ($is_network_game)
-		add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+		common_control_helpers \{nav}
 	endif
 endscript
 

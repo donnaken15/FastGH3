@@ -92,8 +92,8 @@ script create_net_detailed_stats_menu
 	rot_vals = [-3 , 3]
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
-	add_user_control_helper \{text = "CONTINUE" button = green z = 100}
+	add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100}
+	add_user_control_helper \{text = "Continue" button = green z = 100}
 endscript
 
 script net_add_basic_stats

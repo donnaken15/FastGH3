@@ -52,12 +52,7 @@ button_up_models = {
 }
 
 script setup_highway\{Player = 1}
-	if ($Cheat_PerformanceMode = 1)
-		disable_bg_viewport
-	else
-		enable_bg_viewport
-		generate_pos_table
-	endif
+	generate_pos_table
 	SetScreenElementLock \{id = root_window OFF}
 	if ($current_num_players = 1)
 		<Pos> = (0.0, 0.0)
@@ -87,6 +82,11 @@ script setup_highway\{Player = 1}
 		Scale = <Scale>
 		z_priority = 0
 	}
+	if ($Cheat_PerformanceMode = 1)
+		disable_bg_viewport
+	else
+		enable_bg_viewport
+	endif
 	hpos = ((640.0 - ($highway_top_width / 2.0))* (1.0, 0.0))
 	hDims = ($highway_top_width * (1.0, 0.0))
 	<highway_material> = ($<player_status>.highway_material)
@@ -459,7 +459,7 @@ script enable_highway_prepass
 endscript
 start_2d_move = 0
 
-//PC_HIGHWAY_ANIM = 0
+PC_HIGHWAY_ANIM = 0
 script move_highway_2d
 	Change \{start_2d_move = 0}
 	begin
@@ -468,7 +468,7 @@ script move_highway_2d
 		endif
 		wait \{1 gameframe}
 	repeat
-	//if ($PC_HIGHWAY_ANIM = 0)
+	if ($PC_HIGHWAY_ANIM = 0)
 		// a bit slow
 		GetDeltaTime \{ignore_slomo}
 		interval = (1.0/<delta_time>/$current_speedfactor)
@@ -522,7 +522,7 @@ script move_highway_2d
 			endif
 			wait \{1 gameframe}
 		repeat
-	/*else
+	/**/else
 		highway_start_y = 720
 		pos_start_orig = 0
 		pos_add = -720
@@ -549,7 +549,7 @@ script move_highway_2d
 			endif
 			wait \{1 gameframe}
 		repeat
-	endif*///
+	endif/**//
 endscript
 
 script move_highway_camera_to_default\{Player = 1}
@@ -733,8 +733,9 @@ endscript
 highway_pulse_p1 = 0
 highway_pulse_p2 = 0
 
+disable_shake = 0
 script highway_pulse_multiplier_loss\{player_text = 'p1' multiplier = 1}
-	if ($Cheat_PerformanceMode = 1)
+	if ($Cheat_PerformanceMode = 1 || $disable_shake = 1)
 		return
 	endif
 	if ($game_mode = p2_battle || $boss_battle = 1)

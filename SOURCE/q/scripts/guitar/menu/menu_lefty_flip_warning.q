@@ -33,19 +33,17 @@ endscript
 script menu_lefty_flip_warning_select_yes
 	GetGlobalTags \{user_options}
 	if (<Player> = 1)
-		if (<lefty_flip_p1> = 0)
-			<lefty_flip_p1> = 1
+		if ($p1_lefty = 0)
+			change \{p1_lefty = 1}
 		else
-			<lefty_flip_p1> = 0
+			change \{p1_lefty = 0}
 		endif
-		SetGlobalTags user_options params = {lefty_flip_p1 = <lefty_flip_p1>}
 	else
-		if (<lefty_flip_p2> = 0)
-			<lefty_flip_p2> = 1
+		if ($p2_lefty = 0)
+			change \{p2_lefty = 1}
 		else
-			<lefty_flip_p2> = 0
+			change \{p2_lefty = 0}
 		endif
-		SetGlobalTags user_options params = {lefty_flip_p2 = <lefty_flip_p2>}
 	endif
 	GH3_SFX_fail_song_stop_sounds
 	ui_flow_manager_respond_to_action \{action = continue}

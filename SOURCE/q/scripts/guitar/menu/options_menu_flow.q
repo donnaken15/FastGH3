@@ -546,7 +546,7 @@ endscript
 
 script set_store_came_from_options
 	Change \{game_mode = p1_career}
-	progression_pop_current
+	//progression_pop_current
 	Change \{store_came_from = options}
 endscript
 store_autosave_required = 0

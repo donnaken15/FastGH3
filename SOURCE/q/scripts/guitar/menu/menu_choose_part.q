@@ -75,9 +75,7 @@ script create_choose_part_menu
 	displaySprite \{parent = select_intsrument_container tex = #"0xe78837f3" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 	if (($is_network_game = 1)& ($net_can_send_approval = 1))
 		create_ready_icons \{pos1 = (890.0, 130.0) pos2 = (250.0, 540.0)}
 		net_lobby_state_message \{current_state = instrument action = approval}

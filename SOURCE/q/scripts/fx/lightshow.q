@@ -7,30 +7,12 @@ lightshow_defaultblendtime = 0.15
 lightshow_coloroverrideblend = 0.4
 lightshow_offset_ms = 100
 
-script LightShow_CreatePermModels
-endscript
-
 script LS_AllOff
 	killspawnedscript \{id = LightShow}
 endscript
 
-script LS_SetupVenueLights
-endscript
-
-script LS_ResetVenueLights
-	LS_AllOff
-	LS_KillFX
-	GetPakManCurrent \{map = zones}
-endscript
-
-script LS_KillFX
-endscript
-LightShow_ColorOverrideExcludeLights = [
-	#"0x00000000"
-]
-LightShow_StateNodeFlags = [
-	#"0x00000000"
-]
+LightShow_ColorOverrideExcludeLights = []
+LightShow_StateNodeFlags = []
 LightShow_StateNodeFlagMapping = {
 	performance = {
 		poor = [
@@ -45,26 +27,7 @@ LightShow_StateNodeFlagMapping = {
 		]
 	}
 }
-LightShow_NoteMapping = [
-	{
-		MidiNote = 39
-		Scr = EmptyScript
-		params = {
-			Default
-		}
-	}
-]
-LightShow_SharedProcessors = [
-]
+LightShow_NoteMapping = []
+LightShow_SharedProcessors = []
 
-script lightshow_iterator
-endscript
-
-script LightShow_Shutdown
-endscript
-
-script Kill_LightShow_FX
-endscript
-
-script LightShow_WaitAndEnableSpotlights
-endscript
+lightshow_iterator = $WhyAmIBeingCalled

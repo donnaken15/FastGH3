@@ -38,9 +38,9 @@ Transition_Types = {
 		textnl = 'songlost'
 	}
 }
-#"0x5fb765a2" = 400
+nointro_ready_time = 400
 Default_Immediate_Transition = {
-	time = $#"0x5fb765a2"
+	time = $nointro_ready_time
 	ScriptTable = [
 	]
 }

@@ -12,9 +12,7 @@ script create_video_settings_menu\{popup = 0}
 		displaySprite \{parent = vom_container tex = options_video_poster Pos = (640.0, 360.0) dims = (1024.0, 512.0) just = [center center] z = 1 font = $video_settings_menu_font}
 		GetGlobalTags \{user_options}
 		displaySprite \{parent = vom_container id = vom_hilite tex = white Pos = (285.0, 415.0) rgba = [40 60 110 255] dims = (275.0, 35.0) z = 2}
-		add_user_control_helper \{text = "SELECT" button = green z = 100}
-		add_user_control_helper \{text = "BACK" button = red z = 100}
-		add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+		common_control_helpers \{select back nav}
 		text_params = {
 			parent = vs_vmenu
 			Type = TextElement

@@ -177,9 +177,9 @@
 	if (($ui_flow_manager_state [0])= online_pause_fs)
 		Change \{user_control_pill_text_color = [0 0 0 255]}
 		Change \{user_control_pill_color = [180 180 180 255]}
-		add_user_control_helper text = "SELECT" button = green z = (<z> - 10)
-		add_user_control_helper text = "BACK" button = red z = (<z> - 10)
-		add_user_control_helper text = "UP/DOWN" button = strumbar z = (<z> - 10)
+		add_user_control_helper text = $menu_text_sel button = green z = (<z> - 10)
+		add_user_control_helper text = $menu_text_back button = red z = (<z> - 10)
+		add_user_control_helper text = $menu_text_nav button = strumbar z = (<z> - 10)
 	endif
 	leaving_lobby_dialog_focus
 endscript

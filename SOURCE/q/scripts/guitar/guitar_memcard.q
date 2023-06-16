@@ -301,12 +301,12 @@ script memcard_pre_save_progress
 	elseif ($game_mode = p2_career)
 		<do_update> = 1
 	endif
-	if (<do_update> = 1)
-		if ($progression_pop_count = 1)
-			progression_push_current
-			progression_pop_current
-		endif
-	endif
+	//if (<do_update> = 1)
+		//if ($progression_pop_count = 1)
+			//progression_push_current
+			//progression_pop_current
+		//endif
+	//endif
 endscript
 
 script memcard_post_load_progress

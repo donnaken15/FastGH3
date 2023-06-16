@@ -627,14 +627,13 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		FormatText textname = player_text 'p%i' i = <Player> AddToStringLookup
 		Change StructureName = <player_status> guitar_volume = 0
 		UpdateGuitarVolume
-		GetGlobalTags \{user_options}
 		if (<Player> = 1)
-			Change StructureName = <player_status> lefthanded_gems = (<lefty_flip_p1>)
-			Change StructureName = <player_status> lefthanded_button_ups = (<lefty_flip_p1>)
+			Change StructureName = <player_status> lefthanded_gems = ($p1_lefty)
+			Change StructureName = <player_status> lefthanded_button_ups = ($p1_lefty)
 		else
 			if ($is_network_game = 0)
-				Change StructureName = <player_status> lefthanded_gems = (<lefty_flip_p2>)
-				Change StructureName = <player_status> lefthanded_button_ups = (<lefty_flip_p2>)
+				Change StructureName = <player_status> lefthanded_gems = ($p2_lefty)
+				Change StructureName = <player_status> lefthanded_button_ups = ($p2_lefty)
 			endif
 		endif
 		get_resting_whammy_position controller = ($<player_status>.controller)
@@ -900,8 +899,6 @@ script kill_gem_scroller\{no_render = 0}
 	new_net_logic_deinit
 	destroy_net_popup
 	destroy_gamertags
-	//LightShow_Shutdown
-	//Kill_LightShow_FX
 	DestroyParticlesByGroupID \{groupID = zoneparticles}
 	Transition_KillAll
 	killspawnedscript \{name = GuitarEvent_SongFailed_Spawned}
@@ -919,7 +916,6 @@ script kill_gem_scroller\{no_render = 0}
 		<zone_killsong>
 	endif
 	Destroy_AllWhammyFX
-	//LS_ResetVenueLights
 	destroy_movie_viewport
 	destroy_crowd_models
 	destroy_bg_viewport

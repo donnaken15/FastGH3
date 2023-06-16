@@ -278,16 +278,15 @@ career_lefty_flip_warning = {
 }
 
 script lefty_flip_func
-	GetGlobalTags \{user_options}
-	Change StructureName = player1_status lefthanded_gems = <lefty_flip_p1>
-	Change StructureName = player1_status lefthanded_button_ups = <lefty_flip_p1>
-	if (<lefty_flip_p1>)
+	Change StructureName = player1_status lefthanded_gems = $p1_lefty
+	Change StructureName = player1_status lefthanded_button_ups = $p1_lefty
+	if ($p1_lefty)
 		Change \{pad_event_up_inversion = true}
 	else
 		Change \{pad_event_up_inversion = FALSE}
 	endif
-	Change StructureName = player2_status lefthanded_gems = <lefty_flip_p2>
-	Change StructureName = player2_status lefthanded_button_ups = <lefty_flip_p2>
+	Change StructureName = player2_status lefthanded_gems = $p2_lefty
+	Change StructureName = player2_status lefthanded_button_ups = $p2_lefty
 	//career_restart_song
 endscript
 

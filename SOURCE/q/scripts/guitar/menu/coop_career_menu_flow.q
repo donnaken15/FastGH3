@@ -140,7 +140,7 @@ coop_career_select_difficulty_fs = {
 }
 
 script coop_career_select_difficulty_flow_state_func
-	progression_pop_current
+	//progression_pop_current
 	if ($game_mode = p2_career)
 		index = ($difficulty_list_props.($current_difficulty).index)
 		SetProgressionDifficulty difficulty = <index>
@@ -431,11 +431,10 @@ coop_career_controller_settings_lefty_flip_warning = {
 }
 
 script coop_career_lefty_flip_func
-	GetGlobalTags \{user_options}
-	Change StructureName = player1_status lefthanded_gems = <lefty_flip_p1>
-	Change StructureName = player1_status lefthanded_button_ups = <lefty_flip_p1>
-	Change StructureName = player2_status lefthanded_gems = <lefty_flip_p2>
-	Change StructureName = player2_status lefthanded_button_ups = <lefty_flip_p2>
+	Change StructureName = player1_status lefthanded_gems = $p1_lefty
+	Change StructureName = player1_status lefthanded_button_ups = $p1_lefty
+	Change StructureName = player2_status lefthanded_gems = $p2_lefty
+	Change StructureName = player2_status lefthanded_button_ups = $p2_lefty
 	career_restart_song
 endscript
 coop_career_calibrate_lag_warning = {

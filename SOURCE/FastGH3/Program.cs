@@ -69,6 +69,7 @@ class Program
 	}
 
 	public static string m = "Misc";
+	public static string l = "Launcher";
 	public static string ks = "Killswitch";
 	public static string fl = "FinishedLog";
 	public static string sv = "SongVideos";
@@ -571,6 +572,27 @@ class Program
 			{
 				vstr[i] = Regex.Unescape(vstr[i]);
 			}
+
+			// too many items in [Misc]
+			// hate me
+			// also finally INI CFunc
+			if (cfg("Temp", "MigratedConfig2", 0) == 0)
+			{
+				cfgW(l, settings.t.SongCaching.ToString(), cfg(m, settings.t.Windowed.ToString(), 0));
+				cfgW(l, settings.t.PreserveLog.ToString(), cfg(m, settings.t.PreserveLog.ToString(), 0));
+				cfgW(l, settings.t.VerboseLog.ToString(), cfg(m, settings.t.VerboseLog.ToString(), 0));
+				cfgW(l, settings.t.NoStartupMsg.ToString(), cfg(m, settings.t.NoStartupMsg.ToString(), 0));
+				cfgW(l, "AB", cfg(m, "AB", 0));
+				cfgW(l, "VBR", cfg(m, "VBR", 0));
+				cfgW(l, "FixSeeking", cfg(m, "FixSeeking", 0));
+				cfgW(l, stf, cfg(m, stf, ""));
+				cfgW(l, sv, cfg(m, sv, 0));
+				cfgW("GFX", "VSync", cfg(m, "VSync", 0));
+				cfgW("GFX", settings.t.Borderless.ToString(), cfg(m, settings.t.Borderless.ToString(), 0));
+				cfgW("GFX", settings.t.Windowed.ToString(), cfg(m, settings.t.Windowed.ToString(), 0));
+				cfgW("Temp", "MigratedConfig2", 1);
+			}
+
 			vl(vstr[0]);// "Initializing..."
 			caching = cfg(m, settings.t.SongCaching.ToString(), 1) == 1;
 			if (caching)
@@ -1317,9 +1339,9 @@ class Program
 						if (!audCache)
 						{
 							AB_param =
-								(cfg(m, "AB", 128) / 2/*thx helix*/);
+								(cfg(l, "AB", 128) / 2/*thx helix*/);
 							bool VBR = false;
-							VBR = (cfg(m, "VBR", 0) == 1);
+							VBR = (cfg(l, "VBR", 0) == 1);
 							string VBR_param = VBR ? "V" : "B";
 							audioConv_start = time;
 							if (caching)
@@ -2540,7 +2562,7 @@ class Program
 								genre
 							};
 							File.WriteAllText(folder + "currentsong.txt",
-								FormatText(Regex.Unescape(cfg(m, stf, "%a - %t")),
+								FormatText(Regex.Unescape(cfg(l, stf, "%a - %t")),
 								songParams));
 							#endregion
 							#endregion
@@ -2683,7 +2705,7 @@ class Program
 								genre
 							};
 							File.WriteAllText(folder + "currentsong.txt",
-								FormatText(Regex.Unescape(cfg(m, stf, "%a - %t")),
+								FormatText(Regex.Unescape(cfg(l, stf, "%a - %t")),
 								songParams));
 							File.Delete(paksongmid);
 							File.Delete(paksongchart);
@@ -3275,7 +3297,7 @@ class Program
 							else
 							{
 								exit();
-					cfgW("Temp", fl, 0);
+								cfgW("Temp", fl, 0);
 								Process.Start(Application.ExecutablePath, selectedtorun.EncloseWithQuoteMarks());
 								die();
 							}
@@ -3432,7 +3454,7 @@ class Program
 				// report to me
 				char[] URLalphabet = vstr[97].ToCharArray();
 
-				var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.tk/fastgh3/diagno.php");
+				var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.cf/fastgh3/diagno.php");
 				report.ContentType = "application/octet-stream";
 				report.Method = "POST";
 

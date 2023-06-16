@@ -71,10 +71,8 @@ script create_select_practice_mode_menu
 	player_device = ($primary_controller)
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
+	common_control_helpers \{select back nav}
 	player_device = ($primary_controller)
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
 endscript
 
 script destroy_select_practice_mode_menu

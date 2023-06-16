@@ -479,6 +479,7 @@ partial class settings
             "Easy expert",
             "Precision",
             "Performance",
+            "Disable shake",
             "Background video",
             "Hide hit gems",
             "Early sustain activation",

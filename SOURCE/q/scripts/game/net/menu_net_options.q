@@ -103,9 +103,9 @@ save_changes_message = "You are about to exit the Player Options. Any changes ma
 	set_unfocus_color rgba = ($online_light_blue)
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	add_user_control_helper \{text = $menu_text_sel button = green z = 100}
+	add_user_control_helper \{text = $menu_text_back button = red z = 100}
+	add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100}
 	LaunchEvent Type = focus target = <vmenu_id>
 endscript
 
@@ -341,9 +341,9 @@ script create_online_quickmatch_prefs\{menu_id = quickmatch_options_menu vmenu_i
 	set_unfocus_color rgba = ($online_light_blue)
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	add_user_control_helper \{text = $menu_text_sel button = green z = 100}
+	add_user_control_helper \{text = $menu_text_back button = red z = 100}
+	add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100}
 	LaunchEvent Type = focus target = <vmenu_id>
 endscript
 
@@ -469,9 +469,9 @@ script create_online_player_prefs\{menu_id = game_options_menu vmenu_id = game_o
 	set_unfocus_color rgba = ($online_light_blue)
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	add_user_control_helper \{text = $menu_text_sel button = green z = 100}
+	add_user_control_helper \{text = $menu_text_back button = red z = 100}
+	add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100}
 	LaunchEvent Type = focus target = <vmenu_id>
 endscript
 

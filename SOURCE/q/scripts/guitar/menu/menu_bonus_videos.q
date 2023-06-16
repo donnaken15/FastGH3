@@ -128,9 +128,7 @@ script create_bonus_videos_menu\{came_from_movie = 0}
 			<i> = (<i> + 1)
 		repeat <scroll_count>
 	endif
-	add_user_control_helper \{text = "SELECT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
-	add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+	common_control_helpers \{select back nav}
 endscript
 
 script destroy_bonus_videos_menu

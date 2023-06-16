@@ -505,57 +505,9 @@ endscript
 progression_pop_count = 0
 
 script progression_push_current\{Force = 0}
-	printscriptinfo \{"progression_push_current_callstack"}
-	if NOT ($progression_pop_count = 1)
-		if (<Force> = 0)
-			ScriptAssert \{"progression_push_current with nothing popped"}
-		endif
-		return
-	endif
-	GetGlobalTags \{Progression params = current_band}
-	GetGlobalTags \{Progression params = current_difficulty}
-	GetGlobalTags \{Progression params = current_gamemode}
-	get_difficulty_text_nl difficulty = (<current_difficulty>)
-	if GotParam \{force_gamemode}
-		<current_gamemode> = <force_gamemode>
-	endif
-	if (<current_gamemode> = p1_career)
-		bandname_part1 = 'p1_career'
-	elseif (<current_gamemode> = p2_career)
-		bandname_part1 = 'p2_career'
-	endif
-	FormatText checksumName = bandname '%s_band%i_%d' s = <bandname_part1> i = <current_band> d = <difficulty_text_nl>
-	push_bandtags bandname = <bandname> mode = <current_gamemode>
-	Change progression_pop_count = ($progression_pop_count - 1)
 endscript
 
 script progression_pop_current\{Force = 0 updateatoms = 1}
-	printscriptinfo \{"progression_pop_current_callstack"}
-	if NOT ($progression_pop_count = 0)
-		if (<Force> = 0)
-			ScriptAssert \{"progression_pop_current with something already popped"}
-		endif
-		return
-	endif
-	current_gamemode = ($game_mode)
-	if GotParam \{force_gamemode}
-		<current_gamemode> = <force_gamemode>
-	endif
-	if (<current_gamemode> = p1_career)
-		bandname_part1 = 'p1_career'
-	elseif (<current_gamemode> = p2_career)
-		bandname_part1 = 'p2_career'
-	else
-		ScriptAssert \{"progression_pop_current not in career mode"}
-	endif
-	progression_getdifficulty
-	get_difficulty_text_nl difficulty = <difficulty>
-	FormatText checksumName = bandname '%s_band%i_%d' s = <bandname_part1> i = ($current_band)d = <difficulty_text_nl>
-	pop_bandtags bandname = <bandname>
-	SetGlobalTags Progression params = {current_band = ($current_band)
-		current_difficulty = <difficulty>
-		current_gamemode = <current_gamemode>}
-	Change progression_pop_count = ($progression_pop_count + 1)
 endscript
 
 script get_minimum_difficulty\{difficulty1 = easy difficulty2 = easy}

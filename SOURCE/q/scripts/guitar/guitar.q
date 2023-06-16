@@ -13,7 +13,7 @@ player1_status = {
 	bot_strum = 0
 	bot_star_power = 0
 	text = 'p1'
-	part = $p1_part
+	part = guitar
 	lefthanded_gems = 0
 	lefthanded_button_ups = 0
 	lefthanded_gems_flip_save = 0
@@ -116,7 +116,7 @@ player2_status = {
 	bot_strum = 0
 	bot_star_power = 0
 	text = 'p2'
-	part = $p2_part
+	part = rhythm
 	lefthanded_gems = 0
 	lefthanded_button_ups = 0
 	lefthanded_gems_flip_save = 0
@@ -203,12 +203,8 @@ player2_status = {
 	last_playline_song_beat_time = 1.0
 	last_playline_song_beat_change_time = 1.0
 }
-p1_part = guitar
-p2_part = rhythm
-p1_diff = expert
-p2_diff = expert
-p1_ctrl = 0
-p2_ctrl = 1
+p1_lefty = 0
+p2_lefty = 0
 show_gpu_time = 1
 output_gpu_log = 0
 show_cpu_time = 1
@@ -221,8 +217,8 @@ show_sensor_debug = 0
 player1_device = 0
 player2_device = 1
 current_song = fastgh3
-current_difficulty = $p1_diff
-current_difficulty2 = $p2_diff
+current_difficulty = expert
+current_difficulty2 = expert
 current_level = load_z_viewer
 current_highway = highway
 current_time = 0.0
@@ -291,9 +287,9 @@ output_log_file = 0
 practice_start_time = 0
 practice_end_time = 0
 startup_song = fastgh3
-startup_difficulty = $p1_diff
-startup_controller = $p1_ctrl
-startup_controller2 = $p2_ctrl
+startup_difficulty = expert
+startup_controller = 0
+startup_controller2 = 1
 time_gem_offset = 0.0
 time_input_offset = 0.0
 p1_ready = 0
@@ -338,7 +334,7 @@ save_current_powerups_p2 = [
 battle_sudden_death = 0
 Cheat_AirGuitar = -1
 Cheat_PerformanceMode = -1
-Cheat_Hyperspeed = 4
+Cheat_Hyperspeed = 3
 Cheat_NoFail = 0
 Cheat_EasyExpert = 0
 Cheat_PrecisionMode = 0
@@ -362,7 +358,14 @@ num_career_bands = 5
 streamall_fsb_index = -1
 enable_button_cheats = 1
 whammy_mania_achievement_invalidated = 0
-fps_max = 0
+fps_max = 1000
+
+// hate me
+part_index = { guitar = 0 rhythm = 1 }
+parts = [guitar rhythm]
+part_names = {
+	guitar = 'Guitar' rhythm = 'Rhythm'
+}
 
 script FileExists \{#"0x00000000" = ''}
 	StartWildcardSearch wildcard = <#"0x00000000">
@@ -393,8 +396,7 @@ script AllocArray \{set = 0 size = 10}
 	change globalname = <#"0x00000000"> newvalue = <array>
 endscript
 script FSZ \{1024}
-	units = [' ' 'K' 'M' 'G']
-	u = 0
+	AddParams \{units = [' ' 'K' 'M' 'G'] u = 0}
 	begin
 		if (<#"0x00000000"> >= 1024)
 			<#"0x00000000"> = (<#"0x00000000"> / 1024.0)
@@ -405,6 +407,15 @@ script FSZ \{1024}
 		endif
 	repeat
 	return textsize = <text>
+endscript
+script SetValueFromConfig
+	/*if NOT StructureContains structure=<...> #"0x1ca1ff20"
+		#"0x1ca1ff20" = ($<out>)
+		printstruct <...>
+		// not working :(
+	endif*//
+	FGH3Config sect=<sect> <#"0x00000000"> #"0x1ca1ff20"=<#"0x1ca1ff20">
+	change globalname=<out> newvalue=<value>
 endscript
 // @script | guitar_startup | Initialization script
 script guitar_startup
@@ -424,6 +435,113 @@ script guitar_startup
 	if FileExists \{'config.qb.xen'}
 		LoadQB \{'config.qb'}
 	endif
+	// move old (common) config values over from QB since this will be used less now
+	ProfilingStart
+	FGH3Config sect='Temp' 'MigratedConfig' #"0x1ca1ff20"=0
+	ProfilingEnd <...> 'INI read x1'
+	if (<value> = 0)
+		ProfilingStart
+		FGH3Config sect='Player' 'Hyperspeed' set=($Cheat_Hyperspeed)
+		FGH3Config sect='Player' 'Autostart' set=($autolaunch_startnow)
+		FGH3Config sect='Player1' 'Part' set=($part_index.$p1_part)
+		FGH3Config sect='Player2' 'Part' set=($part_index.$p2_part)
+		FGH3Config sect='Player1' 'Device' set=($p1_ctrl)
+		FGH3Config sect='Player2' 'Device' set=($p2_ctrl)
+		FGH3Config sect='Player1' 'Diff' set=($difficulty_list_props.$current_difficulty.index)
+		FGH3Config sect='Player2' 'Diff' set=($difficulty_list_props.$current_difficulty2.index)
+		FGH3Config sect='GFX' 'MaxFPS' set=($fps_max)
+		FGH3Config sect='GFX' 'NoIntro' set=($disable_intro)
+		FGH3Config sect='Player' 'ExitOnSongEnd' set=($exit_on_song_end)
+		FGH3Config sect='Player' 'FCMode' set=($FC_MODE)
+		FGH3Config sect='Player' 'EasyExpert' set=($Cheat_EasyExpert)
+		FGH3Config sect='Player' 'Precision' set=($Cheat_PrecisionMode)
+		FGH3Config sect='Player' 'EarlySustains' set=($anytime_sustain_activation)
+		FGH3Config sect='Player' 'NoFail' set=($Cheat_NoFail)
+		FGH3Config sect='GFX' 'NoIntroReadyTime' set=($nointro_ready_time)
+		FGH3Config sect='GFX' 'BGVideo' set=($enable_video)
+		FGH3Config sect='GFX' 'NoHUD' set=($hudless)
+		FGH3Config sect='GFX' 'KillGemsHit' set=($kill_gems_on_hit)
+		FGH3Config sect='GFX' 'NoStreakDisp' set=($disable_notestreak_notif)
+		FGH3Config sect='GFX' 'NoParticles' set=($disable_particles)
+		FGH3Config sect='GFX' 'Performance' set=($Cheat_PerformanceMode)
+		FGH3Config sect='Misc' 'Debug' set=($enable_button_cheats)
+		ProfilingEnd <...> 'INI write x24'
+		FGH3Config \{sect='Temp' 'MigratedConfig' set=1}
+	endif
+	
+	printf \{'Reading INI'}
+	ProfilingStart
+	
+	icc = [ // ini_common_config
+		// BLOATED BY 4KB IF GLOBAL
+		// takes 0.038ms |:|
+		// 0 = default if not specified
+		{ sect='Player' [
+			{'Hyperspeed' #"0x1ca1ff20"=3 out=Cheat_Hyperspeed}
+			{'Autostart' #"0x1ca1ff20"=1 out=autolaunch_startnow}
+			{'ExitOnSongEnd' out=exit_on_song_end}
+			{'FCMode' out=FC_MODE}
+			{'EasyExpert' out=Cheat_EasyExpert}
+			{'Precision' out=Cheat_PrecisionMode}
+			{'EarlySustains' out=anytime_sustain_activation}
+			{'NoFail' out=Cheat_NoFail}
+		] }
+		{ sect='GFX' [
+			{'MaxFPS' #"0x1ca1ff20"=1000 out=fps_max}
+			{'NoIntro' out=disable_intro}
+			{'NoIntroReadyTime' #"0x1ca1ff20"=400 out=nointro_ready_time}
+			{'BGVideo' out=enable_video}
+			{'NoHUD' out=hudless}
+			{'KillGemsHit' out=kill_gems_on_hit}
+			{'NoStreakDisp' out=disable_notestreak_notif}
+			{'NoParticles' out=disable_particles}
+			{'Performance' out=Cheat_PerformanceMode}
+			{'NoShake' out=disable_shake}
+		] }
+		{ sect='Misc' [
+			{'Debug' out=enable_button_cheats}
+		] }
+		{ sect='Player1' [
+			{'Device' out=startup_controller}
+			{'Lefty' out=p1_lefty}
+		] }
+		{ sect='Player2' [
+			{'Device' #"0x1ca1ff20"=1 out=startup_controller2}
+			{'Lefty' out=p2_lefty}
+		] }
+	]
+	GetArraySize \{icc}
+	i = 0
+	begin
+		ii = (<icc>[<i>].#"0x00000000")
+		sect = (<icc>[<i>].sect)
+		j = 0
+		GetArraySize \{<ii>}
+		begin
+			jj = (<ii>[<j>])
+			k = 0
+			if StructureContains \{structure=jj #"0x1ca1ff20"}
+				k = (<jj>.#"0x1ca1ff20")
+			endif
+			SetValueFromConfig sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k> out=(<jj>.out)
+			Increment \{j}
+		repeat <array_size>
+		Increment \{i}
+		// 2MS >:(
+	repeat <array_size>
+	
+	// PLAYER 1 CONFIG
+	FGH3Config \{sect='Player1' 'Diff' #"0x1ca1ff20"=3}
+	change current_difficulty=($difficulty_array[<value>])
+	FGH3Config \{sect='Player1' 'Part' #"0x1ca1ff20"=0}
+	change structurename=player1_status part=($parts[<value>])
+	// PLAYER 2 CONFIG
+	FGH3Config \{sect='Player2' 'Diff' #"0x1ca1ff20"=3}
+	change current_difficulty2=($difficulty_array[<value>])
+	FGH3Config \{sect='Player2' 'Part' #"0x1ca1ff20"=1}
+	change structurename=player2_status part=($parts[<value>])
+	ProfilingEnd <...> 'INI read'
+	
 	if FileExists \{'bkgd.pak.xen'}
 		LoadPak \{'bkgd.pak' Heap = heap_global_pak}
 	endif
@@ -479,7 +597,7 @@ script guitar_startup
 	printf \{'Loading Paks'}
 	
 	ProfilingStart
-	LoadPak \{'zones/global/global.pak' Heap = heap_global_pak splitfile}
+	LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile}
 	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
 	// test time to load
 	ProfilingEnd <...> 'LoadPak global.pak'
@@ -500,7 +618,7 @@ script guitar_startup
 	
 	if IsFmodEnabled
 		EnableRemoveSoundEntry \{enable}
-		LoadPak \{'zones/global/global_sfx.pak' Heap = heap_audio}
+		LoadPak \{'zones/global_sfx.pak' Heap = heap_audio}
 	endif
 	CreatePakManMap \{map = zones links = GH3Zones folder = 'zones/' uselinkslots}
 	
@@ -515,19 +633,19 @@ script guitar_startup
 	// sick of seeing a bunch of zeroes :/
 	ProfilingStart
 	// {
-	AllocArray \{p1_last_song_detailed_stats set = 0 size = 97}
-	AllocArray \{p2_last_song_detailed_stats set = 0 size = 97}
-	AllocArray \{p1_last_song_detailed_stats_max set = 0 size = 97}
-	AllocArray \{p2_last_song_detailed_stats_max set = 0 size = 97}
+	AllocArray \{size = 97 p1_last_song_detailed_stats}
+	AllocArray \{size = 97 p2_last_song_detailed_stats}
+	AllocArray \{size = 97 p1_last_song_detailed_stats_max}
+	AllocArray \{size = 97 p2_last_song_detailed_stats_max}
 	AllocArray \{WhammyWibble0 set = 1.0 size = 136}
 	AllocArray \{WhammyWibble1 set = 1.0 size = 136}
 	// } ran for 0.3ms
-	AllocArray \{solo_hit_buffer_p1 set = 0 size = 32}
-	AllocArray \{solo_hit_buffer_p2 set = 0 size = 32}
-	AllocArray \{gem_time_table512 set = 0.0 size = $highway_lines}
-	AllocArray \{rowHeightNormalizedDistance set = 0.0 size = $highway_lines}
-	AllocArray \{rowHeight set = 0.0 size = $highway_lines}
-	AllocArray \{time_accum_table set = 0.0 size = $highway_lines}
+	AllocArray \{size = 32 solo_hit_buffer_p1}
+	AllocArray \{size = 32 solo_hit_buffer_p2}
+	AllocArray \{size = $highway_lines set = 0.0 gem_time_table512}
+	AllocArray \{size = $highway_lines set = 0.0 rowHeightNormalizedDistance}
+	AllocArray \{size = $highway_lines set = 0.0 rowHeight}
+	AllocArray \{size = $highway_lines set = 0.0 time_accum_table}
 	ProfilingEnd <...> 'AllocArray x12'
 	// 5 ms (michael scott gif)
 	
@@ -561,7 +679,7 @@ script guitar_startup
 	if ($max_num_players = 2)
 		create_guitarist \{name = BASSIST}
 		destroy_band_member \{name = BASSIST}
-	endif*/
+	endif*//
 	Change \{tutorial_disable_hud = 0}
 endscript
 // @script | load_highway | load highway pak
@@ -591,93 +709,24 @@ endscript
 kill_dummy_bg_camera = $EmptyScript
 restore_dummy_bg_camera = $EmptyScript
 
-script get_LevelZoneArray_size
-	GetArraySize \{$LevelZoneArray}
-	size = (<array_Size>)
-	if GlobalExists \{name = download_LevelZoneArray Type = array}
-		GetArraySize \{$download_LevelZoneArray}
-		size = (<array_Size> + <size>)
-	endif
-	return array_Size = <size>
-endscript
-
-script get_LevelZoneArray_checksum
-	GetArraySize \{$LevelZoneArray}
-	if (<index> < <array_Size>)
-		return level_checksum = ($LevelZoneArray [<index>])
-	else
-		return level_checksum = ($download_LevelZoneArray [(<index> - <array_Size>)])
-	endif
-endscript
-
-script Is_LevelZone_Downloaded\{level_checksum = load_z_artdeco}
-	if ArrayContains array = ($download_LevelZoneArray)contains = <level_checksum>
-		FormatText textname = FileName '%s.pak' s = (($download_LevelZones.<level_checksum>).name)
-		GetContentFolderIndexFromFile <FileName>
-		if (<device> = content)
-			return \{download = 1 true}
-		else
-			return \{download = 1 FALSE}
-		endif
-	else
-		return \{download = 0 true}
-	endif
-endscript
-nullArray = [
-]
-nullNoteArray = [
-	0
-	0
-	0
-]
+nullArray = []
+nullNoteArray = [0 0 0]
 nullStruct = {}
-download_LevelZoneArray = $nullArray
-download_LevelZones = $nullStruct
-LevelZoneArray = [
-	viewer
-]
-dummy = {
-	zone = z_viewer
-	name = 'z_viewer'
-	title = "viewer"
-}
+dummy = {zone = z_viewer name = 'z_viewer' title = "viewer"}
 LevelZones = {
-	$download_LevelZones
-	viewer = {
-		$dummy
-	}
-	load_z_viewer = {
-		$dummy
-	}
+	viewer = {$dummy}
+	load_z_viewer = {$dummy}
 }
 Terrain_Actions = $nullArray
 Terrain_Types = $nullArray
 
-/*script GetCurrentLevel
-	return \{level = $current_level}
-endscript
-
-script get_level_prefix
-	if StructureContains \{structure = $LevelZones $current_level}
-		return prefix = ($LevelZones.($current_level).name)prefix_crc = ($LevelZones.($current_level).zone)
-	endif
-	printf \{'!!!!!!!!!!!!!!!!!!!!!!!!!!!!'}
-	printf \{'!!!!!!!!!!!!!!!!!!!!!!!!!!!!'}
-	printf \{'!!!Warning! Unknown level!!!'}
-	printf \{'!!!!!!!!!!!!!!!!!!!!!!!!!!!!'}
-	printf \{'!!!!!!!!!!!!!!!!!!!!!!!!!!!!'}
-	return \{prefix = 'z_unknown' prefix_crc = z_unknown}
-endscript*/
-
 script InFrontEnd
 	return \{FALSE}
 endscript
-
 script StartRendering
 	StartRendering_C
 	Change \{pause_no_render = 0}
 endscript
-
 script StopRendering
 	StopRendering_C
 	Change \{pause_no_render = 1}

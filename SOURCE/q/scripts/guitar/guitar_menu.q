@@ -22,12 +22,28 @@ default_event_handlers = [
 		}
 	}
 ]
-menu_text_color = [
-	255
-	255
-	255
-	255
-]
+menu_text_color = [ 255 255 255 255 ]
+menu_text_sel = 'Select'
+menu_text_conf = 'Confirm'
+menu_text_back = 'Back'
+menu_text_nav = 'Up/Down'
+script common_control_helpers
+	if GotParam \{select}
+		add_user_control_helper \{text = $menu_text_sel button = green z = 100}
+	endif
+	if GotParam \{confirm}
+		add_user_control_helper \{text = $menu_text_conf button = green z = 100}
+	endif
+	if GotParam \{continue}
+		add_user_control_helper \{text = 'Continue' button = green z = 100}
+	endif
+	if GotParam \{back}
+		add_user_control_helper \{text = $menu_text_back button = red z = 100}
+	endif
+	if GotParam \{nav}
+		add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100}
+	endif
+endscript
 
 script menu_flow_go_back\{Player = 1 create_params = {}destroy_params = {}}
 	ui_flow_manager_respond_to_action action = go_back Player = <Player> create_params = <create_params> destroy_params = <destroy_params>
@@ -157,7 +173,7 @@ script new_menu\{menu_pos = $menu_pos event_handlers = $default_event_handlers u
 				endif
 			endif
 		repeat ($<tierlist>.num_tiers)
-	endif*/
+	endif*//
 	if (<default_colors>)
 		set_focus_color rgba = ($default_menu_focus_color)
 		set_unfocus_color rgba = ($default_menu_unfocus_color)
@@ -248,7 +264,6 @@ script WinPortCreateLaptopUi
 	}
 	spawnscriptnow \{WinPortUpdateLaptopUi}
 endscript
-
 script WinPortUpdateLaptopUi
 	begin
 		WinPortGetLaptopInfo
@@ -371,7 +386,7 @@ script pause_lefty_toggle \{player = 1}
 	endif
 	SoundEvent event = <sound_event>
 	killspawnedscript \{name = lefty_toggle}
-	spawnscriptnow lefty_toggle params = {player_status = <player_status>}
+	spawnscriptnow lefty_toggle params = {player_status = <player_status> save}
 endscript
 
 script set_focus_color\{rgba = $menu_focus_color}
@@ -407,7 +422,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 	endif
 	pause_z = 11000000
 	spacing = -59
-	menu_pos = (150.0, 210.0)
+	menu_pos = (150.0, 170.0)
 	//if (<for_options> = 0)
 		//menu_pos = (230.0, 240.0)
 		//if (<for_practice> = 1)
@@ -485,28 +500,30 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		exclusive_device = <player_device>
 	}
 	if (<for_options> = 0)
-		if (<for_practice> = 0)
+		new_pause_menu_button {
+			<params_params>
+			id = pause_resume
+			event_handlers = [
+				{focus retail_menu_focus params = {id = pause_resume}}
+				{unfocus retail_menu_unfocus params = {id = pause_resume}}
+				{pad_choose gh3_start_pressed}
+			]
+			text = 'Resume'
+		}
+		if ($is_network_game = 0)
 			new_pause_menu_button {
 				<params_params>
-				id = pause_resume
+				id = pause_restart
 				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_resume}}
-					{unfocus retail_menu_unfocus params = {id = pause_resume}}
-					{pad_choose gh3_start_pressed}
+					{focus retail_menu_focus params = {id = pause_restart}}
+					{unfocus retail_menu_unfocus params = {id = pause_restart}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_restart}}
 				]
-				text = 'Resume'
+				text = 'Restart'
 			}
+		endif
+		if (<for_practice> = 0)
 			if ($is_network_game = 0)
-				new_pause_menu_button {
-					<params_params>
-					id = pause_restart
-					event_handlers = [
-						{focus retail_menu_focus params = {id = pause_restart}}
-						{unfocus retail_menu_unfocus params = {id = pause_restart}}
-						{pad_choose ui_flow_manager_respond_to_action params = {action = select_restart}}
-					]
-					text = 'Restart'
-				}
 				if (($game_mode = p1_career & $boss_battle = 0)|| ($game_mode = p1_quickplay))
 					new_pause_menu_button {
 						<params_params>
@@ -519,7 +536,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 						text = 'Practice'
 					}
 				endif
-				/*new_pause_menu_button {
+				new_pause_menu_button {
 					<params_params>
 					id = pause_extras
 					event_handlers = [
@@ -528,7 +545,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 						{pad_choose ui_flow_manager_respond_to_action params = {action = select_extras create_params = {player_device = <player_device>}}}
 					]
 					text = 'Extras'
-				}*/
+				}
 				new_pause_menu_button {
 					<params_params>
 					id = pause_options
@@ -574,26 +591,6 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				}
 			endif
 		else
-			new_pause_menu_button {
-				<params_params>
-				id = pause_resume
-				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_resume}}
-					{unfocus retail_menu_unfocus params = {id = pause_resume}}
-					{pad_choose gh3_start_pressed}
-				]
-				text = 'Resume'
-			}
-			new_pause_menu_button {
-				<params_params>
-				id = pause_restart
-				event_handlers = [
-					{focus retail_menu_focus params = {id = pause_restart}}
-					{unfocus retail_menu_unfocus params = {id = pause_restart}}
-					{pad_choose ui_flow_manager_respond_to_action params = {action = select_restart}}
-				]
-				text = 'Restart'
-			}
 			FormatText textname = text 'Return to %s' s = ($richpres_modes.$practice_last_mode.#"0x00000000") // ez
 			new_pause_menu_button {
 				<params_params>
@@ -646,9 +643,9 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				text = 'Quit'
 			}
 		endif
-		add_user_control_helper \{text = "Select" button = green z = 100000}
-		add_user_control_helper \{text = "Unpause" button = start z = 100000}
-		add_user_control_helper \{text = "Up/Down" button = strumbar z = 100000}
+		add_user_control_helper \{text = $menu_text_sel button = green z = 100000}
+		add_user_control_helper \{text = 'Unpause' button = start z = 100000}
+		add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100000}
 	else
 		<fit_dims> = (400.0, 0.0)
 		params_params = {
@@ -756,17 +753,14 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 			]
 			text = 'Back'
 		}
-		//GetGlobalTags \{user_options}
-		lefty_flip_p1 = ($player1_status.lefthanded_gems)
-		lefty_flip_p2 = ($player2_status.lefthanded_gems)
 		if (<Player> = 1)
-			if (<lefty_flip_p1> = 1)
+			if ($p1_lefty = 1)
 				lefty_tex = options_controller_check
 			else
 				lefty_tex = options_controller_x
 			endif
 		else
-			if (<lefty_flip_p2> = 1)
+			if ($p2_lefty = 1)
 				lefty_tex = options_controller_check
 			else
 				lefty_tex = options_controller_x
@@ -781,9 +775,9 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		}
 		GetScreenElementDims \{id = pause_options_lefty}
 		<id> ::SetProps Pos = (<width> * (1.0, 0.0) + (22.0, 24.0))
-		add_user_control_helper \{text = "Select" button = green z = 100000}
-		add_user_control_helper \{text = "Back" button = red z = 100000}
-		add_user_control_helper \{text = "Up/Down" button = strumbar z = 100000}
+		add_user_control_helper \{text = $menu_text_sel button = green z = 100000}
+		add_user_control_helper \{text = $menu_text_back button = red z = 100000}
+		add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100000}
 	endif
 	if ($is_network_game = 0)
 		if NOT isSinglePlayerGame
@@ -1435,125 +1429,9 @@ script istextstrumbar
 endscript
 
 script get_diff_completion_text\{for_p2_career = 0}
-	pop_progression = 0
-	if ($progression_pop_count = 1)
-		progression_push_current
-		pop_progression = 1
-	endif
-	diff_completion_text = ["" "" "" ""]
-	get_progression_globals game_mode = ($game_mode)
-	Change g_gh3_setlist = <tier_global>
-	difficulty_array = [easy medium hard expert]
-	stored_difficulty = ($current_difficulty)
-	if ($game_mode = p2_career)
-		stored_difficulty2 = ($current_difficulty2)
-		Change \{current_difficulty2 = expert}
-	endif
-	num_tiers = ($g_gh3_setlist.num_tiers)
-	diff_index = 0
-	begin
-		diff_num_songs = 0
-		diff_songs_completed = 0
-		Change current_difficulty = (<difficulty_array> [<diff_index>])
-		progression_pop_current \{updateatoms = 0}
-		tier_index = 1
-		begin
-			setlist_prefix = ($g_gh3_setlist.prefix)
-			FormatText checksumName = tiername '%ptier%i' p = <setlist_prefix> i = <tier_index>
-			FormatText checksumName = tier_checksum 'tier%s' s = <tier_index>
-			GetArraySize ($g_gh3_setlist.<tier_checksum>.songs)
-			num_songs = <array_Size>
-			diff_num_songs = (<diff_num_songs> + <num_songs>)
-			song_count = 0
-			begin
-				FormatText checksumName = song_checksum '%p_song%i_tier%s' p = <setlist_prefix> i = (<song_count> + 1)s = <tier_index> AddToStringLookup = true
-				GetGlobalTags <song_checksum> params = {stars score}
-				if NOT (<stars> = 0)
-					<diff_songs_completed> = (<diff_songs_completed> + 1)
-				endif
-				song_count = (<song_count> + 1)
-			repeat <num_songs>
-			<tier_index> = (<tier_index> + 1)
-		repeat <num_tiers>
-		if NOT (<for_p2_career>)
-			FormatText textname = diff_completion_string "%a OF %b SONGS" a = <diff_songs_completed> b = <diff_num_songs>
-			SetArrayElement ArrayName = diff_completion_text index = (<diff_index>)NewValue = (<diff_completion_string>)
-		else
-			FormatText textname = diff_completion_string "%a of %b songs completed" a = <diff_songs_completed> b = <diff_num_songs>
-			SetArrayElement ArrayName = diff_completion_text index = (<diff_index>)NewValue = (<diff_completion_string>)
-		endif
-		progression_push_current
-		<diff_index> = (<diff_index> + 1)
-	repeat 4
-	Change current_difficulty = <stored_difficulty>
-	if ($game_mode = p2_career)
-		Change current_difficulty2 = <stored_difficulty2>
-	endif
-	if (<pop_progression> = 1)
-		progression_pop_current \{updateatoms = 0}
-	endif
-	return diff_completion_text = <diff_completion_text>
 endscript
 
 script get_diff_completion_percentage\{for_p2_career = 0}
-	pop_progression = 0
-	if ($progression_pop_count = 1)
-		progression_push_current
-		pop_progression = 1
-	endif
-	diff_completion_percentage = [0 0 0 0]
-	diff_completion_score = [0 0 0 0]
-	get_progression_globals game_mode = ($game_mode)
-	Change g_gh3_setlist = <tier_global>
-	difficulty_array = [easy medium hard expert]
-	stored_difficulty = ($current_difficulty)
-	if ($game_mode = p2_career)
-		stored_difficulty2 = ($current_difficulty2)
-		Change \{current_difficulty2 = expert}
-	endif
-	num_tiers = ($g_gh3_setlist.num_tiers)
-	percentage_complete = 0
-	diff_index = 0
-	begin
-		diff_num_songs = 0
-		diff_songs_completed = 0
-		diff_songs_score = 0
-		Change current_difficulty = (<difficulty_array> [<diff_index>])
-		progression_pop_current \{updateatoms = 0}
-		tier_index = 1
-		begin
-			setlist_prefix = ($g_gh3_setlist.prefix)
-			FormatText checksumName = tiername '%ptier%i' p = <setlist_prefix> i = <tier_index>
-			FormatText checksumName = tier_checksum 'tier%s' s = <tier_index>
-			GetArraySize ($g_gh3_setlist.<tier_checksum>.songs)
-			num_songs = <array_Size>
-			diff_num_songs = (<diff_num_songs> + <num_songs>)
-			song_count = 0
-			begin
-				FormatText checksumName = song_checksum '%p_song%i_tier%s' p = <setlist_prefix> i = (<song_count> + 1)s = <tier_index> AddToStringLookup = true
-				GetGlobalTags <song_checksum> params = {stars score}
-				if NOT (<stars> = 0)
-					<diff_songs_completed> = (<diff_songs_completed> + 1)
-					<diff_songs_score> = (<diff_songs_score> + <score>)
-				endif
-				song_count = (<song_count> + 1)
-			repeat <num_songs>
-			<tier_index> = (<tier_index> + 1)
-		repeat <num_tiers>
-		percentage_complete = (<percentage_complete> + (100 * <diff_songs_completed>)/ <diff_num_songs>)
-		SetArrayElement ArrayName = diff_completion_percentage index = (<diff_index>)NewValue = ((100 * <diff_songs_completed>)/ <diff_num_songs>)
-		SetArrayElement ArrayName = diff_completion_score index = (<diff_index>)NewValue = <diff_songs_score>
-		progression_push_current
-		<diff_index> = (<diff_index> + 1)
-	repeat 4
-	Change current_difficulty = <stored_difficulty>
-	if ($game_mode = p2_career)
-		Change current_difficulty2 = <stored_difficulty2>
-	endif
-	if (<pop_progression> = 1)
-		progression_pop_current \{updateatoms = 0}
-	endif
-	return diff_completion_percentage = <diff_completion_percentage> total_percentage_complete = (<percentage_complete> / 4)diff_completion_score = <diff_completion_score>
 endscript
 winport_confirm_exit_msg = "Are you sure you want to exit?"
 

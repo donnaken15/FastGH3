@@ -19,7 +19,7 @@ script create_credits_menu
 			{pad_back ui_flow_manager_respond_to_action params = {action = go_back}}
 		]
 		new_menu scrollid = mc_scroll vmenuid = mc_vmenu event_handlers = <event_handlers>
-		add_user_control_helper \{text = "BACK" button = red z = 1001}
+		add_user_control_helper \{text = $menu_text_back button = red z = 1001}
 	else
 		new_menu \{scrollid = mc_scroll vmenuid = mc_vmenu}
 	endif

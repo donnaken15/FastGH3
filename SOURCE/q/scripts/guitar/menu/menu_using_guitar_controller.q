@@ -128,7 +128,7 @@ script menu_using_guitar_controller_add_text_start
 endscript
 
 script menu_using_guitar_controller_add_text_back
-	text1 = "BACK"
+	text1 = $menu_text_back
 	text1_pos = (459.0, 592.0)
 	text2 = "Red Button"
 	text2_pos = (459.0, 625.0)
@@ -168,7 +168,7 @@ script menu_using_guitar_controller_add_text_continue
 	text2_pos = (397.0, 625.0)
 	GetEnterButtonAssignment
 	if (<assignment> = Circle)
-		text1 = "BACK"
+		text1 = $menu_text_back
 		text1_pos = (397.0, 592.0)
 		text2 = "Green Button"
 		text2_pos = (397.0, 625.0)
@@ -202,7 +202,7 @@ script menu_using_guitar_controller_add_text_continue
 endscript
 
 script menu_using_guitar_controller_add_text_up_down
-	text1 = "UP/DOWN"
+	text1 = $menu_text_nav
 	text1_pos = (565.0, 409.0)
 	text2 = "Strum Bar"
 	text2_pos = (565.0, 442.0)

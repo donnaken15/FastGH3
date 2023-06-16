@@ -15,13 +15,13 @@ script create_top_rockers_menu\{for_options = 0}
 	if NOT (<new_score> = -1)
 		menu_top_rockers_init_band_name_creation score_index = <new_score>
 		clean_up_user_control_helpers
-		add_user_control_helper \{text = "SELECT" button = green z = 100}
+		add_user_control_helper \{text = $menu_text_sel button = green z = 100}
 		add_user_control_helper \{text = "DELETE" button = red z = 100}
-		add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+		add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100}
 		add_user_control_helper \{text = "ACCEPT" button = start z = 100}
 	else
 		menu_top_rockers_create_continue_button
-		add_user_control_helper \{text = "BACK" button = red z = 100}
+		add_user_control_helper \{text = $menu_text_back button = red z = 100}
 	endif
 endscript
 

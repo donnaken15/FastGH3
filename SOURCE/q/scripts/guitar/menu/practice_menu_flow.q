@@ -730,13 +730,13 @@ script where_do_we_go_from_practice
 		case career
 			Change \{game_mode = p1_career}
 			Change current_difficulty = ($came_to_practice_difficulty)
-			progression_pop_current
+			//progression_pop_current
 			return \{flow_state = career_setlist_fs}
 		case coop_career
 			Change \{game_mode = p2_career}
 			Change current_difficulty = ($came_to_practice_difficulty)
 			Change current_difficulty2 = ($came_to_practice_difficulty2)
-			progression_pop_current
+			//progression_pop_current
 			return \{flow_state = coop_career_setlist_fs}
 		case quickplay
 			Change \{game_mode = p1_quickplay}

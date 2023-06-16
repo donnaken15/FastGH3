@@ -15,8 +15,7 @@ script create_gamma_brightness_menu\{popup = 0}
 		create_pause_menu_frame z = (<z> - 10)
 	else
 		CreateScreenElement \{Type = SpriteElement parent = gamma_warning_container Pos = (640.0, 360.0) just = [center center] rgba = [50 50 50 255] dims = (1280.0, 720.0)}
-		add_user_control_helper \{text = "BACK" button = red z = 100}
-		add_user_control_helper \{text = "UP/DOWN" button = strumbar z = 100}
+		common_control_helpers \{back nav}
 	endif
 	SetScreenElementProps \{id = vmenu_gamma_warning dims = (1280.0, 720.0) internal_just = [center top]}
 	CreateScreenElement {

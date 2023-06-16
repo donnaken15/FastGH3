@@ -286,8 +286,8 @@ script create_encore_confirmation_menu
 	Change \{user_control_pill_color = [180 180 180 255]}
 	ec_yes_highlight_focus \{id = ec_play_encore}
 	LaunchEvent \{Type = focus target = ec_vmenu}
-	add_user_control_helper text = "SELECT" button = green z = (<menu_z> + 100)
-	add_user_control_helper text = "UP/DOWN" button = strumbar z = (<menu_z> + 100)
+	add_user_control_helper text = $menu_text_sel button = green z = (<menu_z> + 100)
+	add_user_control_helper text = $menu_text_nav button = strumbar z = (<menu_z> + 100)
 endscript
 
 script destroy_encore_confirmation_menu

@@ -107,7 +107,7 @@ script #"0x1766ab99"
 		create_winport_login_field container = <container> Pos = <Pos> label = "License: " labelId = licenseLabelId prefixId = licensePrefixId cursorId = licenseCursorId suffixId = licenseSuffixId ang = 1.5
 	endif
 	add_user_control_helper \{text = "ACCEPT" button = green z = 100}
-	add_user_control_helper \{text = "BACK" button = red z = 100}
+	add_user_control_helper \{text = $menu_text_back button = red z = 100}
 	if GotParam \{yellowButtonText}
 		add_user_control_helper text = <yellowButtonText> button = yellow z = 100
 	endif
@@ -159,7 +159,7 @@ script #"0x1766ab99"
 			ui_flow_manager_respond_to_action \{action = executeOption2}
 		case loginAborted
 			cancel_winport_account_management_screen mode = <mode>
-	endswitch*///
+	endswitch*//
 endscript
 #"0x4faef07e" = ''
 #"0x8232b0dc" = ''
@@ -201,25 +201,31 @@ endscript
 }
 
 script lefty_toggle\{player_status = player1_status}
-	GetGlobalTags \{user_options}
-	if (<lefty_flip_p1> = 0)
-		SetGlobalTags \{user_options params = {lefty_flip_p1 = 1}}
+	if ($<player_status>.player = 1)
+		toggle_global \{p1_lefty}
+		left = $p1_lefty
 	else
-		SetGlobalTags \{user_options params = {lefty_flip_p1 = 0}}
+		toggle_global \{p2_lefty}
+		left = $p2_lefty
 	endif
-	GetGlobalTags \{user_options}
-	leftt = <lefty_flip_p1>
-	Change StructureName = <player_status> lefthanded_gems = <leftt>
+	if GotParam \{save}
+		if ($<player_status>.player = 1)
+			text = 'Player1' // Y U NO WORK FORMATTEXT
+		else
+			text = 'Player2'
+		endif
+		FGH3Config sect=<text> 'Lefty' set=<left>
+	endif
+	Change StructureName = <player_status> lefthanded_gems = <left>
 	begin
 		if NOT GameIsPaused
 			break
 		endif
 		wait \{1 gameframe}
 	repeat
-	Change StructureName = <player_status> lefthanded_gems = <leftt>
 	wait ((0.28 / $current_speedfactor) * $<player_status>.scroll_time) seconds
 	animate_lefty_flip other_player_status = <player_status>
-	Change StructureName = <player_status> lefthanded_button_ups = <leftt>
+	Change StructureName = <player_status> lefthanded_button_ups = <left>
 endscript
 
 script wait_beats\{1}

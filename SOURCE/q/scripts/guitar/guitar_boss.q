@@ -88,10 +88,9 @@ script bossbattle_init
 	Change \{boss_lastbrokenstringtime = 0}
 	Change \{boss_hammer_count = 0}
 	if ($current_song = bossdevil)
-		GetGlobalTags \{user_options}
-		if (<lefty_flip_p2> = 1)
+		if ($p2_lefty = 1)
 			Change \{save_lefty_flip_p2 = 1}
-			SetGlobalTags \{user_options params = {lefty_flip_p2 = 0}}
+			change \{p2_lefty = 0}
 		else
 			Change \{save_lefty_flip_p2 = 0}
 		endif
@@ -135,7 +134,7 @@ script bossbattle_deinit
 		Change \{boss_hammer_count = 0}
 		if ($current_song = bossdevil)
 			if ($save_lefty_flip_p2 = 1)
-				SetGlobalTags \{user_options params = {lefty_flip_p2 = $save_lefty_flip_p2}}
+				change \{p2_lefty = $save_lefty_flip_p2}
 			endif
 		endif
 	endif

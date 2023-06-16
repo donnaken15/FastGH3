@@ -305,8 +305,7 @@ script training_kill_session
 endscript
 
 script training_are_notes_flipped
-	GetGlobalTags \{user_options params = {lefty_flip_p1}}
-	if (<lefty_flip_p1> = 1)
+	if ($p1_lefty = 1)
 		return \{true}
 	endif
 	return \{FALSE}
