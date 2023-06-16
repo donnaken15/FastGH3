@@ -218,7 +218,7 @@ class Program
 		};
 		foreach (string i in requiredFiles)
 		{
-			if (!File.Exists(dir+i)) // EXCEPT HERE SOMEHOW
+			if (!File.Exists(dir+'\\'+i)) // EXCEPT HERE SOMEHOW
 			{
 				Console.WriteLine("No familiar files can be found, exiting...");
 				return;
@@ -267,9 +267,9 @@ class Program
 			latesttime = latesttime.AddSeconds(latestTimestamp).ToLocalTime();
 			Console.WriteLine("Build timestamp: " + buildtime.ToString());
 			Console.WriteLine("Got latest timestamp: " + latesttime.ToString());
-			devVers = JSON.Parse(fetcher.DownloadString("https://donnaken15.tk/fastgh3/devvers.json"));
-			buildList = JSON.Parse(fetcher.DownloadString("https://donnaken15.tk/fastgh3/vl.json"));
-			latestname = Encoding.UTF8.GetString(Convert.FromBase64String(fetcher.DownloadString("https://donnaken15.tk/fastgh3/v")));
+			devVers = JSON.Parse(fetcher.DownloadString("https://donnaken15.cf/fastgh3/devvers.json"));
+			buildList = JSON.Parse(fetcher.DownloadString("https://donnaken15.cf/fastgh3/vl.json"));
+			latestname = Encoding.UTF8.GetString(Convert.FromBase64String(fetcher.DownloadString("https://donnaken15.cf/fastgh3/v")));
 			//latestVerTime = Convert.ToUInt32(Convert.FromBase64String(fetcher.DownloadString("https://raw.githubusercontent.com/donnaken15/FastGH3/main/DATA/MUSIC/TOOLS/v.bin")));
 		}
 		catch (Exception ex)
@@ -296,9 +296,10 @@ class Program
 		// also TODO: downgrading maybe for checking errors and for when they started to appear
 		// as a consequence of me making this mod the most user friendly for charts
 
+		// and probably download blacklist instead so i dont have to change this program directly
+		// where it doesnt get replaced until its reinstalled
 		string[] blacklist = new string[] {
 			"aspyrconfig.bat",
-			"settings.ini",
 			"data\\user.pak.xen",
 			"data\\bkgd.pak.xen",
 			"data\\movies\\bik\\backgrnd_video.bik.xen",
@@ -309,7 +310,9 @@ class Program
 			"data\\pak\\global.pab.xen",
 			"data\\pak\\global.pak.xen",
 			"data\\pak\\global_sfx.pak.xen",
+			"game!.exe",
 			"ionic.zip.dll",
+			"settings.ini",
 			"updater.exe",
 			".gitignore",
 			".gitmodules",

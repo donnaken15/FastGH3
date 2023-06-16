@@ -2,21 +2,19 @@
 # ![FastGH3](https://donnaken15.cf/fastgh3/assets/logo.svg)
 (or lesser known as FastGH3 Ain't Smaller Than Guitar Hero 3, for longer)
 
-Play Guitar Hero better than ever before!
-
-Optimized and reworked for speed, portability, accessibility, and QOL.
-
-The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer, so we bring you THIS!
+<p>Play Guitar Hero better than ever before!<br>
+Optimized and reworked for speed, portability, accessibility, and QOL.<br>
+The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer, so we bring you THIS!</p>
 
 ![version](https://img.shields.io/github/v/release/donnaken15/FastGH3)
 ![mod size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.cf%2Ffastgh3%2F__final_size.php)
-![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
-![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/total)
-<br>![commit activity](https://img.shields.io/github/commit-activity/m/donnaken15/FastGH3)
+![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.exe)
+<br>![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
+![commit activity](https://img.shields.io/github/commit-activity/m/donnaken15/FastGH3)
 ![launcher code size](https://img.shields.io/github/size/donnaken15/FastGH3/SOURCE/FastGH3/Program.cs?label=launcher%20code%20size)
-![qb.pak size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/PAK/qb.pab.xen?label=qb.pak)
+<br>![qb.pak size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/PAK/qb.pab.xen?label=qb.pak)
 ![zone size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/ZONES/global.pab.xen?label=global.pak)
-<br>![update frequency](https://img.shields.io/badge/update%20frequency-2/year-blue)
+![update frequency](https://img.shields.io/badge/update%20frequency-2/year-blue)
 
 PLAY NOW!
 * [Download (installer)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.exe)
