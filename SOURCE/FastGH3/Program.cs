@@ -1547,8 +1547,16 @@ class Program
 							bool atleast1track = false;
 
 							int delay = 0;
-							if (chart.Song["Offset"] != null) // ugh
-								delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
+							try
+							{
+								if (chart.Song["Offset"] != null) // ugh
+									delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
+							}
+							catch
+                            {
+								// WHY IS THIS STILL NOT WORKING
+								// https://github.com/donnaken15/FastGH3/issues/7#issuecomment-1595513766
+							}
 							QbcNoteTrack tmp;
 
 							QbItemArray scrs = new QbItemArray(mid);

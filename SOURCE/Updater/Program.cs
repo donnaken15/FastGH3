@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Runtime.InteropServices;
 using Ionic.Zip;
 using SimpleJSON;
 
@@ -67,6 +68,10 @@ static class SubstringExtensions
 }
 class Program
 {
+	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileInt", CharSet = CharSet.Unicode)]
+	public static extern int GI(string a, string k, int d, string f);
+	static string inif;
+
 	static byte[] logoBits = {
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11, 0x11,
 		0x00, 0x11, 0x11, 0x11, 0x00, 0x11, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00,
@@ -202,9 +207,9 @@ class Program
 		Console.WriteLine("  UPDATER\n");
 		
 		bool testing = false;
-		string dir = "";
-		dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+		string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 		Directory.SetCurrentDirectory(dir); // make path ensuring less redundant like in the launcher
+		inif = dir + "\\settings.ini";
 
 		// is this even in the right place
 		string[] requiredFiles = new string[] {
@@ -283,12 +288,8 @@ class Program
 		Console.WriteLine("Latest build: " + buildList[latestname]);
 		//Console.WriteLine(devVers[0]["date"].Value);
 
-		IniFile settings = new IniFile();
-
-		if (File.Exists("settings.ini"))
-			settings.Load("settings.ini");
-
-		bool bleeding = settings.GetKeyValue("Updater","BleedingEdge","0") == "1";
+		bool bleeding = GI("Updater","BleedingEdge",0,
+			Path.IsPathRooted(inif) ? inif : Directory.GetCurrentDirectory() + '\\' + inif) == 1;
 		// set default to 1 on repo and 0 on builds??
 
 		// should i put devlog in JSON and display here
