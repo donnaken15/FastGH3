@@ -19,7 +19,7 @@ public partial class songcache : Form
 			foreach (string s in Program.sn(i))
 			{
 				if (File.Exists(folder + s) &&
-					File.Exists(folder + Program.ini(s, "Audio", 0.ToString("X16"), 32, i).Substring(0,16)))
+					File.Exists(folder + Program.ini(s, "Audio", 0.ToString("X16"), 32, i).Substring(0, 16)))
 				{
 					newRow = new DataGridViewRow();
 					newRow.CreateCells(c,
@@ -62,8 +62,8 @@ public partial class songcache : Form
 	private void r(DataGridViewCellEventArgs e)
 	{
 		Program.killgame();
-		string cs = (string)c.Rows[e.RowIndex].Cells[0].Value; // kill me
-		string au = Program.ini(cs, "Audio", null, 33, i).Substring(0, 16);
+		string cs = (string)c.Rows[e.RowIndex].Cells[0].Value.ToString().Substring(0, 16);
+		string au = Program.ini(cs, "Audio", null, 32, i).Substring(0, 16);
 		string t = Program.ini(cs, "Title", null, 64, i);
 		string a = Program.ini(cs, "Author", null, 64, i);
 		string l = Program.ini(cs, "Length", "00:00", 8, i);
@@ -83,7 +83,9 @@ public partial class songcache : Form
 				System.Text.RegularExpressions.Regex.Unescape(Program.cfg(Program.m, Program.stf, "%a - %t")),
 			songParams));
 		Program.unkillgame();
+		Directory.SetCurrentDirectory(folder + "..\\..\\");
 		Process.Start(folder + "..\\..\\game.exe");
+		Directory.SetCurrentDirectory(Program.cf);
 	}
 
 	private void cc(object sender, DataGridViewCellEventArgs e)
