@@ -173,7 +173,7 @@ script new_menu\{menu_pos = $menu_pos event_handlers = $default_event_handlers u
 				endif
 			endif
 		repeat ($<tierlist>.num_tiers)
-	endif*//
+	endif*///
 	if (<default_colors>)
 		set_focus_color rgba = ($default_menu_focus_color)
 		set_unfocus_color rgba = ($default_menu_unfocus_color)

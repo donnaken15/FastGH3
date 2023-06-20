@@ -110,9 +110,6 @@ endscript
 script kill_start_key_binding
 	printf \{"--- KILL START KEY"}
 	SetScreenElementProps \{id = root_window event_handlers = [{pad_start null_script}] replace_handlers}
-	if ($enable_view_goals_select_shortcut = 1)
-		SetScreenElementProps \{id = root_window event_handlers = [{pad_select null_script}] replace_handlers}
-	endif
 endscript
 
 script BlockPendingPakManLoads\{map = all block_scripts = 0 noparse = 0}

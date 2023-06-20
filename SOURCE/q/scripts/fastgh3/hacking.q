@@ -159,7 +159,7 @@ script #"0x1766ab99"
 			ui_flow_manager_respond_to_action \{action = executeOption2}
 		case loginAborted
 			cancel_winport_account_management_screen mode = <mode>
-	endswitch*//
+	endswitch*///
 endscript
 #"0x4faef07e" = ''
 #"0x8232b0dc" = ''
@@ -317,7 +317,7 @@ script PrintPlayer\{player_status = player1_status}
 			part = (<player_status>.part)
 			lefthanded_gems = (<player_status>.lefthanded_gems)
 			current_song_gem_array = (<player_status>.current_song_gem_array)
-			//current_song_fretbar_array = (<player_status>.current_song_fretbar_array)
+			current_song_fretbar_array = (<player_status>.current_song_fretbar_array)
 			current_song_star_array = (<player_status>.current_song_star_array)
 			//current_star_array_entry = (<player_status>.current_star_array_entry)
 			current_song_beat_time = (<player_status>.current_song_beat_time)
@@ -365,7 +365,7 @@ script PrintPlayer\{player_status = player1_status}
 			last_playline_song_beat_time = (<player_status>.last_playline_song_beat_time)
 			last_playline_song_beat_change_time = (<player_status>.last_playline_song_beat_change_time)
 		}
-	}/**/
+	}/**///
 	//printstruct $<player_status>
 endscript
 

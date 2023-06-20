@@ -413,7 +413,7 @@ script SetValueFromConfig
 		#"0x1ca1ff20" = ($<out>)
 		printstruct <...>
 		// not working :(
-	endif*//
+	endif*///
 	FGH3Config sect=<sect> <#"0x00000000"> #"0x1ca1ff20"=<#"0x1ca1ff20">
 	change globalname=<out> newvalue=<value>
 endscript
@@ -660,7 +660,7 @@ script guitar_startup
 		FormatText textname = player_text 'p%i' i = <Player> AddToStringLookup
 		SpawnScriptLater create_guitar_events params = { <...> }
 		Increment \{player}
-	repeat $max_num_players
+	repeat ($max_num_players)
 	if ($autolaunch_startnow = 0)
 		start_flow_manager \{flow_state = bootup_sequence_fs}
 	else
@@ -679,7 +679,7 @@ script guitar_startup
 	if ($max_num_players = 2)
 		create_guitarist \{name = BASSIST}
 		destroy_band_member \{name = BASSIST}
-	endif*//
+	endif*///
 	Change \{tutorial_disable_hud = 0}
 endscript
 // @script | load_highway | load highway pak

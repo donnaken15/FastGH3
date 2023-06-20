@@ -468,7 +468,7 @@ script move_highway_2d
 		endif
 		wait \{1 gameframe}
 	repeat
-	if ($PC_HIGHWAY_ANIM = 0)
+	//if ($PC_HIGHWAY_ANIM = 0)
 		// a bit slow
 		GetDeltaTime \{ignore_slomo}
 		interval = (1.0/<delta_time>/$current_speedfactor)
@@ -510,6 +510,8 @@ script move_highway_2d
 							break
 						endif
 					repeat <time2>
+					// HOW DOES THIS WORK
+					//highway_start_y = (720 + (-720 * (1.0 - (0.0004386 / <pow>)) * <time2>) * (1.0/<interval>))
 					//printf '%d' d = <highway_start_y>
 				endif
 				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<highway_start_y> * (0.0, 1.0)))
@@ -522,7 +524,7 @@ script move_highway_2d
 			endif
 			wait \{1 gameframe}
 		repeat
-	/**/else
+	/**else
 		highway_start_y = 720
 		pos_start_orig = 0
 		pos_add = -720
@@ -549,7 +551,7 @@ script move_highway_2d
 			endif
 			wait \{1 gameframe}
 		repeat
-	endif/**//
+	endif/**///
 endscript
 
 script move_highway_camera_to_default\{Player = 1}

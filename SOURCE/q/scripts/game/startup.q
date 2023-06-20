@@ -21,7 +21,6 @@ memoryleak_havok_warning = 65536
 memoryleak_havok_assert = 131072
 threaded_animation = 1
 viewer_buttons_enabled = 1
-enable_view_goals_select_shortcut = 0
 wireframe_skins = 0
 DEMO_BUILD = 0
 GameInformerBuild = 0
