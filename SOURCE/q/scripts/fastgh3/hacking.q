@@ -262,6 +262,7 @@ script everyone_deploy // :P
 endscript
 
 fastgh3_path_triggers = []
+//fastgh3_path_triggers = [33230 120000 148610 187610 246610 307460 350760 431200 507690 585000 658960 716300 794530 831380 876460 900920 983070]
 // soulless 1 path from CHOpt
 //fastgh3_path_triggers = [9446 18638 37851 57127 85851 151148 191936 265276 298148 334978]
 script muh_arby_bot_star
@@ -286,7 +287,7 @@ script muh_arby_bot_star
 		begin
 			begin
 				GetSongTimeMs
-				if ($fastgh3_path_triggers[<i>] < <time>)
+				if ($fastgh3_path_triggers[<i>] < (<time> + ($check_time_early * 1000.0) + 10))
 					break
 				endif
 				Wait \{1 gameframe}

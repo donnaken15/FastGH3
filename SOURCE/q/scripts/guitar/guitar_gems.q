@@ -954,17 +954,15 @@ script restart_gem_scroller\{no_render = 0}
 		if (<int> > 0)
 			Change current_num_players = <int>
 			DataBufferGetInt \{name = replay}
-			Change p1_ctrl = <int>
+			Change startup_controller = <int>
 			change playback_ctrl1 = <int>
 			DataBufferGetInt \{name = replay}
-			Change p2_ctrl = <int>
+			Change startup_controller2 = <int>
 			change playback_ctrl2 = <int>
 			DataBufferGetChecksum \{name = replay}
-			//Change StructureName = player1_status part = <int>
-			Change p1_part = <checksum>
+			Change StructureName = player1_status part = <int>
 			DataBufferGetChecksum \{name = replay}
-			//Change StructureName = player2_status part = <int>
-			Change p2_part = <checksum>
+			Change StructureName = player2_status part = <int>
 		else
 			Change \{current_num_players = 1}
 			DataBufferGetInt \{name = replay}
