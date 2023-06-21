@@ -1,7 +1,7 @@
-player1_status = {
-	controller = 0
-	Player = 1
-	star_power_usable = 1
+player1_status = {}
+player2_status = {}
+status_base = {
+	star_power_usable = 0
 	star_power_amount = 0.0
 	star_tilt_threshold = 16.0
 	playline_song_measure_time = 0
@@ -12,111 +12,6 @@ player1_status = {
 	bot_pattern = 0
 	bot_strum = 0
 	bot_star_power = 0
-	text = 'p1'
-	part = guitar
-	lefthanded_gems = 0
-	lefthanded_button_ups = 0
-	lefthanded_gems_flip_save = 0
-	lefthanded_button_ups_flip_save = 0
-	current_song_gem_array = None
-	current_song_fretbar_array = None
-	current_song_star_array = None
-	current_star_array_entry = 0
-	current_song_beat_time = 0
-	playline_song_beat_time = 0
-	current_song_measure_time = 0
-	current_detailedstats_array = None
-	current_detailedstats_max_array = None
-	current_detailedstats_array_entry = 0
-	time_in_lead = 0.0
-	hammer_on_tolerance = 0.0
-	check_time_early = 0.0
-	check_time_late = 0.0
-	whammy_on = 0
-	star_power_sequence = 0
-	star_power_note_count = 0
-	score = 0.0
-	notes_hit = 0
-	total_notes = 0
-	best_run = 0
-	max_notes = 0
-	base_score = 0.0
-	stars = 0
-	sp_phrases_hit = 0
-	sp_phrases_total = 0
-	multiplier_count = 0
-	num_multiplier = 0
-	sim_bot_score = 0.0
-	scroll_time = 5.0
-	game_speed = 1.5
-	highway_speed = 0.0
-	highway_material = #"0xce5b3c9f"
-	guitar_volume = 100
-	last_guitar_volume = 100
-	last_faceoff_note = 100
-	net_whammy = 0.0
-	is_local_client = 1
-	highway_layout = default_highway
-	net_id_first = 0
-	net_id_second = 0
-	battlemode_creation_selection = -1
-	current_num_powerups = 0
-	final_blow_powerup = -1
-	battle_text_count = 0
-	shake_notes = -1
-	double_notes = -1
-	diffup_notes = -1
-	lefty_notes = -1
-	whammy_attack = -1
-	stealing_powerup = -1
-	death_lick_attack = -1.0
-	last_hit_note = None
-	broken_string_mask = 0
-	broken_string_green = 0
-	broken_string_red = 0
-	broken_string_yellow = 0
-	broken_string_blue = 0
-	broken_string_orange = 0
-	last_selected_attack = -1
-	battle_num_attacks = 0
-	hold_difficulty_up = 0.0
-	save_health = 0.0
-	save_num_powerups = 0
-	gem_filler_enabled_time_on = -1
-	gem_filler_enabled_time_off = -1
-	current_health = 0.0
-	health_invincible_time = 0.0
-	character_id = axel
-	outfit = 1
-	style = 1
-	instrument_id = None
-	band_member = GUITARIST
-	cash = 0
-	new_cash = 0
-	FourX_FingerFXID01 = JOW_NIL
-	FourX_FingerFXID02 = JOW_NIL
-	FourX_FingerFXID03 = JOW_NIL
-	FourX_FingerFXID04 = JOW_NIL
-	button_checker_up_time = -1.0
-	last_playline_song_beat_time = 1.0
-	last_playline_song_beat_change_time = 1.0
-}
-player2_status = {
-	controller = 1
-	Player = 2
-	star_power_usable = 1
-	star_power_amount = 0.0
-	star_tilt_threshold = 16.0
-	playline_song_measure_time = 0
-	star_power_used = 0
-	current_run = 0
-	resting_whammy_position = -0.76
-	bot_play = 0
-	bot_pattern = 0
-	bot_strum = 0
-	bot_star_power = 0
-	text = 'p2'
-	part = rhythm
 	lefthanded_gems = 0
 	lefthanded_button_ups = 0
 	lefthanded_gems_flip_save = 0
@@ -188,17 +83,6 @@ player2_status = {
 	gem_filler_enabled_time_off = -1
 	current_health = 0.0
 	health_invincible_time = 0.0
-	character_id = None
-	outfit = 1
-	style = 1
-	instrument_id = None
-	band_member = GUITARIST
-	cash = 0
-	new_cash = 0
-	FourX_FingerFXID01 = JOW_NIL
-	FourX_FingerFXID02 = JOW_NIL
-	FourX_FingerFXID03 = JOW_NIL
-	FourX_FingerFXID04 = JOW_NIL
 	button_checker_up_time = -1.0
 	last_playline_song_beat_time = 1.0
 	last_playline_song_beat_change_time = 1.0
@@ -295,50 +179,26 @@ time_input_offset = 0.0
 p1_ready = 0
 p2_ready = 0
 max_num_powerups = 3
-current_powerups_p1 = [
-	0
-	0
-	0
-]
-current_powerups_p2 = [
-	0
-	0
-	0
-]
-current_battle_text_p1 = [
-	id
-	id
-	id
-]
-current_battle_text_p2 = [
-	id
-	id
-	id
-]
+current_powerups_p1 = [ 0 0 0 ]
+current_powerups_p2 = [ 0 0 0 ]
+current_battle_text_p1 = [ id id id ]
+current_battle_text_p2 = [ id id id ]
 battle_p1_highway_hammer = 0
 battle_p2_highway_hammer = 0
 battle_flicker_difficulty_p1 = 2
 battle_flicker_difficulty_p2 = 2
 show_battle_text = 1
 devil_finish = 0
-save_current_powerups_p1 = [
-	0
-	0
-	0
-]
-save_current_powerups_p2 = [
-	0
-	0
-	0
-]
+save_current_powerups_p1 = [ 0 0 0 ]
+save_current_powerups_p2 = [ 0 0 0 ]
 battle_sudden_death = 0
-Cheat_AirGuitar = -1
-Cheat_PerformanceMode = -1
+Cheat_AirGuitar = 0
+Cheat_PerformanceMode = 0
 Cheat_Hyperspeed = 3
 Cheat_NoFail = 0
 Cheat_EasyExpert = 0
 Cheat_PrecisionMode = 0
-Cheat_BretMichaels = -1
+Cheat_BretMichaels = 0
 boss_wuss_out = 0
 crowd_model_array = None
 p1_last_song_detailed_stats = []
@@ -362,12 +222,20 @@ fps_max = 1000
 
 // hate me
 part_index = { guitar = 0 rhythm = 1 }
-parts = [guitar rhythm]
-part_names = {
-	guitar = 'Guitar' rhythm = 'Rhythm'
-}
+parts = [ guitar rhythm ]
+part_names = { guitar = 'Guitar' rhythm = 'Rhythm' }
 
 script FileExists \{#"0x00000000" = ''}
+	if exists <#"0x00000000">
+		return \{true}
+	endif
+	Formattext textname = xen '%s.xen' s = <#"0x00000000">
+	if exists <xen>
+		return \{true}
+	endif
+	return \{false}
+endscript
+script exists \{#"0x00000000" = ''}
 	StartWildcardSearch wildcard = <#"0x00000000">
 	begin
 		if GetWildcardFile
@@ -421,6 +289,8 @@ endscript
 script guitar_startup
 	HideLoadingScreen
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
+	change \{player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar $status_base }}
+	change \{player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm $status_base }}
 	printf \{'Initializing unneeded stuff'}
 	//CompositeObjectManager_startup
 	//MemCardSystemInitialize // probably destroyed and broke save functionality
@@ -432,41 +302,48 @@ script guitar_startup
 	printf \{'Creating sound busses'}
 	Master_SFX_Adding_Sound_Busses
 	printf \{'Loading user config'}
-	if FileExists \{'config.qb.xen'}
+	migrate = 0
+	if FileExists \{'config.qb'}
 		LoadQB \{'config.qb'}
+		migrate = 1
+	elseif FileExists \{'user.pak'}
+		LoadPak \{'user.pak'}
+		migrate = 1
 	endif
 	// move old (common) config values over from QB since this will be used less now
-	ProfilingStart
-	FGH3Config sect='Temp' 'MigratedConfig' #"0x1ca1ff20"=0
-	ProfilingEnd <...> 'INI read x1'
-	if (<value> = 0)
+	if IsTrue <migrate>
 		ProfilingStart
-		FGH3Config sect='Player' 'Hyperspeed' set=($Cheat_Hyperspeed)
-		FGH3Config sect='Player' 'Autostart' set=($autolaunch_startnow)
-		FGH3Config sect='Player1' 'Part' set=($part_index.($player1_status.part))
-		FGH3Config sect='Player2' 'Part' set=($part_index.($player2_status.part))
-		FGH3Config sect='Player1' 'Device' set=($startup_controller)
-		FGH3Config sect='Player2' 'Device' set=($startup_controller2)
-		FGH3Config sect='Player1' 'Diff' set=($difficulty_list_props.$current_difficulty.index)
-		FGH3Config sect='Player2' 'Diff' set=($difficulty_list_props.$current_difficulty2.index)
-		FGH3Config sect='GFX' 'MaxFPS' set=($fps_max)
-		FGH3Config sect='GFX' 'NoIntro' set=($disable_intro)
-		FGH3Config sect='Player' 'ExitOnSongEnd' set=($exit_on_song_end)
-		FGH3Config sect='Player' 'FCMode' set=($FC_MODE)
-		FGH3Config sect='Player' 'EasyExpert' set=($Cheat_EasyExpert)
-		FGH3Config sect='Player' 'Precision' set=($Cheat_PrecisionMode)
-		FGH3Config sect='Player' 'EarlySustains' set=($anytime_sustain_activation)
-		FGH3Config sect='Player' 'NoFail' set=($Cheat_NoFail)
-		FGH3Config sect='GFX' 'NoIntroReadyTime' set=($nointro_ready_time)
-		FGH3Config sect='GFX' 'BGVideo' set=($enable_video)
-		FGH3Config sect='GFX' 'NoHUD' set=($hudless)
-		FGH3Config sect='GFX' 'KillGemsHit' set=($kill_gems_on_hit)
-		FGH3Config sect='GFX' 'NoStreakDisp' set=($disable_notestreak_notif)
-		FGH3Config sect='GFX' 'NoParticles' set=($disable_particles)
-		FGH3Config sect='GFX' 'Performance' set=($Cheat_PerformanceMode)
-		FGH3Config sect='Misc' 'Debug' set=($enable_button_cheats)
-		ProfilingEnd <...> 'INI write x24'
-		FGH3Config \{sect='Temp' 'MigratedConfig' set=1}
+		FGH3Config sect='Temp' 'MigratedConfig' #"0x1ca1ff20"=0
+		ProfilingEnd <...> 'INI read x1'
+		if NOT IsTrue <value>
+			ProfilingStart
+			FGH3Config sect='Player' 'Hyperspeed' set=($Cheat_Hyperspeed)
+			FGH3Config sect='Player' 'Autostart' set=($autolaunch_startnow)
+			FGH3Config sect='Player1' 'Part' set=($part_index.($player1_status.part))
+			FGH3Config sect='Player2' 'Part' set=($part_index.($player2_status.part))
+			FGH3Config sect='Player1' 'Device' set=($startup_controller)
+			FGH3Config sect='Player2' 'Device' set=($startup_controller2)
+			FGH3Config sect='Player1' 'Diff' set=($difficulty_list_props.$current_difficulty.index)
+			FGH3Config sect='Player2' 'Diff' set=($difficulty_list_props.$current_difficulty2.index)
+			FGH3Config sect='GFX' 'MaxFPS' set=($fps_max)
+			FGH3Config sect='GFX' 'NoIntro' set=($disable_intro)
+			FGH3Config sect='Player' 'ExitOnSongEnd' set=($exit_on_song_end)
+			FGH3Config sect='Player' 'FCMode' set=($FC_MODE)
+			FGH3Config sect='Player' 'EasyExpert' set=($Cheat_EasyExpert)
+			FGH3Config sect='Player' 'Precision' set=($Cheat_PrecisionMode)
+			FGH3Config sect='Player' 'EarlySustains' set=($anytime_sustain_activation)
+			FGH3Config sect='Player' 'NoFail' set=($Cheat_NoFail)
+			FGH3Config sect='GFX' 'NoIntroReadyTime' set=($nointro_ready_time)
+			FGH3Config sect='GFX' 'BGVideo' set=($enable_video)
+			FGH3Config sect='GFX' 'NoHUD' set=($hudless)
+			FGH3Config sect='GFX' 'KillGemsHit' set=($kill_gems_on_hit)
+			FGH3Config sect='GFX' 'NoStreakDisp' set=($disable_notestreak_notif)
+			FGH3Config sect='GFX' 'NoParticles' set=($disable_particles)
+			FGH3Config sect='GFX' 'Performance' set=($Cheat_PerformanceMode)
+			FGH3Config sect='Misc' 'Debug' set=($enable_button_cheats)
+			ProfilingEnd <...> 'INI write x24'
+			FGH3Config \{sect='Temp' 'MigratedConfig' set=1}
+		endif
 	endif
 	
 	printf \{'Reading INI'}
@@ -477,8 +354,8 @@ script guitar_startup
 		// takes 0.038ms |:|
 		// 0 = default if not specified
 		{ sect='Player' [
-			{'Hyperspeed' #"0x1ca1ff20"=3 out=Cheat_Hyperspeed}
-			{'Autostart' #"0x1ca1ff20"=1 out=autolaunch_startnow}
+			{'Hyperspeed' out=Cheat_Hyperspeed #"0x1ca1ff20"=3}
+			{'Autostart' out=autolaunch_startnow #"0x1ca1ff20"=1}
 			{'ExitOnSongEnd' out=exit_on_song_end}
 			{'FCMode' out=FC_MODE}
 			{'EasyExpert' out=Cheat_EasyExpert}
@@ -487,9 +364,9 @@ script guitar_startup
 			{'NoFail' out=Cheat_NoFail}
 		] }
 		{ sect='GFX' [
-			{'MaxFPS' #"0x1ca1ff20"=1000 out=fps_max}
+			{'MaxFPS' out=fps_max #"0x1ca1ff20"=1000}
 			{'NoIntro' out=disable_intro}
-			{'NoIntroReadyTime' #"0x1ca1ff20"=400 out=nointro_ready_time}
+			{'NoIntroReadyTime' out=nointro_ready_time #"0x1ca1ff20"=400}
 			{'BGVideo' out=enable_video}
 			{'NoHUD' out=hudless}
 			{'KillGemsHit' out=kill_gems_on_hit}
@@ -506,7 +383,7 @@ script guitar_startup
 			{'Lefty' out=p1_lefty}
 		] }
 		{ sect='Player2' [
-			{'Device' #"0x1ca1ff20"=1 out=startup_controller2}
+			{'Device' out=startup_controller2 #"0x1ca1ff20"=1}
 			{'Lefty' out=p2_lefty}
 		] }
 	]
@@ -667,19 +544,19 @@ script guitar_startup
 		StartRendering
 		SpawnScriptLater \{autolaunch_spawned}
 	endif
-	load_highway
+	if FileExists \{'hway.pak'}
+		load_highway
+	elseif FileExists \{'pak/player.pak'}
+		load_highway \{player_status = player1_status filename = 'pak/player.pak'}
+	endif
 	if FileExists \{'hway2.pak'}
 		// wait, how did this even work if there's conflicting material names
 		load_highway \{player_status = player2_status filename = 'hway2.pak'}
-	else
-		load_highway \{player_status = player2_status}
+	elseif FileExists \{'pak/player.pak'}
+		load_highway \{player_status = player2_status filename = 'pak/player.pak'}
+	elseif FileExists \{'hway.pak'}
+		load_highway \{player_status = player2_status filename = 'hway.pak'}
 	endif
-	/*create_guitarist
-	destroy_band_member \{name = GUITARIST}
-	if ($max_num_players = 2)
-		create_guitarist \{name = BASSIST}
-		destroy_band_member \{name = BASSIST}
-	endif*///
 	Change \{tutorial_disable_hud = 0}
 endscript
 // @script | load_highway | load highway pak
@@ -709,9 +586,6 @@ endscript
 kill_dummy_bg_camera = $EmptyScript
 restore_dummy_bg_camera = $EmptyScript
 
-nullArray = []
-nullNoteArray = [0 0 0]
-nullStruct = {}
 dummy = {zone = z_viewer name = 'z_viewer' title = "viewer"}
 LevelZones = {
 	viewer = {$dummy}
@@ -732,5 +606,65 @@ script StopRendering
 	Change \{pause_no_render = 1}
 endscript
 
+nullStruct = {}
+nullArray = []
+nullNoteArray = [0 0 0]
+nullPhraseArray = [[0 0 0]]
+
+/*fastgh3_song_easy = $nullArray
+fastgh3_song_medium = $nullArray
+fastgh3_song_hard = $nullArray
+fastgh3_song_expert = $nullArray
+fastgh3_song_rhythm_easy = $nullArray
+fastgh3_song_rhythm_medium = $nullArray
+fastgh3_song_rhythm_hard = $nullArray
+fastgh3_song_rhythm_expert = $nullArray
+fastgh3_song_guitarcoop_easy = $nullArray
+fastgh3_song_guitarcoop_medium = $nullArray
+fastgh3_song_guitarcoop_hard = $nullArray
+fastgh3_song_guitarcoop_expert = $nullArray
+fastgh3_song_rhythmcoop_easy = $nullArray
+fastgh3_song_rhythmcoop_medium = $nullArray
+fastgh3_song_rhythmcoop_hard = $nullArray
+fastgh3_song_rhythmcoop_expert = $nullArray
+fastgh3_easy_star = $nullPhraseArray
+fastgh3_medium_star = $nullPhraseArray
+fastgh3_hard_star = $nullPhraseArray
+fastgh3_expert_star = $nullPhraseArray
+fastgh3_rhythm_easy_star = $nullPhraseArray
+fastgh3_rhythm_medium_star = $nullPhraseArray
+fastgh3_rhythm_hard_star = $nullPhraseArray
+fastgh3_rhythm_expert_star = $nullPhraseArray
+fastgh3_guitarcoop_easy_star = $nullPhraseArray
+fastgh3_guitarcoop_medium_star = $nullPhraseArray
+fastgh3_guitarcoop_hard_star = $nullPhraseArray
+fastgh3_guitarcoop_expert_star = $nullPhraseArray
+fastgh3_rhythmcoop_easy_star = $nullPhraseArray
+fastgh3_rhythmcoop_medium_star = $nullPhraseArray
+fastgh3_rhythmcoop_hard_star = $nullPhraseArray
+fastgh3_rhythmcoop_expert_star = $nullPhraseArray
+fastgh3_easy_starbattlemode = $nullPhraseArray
+fastgh3_medium_starbattlemode = $nullPhraseArray
+fastgh3_hard_starbattlemode = $nullPhraseArray
+fastgh3_expert_starbattlemode = $nullPhraseArray
+fastgh3_rhythm_easy_starbattlemode = $nullPhraseArray
+fastgh3_rhythm_medium_starbattlemode = $nullPhraseArray
+fastgh3_rhythm_hard_starbattlemode = $nullPhraseArray
+fastgh3_rhythm_expert_starbattlemode = $nullPhraseArray
+fastgh3_guitarcoop_easy_starbattlemode = $nullPhraseArray
+fastgh3_guitarcoop_medium_starbattlemode = $nullPhraseArray
+fastgh3_guitarcoop_hard_starbattlemode = $nullPhraseArray
+fastgh3_guitarcoop_expert_starbattlemode = $nullPhraseArray
+fastgh3_rhythmcoop_easy_starbattlemode = $nullPhraseArray
+fastgh3_rhythmcoop_medium_starbattlemode = $nullPhraseArray
+fastgh3_rhythmcoop_hard_starbattlemode = $nullPhraseArray
+fastgh3_rhythmcoop_expert_starbattlemode = $nullPhraseArray
+fastgh3_faceoffp1 = [ [ 0 2147483647 ] ]
+fastgh3_faceoffp2 = [ [ 0 2147483647 ] ]
+fastgh3_bossbattlep1 = []
+fastgh3_bossbattlep2 = []
+fastgh3_timesig = [ [ 0 4 4 ] ]
+fastgh3_fretbars = [ 0 999999999 ]
+fastgh3_markers = []*/
 
 

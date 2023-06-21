@@ -214,10 +214,10 @@ script gem_scroller\{Player = 1 training_mode = 0}
 			DataBufferPutChecksum name = replay value = <song_name>
 			//DataBufferPutChecksum name = replay value = ($current_transition)
 			DataBufferPutInt \{name = replay value = $current_num_players}
-			DataBufferPutInt \{name = replay value = $p1_ctrl}
-			DataBufferPutInt \{name = replay value = $p2_ctrl}
-			DataBufferPutChecksum \{name = replay value = $p1_part}
-			DataBufferPutChecksum \{name = replay value = $p2_part}
+			DataBufferPutInt \{name = replay value = $startup_controller}
+			DataBufferPutInt \{name = replay value = $startup_controller2}
+			DataBufferPutChecksum name = replay value = ($player1_status.part)
+			DataBufferPutChecksum name = replay value = ($player2_status.part)
 			DataBufferPutInt \{name = replay value = $disable_intro}
 			DataBufferPutInt \{name = replay value = $nointro_ready_time}
 			DataBufferPutChecksum name = replay value = <difficulty> bytes = 16
@@ -458,13 +458,18 @@ script load_songqpak\{async = 0}
 		//get_song_prefix song = <song_name>
 		//songqpak = 'pak/song.pak'
 		printf \{"Loading Song q pak"}
-		if NOT LoadPakAsync pak_name = 'pak/song.pak' Heap = heap_song no_vram async = <async>
-			DownloadContentLost
-			return
+		if FileExists \{'pak/song.pak'}
+			if NOT LoadPakAsync pak_name = 'pak/song.pak' Heap = heap_song no_vram async = <async>
+				DownloadContentLost
+				return
+			endif
+		elseif FileExists \{'pak/song.qb'}
+			LoadQB \{'pak/song.qb' heap = heap_song}
 		endif
 		Change current_song_qpak = <song_name>
 		if GotParam \{song_prefix}
-			FormatText checksumName = song_setup '%s_setup' s = <song_prefix>
+			ExtendCrc \{$current_song '_setup' out=song_setup}
+			//FormatText checksumName = song_setup '%s_setup' s = <song_prefix>
 			if ScriptExists <song_setup>
 				spawnscriptnow <song_setup>
 			endif
@@ -476,7 +481,11 @@ script unload_songqpak
 	if NOT ($current_song_qpak = None)
 		//songqpak = 'pak/song.pak'
 		printf \{"UnLoading Song q pak"}
-		UnLoadPak \{'pak/song.pak'}
+		if FileExists \{'pak/song.pak'}
+			UnLoadPak \{'pak/song.pak'}
+		elseif FileExists \{'pak/song.qb'}
+			UnLoadQB \{'pak/song.qb'}
+		endif
 		Change \{current_song_qpak = None}
 	endif
 endscript
@@ -954,15 +963,17 @@ script restart_gem_scroller\{no_render = 0}
 		if (<int> > 0)
 			Change current_num_players = <int>
 			DataBufferGetInt \{name = replay}
-			Change startup_controller = <int>
+			Change p1_ctrl = <int>
 			change playback_ctrl1 = <int>
 			DataBufferGetInt \{name = replay}
-			Change startup_controller2 = <int>
+			Change p2_ctrl = <int>
 			change playback_ctrl2 = <int>
 			DataBufferGetChecksum \{name = replay}
-			Change StructureName = player1_status part = <int>
+			//Change StructureName = player1_status part = <int>
+			Change p1_part = <checksum>
 			DataBufferGetChecksum \{name = replay}
-			Change StructureName = player2_status part = <int>
+			//Change StructureName = player2_status part = <int>
+			Change p2_part = <checksum>
 		else
 			Change \{current_num_players = 1}
 			DataBufferGetInt \{name = replay}

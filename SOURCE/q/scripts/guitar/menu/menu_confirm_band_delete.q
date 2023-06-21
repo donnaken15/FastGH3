@@ -113,25 +113,6 @@ script menu_confirm_band_delete_select_no
 endscript
 
 script menu_confirm_band_delete_select_yes
-	band_count = ($current_band)
-	GetArraySize \{$difficulty_list}
-	array_count = 0
-	begin
-		get_difficulty_text_nl difficulty = ($difficulty_list [<array_count>])
-		FormatText checksumName = bandname 'p1_career_band%i_%d' i = ($num_career_bands + 1)d = <difficulty_text_nl> AddToStringLookup = true
-		pop_bandtags bandname = <bandname>
-		FormatText checksumName = bandname 'p1_career_band%i_%d' i = <band_count> d = <difficulty_text_nl> AddToStringLookup = true
-		push_bandtags bandname = <bandname> mode = p1_career
-		FormatText checksumName = bandname 'p2_career_band%i_%d' i = ($num_career_bands + 1)d = <difficulty_text_nl> AddToStringLookup = true
-		pop_bandtags bandname = <bandname>
-		FormatText checksumName = bandname 'p2_career_band%i_%d' i = <band_count> d = <difficulty_text_nl> AddToStringLookup = true
-		push_bandtags bandname = <bandname> mode = p2_career
-		FormatText checksumName = default_bandname 'band%i_info_p1_career' i = <band_count> AddToStringLookup = true
-		SetGlobalTags <default_bandname> params = {($default_bandtags)}
-		FormatText checksumName = default_bandname 'band%i_info_p2_career' i = <band_count> AddToStringLookup = true
-		SetGlobalTags <default_bandname> params = {($default_bandtags)}
-		array_count = (<array_count> + 1)
-	repeat <array_Size>
 	if IsWinPort
 		SaveToMemoryCard \{FileName = $memcard_file_name filetype = Progress usepaddingslot = Always}
 	endif

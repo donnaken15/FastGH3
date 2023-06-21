@@ -167,10 +167,10 @@ endscript
 #"0x15a8b641" = ''
 
 script #"0xad13e27c"
-	FormatText checksumName = Scr '%s' s = ($#"0x4faef07e")
-	if (ScriptExists <Scr>)
-		spawnscriptnow <Scr>
-	endif
+	//FormatText checksumName = Scr '%s' s = ($#"0x4faef07e")
+	//if (ScriptExists <Scr>)
+	//	spawnscriptnow <Scr>
+	//endif
 endscript
 #"0xde5731fa" = {
 	create = #"0xc662b917"
@@ -233,7 +233,7 @@ script wait_beats\{1}
 		last_beat_flip = $beat_flip
 		begin
 			cur_beat_flip = $beat_flip
-			if (<last_beat_flip> != <cur_beat_flip>)
+			if NOT (<last_beat_flip> = <cur_beat_flip>)
 				break
 			endif
 			wait 1 gameframe
@@ -300,7 +300,7 @@ endscript
 
 // TODO: only print necessary info
 script PrintPlayer\{player_status = player1_status}
-	/**player_status = $<player_status>
+	/**/player_status = $<player_status>
 	printstruct {
 		player = {
 			controller = (<player_status>.controller)

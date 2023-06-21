@@ -1564,7 +1564,7 @@ class Program
 									delay = Convert.ToInt32(float.Parse(chart.Song["Offset"].Value) * 1000);
 							}
 							catch
-                            {
+							{
 								// WHY IS THIS STILL NOT WORKING
 								// https://github.com/donnaken15/FastGH3/issues/7#issuecomment-1595513766
 							}

@@ -108,14 +108,14 @@ script setup_highway\{Player = 1}
 	fe = ($highway_playline - $highway_height)
 	fs = (<fe> + $highway_fade)
 	Set2DHighwayFade start = <fs> end = <fe> id = <highway_name> Player = <Player>
-	Pos = ((640 * (1.0, 0.0))+ ($highway_playline * (0.0, 1.0)))
-	now_scale = (($nowbar_scale_x * (1.0, 0.0))+ ($nowbar_scale_y * (0.0, 1.0)))
-	lpos = (($sidebar_x * (1.0, 0.0))+ ($sidebar_y * (0.0, 1.0)))
+	Pos = ((640 * (1.0, 0.0)) + ($highway_playline * (0.0, 1.0)))
+	now_scale = (($nowbar_scale_x * (1.0, 0.0)) + ($nowbar_scale_y * (0.0, 1.0)))
+	lpos = (($sidebar_x * (1.0, 0.0)) + ($sidebar_y * (0.0, 1.0)))
 	langle = ($sidebar_angle)
-	rpos = ((((640.0 - $sidebar_x)+ 640.0)* (1.0, 0.0))+ ($sidebar_y * (0.0, 1.0)))
+	rpos = ((((640.0 - $sidebar_x) + 640.0) * (1.0, 0.0)) + ($sidebar_y * (0.0, 1.0)))
 	rangle = (0.0 - ($sidebar_angle))
-	Scale = (($sidebar_x_scale * (1.0, 0.0))+ ($sidebar_y_scale * (0.0, 1.0)))
-	rscale = (((0 - $sidebar_x_scale)* (1.0, 0.0))+ ($sidebar_y_scale * (0.0, 1.0)))
+	Scale = (($sidebar_x_scale * (1.0, 0.0)) + ($sidebar_y_scale * (0.0, 1.0)))
+	rscale = (((0 - $sidebar_x_scale) * (1.0, 0.0))+ ($sidebar_y_scale * (0.0, 1.0)))
 	ExtendCrc sidebar_container_left <player_text> out = cont
 	CreateScreenElement {
 		Type = ContainerElement
@@ -139,7 +139,7 @@ script setup_highway\{Player = 1}
 		z_priority = 3
 	}
 	Set2DGemFade id = <name> Player = <Player>
-	if ($Cheat_PerformanceMode = 0)
+	if NOT ($Cheat_PerformanceMode = 1)
 		ExtendCrc starpower_container_left <player_text> out = cont
 		CreateScreenElement {
 			Type = ContainerElement
@@ -150,8 +150,8 @@ script setup_highway\{Player = 1}
 			just = [center bottom]
 			z_priority = 3
 		}
-		starpower_pos = (((-55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
-		starpower_scale = (((1.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_pos = (((-55.0 * $starpower_fx_scale) * (1.0, 0.0)) + ((55.0 * $starpower_fx_scale) * (0.0, 1.0)))
+		starpower_scale = (((1.0 * $starpower_fx_scale) * (1.0, 0.0)) + ((1.1 * $starpower_fx_scale) * (0.0, 1.0)))
 		ExtendCrc sidebar_left_glow <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
@@ -164,8 +164,8 @@ script setup_highway\{Player = 1}
 			just = [center bottom]
 			z_priority = 0
 		}
-		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
-		starpower_scale = (((-0.5 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_pos = (((0.0 * $starpower_fx_scale) * (1.0, 0.0)) + ((0.0 * $starpower_fx_scale) * (0.0, 1.0)))
+		starpower_scale = (((-0.5 * $starpower_fx_scale) * (1.0, 0.0)) + ((0.9 * $starpower_fx_scale) * (0.0, 1.0)))
 		ExtendCrc sidebar_left_Lightning01 <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
@@ -179,8 +179,7 @@ script setup_highway\{Player = 1}
 			just = [center top]
 			z_priority = 4
 		}
-		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.0 * $starpower_fx_scale)* (0.0, 1.0)))
-		starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_scale = (((2.0 * $starpower_fx_scale) * (1.0, 0.0)) + ((0.9 * $starpower_fx_scale) * (0.0, 1.0)))
 		ExtendCrc sidebar_left_Lightning02 <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
@@ -218,7 +217,7 @@ script setup_highway\{Player = 1}
 		z_priority = 3
 	}
 	Set2DGemFade id = <name> Player = <Player>
-	if ($Cheat_PerformanceMode = 0)
+	if NOT ($Cheat_PerformanceMode = 1)
 		ExtendCrc starpower_container_right <player_text> out = cont
 		CreateScreenElement {
 			Type = ContainerElement
@@ -243,8 +242,8 @@ script setup_highway\{Player = 1}
 			just = [center bottom]
 			z_priority = 0
 		}
-		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
-		starpower_scale = (((0.5 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0)) + ((0.0 * $starpower_fx_scale) * (0.0, 1.0)))
+		starpower_scale = (((0.5 * $starpower_fx_scale)* (1.0, 0.0)) + ((0.9 * $starpower_fx_scale) * (0.0, 1.0)))
 		ExtendCrc sidebar_Right_Lightning01 <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
@@ -258,8 +257,7 @@ script setup_highway\{Player = 1}
 			just = [center top]
 			z_priority = 4
 		}
-		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.0 * $starpower_fx_scale)* (0.0, 1.0)))
-		starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
+		starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0)) + ((0.9 * $starpower_fx_scale) * (0.0, 1.0)))
 		ExtendCrc sidebar_Right_Lightning02 <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
@@ -278,6 +276,7 @@ script setup_highway\{Player = 1}
 		ExtendCrc starpower_container_right <player_text> out = cont
 		DoScreenElementMorph id = <cont> alpha = 0
 	endif
+	AddParams \{names = ['_base' '_string' '_lip' '_mid' '_neck' '_head']}
 	GetArraySize \{$gem_colors}
 	array_count = 0
 	begin
@@ -289,12 +288,13 @@ script setup_highway\{Player = 1}
 				<pos2d> = ($button_up_models.<Color>.pos_2d)
 			endif
 			Pos = (640.0, 643.0)
-			FormatText checksumName = name_base '%s_base%p' s = ($button_up_models.<Color>.name_string)p = <player_text> AddToStringLookup = true
-			FormatText checksumName = name_string '%s_string%p' s = ($button_up_models.<Color>.name_string)p = <player_text> AddToStringLookup = true
-			FormatText checksumName = name_lip '%s_lip%p' s = ($button_up_models.<Color>.name_string)p = <player_text> AddToStringLookup = true
-			FormatText checksumName = name_mid '%s_mid%p' s = ($button_up_models.<Color>.name_string)p = <player_text> AddToStringLookup = true
-			FormatText checksumName = name_neck '%s_neck%p' s = ($button_up_models.<Color>.name_string)p = <player_text> AddToStringLookup = true
-			FormatText checksumName = name_head '%s_head%p' s = ($button_up_models.<Color>.name_string)p = <player_text> AddToStringLookup = true
+			j = 0
+			begin
+				ExtendCRC name (<names>[<j>]) out = tmpname
+				ExtendCRC ($button_up_models.<Color>.name) (<names>[<j>]) out = tmp
+				ExtendCRC <tmp> <player_text> out = <tmpname>
+				Increment \{j}
+			repeat 6
 			<Pos> = (((<pos2d>.(1.0, 0.0))* (1.0, 0.0))+ (1024 * (0.0, 1.0)))
 			if ($<player_status>.lefthanded_button_ups = 1)
 				<playline_scale> = (((0 - <now_scale>.(1.0, 0.0))* (1.0, 0.0))+ (<now_scale>.(0.0, 1.0) * (0.0, 1.0)))
@@ -371,7 +371,7 @@ script setup_highway\{Player = 1}
 				z_priority = 2
 			}
 		endif
-		array_count = (<array_count> + 1)
+		Increment \{array_count}
 	repeat <array_Size>
 	SpawnScriptLater move_highway_2d params = {<...> }
 	create_highway_prepass <...>
@@ -431,7 +431,7 @@ script destroy_highway_prepass
 endscript
 
 script disable_highway_prepass
-	GetDisplaySettings
+	/*GetDisplaySettings
 	if (<widescreen> = true)
 		if ViewportExists \{id = bg_viewport}
 			if PrepassViewportExists \{viewport = bg_viewport}
@@ -441,11 +441,11 @@ script disable_highway_prepass
 				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = FALSE}
 			endif
 		endif
-	endif
+	endif*/
 endscript
 
 script enable_highway_prepass
-	GetDisplaySettings
+	/*GetDisplaySettings
 	if (<widescreen> = true)
 		if ViewportExists \{id = bg_viewport}
 			if PrepassViewportExists \{viewport = bg_viewport}
@@ -455,7 +455,7 @@ script enable_highway_prepass
 				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = true}
 			endif
 		endif
-	endif
+	endif*/
 endscript
 start_2d_move = 0
 
@@ -559,12 +559,12 @@ script move_highway_camera_to_default\{Player = 1}
 endscript
 
 script disable_bg_viewport_properties
-	SetViewportProperties \{viewport = bg_viewport clear_colorbuffer = true}
+	/*SetViewportProperties \{viewport = bg_viewport clear_colorbuffer = true}
 	SetViewportProperties \{viewport = bg_viewport clear_depthstencilbuffer = true}
 	if PrepassViewportExists \{viewport = bg_viewport}
 		SetViewportProperties \{viewport = bg_viewport prepass = 0 Active = FALSE}
 		SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = FALSE}
-	endif
+	endif*/
 endscript
 
 script disable_highway
@@ -597,7 +597,7 @@ script disable_bg_viewport
 endscript
 
 script enable_bg_viewport_properties
-	if PrepassViewportExists \{viewport = bg_viewport}
+	/*if PrepassViewportExists \{viewport = bg_viewport}
 		SetViewportProperties \{viewport = bg_viewport clear_colorbuffer = FALSE}
 		SetViewportProperties \{viewport = bg_viewport clear_depthstencilbuffer = FALSE}
 		SetViewportProperties \{viewport = bg_viewport no_resolve_depthstencilbuffer = true}
@@ -609,7 +609,7 @@ script enable_bg_viewport_properties
 		SetViewportProperties \{viewport = bg_viewport clear_depthstencilbuffer = true}
 		SetViewportProperties \{viewport = bg_viewport no_resolve_depthstencilbuffer = true}
 		SetViewportProperties \{viewport = bg_viewport no_resolve_colorbuffer = true}
-	endif
+	endif*/
 	TOD_Proxim_Update_LightFX_Viewport \{fxParam = $Default_TOD_Manager viewport = bg_viewport time = 0}
 endscript
 
@@ -669,18 +669,10 @@ Highway_Fader_Params_2p = {
 script setup_bg_viewport
 	printf \{"Setting bg viewport"}
 	destroy_bg_viewport
-	if isXenon
-		if ($current_num_players = 1)
-			AddParams \{$Highway_Fader_Params}
-		else
-			AddParams \{$Highway_Fader_Params_2p}
-		endif
+	if ($current_num_players = 1)
+		AddParams \{$Highway_Fader_Params}
 	else
-		if ($current_num_players = 1)
-			AddParams \{$Highway_Fader_Params_ps3}
-		else
-			AddParams \{$Highway_Fader_Params_2p_ps3}
-		endif
+		AddParams \{$Highway_Fader_Params_2p}
 	endif
 	Pos = (2000.0, 300.0)
 	Pos = (<Pos> + <clip_offset>)
