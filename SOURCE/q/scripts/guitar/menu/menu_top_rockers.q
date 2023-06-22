@@ -2,13 +2,13 @@ tr_max_band_characters = 14
 num_top_scores = 5
 g_tr_went_past_max_width = 0
 
-script create_top_rockers_menu\{for_options = 0}
+script create_top_rockers_menu
 	disable_pause
 	create_menu_backdrop \{texture = toprockers_bg}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = tr_container Pos = (0.0, 0.0)}
 	menu_top_rockers_create_poster
 	new_score = -1
-	if (<for_options> = 0)
+	if NOT GotParam \{practice}
 		menu_top_rockers_check_for_new_top_score
 	endif
 	menu_top_rockers_create_paper highlight_index = (<new_score> + 1)

@@ -413,7 +413,9 @@ public partial class settings : Form
 			RTlbl.Enabled = true;
 			RTms.Enabled = true;
 		}
-		speed.Value = (decimal/*wtf*/)Convert.ToSingle(Program.cfg("Player", "Speed", "1.0")) * 100; // current_speedfactor
+		float _ = Convert.ToSingle(Program.cfg("Player", "Speed", "1.0")) * 100;
+		if (_ <= 0) _ = 100;
+		speed.Value = (decimal/*wtf*/)_; // current_speedfactor
 		tLb.SetItemChecked((int)t.VerboseLog, vl2);
 		tLb.SetItemChecked((int)t.NoShake, Program.cfg("GFX", t.NoShake.ToString(), 0) == 1);
 		for (int i = 0; i < modc; i++)

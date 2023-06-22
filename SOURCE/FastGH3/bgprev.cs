@@ -9,7 +9,7 @@ public partial class bgprev : Form
 		BackColor = Color.Transparent,
 		BackgroundImageLayout = ImageLayout.Stretch,
 		Dock = DockStyle.Fill,
-		ImageLocation = "https://donnaken15.tk/fastgh3/gameBlank.png",
+		ImageLocation = "https://donnaken15.cf/fastgh3/gameBlank.png",
 		Location = new Point(0, 0),
 		Size = size,
 		SizeMode = PictureBoxSizeMode.Zoom

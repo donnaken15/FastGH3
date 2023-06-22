@@ -374,7 +374,7 @@ mp_faceoff_pause_fs = {
 mp_faceoff_pause_options_fs = {
 	create = create_pause_menu
 	create_params = {
-		for_options = 1
+		submenu = options
 	}
 	Destroy = destroy_pause_menu
 	actions = [

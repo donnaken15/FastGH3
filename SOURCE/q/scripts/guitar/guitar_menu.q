@@ -29,19 +29,19 @@ menu_text_back = 'Back'
 menu_text_nav = 'Up/Down'
 script common_control_helpers
 	if GotParam \{select}
-		add_user_control_helper \{text = $menu_text_sel button = green z = 100}
+		add_user_control_helper \{z = 100 button = green text = $menu_text_sel}
 	endif
 	if GotParam \{confirm}
-		add_user_control_helper \{text = $menu_text_conf button = green z = 100}
+		add_user_control_helper \{z = 100 button = green text = $menu_text_conf}
 	endif
 	if GotParam \{continue}
-		add_user_control_helper \{text = 'Continue' button = green z = 100}
+		add_user_control_helper \{z = 100 button = green text = 'Continue'}
 	endif
 	if GotParam \{back}
-		add_user_control_helper \{text = $menu_text_back button = red z = 100}
+		add_user_control_helper \{z = 100 button = red text = $menu_text_back}
 	endif
 	if GotParam \{nav}
-		add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100}
+		add_user_control_helper \{z = 100 button = strumbar text = $menu_text_nav}
 	endif
 endscript
 
@@ -331,12 +331,13 @@ menu_focus_color = [ 255 127 0 224 ]
 default_menu_unfocus_color = [ 255 255 255 191 ]
 default_menu_focus_color = [ 255 127 0 224 ]
 
-script new_pause_menu_button \{cont_params = {} event_handlers = []}
+script new_pause_menu_button \{cont_params = {} event_handlers = [] fit = (250.0, 0.0)}
 	id2 = <id>
 	CreateScreenElement {
 		<cont_params>
 		event_handlers = <event_handlers>
 	}
+	//printstruct <...>
 	CreateScreenElement {
 		Type = TextElement
 		parent = <id>
@@ -352,7 +353,7 @@ script new_pause_menu_button \{cont_params = {} event_handlers = []}
 	GetScreenElementDims id = <id>
 	fit_text_in_rectangle {
 		id = <id>
-		dims = ((250.0, 0.0) + <height> * (0.0, 1.0))
+		dims = (<fit> + <height> * (0.0, 1.0))
 		only_if_larger_x = 1
 		start_x_scale = (<scale>.(1.0, 0.0))
 		start_y_scale = (<scale>.(0.0, 1.0))
@@ -396,7 +397,122 @@ endscript
 script set_unfocus_color\{rgba = $menu_unfocus_color}
 	Change menu_unfocus_color = <rgba>
 endscript
-script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
+
+extras_menu = [
+	// guide
+	// (NO NAME) = variable to set
+	// name = display name
+	// type = type of item (bool, int, etc)
+	// min = minimum value allowed (int)
+	// max = maximum value allowed (int)
+	// sect = INI section
+	// key = INI key
+	// restart = (1) requires restarting the song (2) requires restarting game?
+	{ Cheat_Hyperspeed name='Hyperspeed' type=int min=-13 max=10 sect='Player' restart=1}
+	{ fps_max name='Frame Rate' type=int min=0 max =1000 step = 5 sect='GFX' key='MaxFPS' }
+	{ hudless name='No HUD' type=bool sect='GFX' key='NoHUD' restart=1}
+	{ disable_intro name='No Intro' type=bool sect='GFX' key='NoIntro' restart=1}
+	{ disable_shake name='No Highway Shake' type=bool sect='GFX' key='NoShake'}
+	{ exit_on_song_end name='Exit on Song End' type=bool sect='Player' key='ExitOnSongEnd'}
+	{ kill_gems_on_hit name='Hide Gems Upon Hit' type=bool sect='GFX' key='KillGemsHit'}
+	{ enable_button_cheats name='Debug Menu' type=bool key='Debug'}
+	{ Cheat_NoFail name='No Fail' type=bool sect='Player' key='NoFail' }
+	{ Cheat_EasyExpert name='Easy Expert' type=bool sect='Player' key='EasyExpert' restart=1 }
+	{ Cheat_PrecisionMode name='Precision' type=bool sect='Player' key='Precision' restart=1 }
+]
+script extra_format
+	FormatText textname=strval '%s' s=<#"0x00000000">
+	switch <type>
+		case bool
+			if (<#"0x00000000"> = 1)
+				strval = "On"
+			elseif (<#"0x00000000"> = 0)
+				strval = "Off"
+			elseif (<#"0x00000000"> = true)
+				strval = "On"
+			elseif (<#"0x00000000"> = false)
+				strval = "Off"
+			endif
+	endswitch
+	return strval = <strval>
+endscript
+script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart=0}
+	if (<key> = '')
+		key = <name>
+	endif
+	switch <type>
+		case bool
+			if (<b> = choose)
+				//SoundEvent \{event = ui_sfx_select}
+				value = ($<#"0x00000000">)
+				if (<value> = 1)
+					value=0
+					check=0
+				elseif (<value> = 0)
+					value=1
+					check=1
+				elseif (<value> = true)
+					value=false
+					check=0
+				elseif (<value> = false)
+					value=true
+					check=1
+				endif
+				change globalname=<#"0x00000000"> newvalue=<value>
+				checkbox_sound <check>
+			endif
+		case int
+			switch <b>
+				// can cases fall into others? x to doubt
+				case choose
+					if ($<#"0x00000000"> >= <max>)
+						change globalname=<#"0x00000000"> newvalue=<min>
+					else
+						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> + <step>)
+					endif
+				case left
+					if ($<#"0x00000000"> <= <min>)
+						return
+					else
+						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> - <step>)
+					endif
+				case right
+					if ($<#"0x00000000"> >= <max>)
+						return
+					else
+						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> + <step>)
+					endif
+			endswitch
+			generic_menu_up_or_down_sound
+	endswitch
+	if (<restart> = 1)
+		DoScreenElementMorph \{id=extras_warning_container alpha=1 time=0.2}
+	endif
+	FGH3Config sect=<sect> <key> set=($<#"0x00000000">)
+	extra_format ($<#"0x00000000">) type = <type>
+	FormatText textname=text '%s: %v' s=<name> v=<strval>
+	if (<#"0x00000000"> = fps_max) // custom format ok_bud
+		if ($<#"0x00000000"> = 0)
+			FormatText textname=text '%s: Unlimited' s=<name>
+		endif
+	endif
+	if (<#"0x00000000"> = gem_scalar)
+		change gem_start_scale1 = ($<#"0x00000000"> * $gem_scale_orig1)
+		change gem_start_scale2 = ($<#"0x00000000"> * $gem_scale_orig2)
+	endif
+	if (<#"0x00000000"> = Cheat_NoFail)
+		ExtendCrc #"0x87004517" ($player1_status.text) out=id2
+		SetScreenElementProps id=<id2> alpha=($<#"0x00000000">)
+		ExtendCrc #"0x5b77b0ef" ($player1_status.text) out=id2
+		SetScreenElementProps id=<id2> alpha=($<#"0x00000000">)
+	endif
+	if ScreenElementExists id=<id>
+		SetScreenElementProps id=<id> text=<text>
+	endif
+endscript
+
+script create_pause_menu\{Player = 1 submenu = none}
+	// I hate big scripts like this
 	player_device = ($last_start_pressed_device)
 	if ($player1_device = <player_device>)
 		<Player> = 1
@@ -405,7 +521,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 	endif
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
-	if (<for_options> = 0)
+	if (<submenu> = none)
 		if ($view_mode)
 			return
 		endif
@@ -413,9 +529,6 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		safe_create_gh3_pause_menu
 	else
 		kill_start_key_binding
-		flame_handlers = [
-			{pad_back ui_flow_manager_respond_to_action params = {action = go_back}}
-		]
 	endif
 	if IsWinPort
 		Change \{winport_in_top_pause_menu = 1}
@@ -446,9 +559,12 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		vmenuid = vmenu_pause
 		menu_pos = <menu_pos>
 		rot_angle = 0
-		event_handlers = <flame_handlers>
+		event_handlers = [
+			{pad_back ui_flow_manager_respond_to_action params = {action = go_back}}
+		]
+		dims = (350,600)
 		spacing = <spacing>
-		use_backdrop = (0)
+		use_backdrop = 0
 		exclusive_device = <player_device>
 	}
 	create_pause_menu_frame z = (<pause_z> - 10)
@@ -456,8 +572,8 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		if GotParam \{banner_text}
 			pause_player_text = <banner_text>
 		else
-			if (<for_options> = 0)
-				if (<for_practice> = 1)
+			if (<submenu> = none)
+				if GotParam \{practice}
 					<pause_player_text> = "Paused"
 				else
 					if NOT isSinglePlayerGame
@@ -466,11 +582,24 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 						<pause_player_text> = "Paused"
 					endif
 				endif
-			else
+			elseif (<submenu> = options)
 				pause_player_text = "Options"
+			elseif (<submenu> = extras)
+				pause_player_text = "Extras"
+			else
+				pause_player_text = "Unknown menu"
 			endif
 		endif
 	endif
+	/*CreateScreenElement {
+		Type = SpriteElement
+		parent = pause_menu_frame_container
+		texture = black
+		alpha = 0.2
+		pos = (640,360)
+		dims = (1280,720)
+		z = (<pause_z> - 10)
+	}*///
 	text_scale = (0.9, 0.9)
 	font = fontgrid_title_gh3
 	CreateScreenElement {
@@ -482,6 +611,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		Pos = (<menu_pos> + (270,-17))
 		Scale = 1.2
 		rgba = [255 255 255 255]
+		z = (<pause_z> + 10)
 	}
 	CreateScreenElement {
 		Type = SpriteElement
@@ -491,15 +621,18 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 		Pos = (<menu_pos> - (10,30))
 		Scale = 0.5
 	}
-	container_params = {Type = ContainerElement parent = vmenu_pause dims = (0.0, 100.0)}
-	params_params = { // Sonic's Sonic
-		cont_params = <container_params>
+	params_params = {
+		cont_params = {Type = ContainerElement parent = vmenu_pause dims = (0.0, 100.0)}
 		font = <font>
 		scale = <text_scale>
 		z = <pause_z>
 		exclusive_device = <player_device>
+		fit = (300,0)
 	}
-	if (<for_options> = 0)
+	
+	// PAUSE MENU & SUBMENUS
+	
+	if (<submenu> = none)
 		new_pause_menu_button {
 			<params_params>
 			id = pause_resume
@@ -522,7 +655,7 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				text = 'Restart'
 			}
 		endif
-		if (<for_practice> = 0)
+		if NOT GotParam \{practice}
 			if ($is_network_game = 0)
 				if (($game_mode = p1_career & $boss_battle = 0)|| ($game_mode = p1_quickplay))
 					new_pause_menu_button {
@@ -578,18 +711,6 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				]
 				text = 'Exit'
 			}
-			if ($enable_button_cheats = 1)
-				new_pause_menu_button {
-					<params_params>
-					id = pause_debug_menu
-					event_handlers = [
-						{focus retail_menu_focus params = {id = pause_debug_menu}}
-						{unfocus retail_menu_unfocus params = {id = pause_debug_menu}}
-						{pad_choose ui_flow_manager_respond_to_action params = {action = select_debug_menu}}
-					]
-					text = '__debug'
-				}
-			endif
 		else
 			FormatText textname = text 'Return to %s' s = ($richpres_modes.$practice_last_mode.#"0x00000000") // ez
 			new_pause_menu_button {
@@ -643,145 +764,222 @@ script create_pause_menu\{Player = 1 for_options = 0 for_practice = 0}
 				text = 'Quit'
 			}
 		endif
+		if ($enable_button_cheats = 1)
+			new_pause_menu_button {
+				<params_params>
+				id = pause_debug_menu
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_debug_menu}}
+					{unfocus retail_menu_unfocus params = {id = pause_debug_menu}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_debug_menu}}
+				]
+				text = '__debug'
+			}
+		endif
 		add_user_control_helper \{text = $menu_text_sel button = green z = 100000}
 		add_user_control_helper \{text = 'Unpause' button = start z = 100000}
 		add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100000}
 	else
-		<fit_dims> = (400.0, 0.0)
-		params_params = {
-			cont_params = {
-				Type = ContainerElement
-				parent = vmenu_pause
-				dims = (0.0, 100.0)
-			}
-			font = <font>
-			scale = <text_scale>
-			z = <pause_z>
-			exclusive_device = <player_device>
-		}
-		new_pause_menu_button {
-			<params_params>
-			id = options_audio
-			event_handlers = [
-				{focus retail_menu_focus params = {id = options_audio}}
-				{focus generic_menu_up_or_down_sound}
-				{unfocus retail_menu_unfocus params = {id = options_audio}}
-				{pad_choose ui_flow_manager_respond_to_action params = {action = select_audio_settings create_params = {Player = <Player>}}}
-			]
-			text = 'Volume'
-		}
-		new_pause_menu_button {
-			<params_params>
-			id = options_calibrate_lag
-			event_handlers = [
-				{focus retail_menu_focus params = {id = options_calibrate_lag}}
-				{focus generic_menu_up_or_down_sound}
-				{unfocus retail_menu_unfocus params = {id = options_calibrate_lag}}
-				{pad_choose ui_flow_manager_respond_to_action params = {action = select_calibrate_lag create_params = {Player = <Player>}}}
-			]
-			text = 'Calibrate video lag'
-		}
-		new_pause_menu_button {
-			<params_params>
-			id = winport_options_calibrate_lag
-			event_handlers = [
-				{focus retail_menu_focus params = {id = winport_options_calibrate_lag}}
-				{focus generic_menu_up_or_down_sound}
-				{unfocus retail_menu_unfocus params = {id = winport_options_calibrate_lag}}
-				{pad_choose ui_flow_manager_respond_to_action params = {action = winport_select_calibrate_lag create_params = {Player = <Player>}}}
-			]
-			text = 'Calibrate audio lag'
-		}
-		if IsGuitarController controller = <player_device>
-			if NOT WinPortSioIsKeyboard deviceNum = <player_device>
-				new_pause_menu_button {
-					<params_params>
-					id = options_calibrate_whammy
-					event_handlers = [
-						{focus retail_menu_focus params = {id = options_calibrate_whammy}}
-						{focus generic_menu_up_or_down_sound}
-						{unfocus retail_menu_unfocus params = {id = options_calibrate_whammy}}
-						{pad_choose ui_flow_manager_respond_to_action params = {action = select_calibrate_whammy_bar create_params = {Player = <Player> popup = 1}}}
-					]
-					text = 'Calibrate whammy'
-				}
-			endif
-		endif
-		if isSinglePlayerGame
-			lefty_flip_text = "Lefty flip:"
-		else
-			if (<Player> = 1)
-				lefty_flip_text = "P1 Lefty:"
-			else
-				lefty_flip_text = "P2 Lefty:"
-			endif
-		endif
-		CreateScreenElement {
-			Type = ContainerElement
-			parent = vmenu_pause
-			dims = (0.0, 100.0)
-			event_handlers = [
-				{focus retail_menu_focus params = {id = pause_options_lefty}}
-				{focus generic_menu_up_or_down_sound}
-				{unfocus retail_menu_unfocus params = {id = pause_options_lefty}}
-				{pad_choose pause_lefty_toggle params = {player = <player>}}
-			]
-		}
-		<lefty_container> = <id>
-		CreateScreenElement {
-			Type = TextElement
-			parent = <lefty_container>
-			id = pause_options_lefty
-			font = <font>
-			Scale = <text_scale>
-			rgba = $menu_unfocus_color
-			text = <lefty_flip_text>
-			just = [left top]
-			z_priority = <pause_z>
-			exclusive_device = <player_device>
-		}
-		GetScreenElementDims id = <id>
-		fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-		new_pause_menu_button {
-			<params_params>
-			id = options_exit
-			event_handlers = [
-				{focus retail_menu_focus params = {id = options_exit}}
-				{focus generic_menu_up_or_down_sound}
-				{unfocus retail_menu_unfocus params = {id = options_exit}}
-				{pad_choose ui_flow_manager_respond_to_action params = {action = go_back}}
-			]
-			text = 'Back'
-		}
-		if (<Player> = 1)
-			if ($p1_lefty = 1)
-				lefty_tex = options_controller_check
-			else
-				lefty_tex = options_controller_x
-			endif
-		else
-			if ($p2_lefty = 1)
-				lefty_tex = options_controller_check
-			else
-				lefty_tex = options_controller_x
-			endif
-		endif
-		displaySprite {
-			parent = <lefty_container>
-			tex = <lefty_tex>
-			id = pause_lefty_check
-			just = [center center]
-			z = (<pause_z> + 10)
-		}
-		GetScreenElementDims \{id = pause_options_lefty}
-		<id> ::SetProps Pos = (<width> * (1.0, 0.0) + (22.0, 24.0))
 		add_user_control_helper \{text = $menu_text_sel button = green z = 100000}
 		add_user_control_helper \{text = $menu_text_back button = red z = 100000}
+		switch <submenu>
+			case options
+				<fit_dims> = (400.0, 0.0)
+				new_pause_menu_button {
+					<params_params>
+					id = options_audio
+					event_handlers = [
+						{focus retail_menu_focus params = {id = options_audio}}
+						{focus generic_menu_up_or_down_sound}
+						{unfocus retail_menu_unfocus params = {id = options_audio}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = select_audio_settings create_params = {Player = <Player>}}}
+					]
+					text = 'Volume'
+				}
+				new_pause_menu_button {
+					<params_params>
+					id = options_calibrate_lag
+					event_handlers = [
+						{focus retail_menu_focus params = {id = options_calibrate_lag}}
+						{focus generic_menu_up_or_down_sound}
+						{unfocus retail_menu_unfocus params = {id = options_calibrate_lag}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = select_calibrate_lag create_params = {Player = <Player>}}}
+					]
+					text = 'Calibrate video lag'
+				}
+				new_pause_menu_button {
+					<params_params>
+					id = winport_options_calibrate_lag
+					event_handlers = [
+						{focus retail_menu_focus params = {id = winport_options_calibrate_lag}}
+						{focus generic_menu_up_or_down_sound}
+						{unfocus retail_menu_unfocus params = {id = winport_options_calibrate_lag}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = winport_select_calibrate_lag create_params = {Player = <Player>}}}
+					]
+					text = 'Calibrate audio lag'
+				}
+				if IsGuitarController controller = <player_device>
+					if NOT WinPortSioIsKeyboard deviceNum = <player_device>
+						new_pause_menu_button {
+							<params_params>
+							id = options_calibrate_whammy
+							event_handlers = [
+								{focus retail_menu_focus params = {id = options_calibrate_whammy}}
+								{focus generic_menu_up_or_down_sound}
+								{unfocus retail_menu_unfocus params = {id = options_calibrate_whammy}}
+								{pad_choose ui_flow_manager_respond_to_action params = {action = select_calibrate_whammy_bar create_params = {Player = <Player> popup = 1}}}
+							]
+							text = 'Calibrate whammy'
+						}
+					endif
+				endif
+				if isSinglePlayerGame
+					lefty_flip_text = "Lefty flip:"
+				else
+					if (<Player> = 1)
+						lefty_flip_text = "P1 Lefty:"
+					else
+						lefty_flip_text = "P2 Lefty:"
+					endif
+				endif
+				CreateScreenElement {
+					Type = ContainerElement
+					parent = vmenu_pause
+					dims = (0.0, 100.0)
+					event_handlers = [
+						{focus retail_menu_focus params = {id = pause_options_lefty}}
+						{focus generic_menu_up_or_down_sound}
+						{unfocus retail_menu_unfocus params = {id = pause_options_lefty}}
+						{pad_choose pause_lefty_toggle params = {player = <player>}}
+					]
+				}
+				<lefty_container> = <id>
+				CreateScreenElement {
+					Type = TextElement
+					parent = <lefty_container>
+					id = pause_options_lefty
+					font = <font>
+					Scale = <text_scale>
+					rgba = $menu_unfocus_color
+					text = <lefty_flip_text>
+					just = [left top]
+					z_priority = <pause_z>
+					exclusive_device = <player_device>
+				}
+				GetScreenElementDims id = <id>
+				fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
+				new_pause_menu_button {
+					<params_params>
+					id = options_exit
+					event_handlers = [
+						{focus retail_menu_focus params = {id = options_exit}}
+						{focus generic_menu_up_or_down_sound}
+						{unfocus retail_menu_unfocus params = {id = options_exit}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = go_back}}
+					]
+					text = 'Back'
+				}
+				if (<Player> = 1)
+					if ($p1_lefty = 1)
+						lefty_tex = options_controller_check
+					else
+						lefty_tex = options_controller_x
+					endif
+				else
+					if ($p2_lefty = 1)
+						lefty_tex = options_controller_check
+					else
+						lefty_tex = options_controller_x
+					endif
+				endif
+				displaySprite {
+					parent = <lefty_container>
+					tex = <lefty_tex>
+					id = pause_lefty_check
+					just = [center center]
+					z = (<pause_z> + 10)
+				}
+				GetScreenElementDims \{id = pause_options_lefty}
+				<id> ::SetProps Pos = (<width> * (1.0, 0.0) + (22.0, 24.0))
+			case extras
+				//params_params = {<params_params> scale=0.7}
+				
+				// toggleables
+				menu = ($extras_menu)
+				GetArraySize \{menu}
+				i = 0
+				begin
+					item = (<menu>[<i>])
+					value = (<item>.#"0x00000000")
+					value = ($<value>) // wtf
+					extra_format <value> type = (<item>.type)
+					FormatText textname=text '%s: %v' s=(<item>.name) v=<strval>
+					FormatText checksumname=exid 'extras_%i' i=<i>
+					new_pause_menu_button {
+						<params_params>
+						id = <exid>
+						event_handlers = [
+							{focus retail_menu_focus params = {id = <exid>}}
+							{focus generic_menu_up_or_down_sound}
+							{unfocus retail_menu_unfocus params = {id = <exid>}}
+							{pad_choose extra_toggle params = {id = <exid> <item> b=choose}} // bool toggles
+							{pad_left extra_toggle params = {id = <exid> <item> b=left}} // for integers
+							{pad_right extra_toggle params = {id = <exid> <item> b=right}} //
+						]
+						text = <text>
+					}
+					Increment \{i}
+				repeat <array_size>
+				
+				add_user_control_helper \{text = ' Cycle Option' button = leftright z = 100000}
+				
+				CreateScreenElement \{Type = ContainerElement id = extras_warning_container parent = pause_menu_frame_container alpha = 0 Scale = 0.35 Pos = (800.0, 360.0)}
+				displaySprite \{parent = extras_warning_container id = extras_warning tex = #"0x237d7770" Pos = (0.0, 0.0) just = [center center] rgba = [96 0 0 255] z = 100}
+				CreateScreenElement {
+					Type = TextBlockElement
+					id = first_warning
+					parent = extras_warning_container
+					font = text_a4
+					Scale = 1.5
+					text = 'Warning: Some changed extras require restarting the song!'
+					rgba = [255 101 0 255]
+					just = [center center]
+					z_priority = 101
+					Pos = (0.0, -20.0)
+					dims = (600.0, 100.0)
+					allow_expansion
+				}
+				GetScreenElementDims \{id = first_warning}
+				bg_dims = (<width> * (1.0, 0.0) + (<height> * (0.0, 1.0) + (0.0, 40.0)))
+				extras_warning ::SetProps dims = <bg_dims>
+				displaySprite {
+					parent = extras_warning_container
+					tex = #"0xb844e84a"
+					Pos = (-1 * <width> * (0.5, 0.0))
+					rgba = [96 0 0 255]
+					dims = ((96.0, 0.0) + (<height> * (0.0, 1.0) + (0.0, 40.0)))
+					just = [right center]
+					flip_v
+					z = 100
+				}
+				displaySprite {
+					parent = extras_warning_container
+					tex = #"0xb844e84a"
+					Pos = (<width> * (0.5, 0.0))
+					rgba = [96 0 0 255]
+					dims = ((96.0, 0.0) + (<height> * (0.0, 1.0) + (0.0, 40.0)))
+					just = [left center]
+					z = 100
+				}
+		endswitch
 		add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100000}
 	endif
+	
+	
+	
 	if ($is_network_game = 0)
 		if NOT isSinglePlayerGame
-			if (<for_practice> = 0)
+			if NOT GotParam \{practice}
 				FormatText textname = player_paused_text "PLAYER %d PAUSED. ONLY PLAYER %d OPTIONS ARE AVAILABLE." d = <Player>
 				displaySprite {
 					parent = pause_menu_frame_container
@@ -1009,6 +1207,8 @@ script add_user_control_helper\{z = 10 pill = 1 fit_to_rectangle = 1}
 			case start
 				buttonchar = "\ba"
 				offset_for_strumbar = 1
+			case leftright
+				buttonchar = "\bh"
 		endswitch
 	else
 		buttonchar = ""

@@ -476,7 +476,7 @@ options_toprockers_setlist_fs = {
 options_toprockers_fs = {
 	create = create_top_rockers_menu
 	create_params = {
-		for_options = 1
+		submenu = options
 	}
 	Destroy = destroy_top_rockers_menu
 	actions = [

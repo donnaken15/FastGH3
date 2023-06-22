@@ -140,6 +140,10 @@ career_pause_fs = {
 			flow_state = career_practice_warning_fs
 		}
 		{
+			action = select_extras
+			flow_state = career_extras_fs
+		}
+		{
 			action = select_options
 			flow_state = career_pause_options_fs
 		}
@@ -153,10 +157,23 @@ career_pause_fs = {
 		}
 	]
 }
+career_extras_fs = {
+	create = create_pause_menu
+	create_params = {
+		submenu = extras
+	}
+	Destroy = destroy_pause_menu
+	actions = [
+		{
+			action = go_back
+			flow_state = career_pause_fs
+		}
+	]
+}
 career_pause_options_fs = {
 	create = create_pause_menu
 	create_params = {
-		for_options = 1
+		submenu = options
 	}
 	Destroy = destroy_pause_menu
 	actions = [
@@ -166,8 +183,7 @@ career_pause_options_fs = {
 		}
 		{
 			action = select_calibrate_lag
-			flow_state = #"0xde5731fa"
-			quickplay_calibrate_lag_warning
+			flow_state = quickplay_calibrate_lag_warning
 		}
 		{
 			action = winport_select_calibrate_lag

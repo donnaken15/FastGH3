@@ -93,6 +93,10 @@ quickplay_pause_fs = {
 			flow_state = quickplay_practice_warning_fs
 		}
 		{
+			action = select_extras
+			flow_state = quickplay_extras_fs
+		}
+		{
 			action = select_options
 			flow_state = quickplay_pause_options_fs
 		}
@@ -109,7 +113,7 @@ quickplay_pause_fs = {
 quickplay_pause_options_fs = {
 	create = create_pause_menu
 	create_params = {
-		for_options = 1
+		submenu = options
 	}
 	Destroy = destroy_pause_menu
 	actions = [
@@ -120,8 +124,6 @@ quickplay_pause_options_fs = {
 		{
 			action = select_calibrate_lag
 			flow_state = quickplay_calibrate_lag_warning
-			winport_bind_buttons_fs
-			#"0xde5731fa"
 		}
 		{
 			action = winport_select_calibrate_lag
@@ -145,20 +147,16 @@ quickplay_pause_options_fs = {
 		}
 	]
 }
-#"0x9de642fd" = {
-	create = create_debugging_menu
+quickplay_extras_fs = {
+	create = create_pause_menu
 	create_params = {
-		for_options = 1
+		submenu = extras
 	}
-	Destroy = destroy_debugging_menu
+	Destroy = destroy_pause_menu
 	actions = [
 		{
-			action = #"0xd14d0643"
-			flow_state = #"0x5185891e"
-		}
-		{
 			action = go_back
-			flow_state = quickplay_pause_options_fs
+			flow_state = quickplay_pause_fs
 		}
 	]
 }

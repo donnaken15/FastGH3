@@ -322,7 +322,7 @@ practice_play_song_fs = {
 practice_pause_fs = {
 	create = create_pause_menu
 	create_params = {
-		for_practice = 1
+		practice
 	}
 	Destroy = destroy_pause_menu
 	actions = [
@@ -358,12 +358,29 @@ practice_pause_fs = {
 			action = select_quit
 			flow_state = practice_quit_warning_fs
 		}
+		{
+			action = select_debug_menu
+			flow_state = debug_menu_fs
+		}
+	]
+}
+practice_extras_fs = {
+	create = create_pause_menu
+	create_params = {
+		submenu = extras
+	}
+	Destroy = destroy_pause_menu
+	actions = [
+		{
+			action = go_back
+			flow_state = practice_pause_fs
+		}
 	]
 }
 practice_options_fs = {
 	create = create_pause_menu
 	create_params = {
-		for_options = 1
+		submenu = options
 	}
 	Destroy = destroy_pause_menu
 	actions = [
