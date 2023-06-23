@@ -542,7 +542,7 @@ public partial class settings : Form
 			p2partt.Checked = false;
 		else
 			p2partt.Checked = true;
-		aqlvl.Value = Convert.ToInt32(Program.cfg(Program.l, "AB", "128"));
+		aqlvl.Value = Math.Min(96, Convert.ToInt32(Program.cfg(Program.l, "AB", "128")));
 
 		{
 			Program.vl("Loading scripts for override checks...");

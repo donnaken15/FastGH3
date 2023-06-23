@@ -328,7 +328,7 @@ script guitar_startup
 		// 2MS >:(
 	repeat <array_size>
 	FGH3Config \{sect='Player' 'Speed' #"0x1ca1ff20"=1.0}
-	change current_speedfactor = (<value> * 100)
+	change current_speedfactor = <value>
 	if ($current_speedfactor <= 0.0)
 		if FGH3Config \{sect='Player' 'Speed' #"0x1ca1ff20"=1.0}
 			printf \{'Can\'t have zero percent speed!!!!!'}
@@ -349,8 +349,9 @@ script guitar_startup
 	change structurename=player2_status part=($parts[<value>])
 	FGH3Config \{sect='GFX' 'GemScale' #"0x1ca1ff20"=1.0}
 	ProfilingEnd <...> 'INI read'
-	change \{gem_start_scale1 = $gem_scale_orig1}
-	change \{gem_start_scale2 = $gem_scale_orig2}
+	change gem_scalar = <value>
+	change \{gem_scale_orig1 = $gem_start_scale1}
+	change \{gem_scale_orig2 = $gem_start_scale2}
 	change gem_start_scale1 = ($gem_start_scale1 * <value>)
 	change gem_start_scale2 = ($gem_start_scale2 * <value>)
 	

@@ -361,12 +361,12 @@ script new_pause_menu_button \{cont_params = {} event_handlers = [] fit = (250.0
 endscript
 
 script checkbox_sound
-	s = 'Check_'
+	s = Checkbox_
 	if (<#"0x00000000">)
-		s = ''
+		ExtendCRC <s> 'Check_' out=s
 	endif
-	FormatText checksumName = sound_event 'Checkbox_%sSFX' s = <s>
-	SoundEvent event = <sound_event>
+	ExtendCRC <s> 'SFX' out=s
+	SoundEvent event = <s>
 endscript
 
 script pause_lefty_toggle \{player = 1}
@@ -409,7 +409,7 @@ extras_menu = [
 	// key = INI key
 	// restart = (1) requires restarting the song (2) requires restarting game?
 	{ Cheat_Hyperspeed name='Hyperspeed' type=int min=-13 max=10 sect='Player' restart=1}
-	{ fps_max name='Frame Rate' type=int min=0 max =1000 step = 5 sect='GFX' key='MaxFPS' }
+	{ fps_max name='Frame Rate' type=int min=0 max=1000 step=5 sect='GFX' key='MaxFPS' }
 	{ hudless name='No HUD' type=bool sect='GFX' key='NoHUD' restart=1}
 	{ disable_intro name='No Intro' type=bool sect='GFX' key='NoIntro' restart=1}
 	{ disable_shake name='No Highway Shake' type=bool sect='GFX' key='NoShake'}
@@ -419,6 +419,7 @@ extras_menu = [
 	{ Cheat_NoFail name='No Fail' type=bool sect='Player' key='NoFail' }
 	{ Cheat_EasyExpert name='Easy Expert' type=bool sect='Player' key='EasyExpert' restart=1 }
 	{ Cheat_PrecisionMode name='Precision' type=bool sect='Player' key='Precision' restart=1 }
+	{ gem_scalar name='Gem Scale' type=int min=0.0 max=100.0 step=0.05 sect='GFX' key='GemScale' restart=1}
 ]
 script extra_format
 	FormatText textname=strval '%s' s=<#"0x00000000">
@@ -488,24 +489,31 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 	if (<restart> = 1)
 		DoScreenElementMorph \{id=extras_warning_container alpha=1 time=0.2}
 	endif
+	printstruct <...>
 	FGH3Config sect=<sect> <key> set=($<#"0x00000000">)
 	extra_format ($<#"0x00000000">) type = <type>
 	FormatText textname=text '%s: %v' s=<name> v=<strval>
-	if (<#"0x00000000"> = fps_max) // custom format ok_bud
-		if ($<#"0x00000000"> = 0)
-			FormatText textname=text '%s: Unlimited' s=<name>
-		endif
-	endif
-	if (<#"0x00000000"> = gem_scalar)
-		change gem_start_scale1 = ($<#"0x00000000"> * $gem_scale_orig1)
-		change gem_start_scale2 = ($<#"0x00000000"> * $gem_scale_orig2)
-	endif
-	if (<#"0x00000000"> = Cheat_NoFail)
-		ExtendCrc #"0x87004517" ($player1_status.text) out=id2
-		SetScreenElementProps id=<id2> alpha=($<#"0x00000000">)
-		ExtendCrc #"0x5b77b0ef" ($player1_status.text) out=id2
-		SetScreenElementProps id=<id2> alpha=($<#"0x00000000">)
-	endif
+	switch <#"0x00000000">
+		case fps_max // custom format ok_bud
+			if ($<#"0x00000000"> = 0)
+				FormatText textname=text '%s: Unlimited' s=<name>
+			endif
+		case gem_scalar
+			change gem_start_scale1 = ($<#"0x00000000"> * $gem_scale_orig1)
+			change gem_start_scale2 = ($<#"0x00000000"> * $gem_scale_orig2)
+			//if ($current_num_players = 1)
+			//	change \{gem_start_scale = $gem_start_scale1}
+			//else
+			//	change \{gem_start_scale = $gem_start_scale2}
+			//endif
+			//SetGemConstants
+			//TODO?: script to update gem constants
+		case Cheat_NoFail
+			ExtendCrc #"0x87004517" ($player1_status.text) out=id2
+			SetScreenElementProps id=<id2> alpha=($<#"0x00000000">)
+			ExtendCrc #"0x5b77b0ef" ($player1_status.text) out=id2
+			SetScreenElementProps id=<id2> alpha=($<#"0x00000000">)
+	endswitch
 	if ScreenElementExists id=<id>
 		SetScreenElementProps id=<id> text=<text>
 	endif
@@ -562,7 +570,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 		event_handlers = [
 			{pad_back ui_flow_manager_respond_to_action params = {action = go_back}}
 		]
-		dims = (350,600)
+		dims = (350,700)
 		spacing = <spacing>
 		use_backdrop = 0
 		exclusive_device = <player_device>

@@ -584,11 +584,11 @@ class Program
 			// also finally INI CFunc
 			if (cfg("Temp", "MigratedConfig2", 0) == 0)
 			{
-				cfgW(l, settings.t.SongCaching.ToString(), cfg(m, settings.t.Windowed.ToString(), 0));
+				cfgW(l, settings.t.SongCaching.ToString(), cfg(m, settings.t.Windowed.ToString(), 1));
 				cfgW(l, settings.t.PreserveLog.ToString(), cfg(m, settings.t.PreserveLog.ToString(), 0));
 				cfgW(l, settings.t.VerboseLog.ToString(), cfg(m, settings.t.VerboseLog.ToString(), 0));
 				cfgW(l, settings.t.NoStartupMsg.ToString(), cfg(m, settings.t.NoStartupMsg.ToString(), 0));
-				cfgW(l, "AB", cfg(m, "AB", 0));
+				cfgW(l, "AB", cfg(m, "AB", 96));
 				cfgW(l, "VBR", cfg(m, "VBR", 0));
 				cfgW(l, "FixSeeking", cfg(m, "FixSeeking", 0));
 				cfgW(l, stf, cfg(m, stf, ""));
