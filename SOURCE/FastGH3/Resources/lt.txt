@@ -40,8 +40,8 @@ Failed to copy cached FSB. WHY?!!!
 Deleting the currently loaded FSB in case.
 Chart is not cached.
 Opening song pak.
-dbg.pak.xen can go kill itself
-i'm %#@!?ng done
+why
+WHY
 Compiling chart.
 Creating note arrays...
 Error in parsing notes for 
@@ -59,7 +59,7 @@ Creating powerup arrays...
 Sorting scripts by time.
 Creating face-off sections...
 Creating time signature arrays...
-https://i.kym-cdn.com/photos/images/original/002/297/355/cb3
+No time sigs? https://i.kym-cdn.com/photos/images/original/002/297/355/cb3
 Creating fretbar arrays...
 Collecting garbage...
 Creating marker arrays...
@@ -109,7 +109,7 @@ Change the controller that is selected to play when Keyboard mode is off.\nWARNI
 This applies for both player hyperspeeds.
 This applies for both player difficulties.
 Credits will be displayed in console.
-Enter percentage of song speed.
+Enter percentage of song speed. This also effects the pitch of the song.
 Change instrument or track to be played in game.
 Relaunch the game with the previous song in place.
 Select what plugins should be loaded or disabled.\nRequires GH3+ compatible plugins.
@@ -135,3 +135,4 @@ Restoring user background video
 Failed to kill helix or SoX executables.
 Running mid2chart, log:
 Audio is not cached.
+Failed to upload log. It is saved to launcher.txt.

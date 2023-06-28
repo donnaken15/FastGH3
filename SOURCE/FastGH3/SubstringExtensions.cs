@@ -1,6 +1,6 @@
 ﻿static class SubstringExtensions
 {
-    public static string EncloseWithQuoteMarks(this string value)
+    public static string Quotes(this string value)
     {
         return '"' + value + '"';
     }

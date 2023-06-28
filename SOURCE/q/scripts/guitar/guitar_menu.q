@@ -443,25 +443,28 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 	endif
 	switch <type>
 		case bool
-			if (<b> = choose)
-				//SoundEvent \{event = ui_sfx_select}
-				value = ($<#"0x00000000">)
-				if (<value> = 1)
-					value=0
-					check=0
-				elseif (<value> = 0)
-					value=1
-					check=1
-				elseif (<value> = true)
-					value=false
-					check=0
-				elseif (<value> = false)
-					value=true
-					check=1
-				endif
-				change globalname=<#"0x00000000"> newvalue=<value>
-				checkbox_sound <check>
-			endif
+			switch <b>
+				case choose
+					//SoundEvent \{event = ui_sfx_select}
+					value = ($<#"0x00000000">)
+					if (<value> = 1)
+						value=0
+						check=0
+					elseif (<value> = 0)
+						value=1
+						check=1
+					elseif (<value> = true)
+						value=false
+						check=0
+					elseif (<value> = false)
+						value=true
+						check=1
+					endif
+					change globalname=<#"0x00000000"> newvalue=<value>
+					checkbox_sound <check>
+				default
+					return
+			endswitch
 		case int
 			switch <b>
 				// can cases fall into others? x to doubt
@@ -487,7 +490,7 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 			generic_menu_up_or_down_sound
 	endswitch
 	if (<restart> = 1)
-		DoScreenElementMorph \{id=extras_warning_container alpha=1 time=0.2}
+		DoScreenElementMorph \{id=extras_warning_container alpha=1 time=0.14}
 	endif
 	printstruct <...>
 	FGH3Config sect=<sect> <key> set=($<#"0x00000000">)
@@ -646,6 +649,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 			id = pause_resume
 			event_handlers = [
 				{focus retail_menu_focus params = {id = pause_resume}}
+				{focus generic_menu_up_or_down_sound}
 				{unfocus retail_menu_unfocus params = {id = pause_resume}}
 				{pad_choose gh3_start_pressed}
 			]
@@ -657,6 +661,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				id = pause_restart
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_restart}}
+					{focus generic_menu_up_or_down_sound}
 					{unfocus retail_menu_unfocus params = {id = pause_restart}}
 					{pad_choose ui_flow_manager_respond_to_action params = {action = select_restart}}
 				]
@@ -671,6 +676,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 						id = pause_practice
 						event_handlers = [
 							{focus retail_menu_focus params = {id = pause_practice}}
+							{focus generic_menu_up_or_down_sound}
 							{unfocus retail_menu_unfocus params = {id = pause_practice}}
 							{pad_choose ui_flow_manager_respond_to_action params = {action = select_practice}}
 						]
@@ -682,6 +688,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 					id = pause_extras
 					event_handlers = [
 						{focus retail_menu_focus params = {id = pause_extras}}
+						{focus generic_menu_up_or_down_sound}
 						{unfocus retail_menu_unfocus params = {id = pause_extras}}
 						{pad_choose ui_flow_manager_respond_to_action params = {action = select_extras create_params = {player_device = <player_device>}}}
 					]
@@ -692,6 +699,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 					id = pause_options
 					event_handlers = [
 						{focus retail_menu_focus params = {id = pause_options}}
+						{focus generic_menu_up_or_down_sound}
 						{unfocus retail_menu_unfocus params = {id = pause_options}}
 						{pad_choose ui_flow_manager_respond_to_action params = {action = select_options create_params = {player_device = <player_device>}}}
 					]
@@ -714,6 +722,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				id = pause_quit
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_quit}}
+					{focus generic_menu_up_or_down_sound}
 					{unfocus retail_menu_unfocus params = {id = pause_quit}}
 					{pad_choose <quit_script> params = <quit_script_params>}
 				]
@@ -726,6 +735,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				id = pause_return
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_return}}
+					{focus generic_menu_up_or_down_sound}
 					{unfocus retail_menu_unfocus params = {id = pause_return}}
 					{pad_choose ui_flow_manager_respond_to_action params = {action = select_return}}
 				]
@@ -736,6 +746,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				id = pause_options
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_options}}
+					{focus generic_menu_up_or_down_sound}
 					{unfocus retail_menu_unfocus params = {id = pause_options}}
 					{pad_choose ui_flow_manager_respond_to_action params = {action = select_options create_params = {player_device = <player_device>}}}
 				]
@@ -746,6 +757,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				id = pause_change_speed
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_change_speed}}
+					{focus generic_menu_up_or_down_sound}
 					{unfocus retail_menu_unfocus params = {id = pause_change_speed}}
 					{pad_choose ui_flow_manager_respond_to_action params = {action = select_change_speed}}
 				]
@@ -756,6 +768,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				id = pause_change_section
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_change_section}}
+					{focus generic_menu_up_or_down_sound}
 					{unfocus retail_menu_unfocus params = {id = pause_change_section}}
 					{pad_choose ui_flow_manager_respond_to_action params = {action = select_change_section}}
 				]
@@ -766,6 +779,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				id = pause_quit
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_quit}}
+					{focus generic_menu_up_or_down_sound}
 					{unfocus retail_menu_unfocus params = {id = pause_quit}}
 					{pad_choose ui_flow_manager_respond_to_action params = {action = select_quit}}
 				]
@@ -778,6 +792,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				id = pause_debug_menu
 				event_handlers = [
 					{focus retail_menu_focus params = {id = pause_debug_menu}}
+					{focus generic_menu_up_or_down_sound}
 					{unfocus retail_menu_unfocus params = {id = pause_debug_menu}}
 					{pad_choose ui_flow_manager_respond_to_action params = {action = select_debug_menu}}
 				]

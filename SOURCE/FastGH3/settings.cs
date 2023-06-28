@@ -14,10 +14,10 @@ using System.Text.RegularExpressions;
 public partial class settings : Form
 {
 	[DllImport("user32.dll", EntryPoint = "SetForegroundWindow")]
-	public static extern bool SFW(IntPtr hWnd);
+	static extern bool SFW(IntPtr hWnd);
 
 	[StructLayout(LayoutKind.Sequential)]
-	public struct P
+	struct P
 	{
 		[MarshalAs(UnmanagedType.I4)]
 		public int x;
@@ -26,7 +26,7 @@ public partial class settings : Form
 	}
 	[StructLayout(LayoutKind.Sequential,
 	CharSet = CharSet.Ansi)]
-	public struct DM
+	struct DM
 	{
 		[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
 		public string a;
@@ -89,7 +89,7 @@ public partial class settings : Form
 
 	[DllImport("user32.dll", EntryPoint = "EnumDisplaySettings")]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	public static extern Boolean EDS(
+	static extern Boolean EDS(
 			[param: MarshalAs(UnmanagedType.LPTStr)]
 			string a,
 			[param: MarshalAs(UnmanagedType.U4)]
@@ -97,26 +97,30 @@ public partial class settings : Form
 			[In, Out]
 			ref DM c);
 
-	private static string xmlpath = Environment.GetEnvironmentVariable("USERPROFILE") + "\\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml",
+	static string
+		xmlpath = Environment.GetEnvironmentVariable("USERPROFILE") +
+			"\\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml",
 		xmlDefault = Resources.ResourceManager.GetString("xmlDefault");
-	public XmlDocument xml = new XmlDocument();
-	public XmlNode xmlCfg;
-	public XmlNode xmlW, xmlH, xmlK;
+	XmlDocument xml = new XmlDocument();
+	XmlNode xmlCfg;
+	XmlNode xmlW, xmlH, xmlK;
 
-	private static bool disableEvents = false;
+	static bool disableEvents = false;
 
-	private static QbFile userqb;
-	private static QbKey[] diffCRCs = {
+	static QbKey[] diffCRCs = {
 		QbKey.Create(0xB69D6568), QbKey.Create(0x398CBA48),
 		QbKey.Create(0x3EEAE02D), QbKey.Create(0xB0E46CBD)
 	}, partCRCs = {
 		QbKey.Create(0xBDC53CF2), QbKey.Create(0x7A7D1DCA)
 	};
-	private static string[] diffStr = { "Easy", "Medium", "Hard", "Expert" };
-	private static List<Size> resz = new List<Size>();
-	//private static PakFormat pakformat;
-	//private static PakEditor qbedit;
-	private static Size oldres;
+	static string[] diffStr = { "Easy", "Medium", "Hard", "Expert" };
+	static List<Size> resz = new List<Size>();
+	static PakFormat pakformat;
+	static PakEditor qbedit;
+	static QbFile userqb;
+	static Size oldres;
+	static bool foundqconf = false;
+	static bool userpak = false; // compatibility l:\
 
 	private static string folder = Program.folder;//Path.GetDirectoryName(Application.ExecutablePath) + '\\';
 
@@ -135,9 +139,12 @@ public partial class settings : Form
 
 	private static void svQB()
 	{
-		userqb.AlignPointers();
-		//qbedit.ReplaceFile("config.qb", userqb);
-		userqb.Write(Program.dataf + "config.qb.xen");
+		if (!foundqconf) return;
+		if (userpak)
+		{
+			userqb.AlignPointers();
+			userqb.Write(Program.dataf + "config.qb.xen");
+		} else qbedit.ReplaceFile("config.qb", userqb);
 	}
 
 	static uint Eswap(uint value)
@@ -307,17 +314,27 @@ public partial class settings : Form
 	{
 		return ((mods)i).ToString();
 	}
-	public const int mxn_d = 0x100000;
+	const int mxn_d = 0x100000;
 
 	public settings()
 	{
 		Console.SetWindowSize(80, 32);
 		vl2 = Program.cfg(Program.l, t.VerboseLog.ToString(), 0) == 1;
 		Program.vl("Loading QBs...");
-		//pakformat = new PakFormat(Program.dataf + "user.pak.xen", Program.dataf + "user.pak.xen", "", PakFormatType.PC, false);
-		//qbedit = new PakEditor(pakformat, false);
-		//userqb = qbedit.ReadQbFile("config.qb");
-		userqb = new QbFile(Program.dataf + "config.qb.xen", new PakFormat("", "", "", PakFormatType.PC));
+		try {
+			userqb = new QbFile(Program.dataf + "config.qb.xen", new PakFormat("", "", "", PakFormatType.PC));
+			foundqconf = true;
+		} catch { }
+		try {
+			if (!foundqconf)
+			{
+				pakformat = new PakFormat(Program.dataf + "user.pak.xen", Program.dataf + "user.pak.xen", "", PakFormatType.PC, false);
+				qbedit = new PakEditor(pakformat, false);
+				userqb = qbedit.ReadQbFile("config.qb");
+				userpak = true;
+				foundqconf = true;
+			}
+		} catch { }
 		disableEvents = true;
 		if (File.Exists(xmlpath))
 		{
@@ -414,7 +431,7 @@ public partial class settings : Form
 			RTms.Enabled = true;
 		}
 		float _ = Convert.ToSingle(Program.cfg("Player", "Speed", "1.0")) * 100;
-		if (_ <= 0) _ = 100;
+		if (_ <= 0) { Console.WriteLine("Speed percentage cannot be zero or less!!!"); _ = 100; }
 		speed.Value = (decimal/*wtf*/)_; // current_speedfactor
 		tLb.SetItemChecked((int)t.VerboseLog, vl2);
 		tLb.SetItemChecked((int)t.NoShake, Program.cfg("GFX", t.NoShake.ToString(), 0) == 1);
@@ -437,14 +454,6 @@ public partial class settings : Form
 					oldres.Height = Convert.ToInt32(s.InnerText);
 					xmlH = s;
 					break;
-				/*case keyboardID:
-					string[] keybindsStr = s.InnerText.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-					xmlK = s;
-					for (int i = 0; i < keyBinds.Length; i++)
-					{
-						keyBinds[i] = Convert.ToInt32(keybindsStr[i]);
-					}
-					break;*/
 			}
 			// kill me
 			if (s.Attributes["id"].Value == keyboardID)
@@ -542,7 +551,7 @@ public partial class settings : Form
 			p2partt.Checked = false;
 		else
 			p2partt.Checked = true;
-		aqlvl.Value = Math.Min(96, Convert.ToInt32(Program.cfg(Program.l, "AB", "128")));
+		aqlvl.Value = Math.Min(96, Convert.ToInt32(Program.cfg("Audio", "AB", "128")));
 
 		{
 			Program.vl("Loading scripts for override checks...");
@@ -561,11 +570,9 @@ public partial class settings : Form
 					switch (f.FileType.Crc)
 					{
 						case 0x559566CC: // .dbg
-							try
-							{
+							try {
 								QbFile.PopulateDebugNames(D_PE.ExtractFileToString(f.Filename));
-							}
-							catch (Exception ex) {}
+							} catch (Exception ex) {}
 							break;
 						default:
 							continue;
@@ -630,50 +637,37 @@ public partial class settings : Form
 		Program.cfgW("Player1","Diff",d);
 	}
 		
-	private void resC(object sender, EventArgs e)
+	void resC(object sender, EventArgs e)
 	{
 		cRes(resz[res.SelectedIndex].Width.ToString(), resz[res.SelectedIndex].Height.ToString());
 	}
 
-	private void diffC(object sender, EventArgs e)
+	void diffC(object sender, EventArgs e)
 	{
 		cDiff(diff.SelectedIndex);
 	}
 
-	private void crlink(object sender, LinkLabelLinkClickedEventArgs e)
+	void crlink(object sender, LinkLabelLinkClickedEventArgs e)
 	{
 		Console.Clear();
 		Console.WriteLine(Resources.ResourceManager.GetString("credits"));
 	}
 
-	private void hyVC(object sender, EventArgs e)
+	void hyVC(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
-		{
-			Program.cfgW("Player", "Hyperspeed", Convert.ToInt32(hypers.Value));
-		}
+		Program.cfgW("Player", "Hyperspeed", Convert.ToInt32(hypers.Value));
 	}
 
-	private void ctmp(object sender, EventArgs e)
+	void ctmp(object sender, EventArgs e)
 	{
-		string[] tmpds;
-		//string[] tmpds = Directory.GetDirectories(tmpf, "*", SearchOption.TopDirectoryOnly);
 		string[] tmpfs = Directory.GetFiles(Path.GetTempPath(), "*.tmp.fsp", SearchOption.TopDirectoryOnly);
-		/*foreach (string folder in tmpds)
-		{
-			//string[] whycs = Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories);
-			//foreach (string whycs2 in whycs)
-			//{
-				//File.Delete(whycs2);
-			//}
-			Directory.Delete(folder, true);
-		}*/
 		foreach (string file in tmpfs)
 			File.Delete(file);
 
-		tmpds = Directory.GetDirectories(Path.GetTempPath(), "Aspyr* FastGH3", SearchOption.TopDirectoryOnly);
-		foreach (string folder in tmpds)
+		tmpfs = Directory.GetDirectories(Path.GetTempPath(), "Aspyr* FastGH3", SearchOption.TopDirectoryOnly);
+		foreach (string folder in tmpfs)
 			Directory.Delete(folder, true);
 
 		tmpfs = Directory.GetFiles(Path.GetTempPath(), "libSoX.tmp.*", SearchOption.TopDirectoryOnly);
@@ -699,7 +693,7 @@ public partial class settings : Form
 	}
 
 	// this wont work after focusing control
-	private void kde(object sender, KeyEventArgs e)
+	void kde(object sender, KeyEventArgs e)
 	{
 		//base.OnKeyDown(e);
 
@@ -709,12 +703,12 @@ public partial class settings : Form
 		}
 	}
 
-	private void pmo(object sender, EventArgs e)
+	void pmo(object sender, EventArgs e)
 	{
 		new dllman().ShowDialog();
 	}
 
-	private void vscc(object sender, EventArgs e)
+	void vscc(object sender, EventArgs e)
 	{
 		Directory.CreateDirectory(Program.cf);
 		new songcache().ShowDialog();
@@ -725,9 +719,7 @@ public partial class settings : Form
 		Program.cfgW(sect, key, (toggle ? 1 : 0));
 	}
 
-	string m = "Misc";
-
-	private void stfO(object sender, EventArgs e)
+	void stfO(object sender, EventArgs e)
 	{
 		// formatInterface
 		songtxtfmt FI = new songtxtfmt(Regex.Unescape(Program.cfg(Program.l, Program.stf, "%a - %t")).Replace("\n","\r\n"));
@@ -738,26 +730,26 @@ public partial class settings : Form
 		}
 	}
 
-	private void cRT(object sender, EventArgs e)
+	void cRT(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
 		Program.cfgW("GFX", "NoIntroReadyTime", (int)RTnoi.Value);
 	}
 
-	private void mxFPSc(object sender, EventArgs e)
+	void mxFPSc(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
 		Program.cfgW("GFX", "MaxFPS", maxFPS.Value.ToString());
 	}
 
-	private void sBGi(object sender, EventArgs e)
+	void sBGi(object sender, EventArgs e)
 	{
 		new bgprev(getBGIMG()).ShowDialog();
 	}
 
-	private void sBGc(object sender, EventArgs e)
+	void sBGc(object sender, EventArgs e)
 	{
 		selImg.ShowDialog();
 	}
@@ -772,7 +764,7 @@ public partial class settings : Form
 	{
 		return (x & (x - 1)) == 0;
 	}
-	private void confirmImageReplace(object sender, System.ComponentModel.CancelEventArgs e)
+	void confirmImageReplace(object sender, System.ComponentModel.CancelEventArgs e)
 	{
 		Image i = Image.FromFile(selImg.FileName);
 		bool nR = false;
@@ -799,21 +791,21 @@ public partial class settings : Form
 		//userqb.RemoveItem(backcolrgb);
 	}
 
-	private void cAQ(object sender, EventArgs e)
+	void cAQ(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW(Program.l, "AB", aqlvl.Value.ToString());
+		Program.cfgW("Audio", "AB", aqlvl.Value.ToString());
 	}
 
-	private void mU(object sender, ItemCheckEventArgs e)
+	void mU(object sender, ItemCheckEventArgs e)
 	{
 		if (disableEvents)
 			return;
 		TI("Modifiers", modN(e.Index), e.NewValue == CheckState.Checked);
 	}
 
-	private void oKb(object sender, EventArgs e)
+	void oKb(object sender, EventArgs e)
 	{
 		keyEdit keyChange = new keyEdit(keyBinds);
 		//foreach (int a in keyBinds)
@@ -831,7 +823,7 @@ public partial class settings : Form
 		}
 	}
 
-	private void tU(object sender, ItemCheckEventArgs e)
+	void tU(object sender, ItemCheckEventArgs e)
 	{
 		if (disableEvents)
 			return;
@@ -906,14 +898,12 @@ public partial class settings : Form
 				}
 				Program.cfgW("GFX", "NoParticles", disable_particles);
 				break;
-			//case t.Lefty:
-				//setQBConfig(QbKey.Create(0xBBABFA47), e.NewValue == CheckState.Checked ? 1 : 0); // p1_lefty
-				//break;
 		}
 	}
 
 	public static object gQC(QbKey key, object def)
 	{
+		return null; // not using for now
 		// find matching item's value or use a default
 		// we're only accessing global/root items with this
 		object _item = (userqb.FindItem(key, false));
@@ -936,6 +926,7 @@ public partial class settings : Form
 
 	public static void sQC(QbKey key, object value)
 	{
+		return; // not using for now
 		// find or create value
 		object _item = (userqb.FindItem(key, false));
 		if (value == null) return;
@@ -1007,7 +998,7 @@ public partial class settings : Form
 		svQB();
 	}
 
-	private void mxnVC(object sender, EventArgs e)
+	void mxnVC(object sender, EventArgs e)
 	{
 		if (disableEvents == false)
 		{
@@ -1026,24 +1017,24 @@ public partial class settings : Form
 		}
 	}
 
-	private void dCtrlUpd(object sender, EventArgs e)
+	void dCtrlUpd(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
 		Program.cfgW("Player1", "Device", (int)dCtrl.Value);
 	}
 
-	private void showmods(object sender, EventArgs e)
+	void showmods(object sender, EventArgs e)
 	{
 		new moddiag().ShowDialog();
 	}
 
-	private void spVC(object sender, EventArgs e)
+	void spVC(object sender, EventArgs e)
 	{
 		Program.cfgW("Player", "Speed", speed.Value / 100);
 	}
 
-	private void rGc(object sender, EventArgs e)
+	void rGc(object sender, EventArgs e)
 	{
 		Process gh3 = new Process();
 		gh3.StartInfo.WorkingDirectory = folder;
@@ -1051,20 +1042,20 @@ public partial class settings : Form
 		gh3.Start();
 	}
 
-	private void pVC(object sender, EventArgs e)
+	void pVC(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
-		sQC(QbKey.Create("p1_part"), partCRCs[part.SelectedIndex]);
+		Program.cfgW("Player1", "Part", part.SelectedIndex);
 	}
 
-	private void p2pT(object sender, EventArgs e)
+	void p2pT(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
 		int part = 1;
 		if (p2partt.Checked)
 			part = 0;
-		sQC(QbKey.Create(0x1541A1CC), partCRCs[part]);
+		Program.cfgW("Player1", "Part", part);
 	}
 }

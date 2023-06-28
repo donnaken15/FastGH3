@@ -126,7 +126,7 @@ class Program
 	{
 		#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART
 		// definitely no one will use this
-		if (cfg(m, sv, 0) == 1)
+		if (cfg(l, sv, 0) == 1)
 		{
 			// low IQ:
 			// detect if RAD Video Tools is installed
@@ -466,17 +466,16 @@ class Program
 	}
 	static void __(string l, int i)
 	{
+		if (l == "") return; // >:(
 		// get audio duration from SoX
-		try
-		{
+		try {
 			string[] b = l.Split(':');
 			al[i] = (int.Parse(b[0]) * 60 * 60000) +
 				(int.Parse(b[1]) * 60000) +
 				(int)(float.Parse(b[2]) * 1000);
 		}
-		catch
-		{
-
+		catch {
+			vl("Error getting audio length for stream " + i + ": " + l);
 		}
 	}
 
@@ -501,18 +500,21 @@ class Program
 	}
 	public static void alen(string f, int i)
 	{
-		Process c = cmd(mt + "sox.exe", "--i -d " + f.EncloseWithQuoteMarks());
-		c.OutputDataReceived -= ___;
-		c.OutputDataReceived += (p, d) => __(d.Data, i);
-		c.Start();
-		c.BeginErrorReadLine();
-		c.BeginOutputReadLine();
-		if (!c.HasExited)
-			c.WaitForExit();
+		try {
+			vl("alen args: sox.exe --i -d " + f.Quotes());
+			Process c = cmd(mt + "sox.exe", "--i -d " + f.Quotes());
+			c.OutputDataReceived -= ___;
+			c.OutputDataReceived += (p, d) => __(d.Data, i);
+			c.Start();
+			c.BeginErrorReadLine();
+			c.BeginOutputReadLine();
+			if (!c.HasExited)
+				c.WaitForExit();
+		} catch { }
 	}
 	public static string[] vstr;
 
-	public static string version = "1.0-10723-unpak";
+	public static string version = "1.0-999010889";
 	[STAThread]
 	static void Main(string[] args)
 	{
@@ -588,9 +590,9 @@ class Program
 				cfgW(l, settings.t.PreserveLog.ToString(), cfg(m, settings.t.PreserveLog.ToString(), 0));
 				cfgW(l, settings.t.VerboseLog.ToString(), cfg(m, settings.t.VerboseLog.ToString(), 0));
 				cfgW(l, settings.t.NoStartupMsg.ToString(), cfg(m, settings.t.NoStartupMsg.ToString(), 0));
-				cfgW(l, "AB", cfg(m, "AB", 96));
-				cfgW(l, "VBR", cfg(m, "VBR", 0));
-				cfgW(l, "FixSeeking", cfg(m, "FixSeeking", 0));
+				cfgW("Audio", "AB", cfg(m, "AB", 96));
+				cfgW("Audio", "VBR", cfg(m, "VBR", 0));
+				cfgW("Audio", "FixSeeking", cfg(m, "FixSeeking", 0));
 				cfgW(l, stf, cfg(m, stf, ""));
 				cfgW(l, sv, cfg(m, sv, 0));
 				cfgW("GFX", "VSync", cfg(m, "VSync", 0));
@@ -600,7 +602,7 @@ class Program
 			}
 
 			vl(vstr[0]);// "Initializing..."
-			caching = cfg(m, settings.t.SongCaching.ToString(), 1) == 1;
+			caching = cfg(l, settings.t.SongCaching.ToString(), 1) == 1;
 			if (caching)
 			{
 				Directory.CreateDirectory(cf);
@@ -609,7 +611,7 @@ class Program
 			#region NO ARGS ROUTINE
 			if (args.Length == 0)
 			{
-				if (cfg(m, settings.t.NoStartupMsg.ToString(), 0) == 0)
+				if (cfg(l, settings.t.NoStartupMsg.ToString(), 0) == 0)
 				{
 					Console.Clear();
 					Console.WriteLine(Resources.ResourceManager.GetString("splashText"));
@@ -628,9 +630,9 @@ class Program
 				{
 					// TODO?: process start and redirect output to this EXE
 					// when MMF is figured out for multi instances
-					Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(openchart.FileName));
+					Process.Start(Application.ExecutablePath, SubstringExtensions.Quotes(openchart.FileName));
 				}
-				Environment.Exit(0);
+				Environment.Exit(unchecked(0x11111111));
 			}
 			#endregion
 			if (args.Length > 0)
@@ -934,7 +936,7 @@ class Program
 					exit();
 					cfgW("Temp", fl, 0);
 					// "already running" >:(
-					Process.Start(Application.ExecutablePath, SubstringExtensions.EncloseWithQuoteMarks(tF));
+					Process.Start(Application.ExecutablePath, SubstringExtensions.Quotes(tF));
 					die();
 				}
 				#endregion
@@ -949,7 +951,7 @@ class Program
 						log.WriteLine(vstr[15]); // "\n######### MAIN LAUNCHER PHASE #########\n"
 						vl("File is: " + args[0]);
 						Process mid2chart = cmd(folder + "mid2chart.exe",
-							paksongmid.EncloseWithQuoteMarks() + " -k -u -p -m");
+							paksongmid.Quotes() + " -k -u -p -m");
 						print(vstr[16], chartConvColor); // "Reading file."
 						if (Path.GetFileName(args[0]).EndsWith(chartext))
 						{
@@ -1342,13 +1344,15 @@ class Program
 							vl(e);
 						}
 						TimeSpan audioConv_start = time, audioConv_end = time;
-						int AB_param = 0;
+						int AB_param = 64;
 						if (!audCache)
 						{
 							AB_param =
-								(cfg(l, "AB", 128) / 2/*thx helix*/);
+								(cfg("Audio", "AB", 128) >> 1/*thx helix*/);
+							if (AB_param == 0) AB_param = 64; // i hate myself
+							AB_param = Math.Max(AB_param, 48);
 							bool VBR = false;
-							VBR = (cfg(l, "VBR", 0) == 1);
+							VBR = (cfg("Audio", "VBR", 0) == 1);
 							string VBR_param = VBR ? "V" : "B";
 							audioConv_start = time;
 							if (caching)
@@ -1357,7 +1361,7 @@ class Program
 							{
 								print(vstr[33], FSBcolor);
 								//print("Found more than three audio tracks, merging.", FSBcolor);
-								addaud = cmd(CMDpath, (mt + "nj3t.bat").EncloseWithQuoteMarks());
+								addaud = cmd(CMDpath, (mt + "nj3t.bat").Quotes());
 								addaud.StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
 								addaud.StartInfo.EnvironmentVariables["BM"] = VBR_param;
 								int maxl = 0;
@@ -1367,7 +1371,7 @@ class Program
 									alen(a, 0); maxl = Math.Max(maxl, al[0]);
 								}
 								addaud.StartInfo.WorkingDirectory = mt;
-								addaud.StartInfo.Arguments = "/c " + addaud.StartInfo.Arguments.EncloseWithQuoteMarks();
+								addaud.StartInfo.Arguments = "/c " + addaud.StartInfo.Arguments.Quotes();
 								addaud.Start();
 								if (vb || wl)
 								{
@@ -1399,13 +1403,13 @@ class Program
 								for (int i = 0; i < fsbbuild2.Length; i++)
 								{
 									alen(audiostreams[i], i);
-									fsbbuild2[i] = cmd(CMDpath, "/c " + ((mt + "c128ks.bat").EncloseWithQuoteMarks() + " " + audiostreams[i].EncloseWithQuoteMarks() + " \"" + mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").EncloseWithQuoteMarks());
+									fsbbuild2[i] = cmd(CMDpath, "/c " + ((mt + "c128ks.bat").Quotes() + " " + audiostreams[i].Quotes() + " \"" + mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").Quotes());
 									fsbbuild2[i].StartInfo.WorkingDirectory = mt;
 									fsbbuild2[i].StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
 									fsbbuild2[i].StartInfo.EnvironmentVariables["BM"] = VBR_param;
 									vl("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments, FSBcolor);
 								}
-								fsbbuild3 = cmd(CMDpath, "/c " + ((mt + "fsbbuild.bat").EncloseWithQuoteMarks()));
+								fsbbuild3 = cmd(CMDpath, "/c " + ((mt + "fsbbuild.bat").Quotes()));
 								fsbbuild3.StartInfo.WorkingDirectory = mt;
 								v("As", FSBcolor);
 							}
@@ -1420,9 +1424,9 @@ class Program
 								fsbbuild.StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
 								fsbbuild.StartInfo.WorkingDirectory = mt;
 								fsbbuild.StartInfo.EnvironmentVariables["BM"] = VBR_param;
-								fsbbuild.StartInfo.Arguments = "/c " + ((mt + "fsbbuild.bat").EncloseWithQuoteMarks() + ' ' +
-								audiostreams[0].EncloseWithQuoteMarks() + ' ' + audiostreams[1].EncloseWithQuoteMarks() + ' ' + audiostreams[2].EncloseWithQuoteMarks() + ' ' +
-								(mt + "blank.mp3").EncloseWithQuoteMarks() + ' ' + fsb.EncloseWithQuoteMarks()).EncloseWithQuoteMarks();
+								fsbbuild.StartInfo.Arguments = "/c " + ((mt + "fsbbuild.bat").Quotes() + ' ' +
+								audiostreams[0].Quotes() + ' ' + audiostreams[1].Quotes() + ' ' + audiostreams[2].Quotes() + ' ' +
+								(mt + "blank.mp3").Quotes() + ' ' + fsb.Quotes()).Quotes();
 								vl("MP3 args: c128ks " + fsbbuild.StartInfo.Arguments, FSBcolor);
 								fsbbuild.Start();
 								if (vb || wl)
@@ -1445,8 +1449,8 @@ class Program
 										}
 									}
 								}
-								fsbbuild3.StartInfo.Arguments = "/c " + ((mt + "fsbbuildnoenc.bat").EncloseWithQuoteMarks() + ' ' +
-									fsb.EncloseWithQuoteMarks()).EncloseWithQuoteMarks();
+								fsbbuild3.StartInfo.Arguments = "/c " + ((mt + "fsbbuildnoenc.bat").Quotes() + ' ' +
+									fsb.Quotes()).Quotes();
 							}
 						}
 						else
@@ -2270,8 +2274,7 @@ class Program
 
 							vl(vstr[58], chartConvColor);
 							//vl("Sorting scripts by time.", chartConvColor);
-							scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2)
-							{
+							scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2) {
 								//     autismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautism
 								return (c1.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0].CompareTo((c2.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0]);
 							});
@@ -2380,8 +2383,7 @@ class Program
 											   // legitimately happens on some charts for some reason
 											   // causes infinite starpower
 							{
-								vl("No time sigs?", ConsoleColor.Yellow);
-								vl(vstr[61]); // megamind
+								vl(vstr[61], ConsoleColor.Yellow); // megamind
 								SyncTrackEntry tsfault = new SyncTrackEntry();
 								if (chart.SyncTrack.Count != 0)
 									foreach (SyncTrackEntry st in chart.SyncTrack)
@@ -2496,29 +2498,6 @@ class Program
 							#endregion
 							#region MISC VALUES
 							//vl("Creating and adding other things...", chartConvColor);
-							uint[] unusedKeys = {
-								0x212262DF, 0x7F2FC9BC, 0x32BDB4A9, 0x44819DD0, 0xCB09D855, 0x2E7DDC38,
-								0x71AA8EF7, 0x347C8050, 0x195F3B95, 0x7E1B28BC, 0x9D0C5D0C, 0xAF1E8BC1,
-								0xF51E3E9F, 0x5CD97CE0, 0xCCB6F94A, 0x9CF00B70
-							};
-							QbItemBase[] misc = new QbItemArray[16];
-							for (int i = 0; i < 16; i++)
-							{
-								misc[i] = new QbItemArray(mid);
-								misc[i].Create(QbItemType.SectionArray);
-								misc[i].ItemQbKey = QbKey.Create(unusedKeys[i]);
-							}
-							QbItemFloats[] misc2 = new QbItemFloats[16];
-							for (int i = 0; i < 16; i++)
-							{
-								misc2[i] = new QbItemFloats(mid);
-								misc2[i].Create(QbItemType.Floats);
-							}
-							for (int i = 0; i < 16; i++)
-							{
-								mid.AddItem(misc[i]);
-								misc[i].AddItem(misc2[i]);
-							}
 							//vl("Adding scripts array to QB.", chartConvColor);
 							mid.AddItem(scrs);
 							scrs.AddItem(scr_arr);
@@ -2895,7 +2874,7 @@ class Program
 							vl("fail");
 						}
 						exit();
-						if (cfg(m, settings.t.PreserveLog.ToString(), "0") == "1")
+						if (cfg(l, settings.t.PreserveLog.ToString(), "0") == "1")
 						{
 							print(vstr[98]);
 							//print("Press any key to exit");
@@ -3200,12 +3179,12 @@ class Program
 								if (got7Z)
 								{
 									xf = p;
-									xa = "x " + args[0].EncloseWithQuoteMarks() + " -aoa -o" + tmpf.EncloseWithQuoteMarks();
+									xa = "x " + args[0].Quotes() + " -aoa -o" + tmpf.Quotes();
 								}
 								else if (gotWRAR)
 								{
 									xf = rarpath;
-									xa = "x -o+ " + Path.GetFullPath(args[0]).EncloseWithQuoteMarks() + " " + tmpf.EncloseWithQuoteMarks();
+									xa = "x -o+ " + Path.GetFullPath(args[0]).Quotes() + " " + tmpf.Quotes();
 								}
 								else
 								{
@@ -3219,7 +3198,7 @@ class Program
 								Process x = cmd(xf,xa);
 								if (got7Z || gotWRAR)
 								{
-									vl("Executing " + x.StartInfo.FileName.EncloseWithQuoteMarks() + " " + x.StartInfo.Arguments, FSPcolor);
+									vl("Executing " + x.StartInfo.FileName.Quotes() + " " + x.StartInfo.Arguments, FSPcolor);
 									vl("log:");
 									x.Start();
 									if (vb || wl)
@@ -3338,7 +3317,7 @@ class Program
 							{
 								exit();
 								cfgW("Temp", fl, 0);
-								Process.Start(Application.ExecutablePath, selectedtorun.EncloseWithQuoteMarks());
+								Process.Start(Application.ExecutablePath, selectedtorun.Quotes());
 								die();
 							}
 					}
@@ -3455,66 +3434,68 @@ class Program
 			exit();
 			Program.log = null;
 			string log = File.ReadAllText(folder + "launcher.txt");
-			if (true && log.Length < 0x20000) // max 128 KB to upload
+			if (cfg("Launcher","ErrorReporting",1)==1 && log.Length < 0x20000) // max 128 KB to upload
 			{
-				print("Uploading log.");
+				try {
+					print("Uploading log.");
 
-				ServicePointManager.Expect100Continue = true;
-				ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00);
-				ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+					ServicePointManager.Expect100Continue = true;
+					ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00);
+					ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
-				string host = "https://0x0.st/";
-				var request = (HttpWebRequest)WebRequest.Create(host);
-				string boundary = "------------------------" + DateTime.Now.Ticks.ToString("x");
-				request.ContentType = "multipart/form-data; boundary=" + boundary;
-				request.Method = "POST";
-				request.ServicePoint.Expect100Continue = true;
+					string host = "https://0x0.st/";
+					var request = (HttpWebRequest)WebRequest.Create(host);
+					string boundary = "------------------------" + DateTime.Now.Ticks.ToString("x");
+					request.ContentType = "multipart/form-data; boundary=" + boundary;
+					request.Method = "POST";
+					request.ServicePoint.Expect100Continue = true;
 
-				// brain drain
-				// TODO?: put these strings in lt.txt
-				byte[] tempBuffer = Encoding.ASCII.GetBytes(
-					"\r\n--" + boundary + "\r\n" +
-					"Content-Disposition: form-data; name=\"file\"; filename=\"launcher.txt\"\r\n" +
-					"Content-Type: text/plain\r\n\r\n" +
-					log + "\r\n--" + boundary + "--");
-				request.ContentLength = tempBuffer.Length;
+					// brain drain
+					// TODO?: put these strings in lt.txt
+					byte[] tempBuffer = Encoding.ASCII.GetBytes(
+						"\r\n--" + boundary + "\r\n" +
+						"Content-Disposition: form-data; name=\"file\"; filename=\"launcher.txt\"\r\n" +
+						"Content-Type: text/plain\r\n\r\n" +
+						log + "\r\n--" + boundary + "--");
+					request.ContentLength = tempBuffer.Length;
 
-				using (Stream requestStream = request.GetRequestStream())
-				{
-					requestStream.Write(tempBuffer, 0, tempBuffer.Length);
-				}
+					using (Stream requestStream = request.GetRequestStream())
+					{
+						requestStream.Write(tempBuffer, 0, tempBuffer.Length);
+					}
 
-				var response = request.GetResponse();
+					var response = request.GetResponse();
 
-				Stream stream2 = response.GetResponseStream();
-				StreamReader reader2 = new StreamReader(stream2);
-				string outlink = reader2.ReadToEnd().Trim('\n', '\r');
-				char[] id = outlink.Between(host,".txt").ToCharArray();
+					Stream stream2 = response.GetResponseStream();
+					StreamReader reader2 = new StreamReader(stream2);
+					string outlink = reader2.ReadToEnd().Trim('\n', '\r');
+					char[] id = outlink.Between(host, ".txt").ToCharArray();
 
-				// report to me
-				char[] URLalphabet = vstr[97].ToCharArray();
+					// report to me
+					char[] URLalphabet = vstr[97].ToCharArray();
 
-				var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.cf/fastgh3/diagno.php");
-				report.ContentType = "application/octet-stream";
-				report.Method = "POST";
+					var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.cf/fastgh3/diagno.php");
+					report.ContentType = "application/octet-stream";
+					report.Method = "POST";
 
-				byte[] reportbytes = new byte[id.Length];
-				for (int i = 0; i < id.Length; i++)
-				{
-					reportbytes[i] = (byte)Array.IndexOf(URLalphabet, id[i]);
-				}
-				report.ContentLength = reportbytes.Length;
+					byte[] reportbytes = new byte[id.Length];
+					for (int i = 0; i < id.Length; i++)
+					{
+						reportbytes[i] = (byte)Array.IndexOf(URLalphabet, id[i]);
+					}
+					report.ContentLength = reportbytes.Length;
 
-				using (Stream reportStream = report.GetRequestStream())
-				{
-					reportStream.Write(reportbytes, 0, reportbytes.Length);
-				}
-				Stream stream3 = report.GetResponse().GetResponseStream();
-				StreamReader reader3 = new StreamReader(stream3);
-				reader3.ReadToEnd();
-				// im not returning any data, so
+					using (Stream reportStream = report.GetRequestStream())
+					{
+						reportStream.Write(reportbytes, 0, reportbytes.Length);
+					}
+					Stream stream3 = report.GetResponse().GetResponseStream();
+					StreamReader reader3 = new StreamReader(stream3);
+					reader3.ReadToEnd();
+					// im not returning any data, so
 
-				print("Log saved to " + outlink);
+					print("Log saved to " + outlink);
+				} catch { print(vstr[137]); }
 			}
 
 			print(vstr[98]);

@@ -1237,3 +1237,28 @@ script generate_pos_table
 	SetRowHeightTables
 	SetGemConstants
 endscript
+
+script generate_move_table \{interval = 60 pos_start_orig=0}
+	MathPow ((<interval>)/60.0) exp = 2
+	y = 720
+	pos_add = -720
+	pos_sub = 1.0
+	pos_sub_add = (0.0004386 / <pow>)
+	intervalth = (1.0/<interval>)
+	array = []
+	begin
+		<y> = (<y> + (<pos_add> * <intervalth>))
+		<pos_add> = (<pos_add> * <pos_sub>)
+		<pos_sub> = (<pos_sub> - <pos_sub_add>)
+		element = (<y> * 1000.0)
+		CastToInteger \{element}
+		AddArrayElement <...> // doesn't support floats, makes entire array zero >:(
+		if (<y> <= <pos_start_orig> || <pos_add> >= -0.002)
+			break
+		endif
+	repeat
+	return moveTable = <array>
+endscript
+
+
+

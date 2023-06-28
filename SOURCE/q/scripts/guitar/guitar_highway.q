@@ -480,13 +480,13 @@ script move_highway_2d
 		endif
 		pos_start_orig = 0
 		GetSongTimeMs
-		MathPow ((<interval>)/60.0) exp = 2
 		movetime = ($current_intro.highway_move_time / 2200.0)
 		if (<movetime> < 0.001)
 			SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))
 			return
 		endif
 		i1000 = (1000.0 / <interval>)
+		generate_move_table interval=<interval> pos_start_orig=<pos_start_orig>
 		start_time = (<time> - (400.0 * <movetime>)) // instantly appear animating into screen
 		last_time = -1
 		begin
@@ -494,32 +494,11 @@ script move_highway_2d
 			time2 = (((<time> - <start_time>) / <i1000>) / <movetime>)
 			CastToInteger \{time2}
 			if NOT (<last_time> = <time2>)
-				//ProfilingStart
-				highway_start_y = 720
-				pos_add = -720
-				pos_sub = 1.0
-				pos_sub_add = (0.0004386 / <pow>)
-				last_time = <time2>
-				if (<time2> > 0)
-					begin
-						// there needs to be some optimization for this sort of thing
-						<highway_start_y> = (<highway_start_y> + (<pos_add> * (1.0/<interval>)))
-						<pos_add> = (<pos_add> * <pos_sub>)
-						<pos_sub> = (<pos_sub> - <pos_sub_add>)
-						if (<highway_start_y> <= <pos_start_orig> || <pos_add> >= -0.002)
-							break
-						endif
-					repeat <time2>
-					// HOW DOES THIS WORK
-					//highway_start_y = (720 + (-720 * (1.0 - (0.0004386 / <pow>)) * <time2>) * (1.0/<interval>))
-					//printf '%d' d = <highway_start_y>
-				endif
-				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<highway_start_y> * (0.0, 1.0)))
-				//ProfilingEnd <...> 'highway move'
+				y = (<moveTable>[<time2>] / 1000.0)
+				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<y> * (0.0, 1.0)))
 			endif
-			if (<highway_start_y> <= <pos_start_orig> || <pos_add> >= -0.002)
-				//printf '%d' d = <highway_start_y>
-				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0))+ (<pos_start_orig> * (0.0, 1.0)))
+			if (<y> <= <pos_start_orig>)
+				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))
 				break
 			endif
 			wait \{1 gameframe}
