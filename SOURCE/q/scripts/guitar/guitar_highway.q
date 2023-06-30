@@ -496,6 +496,7 @@ script move_highway_2d
 			if NOT (<last_time> = <time2>)
 				y = (<moveTable>[<time2>] / 1000.0)
 				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<y> * (0.0, 1.0)))
+				last_time = <time2>
 			endif
 			if (<y> <= <pos_start_orig>)
 				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))

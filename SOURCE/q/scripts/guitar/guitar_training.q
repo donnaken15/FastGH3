@@ -26,7 +26,8 @@ script training_waste_time_test
 endscript
 
 script print_random_carp
-	printf "I'm a random carp and the training system time is %t ms" t = ($current_training_time)
+	//printf "I'm a random carp and the training system time is %t ms" t = ($current_training_time)
+	
 endscript
 current_training_script = fake_training_script
 current_training_step = 0

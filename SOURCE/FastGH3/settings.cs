@@ -551,7 +551,7 @@ public partial class settings : Form
 			p2partt.Checked = false;
 		else
 			p2partt.Checked = true;
-		aqlvl.Value = Math.Min(96, Convert.ToInt32(Program.cfg("Audio", "AB", "128")));
+		aqlvl.Value = Math.Max(96, Convert.ToInt32(Program.cfg("Audio", "AB", "128")));
 
 		{
 			Program.vl("Loading scripts for override checks...");
@@ -1053,9 +1053,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		int part = 1;
-		if (p2partt.Checked)
-			part = 0;
+		int part = p2partt.Checked ? 1 : 0;
 		Program.cfgW("Player1", "Part", part);
 	}
 }

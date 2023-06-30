@@ -1238,7 +1238,8 @@ script generate_pos_table
 	SetGemConstants
 endscript
 
-script generate_move_table \{interval = 60 pos_start_orig=0}
+script generate_move_table \{interval=60 pos_start_orig=0}
+	ProfilingStart
 	MathPow ((<interval>)/60.0) exp = 2
 	y = 720
 	pos_add = -720
@@ -1257,6 +1258,7 @@ script generate_move_table \{interval = 60 pos_start_orig=0}
 			break
 		endif
 	repeat
+	ProfilingEnd <...> 'generate_move_table'
 	return moveTable = <array>
 endscript
 

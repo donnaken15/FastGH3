@@ -141,7 +141,7 @@ career_pause_fs = {
 		}
 		{
 			action = select_extras
-			flow_state = career_extras_fs
+			flow_state = extras_fs
 		}
 		{
 			action = select_options
@@ -154,19 +154,6 @@ career_pause_fs = {
 		{
 			action = select_debug_menu
 			flow_state = debug_menu_fs
-		}
-	]
-}
-career_extras_fs = {
-	create = create_pause_menu
-	create_params = {
-		submenu = extras
-	}
-	Destroy = destroy_pause_menu
-	actions = [
-		{
-			action = go_back
-			flow_state = career_pause_fs
 		}
 	]
 }

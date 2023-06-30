@@ -22,6 +22,19 @@ default_event_handlers = [
 		}
 	}
 ]
+extras_fs = {
+	create = create_pause_menu
+	create_params = {
+		submenu = extras
+	}
+	Destroy = destroy_pause_menu
+	actions = [
+		{
+			action = go_back
+			use_last_flow_state
+		}
+	]
+}
 menu_text_color = [ 255 255 255 255 ]
 menu_text_sel = 'Select'
 menu_text_conf = 'Confirm'
@@ -42,6 +55,39 @@ script common_control_helpers
 	endif
 	if GotParam \{nav}
 		add_user_control_helper \{z = 100 button = strumbar text = $menu_text_nav}
+	endif
+endscript
+
+script create_version_text
+	CreateScreenElement {
+		Type = TextElement
+		parent = pause_menu_frame_container
+		text = $fastgh3_build
+		font = text_a4
+		just = [right bottom]
+		Pos = (1200,710)
+		alpha = 0.8
+		Scale = 0.7
+		z = <z>
+	}
+	pad_2 ($build_timestamp[0])
+	d = <pad>
+	pad_2 ($build_timestamp[1])
+	e = <pad>
+	pad_2 ($build_timestamp[2])
+	formattext textname=vertext2 'BLEEDING EDGE %f.%d.%e' d=<d> e=<e> f=<pad>
+	if IsTrue \{$bleeding_edge}
+		CreateScreenElement {
+			Type = TextElement
+			parent = pause_menu_frame_container
+			text = <vertext2>
+			font = text_a4
+			just = [right bottom]
+			Pos = (1000,710)
+			rgba = [ 255 0 0 191 ]
+			Scale = 0.7
+			z = <z>
+		}
 	endif
 endscript
 
@@ -129,51 +175,6 @@ script new_menu\{menu_pos = $menu_pos event_handlers = $default_event_handlers u
 			exclusive_device = <exclusive_device>
 		}
 	endif
-	/*if GotParam \{tierlist}
-		Tier = 0
-		begin
-			<Tier> = (<Tier> + 1)
-			setlist_prefix = ($<tierlist>.prefix)
-			FormatText checksumName = tiername '%ptier%i' p = <setlist_prefix> i = (<Tier>)
-			FormatText checksumName = tier_checksum 'tier%s' s = (<Tier>)
-			<unlocked> = 1
-			GetGlobalTags <tiername> param = unlocked
-			if ((<unlocked> = 1)|| ($is_network_game))
-				GetArraySize ($<tierlist>.<tier_checksum>.songs)
-				song_count = 0
-				if (<array_Size> > 0)
-					begin
-						FormatText checksumName = song_checksum '%p_song%i_tier%s' p = <setlist_prefix> i = (<song_count> + 1)s = (<Tier>)AddToStringLookup = true
-						for_bonus = 0
-						if ($current_tab = tab_bonus)
-							<for_bonus> = 1
-						endif
-						if IsSongAvailable song_checksum = <song_checksum> song = ($g_gh3_setlist.<tier_checksum>.songs [<song_count>])for_bonus = <for_bonus>
-							get_song_title song = ($<tierlist>.<tier_checksum>.songs [<song_count>])
-							CreateScreenElement {
-								Type = TextElement
-								parent = <vmenuid>
-								font = <font>
-								Scale = <font_size>
-								rgba = [210 210 210 250]
-								text = <song_title>
-								just = [left top]
-								event_handlers = [
-									{focus menu_focus}
-									{unfocus menu_unfocus}
-									{pad_choose <on_choose> params = {Tier = <Tier> song_count = <song_count>}}
-									{pad_left <on_left> params = {Tier = <Tier> song_count = <song_count>}}
-									{pad_right <on_right> params = {Tier = <Tier> song_count = <song_count>}}
-									{pad_L3 <on_l3> params = {Tier = <Tier> song_count = <song_count>}}
-								]
-							}
-						endif
-						song_count = (<song_count> + 1)
-					repeat <array_Size>
-				endif
-			endif
-		repeat ($<tierlist>.num_tiers)
-	endif*///
 	if (<default_colors>)
 		set_focus_color rgba = ($default_menu_focus_color)
 		set_unfocus_color rgba = ($default_menu_unfocus_color)
@@ -265,6 +266,10 @@ script WinPortCreateLaptopUi
 	spawnscriptnow \{WinPortUpdateLaptopUi}
 endscript
 script WinPortUpdateLaptopUi
+	FGH3Config sect='GFX' 'LaptopUI' #"0x1ca1ff20"=1
+	if (<value> = 0)
+		return
+	endif
 	begin
 		WinPortGetLaptopInfo
 		if (<batteryPercent> > -1)
@@ -333,10 +338,7 @@ default_menu_focus_color = [ 255 127 0 224 ]
 
 script new_pause_menu_button \{cont_params = {} event_handlers = [] fit = (250.0, 0.0)}
 	id2 = <id>
-	CreateScreenElement {
-		<cont_params>
-		event_handlers = <event_handlers>
-	}
+	CreateScreenElement { <cont_params> event_handlers = <event_handlers> }
 	//printstruct <...>
 	CreateScreenElement {
 		Type = TextElement
@@ -492,7 +494,7 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 	if (<restart> = 1)
 		DoScreenElementMorph \{id=extras_warning_container alpha=1 time=0.14}
 	endif
-	printstruct <...>
+	//printstruct <...>
 	FGH3Config sect=<sect> <key> set=($<#"0x00000000">)
 	extra_format ($<#"0x00000000">) type = <type>
 	FormatText textname=text '%s: %v' s=<name> v=<strval>
@@ -546,25 +548,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 	endif
 	pause_z = 11000000
 	spacing = -59
-	menu_pos = (150.0, 170.0)
-	//if (<for_options> = 0)
-		//menu_pos = (230.0, 240.0)
-		//if (<for_practice> = 1)
-			//<menu_pos> = (230.0, 240.0)
-			//<spacing> = -30
-		//endif
-	//else
-		//<spacing> = -30
-		//if IsGuitarController controller = <player_device>
-			//if WinPortSioIsKeyboard deviceNum = <player_device>
-			//	menu_pos = (230.0, 240.0)
-			//else
-			//	menu_pos = (230.0, 240.0)
-			//endif
-		//else
-			//menu_pos = (230.0, 240.0)
-		//endif
-	//endif
+	menu_pos = (150.0, 110.0)
 	new_menu {
 		scrollid = scrolling_pause
 		vmenuid = vmenu_pause
@@ -573,7 +557,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 		event_handlers = [
 			{pad_back ui_flow_manager_respond_to_action params = {action = go_back}}
 		]
-		dims = (350,700)
+		dims = (350,740)
 		spacing = <spacing>
 		use_backdrop = 0
 		exclusive_device = <player_device>
@@ -632,6 +616,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 		Pos = (<menu_pos> - (10,30))
 		Scale = 0.5
 	}
+	create_version_text z=(<pause_z> + 10)
 	params_params = {
 		cont_params = {Type = ContainerElement parent = vmenu_pause dims = (0.0, 100.0)}
 		font = <font>
@@ -667,6 +652,17 @@ script create_pause_menu\{Player = 1 submenu = none}
 				]
 				text = 'Restart'
 			}
+			new_pause_menu_button {
+				<params_params>
+				id = pause_extras
+				event_handlers = [
+					{focus retail_menu_focus params = {id = pause_extras}}
+					{focus generic_menu_up_or_down_sound}
+					{unfocus retail_menu_unfocus params = {id = pause_extras}}
+					{pad_choose ui_flow_manager_respond_to_action params = {action = select_extras create_params = {player_device = <player_device>}}}
+				]
+				text = 'Extras'
+			}
 		endif
 		if NOT GotParam \{practice}
 			if ($is_network_game = 0)
@@ -683,17 +679,6 @@ script create_pause_menu\{Player = 1 submenu = none}
 						text = 'Practice'
 					}
 				endif
-				new_pause_menu_button {
-					<params_params>
-					id = pause_extras
-					event_handlers = [
-						{focus retail_menu_focus params = {id = pause_extras}}
-						{focus generic_menu_up_or_down_sound}
-						{unfocus retail_menu_unfocus params = {id = pause_extras}}
-						{pad_choose ui_flow_manager_respond_to_action params = {action = select_extras create_params = {player_device = <player_device>}}}
-					]
-					text = 'Extras'
-				}
 				new_pause_menu_button {
 					<params_params>
 					id = pause_options
@@ -729,6 +714,17 @@ script create_pause_menu\{Player = 1 submenu = none}
 				text = 'Exit'
 			}
 		else
+			new_pause_menu_button {
+				<params_params>
+				id = practice_loop_button
+				event_handlers = [
+					{focus retail_menu_focus params = {id = practice_loop_button}}
+					{focus generic_menu_up_or_down_sound}
+					{unfocus retail_menu_unfocus params = {id = practice_loop_button}}
+					{pad_choose practice_loop_toggle}
+				]
+			}
+			practice_loop_setprop
 			FormatText textname = text 'Return to %s' s = ($richpres_modes.$practice_last_mode.#"0x00000000") // ez
 			new_pause_menu_button {
 				<params_params>

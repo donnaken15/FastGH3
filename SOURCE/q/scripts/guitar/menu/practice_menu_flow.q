@@ -213,28 +213,33 @@ script practice_start_song\{device_num = 0}
 	Change \{game_mode = training}
 	Change \{current_transition = practice}
 	start_song startTime = ($practice_start_time)device_num = <device_num> practice_intro = 1 endtime = ($practice_end_time)
-	Change \{practice_audio_muted = 0}
+	//Change \{practice_audio_muted = 0}
 	/*if ($current_speedfactor = 1.0)
 		menu_audio_settings_update_band_volume \{vol = 7}
 	else
 		menu_audio_settings_update_band_volume \{vol = 0}
 	endif*/
-	SetSoundBussParams \{Crowd = {vol = -100.0}}
+	//SetSoundBussParams \{Crowd = {vol = -100.0}}
 	spawnscriptnow \{practice_update}
 	#"0x29a63aa1"
+endscript
+
+script practice_manual_restart
+	Change #"0xdf7ff31b" = ($#"0x736a45df")
+	practice_restart_song
 endscript
 
 script practice_restart_song
 	Change \{game_mode = training}
 	Change \{current_transition = practice}
 	restart_song practice_intro = 1 startTime = ($practice_start_time)endtime = ($practice_end_time)
-	Change \{practice_audio_muted = 0}
+	//Change \{practice_audio_muted = 0}
 	/*if ($current_speedfactor = 1.0)
 		menu_audio_settings_update_band_volume \{vol = 7}
 	else
 		menu_audio_settings_update_band_volume \{vol = 0}
 	endif*/
-	SetSoundBussParams \{Crowd = {vol = -100.0}}
+	//SetSoundBussParams \{Crowd = {vol = -100.0}}
 	spawnscriptnow \{practice_update}
 endscript
 
@@ -252,10 +257,16 @@ endscript
 
 script practice_update
 	begin
-		practice_audio_filter
+		//practice_audio_filter
 		GetSongTimeMs
-		if (<time> > (($practice_end_time)+ ($Song_Win_Delay * 1000 - 100)))
-			spawnscriptnow \{finish_practice_song}
+		if ($practice_loop_mode = 0)
+			if (<time> > ($practice_end_time + ($Song_Win_Delay * 1000 - 100)))
+				spawnscriptnow \{finish_practice_song}
+			endif
+		else
+			if (<time> > ($practice_end_time + 300))
+				spawnscriptnow \{#"0xc5e43e95"}
+			endif
 		endif
 		wait \{1 gameframes}
 	repeat
@@ -263,14 +274,18 @@ endscript
 
 script #"0xc5e43e95"
 	Change #"0xdf7ff31b" = 1
-	spawnscriptnow restart_gem_scroller params = {
+	// TODO: don't use global variable to reset disable_intro back to
+	/*spawnscriptnow restart_gem_scroller params = {
 		song_name = ($current_song)
 		difficulty = ($current_difficulty)
 		difficulty2 = ($current_difficulty2)
-		startTime = ($current_starttime)
+		startTime = ($practice_start_time)
+		endtime = ($practice_end_time)
 		device_num = <device_num>
 		uselaststarttime
-	}
+		//nointro
+	}*/
+	practice_restart_song
 endscript
 
 script finish_practice_song
@@ -301,11 +316,11 @@ endscript
 
 script shut_down_practice_mode
 	killspawnedscript \{name = practice_update}
-	GetGlobalTags \{user_options}
-	menu_audio_settings_update_guitar_volume vol = <guitar_volume>
-	menu_audio_settings_update_band_volume vol = <band_volume>
-	menu_audio_settings_update_sfx_volume vol = <sfx_volume>
-	SetSoundBussParams {Crowd = {vol = ($Default_BussSet.Crowd.vol)}}
+	//GetGlobalTags \{user_options}
+	//menu_audio_settings_update_guitar_volume vol = <guitar_volume>
+	//menu_audio_settings_update_band_volume vol = <band_volume>
+	//menu_audio_settings_update_sfx_volume vol = <sfx_volume>
+	//SetSoundBussParams {Crowd = {vol = ($Default_BussSet.Crowd.vol)}}
 endscript
 practice_play_song_fs = {
 	actions = [
@@ -339,6 +354,18 @@ practice_pause_fs = {
 			flow_state = practice_return_warning_fs
 		}
 		{
+			action = select_loop_menu_3a
+			flow_state = practice_loop_error_fs
+		}
+		{
+			action = select_loop_menu_3b
+			flow_state = practice_ab_restart_fs
+		}
+		{
+			action = select_extras
+			flow_state = extras_fs
+		}
+		{
 			action = select_options
 			flow_state = practice_options_fs
 		}
@@ -361,19 +388,6 @@ practice_pause_fs = {
 		{
 			action = select_debug_menu
 			flow_state = debug_menu_fs
-		}
-	]
-}
-practice_extras_fs = {
-	create = create_pause_menu
-	create_params = {
-		submenu = extras
-	}
-	Destroy = destroy_pause_menu
-	actions = [
-		{
-			action = go_back
-			flow_state = practice_pause_fs
 		}
 	]
 }
@@ -709,7 +723,7 @@ practice_end_fs = {
 	actions = [
 		{
 			action = restart
-			func = practice_restart_song
+			func = practice_manual_restart
 			transition_screen = default_loading_screen
 			flow_state = practice_play_song_fs
 		}

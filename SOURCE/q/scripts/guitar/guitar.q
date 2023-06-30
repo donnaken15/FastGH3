@@ -142,6 +142,10 @@ part_index = { guitar = 0 rhythm = 1 }
 parts = [ guitar rhythm ]
 part_names = { guitar = 'Guitar' rhythm = 'Rhythm' }
 
+fastgh3_build = '1.0-999010889'
+bleeding_edge = 1
+build_timestamp = [06 30 2023]
+
 script FileExists \{#"0x00000000" = ''}
 	if exists <#"0x00000000">
 		return \{true}
@@ -206,6 +210,16 @@ endscript
 script guitar_startup
 	HideLoadingScreen
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
+	printf \{'Version %v' v=$fastgh3_build}
+	if ($bleeding_edge = 1)
+		printf \{'On developmental build'}
+		pad_2 ($build_timestamp[0])
+		d = <pad>
+		pad_2 ($build_timestamp[1])
+		e = <pad>
+		pad_2 ($build_timestamp[2])
+		printf 'Timestamp: %d.%e.%f' d=<d> e=<e> f=<pad>
+	endif
 	change player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }
 	change player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }
 	printf \{'Initializing unneeded stuff'}
@@ -231,6 +245,7 @@ script guitar_startup
 		LoadPak \{'bkgd.pak' Heap = heap_global_pak}
 	endif
 	// move old (common) config values over from QB since this will be used less now
+	// i'll probably have to package release with MigratedConfig values set for new users
 	if IsTrue <migrate>
 		ProfilingStart
 		FGH3Config \{sect='Temp' 'MigratedConfig' #"0x1ca1ff20"=0}
@@ -239,8 +254,16 @@ script guitar_startup
 			ProfilingStart
 			FGH3Config sect='Player' 'Hyperspeed' set=($Cheat_Hyperspeed)
 			FGH3Config sect='Player' 'Autostart' set=($autolaunch_startnow)
-			FGH3Config sect='Player1' 'Part' set=($part_index.($player1_status.part))
-			FGH3Config sect='Player2' 'Part' set=($part_index.($player2_status.part))
+			if GlobalExists \{name=p1_part type=int}
+				FGH3Config sect='Player1' 'Part' set=($p1_part) // this is my fault but because i had limited resources
+			else
+				FGH3Config sect='Player1' 'Part' set=($part_index.($player1_status.part))
+			endif
+			if GlobalExists \{name=p2_part type=int}
+				FGH3Config sect='Player2' 'Part' set=($p2_part)
+			else
+				FGH3Config sect='Player2' 'Part' set=($part_index.($player2_status.part))
+			endif
 			FGH3Config sect='Player1' 'Device' set=($startup_controller)
 			FGH3Config sect='Player2' 'Device' set=($startup_controller2)
 			FGH3Config sect='Player1' 'Diff' set=($difficulty_list_props.$current_difficulty.index)
@@ -484,6 +507,7 @@ script guitar_startup
 	endif
 	if FileExists \{'hway2.pak'}
 		// wait, how did this even work if there's conflicting material names
+		// ps: ok, now it doesn't apparently
 		load_highway \{player_status = player2_status filename = 'hway2.pak'}
 	elseif FileExists \{'pak/player.pak'}
 		load_highway \{player_status = player2_status filename = 'pak/player.pak'}

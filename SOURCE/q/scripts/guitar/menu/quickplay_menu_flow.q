@@ -94,7 +94,7 @@ quickplay_pause_fs = {
 		}
 		{
 			action = select_extras
-			flow_state = quickplay_extras_fs
+			flow_state = extras_fs
 		}
 		{
 			action = select_options
@@ -141,19 +141,6 @@ quickplay_pause_options_fs = {
 			action = select_lefty_flip
 			flow_state = quickplay_lefty_flip_warning
 		}
-		{
-			action = go_back
-			flow_state = quickplay_pause_fs
-		}
-	]
-}
-quickplay_extras_fs = {
-	create = create_pause_menu
-	create_params = {
-		submenu = extras
-	}
-	Destroy = destroy_pause_menu
-	actions = [
 		{
 			action = go_back
 			flow_state = quickplay_pause_fs
