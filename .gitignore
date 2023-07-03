@@ -17,6 +17,7 @@ JUNK3
 *.log
 *_*.idb
 bin/
+!/bin
 obj/
 *.ini
 Release/
