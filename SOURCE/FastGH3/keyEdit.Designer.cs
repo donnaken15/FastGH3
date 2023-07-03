@@ -50,7 +50,7 @@
             // 
             // guitarPic
             // 
-            this.guitarPic.ImageLocation = "https://donnaken15.tk/fastgh3/assets/control/xplorer.jpg";
+            this.guitarPic.ImageLocation = "https://donnaken15.cf/fastgh3/assets/control/xplorer.jpg";
             this.guitarPic.Location = new System.Drawing.Point(3, 2);
             this.guitarPic.Name = "guitarPic";
             this.guitarPic.Size = new System.Drawing.Size(544, 179);

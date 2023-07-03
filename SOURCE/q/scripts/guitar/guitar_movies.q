@@ -136,55 +136,31 @@ script PlayMovieAndWait
 	endif
 	mark_safe_for_shutdown
 endscript
-#"0x89f66c79" = {
-	#"0x071b048c"
-	no_hold
-}
+movie_params = {}
 
-script #"0x876d2a82"
-	#"0x6f142d6a"
-	movie = 'backgrnd_video'
-	if NOT IsMovieInBuffer movie = <movie>
-		buffer_slot = 0
-		FreeMovieBuffer buffer_slot = <buffer_slot>
-		if GotExtraMemory
-			MemPushContext \{debugheap}
-		endif
-		AllocateMovieBuffer buffer_slot = <buffer_slot> movie = 'movies\bik\backgrnd_video.bik.xen'
-		if GotExtraMemory
-			MemPopContext
-		endif
-		LoadMovieIntoBuffer buffer_slot = <buffer_slot> movie = <movie>
+video_start_on_time = 0
+script preload_bgbink
+	stop_bgbink
+	PreLoadMovie \{ movie = 'backgrnd_video' textureSlot = 2 TexturePri = 0 $movie_params }
+endscript
+script start_bgbink
+	if isMoviePreLoaded \{textureSlot = 2}
+		StartPreLoadedMovie \{textureSlot = 2}
 	endif
 endscript
-
-script #"0x1debfd1e"
-	params = $#"0x89f66c79"
-	PlayMovieFromBuffer {
-		buffer_slot = 0
-		textureSlot = 2
-		TexturePri = 0
-		<params>
-	}
-endscript
-
-script #"0x6f142d6a"
-	if IsWinPort
-		if IsMoviePlaying \{textureSlot = 2}
-			KillMovie \{textureSlot = 2}
-		endif
+script stop_bgbink
+	if IsMoviePlaying \{textureSlot = 2}
+		KillMovie \{textureSlot = 2}
 	endif
 endscript
-
-script #"0x3cfb4303"
+script pause_bgbink
 	if IsMoviePlaying \{textureSlot = 2}
 		PauseMovie \{textureSlot = 2}
 	endif
 endscript
-
-script #"0x0c4cf76d"
+script unpause_bgbink
 	if IsMoviePlaying \{textureSlot = 2}
 		ResumeMovie \{textureSlot = 2}
 	endif
 endscript
-#"0x633e187f" = 0
+enable_video = 0

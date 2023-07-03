@@ -60,25 +60,45 @@ script destroy_all_debug_menus
 	destroy_debugging_menu
 endscript
 
-script pad_2 \{#"0x00000000" = 0 pad = '0'}
+script pad \{#"0x00000000" = 0 count = 2 pad = '0'}
+	formattext textname=text '%d' d=<#"0x00000000">
+	if (<count> > 0)
+		digits = 1
+		begin
+			if (<#"0x00000000"> < 10)
+				break
+			endif
+			#"0x00000000" = (<#"0x00000000"> / 10)
+			Increment \{digits}
+		repeat <count>
+		// i think i had this better optimized in my mind but im half asleep
+		if (<count> > <digits>)
+			begin
+				formattext textname = text '%p%d' p = <pad> d = <text>
+			repeat (<count> - <digits>)
+		endif
+	endif
+	return pad = <text>
+endscript
+/*script pad_2 \{#"0x00000000" = 0 pad = '0'}
 	if (<#"0x00000000"> >= 10)
 		pad = ''
 	endif
 	formattext textname = text '%p%d' p = <pad> d = <#"0x00000000">
 	return pad = <text>
-endscript
+endscript*///
 script timestamp
 	GetLocalSystemTime
 	AddParams <localsystemtime>
-	pad_2 <month>
+	pad (<month>+1) // why is it one less
 	month = <pad>
-	pad_2 <dayofmonth>
+	pad <dayofmonth>
 	dayofmonth = <pad>
-	pad_2 <hour>
+	pad <hour>
 	hour = <pad>
-	pad_2 <minute>
+	pad <minute>
 	minute = <pad>
-	pad_2 <second>
+	pad <second>
 	second = <pad>
 	FormatText { textname = timestamp "%y-%m-%d_%h-%n-%s"
 		y = <year> m = <month> d = <dayofmonth> h = <hour> n = <minute> s = <second> }
@@ -466,6 +486,7 @@ script update_slomo
 	Player = 1
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player>
+		// this is probably meant to tighten it as if it were still 100% but it doesn't take effect until restart
 		Change StructureName = <player_status> check_time_early = ($check_time_early * $current_speedfactor)
 		Change StructureName = <player_status> check_time_late = ($check_time_late * $current_speedfactor)
 		Player = (<Player> + 1)

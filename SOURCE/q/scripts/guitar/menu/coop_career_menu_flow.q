@@ -260,6 +260,10 @@ coop_career_pause_fs = {
 			flow_state = coop_career_practice_warning_fs
 		}
 		{
+			action = select_extras
+			flow_state = extras_fs
+		}
+		{
 			action = select_options
 			flow_state = coop_career_pause_options_fs
 		}

@@ -139,12 +139,10 @@ public partial class settings : Form
 
 	private static void svQB()
 	{
-		if (!foundqconf) return;
-		if (userpak)
-		{
-			userqb.AlignPointers();
-			userqb.Write(Program.dataf + "config.qb.xen");
-		} else qbedit.ReplaceFile("config.qb", userqb);
+		if (!foundqconf) { Program.print("No QB config found, cannot save changes."); return; }
+		userqb.AlignPointers();
+		if (!userpak) userqb.Write(Program.dataf + "config.qb.xen");
+		else qbedit.ReplaceFile("config.qb", userqb);
 	}
 
 	static uint Eswap(uint value)
@@ -347,7 +345,7 @@ public partial class settings : Form
 		//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
 		//DialogResult = DialogResult.OK;
 		InitializeComponent();
-		vlbl.Text = "Version      : "+Program.version;
+		vlbl.Text = "Version      : "+Program.version+"\nBuild date  : "+Program.builddate.ToLocalTime();
 		// kill me
 		tt.SetToolTip(maxFPS, Program.vstr[102]);
 		tt.SetToolTip(MaxN, Program.vstr[103]);
@@ -579,7 +577,7 @@ public partial class settings : Form
 					}
 				}
 			}
-			if (false)
+			if (true)
 			{
 				PakEditor O_PE = new PakEditor(O_PF, false);
 				foreach (PakHeaderItem f in O_PE.Headers.Values)
@@ -901,9 +899,10 @@ public partial class settings : Form
 		}
 	}
 
+	// still using these for qb mod configs
 	public static object gQC(QbKey key, object def)
 	{
-		return null; // not using for now
+		if (!foundqconf) { Program.print("No QB config file found, cannot set value."); return def; }
 		// find matching item's value or use a default
 		// we're only accessing global/root items with this
 		object _item = (userqb.FindItem(key, false));
@@ -913,6 +912,21 @@ public partial class settings : Form
 			{
 				case QbItemType.SectionInteger:
 					return (_item as QbItemInteger).Values[0];
+				case QbItemType.SectionArray:
+					QbItemBase array = (_item as QbItemArray).Items[0];
+					switch (array.QbItemType)
+					{
+						case QbItemType.ArrayInteger:
+							return (array as QbItemInteger).Values;
+						case QbItemType.ArrayFloat:
+							return (array as QbItemFloat).Values;
+						case QbItemType.ArrayQbKey:
+							return (array as QbItemQbKey).Values;
+						case QbItemType.ArrayString:
+						case QbItemType.ArrayStringW:
+							return (array as QbItemString).Strings;
+					}
+					throw new InvalidDataException("Unknown object type in array: "+key);
 				case QbItemType.SectionFloat:
 					return (_item as QbItemFloat).Values[0];
 				case QbItemType.SectionString:
@@ -923,79 +937,142 @@ public partial class settings : Form
 		}
 		return def;
 	}
-
 	public static void sQC(QbKey key, object value)
 	{
-		return; // not using for now
+		if (!foundqconf) { Program.print("No QB config file found, cannot set value."); return; }
 		// find or create value
 		object _item = (userqb.FindItem(key, false));
 		if (value == null) return;
 		Type type = value.GetType();
 		if (_item == null)
 		{
-			switch (Type.GetTypeCode(type))
+			if (!type.IsArray)
 			{
-				case TypeCode.Int32:
-					{
-						QbItemInteger item = new QbItemInteger(userqb);
-						item.Create(QbItemType.SectionInteger);
-						item.ItemQbKey = key;
-						userqb.AddItem(item);
-					}
-					break;
-				case TypeCode.Single:
-				case TypeCode.Double:
-					{
-						QbItemFloat item = new QbItemFloat(userqb);
-						item.Create(QbItemType.SectionFloat); // *
-						item.ItemQbKey = key;
-						userqb.AddItem(item);
-					}
-					break;
-				case TypeCode.String:
-					{
-						QbItemString item = new QbItemString(userqb);
-						item.Create(QbItemType.SectionString); // *
-						item.ItemQbKey = key;
-						userqb.AddItem(item);
-					}
-					break;
+				switch (Type.GetTypeCode(type))
+				{
+					case TypeCode.Int32:
+						{
+							QbItemInteger item = new QbItemInteger(userqb);
+							item.Create(QbItemType.SectionInteger);
+							userqb.AddItem(item);
+							item.ItemQbKey = key;
+						}
+						break;
+					case TypeCode.Single:
+					case TypeCode.Double:
+						{
+							QbItemFloat item = new QbItemFloat(userqb);
+							item.Create(QbItemType.SectionFloat); // *
+							userqb.AddItem(item);
+							item.ItemQbKey = key;
+						}
+						break;
+					case TypeCode.String:
+						{
+							QbItemString item = new QbItemString(userqb);
+							item.Create(QbItemType.SectionString); // *
+							userqb.AddItem(item);
+							item.ItemQbKey = key;
+						}
+						break;
+				}
+				if (value is QbKey)
+				{
+					QbItemQbKey item = new QbItemQbKey(userqb);
+					item.Create(QbItemType.SectionQbKey); // *
+					userqb.AddItem(item);
+					item.ItemQbKey = key;
+				}
 			}
-			if (value is QbKey)
+			else
 			{
-				QbItemQbKey item = new QbItemQbKey(userqb);
-				item.Create(QbItemType.SectionQbKey); // *
-				item.ItemQbKey = key;
-				userqb.AddItem(item);
+				QbItemArray arraybase = new QbItemArray(userqb);
+				arraybase.Create(QbItemType.SectionArray);
+				arraybase.ItemQbKey = key;
+				userqb.AddItem(arraybase);
+				switch (Type.GetTypeCode(type.GetElementType()))
+				{
+					case TypeCode.Int32:
+						{
+							QbItemInteger item = new QbItemInteger(userqb);
+							item.Create(QbItemType.ArrayInteger);
+							arraybase.AddItem(item);
+							item.ItemQbKey = key;
+						}
+						break;
+					case TypeCode.Single:
+						{
+							QbItemFloat item = new QbItemFloat(userqb);
+							item.Create(QbItemType.ArrayFloat); // *
+							arraybase.AddItem(item);
+							item.ItemQbKey = key;
+						}
+						break;
+					case TypeCode.String:
+						{
+							QbItemString item = new QbItemString(userqb);
+							item.Create(QbItemType.ArrayString); // *
+							arraybase.AddItem(item);
+							item.ItemQbKey = key;
+						}
+						break;
+				}
+				if (value is QbKey)
+				{
+					QbItemQbKey item = new QbItemQbKey(userqb);
+					item.Create(QbItemType.ArrayQbKey); // *
+					arraybase.AddItem(item);
+					item.ItemQbKey = key;
+				}
 			}
 		}
 		_item = userqb.FindItem(key, false); // weird
 		try
 		{
-			switch (Type.GetTypeCode(type))
+			if (!type.IsArray)
 			{
-				case TypeCode.Int32:
-					(_item as QbItemInteger).Values[0] = (int)value;
-					break;
-				case TypeCode.Single:
-				case TypeCode.Double:
-					(_item as QbItemFloat).Values[0] = (float)value;
-					break;
-				case TypeCode.String:
-					(_item as QbItemString).Strings[0] = (string)value;
-					break;
+				switch (Type.GetTypeCode(type))
+				{
+					case TypeCode.Int32:
+						(_item as QbItemInteger).Values[0] = (int)value;
+						break;
+					case TypeCode.Single:
+					case TypeCode.Double:
+						(_item as QbItemFloat).Values[0] = (float)value;
+						break;
+					case TypeCode.String:
+						(_item as QbItemString).Strings[0] = (string)value;
+						break;
+				}
+				if (value is QbKey)
+					(_item as QbItemQbKey).Values[0] = (QbKey)value;
 			}
-			if (value is QbKey)
+			else
 			{
-				(_item as QbItemQbKey).Values[0] = (QbKey)value;
+				QbItemBase array = (_item as QbItemArray).Items[0];
+				switch (Type.GetTypeCode(type.GetElementType()))
+				{
+					case TypeCode.Int32:
+						(array as QbItemInteger).Values = (int[])value;
+						break;
+					case TypeCode.Single:
+					case TypeCode.Double:
+						(array as QbItemFloat).Values = (float[])value;
+						break;
+					case TypeCode.String:
+						(array as QbItemString).Strings = (string[])value;
+						break;
+				}
+				if (value is QbKey)
+					(_item as QbItemQbKey).Values = (QbKey[])value;
 			}
+			svQB();
 		}
 		catch (Exception ex)
 		{
 			Console.WriteLine("Failed to set user QB value.");
 			Console.WriteLine(ex);
 		}
-		svQB();
 	}
 
 	void mxnVC(object sender, EventArgs e)

@@ -53,285 +53,33 @@ pitch_dirty = 1
 prev_len = 0
 bPS3SingleSignOnCheckComplete = 0
 
-script xenon_singleplayer_session_init\{ps3_signin_callback = xenon_singleplayer_session_init}
-	//printscriptinfo \{"--- MJS xenon_singleplayer_session_init"}
-	if CheckForSignIn
-		if ($is_network_game = 1)
-			NetSessionFunc \{func = motd_uninit}
-			NetSessionFunc \{func = motd_init}
-			if isXenon
-				NetSessionFunc \{func = start_singleplayer_session Obj = session}
-				MassiveInit \{sku = 'atvi_guitar_hero_3_pc_na' startZone = 'GlobalZone'}
-			endif
-		endif
-	else
-		if ($is_attract_mode = 0)
-			if NOT GotParam \{from_callback}
-				if (0 = $bPS3SingleSignOnCheckComplete)
-					NetSessionFunc func = OnlineSignIn params = {callback = <ps3_signin_callback>}
-					Change \{bPS3SingleSignOnCheckComplete = 1}
-				endif
-			else
-				printf \{"PS3: unable to signin in to the network platform"}
-			endif
-		endif
-	endif
-endscript
-
-script begin_singleplayer_game
-	if NetSessionFunc \{Obj = session func = has_active_session}
-		NetSessionFunc \{Obj = session func = begin_singleplayer_game}
-	endif
-endscript
-
-script xenon_singleplayer_session_begin_uninit
-	if isXenon
-		NetSessionFunc \{func = stop_singleplayer_session Obj = session}
-	endif
-endscript
-
-script xenon_singleplayer_session_complete_uninit
-	printf \{"--- xenon_singleplayer_session_complete_uninit"}
-	Change \{net_safe_to_enter_net_play = 0}
-	NetSessionFunc \{Obj = session func = unpost_game}
-	NetSessionFunc \{func = match_uninit}
-	NetSessionFunc \{func = motd_uninit}
-	Change \{net_safe_to_enter_net_play = 1}
-endscript
-
-script send_leader_board_message
-endscript
-
-script net_write_single_player_stats
-	net_retrieve_primary_controller_score
-	primary_player_score = <primary_score>
-	secondary_player_score = <secondary_score>
-	if (<primary_player_score> > 0)
-		if NOT (($game_mode = p2_battle)|| ($game_mode = practice)|| $Cheat_NoFail = 1 || $Cheat_EasyExpert = 1)
-			if ($game_mode = p2_career)
-				primary_player_score = (<primary_player_score> + <secondary_player_score>)
-				casttointeger \{primary_player_score}
-				get_song_struct song = ($current_song)
-				FormatText checksumName = coop_song_checksum 'lb_coop_%s' s = (<song_struct>.name)
-				send_leader_board_message score = <primary_player_score> leaderboard_id = <coop_song_checksum> diff = ($current_difficulty)
-			else
-				casttointeger \{primary_player_score}
-				send_leader_board_message score = <primary_player_score> leaderboard_id = ($current_song)diff = ($current_difficulty)
-			endif
-		else
-			xenon_singleplayer_session_begin_uninit
-		endif
-	else
-		xenon_singleplayer_session_begin_uninit
-	endif
-endscript
-
-script net_retrieve_primary_controller_score
-	if (($player1_status.controller)= ($primary_controller))
-		return primary_score = ($player1_status.score)secondary_score = ($player2_status.score)
-	elseif (($player2_status.controller)= ($primary_controller))
-		return primary_score = ($player2_status.score)secondary_score = ($player1_status.score)
-	else
-		return \{primary_score = 0 secondary_score = 0}
-	endif
-endscript
-
-script summation_career_score
-	setlist_prefix = ($<tier_global>.prefix)
-	career_score = 0
-	Tier = 1
-	begin
-		FormatText checksumName = tiername '%ptier%i' p = <setlist_prefix> i = <Tier>
-		FormatText checksumName = tier_checksum 'tier%s' s = <Tier>
-		GetArraySize ($<tier_global>.<tier_checksum>.songs)
-		array_count = 0
-		begin
-			FormatText checksumName = song_checksum '%p_song%i_tier%s' p = <setlist_prefix> i = (<array_count> + 1)s = <Tier>
-			GetGlobalTags <song_checksum> param = score
-			<career_score> = (<career_score> + <score>)
-			array_count = (<array_count> + 1)
-		repeat <array_Size>
-		Tier = (<Tier> + 1)
-	repeat ($<tier_global>.num_tiers)
-	return career_score = <career_score>
-endscript
-
-script online_song_end_write_stats
-endscript
-
-script online_match_end_write_stats
-endscript
-
-script online_set_win_losses_streak\{out_come = lose}
-	GetGlobalTags \{net}
-	switch ($game_mode)
-		case p2_battle
-			if (<out_come> = win)
-				SetGlobalTags net params = {battle_streak = (<battle_streak> + 1)battle_wins = (<battle_wins> + 1)}
-			else
-				SetGlobalTags net params = {battle_streak = 0 battle_loses = (<battle_loses> + 1)}
-			endif
-		case p2_faceoff
-			if (<out_come> = win)
-				SetGlobalTags net params = {face_off_streak = (<face_off_streak> + 1)faceoff_wins = (<faceoff_wins> + 1)}
-			else
-				SetGlobalTags net params = {face_off_streak = 0 faceoff_loses = (<faceoff_loses> + 1)}
-			endif
-		case p2_pro_faceoff
-			if (<out_come> = win)
-				SetGlobalTags net params = {pro_face_off_streak = (<pro_face_off_streak> + 1)pro_faceoff_wins = (<pro_faceoff_wins> + 1)}
-			else
-				SetGlobalTags net params = {pro_face_off_streak = 0 pro_faceoff_loses = (<pro_faceoff_loses> + 1)}
-			endif
-	endswitch
-endscript
-
-script prepare_player_list_array
-endscript
-
-script get_match_type_leaderboard_info
-	if NOT ($game_mode = p2_battle)
-		net_stats_calculate_total_scores
-		player1_score = <p1_score>
-		casttointeger \{player1_score}
-		player2_score = <p2_score>
-		casttointeger \{player2_score}
-		return {
-			write_type = Max
-			score1 = <player1_score>
-			attrib_acum1 = <player1_score>
-			attrib_score1 = <player1_score>
-			attrib_tot1 = 0
-			score2 = <player2_score>
-			attrib_acum2 = <player2_score>
-			attrib_score2 = <player2_score>
-			attrib_tot2 = 0
-		}
-	else
-		return {
-			write_type = ACCUMULATE
-			score1 = <p1_wins_value>
-			attrib_acum1 = <p1_wins_value>
-			attrib_score1 = <p1_wins_value>
-			attrib_tot1 = 0
-			score2 = <p2_wins_value>
-			attrib_acum2 = <p2_wins_value>
-			attrib_score2 = <p2_wins_value>
-			attrib_tot2 = 0
-		}
-	endif
-endscript
-
-script gameinvite_server_unavailable
-	CreateJoinRefusedDialog \{reason = net_status_join_timeout}
-endscript
-
-script destroy_join_refuse_dialog
-	destroy_connection_dialog_scroller
-	destroy_popup_warning_menu
-endscript
-
-script append_animating_dots
-	printf \{"---append_animating_dots"}
-	num_dots = 0
-	if ScreenElementExists id = <id>
-		begin
-			FormatText textname = new_text "%a\n%b" a = <text> b = ($dots_array [<num_dots>])
-			<id> ::SetProps text = <new_text>
-			if (<num_dots> = 3)
-				<num_dots> = 0
-			else
-				<num_dots> = (<num_dots> + 1)
-			endif
-			wait \{0.5 Second}
-		repeat
-	endif
-endscript
-
-script destroy_net_popup
-	if ScreenElementExists \{id = net_popup_container}
-		DestroyScreenElement \{id = net_popup_container}
-	endif
-endscript
-
-script ShowJoinTimeoutNotice
-	cancel_join_server
-	setup_sessionfuncs
-	spawnscriptnow \{timeout_connection_attempt}
-endscript
-
-script timeout_connection_attempt
-	create_timeout_dialog
-	ui_flow_manager_respond_to_action \{action = timeout}
-	net_repeat_last_search
-endscript
-
-script FailedToCreateGame
-	cancel_join_server
-	setup_sessionfuncs
-	create_failed_connection_dialog
-endscript
-
-script destroy_connection_dialog_scroller
-	if ScreenElementExists \{id = connection_dialog_scroller}
-		DestroyScreenElement \{id = connection_dialog_scroller}
-	endif
-	destroy_net_popup
-endscript
-
-script create_timeout_dialog
-endscript
-
-script create_failed_connection_dialog
-endscript
-
-script net_repeat_last_search
-	wait \{1 gameframe}
-	ui_flow_manager_respond_to_action \{action = select_done}
-endscript
-
-script check_if_selecting_tie_breaker\{Player = 1}
-	if IsHost
-		if (($tie_breaker = HOST)& (<Player> = 1))
-			return \{selecting_tiebreaker = 1}
-		endif
-		if (($tie_breaker = CLIENT)& (<Player> = 2))
-			return \{selecting_tiebreaker = 1}
-		endif
-	else
-		if (($tie_breaker = HOST)& (<Player> = 2))
-			return \{selecting_tiebreaker = 1}
-		endif
-		if (($tie_breaker = CLIENT)& (<Player> = 1))
-			return \{selecting_tiebreaker = 1}
-		endif
-	endif
-	return \{selecting_tiebreaker = 0}
-endscript
-
-script get_num_players_by_gamemode
-	if (($game_mode = p1_career)|| ($game_mode = p1_quickplay))
-		return \{num_players = 1}
-	else
-		return \{num_players = 2}
-	endif
-endscript
-
-script connection_lost_end_song
-	printf \{"connection_lost_end_song"}
-	Change \{current_num_players = 2}
-	if ($playing_song = 0)
-		return
-	endif
-	if ($game_mode = p2_battle)
-		Change \{StructureName = player1_status current_health = 1.0}
-		Change \{StructureName = player2_status current_health = 0.0}
-		GuitarEvent_SongWon \{battle_win = 1}
-	else
-		ExtendCrc \{song_won 'p1' out = Type}
-		broadcastevent Type = <Type>
-	endif
-endscript
+xenon_singleplayer_session_init = $EmptyScript
+begin_singleplayer_game = $EmptyScript
+xenon_singleplayer_session_begin_uninit = $EmptyScript
+xenon_singleplayer_session_complete_uninit = $EmptyScript
+send_leader_board_message = $EmptyScript
+net_write_single_player_stats = $EmptyScript
+net_retrieve_primary_controller_score = $EmptyScript
+summation_career_score = $EmptyScript
+online_song_end_write_stats = $EmptyScript
+online_match_end_write_stats = $EmptyScript
+online_set_win_losses_streak = $EmptyScript
+prepare_player_list_array = $EmptyScript
+get_match_type_leaderboard_info = $EmptyScript
+gameinvite_server_unavailable = $EmptyScript
+destroy_join_refuse_dialog = $EmptyScript
+append_animating_dots = $EmptyScript
+destroy_net_popup = $EmptyScript
+ShowJoinTimeoutNotice = $EmptyScript
+timeout_connection_attempt = $EmptyScript
+FailedToCreateGame = $EmptyScript
+destroy_connection_dialog_scroller = $EmptyScript
+create_timeout_dialog = $EmptyScript
+create_failed_connection_dialog = $EmptyScript
+net_repeat_last_search = $EmptyScript
+check_if_selecting_tie_breaker = $EmptyScript
+get_num_players_by_gamemode = $EmptyScript
+connection_lost_end_song = $EmptyScript
 
 script test_events\{passed_in_value = 'test value'}
 	printf \{"test_events"}

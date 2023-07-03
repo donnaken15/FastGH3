@@ -42,16 +42,6 @@ battlemode_powerups = [
 	}
 	{
 		$powerup_base
-		name = starpower
-		name_text = "Star Power"
-		weight = 0
-		Scr = #"0x7c9d1363"
-		card_texture = #"0x31b5184b"
-		drain_time = 10
-		fire_bolt = 0
-	}
-	{
-		$powerup_base
 		name = PowerUpSteal
 		name_text = "Powerup Steal"
 		weight_losing = 10
@@ -106,6 +96,16 @@ battlemode_powerups = [
 		hard_kill_rate = 0.25
 		expert_kill_rate = 0.2
 		drain_time = 10000
+		fire_bolt = 0
+	}
+	{
+		$powerup_base
+		name = starpower
+		name_text = "Star Power"
+		weight = 0
+		Scr = #"0x7c9d1363"
+		card_texture = #"0x31b5184b"
+		drain_time = 10
 		fire_bolt = 0
 	}
 ]
@@ -1707,10 +1707,10 @@ script battle_whammy_attack
 				else
 					<len> = 0
 				endif
-				if ($boss_battle = 1 &
-					<other_player_status>.Player = 2)
+				if (($boss_battle = 1 &
+					<other_player_status>.Player = 2) | <other_player_status>.bot_play = 1)
 					GetSongTimeMs
-					if (<time> - $boss_lastwhammytime > $current_boss.WhammySpeed.($current_difficulty))
+					if (<time> - $boss_lastwhammytime > 250)
 						len = 0.5
 						Change boss_lastwhammytime = <time>
 					else
@@ -2065,11 +2065,12 @@ script battle_broken_string
 		if (<total_broken_strings> = 0)
 			break
 		endif
-		if ($boss_battle = 1 &
-			<other_player_status>.Player = 2)
+		if (($boss_battle = 1 &
+			<other_player_status>.Player = 2) | <other_player_status>.bot_play = 1)
 			if ($<other_player_status>.whammy_attack < 1)
 				GetSongTimeMs
-				if (<time> - $boss_lastbrokenstringtime > $current_boss.BrokenStringSpeed.($current_difficulty))
+				if (<time> - $boss_lastbrokenstringtime > 250)
+					Change structurename = <other_player_status> bot_pattern = ($<other_player_status>.broken_string_mask)
 					Change boss_pattern = ($<other_player_status>.broken_string_mask)
 					Change boss_lastbrokenstringtime = <time>
 				else

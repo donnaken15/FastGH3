@@ -481,8 +481,6 @@ endscript
 script Do_StarPower_Camera
 	// called internally
 endscript
-script Kill_StarPower_StageFX
-endscript
 using_starpower_camera = FALSE
 
 overlapping_starpower = 1

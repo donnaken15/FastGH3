@@ -341,50 +341,6 @@ script progression_getdifficulty
 endscript
 
 script Progression_SetProgressionNodeFlags
-	if ($coop_dlc_active = 1)
-		Change \{game_mode = p2_career}
-	endif
-	ChangeNodeFlag \{LS_ALWAYS 1}
-	ls_encore = 0
-	ls_3_5 = 0
-	get_progression_globals game_mode = ($game_mode)
-	Tier = ($setlist_selection_tier)
-	if ($coop_dlc_active = 0)
-		if ($game_mode = p1_career ||
-			$game_mode = p2_career)
-			if Progression_IsEncoreSong tier_global = <tier_global> Tier = <Tier> song = ($current_song)
-				ls_encore = 1
-			endif
-			progression_getdifficulty
-			Progression_CountCompletedSongsInCurrentTier
-			if (<difficulty> = easy || <difficulty> = medium)
-				if (<completed_songs> >= 2)
-					ls_3_5 = 1
-				endif
-			else
-				if (<completed_songs> >= 3)
-					ls_3_5 = 1
-				endif
-			endif
-		endif
-	endif
-	printf "Progression_SetProgressionNodeFlags encore = %d 3_5 = %i" d = <ls_encore> i = <ls_3_5>
-	if (<ls_encore> = 1)
-		ChangeNodeFlag \{LS_3_5_PRE 0}
-		ChangeNodeFlag \{LS_3_5_POST 1}
-		ChangeNodeFlag \{LS_ENCORE_PRE 0}
-		ChangeNodeFlag \{LS_ENCORE_POST 1}
-	elseif (<ls_3_5> = 1)
-		ChangeNodeFlag \{LS_3_5_PRE 0}
-		ChangeNodeFlag \{LS_3_5_POST 1}
-		ChangeNodeFlag \{LS_ENCORE_PRE 1}
-		ChangeNodeFlag \{LS_ENCORE_POST 0}
-	else
-		ChangeNodeFlag \{LS_3_5_PRE 1}
-		ChangeNodeFlag \{LS_3_5_POST 0}
-		ChangeNodeFlag \{LS_ENCORE_PRE 1}
-		ChangeNodeFlag \{LS_ENCORE_POST 0}
-	endif
 endscript
 #"0xfde7f2e2" = {
 	tier_global = #"0xc48885fc"

@@ -15,7 +15,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Guitar Hero is trademar
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright Activision, Aspyr, Neversoft 2007"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "FastGH3 1.0"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APPVERSION}"
-InstallDir $PROGRAMFILES\FastGH3
+InstallDir "$PROGRAMFILES\FastGH3"
 
 Page custom splashPage
 !insertmacro MUI_PAGE_DIRECTORY
@@ -23,28 +23,30 @@ Page custom splashPage
 !insertmacro MUI_PAGE_INSTFILES
 
 Section
-	StrCpy $3 $INSTDIR
-	SetOutPath $3
+	StrCpy $0 $INSTDIR
+	SetOutPath $0
 	File /r "..\..\__FINAL\*"
-	StrCpy $0 "FastGH3"
-	StrCpy $1 "$\"$3\$0.exe$\" $\"%1$\""
-	StrCpy $2 "\shell\open\"
-	WriteRegStr HKCR ".chart" "" "$0.chart"
-	WriteRegStr HKCR ".fsp" "" "$0.FSP"
-	WriteRegStr HKCR "$0" "" "$0"
-	WriteRegStr HKCR "$0" "URL Protocol" ""
-	WriteRegStr HKCR "$0.chart" "" "Guitar Hero Chart"
-	WriteRegStr HKCR "$0.chart$2" "" "Play"
-	WriteRegStr HKCR "$0.chart$2command" "" "$1"
-	WriteRegStr HKCR "$0.FSP" "" "FastGH3 Song Package"
-	WriteRegStr HKCR "$0.FSP$2" "" "Play"
-	WriteRegStr HKCR "$0.FSP$2command" "" "$1"
-	StrCpy $4 "$3\$0.exe"
-	CreateShortCut "$DESKTOP\$0.lnk" "$4" "" "$4" 0
-	CreateShortCut "$SMPROGRAMS\$0\$0.lnk" "$4" "" "$4" 0
-	CreateShortCut "$SMPROGRAMS\$0\$0 Settings.lnk" "$4" "-settings" "$4" 0
-	CreateShortCut "$SMPROGRAMS\$0\Shuffle.lnk" "$4" "-shuffle" "$4" 0
-	CreateShortCut "$SMPROGRAMS\$0\Updater.lnk" "$3\Updater.exe" "" "$4" 0
+	StrCpy $1 "FastGH3"
+	StrCpy $4 "$0\$1.exe"
+	StrCpy $2 "$\"$4$\" $\"%1$\""
+	StrCpy $3 "\shell\open\"
+	WriteRegStr HKCR ".chart" "" "$1.chart"
+	WriteRegStr HKCR ".fsp" "" "$1.FSP"
+	WriteRegStr HKCR "$1" "" "$1"
+	WriteRegStr HKCR "$1" "URL Protocol" ""
+	WriteRegStr HKCR "$1$3command" "" "$2"
+	WriteRegStr HKCR "$1.chart" "" "Guitar Hero Chart"
+	WriteRegStr HKCR "$1.chart$3" "" "Play"
+	WriteRegStr HKCR "$1.chart$3command" "" "$\"$4$\" dl $\"%1$\""
+	WriteRegStr HKCR "$1.FSP" "" "$1 Song Package"
+	WriteRegStr HKCR "$1.FSP$3" "" "Play"
+	WriteRegStr HKCR "$1.FSP$3command" "" "$2"
+	CreateShortCut "$DESKTOP\$1.lnk" "$4" "" "$4" 0
+	CreateDirectory "$SMPROGRAMS\$1"
+	CreateShortCut "$SMPROGRAMS\$1\$1.lnk" "$4" "" "$4" 0
+	CreateShortCut "$SMPROGRAMS\$1\$1 Settings.lnk" "$4" "-settings" "$4" 0
+	CreateShortCut "$SMPROGRAMS\$1\Shuffle.lnk" "$4" "-shuffle" "$4" 0
+	CreateShortCut "$SMPROGRAMS\$1\Updater.lnk" "$0\Updater.exe" "" "$4" 0
 SectionEnd
 
 Var DIALOG

@@ -341,7 +341,7 @@ endscript
 
 script Transition_GetTime\{Type = Intro}
 	if StructureContains structure = $Transition_Types <Type>
-		printstruct <...>
+		//printstruct <...>
 		type_textnl = ($Transition_Types.<Type>.textnl)
 	else
 		printstruct <...>

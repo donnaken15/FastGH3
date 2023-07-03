@@ -149,9 +149,6 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 	WinPortGetSongSkew
 	startTime = (<startTime> - <value>)
 	SetSeekPosition_Song position = <startTime>
-	if ($#"0x633e187f" = 1)
-		#"0x876d2a82"
-	endif
 endscript
 
 script SongUnLoadFSBIfDownloaded
@@ -316,7 +313,7 @@ script startpreloadpaused_song
 	endif
 endscript
 
-no_sync = 1
+no_sync = 0
 script begin_song_after_intro
 	WinPortGetSongSkew
 	begin
@@ -331,6 +328,35 @@ script begin_song_after_intro
 	if ($no_sync = 0)
 		WinPortSongHighwaySync \{sync = 1}
 	endif
+endscript
+script begin_video_after_intro
+	if ($enable_video = 0)
+		return
+	endif
+	if ($video_start_on_time < 0)
+		begin
+			if isMoviePreLoaded \{textureSlot = 2}
+				StartPreLoadedMovie \{textureSlot = 2}
+				return
+			endif
+			Wait \{1 gameframe}
+		repeat
+	endif
+	starttimeafterintro = (<starttimeafterintro> + $video_start_on_time)
+	begin
+		GetSongTimeMs
+		if (<time> >= <starttimeafterintro>)
+			break
+		endif
+		wait \{1 gameframe}
+	repeat
+	begin
+		if isMoviePreLoaded \{textureSlot = 2}
+			StartPreLoadedMovie \{textureSlot = 2}
+			return
+		endif
+		Wait \{1 gameframe}
+	repeat
 endscript
 
 script begin_song\{Pause = 0}
@@ -348,9 +374,6 @@ script begin_song\{Pause = 0}
 	endif
 	unlockdsp
 	Change \{song_paused = 0}
-	if ($#"0x633e187f" = 1)
-		#"0x1debfd1e"
-	endif
 endscript
 
 script SetSeekPosition_Song\{position = 0}

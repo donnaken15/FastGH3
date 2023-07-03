@@ -1,6 +1,6 @@
 Initializing...
 FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n--------------------------------
-Shuffle settings section cannot be found
+Shuffle section cannot be found in settings.ini.\nUsage:\n[Shuffle]\npath1=C:\\charts\\\npath2=D:\\charts2\\\npath3=E:\\retail_games\\\n
 Can't find any charts!
 Cannot find a file indicating of containing highway GFX.
 global.pak isn't named correctly.

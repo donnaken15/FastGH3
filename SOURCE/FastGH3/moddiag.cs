@@ -68,7 +68,32 @@ public partial class moddiag : Form
 				return (_item as QbItemStruct);
 			case QbItemType.SectionArray:
 			case QbItemType.StructItemArray:
-				return (_item as QbItemArray);
+				if ((_item as QbItemArray).ItemCount < 1) return _item; // wtf
+				QbItemBase array = (_item as QbItemArray).Items[0];
+				//Console.WriteLine(array.ItemCount);
+				switch (array.QbItemType)
+				{
+					case QbItemType.ArrayInteger:
+						return (array as QbItemInteger).Values;
+					case QbItemType.ArrayFloat:
+						return (array as QbItemFloat).Values;
+					case QbItemType.ArrayQbKey:
+					case QbItemType.ArrayQbKeyString:
+						return (array as QbItemQbKey).Values;
+					case QbItemType.ArrayString:
+					case QbItemType.ArrayStringW:
+						return (array as QbItemString).Strings;
+					case QbItemType.ArrayStruct:
+						return (array as QbItemStruct);
+					case QbItemType.Floats:
+						return (array as QbItemFloats).Values;
+					case QbItemType.ArrayFloatsX2:
+						return (array as QbItemFloatsArray).Items;
+					case QbItemType.ArrayArray:
+						return (array as QbItemArray).Items;
+				}
+				throw new InvalidDataException("Unknown object type in array: " + (_item as QbItemBase).ItemQbKey);
+			//return (_item as QbItemArray);
 			default:
 				return _item;
 		}

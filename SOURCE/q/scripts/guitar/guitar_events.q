@@ -387,7 +387,6 @@ endscript
 script GuitarEvent_StarPowerOff
 	GH_Star_Power_Verb_Off
 	spawnscriptnow rock_meter_star_power_off params = {player_text = <player_text>}
-	SpawnScriptLater Kill_StarPower_StageFX params = {<...> }
 	ExtendCrc starpower_container_left <player_text> out = cont
 	if ScreenElementExists id = <cont>
 		DoScreenElementMorph id = <cont> alpha = 0
@@ -400,7 +399,6 @@ script GuitarEvent_StarPowerOff
 	if ScreenElementExists id = <highway>
 		SetScreenElementProps id = <highway> rgba = ($highway_normal)
 	endif
-	spawnscriptnow \{Kill_StarPower_Camera}
 endscript
 winport_clap_delay = 0.18
 
@@ -762,7 +760,25 @@ script GuitarEvent_SongWon\{battle_win = 0}
 				else
 					FormatText textname = text "Notes Hit Percentage: %s" s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
 				endif
-				TextOutput text = <text>
+				/*GetArraySize \{$fastgh3_markers}
+				if (<array_size> > 0)
+					j = 0
+					begin
+						FormatText checksumname=details 'p%i_last_song_detailed_stats' i=<i>
+						extendcrc <details> '_max' out=details_max
+						get_section_stats section_index=<j> section_array=$current_section_array
+						if (<notes_max>[<i>] > 0)
+							hit_percent = ((100 * (<notes_hit>[<i>])) / (<notes_max>[<i>]))
+							FormatText textname = section_percent "%d\%" d = <hit_percent>
+						else
+							FormatText \{textname = section_percent "N/A"}
+						endif
+						FormatText textname = text "%s: %d" s=<section_name> d=<section_percent>
+						TextOutput text = <text>
+						Increment \{j}
+					repeat <array_size>
+				endif
+				TextOutput text = <text>*///
 				Increment \{i}
 			repeat $current_num_players
 			timestamp

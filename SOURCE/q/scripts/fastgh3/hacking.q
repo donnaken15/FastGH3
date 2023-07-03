@@ -399,7 +399,7 @@ script #"0xbee285d9"
 	endif
 endscript
 
-script ProfilingStart
+/*script ProfilingStart
 	//return
 	AddParams \{time = 0.0} // fallback if ProfileTime is not patched by FastGH3 plugin
 	ProfileTime
@@ -420,5 +420,7 @@ script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
 	endif
 	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
-endscript
+endscript*///
+ProfilingStart = $EmptyScript
+ProfilingEnd = $EmptyScript
 

@@ -232,12 +232,12 @@ endscript
 
 script play_outro
 	SongUnLoadFSBIfDownloaded
-	Kill_StarPower_Camera \{changecamera = 0}
-	Kill_Walk_Camera \{changecamera = 0}
+	//Kill_StarPower_Camera \{changecamera = 0}
+	//Kill_Walk_Camera \{changecamera = 0}
 	Change \{StructureName = player1_status star_power_amount = 0}
 	Change \{StructureName = player2_status star_power_amount = 0}
-	Kill_StarPower_StageFX player_text = ($player1_status.text)player_status = $player1_status ifEmpty = 0
-	Kill_StarPower_StageFX player_text = ($player2_status.text)player_status = $player2_status ifEmpty = 0
+	//Kill_StarPower_StageFX player_text = ($player1_status.text)player_status = $player1_status ifEmpty = 0
+	//Kill_StarPower_StageFX player_text = ($player2_status.text)player_status = $player2_status ifEmpty = 0
 	Change \{showing_raise_axe = 0}
 	Destroy2DParticleSystem \{id = all}
 	LaunchGemEvent \{event = kill_objects}

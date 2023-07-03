@@ -144,7 +144,7 @@ part_names = { guitar = 'Guitar' rhythm = 'Rhythm' }
 
 fastgh3_build = '1.0-999010889'
 bleeding_edge = 1
-build_timestamp = [06 30 2023]
+build_timestamp = [07 03 2023]
 
 script FileExists \{#"0x00000000" = ''}
 	if exists <#"0x00000000">
@@ -213,13 +213,20 @@ script guitar_startup
 	printf \{'Version %v' v=$fastgh3_build}
 	if ($bleeding_edge = 1)
 		printf \{'On developmental build'}
-		pad_2 ($build_timestamp[0])
+		pad ($build_timestamp[0])
 		d = <pad>
-		pad_2 ($build_timestamp[1])
+		pad ($build_timestamp[1])
 		e = <pad>
-		pad_2 ($build_timestamp[2])
-		printf 'Timestamp: %d.%e.%f' d=<d> e=<e> f=<pad>
+		printf 'Timestamp: %f.%d.%e' d=<d> e=<e> f=($build_timestamp[2])
 	endif
+	//if CD
+	//	printf \{'is CD'}
+	//endif
+	SetConfig \{NotCD GotExtraMemory}
+	//if NotCD
+	//	printf \{'isn\'t CD'}
+	//endif
+	ProfilingStart
 	change player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }
 	change player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }
 	printf \{'Initializing unneeded stuff'}
@@ -230,9 +237,11 @@ script guitar_startup
 	LightShow_Init \{notes = $LightShow_NoteMapping nodeflags = $LightShow_StateNodeFlags ColorOverrideExclusions = $LightShow_ColorOverrideExcludeLights}
 	printf \{'Initializing Replay buffer'}
 	AllocateDataBuffer \{name = replay kb = 5120}
+	ProfilingEnd <...> 'init things'
 	printf \{'Creating sound busses'}
 	Master_SFX_Adding_Sound_Busses
 	printf \{'Loading user config'}
+	ProfilingStart
 	migrate = 0
 	if FileExists \{'config.qb'}
 		LoadQB \{'config.qb'}
@@ -244,6 +253,7 @@ script guitar_startup
 	if FileExists \{'bkgd.pak.xen'}
 		LoadPak \{'bkgd.pak' Heap = heap_global_pak}
 	endif
+	ProfilingEnd <...> 'load config files'
 	// move old (common) config values over from QB since this will be used less now
 	// i'll probably have to package release with MigratedConfig values set for new users
 	if IsTrue <migrate>
@@ -312,6 +322,7 @@ script guitar_startup
 			{'NoIntro' out=disable_intro}
 			{'NoIntroReadyTime' out=nointro_ready_time #"0x1ca1ff20"=400}
 			{'BGVideo' out=enable_video}
+			{'BGVideoStartTime' out=video_start_on_time}
 			{'NoHUD' out=hudless}
 			{'KillGemsHit' out=kill_gems_on_hit}
 			{'NoStreakDisp' out=disable_notestreak_notif}
@@ -378,6 +389,7 @@ script guitar_startup
 	change gem_start_scale1 = ($gem_start_scale1 * <value>)
 	change gem_start_scale2 = ($gem_start_scale2 * <value>)
 	
+	ProfilingStart
 	if ScriptExists \{startup}
 		startup
 	endif
@@ -427,8 +439,9 @@ script guitar_startup
 		endif
 	repeat
 	EndWildcardSearch
-	printf \{'Loading Paks'}
+	ProfilingEnd <...> 'mod load'
 	
+	printf \{'Loading Paks'}
 	ProfilingStart
 	LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile}
 	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
@@ -438,6 +451,7 @@ script guitar_startup
 	LoadPak \{'zones/default.pak'}
 	ProfilingEnd <...> 'LoadPak default.pak'
 	
+	ProfilingStart
 	SetFontProperties \{'text_A1' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'ButtonsXenon' buttons_font}
 	SetFontProperties \{'text_a3' color_tab = $Default_Font_Colors}
@@ -448,7 +462,9 @@ script guitar_startup
 	SetFontProperties \{'text_a10' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'text_a11' color_tab = $Default_Font_Colors}
 	SetFontProperties \{'fontgrid_title_gh3' color_tab = $Default_Font_Colors}
+	ProfilingEnd <...> 'font properties'
 	
+	ProfilingStart
 	if IsFmodEnabled
 		EnableRemoveSoundEntry \{enable}
 		LoadPak \{'zones/global_sfx.pak' Heap = heap_audio}
@@ -461,6 +477,7 @@ script guitar_startup
 	CreateScreenElement \{Type = ContainerElement id = dead_particle_container parent = root_window Pos = (0.0, 0.0)}
 	Init2DParticles \{parent = dead_particle_container}
 	setup_sprites
+	ProfilingEnd <...> 'screen element stuff'
 	
 	printf \{'Allocating new big arrays'}
 	// sick of seeing a bunch of zeroes :/
@@ -482,6 +499,7 @@ script guitar_startup
 	ProfilingEnd <...> 'AllocArray x12'
 	// 5 ms (michael scott gif)
 	
+	ProfilingStart
 	printf \{'Done initializing - into game...'}
 	InitAtoms
 	SetProgressionMaxDifficulty \{difficulty = 3}
@@ -500,6 +518,8 @@ script guitar_startup
 		StartRendering
 		SpawnScriptLater \{autolaunch_spawned}
 	endif
+	ProfilingEnd <...> 'start game'	
+	ProfilingStart
 	if FileExists \{'hway.pak'}
 		load_highway
 	elseif FileExists \{'pak/player.pak'}
@@ -514,6 +534,7 @@ script guitar_startup
 	elseif FileExists \{'hway.pak'}
 		load_highway \{player_status = player2_status filename = 'hway.pak'}
 	endif
+	ProfilingEnd <...> 'load highways'
 	Change \{tutorial_disable_hud = 0}
 endscript
 // @script | load_highway | load highway pak

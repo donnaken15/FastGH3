@@ -70,12 +70,11 @@ script create_version_text
 		Scale = 0.7
 		z = <z>
 	}
-	pad_2 ($build_timestamp[0])
+	pad ($build_timestamp[0])
 	d = <pad>
-	pad_2 ($build_timestamp[1])
+	pad ($build_timestamp[1])
 	e = <pad>
-	pad_2 ($build_timestamp[2])
-	formattext textname=vertext2 'BLEEDING EDGE %f.%d.%e' d=<d> e=<e> f=<pad>
+	formattext textname=vertext2 'BLEEDING EDGE %f.%d.%e' d=<d> e=<e> f=($build_timestamp[2])
 	if IsTrue \{$bleeding_edge}
 		CreateScreenElement {
 			Type = TextElement
@@ -332,9 +331,9 @@ endscript
 winport_in_top_pause_menu = 0
 
 menu_unfocus_color = [ 255 255 255 191 ]
-menu_focus_color = [ 255 127 0 224 ]
+menu_focus_color = [ 255 105 0 224 ]
 default_menu_unfocus_color = [ 255 255 255 191 ]
-default_menu_focus_color = [ 255 127 0 224 ]
+default_menu_focus_color = [ 255 105 0 224 ]
 
 script new_pause_menu_button \{cont_params = {} event_handlers = [] fit = (250.0, 0.0)}
 	id2 = <id>
@@ -400,6 +399,7 @@ script set_unfocus_color\{rgba = $menu_unfocus_color}
 	Change menu_unfocus_color = <rgba>
 endscript
 
+particle_modes=['All' 'Minimal' 'Disabled']
 extras_menu = [
 	// guide
 	// (NO NAME) = variable to set
@@ -410,18 +410,21 @@ extras_menu = [
 	// sect = INI section
 	// key = INI key
 	// restart = (1) requires restarting the song (2) requires restarting game?
-	{ Cheat_Hyperspeed name='Hyperspeed' type=int min=-13 max=10 sect='Player' restart=1}
+	{ Cheat_Hyperspeed name='Hyperspeed' type=int min=-13 max=10 sect='Player' restart=1 }
 	{ fps_max name='Frame Rate' type=int min=0 max=1000 step=5 sect='GFX' key='MaxFPS' }
-	{ hudless name='No HUD' type=bool sect='GFX' key='NoHUD' restart=1}
-	{ disable_intro name='No Intro' type=bool sect='GFX' key='NoIntro' restart=1}
-	{ disable_shake name='No Highway Shake' type=bool sect='GFX' key='NoShake'}
-	{ exit_on_song_end name='Exit on Song End' type=bool sect='Player' key='ExitOnSongEnd'}
-	{ kill_gems_on_hit name='Hide Gems Upon Hit' type=bool sect='GFX' key='KillGemsHit'}
-	{ enable_button_cheats name='Debug Menu' type=bool key='Debug'}
+	{ disable_particles name='Particles' type=int min=0 max=2 sect='GFX' key='NoParticles' }
+	{ hudless name='No HUD' type=bool sect='GFX' key='NoHUD' restart=1 }
+	{ disable_intro name='No Intro' type=bool sect='GFX' key='NoIntro' restart=1 }
+	{ disable_shake name='No Highway Shake' type=bool sect='GFX' key='NoShake' }
+	{ exit_on_song_end name='Exit on Song End' type=bool sect='Player' key='ExitOnSongEnd' }
+	{ kill_gems_on_hit name='Hide Gems Upon Hit' type=bool sect='GFX' key='KillGemsHit' }
+	{ enable_button_cheats name='Debug Menu' type=bool key='Debug' }
 	{ Cheat_NoFail name='No Fail' type=bool sect='Player' key='NoFail' }
 	{ Cheat_EasyExpert name='Easy Expert' type=bool sect='Player' key='EasyExpert' restart=1 }
 	{ Cheat_PrecisionMode name='Precision' type=bool sect='Player' key='Precision' restart=1 }
-	{ gem_scalar name='Gem Scale' type=int min=0.0 max=100.0 step=0.05 sect='GFX' key='GemScale' restart=1}
+	{ FC_MODE name='FC Mode' type=bool sect='Player' key='FCMode' restart=1 }
+	{ gem_scalar name='Gem Scale' type=int min=0.0 max=100.0 step=0.05 sect='GFX' key='GemScale' restart=1 }
+	{ current_speedfactor name='Speed Factor' type=int min=0.05 max=100.0 step=0.05 sect='Player' key='Speed' }
 ]
 script extra_format
 	FormatText textname=strval '%s' s=<#"0x00000000">
@@ -513,17 +516,29 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 			//endif
 			//SetGemConstants
 			//TODO?: script to update gem constants
-		case Cheat_NoFail
-			ExtendCrc #"0x87004517" ($player1_status.text) out=id2
-			SetScreenElementProps id=<id2> alpha=($<#"0x00000000">)
-			ExtendCrc #"0x5b77b0ef" ($player1_status.text) out=id2
-			SetScreenElementProps id=<id2> alpha=($<#"0x00000000">)
 	endswitch
+	if (<#"0x00000000"> = Cheat_NoFail)
+		// Y U NO WORK IN SWITCH (executes half of the time, makes no sense)
+		ExtendCrc #"0x87004517" ($player1_status.text) out=id2
+		if ScreenElementExists id=<id2>
+			SetScreenElementProps id=<id2> alpha=<check>
+		endif
+		ExtendCrc #"0x5b77b0ef" ($player1_status.text) out=id2
+		if ScreenElementExists id=<id2>
+			SetScreenElementProps id=<id2> alpha=<check>
+		endif
+	endif
+	if (<#"0x00000000"> = disable_particles)
+		FormatText textname=text '%s: %v' s=<name> v=($particle_modes[($<#"0x00000000">)])
+	endif
+	if (<#"0x00000000"> = current_speedfactor)
+		update_slomo
+	endif
 	if ScreenElementExists id=<id>
 		SetScreenElementProps id=<id> text=<text>
 	endif
 endscript
-
+pause_font = fontgrid_title_gh3
 script create_pause_menu\{Player = 1 submenu = none}
 	// I hate big scripts like this
 	player_device = ($last_start_pressed_device)
@@ -547,8 +562,14 @@ script create_pause_menu\{Player = 1 submenu = none}
 		Change \{winport_in_top_pause_menu = 1}
 	endif
 	pause_z = 11000000
+	menu_pos = (130.0, 140.0)
 	spacing = -59
-	menu_pos = (150.0, 110.0)
+	text_scale = (0.85, 0.85)
+	switch (<submenu>)
+		case extras
+			spacing = -72
+			text_scale = (0.63, 0.63)
+	endswitch
 	new_menu {
 		scrollid = scrolling_pause
 		vmenuid = vmenu_pause
@@ -595,8 +616,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 		dims = (1280,720)
 		z = (<pause_z> - 10)
 	}*///
-	text_scale = (0.9, 0.9)
-	font = fontgrid_title_gh3
+	font = ($pause_font)
 	CreateScreenElement {
 		Type = TextElement
 		parent = pause_menu_frame_container
@@ -950,9 +970,13 @@ script create_pause_menu\{Player = 1 submenu = none}
 					Increment \{i}
 				repeat <array_size>
 				
+				FormatText textname=text 'Particles: %v' v=($particle_modes[$disable_particles])
+				FormatText \{checksumname=id 'extras_%i' i=2}
+				SetScreenElementProps id=extras_2 text=<text>
+				
 				add_user_control_helper \{text = ' Cycle Option' button = leftright z = 100000}
 				
-				CreateScreenElement \{Type = ContainerElement id = extras_warning_container parent = pause_menu_frame_container alpha = 0 Scale = 0.35 Pos = (800.0, 360.0)}
+				CreateScreenElement \{Type = ContainerElement id = extras_warning_container parent = pause_menu_frame_container alpha = 0 Scale = 0.35 Pos = (640.0, 540.0)}
 				displaySprite \{parent = extras_warning_container id = extras_warning tex = #"0x237d7770" Pos = (0.0, 0.0) just = [center center] rgba = [96 0 0 255] z = 100}
 				CreateScreenElement {
 					Type = TextBlockElement
@@ -1179,7 +1203,7 @@ user_control_pill_text_color = [
 ]
 user_control_auto_center = 1
 user_control_super_pill = 0
-user_control_pill_y_position = 650
+user_control_pill_y_position = 630
 user_control_pill_scale = 0.4
 user_control_pill_end_width = 50
 user_control_pill_gap = 150
@@ -1197,7 +1221,7 @@ script clean_up_user_control_helpers
 	Change \{user_control_pill_text_color = [180 180 180 255]}
 	Change \{user_control_auto_center = 1}
 	Change \{user_control_super_pill = 0}
-	Change \{user_control_pill_y_position = 650}
+	Change \{user_control_pill_y_position = 630}
 	Change \{user_control_pill_scale = 0.4}
 endscript
 

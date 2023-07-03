@@ -80,6 +80,10 @@ public partial class modcfg : Form
 				(target as TrackBar).Value = (int)value;
 				(target.Parent.Controls.Find(name + "_disp", false)[0] as Label).Text = value.ToString();
 				break;
+			case 0x99A9B716: // color
+				(target as Panel).BackColor = ColorFromArray((int[])value);
+				setParamValue(target, e);
+				break;
 			default:
 				QbItemBase defaultItem = qs.FindItem(QbKey.Create("default"), false);
 				object def = moddiag.getItemObject(defaultItem);
@@ -120,6 +124,9 @@ public partial class modcfg : Form
 				value = (s as TrackBar).Value;
 				(s.Parent.Controls.Find(name + "_disp", false)[0] as Label).Text = value.ToString();
 				break;
+			case 0x99A9B716: // color
+				value = ColorToArray((s as Panel).BackColor);
+				break;
 			default:
 				QbItemBase defaultItem = qs.FindItem(QbKey.Create("default"), false);
 				if (defaultItem != null)
@@ -131,16 +138,25 @@ public partial class modcfg : Form
 							value = (s as TextBox).Text;
 							break;
 						case QbItemType.StructItemInteger:
-							value = (s as NumericUpDown).Value;
+							value = (int)(s as NumericUpDown).Value;
 							break;
 						case QbItemType.StructItemFloat:
-							value = (s as NumericUpDown).Value;
+							value = (float)(s as NumericUpDown).Value;
 							break;
 					}
 				}
 				break;
 		}
 		settings.sQC(QbKey.Create(nonunique+name), value);
+	}
+	void setConfColor(object s, EventArgs e)
+	{
+		coldiag.Color = (s as Panel).BackColor;
+		if (coldiag.ShowDialog() == DialogResult.OK)
+		{
+			(s as Panel).BackColor = coldiag.Color;
+			setParamValue(s, e);
+		}
 	}
 
 	public modcfg(QbItemStructArray _params, string nonunique)
@@ -163,8 +179,6 @@ public partial class modcfg : Form
 				Tag = i,
 				//BackColor = Color.Gray
 			};
-			if (getItem(i, QbKey.Create("desc")) != null)
-				tooltip.SetToolTip(newParam, structString(i, QbKey.Create("desc")));
 			//i.FindItem(QbKey.Create("name"), false);
 			string paramTitle = structString(i, QbKey.Create("name"));
 			//string qname = paramTitle;
@@ -177,6 +191,26 @@ public partial class modcfg : Form
 				Text = paramTitle,
 				AutoSize = true
 			};
+			Label helpCtrl;
+			QbKey desc = QbKey.Create("desc");
+			if (getItem(i, desc) != null)
+			{
+				string desctext = structString(i, desc);
+				if (desctext != "")
+				{
+					helpCtrl = new Label()
+					{
+						Font = font,
+						Location = new Point(248, 1),
+						FlatStyle = FlatStyle.System,
+						Text = "?",
+						AutoSize = true,
+						Cursor = Cursors.Help
+					};
+					tooltip.SetToolTip(helpCtrl, desctext);
+					newParam.Controls.Add(helpCtrl);
+				}
+			}
 			Button paramReset = new Button() {
 				Location = new Point(264, 2),
 				Size = new Size(40, 18),
@@ -238,6 +272,20 @@ public partial class modcfg : Form
 						Name = paramTitle+"_disp"
 					};
 					newParam.Controls.Add(trackbarText);
+					break;
+				case 0x99A9B716: // color
+					if (setordef == null) setordef = new int[] { 255, 255, 255, 255 }; // im cringing
+					paramCtrl = new Panel()
+					{
+						Location = new Point(2, 22),
+						Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Right,
+						Size = new Size(80,20),
+						BorderStyle = BorderStyle.FixedSingle,
+						BackColor = ColorFromArray((int[])setordef),
+						Cursor = Cursors.Hand,
+						Name = paramTitle
+					};
+					(paramCtrl as Panel).Click += new EventHandler(setConfColor);
 					break;
 				default:
 					if (defaultItem == null)
@@ -304,5 +352,18 @@ public partial class modcfg : Form
 			newParam.Controls.Add(paramCtrl);
 			Controls.Add(newParam);
 		}
+	}
+	public static Color ColorFromArray(int[] value)
+	{
+		return Color.FromArgb(
+			(value[0] << 16) |
+			(value[1] << 8) |
+			(value[2]) |
+			(value[3] << 24)
+		);
+	}
+	public static int[] ColorToArray(Color value)
+	{
+		return new int[] { value.R, value.G, value.B, value.A };
 	}
 }

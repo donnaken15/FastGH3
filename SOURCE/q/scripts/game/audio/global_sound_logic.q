@@ -499,9 +499,9 @@ script Menu_music_Checking
 endscript
 
 script Menu_Music_Off
-	EnableUserMusic \{disable}
-	killspawnedscript \{name = Menu_Music_On}
-	StopSoundEvent \{Menu_Music_SE}
+	//EnableUserMusic \{disable}
+	//killspawnedscript \{name = Menu_Music_On}
+	//StopSoundEvent \{Menu_Music_SE}
 endscript
 
 script PlayEncoreStreamSFX

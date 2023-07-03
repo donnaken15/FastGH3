@@ -161,11 +161,16 @@ class Program
 						vl(vstr[133]);
 						// restore user video after playing a song a background video
 						// and now playing a song without one
-						File.Copy(
-							vid + "lastvid",
-							vid + "backgrnd_video.bik.xen", true);
-						File.Delete(
-							vid + "lastvid");
+						if (File.Exists(vid + "lastvid"))
+						{
+							File.Copy(
+								vid + "lastvid",
+								vid + "backgrnd_video.bik.xen", true);
+							File.Delete(vid + "lastvid");
+						}
+						else
+							File.Delete(vid + "backgrnd_video.bik.xen");
+						// if there's no previous video, just delete the current one
 						cfgW(m, lshv, 0);
 					}
 				}
@@ -515,6 +520,7 @@ class Program
 	public static string[] vstr;
 
 	public static string version = "1.0-999010889";
+	public static DateTime builddate;
 	[STAThread]
 	static void Main(string[] args)
 	{
@@ -525,7 +531,7 @@ class Program
 			folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
 			inif = folder + "settings.ini";
 			// System.Reflection.Emit wat dis
-			bool mic_ = cfg(m, "DisableMultiInstCheck", 0) == 0;
+			bool mic_ = cfg(l, "DisableMultiInstCheck", 0) == 0;
 			// multi instance check
 			// not working for one user
 			// maybe admin related
@@ -534,9 +540,7 @@ class Program
 				Process[] mic = Process.GetProcessesByName(
 					// who's going to rename this program
 					Path.GetFileNameWithoutExtension(Application.ExecutablePath));
-				//MessageBox.Show(multiinstcheck.Length.ToString());
-				//int micn = 0;
-				//int multiinstcheckn2 = 0;
+				//MessageBox.Show(mic.Length.ToString());
 				if (mic.Length > 1)
 					foreach (Process fgh3 in mic)
 					{
@@ -549,7 +553,6 @@ class Program
 							// unless (as i thought of using) i
 							// use an MMF to indicate that a
 							// song converting launcher is active
-							//micn++;
 							// 1 or [0] = probably this process
 							//if (micn > 1)
 								if (cfg("Temp","ConvPID",-1) > -1 && (File.Exists(args[0]) || args[0] == "dl"))
@@ -568,7 +571,7 @@ class Program
 			GH3EXEPath = NP(folder + "game.exe");
 			//if (File.Exists(folder + "settings.ini"))
 				//ini.Load(folder + "settings.ini");
-			vb = cfg(m, settings.t.VerboseLog.ToString(), 0) == 1;
+			vb = cfg(l, settings.t.VerboseLog.ToString(), 0) == 1;
 			vstr = Resources.ResourceManager.GetString("vstr").Split('\n');
 			dataf = folder + dataf;
 			pakf = dataf + "PAK\\";
@@ -590,6 +593,8 @@ class Program
 				cfgW(l, settings.t.PreserveLog.ToString(), cfg(m, settings.t.PreserveLog.ToString(), 0));
 				cfgW(l, settings.t.VerboseLog.ToString(), cfg(m, settings.t.VerboseLog.ToString(), 0));
 				cfgW(l, settings.t.NoStartupMsg.ToString(), cfg(m, settings.t.NoStartupMsg.ToString(), 0));
+				cfgW(l, settings.t.VerboseLog.ToString(), cfg(m, settings.t.VerboseLog.ToString(), 0));
+				cfgW(l, "DisableMultiInstCheck", cfg(m, "DisableMultiInstCheck", 0));
 				cfgW("Audio", "AB", cfg(m, "AB", 96));
 				cfgW("Audio", "VBR", cfg(m, "VBR", 0));
 				cfgW("Audio", "FixSeeking", cfg(m, "FixSeeking", 0));
@@ -653,7 +658,13 @@ class Program
 						if (newfile)
 						{
 							log.WriteLine(vstr[1]);
-							log.WriteLine("version "+version);
+							try {
+								builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
+								// a person legitimately had this file missing, how is that even possible >:(
+							} catch {
+								builddate = DateTime.MinValue;
+							}
+							log.WriteLine("version " + version + " / build time: " + builddate);
 							newfile = false;
 							cfgW("Temp", fl, 0);
 						}
@@ -670,6 +681,7 @@ class Program
 					FSPcolor = ConsoleColor.Magenta;
 				if (args[0] == "-settings")
 				{
+					builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
 					// muh classic theme
 					//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
 					Directory.SetCurrentDirectory(folder);
@@ -1513,13 +1525,11 @@ class Program
 								try
 								{
 									vl(vstr[42], ConsoleColor.Red);
-									//vl("dbg.pak.xen can go kill itself", ConsoleColor.Red);
 									build = new PakEditor(PF, false);
 								}
 								catch
 								{
 									vl(vstr[43], ConsoleColor.Red);
-									//vl("i'm %#@!?ng done", ConsoleColor.Red);
 									File.Move(pakf + "dbg.pak.xen", pakf + "dbg.pak.xen.bak");
 									build = new PakEditor(PF, false);
 									// if even after this it fails, look for god
@@ -2298,25 +2308,22 @@ class Program
 							// game only allows two face-off tracks for all difficulties
 							// so, use expert track
 							// TODO: if not in that track, use lower diff
-							if (chart.NoteTracks["ExpertSingle"] != null)
+							foreach (Note a in chart.NoteTracks["ExpertSingle"])
 							{
-								foreach (Note a in chart.NoteTracks["ExpertSingle"])
+								if (a.Type == NoteType.Special &&
+									(a.SpecialFlag == 0) || (a.SpecialFlag == 1))
 								{
-									if (a.Type == NoteType.Special &&
-										(a.SpecialFlag == 0) || (a.SpecialFlag == 1))
-									{
-										gotfo[a.SpecialFlag] = true;
-										QbItemInteger faceoff_bit = new QbItemInteger(mid);
-										faceoff_bit.Create(QbItemType.ArrayInteger);
-										faceoff_bit.Values = new int[] {
-											(int)Math.Floor(OT.GetTime(a.Offset) * 1000),
-											(int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
-										};
-										if (a.SpecialFlag == 0)
-											fop1a.AddItem(faceoff_bit);
-										else
-											fop2a.AddItem(faceoff_bit);
-									}
+									gotfo[a.SpecialFlag] = true;
+									QbItemInteger faceoff_bit = new QbItemInteger(mid);
+									faceoff_bit.Create(QbItemType.ArrayInteger);
+									faceoff_bit.Values = new int[] {
+										(int)Math.Floor(OT.GetTime(a.Offset) * 1000),
+										(int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
+									};
+									if (a.SpecialFlag == 0)
+										fop1a.AddItem(faceoff_bit);
+									else
+										fop2a.AddItem(faceoff_bit);
 								}
 							}
 							// if there isn't, put only one marker

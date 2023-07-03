@@ -507,13 +507,14 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 			Change \{end_credits = 0}
 		endif
 	endif
+	ProfilingStart
 	Change \{playing_song = 1}
 	mark_unsafe_for_shutdown
-	dragonforce_hack_off
-	Menu_Music_Off
-	GuitarEvent_EnterVenue
+	//dragonforce_hack_off
+	//Menu_Music_Off
+	//GuitarEvent_EnterVenue
 	init_play_log
-	load_songqpak song_name = <song_name> async = 1
+	load_songqpak song_name = <song_name> async = 0
 	if IsWinPort
 		WinPortGetPracticeModeOffsets
 		Change default_practice_mode_geminput_offset = <pm_geminput_offset>
@@ -522,7 +523,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		Change default_practice_mode_pitchshift_offset_slower = <pm_pitchshift_offset_slower>
 		Change default_practice_mode_pitchshift_offset_slowest = <pm_pitchshift_offset_slowest>
 	endif
-	begin_singleplayer_game
+	//begin_singleplayer_game
 	get_song_struct song = <song_name>
 	if StructureContains structure = <song_struct> boss
 		<difficulty2> = <difficulty>
@@ -538,7 +539,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	//	Change \{StructureName = player1_status bot_play = 1}
 	//	Change \{StructureName = player2_status bot_play = 1}
 	//endif
-	Progression_SetProgressionNodeFlags
+	//Progression_SetProgressionNodeFlags
 	get_song_struct song = <song_name>
 	if StructureContains structure = <song_struct> boss
 		Change current_boss = (<song_struct>.boss)
@@ -547,15 +548,15 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		Change boss_oldcontroller = ($player2_status.controller)
 		GetInputHandlerBotIndex \{Player = 2}
 		Change StructureName = player2_status controller = <controller>
-		if StructureContains \{structure = $current_boss name = character_profile}
-			Profile = ($current_boss.character_profile)
-			Change StructureName = player2_status character_id = <Profile>
-			Change \{StructureName = player2_status outfit = 1}
-			Change \{StructureName = player2_status style = 1}
-		endif
+		//if StructureContains \{structure = $current_boss name = character_profile}
+		//	Profile = ($current_boss.character_profile)
+		//	Change StructureName = player2_status character_id = <Profile>
+		//	Change \{StructureName = player2_status outfit = 1}
+		//	Change \{StructureName = player2_status style = 1}
+		//endif
 		printf \{channel = log "Starting bot for boss"}
 	else
-		if (($player2_status.bot_play = 1)|| ($new_net_logic))
+		if ($player2_status.bot_play = 1 || $new_net_logic)
 			Change boss_oldcontroller = ($player2_status.controller)
 			GetInputHandlerBotIndex \{Player = 2}
 			Change StructureName = player2_status controller = <controller>
@@ -571,47 +572,41 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	//	Change \{StructureName = player1_status bot_play = 0}
 	//	Change \{StructureName = player2_status bot_play = 0}
 	//endif
-	if ($game_mode = p2_battle)
-		printf \{"Initiating Battlemode"}
-		battlemode_init
-	endif
-	if ($boss_battle = 1)
+	if ($game_mode = p2_battle || $boss_battle = 1)
 		printf \{"Initiating BossBattle"}
 		bossbattle_init
 	endif
 	if ($new_net_logic)
 		new_net_logic_init
 	endif
-	printf \{"-------------------------------------"}
-	printf \{"-------------------------------------"}
-	printf \{"-------------------------------------"}
-	printf \{"Now playing %s %d" s = $current_song d = $current_difficulty}
-	printf \{"-------------------------------------"}
-	printf \{"-------------------------------------"}
-	printf \{"-------------------------------------"}
+	//printf \{"-------------------------------------"}
+	//printf \{"-------------------------------------"}
+	//printf \{"-------------------------------------"}
+	//printf \{"Now playing %s %d" s = $current_song d = $current_difficulty}
+	//printf \{"-------------------------------------"}
+	//printf \{"-------------------------------------"}
+	//printf \{"-------------------------------------"}
 	song_start_time = <startTime>
 	call_startup_scripts <...>
 	setup_bg_viewport
-	#"0xbe8220a7" <...>
+	//Change current_transition = fastintro
 	starttimeafterintro = <startTime>
-	printf "Current Transition = %s" s = ($current_transition)
-	if ($#"0xdf7ff31b" = 1)
+	//printf "Current Transition = %s" s = ($current_transition)
+	if ($disable_intro = 1)
 		Change \{current_transition = immediate}
 	endif
 	Transition_GetTime Type = ($current_transition)
 	startTime = (<startTime> - <transition_time>)
-	setslomo \{0.001}
+	//setslomo \{0.001}
 	reset_song_time startTime = <startTime>
-	if NOT ($use_character_debug_cam = 1)
-	endif
 	create_movie_viewport
-	#"0xcf3057c9"
-	#"0x7714e89d"
-	#"0x7714e89d"
 	if ($game_mode = training)
 		practicemode_init
 	endif
 	preload_song song_name = <song_name> startTime = <song_start_time>
+	if IsTrue \{$enable_video}
+		preload_bgbink
+	endif
 	calc_score = true
 	if NOT (<devil_finish_restart> = 1 || $end_credits = 1)
 		if ($use_last_player_scores = 0)
@@ -720,6 +715,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 			spawnscriptnow \{create_connection_lost_dialog}
 		endif
 	endif
+	spawnscriptnow begin_video_after_intro params = {starttimeafterintro = <starttimeafterintro>}
 	spawnscriptnow begin_song_after_intro params = {starttimeafterintro = <starttimeafterintro>}
 	if ($boss_battle = 1)
 		if ($show_boss_helper_screen = 1)
@@ -742,13 +738,10 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	change \{highway_pulse_p1 = 0}
 	change \{highway_pulse_p2 = 0}
 	mark_safe_for_shutdown
-	#"0x03c898f5"
 	richpres_start_song
+	ProfilingEnd <...> 'start_gem_scroller'
 endscript
 
-script #"0xbe8220a7"
-	Change current_transition = fastintro
-endscript
 show_boss_helper_screen = 0
 
 script wait_and_show_boss_helper_after_intro
@@ -767,19 +760,20 @@ script show_boss_helper_now
 endscript
 
 script kill_gem_scroller\{no_render = 0}
+	ProfilingStart
 	mark_unsafe_for_shutdown
 	printf \{"kill_gem_scroller - Start"}
-	if NOT GotParam \{restarting}
-		StopRendering
-	endif
-	SongUnLoadFSBIfDownloaded
+	//if NOT GotParam \{restarting}
+		//StopRendering
+	//endif
 	disable_highway_prepass
-	Kill_StarPower_Camera \{changecamera = 0}
-	Kill_Walk_Camera \{changecamera = 0}
+	SongUnLoadFSBIfDownloaded
+	//Kill_StarPower_Camera \{changecamera = 0}
+	//Kill_Walk_Camera \{changecamera = 0}
 	Change \{StructureName = player1_status star_power_amount = 0}
 	Change \{StructureName = player2_status star_power_amount = 0}
-	Kill_StarPower_StageFX player_text = ($player1_status.text)player_status = $player1_status ifEmpty = 0
-	Kill_StarPower_StageFX player_text = ($player2_status.text)player_status = $player2_status ifEmpty = 0
+	//Kill_StarPower_StageFX player_text = ($player1_status.text)player_status = $player1_status ifEmpty = 0
+	//Kill_StarPower_StageFX player_text = ($player2_status.text)player_status = $player2_status ifEmpty = 0
 	if ScreenElementExists \{id = starpower_container_leftp1}
 		DoScreenElementMorph \{id = starpower_container_leftp1 alpha = 0}
 	endif
@@ -794,8 +788,8 @@ script kill_gem_scroller\{no_render = 0}
 	endif
 	Change \{showing_raise_axe = 0}
 	kill_debug_elements
-	GuitarEvent_ExitVenue
-	destroy_cameracuts
+	//GuitarEvent_ExitVenue
+	//destroy_cameracuts
 	practicemode_deinit
 	notemap_deinit
 	Destroy2DParticleSystem \{id = all}
@@ -926,7 +920,6 @@ script kill_gem_scroller\{no_render = 0}
 	endif
 	Destroy_AllWhammyFX
 	destroy_movie_viewport
-	destroy_crowd_models
 	destroy_bg_viewport
 	destroy_intro
 	destroy_band
@@ -936,19 +929,20 @@ script kill_gem_scroller\{no_render = 0}
 	shut_down_practice_mode
 	destroy_menu \{menu_id = you_rock_container}
 	KillMovie \{textureSlot = 1}
-	printf \{"kill_gem_scroller - waiting for dead objects"}
-	wait \{2 gameframes}
-	printf \{"kill_gem_scroller - waiting for dead objects End"}
+	//printf \{"kill_gem_scroller - waiting for dead objects"}
+	//wait \{2 gameframes}
+	//printf \{"kill_gem_scroller - waiting for dead objects End"}
 	end_song
-	if NOT (<no_render> = 1)
-		if ($shutdown_game_for_signin_change_flag = 0)
-			StartRendering
-		endif
-	endif
+	//if NOT (<no_render> = 1)
+	//	if ($shutdown_game_for_signin_change_flag = 0)
+	//		StartRendering
+	//	endif
+	//endif
 	printf \{"kill_gem_scroller - End"}
 	mark_safe_for_shutdown
 	Change \{playing_song = 0}
 	richpres_stop_song
+	ProfilingEnd <...> 'kill_gem_scroller'
 endscript
 
 script restart_gem_scroller\{no_render = 0}
@@ -1018,7 +1012,7 @@ script restart_gem_scroller\{no_render = 0}
 endscript
 
 script reset_song_time\{startTime = 0}
-	Change current_deltatime = (1.0 / 60.0)
+	//Change current_deltatime = (1.0 / 60.0)
 	Change current_time = (<startTime> / 1000.0)
 	Change playback_next_frame = 0.0
 	Change playback_do_frame = 0
@@ -1142,8 +1136,6 @@ script Load_Venue\{block_scripts = 0}
 			ResetWaypoints
 			SetPakManCurrentBlock \{map = zones pak = None}
 		endif
-	else
-		ResetWaypoints
 	endif
 	ResetPulseEvents
 	FormatText textname = FileName '%s.pak' s = (($LevelZones.$current_level).name)
@@ -1154,7 +1146,7 @@ script Load_Venue\{block_scripts = 0}
 			return
 		endif
 	endif
-	if NOT SetPakManCurrentBlock map = zones pak = (($LevelZones.$current_level).zone)block_scripts = <block_scripts>
+	if NOT SetPakManCurrentBlock map = zones pak = (($LevelZones.$current_level).zone) block_scripts = <block_scripts>
 		DownloadContentLost
 		return
 	endif
@@ -1288,7 +1280,4 @@ script debug_flash_star
 		LaunchGemEvent \{event = debug_gem}
 		wait \{8 gameframes}
 	repeat
-endscript
-
-script #"0x03c898f5"
 endscript
