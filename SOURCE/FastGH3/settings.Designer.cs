@@ -316,7 +316,7 @@ partial class settings
 		// 
 		// bImg
 		// 
-		this.bImg.BackColor = System.Drawing.SystemColors.Control;
+		this.bImg.BackColor = System.Drawing.Color.Black;
 		this.bImg.Cursor = System.Windows.Forms.Cursors.Help;
 		this.bImg.Location = new System.Drawing.Point(119, 100);
 		this.bImg.Name = "bImg";

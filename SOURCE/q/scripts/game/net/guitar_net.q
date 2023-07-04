@@ -78,7 +78,6 @@ create_timeout_dialog = $EmptyScript
 create_failed_connection_dialog = $EmptyScript
 net_repeat_last_search = $EmptyScript
 check_if_selecting_tie_breaker = $EmptyScript
-get_num_players_by_gamemode = $EmptyScript
 connection_lost_end_song = $EmptyScript
 
 script test_events\{passed_in_value = 'test value'}

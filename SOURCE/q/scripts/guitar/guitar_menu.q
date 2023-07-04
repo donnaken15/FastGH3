@@ -371,6 +371,10 @@ script checkbox_sound
 endscript
 
 script pause_lefty_toggle \{player = 1}
+	if ($game_mode = p2_battle | $boss_battle = 1)
+		ui_flow_manager_respond_to_action \{action=select_lefty_flip}
+		return
+	endif
 	FormatText checksumName = player_status 'player%d_status' d = <Player>
 	sound_event = Checkbox_
 	if ($<player_status>.lefthanded_gems = 1)
@@ -528,8 +532,11 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 			SetScreenElementProps id=<id2> alpha=<check>
 		endif
 	endif
-	if (<#"0x00000000"> = disable_particles)
+	if (<key> = 'NoParticles')
 		FormatText textname=text '%s: %v' s=<name> v=($particle_modes[($<#"0x00000000">)])
+		// WHY WAS THIS EXECUTING ON OTHER OPTIONS!!!!!!!!!!!!!!!!?!??!?!?!?!??!!
+	else
+		extra_format ($<#"0x00000000">) type = <type>
 	endif
 	if (<#"0x00000000"> = current_speedfactor)
 		update_slomo
@@ -907,17 +914,6 @@ script create_pause_menu\{Player = 1 submenu = none}
 				}
 				GetScreenElementDims id = <id>
 				fit_text_in_rectangle id = <id> dims = (<fit_dims> + <height> * (0.0, 1.0))only_if_larger_x = 1 start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-				new_pause_menu_button {
-					<params_params>
-					id = options_exit
-					event_handlers = [
-						{focus retail_menu_focus params = {id = options_exit}}
-						{focus generic_menu_up_or_down_sound}
-						{unfocus retail_menu_unfocus params = {id = options_exit}}
-						{pad_choose ui_flow_manager_respond_to_action params = {action = go_back}}
-					]
-					text = 'Back'
-				}
 				if (<Player> = 1)
 					if ($p1_lefty = 1)
 						lefty_tex = options_controller_check
@@ -940,6 +936,17 @@ script create_pause_menu\{Player = 1 submenu = none}
 				}
 				GetScreenElementDims \{id = pause_options_lefty}
 				<id> ::SetProps Pos = (<width> * (1.0, 0.0) + (22.0, 24.0))
+				new_pause_menu_button {
+					<params_params>
+					id = options_exit
+					event_handlers = [
+						{focus retail_menu_focus params = {id = options_exit}}
+						{focus generic_menu_up_or_down_sound}
+						{unfocus retail_menu_unfocus params = {id = options_exit}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = go_back}}
+					]
+					text = 'Back'
+				}
 			case extras
 				//params_params = {<params_params> scale=0.7}
 				

@@ -509,7 +509,7 @@ mp_faceoff_lefty_flip_warning = {
 	actions = [
 		{
 			action = continue
-			func = lefty_flip_func
+			func = lefty_flip_func_restart
 			flow_state = mp_faceoff_play_song_fs
 		}
 		{

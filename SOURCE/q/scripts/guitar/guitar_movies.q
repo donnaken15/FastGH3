@@ -136,12 +136,20 @@ script PlayMovieAndWait
 	endif
 	mark_safe_for_shutdown
 endscript
-movie_params = {}
 
 video_start_on_time = 0
+video_looping = 0
+video_hold_last_frame = 0
 script preload_bgbink
+	params = {}
+	if ($video_looping = 0)
+		params = { <params> no_looping }
+	endif
+	if ($video_hold_last_frame = 0)
+		params = { <params> no_hold }
+	endif
 	stop_bgbink
-	PreLoadMovie \{ movie = 'backgrnd_video' textureSlot = 2 TexturePri = 0 $movie_params }
+	PreLoadMovie { movie = 'backgrnd_video' textureSlot = 2 TexturePri = -9999999 <params> }
 endscript
 script start_bgbink
 	if isMoviePreLoaded \{textureSlot = 2}

@@ -70,10 +70,10 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 	set_unfocus_color \{rgba = $calibrate_lag_hilite_unselected}
 	z = 100
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = cl_container Pos = (0.0, 0.0)}
-	create_menu_backdrop \{texture = venue_bg}
+	create_menu_backdrop \{texture = black}
 	displaySprite {
 		parent = cl_container
-		tex = venue_bg
+		tex = black
 		Pos = (640.0, 360.0)
 		dims = (1280.0, 720.0)
 		just = [center center]
@@ -95,60 +95,6 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 		Pos = (250.0, 0.0)
 		dims = (432.0, 954.0)
 		z = <z>
-	}
-	displaySprite {
-		parent = cl_container
-		tex = tape_02
-		Pos = (720.0, -100.0)
-		dims = (180.0, 80.0)
-		z = (<z> + 2)
-		rot_angle = 93
-	}
-	displaySprite {
-		parent = cl_container
-		tex = tape_02
-		rgba = [0 0 0 128]
-		Pos = (725.0, -102.0)
-		dims = (180.0, 80.0)
-		z = (<z> + 2)
-		rot_angle = 93
-	}
-	<tape_offset> = (90.0, 325.0)
-	displaySprite {
-		parent = cl_container
-		tex = tape_v_01
-		Pos = ((970.0, 106.0) + <tape_offset>)
-		dims = (96.0, 192.0)
-		z = (<z> + 2)
-		flip_v
-		rot_angle = -6
-	}
-	displaySprite {
-		parent = cl_container
-		tex = tape_v_01
-		rgba = [0 0 0 128]
-		Pos = ((975.0, 104.0) + <tape_offset>)
-		dims = (96.0, 192.0)
-		z = (<z> + 2)
-		flip_v
-		rot_angle = -6
-	}
-	displaySprite {
-		parent = cl_container
-		tex = tape_h_02
-		Pos = (220.0, 566.0)
-		dims = (132.0, 64.0)
-		z = (<z> + 2)
-		rot_angle = 8
-	}
-	displaySprite {
-		parent = cl_container
-		tex = tape_h_02
-		rgba = [0 0 0 128]
-		Pos = (212.0, 572.0)
-		dims = (132.0, 64.0)
-		z = (<z> + 2)
-		rot_angle = 8
 	}
 	displayText \{parent = cl_container text = "HDTV LAG" Pos = (770.0, 80.0) font = fontgrid_title_gh3 rgba = [0 0 0 255] noshadow}
 	upper_helper = "Some HDTVs have an audio/video delay that makes playing difficult. If you're ready to blame your TV, try calibrating."
@@ -282,7 +228,7 @@ script calibrate_lag_fill_options\{z = 100}
 endscript
 
 script calibrate_lag_update_text
-	GetGlobalTags \{user_options}
+	get_video_lag
 	casttointeger \{lag_calibration}
 	FormatText textname = lag_value_text "%d ms" d = <lag_calibration>
 	lag_offset_text ::SetProps text = <lag_value_text>
@@ -344,6 +290,8 @@ script menu_calibrate_unfocus
 endscript
 
 script menu_calibrate_lag_create_circles
+	change \{fps_last = $fps_max}
+	change \{fps_max = 60}
 	if ($transitions_locked = 1 || $menu_flow_locked = 1)
 		return
 	endif
@@ -663,10 +611,11 @@ script menu_calibrate_lag_finish_up_calibration
 		elseif (<avg> > $calibrate_lag_cap)
 			<avg> = $calibrate_lag_cap
 		endif
-		GetGlobalTags \{user_options}
+		get_video_lag
 		old_lag = <lag_calibration>
-		SetGlobalTags user_options params = {lag_calibration = <avg>}
+		set_video_lag <avg>
 	endif
+	change \{fps_max = $fps_last}
 	LaunchEvent \{Type = focus target = root_window}
 	wait \{30 gameframes}
 	destroy_calibrate_lag_menu
@@ -683,11 +632,11 @@ endscript
 
 script menu_calibrate_lag_reset_lag
 	generic_menu_up_or_down_sound
-	GetGlobalTags \{user_options}
+	get_video_lag
 	if (<lag_calibration> = 0.0)
 		return
 	endif
-	SetGlobalTags \{user_options params = {lag_calibration = 0.0}}
+	set_video_lag \{0.0}
 	calibrate_lag_update_text
 	Change \{calibrate_lag_dirty = 1}
 endscript
@@ -724,7 +673,7 @@ script menu_calibrate_lag_manual_down
 endscript
 
 script menu_calibrate_lag_adjust\{value = 1}
-	GetGlobalTags \{user_options}
+	get_video_lag
 	<new_lag_calibration> = (<lag_calibration> + <value>)
 	if (<new_lag_calibration> > $calibrate_lag_cap)
 		return \{FALSE}
@@ -732,7 +681,17 @@ script menu_calibrate_lag_adjust\{value = 1}
 		return \{FALSE}
 	endif
 	Change \{calibrate_lag_dirty = 1}
-	SetGlobalTags user_options params = {lag_calibration = <new_lag_calibration>}
+	set_video_lag <new_lag_calibration>
 	calibrate_lag_update_text
 	return \{true}
 endscript
+
+script get_video_lag
+	FGH3Config \{sect='GFX' 'VideoLag' #"0x1ca1ff20"=0}
+	return lag_calibration = <value>
+endscript
+script set_video_lag
+	FGH3Config sect='GFX' 'VideoLag' set=<#"0x00000000">
+endscript
+
+fps_last = 0

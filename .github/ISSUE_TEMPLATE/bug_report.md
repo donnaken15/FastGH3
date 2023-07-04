@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Got bugs? LET'S KILL 'EM! Check here first to see if your problem already has a solution: https://donnaken15.tk/fastgh3/solverz
+about: Got bugs? LET'S KILL 'EM!
 title: 'Bug: The stage diver had no animation file and caused a segfault on my guitar'
 labels: bug
 assignees: donnaken15

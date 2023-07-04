@@ -1,4 +1,7 @@
-!include MUI.nsh
+
+SetCompressor /FINAL lzma
+
+!include MUI2.nsh
 !include nsDialogs.nsh
 !include LogicLib.nsh
 !define MUI_ICON Icon.ico
@@ -17,12 +20,30 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "FastGH3 1.0"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APPVERSION}"
 InstallDir "$PROGRAMFILES\FastGH3"
 
+Caption "FastGH3 1.0"
+BrandingText "github.com/donnaken15/FastGH3"
+
 Page custom splashPage
+!define MUI_PAGE_HEADER_TEXT "Select Application Folder"
+!define MUI_PAGE_HEADER_SUBTEXT "Please choose the directory for the installation."
 !insertmacro MUI_PAGE_DIRECTORY
 ; need a start menu/desktop shortcut checkbox
+!define MUI_INSTFILESPAGE_FINISHHEADER_TEXT "Installed"
+!define MUI_INSTFILESPAGE_FINISHHEADER_SUBTEXT "Done. lol. NOW JUST START PLAYING!"
 !insertmacro MUI_PAGE_INSTFILES
+;!define MUI_FINISHPAGE_RUN "$INSTDIR\FastGH3.exe"
+;!define MUI_FINISHPAGE_RUN_TEXT "Play a chart now"
+;!define MUI_WELCOMEFINISHPAGE_BITMAP "InstSplash.bmp"
+; HOW DO I DO FINISH PAGE
+;!define MUI_FINISHPAGE_RUN "$INSTDIR\FastGH3.exe"
+;!define MUI_FINISHPAGE_RUN_TEXT "Play a chart now"
+;!insertmacro MUI_PAGE_FINISH
+;"Thank you for installing FastGH3!"
+;"Click Close to exit. Enjoy!"
+;"Select a chart now"
 
 Section
+	!insertmacro MUI_HEADER_TEXT "Installing" "Don't blink!"
 	StrCpy $0 $INSTDIR
 	SetOutPath $0
 	File /r "..\..\__FINAL\*"
@@ -34,10 +55,10 @@ Section
 	WriteRegStr HKCR ".fsp" "" "$1.FSP"
 	WriteRegStr HKCR "$1" "" "$1"
 	WriteRegStr HKCR "$1" "URL Protocol" ""
-	WriteRegStr HKCR "$1$3command" "" "$2"
+	WriteRegStr HKCR "$1$3command" "" "$\"$4$\" dl $\"%1$\""
 	WriteRegStr HKCR "$1.chart" "" "Guitar Hero Chart"
 	WriteRegStr HKCR "$1.chart$3" "" "Play"
-	WriteRegStr HKCR "$1.chart$3command" "" "$\"$4$\" dl $\"%1$\""
+	WriteRegStr HKCR "$1.chart$3command" "" "$2"
 	WriteRegStr HKCR "$1.FSP" "" "$1 Song Package"
 	WriteRegStr HKCR "$1.FSP$3" "" "Play"
 	WriteRegStr HKCR "$1.FSP$3command" "" "$2"
@@ -61,10 +82,10 @@ Function .onInit
 	CreateFont $HEADLINE_FONT "$(^Font)" "11" "600"
 	
 	InitPluginsDir
-	File /oname=$PLUGINSDIR\splash.bmp "InstSplash.bmp"
 	File /oname=$PLUGINSDIR\intro.wav "Intro.wav"
 	StrCpy $0 "$PLUGINSDIR\intro.wav"
 	System::Call 'winmm::PlaySound(t r0, i, i) b'
+	File /oname=$PLUGINSDIR\splash.bmp "InstSplash.bmp"
 FunctionEnd
 
 Function HideControls
@@ -145,6 +166,7 @@ Function splashPage
 	SetCtlColors $DIALOG 0 0xffffff
 	SetCtlColors $HEADLINE 0 0xffffff
 	SetCtlColors $TEXT 0 0xffffff
+	SetCtlColors $RUNNOW_TEXT 0 0xffffff
 
 	Call HideControls
 
@@ -154,6 +176,3 @@ Function splashPage
 
 	System::Call gdi32::DeleteObject(p$IMAGE)
 FunctionEnd
-
-
-

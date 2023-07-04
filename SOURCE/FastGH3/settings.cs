@@ -180,14 +180,18 @@ public partial class settings : Form
 		return b;
 	}
 
-	private static PakFormat bkgdPF;
-	private static PakEditor bkgdPE;
+	//private static PakFormat bkgdPF;
+	//private static PakEditor bkgdPE;
 	public static Image bgImg;
 	Image getBGIMG()
 	{
 		//if (globalPE == null)
-			//return null;
-		byte[] tmp = bkgdPE.ExtractFileToBytes("24535078");
+		//return null;
+		//byte[] tmp = bkgdPE.ExtractFileToBytes("24535078");
+		if (!File.Exists("DATA\\gameplay_BG.img.xen"))
+			return null;
+			//return new Bitmap(4, 4);
+		byte[] tmp = File.ReadAllBytes("DATA\\gameplay_BG.img.xen");
 		//uint imgoff = 0x28;
 		//int imglen = tmp.Length - imgoff;
 		uint imgoff = Eswap(BitConverter.ToUInt32(tmp, 0x1C));
@@ -246,8 +250,8 @@ public partial class settings : Form
 		long strsize = ms.Position - 0x28;
 		ms.Position = lenptr;
 		ms.Write(BitConverter.GetBytes(Eswap((uint)strsize)),0,4);
-		bkgdPE.ReplaceFile("24535078", ms.ToArray());
-		//File.WriteAllBytes("DATA\\test22.img.xen",ms.ToArray());
+		//bkgdPE.ReplaceFile("24535078", ms.ToArray());
+		File.WriteAllBytes("DATA\\gameplay_BG.img.xen",ms.ToArray());
 	}
 
 	ushort[] keyBinds = new ushort[] {
@@ -368,11 +372,11 @@ public partial class settings : Form
 		tt.SetToolTip(setbgimg, Program.vstr[120]);
 		tt.SetToolTip(bImg, Program.vstr[121]);
 		this.spL.Text = Program.vstr[122];
-		bkgdPF = new PakFormat(
-			Program.dataf + "bkgd.pak.xen",
-			Program.dataf + "bkgd.pab.xen", "",
-			PakFormatType.PC, false);
-		bkgdPE = new PakEditor(bkgdPF, false);
+		//bkgdPF = new PakFormat(
+		//	Program.dataf + "bkgd.pak.xen",
+		//	Program.dataf + "bkgd.pab.xen", "",
+		//	PakFormatType.PC, false);
+		//bkgdPE = new PakEditor(bkgdPF, false);
 		bImg.Image = getBGIMG();
 		//setBGIMG(pbxBg.Image, false);
 
@@ -383,7 +387,7 @@ public partial class settings : Form
 #pragma warning disable CS0162
 		// people wanted unlimited FPS, but
 		// then autoplay will hit too early sometimes
-		maxFPS.Value = Program.cfg("Player", "MaxFPS", 1000);
+		maxFPS.Value = Program.cfg("GFX", "MaxFPS", 1000);
 #pragma warning restore CS0162
 		hypers.Value = Program.cfg("Player", "Hyperspeed", 3); // Cheat_Hyperspeed
 		{

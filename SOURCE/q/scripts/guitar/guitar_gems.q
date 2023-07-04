@@ -233,7 +233,8 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	endif
 	<gem_offset> = ($time_gem_offset)
 	<input_offset> = ($time_input_offset)
-	GetGlobalTags \{user_options}
+	GetGlobalTags \{user_options} // dont know what else is used here by this
+	get_video_lag
 	<input_offset> = (<input_offset> - <lag_calibration>)
 	if (<training_mode> = 0)
 		if (<Player> = 1)
@@ -1202,9 +1203,9 @@ endscript
 script restart_song\{practice_intro = 0 sudden_death = 0}
 	kill_start_key_binding
 	create_loading_screen \{mode = restart_song}
-	if ($is_network_game = 0)
-		xenon_singleplayer_session_init
-	endif
+	//if ($is_network_game = 0)
+	//	xenon_singleplayer_session_init
+	//endif
 	if (<sudden_death> = 0)
 		Change \{battle_sudden_death = 0}
 	endif
@@ -1280,4 +1281,12 @@ script debug_flash_star
 		LaunchGemEvent \{event = debug_gem}
 		wait \{8 gameframes}
 	repeat
+endscript
+
+script get_num_players_by_gamemode
+	if (($game_mode = p1_career)|| ($game_mode = p1_quickplay))
+		return \{num_players = 1}
+	else
+		return \{num_players = 2}
+	endif
 endscript

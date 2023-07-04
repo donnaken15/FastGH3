@@ -124,7 +124,7 @@ script destroy_intro
 endscript
 
 script intro_buttonup_ripple
-	EnableInput OFF controller = ($<player_status>.controller)
+	//EnableInput OFF controller = ($<player_status>.controller)
 	begin
 		GetSongTimeMs
 		if ($current_intro.button_ripple_start_time + $current_starttime < <time>)
@@ -198,12 +198,6 @@ script intro_highway_move
 		wait \{1 gameframe}
 	repeat
 	spawnscriptnow \{Song_Intro_Highway_Up_SFX_Waiting}
-	Player = 1
-	begin
-		FormatText checksumName = player_status 'player%i_status' i = <Player> AddToStringLookup
-		FormatText textname = player_text 'p%i' i = <Player> AddToStringLookup
-		Player = (<Player> + 1)
-	repeat $current_num_players
 	move_highway_camera_to_default // <...> time = ($current_intro.highway_move_time / 1000.0)
 	// doesn't even do anything with players
 endscript

@@ -38,8 +38,10 @@ difficulty_list_props = {
 		game_speed = 2.25
 	}
 }
-p2_scroll_time_factor = 0.8
-p2_game_speed_factor = 0.8
+p2_scroll_time_factor = 1.0
+p2_game_speed_factor = 1.0
+//p2_scroll_time_factor = 0.8
+//p2_game_speed_factor = 0.8
 global_hyperspeed_factor = 1.0
 
 script get_difficulty_text\{difficulty = easy}

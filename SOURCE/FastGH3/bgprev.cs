@@ -6,7 +6,7 @@ public partial class bgprev : Form
 	static Size size = new Size(548, 411);
 	PictureBox game = new PictureBox()
 	{
-		BackColor = Color.Transparent,
+		BackColor = Color.Black,
 		BackgroundImageLayout = ImageLayout.Stretch,
 		Dock = DockStyle.Fill,
 		ImageLocation = "https://donnaken15.cf/fastgh3/gameBlank.png",

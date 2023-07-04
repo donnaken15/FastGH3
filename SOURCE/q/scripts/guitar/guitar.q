@@ -143,8 +143,8 @@ parts = [ guitar rhythm ]
 part_names = { guitar = 'Guitar' rhythm = 'Rhythm' }
 
 fastgh3_build = '1.0-999010889'
-bleeding_edge = 1
-build_timestamp = [07 03 2023]
+bleeding_edge = 0
+build_timestamp = [07 04 2023]
 
 script FileExists \{#"0x00000000" = ''}
 	if exists <#"0x00000000">
@@ -206,6 +206,8 @@ script SetValueFromConfig
 	FGH3Config sect=<sect> <#"0x00000000"> #"0x1ca1ff20"=<#"0x1ca1ff20">
 	change globalname=<out> newvalue=<value>
 endscript
+random_seed = -1
+// ^ originally 107482099
 // @script | guitar_startup | Initialization script
 script guitar_startup
 	HideLoadingScreen
@@ -218,6 +220,12 @@ script guitar_startup
 		pad ($build_timestamp[1])
 		e = <pad>
 		printf 'Timestamp: %f.%d.%e' d=<d> e=<e> f=($build_timestamp[2])
+	endif
+	if IntegerEquals \{a=$random_seed b=-1}
+		Randomize
+	else
+		Randomize \{$random_seed}
+		// boss speedruns when
 	endif
 	//if CD
 	//	printf \{'is CD'}
@@ -250,7 +258,9 @@ script guitar_startup
 		LoadPak \{'user.pak'}
 		migrate = 1
 	endif
-	if FileExists \{'bkgd.pak.xen'}
+	if FileExists \{'gameplay_BG.img.xen'}
+		LoadTexture \{'../gameplay_BG'}
+	elseif FileExists \{'bkgd.pak.xen'} // deprecated, BTFO'd by above
 		LoadPak \{'bkgd.pak' Heap = heap_global_pak}
 	endif
 	ProfilingEnd <...> 'load config files'
@@ -323,6 +333,8 @@ script guitar_startup
 			{'NoIntroReadyTime' out=nointro_ready_time #"0x1ca1ff20"=400}
 			{'BGVideo' out=enable_video}
 			{'BGVideoStartTime' out=video_start_on_time}
+			{'BGVideoLoop' out=video_looping}
+			{'BGVideoHold' out=video_hold_last_frame}
 			{'NoHUD' out=hudless}
 			{'KillGemsHit' out=kill_gems_on_hit}
 			{'NoStreakDisp' out=disable_notestreak_notif}

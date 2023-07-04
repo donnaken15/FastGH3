@@ -590,9 +590,9 @@ script winport_menu_calibrate_lag_finish_up_calibration
 		elseif (<avg> > $winport_calibrate_lag_cap)
 			<avg> = $winport_calibrate_lag_cap
 		endif
-		GetGlobalTags \{user_options}
+		get_video_lag
 		old_lag = <lag_calibration>
-		SetGlobalTags user_options params = {lag_calibration = <avg>}
+		set_video_lag
 	endif
 	LaunchEvent \{Type = focus target = root_window}
 	wait \{30 gameframes}

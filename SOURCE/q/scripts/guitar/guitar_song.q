@@ -505,10 +505,10 @@ script UnpauseGh3Sounds
 	endif
 	unlockdsp
 endscript
-#"0x045713d3" = 0
+exit_on_song_end = 0
 
 script #"0x08fdcd95"
-	if ($#"0x045713d3" = 1)
+	if ($exit_on_song_end = 1)
 		ResetEngine
 	endif
 endscript
