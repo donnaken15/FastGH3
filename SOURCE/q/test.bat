@@ -1,5 +1,5 @@
-@echo off
-sh ./qcomp ./scripts ./!cache/scripts
-node "E:\GHWTDE\guitar-hero-sdk\sdk.js" createpak -out ..\..\DATA\PAK\qb.pak.xen -pab !cache
-cd ..\..
-start "" game!
+:# REQUIRES (AND USES CYGWIN) SH
+@sh ./qcomp scripts ../../DATA/scripts
+@cd ../..
+game
+:# doesnt focus if i use start
