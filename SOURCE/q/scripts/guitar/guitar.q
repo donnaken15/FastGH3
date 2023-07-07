@@ -462,6 +462,18 @@ script guitar_startup
 	ProfilingStart
 	LoadPak \{'zones/default.pak'}
 	ProfilingEnd <...> 'LoadPak default.pak'
+	printf \{'Loading unpacked images'}
+	ProfilingStart
+	StartWildcardSearch \{wildcard = 'IMAGES\*.img.xen'}
+	begin
+		if NOT GetWildcardFile
+			break
+		endif
+		printf 'Loading images/%f.img' f = <basename>
+		LoadTexture <basename>
+	repeat
+	EndWildcardSearch
+	ProfilingEnd <...> 'LoadTexture *'
 	
 	ProfilingStart
 	SetFontProperties \{'text_A1' color_tab = $Default_Font_Colors}
