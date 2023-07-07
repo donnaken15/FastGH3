@@ -507,7 +507,7 @@ script UnpauseGh3Sounds
 endscript
 exit_on_song_end = 0
 
-script #"0x08fdcd95"
+script ExitOnSongEnd
 	if ($exit_on_song_end = 1)
 		ResetEngine
 	endif

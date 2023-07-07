@@ -87,7 +87,7 @@ currently_holding = [
 	0
 ]
 
-script #"0x1c86c933"
+script check_note_hold1
 	printstruct <...>
 endscript
 

@@ -53,10 +53,10 @@ script play_intro
 	endif
 	EnableInput controller = ($<player_status>.controller)
 endscript
-#"0xdf7ff31b" = 0
-#"0x736a45df" = 0
+disable_intro = 0
+disable_intro_originalsetting = 0
 
-script #"0x9c9f988b"
+script nointro
 	if ($Cheat_PerformanceMode = 1)
 		return
 	endif
@@ -99,7 +99,7 @@ script #"0x9c9f988b"
 		endif
 		FormatText checksumName = container_id 'gem_containerp%i' i = <Player>
 		SetScreenElementProps id = <container_id> Pos = <Pos>
-		#"0x9ca8d62c" morph_time = 0.0001
+		nointro_hud_move morph_time = 0.0001
 		Player = (<Player> + 1)
 	repeat ($current_num_players)
 	EnableInput controller = ($<player_status>.controller)

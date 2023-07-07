@@ -6,7 +6,7 @@ progression_completion_tier = 1
 progression_unlocked_guitar = -1
 progression_unlocked_guitar2 = -1
 progression_unlocked_type = guitar
-#"0xc48885fc" = {
+GH3_Null = {
 	prefix = 'career'
 	num_tiers = 1
 	tier1 = {
@@ -342,21 +342,21 @@ endscript
 
 script Progression_SetProgressionNodeFlags
 endscript
-#"0xfde7f2e2" = {
-	tier_global = #"0xc48885fc"
+Null_progression = {
+	tier_global = GH3_Null
 	progression_global = None
 }
-P1_career_progression = $#"0xfde7f2e2"
-P2_career_progression = $#"0xfde7f2e2"
-Bonus_progression = $#"0xfde7f2e2"
-Download_progression = $#"0xfde7f2e2"
-General_progression = $#"0xfde7f2e2"
-GeneralP2_progression = $#"0xfde7f2e2"
-P2_coop_progression = $#"0xfde7f2e2"
-Demo_progression_Career = $#"0xfde7f2e2"
-Demo_progression_Coop = $#"0xfde7f2e2"
-Demo_progression_Multiplayer = $#"0xfde7f2e2"
-Demo_progression_Quickplay = $#"0xfde7f2e2"
+P1_career_progression = $Null_progression
+P2_career_progression = $Null_progression
+Bonus_progression = $Null_progression
+Download_progression = $Null_progression
+General_progression = $Null_progression
+GeneralP2_progression = $Null_progression
+P2_coop_progression = $Null_progression
+Demo_progression_Career = $Null_progression
+Demo_progression_Coop = $Null_progression
+Demo_progression_Multiplayer = $Null_progression
+Demo_progression_Quickplay = $Null_progression
 
 script get_progression_globals {game_mode = <game_mode> use_current_tab = 0}
 	if (<use_current_tab> = 1)

@@ -2,7 +2,7 @@ mp_select_controller_fs = {
 	create = create_select_controller_menu
 	create_params = {
 		Player = $primary_controller
-		#"0xd86acd5f" = 2
+		player2 = 2
 	}
 	Destroy = destroy_select_controller_menu
 	actions = [
@@ -12,7 +12,7 @@ mp_select_controller_fs = {
 		}
 		{
 			$quickplay_play_song_action
-			action = #"0xf3556d9d"
+			action = continue2
 		}
 		{
 			action = go_back
@@ -24,7 +24,7 @@ mp_select_mode_fs = {
 	create = create_mp_select_mode_menu
 	create_params = {
 		Player = $primary_controller
-		#"0xd86acd5f" = 2
+		player2 = 2
 	}
 	Destroy = destroy_mp_select_mode_menu
 	actions = [

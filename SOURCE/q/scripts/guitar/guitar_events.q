@@ -306,7 +306,7 @@ script GuitarEvent_HitNotes
 		Change StructureName = <player_status> current_health = 0.0000000000000000001
 	endif
 	if (GotParam open)
-		#"0x49b1c3d0" Player = <Player> player_status = <player_status>
+		Open_NoteFX Player = <Player> player_status = <player_status>
 	endif
 endscript
 
@@ -821,7 +821,7 @@ script GuitarEvent_SongWon\{battle_win = 0}
 	endif
 	killspawnedscript \{name = GuitarEvent_SongFailed_Spawned}
 	spawnscriptnow \{GuitarEvent_SongWon_Spawned}
-	#"0x08fdcd95"
+	ExitOnSongEnd
 endscript
 
 script GuitarEvent_SongWon_Spawned
@@ -1223,7 +1223,7 @@ script GuitarEvent_SongWon_Spawned
 	if ($is_network_game)
 		mark_safe_for_shutdown
 	endif
-	#"0x08fdcd95"
+	ExitOnSongEnd
 endscript
 
 script Sudden_Death_Helper_Text

@@ -47,7 +47,7 @@ Boss_Props = {
 		PowerUpSteal
 	]
 	character_profile = axel
-	character_name = $#"0xf7babcbd"
+	character_name = $boss_name
 }
 save_lefty_flip_p2 = 0
 
@@ -459,7 +459,7 @@ endscript
 script update_battle_death_meter
 	GetSongTimeMs
 	startTime = <time>
-	endtime = $#"0x7ddbff91"
+	endtime = $boss_death_time
 	if (<endtime> < 1)
 		return
 	endif
@@ -494,7 +494,7 @@ endscript
 script update_battle_death_meter_wings
 	GetSongTimeMs
 	startTime = <time>
-	endtime = $#"0x7ddbff91"
+	endtime = $boss_death_time
 	if (<endtime> < 1)
 		return
 	endif
@@ -524,5 +524,5 @@ script update_battle_death_meter_wings
 		wait <meterStep> seconds
 	repeat
 endscript
-#"0x7ddbff91" = 30000
-#"0xf7babcbd" = 'Player 2'
+boss_death_time = 30000
+boss_name = 'Player 2'

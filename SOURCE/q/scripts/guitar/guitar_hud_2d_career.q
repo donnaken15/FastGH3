@@ -15,7 +15,7 @@ career_hud_2d_elements = {
 	score_pos_p2 = (900.0, 40.0)
 	counter_pos_p2 = (-2000.0, 200.0)
 	offscreen_note_streak_bar_off = (0.0, 800.0)
-	#"0x936bb5fe" = $#"0x28381025"
+	#"0x936bb5fe" = $gameplaybg_pos
 	Scale = 0.7
 	small_bulb_scale = 0.7
 	big_bulb_scale = 1.0
@@ -32,14 +32,14 @@ career_hud_2d_elements = {
 		{
 			element_id = #"0x99dd87cc"
 			element_parent = #"0xa90fc148"
-			texture = $#"0x1d52cdca"
-			dims = $#"0x8d974f74"
+			texture = $gameplaybg_texture
+			dims = $gameplaybg_dims
 			rot = -0.1
 			just = [
 				left
 				top
 			]
-			rgba = $#"0x902ecc17"
+			rgba = $BGCol
 			zoff = -2147483648
 		}
 		{
@@ -145,7 +145,7 @@ career_hud_2d_elements = {
 			]
 		}
 		{
-			element_id = #"0x87004517"
+			element_id = hud2d_rock_bg_nofail
 			element_parent = HUD2D_rock_body
 			texture = HUD_rock_bg_null
 			pos_off = (0.0, 0.0)
@@ -153,7 +153,7 @@ career_hud_2d_elements = {
 			alpha = $Cheat_NoFail // why didnt i do it like this before
 		}
 		{
-			element_id = #"0x5b77b0ef"
+			element_id = HUD2D_rock_lights_nofail
 			element_parent = HUD2D_rock_body
 			texture = HUD_rock_lights_all
 			pos_off = (0.0, 0.0)

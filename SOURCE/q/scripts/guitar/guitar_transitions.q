@@ -48,7 +48,7 @@ Common_Immediate_Transition = {
 	ScriptTable = [
 		{
 			time = 0
-			Scr = #"0x9c9f988b"
+			Scr = nointro
 		}
 		{
 			time = 0
@@ -76,12 +76,12 @@ Common_Immediate_Transition = {
 		}
 	]
 }
-#"0x330738c4" = {
+Default_Generic_Transition = {
 	time = 1500
 	ScriptTable = [
 	]
 }
-#"0xf0d0fb06" = {
+Common_Generic_Transition = {
 	ScriptTable = [
 		{
 			time = 0
@@ -115,17 +115,17 @@ Common_Immediate_Transition = {
 	EndWithDefaultCamera
 	SyncWithNoteCameras
 }
-Default_FastIntro_Transition = $#"0x330738c4"
-Common_FastIntro_Transition = $#"0xf0d0fb06"
-Default_RestartEncore_Transition = $#"0x330738c4"
-Common_RestartEncore_Transition = $#"0xf0d0fb06"
-Default_RestartBoss_Transition = $#"0x330738c4"
-Common_RestartBoss_Transition = $#"0xf0d0fb06"
-Default_Practice_Transition = $#"0x330738c4"
-Common_Practice_Transition = $#"0xf0d0fb06"
-Default_Intro_Transition = $#"0x330738c4"
-Common_Intro_Transition = $#"0xf0d0fb06"
-#"0xd1f5ae69" = [
+Default_FastIntro_Transition = $Default_Generic_Transition
+Common_FastIntro_Transition = $Common_Generic_Transition
+Default_RestartEncore_Transition = $Default_Generic_Transition
+Common_RestartEncore_Transition = $Common_Generic_Transition
+Default_RestartBoss_Transition = $Default_Generic_Transition
+Common_RestartBoss_Transition = $Common_Generic_Transition
+Default_Practice_Transition = $Default_Generic_Transition
+Common_Practice_Transition = $Common_Generic_Transition
+Default_Intro_Transition = $Default_Generic_Transition
+Common_Intro_Transition = $Common_Generic_Transition
+uselater = [
 	{
 		time = -1
 		Scr = lefty_toggle
@@ -177,8 +177,8 @@ Common_PreEncore_Transition = {
 	]
 	EndWithDefaultCamera
 }
-Default_Encore_Transition = $#"0x330738c4"
-Common_Encore_Transition = $#"0xf0d0fb06"
+Default_Encore_Transition = $Default_Generic_Transition
+Common_Encore_Transition = $Common_Generic_Transition
 Default_PreBoss_Transition = {
 	time = 8000
 	ScriptTable = [
@@ -234,7 +234,7 @@ Common_SongWon_Transition = {
 	]
 	EndWithDefaultCamera
 }
-#"0x6bd3b706" = [
+unused = [
 	{
 		time = 0
 		Scr = play_win_anims

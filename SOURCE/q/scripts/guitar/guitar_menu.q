@@ -523,11 +523,11 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 	endswitch
 	if (<#"0x00000000"> = Cheat_NoFail)
 		// Y U NO WORK IN SWITCH (executes half of the time, makes no sense)
-		ExtendCrc #"0x87004517" ($player1_status.text) out=id2
+		ExtendCrc hud2d_rock_bg_nofail ($player1_status.text) out=id2
 		if ScreenElementExists id=<id2>
 			SetScreenElementProps id=<id2> alpha=<check>
 		endif
-		ExtendCrc #"0x5b77b0ef" ($player1_status.text) out=id2
+		ExtendCrc HUD2D_rock_lights_nofail ($player1_status.text) out=id2
 		if ScreenElementExists id=<id2>
 			SetScreenElementProps id=<id2> alpha=<check>
 		endif

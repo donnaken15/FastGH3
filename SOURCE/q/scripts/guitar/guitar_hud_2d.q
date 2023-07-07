@@ -1030,7 +1030,7 @@ script hud_flip_note_streak_num
 	DoScreenElementMorph id = <id> Pos = <intial_pos> alpha = 1 time = 0.1
 endscript
 
-script #"0x2aa01bc3"\{texture = #"0x24535078" rgba = [255 255 255 255]}
+script create_game_backdrop2\{texture = gameplay_BG rgba = [255 255 255 255]}
 	if ScreenElementExists \{id = #"0x6b9ddabb"}
 		DestroyScreenElement \{id = #"0x6b9ddabb"}
 	endif
@@ -1048,19 +1048,19 @@ script #"0x2aa01bc3"\{texture = #"0x24535078" rgba = [255 255 255 255]}
 	}
 endscript
 
-script #"0xadfc2935"
+script destroy_game_backdrop2
 	if ScreenElementExists \{id = #"0x6b9ddabb"}
 		DestroyScreenElement \{id = #"0x6b9ddabb"}
 	endif
 endscript
-#"0x1d52cdca" = #"0x24535078"
-#"0x28381025" = (0.0, -1.0)
-#"0x8d974f74" = (1828.0, 1030.0)
-#"0x902ecc17" = [
+gameplaybg_texture = gameplay_BG
+gameplaybg_pos = (0.0, -1.0)
+gameplaybg_dims = (1828.0, 1030.0)
+BGCol = [
 	255
 	255
 	255
 	255
 ]
-#"0x67cf1f5d" = -20
-#"0xdd6ab3d6" = -21
+Nofailvis = -20
+Nofailvis2 = -21

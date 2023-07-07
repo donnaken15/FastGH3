@@ -1,4 +1,4 @@
-#"0x23976a46" = bootup_press_any_button_fs
+boot_flow_state = bootup_press_any_button_fs
 respond_to_signin_changed = 0
 bootup_sequence_fs = {
 	create = bootup_sequence
@@ -6,7 +6,7 @@ bootup_sequence_fs = {
 	actions = [
 		{
 			action = skip_bootup_sequence
-			flow_state = $#"0x23976a46"
+			flow_state = $boot_flow_state
 		}
 	]
 }
@@ -20,8 +20,8 @@ bootup_press_any_button_fs = {
 		}
 	]
 }
-#"0x2616eb19" = {
-	create = #"0x99553152"
+bootup_to_game_fs = {
+	create = generic_script_in_flow_hack
 	Destroy = EmptyScript
 	actions = [
 		{
@@ -54,7 +54,7 @@ bootup_attract_mode_fs = {
 	]
 }
 legal_timer = 0
-#"0x3bfe55e9" = 1
+login_hack = 1
 
 script start_legal_timer
 endscript
@@ -68,7 +68,7 @@ script bootup_sequence
 	spawnscriptnow \{ui_flow_manager_respond_to_action params = {action = skip_bootup_sequence play_sound = 0}}
 endscript
 
-script #"0x99553152"
+script generic_script_in_flow_hack
 	spawnscriptnow ui_flow_manager_respond_to_action params = {
 		action = continue
 		play_sound = 0
@@ -101,7 +101,7 @@ script bootup_check_autologin
 		Change StructureName = player1_status controller = ($primary_controller)
 	endif
 	NetSessionFunc \{func = GetAutoLoginSetting}
-	if (<autoLoginSetting> = autoLoginOff || $#"0x3bfe55e9" = 1)
+	if (<autoLoginSetting> = autoLoginOff || $login_hack = 1)
 		process_signin_complete
 		return flow_state = <flow_state>
 	endif
@@ -122,7 +122,7 @@ script process_signin_complete
 		repeat
 	endif
 	WinPortCreateLaptopUi
-	return \{flow_state = #"0x2616eb19"}
+	return \{flow_state = bootup_to_game_fs}
 endscript
 'SO HACKY!!!'
 ps3_signin_complete = 0

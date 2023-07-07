@@ -221,11 +221,11 @@ script practice_start_song\{device_num = 0}
 	endif*/
 	//SetSoundBussParams \{Crowd = {vol = -100.0}}
 	spawnscriptnow \{practice_update}
-	#"0x29a63aa1"
+	practice_restore_select_key_binding
 endscript
 
 script practice_manual_restart
-	Change #"0xdf7ff31b" = ($#"0x736a45df")
+	Change disable_intro = ($disable_intro_originalsetting)
 	practice_restart_song
 endscript
 
@@ -243,15 +243,15 @@ script practice_restart_song
 	spawnscriptnow \{practice_update}
 endscript
 
-script #"0x29a63aa1"
+script practice_restore_select_key_binding
 	printf \{"+++RESTORE SELECT KEY"}
-	Change #"0x736a45df" = ($#"0xdf7ff31b")
-	SetScreenElementProps \{id = root_window event_handlers = [{pad_select #"0xc5e43e95"}] replace_handlers}
+	Change disable_intro_originalsetting = ($disable_intro)
+	SetScreenElementProps \{id = root_window event_handlers = [{pad_select practice_instarestart}] replace_handlers}
 endscript
 
-script #"0xd0d74dce"
+script practice_kill_select_key_binding
 	printf \{"+++KILL SELECT KEY"}
-	Change #"0xdf7ff31b" = ($#"0x736a45df")
+	Change disable_intro = ($disable_intro_originalsetting)
 	SetScreenElementProps \{id = root_window event_handlers = [{pad_select null_script}] replace_handlers}
 endscript
 
@@ -265,15 +265,15 @@ script practice_update
 			endif
 		else
 			if (<time> > ($practice_end_time + 300))
-				spawnscriptnow \{#"0xc5e43e95"}
+				spawnscriptnow \{practice_instarestart}
 			endif
 		endif
 		wait \{1 gameframes}
 	repeat
 endscript
 
-script #"0xc5e43e95"
-	Change #"0xdf7ff31b" = 1
+script practice_instarestart
+	Change disable_intro = 1
 	// TODO: don't use global variable to reset disable_intro back to
 	/*spawnscriptnow restart_gem_scroller params = {
 		song_name = ($current_song)
@@ -291,7 +291,7 @@ endscript
 script finish_practice_song
 	killspawnedscript \{name = practice_update}
 	ui_flow_manager_respond_to_action \{action = end_song}
-	#"0xd0d74dce"
+	practice_kill_select_key_binding
 	gh3_start_pressed
 endscript
 practice_audio_muted = 0
@@ -708,7 +708,7 @@ practice_newspaper_fs = {
 			transition_screen = default_loading_screen
 		}
 		{
-			action = #"0xb7294ebb"
+			action = back_2_setlist2
 			func = ResetEngine
 		}
 		{

@@ -145,10 +145,10 @@ script practice_loop_toggle
 	GetSongTimeMs
 	CastToInteger \{songtime}
 	if ($practice_loop_mode=0)
-		Change #"0x736a45df" = ($#"0xdf7ff31b")
+		Change disable_intro_originalsetting = ($disable_intro)
 		change disable_intro = 1
 	else
-		Change #"0xdf7ff31b" = ($#"0x736a45df")
+		Change disable_intro = ($disable_intro_originalsetting)
 	endif
 	if ($practice_loop_mode=2)
 		change practice_loop_a = <time>
