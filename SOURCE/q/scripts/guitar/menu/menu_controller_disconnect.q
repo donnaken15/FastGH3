@@ -93,7 +93,7 @@ script create_controller_disconnect_menu
 		displaySprite {
 			parent = cd_static_text_container
 			id = controller_disconnect_pill
-			tex = #"0x0d96f276"
+			tex = Control_Pill_Fill
 			dims = (384.0, 80.0)
 			just = [center center]
 			Pos = <blinker_pos>

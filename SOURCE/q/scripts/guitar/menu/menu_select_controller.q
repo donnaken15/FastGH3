@@ -178,7 +178,7 @@ script menu_select_controller_add_controllable_icon\{controller_index = 0 wait_t
 				GetPlatform
 				switch <Platform>
 					case Xenon
-						c_texture = #"0x6f1b200d"
+						c_texture = controller_2p_controller_XBOX
 					case PS3
 						c_texture = controller_2p_controller_ps3
 					default

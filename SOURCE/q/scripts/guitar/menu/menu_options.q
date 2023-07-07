@@ -315,7 +315,7 @@ script create_options_menu
 		rgba = [0 0 0 128]
 		z = 19
 	}
-	displaySprite \{parent = om_container tex = #"0xf6c8349f" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
+	displaySprite \{parent = om_container tex = Venue_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
 	Change \{menu_options_current_index = 1}
 	LaunchEvent \{Type = focus target = om_text_1}
 	Change \{user_control_pill_text_color = [0 0 0 255]}

@@ -984,7 +984,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				add_user_control_helper \{text = ' Cycle Option' button = leftright z = 100000}
 				
 				CreateScreenElement \{Type = ContainerElement id = extras_warning_container parent = pause_menu_frame_container alpha = 0 Scale = 0.35 Pos = (640.0, 540.0)}
-				displaySprite \{parent = extras_warning_container id = extras_warning tex = #"0x237d7770" Pos = (0.0, 0.0) just = [center center] rgba = [96 0 0 255] z = 100}
+				displaySprite \{parent = extras_warning_container id = extras_warning tex = control_pill_body Pos = (0.0, 0.0) just = [center center] rgba = [96 0 0 255] z = 100}
 				CreateScreenElement {
 					Type = TextBlockElement
 					id = first_warning
@@ -1004,7 +1004,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				extras_warning ::SetProps dims = <bg_dims>
 				displaySprite {
 					parent = extras_warning_container
-					tex = #"0xb844e84a"
+					tex = control_pill_end
 					Pos = (-1 * <width> * (0.5, 0.0))
 					rgba = [96 0 0 255]
 					dims = ((96.0, 0.0) + (<height> * (0.0, 1.0) + (0.0, 40.0)))
@@ -1014,7 +1014,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				}
 				displaySprite {
 					parent = extras_warning_container
-					tex = #"0xb844e84a"
+					tex = control_pill_end
 					Pos = (<width> * (0.5, 0.0))
 					rgba = [96 0 0 255]
 					dims = ((96.0, 0.0) + (<height> * (0.0, 1.0) + (0.0, 40.0)))
@@ -1348,7 +1348,7 @@ script add_user_control_helper\{z = 10 pill = 1 fit_to_rectangle = 1}
 			CreateScreenElement {
 				Type = SpriteElement
 				parent = user_control_container
-				texture = #"0x237d7770"
+				texture = control_pill_body
 				dims = ((1.0, 0.0) * <pill_width> + (0.0, 1.0) * <pill_height>)
 				Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset>)
 				rgba = ($user_control_pill_color)
@@ -1358,7 +1358,7 @@ script add_user_control_helper\{z = 10 pill = 1 fit_to_rectangle = 1}
 			CreateScreenElement {
 				Type = SpriteElement
 				parent = user_control_container
-				texture = #"0xb844e84a"
+				texture = control_pill_end
 				dims = ((1.0, 0.0) * (<Scale> * $user_control_pill_end_width)+ (0.0, 1.0) * <pill_height>)
 				Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset>)
 				rgba = ($user_control_pill_color)
@@ -1369,7 +1369,7 @@ script add_user_control_helper\{z = 10 pill = 1 fit_to_rectangle = 1}
 			CreateScreenElement {
 				Type = SpriteElement
 				parent = user_control_container
-				texture = #"0xb844e84a"
+				texture = control_pill_end
 				dims = ((1.0, 0.0) * (<Scale> * $user_control_pill_end_width)+ (0.0, 1.0) * <pill_height>)
 				Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset> + (1.0, 0.0) * <pill_width>)
 				rgba = ($user_control_pill_color)
@@ -1500,7 +1500,7 @@ script user_control_build_pills
 				Type = SpriteElement
 				parent = user_control_container
 				id = <pill_id>
-				texture = #"0x237d7770"
+				texture = control_pill_body
 				dims = ((1.0, 0.0) * <pill_width> + (0.0, 1.0) * <pill_height>)
 				Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset>)
 				rgba = ($user_control_pill_color)
@@ -1511,7 +1511,7 @@ script user_control_build_pills
 				Type = SpriteElement
 				parent = user_control_container
 				id = <pill_l_id>
-				texture = #"0xb844e84a"
+				texture = control_pill_end
 				dims = ((1.0, 0.0) * (<Scale> * $user_control_pill_end_width)+ (0.0, 1.0) * <pill_height>)
 				Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset>)
 				rgba = ($user_control_pill_color)
@@ -1523,7 +1523,7 @@ script user_control_build_pills
 				Type = SpriteElement
 				parent = user_control_container
 				id = <pill_r_id>
-				texture = #"0xb844e84a"
+				texture = control_pill_end
 				dims = ((1.0, 0.0) * (<Scale> * $user_control_pill_end_width)+ (0.0, 1.0) * <pill_height>)
 				Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset> + (1.0, 0.0) * <max_pill_width>)
 				rgba = ($user_control_pill_color)
@@ -1632,7 +1632,7 @@ script user_control_build_super_pill
 		Type = SpriteElement
 		parent = user_control_container
 		id = user_control_super_pill_object_main
-		texture = #"0x237d7770"
+		texture = control_pill_body
 		dims = ((1.0, 0.0) * <whole_pill_width> + (0.0, 1.0) * <pill_height>)
 		Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset>)
 		rgba = ($user_control_pill_color)
@@ -1643,7 +1643,7 @@ script user_control_build_super_pill
 		Type = SpriteElement
 		parent = user_control_container
 		id = user_control_super_pill_object_l
-		texture = #"0xb844e84a"
+		texture = control_pill_end
 		dims = ((1.0, 0.0) * (<Scale> * $user_control_pill_end_width)+ (0.0, 1.0) * <pill_height>)
 		Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset>)
 		rgba = ($user_control_pill_color)
@@ -1655,7 +1655,7 @@ script user_control_build_super_pill
 		Type = SpriteElement
 		parent = user_control_container
 		id = user_control_super_pill_object_r
-		texture = #"0xb844e84a"
+		texture = control_pill_end
 		dims = ((1.0, 0.0) * (<Scale> * $user_control_pill_end_width)+ (0.0, 1.0) * <pill_height>)
 		Pos = (<Pos> + (0.0, -0.5) * <pill_y_offset> + (1.0, 0.0) * <whole_pill_width>)
 		rgba = ($user_control_pill_color)

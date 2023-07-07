@@ -145,7 +145,7 @@ script create_data_settings_menu\{for_loaddevice = 0}
 		just = [left top]
 		z_priority = 19
 	}
-	CreateScreenElement \{Type = SpriteElement parent = data_settings_container texture = #"0xf6c8349f" Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0) z_priority = 99 rgba = [255 255 255 255]}
+	CreateScreenElement \{Type = SpriteElement parent = data_settings_container texture = Venue_Overlay Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0) z_priority = 99 rgba = [255 255 255 255]}
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
 	common_control_helpers \{select back nav}

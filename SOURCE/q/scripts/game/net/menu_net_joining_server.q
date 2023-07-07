@@ -2,9 +2,9 @@
 script create_join_server_menu
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = joining_screen_container Pos = (0.0, 0.0)}
 	killspawnedscript \{name = destroy_loading_screen_spawned}
-	create_menu_backdrop \{texture = #"0x4fb4b5e9"}
-	displaySprite \{id = online_frame parent = joining_screen_container tex = #"0xfaffa7d8" Pos = (640.0, 100.0) just = [center top] z = 2}
-	displaySprite \{id = #"0xf3ed3382" parent = joining_screen_container tex = #"0xf3ed3382" Pos = (640.0, 42.0) just = [center top] z = 2.0999999 dims = (256.0, 105.0)}
+	create_menu_backdrop \{texture = Online_Background}
+	displaySprite \{id = online_frame parent = joining_screen_container tex = Online_Frame_Large Pos = (640.0, 100.0) just = [center top] z = 2}
+	displaySprite \{id = online_frame_crown parent = joining_screen_container tex = #"0xf3ed3382" Pos = (640.0, 42.0) just = [center top] z = 2.0999999 dims = (256.0, 105.0)}
 	if (($ui_flow_manager_state [0])= quick_match_joining_game_fs)
 		<title_text> = "QUICKMATCH"
 	elseif (($ui_flow_manager_state [0])= invite_joining_game_fs)

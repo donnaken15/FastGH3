@@ -50,7 +50,7 @@ career_hud_2d_elements = {
 		{
 			element_id = HUD2D_rock_glow
 			element_parent = HUD2D_rock_container
-			texture = #"0x6e5168a0"
+			texture = Char_Select_Hilite1
 			pos_off = (-50.0, -100.0)
 			dims = (350.0, 350.0)
 			rgba = [

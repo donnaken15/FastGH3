@@ -27,11 +27,11 @@ script create_choose_part_menu
 	menu_font = text_a5
 	create_menu_backdrop \{texture = venue_bg}
 	CreateScreenElement \{Type = ContainerElement id = select_intsrument_container parent = root_window Pos = (0.0, 0.0)}
-	displaySprite \{parent = select_intsrument_container tex = #"0x8be93fac" Pos = (250.0, 0.0) dims = (768.0, 768.0) z = 1}
-	displaySprite \{parent = select_intsrument_container tex = #"0xb1004fdd" Pos = (190.0, 260.0) dims = (192.0, 96.0) z = 10 rot_angle = -80}
-	displaySprite \{parent = select_intsrument_container tex = #"0xb1004fdd" rgba = [0 0 0 128] Pos = (186.0, 266.0) dims = (192.0, 96.0) z = 10 rot_angle = -80}
-	displaySprite \{parent = select_intsrument_container tex = #"0x01c66f71" Pos = (960.0, 386.0) dims = (116.0, 232.0) z = 10 flip_v rot_angle = -6}
-	displaySprite \{parent = select_intsrument_container tex = #"0x01c66f71" rgba = [0 0 0 128] Pos = (966.0, 392.0) dims = (116.0, 232.0) z = 10 flip_v rot_angle = -6}
+	displaySprite \{parent = select_intsrument_container tex = Instrument_2p_Poster Pos = (250.0, 0.0) dims = (768.0, 768.0) z = 1}
+	displaySprite \{parent = select_intsrument_container tex = Tape_H_01 Pos = (190.0, 260.0) dims = (192.0, 96.0) z = 10 rot_angle = -80}
+	displaySprite \{parent = select_intsrument_container tex = Tape_H_01 rgba = [0 0 0 128] Pos = (186.0, 266.0) dims = (192.0, 96.0) z = 10 rot_angle = -80}
+	displaySprite \{parent = select_intsrument_container tex = Tape_V_01 Pos = (960.0, 386.0) dims = (116.0, 232.0) z = 10 flip_v rot_angle = -6}
+	displaySprite \{parent = select_intsrument_container tex = Tape_V_01 rgba = [0 0 0 128] Pos = (966.0, 392.0) dims = (116.0, 232.0) z = 10 flip_v rot_angle = -6}
 	if NOT ($is_network_game)
 		displayText \{parent = select_intsrument_container Pos = (420.0, 96.0) Scale = 1 font = text_a6 rgba = [185 220 230 255] rot = -3 z = 5 text = "Player 1"}
 		displayText \{parent = select_intsrument_container Pos = (650.0, 538.0) Scale = 1 font = text_a6 rgba = [215 220 175 255] rot = -3 z = 5 text = "Player 2"}
@@ -64,15 +64,15 @@ script create_choose_part_menu
 	if (<width> > 170)
 		fit_text_in_rectangle id = <id> dims = ((170.0, 0.0) + <height> * (0.0, 1.100000023841858))
 	endif
-	displaySprite \{id = si_hilite_p1 parent = select_intsrument_container tex = #"0x27a29bc7" Pos = $#"0x8c59897e" dims = (216.0, 64.0) rgba = [5 30 35 255] z = 4}
-	displaySprite \{id = si_hilite_p2 parent = select_intsrument_container tex = #"0x27a29bc7" Pos = $#"0xcbf9f3ae" dims = (216.0, 64.0) rgba = [65 25 10 255] z = 4 flip_h rot_angle = 8}
+	displaySprite \{id = si_hilite_p1 parent = select_intsrument_container tex = Instrument_2p_Hilite Pos = $#"0x8c59897e" dims = (216.0, 64.0) rgba = [5 30 35 255] z = 4}
+	displaySprite \{id = si_hilite_p2 parent = select_intsrument_container tex = Instrument_2p_Hilite Pos = $#"0xcbf9f3ae" dims = (216.0, 64.0) rgba = [65 25 10 255] z = 4 flip_h rot_angle = 8}
 	//displaySprite id = si_hilite_bookend_p1a parent = select_intsrument_container tex = #"0xcdf38dca" Pos = ($g_si_hilitep1_pos + (0.0, 10.0))z = 4.5
 	//displaySprite id = si_hilite_bookend_p1b parent = <id> tex = #"0x54fadc70" Pos = (180.0, 10.0)
 	//displaySprite id = si_hilite_bookend_p2a parent = select_intsrument_container tex = #"0xe6dede09" Pos = ($g_si_hilitep2_pos + (0.0, 20.0))z = 4.5
 	//displaySprite id = si_hilite_bookend_p2b parent = <id> tex = #"0x7fd78fb3" Pos = (180.0, 20.0)
 	select_instrument_randomize_bookends \{Player = 1}
 	select_instrument_randomize_bookends \{Player = 2}
-	displaySprite \{parent = select_intsrument_container tex = #"0xe78837f3" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
+	displaySprite \{parent = select_intsrument_container tex = Instrument_2p_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
 	common_control_helpers \{select back nav}

@@ -435,7 +435,7 @@ script detailed_stats_create_container\{for_practice = 0}
 	if (<for_practice> = 0)
 		LaunchEvent \{Type = focus target = continue_text}
 	endif
-	CreateScreenElement \{Type = SpriteElement id = detailed_stats_paper_top parent = ds_container texture = #"0x29f369b2" rot_angle = 2 Pos = (140.0, 50.0) just = [left top] z_priority = 1}
+	CreateScreenElement \{Type = SpriteElement id = detailed_stats_paper_top parent = ds_container texture = Detailed_stats_sheet_top rot_angle = 2 Pos = (140.0, 50.0) just = [left top] z_priority = 1}
 	if (<for_practice> = 1)
 		CreateScreenElement {
 			Type = TextElement
@@ -473,11 +473,11 @@ script detailed_stats_create_container\{for_practice = 0}
 		}
 	endif
 	CreateScreenElement \{Type = ContainerElement id = detailed_stats_bg_container parent = root_window Pos = (0.0, 0.0)}
-	CreateScreenElement \{Type = SpriteElement id = detailed_stats_bg0 parent = detailed_stats_bg_container texture = #"0x77387df0" rgba = [255 255 255 255] Pos = (0.0, 0.0) dims = (1280.0, 240.0) just = [left top] z_priority = 0}
-	CreateScreenElement \{Type = SpriteElement id = detailed_stats_bg1 parent = detailed_stats_bg_container texture = #"0x77387df0" rgba = [255 255 255 255] Pos = (0.0, 240.0) dims = (1280.0, 240.0) just = [left top] z_priority = 0}
-	CreateScreenElement \{Type = SpriteElement id = detailed_stats_bg2 parent = detailed_stats_bg_container texture = #"0x77387df0" rgba = [255 255 255 255] Pos = (0.0, 480.0) dims = (1280.0, 240.0) just = [left top] z_priority = 0}
-	CreateScreenElement \{Type = SpriteElement id = detailed_stats_bg3 parent = detailed_stats_bg_container texture = #"0x77387df0" rgba = [255 255 255 255] Pos = (0.0, 720.0) dims = (1280.0, 240.0) just = [left top] z_priority = 0}
-	CreateScreenElement \{Type = SpriteElement parent = root_window id = ds_spotlight texture = #"0xe90df3b5" rgba = [255 255 255 255] dims = (1280.0, 720.0) Pos = (0.0, 0.0) just = [left top] z_priority = 7 blend = sub}
+	CreateScreenElement \{Type = SpriteElement id = detailed_stats_bg0 parent = detailed_stats_bg_container texture = Detailed_stats_BG rgba = [255 255 255 255] Pos = (0.0, 0.0) dims = (1280.0, 240.0) just = [left top] z_priority = 0}
+	CreateScreenElement \{Type = SpriteElement id = detailed_stats_bg1 parent = detailed_stats_bg_container texture = Detailed_stats_BG rgba = [255 255 255 255] Pos = (0.0, 240.0) dims = (1280.0, 240.0) just = [left top] z_priority = 0}
+	CreateScreenElement \{Type = SpriteElement id = detailed_stats_bg2 parent = detailed_stats_bg_container texture = Detailed_stats_BG rgba = [255 255 255 255] Pos = (0.0, 480.0) dims = (1280.0, 240.0) just = [left top] z_priority = 0}
+	CreateScreenElement \{Type = SpriteElement id = detailed_stats_bg3 parent = detailed_stats_bg_container texture = Detailed_stats_BG rgba = [255 255 255 255] Pos = (0.0, 720.0) dims = (1280.0, 240.0) just = [left top] z_priority = 0}
+	CreateScreenElement \{Type = SpriteElement parent = root_window id = ds_spotlight texture = Detailed_stats_spotlight_overlay rgba = [255 255 255 255] dims = (1280.0, 720.0) Pos = (0.0, 0.0) just = [left top] z_priority = 7 blend = sub}
 endscript
 
 script add_text_to_column{
@@ -633,7 +633,7 @@ script menu_detailed_stats_add_paper_sprites
 		Pos = ((1.0, 0.0) * 129 + (0.0, 1.0) * ($left_column_y_end))
 		rot_angle = 2
 		dims = (1016.0, 128.0)
-		texture = #"0x8e2285cf"
+		texture = Detailed_stats_sheet_bottom
 		just = [left top]
 		z_priority = 2
 	}
@@ -647,7 +647,7 @@ script menu_detailed_stats_add_paper_sprites
 			parent = ds_container
 			Pos = ((1.0, 0.0) * 129 + (0.0, 1.0) * <y_position>)
 			dims = ((32.0, 0.0) + (0.0, 1.0) * <piecewise_desired_dim>)
-			texture = #"0xdc6d05c2"
+			texture = Detailed_stats_sheet_L
 			just = [left top]
 			z_priority = 2
 		}
@@ -662,7 +662,7 @@ script menu_detailed_stats_add_paper_sprites
 			parent = ds_container
 			Pos = ((1.0, 0.0) * 1087 + (0.0, 1.0) * <y_position>)
 			dims = ((64.0, 0.0) + (0.0, 1.0) * <piecewise_desired_dim>)
-			texture = #"0x266238a1"
+			texture = Detailed_stats_sheet_R
 			just = [left top]
 			z_priority = 2
 		}
@@ -708,7 +708,7 @@ script add_divider_graphic
 		parent = ds_container
 		Pos = ((1.0, 0.0) * $center_column_x + (0.0, 1.0) * (<divider_y> - 8))
 		Scale = (2.5, 1.399999976158142)
-		texture = #"0x1b5e66a7"
+		texture = Detailed_stats_divider
 		just = [center center]
 		z_priority = 5
 	}

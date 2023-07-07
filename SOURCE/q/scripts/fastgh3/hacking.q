@@ -13,7 +13,7 @@ script #"0x1766ab99"
 	// TODO: better one
 	/*printf \{"--- create_winport_account_management_screen"}
 	z = 110
-	create_menu_backdrop \{texture = #"0x4fb4b5e9"}
+	create_menu_backdrop \{texture = Online_Background}
 	if ((GotParam yellowButtonAction)& (GotParam blueButtonAction))
 		Handlers = [
 			{focus net_warning_focus}

@@ -515,7 +515,7 @@ script create_newspaper_menu\{for_practice = 0}
 		displaySprite {
 			id = np_circle_1
 			parent = newspaper_container
-			tex = #"0xcbbb28dc"
+			tex = Song_Summary_Circle_2p
 			Pos = (<p1_stats_pos> + (61.0, 61.0))
 			rgba = $g_ss_p1_orangeish
 			rot_angle = 180
@@ -524,7 +524,7 @@ script create_newspaper_menu\{for_practice = 0}
 		displaySprite {
 			id = np_circle_2
 			parent = newspaper_container
-			tex = #"0xcbbb28dc"
+			tex = Song_Summary_Circle_2p
 			Pos = <p2_stats_pos>
 			rgba = $g_ss_p2_violetish
 			z = 8
@@ -558,27 +558,27 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_left_wing
 				parent = newspaper_container
-				tex = #"0x3a0de853"
+				tex = Song_Summary_Wing_2p
 				Pos = <l_wing_pos>
 				z = 7
 			}
 			displaySprite {
 				id = np_right_wing
 				parent = newspaper_container
-				tex = #"0x5e061f6b"
+				tex = Song_Summary_Wing_2p_Flipped
 				Pos = <r_wing_pos>
 				z = 7
 			}
 			if (<winner> = "1")
 				displaySprite {
 					parent = newspaper_container
-					tex = #"0x390a5ad1"
+					tex = Song_Summary_Guitar_Winner_2p
 					Pos = (<p1_stats_pos> + (46.0, 0.0))
 					z = 6
 				}
 				displaySprite {
 					parent = newspaper_container
-					tex = #"0x36aaa443"
+					tex = Song_Summary_Guitar_Loser_2p
 					Pos = (<p2_stats_pos> + (-44.0, 0.0))
 					flip_v
 					z = 6
@@ -586,14 +586,14 @@ script create_newspaper_menu\{for_practice = 0}
 			else
 				displaySprite {
 					parent = newspaper_container
-					tex = #"0x390a5ad1"
+					tex = Song_Summary_Guitar_Winner_2p
 					Pos = (<p2_stats_pos> + (-110.0, 0.0))
 					flip_v
 					z = 6
 				}
 				displaySprite {
 					parent = newspaper_container
-					tex = #"0x36aaa443"
+					tex = Song_Summary_Guitar_Loser_2p
 					Pos = (<p1_stats_pos> + (44.0, 0.0))
 					z = 6
 				}
@@ -694,14 +694,14 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = ss_p1_score_fill
 				parent = newspaper_container
-				tex = #"0x570defec"
+				tex = Song_Summary_Score_BG_2p
 				Pos = (<p1_stats_pos> + (-12.0, 160.0))
 				rgba = <ss_score_color>
 			}
 			displaySprite {
 				id = ss_p2_score_fill
 				parent = newspaper_container
-				tex = #"0x570defec"
+				tex = Song_Summary_Score_BG_2p
 				Pos = (<p2_stats_pos> + (54.0, 192.0))
 				rgba = <ss_score_color>
 				rot_angle = 181
@@ -710,14 +710,14 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = ss_p1_score_fill
 				parent = newspaper_container
-				tex = #"0x570defec"
+				tex = Song_Summary_Score_BG_2p
 				Pos = (<p1_stats_pos> + (-12.0, 160.0))
 				rgba = $g_ss_HELL_darker_reddish
 			}
 			displaySprite {
 				id = ss_p2_score_fill
 				parent = newspaper_container
-				tex = #"0x570defec"
+				tex = Song_Summary_Score_BG_2p
 				Pos = (<p2_stats_pos> + (54.0, 192.0))
 				rgba = $g_ss_HELL_darker_reddish
 				rot_angle = 181
@@ -895,7 +895,7 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_icon_thumb
 				parent = newspaper_container
-				tex = #"0xac4522a1"
+				tex = Song_Summary_Icon_Winner_2p
 				Pos = (<p1_stats_pos> + (46.0, 330.0))
 				rgba = $g_ss_p1_orangeish
 				just = [center center]
@@ -1847,7 +1847,7 @@ script np_2p_fade_to_grey
 	displaySprite {
 		id = ss_stroke_1
 		parent = newspaper_container
-		tex = #"0x2000f2ad"
+		tex = Song_Summary_Brushstroke_2p
 		Pos = <stroke_pos>
 		rgba = $g_ss_AP_reddish
 		z = 80
@@ -1860,7 +1860,7 @@ script np_2p_fade_to_grey
 	displaySprite {
 		id = ss_stroke_2
 		parent = newspaper_container
-		tex = #"0x2000f2ad"
+		tex = Song_Summary_Brushstroke_2p
 		Pos = (<stroke_pos> + (-110.0, -30.0))
 		rgba = [255 0 0 255]
 		z = 80
