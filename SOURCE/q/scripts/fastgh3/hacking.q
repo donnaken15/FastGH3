@@ -1,19 +1,19 @@
-#"0x4d8e5ad2" = ''
+tmpinput = ''
 
-script #"0xc662b917"
-	#"0x1766ab99" {
+script create_winport_input_field_flow
+	create_winport_input_field {
 		mode = loginAccount
 		title = "Enter text"
 		container = accountLoginContainer
 	}
 endscript
 
-script #"0x1766ab99"
+script create_winport_input_field
 	// keyboard input hack
 	// TODO: better one
 	/*printf \{"--- create_winport_account_management_screen"}
 	z = 110
-	create_menu_backdrop \{texture = #"0x4fb4b5e9"}
+	create_menu_backdrop \{texture = Online_Background}
 	if ((GotParam yellowButtonAction)& (GotParam blueButtonAction))
 		Handlers = [
 			{focus net_warning_focus}
@@ -146,7 +146,7 @@ script #"0x1766ab99"
 			break
 		endif
 	repeat
-	text = $#"0x4faef07e"
+	text = $textinput_username
 	printstruct <...>
 	switch <loginEntry>
 		case loginAccepted
@@ -161,24 +161,24 @@ script #"0x1766ab99"
 			cancel_winport_account_management_screen mode = <mode>
 	endswitch*///
 endscript
-#"0x4faef07e" = ''
-#"0x8232b0dc" = ''
-#"0x294ccb3a" = ''
-#"0x15a8b641" = ''
+textinput_username = ''
+textinput_password = ''
+textinput_newPassword2 = ''
+textinput_license = ''
 
-script #"0xad13e27c"
-	//FormatText checksumName = Scr '%s' s = ($#"0x4faef07e")
+script executeScriptFromString
+	//FormatText checksumName = Scr '%s' s = ($textinput_username)
 	//if (ScriptExists <Scr>)
 	//	spawnscriptnow <Scr>
 	//endif
 endscript
-#"0xde5731fa" = {
-	create = #"0xc662b917"
+fastgh3_test_fs = {
+	create = create_winport_input_field_flow
 	Destroy = destroy_winport_account_login_screen
 	actions = [
 		{
 			action = executeLogin
-			func = #"0xad13e27c"
+			func = executeScriptFromString
 			flow_state = quickplay_pause_options_fs
 		}
 		{
@@ -370,7 +370,7 @@ script PrintPlayer\{player_status = player1_status}
 	//printstruct $<player_status>
 endscript
 
-script #"0xbee285d9"
+script keytest
 	CreateScreenElement {
 		Type = TextElement
 		parent = root_window

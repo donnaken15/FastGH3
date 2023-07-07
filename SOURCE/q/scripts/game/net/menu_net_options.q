@@ -28,16 +28,16 @@ save_changes_message = "You are about to exit the Player Options. Any changes ma
 		]
 		exclusive_device = ($primary_controller)
 	}
-	create_menu_backdrop \{texture = #"0x4fb4b5e9"}
+	create_menu_backdrop \{texture = Online_Background}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = online_menu_ui_container Pos = (0.0, 0.0)}
-	displaySprite id = #"0xf3ed3382" parent = online_menu_ui_container tex = #"0xf3ed3382" Pos = (($online_general_menu_pos)+ (0.0, -48.0))dims = (192.0, 96.0) just = [center top] z = 3
-	displaySprite id = online_menu_box_top parent = online_menu_ui_container tex = #"0xb532229b" rgba = ($online_medium_blue)Pos = ($online_general_menu_pos)dims = (256.0, 64.0) just = [center top] z = 2
-	displaySprite id = online_menu_box_top_fill parent = online_menu_ui_container tex = #"0xecab1ed6" rgba = [0 0 0 200] Pos = ($online_general_menu_pos)dims = (256.0, 64.0) just = [center top] z = 2
-	displaySprite id = online_menu_box_body parent = online_menu_ui_container tex = #"0x721db38e" rgba = ($online_medium_blue)Pos = (($online_general_menu_pos)+ (0.0, 64.0))dims = (256.0, 432.0) just = [center top] z = 2 flip_h
-	displaySprite id = online_menu_box_body_fill parent = online_menu_ui_container tex = #"0xae017b97" rgba = [0 0 0 200] Pos = (($online_general_menu_pos)+ (0.0, 64.0))dims = (256.0, 432.0) just = [center top] z = 2 flip_h
-	displaySprite id = online_menu_box_bottom parent = online_menu_ui_container tex = #"0xb532229b" rgba = ($online_medium_blue)Pos = (($online_general_menu_pos)+ (0.0, 496.0))dims = (256.0, 64.0) just = [center top] z = 2 flip_h
-	displaySprite id = online_menu_box_bottom_fill parent = online_menu_ui_container tex = #"0xecab1ed6" rgba = [0 0 0 200] Pos = (($online_general_menu_pos)+ (0.0, 496.0))dims = (256.0, 64.0) just = [center top] z = 2 flip_h
-	displaySprite id = online_title_bar parent = online_menu_ui_container tex = #"0xec880166" rgba = ($online_light_blue)Pos = (($online_general_menu_pos)+ (0.0, 128.0))dims = (256.0, 128.0) just = [center center] z = 3
+	displaySprite id = online_frame_crown parent = online_menu_ui_container tex = #"0xf3ed3382" Pos = (($online_general_menu_pos)+ (0.0, -48.0))dims = (192.0, 96.0) just = [center top] z = 3
+	displaySprite id = online_menu_box_top parent = online_menu_ui_container tex = window_frame_cap rgba = ($online_medium_blue)Pos = ($online_general_menu_pos)dims = (256.0, 64.0) just = [center top] z = 2
+	displaySprite id = online_menu_box_top_fill parent = online_menu_ui_container tex = window_fill_cap rgba = [0 0 0 200] Pos = ($online_general_menu_pos)dims = (256.0, 64.0) just = [center top] z = 2
+	displaySprite id = online_menu_box_body parent = online_menu_ui_container tex = window_frame_body_tall rgba = ($online_medium_blue)Pos = (($online_general_menu_pos)+ (0.0, 64.0))dims = (256.0, 432.0) just = [center top] z = 2 flip_h
+	displaySprite id = online_menu_box_body_fill parent = online_menu_ui_container tex = window_fill_body_large rgba = [0 0 0 200] Pos = (($online_general_menu_pos)+ (0.0, 64.0))dims = (256.0, 432.0) just = [center top] z = 2 flip_h
+	displaySprite id = online_menu_box_bottom parent = online_menu_ui_container tex = window_frame_cap rgba = ($online_medium_blue)Pos = (($online_general_menu_pos)+ (0.0, 496.0))dims = (256.0, 64.0) just = [center top] z = 2 flip_h
+	displaySprite id = online_menu_box_bottom_fill parent = online_menu_ui_container tex = window_fill_cap rgba = [0 0 0 200] Pos = (($online_general_menu_pos)+ (0.0, 496.0))dims = (256.0, 64.0) just = [center top] z = 2 flip_h
+	displaySprite id = online_title_bar parent = online_menu_ui_container tex = store_frame_bottom_bg rgba = ($online_light_blue)Pos = (($online_general_menu_pos)+ (0.0, 128.0))dims = (256.0, 128.0) just = [center center] z = 3
 	displaySprite id = online_highlight parent = online_menu_ui_container tex = white rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (632.0, 0.0))dims = (256.0, 40.0) just = [center top] z = 3
 	displaySprite id = online_bookend1 parent = online_menu_ui_container tex = character_hub_hilite_bookend rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (502.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
 	displaySprite id = online_bookend2 parent = online_menu_ui_container tex = character_hub_hilite_bookend rgba = ($online_light_blue)Pos = ((($online_general_menu_hi_lite_ypos [0])* (0.0, 1.0))+ (774.0, 20.0))dims = (40.0, 35.0) just = [center center] z = 3
@@ -164,9 +164,9 @@ script create_online_quickmatch_prefs\{menu_id = quickmatch_options_menu vmenu_i
 		]
 		exclusive_device = ($primary_controller)
 	}
-	create_menu_backdrop \{texture = #"0x4fb4b5e9"}
-	displaySprite \{id = online_frame parent = quickmatch_options_container tex = #"0xfaffa7d8" Pos = (640.0, 100.0) just = [center top] z = 2}
-	displaySprite \{id = #"0xf3ed3382" parent = quickmatch_options_container tex = #"0xf3ed3382" Pos = (640.0, 42.0) just = [center top] z = 3 dims = (256.0, 105.0)}
+	create_menu_backdrop \{texture = Online_Background}
+	displaySprite \{id = online_frame parent = quickmatch_options_container tex = Online_Frame_Large Pos = (640.0, 100.0) just = [center top] z = 2}
+	displaySprite \{id = online_frame_crown parent = quickmatch_options_container tex = #"0xf3ed3382" Pos = (640.0, 42.0) just = [center top] z = 3 dims = (256.0, 105.0)}
 	CreateScreenElement {
 		Type = TextElement
 		parent = quickmatch_options_container
@@ -387,10 +387,10 @@ script create_online_player_prefs\{menu_id = game_options_menu vmenu_id = game_o
 		]
 		exclusive_device = ($primary_controller)
 	}
-	create_menu_backdrop \{texture = #"0x4fb4b5e9"}
+	create_menu_backdrop \{texture = Online_Background}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = player_options_container Pos = (0.0, 0.0)}
-	displaySprite \{id = online_frame parent = player_options_container tex = #"0xfaffa7d8" Pos = (640.0, 100.0) just = [center top] z = 2}
-	displaySprite \{id = #"0xf3ed3382" parent = player_options_container tex = #"0xf3ed3382" Pos = (640.0, 42.0) just = [center top] z = 3 dims = (256.0, 105.0)}
+	displaySprite \{id = online_frame parent = player_options_container tex = Online_Frame_Large Pos = (640.0, 100.0) just = [center top] z = 2}
+	displaySprite \{id = online_frame_crown parent = player_options_container tex = #"0xf3ed3382" Pos = (640.0, 42.0) just = [center top] z = 3 dims = (256.0, 105.0)}
 	CreateScreenElement {
 		Type = TextElement
 		parent = player_options_container
@@ -544,7 +544,7 @@ script create_online_options_changed_dialog\{menu_id = online_options_changed_me
 		Type = SpriteElement
 		parent = <container_id>
 		local_id = bookend_left
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		alpha = 1.0
 		just = [right center]
 		Pos = ((0.0, 20.0) + (1.0, 0.0) * (<width> / (-2))+ (-5.0, 0.0))
@@ -556,7 +556,7 @@ script create_online_options_changed_dialog\{menu_id = online_options_changed_me
 		Type = SpriteElement
 		parent = <container_id>
 		local_id = bookend_right
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		alpha = 1.0
 		just = [left center]
 		Pos = ((0.0, 20.0) + (1.0, 0.0) * (<width> / (2))+ (5.0, 0.0))
@@ -582,7 +582,7 @@ script create_online_options_changed_dialog\{menu_id = online_options_changed_me
 		Type = SpriteElement
 		parent = <container_id>
 		local_id = bookend_left
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		just = [right center]
 		Pos = ((0.0, 20.0) + (1.0, 0.0) * (<width> / (-2))+ (-5.0, 0.0))
 		alpha = 0.0
@@ -594,7 +594,7 @@ script create_online_options_changed_dialog\{menu_id = online_options_changed_me
 		Type = SpriteElement
 		parent = <container_id>
 		local_id = bookend_right
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		just = [left center]
 		Pos = ((0.0, 20.0) + (1.0, 0.0) * (<width> / (2))+ (5.0, 0.0))
 		alpha = 0.0

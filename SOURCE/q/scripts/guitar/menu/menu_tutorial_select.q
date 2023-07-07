@@ -111,7 +111,7 @@ endscript
 
 script ts_add_skull
 	displaySprite {
-		tex = #"0xd16f20eb"
+		tex = Toprockers_Skull
 		parent = ts_container
 		Pos = <Pos>
 		dims = (24.0, 24.0)
@@ -121,7 +121,7 @@ script ts_add_skull
 		z = 7
 	}
 	displaySprite {
-		tex = #"0xd16f20eb"
+		tex = Toprockers_Skull
 		parent = ts_container
 		Pos = <Pos>
 		dims = (26.0, 26.0)

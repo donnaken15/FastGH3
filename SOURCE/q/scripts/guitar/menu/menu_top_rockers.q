@@ -34,7 +34,7 @@ script destroy_top_rockers_menu
 endscript
 
 script menu_top_rockers_create_poster
-	displaySprite \{parent = tr_container tex = #"0xf6c8349f" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
+	displaySprite \{parent = tr_container tex = Venue_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
 	//CreateScreenElement \{Type = SpriteElement parent = tr_container texture = #"0x1c8a86f3" Pos = (740.0, 30.0) just = [right top] dims = (620.0, 620.0) z_priority = 1.2 rot_angle = -3}
 	FormatText \{textname = Rockers_title "\c9%T\c0%R" t = "TOP" r = "ROCKERS"}
 	CreateScreenElement {
@@ -98,8 +98,8 @@ script menu_top_rockers_create_paper
 		text = <song_diff_text>
 	}
 	fit_text_in_rectangle id = <id> dims = (380.0, 100.0) keep_ar = 1
-	displaySprite \{parent = tr_container tex = #"0xfd06d27e" Pos = (500.0, -10.0) dims = (140.0, 70.0) z = 50}
-	displaySprite \{parent = tr_container tex = #"0x640f83c4" Pos = (280.0, 240.0) z = 50 rot_angle = 90 dims = (140.0, 70.0)}
+	displaySprite \{parent = tr_container tex = Toprockers_Tape_1 Pos = (500.0, -10.0) dims = (140.0, 70.0) z = 50}
+	displaySprite \{parent = tr_container tex = Toprockers_Tape_2 Pos = (280.0, 240.0) z = 50 rot_angle = 90 dims = (140.0, 70.0)}
 	column_x = 65
 	number_offset = (-55.0, 0.0)
 	current_y_position = (20.0, 80.0)
@@ -166,7 +166,7 @@ script menu_top_rockers_create_paper
 				z_priority = 1.3
 				rgba = [255 255 255 255]
 				just = [left bottom]
-				texture = #"0xd16f20eb"
+				texture = Toprockers_Skull
 				dims = (48.0, 48.0)
 			}
 		endif

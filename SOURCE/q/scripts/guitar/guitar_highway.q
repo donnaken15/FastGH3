@@ -69,7 +69,7 @@ script setup_highway\{Player = 1}
 		endif
 		<Scale> = (1.0, 1.0)
 	endif
-	if ($#"0xdf7ff31b" = 0)
+	if ($disable_intro = 0)
 		<container_pos> = (<Pos> + (0.0, 720.0))
 	endif
 	ExtendCrc gem_container <player_text> out = container_id

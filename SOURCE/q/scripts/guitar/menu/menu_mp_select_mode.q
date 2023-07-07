@@ -48,14 +48,14 @@ script create_mp_select_mode_menu
 		rgba = ($menu_unfocus_color)
 		rot_angle = -7
 	}
-	create_menu_backdrop \{texture = #"0xdebc01a3"}
+	create_menu_backdrop \{texture = Multiplayer_2p_BG}
 	z = 1
 	g_rot_angle = -3
 	CreateScreenElement \{Type = ContainerElement id = mpsm_container parent = root_window Pos = (0.0, 0.0)}
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = mpsm_container
-		texture = #"0xc3eca9ea"
+		texture = Multiplayer_2p_LP
 		id = record
 		just = [center center]
 		Pos = (850.0, 340.0)
@@ -66,7 +66,7 @@ script create_mp_select_mode_menu
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = mpsm_container
-		texture = #"0xce87f29f"
+		texture = Multiplayer_2p_Jacket_02
 		just = [center center]
 		Pos = (600.0, 360.0)
 		rot_angle = <g_rot_angle>
@@ -77,7 +77,7 @@ script create_mp_select_mode_menu
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = mpsm_container
-		texture = #"0xa438cf3c"
+		texture = Multiplayer_2p_Hilite_01
 		id = blood_splat_01
 		just = [center center]
 		Pos = (3040.0, 3060.0)
@@ -89,7 +89,7 @@ script create_mp_select_mode_menu
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = mpsm_container
-		texture = #"0x3d319e86"
+		texture = Multiplayer_2p_Hilite_02
 		id = blood_splat_02
 		just = [center center]
 		Pos = (3040.0, 3060.0)
@@ -129,7 +129,7 @@ script create_mp_select_mode_menu
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = mpsm_container
-		texture = #"0xfdcd703f"
+		texture = Multiplayer_2p_Flourish
 		Pos = (<mp_text_center> + <left_flourish_offset>)
 		rot_angle = <g_rot_angle>
 		dims = <flourish_dims>
@@ -142,7 +142,7 @@ script create_mp_select_mode_menu
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = mpsm_container
-		texture = #"0xfdcd703f"
+		texture = Multiplayer_2p_Flourish
 		Pos = (<mp_text_center> + <right_flourish_offset>)
 		rot_angle = <g_rot_angle>
 		dims = <flourish_dims>

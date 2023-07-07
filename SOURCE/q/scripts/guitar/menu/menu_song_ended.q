@@ -55,12 +55,12 @@ script create_song_ended_menu\{Player = 1}
 	Change \{menu_unfocus_color = [0 0 0 255]}
 	text_scale = (0.8999999761581421, 1.0)
 	displaySprite parent = song_ended_static_text_container tex = white Pos = (492.0, 517.0) Scale = (75.0, 6.0) z = (<z> + 0.1)rgba = <offwhite>
-	displaySprite parent = song_ended_static_text_container tex = #"0xacf2f335" Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite parent = song_ended_static_text_container tex = #"0xacf2f335" Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite id = hi_right parent = song_ended_static_text_container tex = #"0x0b444b41" Pos = (770.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)just = [left center]
-	displaySprite id = hi_left parent = song_ended_static_text_container tex = #"0x0b444b41" flip_v Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)just = [right center]
-	displaySprite parent = song_ended_static_text_container tex = #"0xdb44b36c" Pos = (480.0, 450.0) Scale = (1.25, 1.25) z = <z>
-	displaySprite parent = song_ended_static_text_container tex = #"0xdb44b36c" flip_h Pos = (480.0, 530.0) Scale = (1.25, 1.25) z = <z>
+	displaySprite parent = song_ended_static_text_container tex = Dialog_Frame_Joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
+	displaySprite parent = song_ended_static_text_container tex = Dialog_Frame_Joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
+	displaySprite id = hi_right parent = song_ended_static_text_container tex = Dialog_Highlight Pos = (770.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)just = [left center]
+	displaySprite id = hi_left parent = song_ended_static_text_container tex = Dialog_Highlight flip_v Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)just = [right center]
+	displaySprite parent = song_ended_static_text_container tex = dialog_bg Pos = (480.0, 450.0) Scale = (1.25, 1.25) z = <z>
+	displaySprite parent = song_ended_static_text_container tex = dialog_bg flip_h Pos = (480.0, 530.0) Scale = (1.25, 1.25) z = <z>
 	CreateScreenElement \{Type = ContainerElement parent = song_ended_vmenu dims = (0.0, 100.0) event_handlers = [{focus menu_se_retry_highlight_focus params = {id = song_ended_retry_text}}{unfocus retail_menu_unfocus params = {id = song_ended_retry_text}}{pad_choose song_ended_menu_select_retry_song}]}
 	CreateScreenElement {
 		Type = TextElement

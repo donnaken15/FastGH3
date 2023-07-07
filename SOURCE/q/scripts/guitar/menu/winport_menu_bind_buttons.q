@@ -111,14 +111,14 @@ script winport_create_bind_buttons
 	menuItemHiliteJust = [left center]
 	menuItemHiliteRot = -0.5
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = screen_container Pos = (0.0, 0.0) just = [left top]}
-	create_menu_backdrop \{texture = #"0xc5a54934"}
-	CreateScreenElement \{Type = SpriteElement id = light_overlay parent = screen_container texture = #"0xf6c8349f" Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 100}
-	displaySprite \{parent = screen_container tex = #"0xe6bb28d4" Pos = (640.0, 360.0) Scale = (1.5, 1.7000000476837158) just = [center center] z = 1 rot_angle = -2}
+	create_menu_backdrop \{texture = Venue_BG}
+	CreateScreenElement \{Type = SpriteElement id = light_overlay parent = screen_container texture = Venue_Overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 100}
+	displaySprite \{parent = screen_container tex = controller_config_poster Pos = (640.0, 360.0) Scale = (1.5, 1.7000000476837158) just = [center center] z = 1 rot_angle = -2}
 	CreateScreenElement \{Type = TextElement parent = screen_container text = "KEYBOARD" Pos = (830.0, 100.0) Scale = (1.5099999904632568, 1.2999999523162842) just = [center center] rgba = [202 243 113 255] font = #"0x42c721dd" z_priority = 10 rot_angle = -2.8 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (-3.0, 3.0)}
-	displaySprite \{parent = screen_container tex = #"0x01c66f71" Pos = (205.0, 65.0) dims = (96.0, 192.0) z = 5 rot_angle = -1}
-	displaySprite \{parent = screen_container tex = #"0x01c66f71" rgba = [0 0 0 128] Pos = (202.0, 68.0) dims = (96.0, 192.0) z = 4 rot_angle = -1}
-	displaySprite \{parent = screen_container tex = #"0x28091e67" Pos = (945.0, 550.0) dims = (132.0, 64.0) z = 5 rot_angle = 8}
-	displaySprite \{parent = screen_container tex = #"0x28091e67" rgba = [0 0 0 128] Pos = (942.0, 553.0) dims = (132.0, 64.0) z = 4 rot_angle = 8}
+	displaySprite \{parent = screen_container tex = Tape_V_01 Pos = (205.0, 65.0) dims = (96.0, 192.0) z = 5 rot_angle = -1}
+	displaySprite \{parent = screen_container tex = Tape_V_01 rgba = [0 0 0 128] Pos = (202.0, 68.0) dims = (96.0, 192.0) z = 4 rot_angle = -1}
+	displaySprite \{parent = screen_container tex = tape_H_02 Pos = (945.0, 550.0) dims = (132.0, 64.0) z = 5 rot_angle = 8}
+	displaySprite \{parent = screen_container tex = tape_H_02 rgba = [0 0 0 128] Pos = (942.0, 553.0) dims = (132.0, 64.0) z = 4 rot_angle = 8}
 	CreateScreenElement {
 		Type = VMenu
 		id = menu

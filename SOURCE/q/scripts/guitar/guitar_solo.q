@@ -368,9 +368,9 @@ script solo_reset\{Player = 1}
 		Change \{note_index_p2 = 0}
 	endif
 	if (<Player> = 1)
-		GetArraySize \{$#"0x39c33a22"}
+		GetArraySize \{$solo_hit_buffer_p1}
 	elseif (<Player> = 2)
-		GetArraySize \{$#"0xa0ca6b98"}
+		GetArraySize \{$solo_hit_buffer_p2}
 	endif
 	FormatText checksumName = array 'solo_hit_buffer_p%d' d = <Player>
 	hit_buffer = $<array>
@@ -392,11 +392,11 @@ script set_solo_hit_buffer\{Player = 1 1}
 	if (<Player> = 1)
 		num = ($last_solo_index_p1 + 1)
 		Change last_solo_index_p1 = <num>
-		GetArraySize \{$#"0x39c33a22"}
+		GetArraySize \{$solo_hit_buffer_p1}
 	elseif (<Player> = 2)
 		num = ($last_solo_index_p2 + 1)
 		Change last_solo_index_p2 = <num>
-		GetArraySize \{$#"0xa0ca6b98"}
+		GetArraySize \{$solo_hit_buffer_p2}
 	endif
 	hit_buffer = $<array>
 	i = 1

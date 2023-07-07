@@ -9,13 +9,13 @@ script create_choose_practice_part_menu
 	menu_pos = (845.0, 258.0)
 	CreateScreenElement \{Type = ContainerElement id = cpp_container parent = root_window just = [left top] Pos = (0.0, 0.0)}
 	new_menu scrollid = cpp_scroll vmenuid = cpp_vmenu menu_pos = <menu_pos> spacing = -45
-	create_menu_backdrop \{texture = #"0xc5a54934"}
-	CreateScreenElement \{Type = SpriteElement parent = cpp_container texture = #"0xf6c8349f" Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
+	create_menu_backdrop \{texture = Venue_BG}
+	CreateScreenElement \{Type = SpriteElement parent = cpp_container texture = Venue_Overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
 	//displaySprite \{parent = cpp_container tex = #"0x148a9ced" Pos = (186.0, 15.0) dims = (672.0, 672.0) rot_angle = -2 z = 1}
-	displaySprite \{parent = cpp_container tex = #"0x640f83c4" Pos = (500.0, 650.0) z = 3 rot_angle = -12 flip_v}
-	displaySprite \{parent = cpp_container tex = #"0xfd06d27e" Pos = (565.0, -95.0) z = 3 rot_angle = 80}
-	displaySprite \{parent = cpp_container tex = #"0x640f83c4" Pos = (500.0, -85.0) z = 3 rot_angle = 80}
-	displaySprite \{parent = cpp_container tex = #"0x640f83c4" Pos = (435.0, -75.0) z = 3 rot_angle = 78}
+	displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (500.0, 650.0) z = 3 rot_angle = -12 flip_v}
+	displaySprite \{parent = cpp_container tex = Toprockers_Tape_1 Pos = (565.0, -95.0) z = 3 rot_angle = 80}
+	displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (500.0, -85.0) z = 3 rot_angle = 80}
+	displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (435.0, -75.0) z = 3 rot_angle = 78}
 	CreateScreenElement {
 		Type = TextBlockElement
 		parent = cpp_container
@@ -46,10 +46,10 @@ script create_choose_practice_part_menu
 		endif
 		<i> = (<i> + 1)
 	repeat <array_Size>
-	displaySprite \{parent = cpp_container tex = #"0xdb44b36c" Pos = (680.0, 256.0) dims = (332.0, 70.0) z = 2}
-	displaySprite \{parent = cpp_container tex = #"0xdb44b36c" flip_h Pos = (680.0, 326.0) dims = (332.0, 70.0) z = 2}
-	displaySprite \{id = cpp_hi_left parent = cpp_container tex = #"0x0b444b41" flip_v Pos = (720.0, 325.0) z = 5 just = [right center]}
-	displaySprite \{id = cpp_hi_right parent = cpp_container tex = #"0x0b444b41" Pos = (910.0, 325.0) z = 5 just = [left center]}
+	displaySprite \{parent = cpp_container tex = dialog_bg Pos = (680.0, 256.0) dims = (332.0, 70.0) z = 2}
+	displaySprite \{parent = cpp_container tex = dialog_bg flip_h Pos = (680.0, 326.0) dims = (332.0, 70.0) z = 2}
+	displaySprite \{id = cpp_hi_left parent = cpp_container tex = Dialog_Highlight flip_v Pos = (720.0, 325.0) z = 5 just = [right center]}
+	displaySprite \{id = cpp_hi_right parent = cpp_container tex = Dialog_Highlight Pos = (910.0, 325.0) z = 5 just = [left center]}
 	guitar_or_lead_text = "GUITAR"
 	bass_or_rhythm_text = "BASS"
 	get_song_rhythm_track song = ($current_song)

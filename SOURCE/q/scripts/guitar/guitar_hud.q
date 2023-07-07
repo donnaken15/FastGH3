@@ -159,14 +159,14 @@ script setup_hud
 		{
 			element_id = #"0x99dd87cc"
 			element_parent = #"0xa90fc148"
-			texture = $#"0x1d52cdca"
-			dims = $#"0x8d974f74"
+			texture = $gameplaybg_texture
+			dims = $gameplaybg_dims
 			rot = -0.1
 			just = [
 				left
 				top
 			]
-			rgba = $#"0x902ecc17"
+			rgba = $BGCol
 			zoff = -2147483648
 		}*/
 		ExtendCrc HUD_2D_Container <player_text> out = new_2d_container
@@ -174,12 +174,12 @@ script setup_hud
 			type = spriteelement
 			id = <new_2d_container>
 			parent = root_window
-			pos = $#"0x28381025"
+			pos = $gameplaybg_pos
 			just = [left top]
-			texture = $#"0x1d52cdca"
-			dims = $#"0x8d974f74"
+			texture = $gameplaybg_texture
+			dims = $gameplaybg_dims
 			rot = -0.1
-			rgba = $#"0x902ecc17"
+			rgba = $BGCol
 			alpha = 1
 			z_priority = -2147483648
 		}
@@ -301,7 +301,7 @@ script move_2d_elements_to_default
 	morph_2d_hud_elements <...>
 endscript
 
-script #"0x9ca8d62c"
+script nointro_hud_move
 	if ($hudless = 1 || $Cheat_PerformanceMode = 1)
 		return
 	endif

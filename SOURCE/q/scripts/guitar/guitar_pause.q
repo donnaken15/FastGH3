@@ -162,7 +162,7 @@ script safe_create_gh3_pause_menu
 	endif
 endscript
 
-script #"0x924a920a"
+script create_generic_backdrop2
 	if NOT ScreenElementExists \{id = generic_backdrop_container}
 		CreateScreenElement \{Type = ContainerElement parent = root_window id = generic_backdrop_container Pos = (0.0, 0.0) just = [left top]}
 		CreateScreenElement \{Type = SpriteElement id = pause_backdrop parent = generic_backdrop_container texture = venue_bg rgba = [255 255 255 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 0 alpha = 1}
@@ -170,7 +170,7 @@ script #"0x924a920a"
 	endif
 endscript
 
-script #"0xacaed441"
+script destroy_generic_backdrop2
 	if ScreenElementExists \{id = generic_backdrop_container}
 		DestroyScreenElement \{id = generic_backdrop_container}
 	endif

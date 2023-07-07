@@ -108,7 +108,7 @@
 		Type = SpriteElement
 		parent = <container_id>
 		local_id = bookend_left
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		alpha = 1.0
 		just = [right center]
 		Pos = ((0.0, 20.0) + (1.0, 0.0) * (<width> / (-2))+ (-5.0, 0.0))
@@ -120,7 +120,7 @@
 		Type = SpriteElement
 		parent = <container_id>
 		local_id = bookend_right
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		alpha = 1.0
 		just = [left center]
 		Pos = ((0.0, 20.0) + (1.0, 0.0) * (<width> / (2))+ (5.0, 0.0))
@@ -155,7 +155,7 @@
 		Type = SpriteElement
 		parent = <container_id>
 		local_id = bookend_left
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		just = [right center]
 		Pos = ((0.0, 20.0) + (1.0, 0.0) * (<width> / (-2))+ (-5.0, 0.0))
 		alpha = 0.0
@@ -167,7 +167,7 @@
 		Type = SpriteElement
 		parent = <container_id>
 		local_id = bookend_right
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		just = [left center]
 		Pos = ((0.0, 20.0) + (1.0, 0.0) * (<width> / (2))+ (5.0, 0.0))
 		alpha = 0.0

@@ -20,14 +20,14 @@ script create_bonus_videos_menu\{came_from_movie = 0}
 		rot_angle = 4
 		z = 49
 	}
-	displaySprite \{parent = bv_container tex = #"0xfd06d27e" Pos = (250.0, 130.0) rot_angle = 75 dims = (192.0, 96.0) z = 100}
-	displaySprite \{parent = bv_container tex = #"0xfd06d27e" rgba = [0 0 0 128] Pos = (255.0, 135.0) rot_angle = 75 dims = (192.0, 96.0) z = 99}
-	displaySprite \{parent = bv_container tex = #"0x640f83c4" Pos = (1070.0, 270.0) rot_angle = 75 dims = (192.0, 96.0) z = 100 flip_v}
-	displaySprite \{parent = bv_container tex = #"0xfd06d27e" rgba = [0 0 0 128] Pos = (1075.0, 275.0) rot_angle = 75 dims = (192.0, 96.0) z = 99 flip_v}
-	CreateScreenElement \{Type = SpriteElement parent = bv_container texture = #"0xbe14c2a7" Pos = (640.0, 450.0) just = [center center] dims = (32.0, 64.0) id = venue_down_arrow z_priority = 99 alpha = 1 flip_h flip_v}
-	CreateScreenElement \{Type = SpriteElement parent = bv_container texture = #"0xbe14c2a7" Pos = (640.0, 450.0) just = [center center] dims = (40.0, 72.0) id = venue_down_arrow2 z_priority = 99 rgba = [0 0 0 255] alpha = 1 flip_h flip_v}
-	CreateScreenElement \{Type = SpriteElement parent = bv_container texture = #"0xbe14c2a7" Pos = (640.0, 170.0) just = [center center] dims = (32.0, 64.0) id = venue_up_arrow z_priority = 99 alpha = 0}
-	CreateScreenElement \{Type = SpriteElement parent = bv_container texture = #"0xbe14c2a7" Pos = (640.0, 170.0) just = [center center] dims = (40.0, 72.0) id = venue_up_arrow2 z_priority = 99 rgba = [0 0 0 255] alpha = 0}
+	displaySprite \{parent = bv_container tex = Toprockers_Tape_1 Pos = (250.0, 130.0) rot_angle = 75 dims = (192.0, 96.0) z = 100}
+	displaySprite \{parent = bv_container tex = Toprockers_Tape_1 rgba = [0 0 0 128] Pos = (255.0, 135.0) rot_angle = 75 dims = (192.0, 96.0) z = 99}
+	displaySprite \{parent = bv_container tex = Toprockers_Tape_2 Pos = (1070.0, 270.0) rot_angle = 75 dims = (192.0, 96.0) z = 100 flip_v}
+	displaySprite \{parent = bv_container tex = Toprockers_Tape_1 rgba = [0 0 0 128] Pos = (1075.0, 275.0) rot_angle = 75 dims = (192.0, 96.0) z = 99 flip_v}
+	CreateScreenElement \{Type = SpriteElement parent = bv_container texture = controller_2p_arrow Pos = (640.0, 450.0) just = [center center] dims = (32.0, 64.0) id = venue_down_arrow z_priority = 99 alpha = 1 flip_h flip_v}
+	CreateScreenElement \{Type = SpriteElement parent = bv_container texture = controller_2p_arrow Pos = (640.0, 450.0) just = [center center] dims = (40.0, 72.0) id = venue_down_arrow2 z_priority = 99 rgba = [0 0 0 255] alpha = 1 flip_h flip_v}
+	CreateScreenElement \{Type = SpriteElement parent = bv_container texture = controller_2p_arrow Pos = (640.0, 170.0) just = [center center] dims = (32.0, 64.0) id = venue_up_arrow z_priority = 99 alpha = 0}
+	CreateScreenElement \{Type = SpriteElement parent = bv_container texture = controller_2p_arrow Pos = (640.0, 170.0) just = [center center] dims = (40.0, 72.0) id = venue_up_arrow2 z_priority = 99 rgba = [0 0 0 255] alpha = 0}
 	Pos = ($bv_hilite_pos)
 	i = 0
 	begin

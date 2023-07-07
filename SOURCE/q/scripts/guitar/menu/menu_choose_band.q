@@ -32,8 +32,8 @@ script create_choose_band_menu
 		dims = (655.0, 80.0)
 		rot_angle = <rotation_angle>
 	}
-	CreateScreenElement \{Type = SpriteElement parent = cb_helper_container id = light_overlay texture = #"0xf6c8349f" Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
-	CreateScreenElement \{Type = SpriteElement parent = cb_helper_container id = ticket_image texture = #"0x6bdca25b" rgba = [255 255 255 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 1}
+	CreateScreenElement \{Type = SpriteElement parent = cb_helper_container id = light_overlay texture = Venue_Overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
+	CreateScreenElement \{Type = SpriteElement parent = cb_helper_container id = ticket_image texture = band_name_ticket rgba = [255 255 255 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 1}
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = cb_helper_container

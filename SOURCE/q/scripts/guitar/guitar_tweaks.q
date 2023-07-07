@@ -1,5 +1,5 @@
 disable_particles = 0
-#"0xb17c0279" = 0
+disable_shake = 0
 destroy_time = 1.0
 gHighwayTiling1 = 1.5
 highway_playline1 = 655

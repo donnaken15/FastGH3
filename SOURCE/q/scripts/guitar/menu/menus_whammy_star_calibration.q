@@ -21,8 +21,8 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 		<z> = 2
 	endif
 	if NOT (<popup>)
-		create_menu_backdrop \{texture = #"0xc5a54934"}
-		CreateScreenElement \{Type = SpriteElement parent = wbc_container id = wbc_light_overlay texture = #"0xf6c8349f" Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
+		create_menu_backdrop \{texture = Venue_BG}
+		CreateScreenElement \{Type = SpriteElement parent = wbc_container id = wbc_light_overlay texture = Venue_Overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
 	endif
 	displaySprite {
 		id = wbc_poster_1
@@ -45,7 +45,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	if NOT (<popup>)
 		displaySprite {
 			parent = wbc_container
-			tex = #"0xfd06d27e"
+			tex = Toprockers_Tape_1
 			Pos = (1010.0, 450.0)
 			dims = (192.0, 92.0)
 			z = (<z> + 1)
@@ -54,7 +54,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 		}
 		displaySprite {
 			parent = wbc_container
-			tex = #"0x640f83c4"
+			tex = Toprockers_Tape_2
 			Pos = (350.0, 200.0)
 			z = (<z> + 1)
 			rot_angle = 90

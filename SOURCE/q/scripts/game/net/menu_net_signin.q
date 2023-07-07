@@ -124,7 +124,7 @@ script update_winport_login_field
 	endif
 	NetSessionFunc func = GetLoginField params = {Field = <Field>}
 	if (<Field> = username)
-		Change #"0x4faef07e" = <prefix>
+		Change textinput_username = <prefix>
 	endif
 	if (<Active> = 1)
 		SetScreenElementProps id = <prefixId> text = <prefix>

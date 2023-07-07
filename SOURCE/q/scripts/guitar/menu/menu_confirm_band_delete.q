@@ -10,12 +10,12 @@ script create_confirm_band_delete_menu
 	displaySprite parent = cbd_container tex = dialog_title_bg flip_v Pos = (416.0, 60.0) Scale = (1.75, 1.75) z = <z>
 	displaySprite parent = cbd_container tex = dialog_title_bg Pos = (640.0, 60.0) Scale = (1.75, 1.75) z = <z>
 	displaySprite parent = cbd_container tex = white Pos = (525.0, 524.0) Scale = (58.0, 6.0) z = (<z> + 0.1)rgba = <offwhite>
-	displaySprite parent = cbd_container tex = #"0xacf2f335" Pos = (510.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite parent = cbd_container tex = #"0xacf2f335" Pos = (723.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite parent = cbd_container tex = #"0xdb44b36c" Pos = (514.0, 467.0) Scale = (1.0, 1.25) z = <z>
-	displaySprite parent = cbd_container tex = #"0xdb44b36c" flip_h Pos = (514.0, 537.0) Scale = (1.0, 1.25) z = <z>
-	displaySprite id = hi_right parent = cbd_container tex = #"0x0b444b41" Pos = (770.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)
-	displaySprite id = hi_left parent = cbd_container tex = #"0x0b444b41" flip_v Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)
+	displaySprite parent = cbd_container tex = Dialog_Frame_Joiner Pos = (510.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
+	displaySprite parent = cbd_container tex = Dialog_Frame_Joiner Pos = (723.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
+	displaySprite parent = cbd_container tex = dialog_bg Pos = (514.0, 467.0) Scale = (1.0, 1.25) z = <z>
+	displaySprite parent = cbd_container tex = dialog_bg flip_h Pos = (514.0, 537.0) Scale = (1.0, 1.25) z = <z>
+	displaySprite id = hi_right parent = cbd_container tex = Dialog_Highlight Pos = (770.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)
+	displaySprite id = hi_left parent = cbd_container tex = Dialog_Highlight flip_v Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)
 	create_pause_menu_frame \{x_scale = 1.2 z = 98}
 	create_confirm_band_delete_warning_text z = <z>
 	create_confirm_band_delete_warning_menu_options z = <z>

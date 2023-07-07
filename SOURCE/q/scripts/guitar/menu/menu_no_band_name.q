@@ -59,13 +59,13 @@ script create_no_band_menu
 		dims = <quit_warning_text_dims>
 		z_priority = (<z> + 3)
 	}
-	displaySprite parent = no_band_container tex = #"0xdb44b36c" Pos = (480.0, 485.0) dims = (320.0, 64.0) z = (<z> + 3)
-	displaySprite parent = no_band_container tex = #"0xdb44b36c" flip_h Pos = (480.0, 554.0) dims = (320.0, 64.0) z = (<z> + 3)
+	displaySprite parent = no_band_container tex = dialog_bg Pos = (480.0, 485.0) dims = (320.0, 64.0) z = (<z> + 3)
+	displaySprite parent = no_band_container tex = dialog_bg flip_h Pos = (480.0, 554.0) dims = (320.0, 64.0) z = (<z> + 3)
 	displaySprite parent = no_band_container tex = white Pos = (492.0, 541.0) Scale = (75.0, 6.0) z = (<z> + 3)rgba = <offwhite>
-	displaySprite parent = no_band_container tex = #"0xacf2f335" Pos = (480.0, 534.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 3.01)
-	displaySprite parent = no_band_container tex = #"0xacf2f335" Pos = (750.0, 538.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 3.01)
-	displaySprite id = hi_right parent = no_band_container tex = #"0x0b444b41" Pos = (770.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 3.02)
-	displaySprite id = hi_left parent = no_band_container tex = #"0x0b444b41" flip_v Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 3.02)
+	displaySprite parent = no_band_container tex = Dialog_Frame_Joiner Pos = (480.0, 534.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 3.01)
+	displaySprite parent = no_band_container tex = Dialog_Frame_Joiner Pos = (750.0, 538.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 3.01)
+	displaySprite id = hi_right parent = no_band_container tex = Dialog_Highlight Pos = (770.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 3.02)
+	displaySprite id = hi_left parent = no_band_container tex = Dialog_Highlight flip_v Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 3.02)
 	set_focus_color \{rgba = [180 50 50 255]}
 	set_unfocus_color \{rgba = [0 0 0 255]}
 	CreateScreenElement {

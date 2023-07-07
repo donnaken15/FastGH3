@@ -1241,13 +1241,13 @@ script restart_song\{practice_intro = 0 sudden_death = 0}
 	endif
 	restart_gem_scroller song_name = ($current_song)difficulty = ($current_difficulty)difficulty2 = ($current_difficulty2)startTime = ($current_starttime)practice_intro = <practice_intro> endtime = <endtime>
 endscript
-#"0xc50e4995" = 0
-#"0xf88a8d5d" = 0
+kill_gems_on_hit = 0
+anytime_sustain_activation = 0
 
 script kill_object_later
-	if ($#"0xc50e4995" = 1)
+	if ($kill_gems_on_hit = 1)
 		if (ScreenElementExists id = <gem_id>)
-			if ($#"0xf88a8d5d" = 0)
+			if ($anytime_sustain_activation = 0)
 				SetScreenElementProps id = <gem_id> alpha = 0
 			else
 				DestroyGem name = <gem_id>
@@ -1255,10 +1255,10 @@ script kill_object_later
 			endif
 		endif
 	endif
-	#"0xadebd460" <...>
+	kill_object_later_original <...>
 endscript
 
-script #"0xadebd460"
+script kill_object_later_original
 	begin
 		if ScreenElementExists id = <gem_id>
 			GetScreenElementPosition id = <gem_id> local

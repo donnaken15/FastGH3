@@ -63,7 +63,7 @@ script create_audio_settings_menu\{popup = 0}
 			displaySprite {
 				parent = pause_menu_frame_container
 				id = pause_helper_text_bg
-				tex = #"0x237d7770"
+				tex = control_pill_body
 				Pos = (640.0, 600.0)
 				just = [center center]
 				rgba = [96 0 0 255]
@@ -84,7 +84,7 @@ script create_audio_settings_menu\{popup = 0}
 			pause_helper_text_bg ::SetProps dims = <bg_dims>
 			displaySprite {
 				parent = pause_menu_frame_container
-				tex = #"0xb844e84a"
+				tex = control_pill_end
 				Pos = ((640.0, 600.0) - <width> * (0.5, 0.0))
 				rgba = [96 0 0 255]
 				just = [right center]
@@ -93,7 +93,7 @@ script create_audio_settings_menu\{popup = 0}
 			}
 			displaySprite {
 				parent = pause_menu_frame_container
-				tex = #"0xb844e84a"
+				tex = control_pill_end
 				Pos = ((640.0, 600.0) + <width> * (0.5, 0.0))
 				rgba = [96 0 0 255]
 				just = [left center]

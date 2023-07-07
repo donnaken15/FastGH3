@@ -44,7 +44,7 @@ quickplay_setlist_fs = {
 		}
 		{
 			action = show_help
-			flow_state = #"0x6ddea6c0"
+			flow_state = quickplay_battle_help_fs
 			transition_right
 		}
 		{
@@ -459,7 +459,7 @@ quickplay_autosave_fs = {
 		}
 	]
 }
-#"0x6ddea6c0" = {
+quickplay_battle_help_fs = {
 	create = create_battle_helper_menu
 	Destroy = destroy_battle_helper_menu
 	actions = [

@@ -52,10 +52,10 @@ script create_select_difficulty_menu
 	displaySprite \{parent = sd_container tex = 1p_difficulty_poster Pos = (640.0, 0.0) just = [center top] dims = (920.0, 720.0) z = 1}
 	p1_diff_index = 8
 	displaySprite id = sd_white_p1 parent = sd_container tex = white Pos = ($g_sd_hilite_props [<p1_diff_index>].Pos)dims = (300.0, 37.0) rgba = [225 120 60 255]
-	displaySprite \{parent = sd_container tex = #"0xfd06d27e" Pos = (1150.0, 0.0) dims = (212.0, 128.0) z = 50 rot_angle = 90}
-	displaySprite \{parent = sd_container tex = #"0xfd06d27e" Pos = (1155.0, 3.0) dims = (212.0, 128.0) rgba = [0 0 0 100] z = 49 rot_angle = 90}
-	displaySprite \{parent = sd_container tex = #"0x640f83c4" Pos = (260.0, 550.0) z = 50 rot_angle = 90 dims = (212.0, 128.0)}
-	displaySprite \{parent = sd_container tex = #"0x640f83c4" Pos = (264.0, 555.0) rgba = [0 0 0 100] z = 49 rot_angle = 90 dims = (212.0, 128.0)}
+	displaySprite \{parent = sd_container tex = Toprockers_Tape_1 Pos = (1150.0, 0.0) dims = (212.0, 128.0) z = 50 rot_angle = 90}
+	displaySprite \{parent = sd_container tex = Toprockers_Tape_1 Pos = (1155.0, 3.0) dims = (212.0, 128.0) rgba = [0 0 0 100] z = 49 rot_angle = 90}
+	displaySprite \{parent = sd_container tex = Toprockers_Tape_2 Pos = (260.0, 550.0) z = 50 rot_angle = 90 dims = (212.0, 128.0)}
+	displaySprite \{parent = sd_container tex = Toprockers_Tape_2 Pos = (264.0, 555.0) rgba = [0 0 0 100] z = 49 rot_angle = 90 dims = (212.0, 128.0)}
 	if (($game_mode = p1_career)|| ($game_mode = p2_career))
 		get_diff_completion_text
 	endif
@@ -221,7 +221,7 @@ script create_select_difficulty_menu
 		just = [center center]
 		z_priority = 80
 	}
-	displaySprite \{parent = sd_container tex = #"0xe78837f3" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50 rgba = [105 56 7 160]}
+	displaySprite \{parent = sd_container tex = Instrument_2p_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50 rgba = [105 56 7 160]}
 	common_control_helpers \{select back nav}
 endscript
 
@@ -361,7 +361,7 @@ script create_mp_select_difficulty_menu
 		no_focus = <no_focus_value>
 	}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = sd_container Pos = (0.0, 0.0)}
-	displaySprite \{parent = sd_container tex = #"0x399a136f" Pos = (640.0, 0.0) just = [center top] dims = (915.0, 720.0) z = 1}
+	displaySprite \{parent = sd_container tex = Difficulty_2p_BG Pos = (640.0, 0.0) just = [center top] dims = (915.0, 720.0) z = 1}
 	p1_diff_index = 0
 	p2_diff_index = 4
 	if ($is_network_game = 1)
@@ -407,7 +407,7 @@ script create_mp_select_difficulty_menu
 		displaySprite {
 			parent = sd_container
 			id = diff_select_completed_bg
-			tex = #"0x237d7770"
+			tex = control_pill_body
 			Pos = (<initial_pos> + (0.0, -3.0))
 			just = [center center]
 			rgba = [225 120 60 255]
@@ -419,7 +419,7 @@ script create_mp_select_difficulty_menu
 		diff_select_completed_bg ::SetProps dims = <completed_dims>
 		displaySprite {
 			parent = sd_container
-			tex = #"0xb844e84a"
+			tex = control_pill_end
 			Pos = ((625.0, 589.0) - <width> * (0.5, 0.0))
 			rgba = [225 120 60 255]
 			just = [right center]
@@ -428,7 +428,7 @@ script create_mp_select_difficulty_menu
 		}
 		displaySprite {
 			parent = sd_container
-			tex = #"0xb844e84a"
+			tex = control_pill_end
 			Pos = ((645.0, 589.5) + <width> * (0.5, 0.0))
 			rgba = [225 120 60 255]
 			just = [left center]
@@ -556,7 +556,7 @@ script create_mp_select_difficulty_menu
 		exclusive_device = $player2_device
 	}
 	fit_text_in_rectangle id = <id> dims = (180.0, 50.0)
-	displaySprite \{parent = sd_container tex = #"0xe78837f3" Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50 rgba = [105 56 7 160]}
+	displaySprite \{parent = sd_container tex = Instrument_2p_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50 rgba = [105 56 7 160]}
 	if ($is_network_game = 1)
 		create_ready_icons \{pos1 = (260.0, 150.0) pos2 = (880.0, 130.0)}
 	else

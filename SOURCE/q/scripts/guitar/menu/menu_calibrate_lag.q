@@ -315,7 +315,7 @@ script menu_calibrate_lag_create_circles
 	displaySprite {
 		id = cl_countdown_circle
 		parent = cl_container
-		tex = #"0xcbbb28dc"
+		tex = Song_Summary_Circle_2p
 		Pos = ($calibrate_lag_menu_line_pos + (13.0, 14.0))
 		rgba = [220 220 220 208]
 		dims = (72.0, 72.0)

@@ -180,10 +180,10 @@ script create_fail_song_menu
 		text_scale = (0.8999999761581421, 0.8500000238418579)
 	endif
 	displaySprite parent = fail_song_static_text_container tex = white Pos = (492.0, 517.0) Scale = (75.0, 6.0) z = (<z> + 0.1)rgba = <offwhite>
-	displaySprite parent = fail_song_static_text_container tex = #"0xacf2f335" Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite parent = fail_song_static_text_container tex = #"0xacf2f335" Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite id = hi_right parent = fail_song_static_text_container tex = #"0x0b444b41" Pos = (770.0, 533.0) just [left top] Scale = (1.0, 1.0) z = (<z> + 0.3)
-	displaySprite id = hi_left parent = fail_song_static_text_container tex = #"0x0b444b41" flip_v just = [right top] Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)
+	displaySprite parent = fail_song_static_text_container tex = Dialog_Frame_Joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
+	displaySprite parent = fail_song_static_text_container tex = Dialog_Frame_Joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
+	displaySprite id = hi_right parent = fail_song_static_text_container tex = Dialog_Highlight Pos = (770.0, 533.0) just [left top] Scale = (1.0, 1.0) z = (<z> + 0.3)
+	displaySprite id = hi_left parent = fail_song_static_text_container tex = Dialog_Highlight flip_v just = [right top] Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)
 	if NOT GotParam \{exclusive_device}
 		exclusive_device = ($primary_controller)
 	endif
@@ -254,8 +254,8 @@ script create_fail_song_menu
 		if (<width> > 220)
 			fit_text_in_rectangle id = <id> dims = ((220.0, 0.0) + <height> * (0.0, 1.0))
 		endif
-		displaySprite parent = fail_song_static_text_container tex = #"0xdb44b36c" Pos = (480.0, 428.0) Scale = (1.25, 1.600000023841858) z = <z>
-		displaySprite parent = fail_song_static_text_container tex = #"0xdb44b36c" flip_h Pos = (480.0, 530.0) Scale = (1.25, 1.600000023841858) z = <z>
+		displaySprite parent = fail_song_static_text_container tex = dialog_bg Pos = (480.0, 428.0) Scale = (1.25, 1.600000023841858) z = <z>
+		displaySprite parent = fail_song_static_text_container tex = dialog_bg flip_h Pos = (480.0, 530.0) Scale = (1.25, 1.600000023841858) z = <z>
 	elseif ($is_boss_song = 1 & $is_guitar_controller = 1)
 		CreateScreenElement {
 			Type = ContainerElement
@@ -287,11 +287,11 @@ script create_fail_song_menu
 		if (<width> > 220)
 			fit_text_in_rectangle id = <id> dims = ((220.0, 0.0) + <height> * (0.0, 1.0))
 		endif
-		displaySprite parent = fail_song_static_text_container tex = #"0xdb44b36c" Pos = (480.0, 450.0) Scale = (1.25, 1.600000023841858) z = <z>
-		displaySprite parent = fail_song_static_text_container tex = #"0xdb44b36c" flip_h Pos = (480.0, 552.0) Scale = (1.25, 1.600000023841858) z = <z>
+		displaySprite parent = fail_song_static_text_container tex = dialog_bg Pos = (480.0, 450.0) Scale = (1.25, 1.600000023841858) z = <z>
+		displaySprite parent = fail_song_static_text_container tex = dialog_bg flip_h Pos = (480.0, 552.0) Scale = (1.25, 1.600000023841858) z = <z>
 	else
-		displaySprite parent = fail_song_static_text_container tex = #"0xdb44b36c" Pos = (480.0, 450.0) Scale = (1.25, 1.25) z = <z>
-		displaySprite parent = fail_song_static_text_container tex = #"0xdb44b36c" flip_h Pos = (480.0, 530.0) Scale = (1.25, 1.25) z = <z>
+		displaySprite parent = fail_song_static_text_container tex = dialog_bg Pos = (480.0, 450.0) Scale = (1.25, 1.25) z = <z>
+		displaySprite parent = fail_song_static_text_container tex = dialog_bg flip_h Pos = (480.0, 530.0) Scale = (1.25, 1.25) z = <z>
 	endif
 	CreateScreenElement {
 		Type = ContainerElement

@@ -1,11 +1,11 @@
-#"0xeef07d34" = {
+Wrong_Notes_Player1_struct = {
 	Default_Priority = 90
 	Default_Buss = Wrong_Notes_Player1
 	NoRepeatFor = 0.02
 	InstanceManagement = stop_oldest
 	InstanceLimit = 4
 }
-Single_Player_Bad_Note_Guitar_struct = $#"0xeef07d34"
+Single_Player_Bad_Note_Guitar_struct = $Wrong_Notes_Player1_struct
 Single_Player_Bad_Note_Guitar_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -38,7 +38,7 @@ Single_Player_Bad_Note_Guitar_container = {
 		}
 	}
 }
-Single_Player_Bad_Note_Bass_struct = $#"0xeef07d34"
+Single_Player_Bad_Note_Bass_struct = $Wrong_Notes_Player1_struct
 Single_Player_Bad_Note_Bass_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -61,7 +61,7 @@ Single_Player_Bad_Note_Bass_container = {
 		}
 	}
 }
-First_Player_Bad_Note_Guitar_struct = $#"0xeef07d34"
+First_Player_Bad_Note_Guitar_struct = $Wrong_Notes_Player1_struct
 First_Player_Bad_Note_Guitar_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -118,7 +118,7 @@ First_Player_Bad_Note_Guitar_container = {
 		}
 	}
 }
-First_Player_Bad_Note_Bass_struct = $#"0xeef07d34"
+First_Player_Bad_Note_Bass_struct = $Wrong_Notes_Player1_struct
 First_Player_Bad_Note_Bass_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -157,14 +157,14 @@ First_Player_Bad_Note_Bass_container = {
 		}
 	}
 }
-#"0x607f7ad7" = {
+Wrong_Notes_Player2_struct = {
 	Default_Priority = 90
 	Default_Buss = Wrong_Notes_Player2
 	NoRepeatFor = 0.02
 	InstanceManagement = stop_oldest
 	InstanceLimit = 4
 }
-Second_Player_Bad_Note_Guitar_struct = $#"0x607f7ad7"
+Second_Player_Bad_Note_Guitar_struct = $Wrong_Notes_Player2_struct
 Second_Player_Bad_Note_Guitar_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -221,7 +221,7 @@ Second_Player_Bad_Note_Guitar_container = {
 		}
 	}
 }
-Second_Player_Bad_Note_Bass_struct = $#"0x607f7ad7"
+Second_Player_Bad_Note_Bass_struct = $Wrong_Notes_Player2_struct
 Second_Player_Bad_Note_Bass_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -260,14 +260,14 @@ Second_Player_Bad_Note_Bass_container = {
 		}
 	}
 }
-#"0x0e7890b0" = {
+StarPowerSFX_struct = {
 	Default_Priority = 90
 	Default_Buss = UI_Star_Power
 	NoRepeatFor = 0.02
 	InstanceManagement = stop_oldest
 	InstanceLimit = 6
 }
-Star_Power_Awarded_SFX_struct = $#"0x0e7890b0"
+Star_Power_Awarded_SFX_struct = $StarPowerSFX_struct
 Star_Power_Awarded_SFX_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -282,7 +282,7 @@ Star_Power_Awarded_SFX_container = {
 		}
 	}
 }
-Star_Power_Awarded_SFX_P1_struct = $#"0x0e7890b0"
+Star_Power_Awarded_SFX_P1_struct = $StarPowerSFX_struct
 Star_Power_Awarded_SFX_P1_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -297,7 +297,7 @@ Star_Power_Awarded_SFX_P1_container = {
 		}
 	}
 }
-Star_Power_Awarded_SFX_P2_struct = $#"0x0e7890b0"
+Star_Power_Awarded_SFX_P2_struct = $StarPowerSFX_struct
 Star_Power_Awarded_SFX_P2_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -312,7 +312,7 @@ Star_Power_Awarded_SFX_P2_container = {
 		}
 	}
 }
-Star_Power_Ready_SFX_struct = $#"0x0e7890b0"
+Star_Power_Ready_SFX_struct = $StarPowerSFX_struct
 Star_Power_Ready_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -323,7 +323,7 @@ Star_Power_Ready_SFX_container = {
 		}
 	}
 }
-Star_Power_Ready_SFX_P1_struct = $#"0x0e7890b0"
+Star_Power_Ready_SFX_P1_struct = $StarPowerSFX_struct
 Star_Power_Ready_SFX_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -338,7 +338,7 @@ Star_Power_Ready_SFX_P1_container = {
 		}
 	}
 }
-Star_Power_Ready_SFX_P2_struct = $#"0x0e7890b0"
+Star_Power_Ready_SFX_P2_struct = $StarPowerSFX_struct
 Star_Power_Ready_SFX_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -353,7 +353,7 @@ Star_Power_Ready_SFX_P2_container = {
 		}
 	}
 }
-Star_Power_Deployed_SFX_struct = $#"0x0e7890b0"
+Star_Power_Deployed_SFX_struct = $StarPowerSFX_struct
 Star_Power_Deployed_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -364,7 +364,7 @@ Star_Power_Deployed_SFX_container = {
 		}
 	}
 }
-Star_Power_Deployed_SFX_P1_struct = $#"0x0e7890b0"
+Star_Power_Deployed_SFX_P1_struct = $StarPowerSFX_struct
 Star_Power_Deployed_SFX_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -379,7 +379,7 @@ Star_Power_Deployed_SFX_P1_container = {
 		}
 	}
 }
-Star_Power_Deployed_SFX_P2_struct = $#"0x0e7890b0"
+Star_Power_Deployed_SFX_P2_struct = $StarPowerSFX_struct
 Star_Power_Deployed_SFX_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -485,14 +485,14 @@ ui_sfx_guitvol_container = {
 		}
 	}
 }
-#"0x1824c905" = {
+BattleModeSFX_struct = {
 	Default_Priority = 90
 	Default_Buss = UI_Battle_Mode
 	NoRepeatFor = 0.02
 	InstanceManagement = stop_oldest
 	InstanceLimit = 6
 }
-GH_SFX_BattleMode_Lightning_Player1_struct = $#"0x1824c905"
+GH_SFX_BattleMode_Lightning_Player1_struct = $BattleModeSFX_struct
 GH_SFX_BattleMode_Lightning_Player1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -507,7 +507,7 @@ GH_SFX_BattleMode_Lightning_Player1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Lightning_Player2_struct = $#"0x1824c905"
+GH_SFX_BattleMode_Lightning_Player2_struct = $BattleModeSFX_struct
 GH_SFX_BattleMode_Lightning_Player2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -522,7 +522,7 @@ GH_SFX_BattleMode_Lightning_Player2_container = {
 		}
 	}
 }
-GH_SFX_Overloaded_Static_Player1_SE_struct = $#"0xeef07d34"
+GH_SFX_Overloaded_Static_Player1_SE_struct = $Wrong_Notes_Player1_struct
 GH_SFX_Overloaded_Static_Player1_SE_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -565,7 +565,7 @@ GH_SFX_Overloaded_Static_Player1_SE_container = {
 		}
 	}
 }
-GH_SFX_Overloaded_Static_Player2_SE_struct = $#"0x607f7ad7"
+GH_SFX_Overloaded_Static_Player2_SE_struct = $Wrong_Notes_Player2_struct
 GH_SFX_Overloaded_Static_Player2_SE_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -625,14 +625,14 @@ GH_SFX_BeatSoundEvent_container = {
 		}
 	}
 }
-#"0x1929bc34" = {
+GH3_BeatSFX_struct = {
 	Default_Priority = 90
 	Default_Buss = Test_Tones
 	NoRepeatFor = 0.02
 	InstanceManagement = stop_oldest
 	InstanceLimit = 6
 }
-GH_SFX_BeatWindowOpenSoundEvent_struct = $#"0x1929bc34"
+GH_SFX_BeatWindowOpenSoundEvent_struct = $GH3_BeatSFX_struct
 GH_SFX_BeatWindowOpenSoundEvent_container = {
 	Command = PlaySound
 	Randomness = None
@@ -644,7 +644,7 @@ GH_SFX_BeatWindowOpenSoundEvent_container = {
 		}
 	}
 }
-GH_SFX_BeatWindowCloseSoundEvent_struct = $#"0x1929bc34"
+GH_SFX_BeatWindowCloseSoundEvent_struct = $GH3_BeatSFX_struct
 GH_SFX_BeatWindowCloseSoundEvent_container = {
 	Command = PlaySound
 	Randomness = None
@@ -673,14 +673,14 @@ Menu_Warning_SFX_container = {
 		}
 	}
 }
-#"0xfb849dbe" = {
+FESFX_50_generic_struct = {
 	Default_Priority = 50
 	Default_Buss = Front_End
 	NoRepeatFor = 0.1
 	InstanceManagement = stop_oldest
 	InstanceLimit = 1
 }
-Generic_Menu_Back_SFX_struct = $#"0xfb849dbe"
+Generic_Menu_Back_SFX_struct = $FESFX_50_generic_struct
 Generic_Menu_Back_SFX_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -712,7 +712,7 @@ Notes_Ripple_Up_SFX_container = {
 		}
 	}
 }
-Box_Check_SFX_struct = $#"0xfb849dbe"
+Box_Check_SFX_struct = $FESFX_50_generic_struct
 Box_Check_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -727,7 +727,7 @@ Box_Check_SFX_container = {
 		}
 	}
 }
-Box_UnCheck_SFX_struct = $#"0xfb849dbe"
+Box_UnCheck_SFX_struct = $FESFX_50_generic_struct
 Box_UnCheck_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -742,7 +742,7 @@ Box_UnCheck_SFX_container = {
 		}
 	}
 }
-You_Rock_End_SFX_struct = $#"0xfb849dbe"
+You_Rock_End_SFX_struct = $FESFX_50_generic_struct
 You_Rock_End_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -753,7 +753,7 @@ You_Rock_End_SFX_container = {
 		}
 	}
 }
-UI_SFX_Lose_Multiplier_2X_struct = $#"0xfb849dbe"
+UI_SFX_Lose_Multiplier_2X_struct = $FESFX_50_generic_struct
 UI_SFX_Lose_Multiplier_2X_container = {
 	Command = PlaySound
 	Randomness = None
@@ -765,7 +765,7 @@ UI_SFX_Lose_Multiplier_2X_container = {
 		}
 	}
 }
-UI_SFX_Lose_Multiplier_3X_struct = $#"0xfb849dbe"
+UI_SFX_Lose_Multiplier_3X_struct = $FESFX_50_generic_struct
 UI_SFX_Lose_Multiplier_3X_container = {
 	Command = PlaySound
 	Randomness = None
@@ -777,7 +777,7 @@ UI_SFX_Lose_Multiplier_3X_container = {
 		}
 	}
 }
-UI_SFX_Lose_Multiplier_4X_struct = $#"0xfb849dbe"
+UI_SFX_Lose_Multiplier_4X_struct = $FESFX_50_generic_struct
 UI_SFX_Lose_Multiplier_4X_container = {
 	Command = PlaySound
 	Randomness = None
@@ -789,7 +789,7 @@ UI_SFX_Lose_Multiplier_4X_container = {
 		}
 	}
 }
-Song_Intro_Kick_SFX_struct = $#"0xfb849dbe"
+Song_Intro_Kick_SFX_struct = $FESFX_50_generic_struct
 Song_Intro_Kick_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -800,7 +800,7 @@ Song_Intro_Kick_SFX_container = {
 		}
 	}
 }
-Song_Intro_Highway_Up_struct = $#"0xfb849dbe"
+Song_Intro_Highway_Up_struct = $FESFX_50_generic_struct
 Song_Intro_Highway_Up_container = {
 	Command = PlaySound
 	Randomness = None
@@ -811,14 +811,14 @@ Song_Intro_Highway_Up_container = {
 		}
 	}
 }
-#"0x429b1a2d" = {
+BMSFX_50_generic_struct = {
 	Default_Priority = 50
 	Default_Buss = UI_Battle_Mode
 	NoRepeatFor = 0.1
 	InstanceManagement = stop_oldest
 	InstanceLimit = 1
 }
-GH_SFX_BattleMode_DeathOf_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_DeathOf_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_DeathOf_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -833,7 +833,7 @@ GH_SFX_BattleMode_DeathOf_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_DiffUp_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_DiffUp_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_DiffUp_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -848,7 +848,7 @@ GH_SFX_BattleMode_DiffUp_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_DoubleNote_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_DoubleNote_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_DoubleNote_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -863,7 +863,7 @@ GH_SFX_BattleMode_DoubleNote_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Lefty_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Lefty_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Lefty_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -877,7 +877,7 @@ GH_SFX_BattleMode_Lefty_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Steal_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Steal_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Steal_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -892,7 +892,7 @@ GH_SFX_BattleMode_Steal_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_StringBreak_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_StringBreak_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_StringBreak_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -907,7 +907,7 @@ GH_SFX_BattleMode_StringBreak_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_WhammyAttack_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_WhammyAttack_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_WhammyAttack_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -922,7 +922,7 @@ GH_SFX_BattleMode_WhammyAttack_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_DeathOf_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_DeathOf_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_DeathOf_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -937,7 +937,7 @@ GH_SFX_BattleMode_DeathOf_P2_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_DiffUp_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_DiffUp_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_DiffUp_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -952,7 +952,7 @@ GH_SFX_BattleMode_DiffUp_P2_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_DoubleNote_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_DoubleNote_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_DoubleNote_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -967,7 +967,7 @@ GH_SFX_BattleMode_DoubleNote_P2_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Lefty_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Lefty_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Lefty_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -981,7 +981,7 @@ GH_SFX_BattleMode_Lefty_P2_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Steal_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Steal_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Steal_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -996,7 +996,7 @@ GH_SFX_BattleMode_Steal_P2_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_StringBreak_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_StringBreak_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_StringBreak_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1011,7 +1011,7 @@ GH_SFX_BattleMode_StringBreak_P2_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_WhammyAttack_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_WhammyAttack_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_WhammyAttack_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1026,7 +1026,7 @@ GH_SFX_BattleMode_WhammyAttack_P2_container = {
 		}
 	}
 }
-GH_SFX_BossBattle_PlayerDies_struct = $#"0x429b1a2d"
+GH_SFX_BossBattle_PlayerDies_struct = $BMSFX_50_generic_struct
 GH_SFX_BossBattle_PlayerDies_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1036,7 +1036,7 @@ GH_SFX_BossBattle_PlayerDies_container = {
 		}
 	}
 }
-GH_SFX_You_Lose_Single_Player_struct = $#"0x429b1a2d"
+GH_SFX_You_Lose_Single_Player_struct = $BMSFX_50_generic_struct
 GH_SFX_You_Lose_Single_Player_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1047,7 +1047,7 @@ GH_SFX_You_Lose_Single_Player_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Attack_Over_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Attack_Over_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Attack_Over_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1062,7 +1062,7 @@ GH_SFX_BattleMode_Attack_Over_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Attack_Over_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Attack_Over_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Attack_Over_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1077,14 +1077,14 @@ GH_SFX_BattleMode_Attack_Over_P2_container = {
 		}
 	}
 }
-#"0x8f26e542" = {
+BMSFX_Star_struct = {
 	Default_Priority = 90
 	Default_Buss = UI_Star_Power
 	NoRepeatFor = 0.02
 	InstanceManagement = stop_oldest
 	InstanceLimit = 6
 }
-Battle_Power_Awarded_SFX_P1_struct = $#"0x8f26e542"
+Battle_Power_Awarded_SFX_P1_struct = $BMSFX_Star_struct
 Battle_Power_Awarded_SFX_P1_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -1099,7 +1099,7 @@ Battle_Power_Awarded_SFX_P1_container = {
 		}
 	}
 }
-Battle_Power_Awarded_SFX_P2_struct = $#"0x8f26e542"
+Battle_Power_Awarded_SFX_P2_struct = $BMSFX_Star_struct
 Battle_Power_Awarded_SFX_P2_container = {
 	Command = PlaySound
 	Randomness = RandomNoRepeatType
@@ -1114,7 +1114,7 @@ Battle_Power_Awarded_SFX_P2_container = {
 		}
 	}
 }
-UI_1stPlayerWins_SFX_struct = $#"0xfb849dbe"
+UI_1stPlayerWins_SFX_struct = $FESFX_50_generic_struct
 UI_1stPlayerWins_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1129,7 +1129,7 @@ UI_1stPlayerWins_SFX_container = {
 		}
 	}
 }
-UI_2ndPlayerWins_SFX_struct = $#"0xfb849dbe"
+UI_2ndPlayerWins_SFX_struct = $FESFX_50_generic_struct
 UI_2ndPlayerWins_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1162,7 +1162,7 @@ GH_SFX_HitNoteSoundEvent_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_WhammyAttack_Received_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_WhammyAttack_Received_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_WhammyAttack_Received_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1177,7 +1177,7 @@ GH_SFX_BattleMode_WhammyAttack_Received_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_WhammyAttack_Received_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_WhammyAttack_Received_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_WhammyAttack_Received_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1192,14 +1192,14 @@ GH_SFX_BattleMode_WhammyAttack_Received_P2_container = {
 		}
 	}
 }
-#"0x91194e26" = {
+SPSFX_80_generic_struct = {
 	Default_Priority = 80
 	Default_Buss = UI_Star_Power
 	NoRepeatFor = 0.1
 	InstanceManagement = stop_oldest
 	InstanceLimit = 1
 }
-Checkbox_SFX_struct = $#"0x91194e26"
+Checkbox_SFX_struct = $SPSFX_80_generic_struct
 Checkbox_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1210,7 +1210,7 @@ Checkbox_SFX_container = {
 		}
 	}
 }
-Checkbox_SFX_P1_struct = $#"0x91194e26"
+Checkbox_SFX_P1_struct = $SPSFX_80_generic_struct
 Checkbox_SFX_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1223,7 +1223,7 @@ Checkbox_SFX_P1_container = {
 		}
 	}
 }
-Checkbox_SFX_P2_struct = $#"0x91194e26"
+Checkbox_SFX_P2_struct = $SPSFX_80_generic_struct
 Checkbox_SFX_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1236,7 +1236,7 @@ Checkbox_SFX_P2_container = {
 		}
 	}
 }
-Whammy_Test_SFX_struct = $#"0x91194e26"
+Whammy_Test_SFX_struct = $SPSFX_80_generic_struct
 Whammy_Test_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1247,7 +1247,7 @@ Whammy_Test_SFX_container = {
 		}
 	}
 }
-CheckBox_Check_SFX_struct = $#"0x91194e26"
+CheckBox_Check_SFX_struct = $SPSFX_80_generic_struct
 CheckBox_Check_SFX_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1258,7 +1258,7 @@ CheckBox_Check_SFX_container = {
 		}
 	}
 }
-CheckBox_Check_SFX_P1_struct = $#"0x91194e26"
+CheckBox_Check_SFX_P1_struct = $SPSFX_80_generic_struct
 CheckBox_Check_SFX_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1271,7 +1271,7 @@ CheckBox_Check_SFX_P1_container = {
 		}
 	}
 }
-CheckBox_Check_SFX_P2_struct = $#"0x91194e26"
+CheckBox_Check_SFX_P2_struct = $SPSFX_80_generic_struct
 CheckBox_Check_SFX_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1284,7 +1284,7 @@ CheckBox_Check_SFX_P2_container = {
 		}
 	}
 }
-UI_SFX_100_Note_Streak_SinglePlayer_struct = $#"0xfb849dbe"
+UI_SFX_100_Note_Streak_SinglePlayer_struct = $FESFX_50_generic_struct
 UI_SFX_100_Note_Streak_SinglePlayer_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1295,7 +1295,7 @@ UI_SFX_100_Note_Streak_SinglePlayer_container = {
 		}
 	}
 }
-UI_SFX_50_Note_Streak_SinglePlayer_struct = $#"0xfb849dbe"
+UI_SFX_50_Note_Streak_SinglePlayer_struct = $FESFX_50_generic_struct
 UI_SFX_50_Note_Streak_SinglePlayer_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1306,7 +1306,7 @@ UI_SFX_50_Note_Streak_SinglePlayer_container = {
 		}
 	}
 }
-UI_SFX_100_Note_Streak_P1_struct = $#"0xfb849dbe"
+UI_SFX_100_Note_Streak_P1_struct = $FESFX_50_generic_struct
 UI_SFX_100_Note_Streak_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1321,7 +1321,7 @@ UI_SFX_100_Note_Streak_P1_container = {
 		}
 	}
 }
-UI_SFX_50_Note_Streak_P1_struct = $#"0xfb849dbe"
+UI_SFX_50_Note_Streak_P1_struct = $FESFX_50_generic_struct
 UI_SFX_50_Note_Streak_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1336,7 +1336,7 @@ UI_SFX_50_Note_Streak_P1_container = {
 		}
 	}
 }
-UI_SFX_100_Note_Streak_P2_struct = $#"0xfb849dbe"
+UI_SFX_100_Note_Streak_P2_struct = $FESFX_50_generic_struct
 UI_SFX_100_Note_Streak_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1351,7 +1351,7 @@ UI_SFX_100_Note_Streak_P2_container = {
 		}
 	}
 }
-UI_SFX_50_Note_Streak_P2_struct = $#"0xfb849dbe"
+UI_SFX_50_Note_Streak_P2_struct = $FESFX_50_generic_struct
 UI_SFX_50_Note_Streak_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1366,7 +1366,7 @@ UI_SFX_50_Note_Streak_P2_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Death_Drain_P1_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Death_Drain_P1_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Death_Drain_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1381,7 +1381,7 @@ GH_SFX_BattleMode_Death_Drain_P1_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Death_Drain_P2_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Death_Drain_P2_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Death_Drain_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1396,7 +1396,7 @@ GH_SFX_BattleMode_Death_Drain_P2_container = {
 		}
 	}
 }
-GH_SFX_BattleMode_Sudden_Death_struct = $#"0x429b1a2d"
+GH_SFX_BattleMode_Sudden_Death_struct = $BMSFX_50_generic_struct
 GH_SFX_BattleMode_Sudden_Death_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1407,14 +1407,14 @@ GH_SFX_BattleMode_Sudden_Death_container = {
 		}
 	}
 }
-#"0xb63ab238" = {
+FESFX_100_generic_struct = {
 	Default_Priority = 100
 	Default_Buss = Front_End
 	NoRepeatFor = 0.1
 	InstanceManagement = stop_oldest
 	InstanceLimit = 1
 }
-Tutorial_Missed_HOPO_Free_struct = $#"0xb63ab238"
+Tutorial_Missed_HOPO_Free_struct = $FESFX_100_generic_struct
 Tutorial_Missed_HOPO_Free_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1425,7 +1425,7 @@ Tutorial_Missed_HOPO_Free_container = {
 		}
 	}
 }
-Tutorial_String_1_HOPO_Free_struct = $#"0xb63ab238"
+Tutorial_String_1_HOPO_Free_struct = $FESFX_100_generic_struct
 Tutorial_String_1_HOPO_Free_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1436,7 +1436,7 @@ Tutorial_String_1_HOPO_Free_container = {
 		}
 	}
 }
-Tutorial_String_1_Strum_Free_struct = $#"0xb63ab238"
+Tutorial_String_1_Strum_Free_struct = $FESFX_100_generic_struct
 Tutorial_String_1_Strum_Free_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1447,7 +1447,7 @@ Tutorial_String_1_Strum_Free_container = {
 		}
 	}
 }
-Tutorial_String_2_HOPO_Free_struct = $#"0xb63ab238"
+Tutorial_String_2_HOPO_Free_struct = $FESFX_100_generic_struct
 Tutorial_String_2_HOPO_Free_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1458,7 +1458,7 @@ Tutorial_String_2_HOPO_Free_container = {
 		}
 	}
 }
-Tutorial_String_2_Strum_Free_struct = $#"0xb63ab238"
+Tutorial_String_2_Strum_Free_struct = $FESFX_100_generic_struct
 Tutorial_String_2_Strum_Free_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1469,7 +1469,7 @@ Tutorial_String_2_Strum_Free_container = {
 		}
 	}
 }
-Tutorial_String_3_HOPO_Free_struct = $#"0xb63ab238"
+Tutorial_String_3_HOPO_Free_struct = $FESFX_100_generic_struct
 Tutorial_String_3_HOPO_Free_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1480,7 +1480,7 @@ Tutorial_String_3_HOPO_Free_container = {
 		}
 	}
 }
-Tutorial_String_3_Strum_Free_struct = $#"0xb63ab238"
+Tutorial_String_3_Strum_Free_struct = $FESFX_100_generic_struct
 Tutorial_String_3_Strum_Free_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1491,30 +1491,30 @@ Tutorial_String_3_Strum_Free_container = {
 		}
 	}
 }
-#"0x7cecdabb" = {
+StopNotes_base_struct = {
 	Default_Priority = 100
 	Default_Buss = Front_End
 	NoRepeatFor = 0.1
 	InstanceManagement = stop_oldest
 	InstanceLimit = 3
 }
-#"0xc1286da2" = {
+StopNotes_base_container = {
 	Command = PlaySound
 	Randomness = None
 }
-StopNotes_01_struct = $#"0x7cecdabb"
-StopNotes_01_container = $#"0xc1286da2"
-StopNotes_02_struct = $#"0x7cecdabb"
-StopNotes_02_container = $#"0xc1286da2"
-StopNotes_03_struct = $#"0x7cecdabb"
-StopNotes_03_container = $#"0xc1286da2"
-StopNotes_04_struct = $#"0x7cecdabb"
-StopNotes_04_container = $#"0xc1286da2"
-StopNotes_05_struct = $#"0x7cecdabb"
-StopNotes_05_container = $#"0xc1286da2"
-StopNotes_06_struct = $#"0x7cecdabb"
-StopNotes_06_container = $#"0xc1286da2"
-Battlemode_HeartBeat_P1_struct = $#"0x429b1a2d"
+StopNotes_01_struct = $StopNotes_base_struct
+StopNotes_01_container = $StopNotes_base_container
+StopNotes_02_struct = $StopNotes_base_struct
+StopNotes_02_container = $StopNotes_base_container
+StopNotes_03_struct = $StopNotes_base_struct
+StopNotes_03_container = $StopNotes_base_container
+StopNotes_04_struct = $StopNotes_base_struct
+StopNotes_04_container = $StopNotes_base_container
+StopNotes_05_struct = $StopNotes_base_struct
+StopNotes_05_container = $StopNotes_base_container
+StopNotes_06_struct = $StopNotes_base_struct
+StopNotes_06_container = $StopNotes_base_container
+Battlemode_HeartBeat_P1_struct = $BMSFX_50_generic_struct
 Battlemode_HeartBeat_P1_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1530,7 +1530,7 @@ Battlemode_HeartBeat_P1_container = {
 		}
 	}
 }
-Battlemode_HeartBeat_P2_struct = $#"0x429b1a2d"
+Battlemode_HeartBeat_P2_struct = $BMSFX_50_generic_struct
 Battlemode_HeartBeat_P2_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1546,7 +1546,7 @@ Battlemode_HeartBeat_P2_container = {
 		}
 	}
 }
-GH3_Score_FlyIn_Hit_struct = $#"0xfb849dbe"
+GH3_Score_FlyIn_Hit_struct = $FESFX_50_generic_struct
 GH3_Score_FlyIn_Hit_container = {
 	Command = PlaySound
 	Randomness = None
@@ -1557,7 +1557,7 @@ GH3_Score_FlyIn_Hit_container = {
 		}
 	}
 }
-GH3_Cash_FlyIn_Hit_struct = $#"0xfb849dbe"
+GH3_Cash_FlyIn_Hit_struct = $FESFX_50_generic_struct
 GH3_Cash_FlyIn_Hit_container = {
 	Command = PlaySound
 	Randomness = None

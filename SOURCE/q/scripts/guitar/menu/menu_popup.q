@@ -44,12 +44,12 @@ script create_popup_warning_menu\{player_device = $primary_controller}
 	set_unfocus_color \{rgba = [0 0 0 255]}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = popup_warning_container Pos = (0.0, 0.0) just = [left top]}
 	if NOT (GotParam no_background)
-		displaySprite \{parent = popup_warning_container tex = #"0x8d57f10c" Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z = 96}
+		displaySprite \{parent = popup_warning_container tex = brick_bg Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z = 96}
 	endif
 	offwhite = [223 223 223 255]
 	z = 100
-	displaySprite parent = popup_warning_container tex = #"0x7464ad56" flip_v Pos = (416.0, 100.0) dims = (224.0, 224.0) z = <z>
-	displaySprite parent = popup_warning_container tex = #"0x7464ad56" Pos = (640.0, 100.0) dims = (224.0, 224.0) z = <z>
+	displaySprite parent = popup_warning_container tex = Dialog_Title_BG flip_v Pos = (416.0, 100.0) dims = (224.0, 224.0) z = <z>
+	displaySprite parent = popup_warning_container tex = Dialog_Title_BG Pos = (640.0, 100.0) dims = (224.0, 224.0) z = <z>
 	if GotParam \{options}
 		CreateScreenElement {
 			Type = VMenu
@@ -59,8 +59,8 @@ script create_popup_warning_menu\{player_device = $primary_controller}
 			just = [center top]
 			internal_just = [center center]
 		}
-		displaySprite parent = options_bg_id tex = #"0xdb44b36c" z = <z>
-		displaySprite parent = options_bg_id tex = #"0xdb44b36c" flip_h z = <z>
+		displaySprite parent = options_bg_id tex = dialog_bg z = <z>
+		displaySprite parent = options_bg_id tex = dialog_bg flip_h z = <z>
 	endif
 	create_pause_menu_frame z = (<z> - 4)
 	create_popup_warning_text <...>
@@ -162,7 +162,7 @@ script create_popup_warning_menu_option\{max_option_width = 450}
 		Type = SpriteElement
 		local_id = hi_left
 		parent = <id>
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		rgba = [255 255 255 255]
 		Pos = (58.0, 7.0)
 		just = [right top]
@@ -195,7 +195,7 @@ script create_popup_warning_menu_option\{max_option_width = 450}
 		Type = SpriteElement
 		local_id = hi_right
 		parent = <id>
-		texture = #"0x0b444b41"
+		texture = Dialog_Highlight
 		rgba = [255 255 255 255]
 		Pos = (0.0, 7.0)
 		just = [left top]

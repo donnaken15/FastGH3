@@ -103,8 +103,8 @@ battlemode_powerups = [
 		name = starpower
 		name_text = "Star Power"
 		weight = 0
-		Scr = #"0x7c9d1363"
-		card_texture = #"0x31b5184b"
+		Scr = battle_starpower
+		card_texture = icon_battle_star
 		drain_time = 10
 		fire_bolt = 0
 	}
@@ -2086,7 +2086,7 @@ script battle_broken_string
 	GuitarEvent_BattleAttackFinished <...>
 endscript
 
-script #"0x7c9d1363"
+script battle_starpower
 	if ($<other_player_status>.Player = 1)
 		player_status = player2_status
 		Player = 2

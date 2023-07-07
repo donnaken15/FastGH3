@@ -25,7 +25,7 @@ battle_hud_2d_elements = {
 	whammy_bottom_bar_pos_p2 = (635.0, 643.0)
 	offscreen_gamertag_pos = (0.0, -400.0)
 	final_gamertag_pos = (0.0, 0.0)
-	#"0x936bb5fe" = $#"0x28381025"
+	#"0x936bb5fe" = $gameplaybg_pos
 	#"0x53c9001c" = (0.0, 0.0)
 	elements = [
 		{
@@ -36,10 +36,10 @@ battle_hud_2d_elements = {
 		{
 			element_id = #"0x99dd87cc"
 			element_parent = #"0xa90fc148"
-			texture = $#"0x1d52cdca"
-			dims = $#"0x8d974f74"
+			texture = $gameplaybg_texture
+			dims = $gameplaybg_dims
 			rot = -0.1
-			rgba = $#"0x902ecc17"
+			rgba = $BGCol
 			zoff = -2147483648
 		}
 		{
