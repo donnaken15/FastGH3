@@ -9,7 +9,7 @@ indir=$1; find=/usr/bin/find
 # >:(
 
 # check for manually specified output
-[ -z "$2" ] && outdir="$1_build/" || outdir="$2/"
+outdir="${2:-$1_build}/"
 [ ! "$(dirname "$0")" = "." ] && bin="$(realpath "$0")/" || bin="$(which "$0")/"
 								#???						# required when script is pathed
 #thx luke / https://stackoverflow.com/a/21913843
@@ -18,8 +18,7 @@ bin=$(dirname "$bin"); wbin=$(cygpath -w "$bin"); NL=$'\n'; nul=/dev/null
 echo -e "\e[33m*****  Q COMPILATION   *****\e[0m"
 
 INPUTS=$(pushd "$indir" > $nul && $find * -type f -name "*.q" && popd > $nul)
-for f in $INPUTS
-do
+for f in $INPUTS; do
 	out="$outdir${f%%.*}.qb.xen"
 	# (re)compile files after being modified / or if they're new
 	if [ ! -f "$out" ] || [ "$out" -ot "$indir/$f" ]; then

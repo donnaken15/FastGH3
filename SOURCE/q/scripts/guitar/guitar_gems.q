@@ -590,7 +590,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	song_start_time = <startTime>
 	call_startup_scripts <...>
 	setup_bg_viewport
-	//Change current_transition = fastintro
+	Change \{current_transition = fastintro}
 	starttimeafterintro = <startTime>
 	//printf "Current Transition = %s" s = ($current_transition)
 	if ($disable_intro = 1)
