@@ -34,9 +34,10 @@ If applicable, add screenshots to help explain your problem.
 
 
 **When I downloaded this mod/what version I'm using (most likely required)**
+Old stuff you could be using with the mod like custom themes might break on newer versions and could be the result of the error.<br>
 Specify version number for downloaded release build, or date of downloaded development build (bleeding edge).<br>
 You can check settings dialog or date of files for this, particularly FastGH3.exe.<br>
-(i.e. 1.0-999010723 / October 29, 2022)
+(i.e. 1.0-999010889 / July 4, 2023)
 
 
 **Desktop (Optional, but could help figure out system specific problems):**
