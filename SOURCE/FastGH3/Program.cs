@@ -1115,7 +1115,7 @@ class Program
 						}
 						string[] audstnames = { "song", "guitar", "rhythm" },
 							audextnames = { "ogg", "mp3", "wav", "opus" };
-						// if Stream values above can't be found, use FOF named files
+						// if Stream values above can't be found, check if audio name matching chart exists
 						for (int i = 0; i < 4; i++)
 						{
 							if (!File.Exists(audiostreams[0]))
@@ -1123,29 +1123,46 @@ class Program
 								audtmpstr = chf + Path.GetFileNameWithoutExtension(args[0]) + '.' + audextnames[i];
 								if (File.Exists(audtmpstr))
 								{
-									vl(vstr[24], FSBcolor);
-									//vl("Found audio with the chart name", FSBcolor);
+									vl(vstr[24], FSBcolor); //vl("Found audio with the chart name", FSBcolor);
 									audiostreams[0] = audtmpstr;
 									break;
 								}
 							}
 						}
+						// CH sucks
+						for (int i = 0; i < 4; i++)
+						{
+							if (!File.Exists(audiostreams[0]))
+							{
+								audtmpstr = chf + audstnames[1] + '.' + audextnames[i];
+								if (File.Exists(audtmpstr))
+								{
+									vl("Found cringe compatibility", FSBcolor);
+									audiostreams[0] = audtmpstr;
+									audiostreams[1] = mt + "blank.mp3";
+									break;
+								}
+							}
+						}
+						//if that fails, use FOF named files
+						// iterate over names
 						for (int i = 0; i < audstnames.Length; i++)
 						{
+							// if current stream doesn't exist
 							if (!File.Exists(audiostreams[i]))
+								// check every extension under the stream name until a file is found
 								for (int j = 0; j < 4; j++)
 								{
 									audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 									if (File.Exists(audtmpstr))
 									{
-										vl(vstr[25] + audstnames[i], FSBcolor);
-										//vl("Found FOF structure files / " + audstnames[i], FSBcolor);
+										vl(vstr[25] + audstnames[i], FSBcolor); //vl("Found FOF structure files / " + audstnames[i], FSBcolor);
 										audiostreams[i] = audtmpstr;
 										break;
 									}
 								}
 						}
-						// TODO: allow NJ3T routine even when song.ogg exists
+						// alternate names for guitar/rhythm if above don't exist
 						audstnames = new string[] { "lead", "bass" };
 						for (int i = 0; i < audstnames.Length; i++)
 						{
@@ -1155,17 +1172,17 @@ class Program
 									audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 									if (File.Exists(audtmpstr))
 									{
-										vl(vstr[25] + audstnames[i], FSBcolor);
-										//vl("Found FOF structure files / " + audstnames[i], FSBcolor);
+										vl(vstr[25] + audstnames[i], FSBcolor); //vl("Found FOF structure files / " + audstnames[i], FSBcolor);
 										audiostreams[i + 1] = audtmpstr;
 										break;
 									}
 								}
 						}
+						// TODO: allow NJ3T routine even when song.ogg exists
 						bool nj3t = false; // nj3ts.Count smh // "3 Count!"
 						List<string> nj3ts = new List<string>();
-						vl(vstr[26], FSBcolor);
-						//vl("Checking if extra audio exists", FSBcolor);
+						vl(vstr[26], FSBcolor); //vl("Checking if extra audio exists", FSBcolor);
+						// numbered drum streams
 						for (int j = 0; j < 4; j++)
 						{
 							for (int i = 1; i < 9; i++)
@@ -1173,21 +1190,20 @@ class Program
 								audtmpstr = chf + "drums_" + i + '.' + audextnames[j];
 								if (File.Exists(audtmpstr))
 								{
-									vl(vstr[27] + i + ')', FSBcolor);
-									//vl("Found isolated drums audio (" + i + ')', FSBcolor);
+									vl(vstr[27] + i + ')', FSBcolor); //vl("Found isolated drums audio (" + i + ')', FSBcolor);
 									nj3t = true;
 									nj3ts.Add(audtmpstr);
 								}
 							}
 						}
 						// also maybe ignore drums.ogg if numbered files exist
+						// numbered vocal streams
 						for (int j = 0; j < 4; j++)
 						{
 							audtmpstr = chf + "vocals." + audextnames[j];
 							if (File.Exists(audtmpstr))
 							{
-								vl(vstr[28], FSBcolor);
-								//vl("Found isolated vocals audio", FSBcolor);
+								vl(vstr[28], FSBcolor); //vl("Found isolated vocals audio", FSBcolor);
 								nj3t = true;
 								nj3ts.Add(audtmpstr);
 								break;
@@ -1216,8 +1232,7 @@ class Program
 							audiostreams[0] = nj3ts[0];
 							nj3t = false;
 						}
-						vl(vstr[29], FSBcolor);
-						//vl("Current selected audio streams are:", FSBcolor);
+						vl(vstr[29], FSBcolor); //vl("Current selected audio streams are:", FSBcolor);
 						foreach (string a in audiostreams)
 							vl(a, FSBcolor);
 						if (!File.Exists(audiostreams[0]) && !nj3t)
