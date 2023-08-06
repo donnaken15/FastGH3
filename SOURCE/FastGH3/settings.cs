@@ -425,14 +425,14 @@ public partial class settings : Form
 		tLb.SetItemChecked((int)t.NoStartupMsg, Program.cfg(Program.l, t.NoStartupMsg.ToString(), 0) == 1);
 		tLb.SetItemChecked((int)t.PreserveLog, Program.cfg(Program.l, t.PreserveLog.ToString(), 0) == 1);
 		tLb.SetItemChecked((int)t.Windowed, Program.cfg("GFX", t.Windowed.ToString(), 1) == 1);
-		tLb.SetItemChecked((int)t.Borderless, Program.cfg("GFX", t.Borderless.ToString(), 1) == 1);
+		tLb.SetItemChecked((int)t.Borderless, Program.cfg("GFX", t.Borderless.ToString(), 0) == 1);
 		if (tLb.GetItemChecked((int)t.NoIntro))
 		{
 			RTnoi.Enabled = true;
 			RTlbl.Enabled = true;
 			RTms.Enabled = true;
 		}
-		float _ = Convert.ToSingle(Program.cfg("Player", "Speed", "1.0")) * 100;
+		float _ = Convert.ToSingle(Program.cfg("Player", "Speed", "1.0"), System.Globalization.CultureInfo.InvariantCulture) * 100;
 		if (_ <= 0) { Console.WriteLine("Speed percentage cannot be zero or less!!!"); _ = 100; }
 		speed.Value = (decimal/*wtf*/)_; // current_speedfactor
 		tLb.SetItemChecked((int)t.VerboseLog, vl2);

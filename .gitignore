@@ -15,6 +15,7 @@ JUNK*
 *.obj
 *.tlog
 *.log
+!/FastGH3.pdb
 PLUGINS/disabled
 PLUGINS/disabled3
 /PLUGINS/RichPresence.dll

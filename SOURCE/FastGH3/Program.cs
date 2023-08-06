@@ -1129,23 +1129,8 @@ class Program
 								}
 							}
 						}
-						// CH sucks
-						for (int i = 0; i < 4; i++)
-						{
-							if (!File.Exists(audiostreams[0]))
-							{
-								audtmpstr = chf + audstnames[1] + '.' + audextnames[i];
-								if (File.Exists(audtmpstr))
-								{
-									vl("Found cringe compatibility", FSBcolor);
-									audiostreams[0] = audtmpstr;
-									audiostreams[1] = mt + "blank.mp3";
-									break;
-								}
-							}
-						}
 						//if that fails, use FOF named files
-						// iterate over names
+						// iterate over stream names
 						for (int i = 0; i < audstnames.Length; i++)
 						{
 							// if current stream doesn't exist
@@ -1231,6 +1216,22 @@ class Program
 						{
 							audiostreams[0] = nj3ts[0];
 							nj3t = false;
+						}
+						// CH sucks
+						if (!File.Exists(audiostreams[0]))
+						{
+							for (int i = 0; i < 4; i++)
+							{
+								audtmpstr = chf + "guitar" + '.' + audextnames[i];
+								Console.WriteLine(audtmpstr);
+								if (File.Exists(audtmpstr))
+								{
+									vl("Found cringe compatibility", FSBcolor);
+									audiostreams[0] = audtmpstr;
+									audiostreams[1] = mt + "blank.mp3";
+									break;
+								}
+							}
 						}
 						vl(vstr[29], FSBcolor); //vl("Current selected audio streams are:", FSBcolor);
 						foreach (string a in audiostreams)
@@ -2323,24 +2324,33 @@ class Program
 							// game only allows two face-off tracks for all difficulties
 							// so, use expert track
 							// TODO: if not in that track, use lower diff
-							foreach (Note a in chart.NoteTracks["ExpertSingle"])
-							{
-								if (a.Type == NoteType.Special &&
-									(a.SpecialFlag == 0) || (a.SpecialFlag == 1))
+							NoteTrack font = null; // lol
+							for (int j = 0; j < 4; j++)
+								for (int i = 3; i >= 0; i--)
 								{
-									gotfo[a.SpecialFlag] = true;
-									QbItemInteger faceoff_bit = new QbItemInteger(mid);
-									faceoff_bit.Create(QbItemType.ArrayInteger);
-									faceoff_bit.Values = new int[] {
-										(int)Math.Floor(OT.GetTime(a.Offset) * 1000),
-										(int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
-									};
-									if (a.SpecialFlag == 0)
-										fop1a.AddItem(faceoff_bit);
-									else
-										fop2a.AddItem(faceoff_bit);
+									font = chart.NoteTracks[td[i] + ti[j]]; // ugh
+									if (font != null)
+										break;
 								}
-							}
+							if (font != null)
+								foreach (Note a in font)
+								{
+									if (a.Type == NoteType.Special &&
+										(a.SpecialFlag == 0) || (a.SpecialFlag == 1))
+									{
+										gotfo[a.SpecialFlag] = true;
+										QbItemInteger faceoff_bit = new QbItemInteger(mid);
+										faceoff_bit.Create(QbItemType.ArrayInteger);
+										faceoff_bit.Values = new int[] {
+											(int)Math.Floor(OT.GetTime(a.Offset) * 1000),
+											(int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
+										};
+										if (a.SpecialFlag == 0)
+											fop1a.AddItem(faceoff_bit);
+										else
+											fop2a.AddItem(faceoff_bit);
+									}
+								}
 							// if there isn't, put only one marker
 							// so they're played like pro faceoff
 							{
@@ -3455,6 +3465,11 @@ class Program
 			// upload log for diagnostics
 			exit();
 			Program.log = null;
+			if (!File.Exists(folder + "launcher.txt"))
+			{
+				print("Failed to load own launcher log.");
+				return;
+			}
 			string log = File.ReadAllText(folder + "launcher.txt");
 			if (cfg("Launcher","ErrorReporting",1)==1 && log.Length < 0x20000) // max 128 KB to upload
 			{
