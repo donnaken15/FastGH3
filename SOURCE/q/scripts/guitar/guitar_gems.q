@@ -458,6 +458,34 @@ script load_songqpak\{async = 0}
 		unload_songqpak
 		//get_song_prefix song = <song_name>
 		//songqpak = 'pak/song.pak'
+		
+		ProfileTime
+		if StructureContains structure=<...> time
+			begin_wait_time = <time>
+			FGH3Config \{sect='Temp' 'LoadingLock' #"0x1ca1ff20"=0}
+			if (<value> = 1)
+				printf \{'Chart is still processing, waiting...'}
+				begin
+					FGH3Config \{sect='Temp' 'LoadingLock' #"0x1ca1ff20"=0}
+					if (<value> = 1)
+						ProfileTime
+						// sleep hack because i suck
+						begin_time = <time>
+						begin
+							ProfileTime
+							if ((<time> - <begin_time>) >= 333333)
+								break
+							endif
+						repeat
+					else
+						break
+					endif
+				repeat
+				ProfileTime
+				printf 'Waited %d seconds' d=((<time> - <begin_wait_time>) * 0.0000001)
+			endif
+		endif
+		
 		printf \{"Loading Song q pak"}
 		if FileExists \{'pak/song.pak'}
 			if NOT LoadPakAsync pak_name = 'pak/song.pak' Heap = heap_song no_vram async = <async>

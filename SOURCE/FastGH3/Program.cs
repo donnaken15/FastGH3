@@ -248,8 +248,24 @@ class Program
 	{
 		cfgW("Temp", fl, 1);
 		cfgW("Temp", "ConvPID", -1);
+		cfgW("Temp", "LoadingLock", 0);
 		if (wl && log != null)
 			log.Close();
+	}
+	public static void stupid(Process p)
+    {
+		if (!p.HasExited)
+			p.Kill();
+		/*try
+		{
+			foreach (Process proc in Process.GetProcessesByName("game"))
+				if (NP(proc.MainModule.FileName) == NP(folder + "game.exe"))
+					proc.Kill();
+			foreach (Process proc in Process.GetProcessesByName("game!"))
+				if (NP(proc.MainModule.FileName) == NP(folder + "game!.exe"))
+					proc.Kill();
+		}
+		catch { }*/
 	}
 
 	// print base
@@ -1007,6 +1023,7 @@ class Program
 								cacheList[i] = Path.GetFileNameWithoutExtension(cacheList[i]);
 							}
 						}
+						cfgW("Temp", "LoadingLock", 1);
 						Chart chart = new Chart();
 						if (ischart)
 						{
@@ -2737,12 +2754,19 @@ class Program
 							File.Delete(paksongchart);
 						}
 						#region COMPILE AUDIO TO FSB
+						vl(vstr[74]);
+						//vl("Creating GH3 process...");
+						Process gh3 = new Process();
+						gh3.StartInfo.WorkingDirectory = folder;
+						gh3.StartInfo.FileName = GH3EXEPath;
+						gh3.Start();
 						if (!audCache)
 						{
 							if (!MTFSB)
 							{
 								if (!fsbbuild.HasExited)
 								{
+									vl("Launching game early");
 									print(vstr[70], FSBcolor);
 									//print("Waiting for song encoding to finish.", FSBcolor);
 									fsbbuild.WaitForExit();
@@ -2758,6 +2782,7 @@ class Program
 							}
 							else
 							{
+								vl("Launching game early");
 								print(vstr[70], FSBcolor);
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								try
@@ -2840,6 +2865,7 @@ class Program
 								}
 							}
 						}
+						cfgW("Temp", "LoadingLock", 0);
 						#endregion
 						cSV("background.bik");
 						unkillgame();
@@ -2851,11 +2877,6 @@ class Program
 						}
 						Console.ResetColor();
 						//print("Speeding up.");
-						vl(vstr[74]);
-						//vl("Creating GH3 process...");
-						Process gh3 = new Process();
-						gh3.StartInfo.WorkingDirectory = folder;
-						gh3.StartInfo.FileName = GH3EXEPath;
 						if (cfg("Player", "MaxNotesAuto", "0") == "1")
 						{
 							vl("Getting max notes...");
@@ -2876,7 +2897,6 @@ class Program
 						}
 						print(vstr[75]);
 						//print("Ready, go!");
-						gh3.Start();
 						cfgW("Temp", fl, 1);
 						try
 						{
