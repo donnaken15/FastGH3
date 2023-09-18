@@ -495,10 +495,10 @@ script guitar_startup
 	// sick of seeing a bunch of zeroes :/
 	ProfilingStart
 	// {
-	AllocArray \{size = 97 p1_last_song_detailed_stats}
-	AllocArray \{size = 97 p2_last_song_detailed_stats}
-	AllocArray \{size = 97 p1_last_song_detailed_stats_max}
-	AllocArray \{size = 97 p2_last_song_detailed_stats_max}
+	AllocArray \{size = 500 p1_last_song_detailed_stats}
+	AllocArray \{size = 500 p2_last_song_detailed_stats}
+	AllocArray \{size = 500 p1_last_song_detailed_stats_max}
+	AllocArray \{size = 500 p2_last_song_detailed_stats_max}
 	AllocArray \{WhammyWibble0 set = 1.0 size = 136}
 	AllocArray \{WhammyWibble1 set = 1.0 size = 136}
 	// } ran for 0.3ms

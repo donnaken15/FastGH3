@@ -19,6 +19,7 @@ The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer,
 PLAY NOW!
 * [Download (installer)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.exe)
 * [Download (portable)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.zip)
+* [Download (one EXE demo)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_LITE.EXE)
 * [Latest Dev Build](https://github.com/donnaken15/FastGH3/archive/refs/heads/main.zip)
 <br>![last commit](https://img.shields.io/github/last-commit/donnaken15/FastGH3)
 * [Q Unpack (Experimental)](https://github.com/donnaken15/FastGH3/tree/unpak)
@@ -63,11 +64,13 @@ and then press any button on your keyboard or device to play.
 * Easy highway and zone swapping for ultimate personalization
 * Custom zones at https://donnaken15.cf/fastgh3/zones.html
 * Background images and videos
+* Load charts stored in archive files (ZIP, RAR, 7Z)
 * Easy chart downloads and instant play through fastgh3:// links
+* Play charts straight from chorus and Google Drive: https://donnaken15.cf/fastgh3/gdrive.html
 * Song caching (songs converted at least once are saved for later play)
 * Autoplay with automatic starpower activation
 * A multitude of fixes, such as for:
-  * Calibration slow down
+  * Audio calibration slow down
   * Particle velocity/friction tied to frame rate
   * Whammy width looking smaller on higher resolutions
   * Leftover starpower FX glitch
