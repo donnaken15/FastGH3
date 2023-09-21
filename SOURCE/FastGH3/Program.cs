@@ -250,10 +250,13 @@ class Program
 		cfgW("Temp", "ConvPID", -1);
 		cfgW("Temp", "LoadingLock", 0);
 		if (wl && log != null)
+		{
 			log.Close();
+			wl = false; // actually die i'm not kidding you deserve it life would be so much better if you did not exist take a bow
+		}
 	}
 	public static void stupid(Process p)
-    {
+	{
 		if (!p.HasExited)
 			p.Kill();
 		/*try
@@ -464,7 +467,6 @@ class Program
 	static short lx, ly;
 	// progress bars
 	static short[] pbl; // lines to write to
-	static int[] al;
 	static void pb(float p, int l) // update progress bar at that line
 	{
 		if (p < 0 || pbl[l] < 0)
@@ -485,21 +487,6 @@ class Program
 			vl("Progress bar fail");
 		}
 	}
-	static void __(string l, int i)
-	{
-		if (l == "") return; // >:(
-		// get audio duration from SoX
-		try {
-			string[] b = l.Split(':');
-			al[i] = (int.Parse(b[0]) * 60 * 60000) +
-				(int.Parse(b[1]) * 60000) +
-				(int)(float.Parse(b[2]) * 1000);
-		}
-		catch {
-			vl("Error getting audio length for stream " + i + ": " + l);
-		}
-	}
-
 	static void ___(object p, DataReceivedEventArgs a)
 	{
 		vl(a.Data);
@@ -519,19 +506,19 @@ class Program
 		n.OutputDataReceived += ___;
 		return n;
 	}
-	public static void alen(string f, int i)
+	public static float alen(string f)
 	{
 		try {
-			vl("alen args: sox.exe --i -d " + f.Quotes());
-			Process c = cmd(mt + "sox.exe", "--i -d " + f.Quotes());
+			vl("alen args: sox.exe --i -D " + f.Quotes());
+			Process c = cmd(mt + "sox.exe", "--i -D " + f.Quotes());
 			c.OutputDataReceived -= ___;
-			c.OutputDataReceived += (p, d) => __(d.Data, i);
+			//c.OutputDataReceived += (p, d) => __(d.Data, i);
 			c.Start();
 			c.BeginErrorReadLine();
-			c.BeginOutputReadLine();
-			if (!c.HasExited)
-				c.WaitForExit();
-		} catch { }
+			return Convert.ToSingle(c.StandardOutput.ReadToEnd());
+			//if (!c.HasExited) // uhh
+			//	c.WaitForExit();
+		} catch { return -1f; }
 	}
 	public static string[] vstr;
 
@@ -1372,7 +1359,7 @@ class Program
 						const bool MTFSB = true; // enable asynchronous audio track encoding
 												 //if (cacheEnabled)
 						pbl = new short[3] { -1, -1, -1 };
-						al = new int[3] { -1, -1, -1 };
+						float[] al = new float[3] { -1, -1, -1 };
 						killgame();
 						string CMDpath = where("cmd.exe");
 						if (CMDpath == "") // somehow someone got an error of a process starting
@@ -1409,12 +1396,13 @@ class Program
 								addaud = cmd(CMDpath, (mt + "nj3t.bat").Quotes());
 								addaud.StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
 								addaud.StartInfo.EnvironmentVariables["BM"] = VBR_param;
-								int maxl = 0;
+								float maxl = 0;
 								foreach (string a in nj3ts)
 								{
 									addaud.StartInfo.Arguments += " \"" + a + '"';
-									alen(a, 0); maxl = Math.Max(maxl, al[0]);
+									maxl = Math.Max(maxl, alen(a));
 								}
+								al[0] = maxl;
 								addaud.StartInfo.WorkingDirectory = mt;
 								addaud.StartInfo.Arguments = "/c " + addaud.StartInfo.Arguments.Quotes();
 								addaud.Start();
@@ -1447,7 +1435,8 @@ class Program
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								for (int i = 0; i < fsbbuild2.Length; i++)
 								{
-									alen(audiostreams[i], i);
+									if ((i != 0 && nj3t) || i > 0)
+										al[i] = alen(audiostreams[i]);
 									fsbbuild2[i] = cmd(CMDpath, "/c " + ((mt + "c128ks.bat").Quotes() + " " + audiostreams[i].Quotes() + " \"" + mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").Quotes());
 									fsbbuild2[i].StartInfo.WorkingDirectory = mt;
 									fsbbuild2[i].StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
@@ -2833,9 +2822,8 @@ class Program
 									for (int i = 0; i < 3; i++)
 										if (!locks[i])
 											if (File.Exists(mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3"))
-												pb(((float)new FileInfo(
-													mt + "fsbtmp\\fastgh3_" +
-													fsbnames[i] + ".mp3").Length / (al[i] * (AB_param / 4))), i);
+												pb(new FileInfo(mt + "fsbtmp\\fastgh3_" +
+													fsbnames[i] + ".mp3").Length / 1000 / (al[i] * (AB_param / 4)), i);
 									for (int i = 0; i < fsbbuild2.Length; i++)
 										if (!nj3t || (nj3t && i != 0))
 											if (!locks[i])
