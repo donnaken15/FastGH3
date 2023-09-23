@@ -100,6 +100,8 @@ public partial class songcache : Form
 
 	private void cdblc(object sender, DataGridViewCellEventArgs e)
 	{
+		if (e.RowIndex < 0)
+			return;
 		r(e);
 	}
 
