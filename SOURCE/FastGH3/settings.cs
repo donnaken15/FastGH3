@@ -251,7 +251,7 @@ public partial class settings : Form
 		ms.Position = lenptr;
 		ms.Write(BitConverter.GetBytes(Eswap((uint)strsize)),0,4);
 		//bkgdPE.ReplaceFile("24535078", ms.ToArray());
-		File.WriteAllBytes("DATA\\gameplay_BG.img.xen",ms.ToArray());
+		File.WriteAllBytes(folder + "DATA\\gameplay_BG.img.xen",ms.ToArray());
 	}
 
 	ushort[] keyBinds = new ushort[] {
