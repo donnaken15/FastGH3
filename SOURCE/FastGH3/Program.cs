@@ -879,7 +879,7 @@ class Program
 					if (datecheck && caching)
 					{
 						if (ini(cs, "Date", 0, cachf) != 0) // STUPID
-							lastmod_cached = new DateTime(Convert.ToInt64(ini(cs, "Date", 0, cachf)));
+							lastmod_cached = new DateTime(Convert.ToInt64(ini(cs, "Date", "0", cachf)));
 						else
 							lastmod_cached = new DateTime(0);
 						if (lastmod_cached.Ticks == 0)
@@ -894,6 +894,7 @@ class Program
 							if (lastmod.Ticks == lastmod_cached.Ticks && lastmod_cached.Ticks != 0)
 							{
 								vl("Unchanged"+fdp+"Using "+adf, cacheColor);
+								tF = ini(cs, "File", "null", cachf);
 								goto skipToGame;
 							}
 							else
@@ -951,7 +952,7 @@ class Program
 					exit();
 					cfgW("Temp", fl, 0);
 					// "already running" >:(
-					Process.Start(Application.ExecutablePath, SubstringExtensions.Quotes(tF));
+					Process.Start(Application.ExecutablePath, tF.Quotes());
 					die();
 				}
 				#endregion
