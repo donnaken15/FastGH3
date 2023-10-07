@@ -362,6 +362,11 @@ mp_faceoff_pause_fs = {
 			flow_state = extras_fs
 		}
 		{
+			action = select_modes
+			flow_state = modes_fs
+			func = reset_mode_setup
+		}
+		{
 			action = select_options
 			flow_state = mp_faceoff_pause_options_fs
 		}
@@ -660,9 +665,7 @@ mp_faceoff_newspaper_fs = {
 	actions = [
 		{
 			action = continue
-			func = mp_faceoff_change_mode_if_coop_dlc
-			flow_state = mp_faceoff_setlist_fs
-			transition_right
+			func = ExitGameConfirmed
 		}
 		{
 			action = try_again
@@ -677,7 +680,7 @@ mp_faceoff_newspaper_fs = {
 		}
 		{
 			action = quit
-			flow_state = main_menu_fs
+			func = ExitGameConfirmed
 		}
 	]
 }
@@ -695,9 +698,7 @@ mp_faceoff_detailed_stats_fs = {
 		}
 		{
 			action = continue
-			func = mp_faceoff_change_mode_if_coop_dlc
-			flow_state = mp_faceoff_setlist_fs
-			transition_left
+			func = ExitGameConfirmed
 		}
 	]
 }

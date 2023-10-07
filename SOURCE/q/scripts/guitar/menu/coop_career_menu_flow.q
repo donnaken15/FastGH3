@@ -264,6 +264,11 @@ coop_career_pause_fs = {
 			flow_state = extras_fs
 		}
 		{
+			action = select_modes
+			flow_state = modes_fs
+			func = reset_mode_setup
+		}
+		{
 			action = select_options
 			flow_state = coop_career_pause_options_fs
 		}

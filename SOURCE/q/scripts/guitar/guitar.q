@@ -13,6 +13,7 @@ output_song_stats = 1
 show_sensor_debug = 0
 player1_device = 0
 player2_device = 1
+coop_tracks = 0
 current_song = fastgh3
 current_difficulty = expert
 current_difficulty2 = expert
@@ -141,10 +142,29 @@ gem_scale_orig2 = 0.0
 part_index = { guitar = 0 rhythm = 1 }
 parts = [ guitar rhythm ]
 part_names = { guitar = 'Guitar' rhythm = 'Rhythm' }
+diff_index = { easy = 0 medium = 1 hard = 2 expert = 3 }
+modes = [
+	p1_quickplay
+	training
+	p2_coop
+	p2_faceoff
+	p2_pro_faceoff
+	p2_battle
+]
+mode_index = {
+	p1_quickplay = 0
+	p1_career = 0 // lol
+	training = 1
+	p2_coop = 2
+	p2_career = 2
+	p2_faceoff = 3
+	p2_pro_faceoff = 4
+	p2_battle = 5
+}
 
 fastgh3_build = '1.0-999010889'
-bleeding_edge = 0
-build_timestamp = [07 04 2023]
+bleeding_edge = 1
+build_timestamp = [10 06 2023]
 
 script FileExists \{#"0x00000000" = ''}
 	if exists <#"0x00000000">
@@ -325,6 +345,7 @@ script guitar_startup
 			{'Precision' out=Cheat_PrecisionMode}
 			{'EarlySustains' out=anytime_sustain_activation}
 			{'NoFail' out=Cheat_NoFail}
+			{'CoopTracks' out=coop_tracks} // effective only when chart actually has both co-op parts
 			//{'Speed' out=current_speedfactor #"0x1ca1ff20"=1.0}
 		] }
 		{ sect='GFX' [
@@ -383,16 +404,31 @@ script guitar_startup
 		change \{current_speedfactor = 1.0}
 	endif
 	
+	FGH3Config \{sect='Player' 'Mode' #"0x1ca1ff20"=0}
+	if NOT (<value> = 2)
+		change game_mode = ($modes[<value>])
+	endif
+	FGH3Config \{sect='Player' '2Player' #"0x1ca1ff20"=0}
+	if (<value> = 1)
+		change \{current_num_players = 2}
+	else
+		change \{current_num_players = 1}
+	endif
+	
 	// PLAYER 1 CONFIG
 	FGH3Config \{sect='Player1' 'Diff' #"0x1ca1ff20"=3}
 	change current_difficulty=($difficulty_list[<value>])
 	FGH3Config \{sect='Player1' 'Part' #"0x1ca1ff20"=0}
 	change structurename=player1_status part=($parts[<value>])
+	FGH3Config \{sect='Player1' 'Bot' #"0x1ca1ff20"=1}
+	change structurename=player1_status bot_play=<value>
 	// PLAYER 2 CONFIG
 	FGH3Config \{sect='Player2' 'Diff' #"0x1ca1ff20"=3}
 	change current_difficulty2=($difficulty_list[<value>])
 	FGH3Config \{sect='Player2' 'Part' #"0x1ca1ff20"=1}
 	change structurename=player2_status part=($parts[<value>])
+	FGH3Config \{sect='Player2' 'Bot' #"0x1ca1ff20"=1}
+	change structurename=player2_status bot_play=<value>
 	FGH3Config \{sect='GFX' 'GemScale' #"0x1ca1ff20"=1.0}
 	ProfilingEnd <...> 'INI read'
 	change gem_scalar = <value>
@@ -511,6 +547,9 @@ script guitar_startup
 	ProfilingEnd <...> 'AllocArray x12'
 	// 5 ms (michael scott gif)
 	
+	//Load_Venue
+	SetPakManCurrentBlock map = zones pak = z_viewer block_scripts = 0
+	
 	ProfilingStart
 	printf \{'Done initializing - into game...'}
 	InitAtoms
@@ -569,18 +608,33 @@ endscript
 
 script autolaunch_spawned
 	NewShowStorageSelector
-	start_flow_manager \{flow_state = quickplay_play_song_fs}
+	flow = quickplay_play_song_fs
+	switch $game_mode
+		case training
+			flow = practice_play_song_fs
+		case p2_coop
+		case p2_career
+			flow = coop_career_play_song_fs
+		case p2_faceoff
+			flow = mp_faceoff_play_song_fs
+		case p2_battle
+		case p1_quickplay
+		default
+			flow = quickplay_play_song_fs
+	endswitch
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// ! COOP IS CRASHING WHEN IT IS THE STARTUP MODE !
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	start_flow_manager flow_state = <flow>
 	Change \{primary_controller = $startup_controller}
+	Change \{player1_device = $startup_controller}
+	Change \{player2_device = $startup_controller2}
 	SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
 endscript
 kill_dummy_bg_camera = $EmptyScript
 restore_dummy_bg_camera = $EmptyScript
-
-dummy = {zone = z_viewer name = 'z_viewer' title = "viewer"}
-LevelZones = {
-	viewer = {$dummy}
-	load_z_viewer = {$dummy}
-}
 Terrain_Actions = $nullArray
 Terrain_Types = $nullArray
 

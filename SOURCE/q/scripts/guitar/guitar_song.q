@@ -64,10 +64,12 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 	FormatText checksumName = crowd_stream '%s_crowd' s = <song_prefix> AddToStringLookup
 	if ($game_mode = p2_career || $game_mode = p2_coop ||
 		($game_mode = training & ($player1_status.part = rhythm)))
-		if StructureContains structure = <song_struct> use_coop_notetracks
-			FormatText checksumName = song_stream '%s_coop_song' s = <song_prefix> AddToStringLookup
-			FormatText checksumName = guitar_stream '%s_coop_guitar' s = <song_prefix> AddToStringLookup
-			FormatText checksumName = rhythm_stream '%s_coop_rhythm' s = <song_prefix> AddToStringLookup
+		if StructureContains structure = <song_struct> use_coop_stream // :(
+			if ($coop_tracks = 1)
+				FormatText checksumName = song_stream '%s_coop_song' s = <song_prefix> AddToStringLookup
+				FormatText checksumName = guitar_stream '%s_coop_guitar' s = <song_prefix> AddToStringLookup
+				FormatText checksumName = rhythm_stream '%s_coop_rhythm' s = <song_prefix> AddToStringLookup
+			endif
 		endif
 	endif
 	Change song_stream_id = <song_stream>

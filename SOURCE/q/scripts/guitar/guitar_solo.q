@@ -5,7 +5,9 @@ script solo\{part = guitar diff = expert}
 	endif
 	// for performance sake since S5 has the event for all difficulties
 	// and executes part of main for 6ms >:(
+	coop_track = 0
 	matched_player = 0
+	ExtendCrc $current_song '_extra' out = extra_struct
 	i = 1
 	begin
 		FormatText checksumName = player_status 'player%d_status' d = <i>
@@ -16,6 +18,25 @@ script solo\{part = guitar diff = expert}
 		endif
 		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
 			matched_player = 1
+		endif
+		if StructureContains structure = ($<extra_struct>) use_coop_notetracks
+			if ($coop_tracks = 1)
+				if ($game_mode = p2_career || $game_mode = p2_coop)
+					// hacky
+					if ChecksumEquals a = guitarcoop b = <part>
+						if ChecksumEquals a = guitar b = ($<player_status>.part)
+							coop_track = 1
+							matched_player = 1
+						endif
+					endif
+					if ChecksumEquals a = rhythmcoop b = <part>
+						if ChecksumEquals a = rhythm b = ($<player_status>.part)
+							coop_track = 1
+							matched_player = 1
+						endif
+					endif
+				endif
+			endif
 		endif
 		Increment \{i}
 	repeat ($current_num_players)
@@ -66,7 +87,7 @@ script solo\{part = guitar diff = expert}
 			return
 		endif
 	repeat <array_size>
-	if (<found_self> = 0)
+	if (<why> = 0)
 		printf \{'why'}
 	endif
 	Increment \{k}
@@ -109,6 +130,14 @@ script solo\{part = guitar diff = expert}
 	if (<found_soloend> = 0)
 		printf \{'why'}
 		return
+	endif
+	if (<coop_track> = 1)
+		if (<part> = guitarcoop)
+			part = guitar
+		endif
+		if (<part> = rhythmcoop)
+			part = rhythm
+		endif
 	endif
 	i = 1
 	begin
@@ -217,6 +246,19 @@ script soloend \{part = guitar diff = expert}
 			player_difficulty = current_difficulty
 		elseif (<i> = 2)
 			player_difficulty = current_difficulty2
+		endif
+		ExtendCrc $current_song '_extra' out = extra_struct
+		if StructureContains structure = ($<extra_struct>) use_coop_notetracks
+			if ChecksumEquals a = guitarcoop b = <part>
+				if ChecksumEquals a = guitar b = ($<player_status>.part)
+					part = ($<player_status>.part)
+				endif
+			endif
+			if ChecksumEquals a = rhythmcoop b = <part>
+				if ChecksumEquals a = rhythm b = ($<player_status>.part)
+					part = ($<player_status>.part)
+				endif
+			endif
 		endif
 		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
 			begin

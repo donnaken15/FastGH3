@@ -121,11 +121,13 @@ script setup_gemarrays
 	if ($game_mode = p2_career || $game_mode = p2_coop ||
 		($game_mode = training & ($<player_status>.part = rhythm)))
 		if StructureContains structure = <song_struct> use_coop_notetracks
-		// make packed struct ? ^
-			if (($<player_status>.part)= rhythm)
-				<part> = 'rhythmcoop_'
-			else
-				<part> = 'guitarcoop_'
+			// make packed struct ? ^
+			if ($coop_tracks = 1)
+				if (($<player_status>.part)= rhythm)
+					<part> = 'rhythmcoop_'
+				else
+					<part> = 'guitarcoop_'
+				endif
 			endif
 		endif
 	endif
@@ -390,10 +392,12 @@ script get_song_end_time
 	get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythm_expert>
 	get_song_struct song = <song>
 	if StructureContains structure = <song_struct> use_coop_notetracks
-		FormatText checksumName = guitarcoop_expert '%s_song_guitarcoop_expert' s = <song_prefix> AddToStringLookup
-		FormatText checksumName = rhythmcoop_expert '%s_song_rhythmcoop_expert' s = <song_prefix> AddToStringLookup
-		get_song_end_time_for_array total_end_time = <total_end_time> song_array = <guitarcoop_expert>
-		get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythmcoop_expert>
+		if ($coop_tracks = 1)
+			FormatText checksumName = guitarcoop_expert '%s_song_guitarcoop_expert' s = <song_prefix> AddToStringLookup
+			FormatText checksumName = rhythmcoop_expert '%s_song_rhythmcoop_expert' s = <song_prefix> AddToStringLookup
+			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <guitarcoop_expert>
+			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythmcoop_expert>
+		endif
 	endif
 	return total_end_time = <total_end_time>
 endscript
@@ -1156,42 +1160,47 @@ script kill_startup_script
 endscript
 
 script Load_Venue\{block_scripts = 0}
-	GetPakManCurrentName \{map = zones}
-	if GotParam \{pakname}
-		if (<pakname> = (($LevelZones.$current_level).name))
-			Transitions_ResetZone
-			return
-		else
-			ResetWaypoints
-			SetPakManCurrentBlock \{map = zones pak = None}
-		endif
-	endif
-	ResetPulseEvents
-	FormatText textname = FileName '%s.pak' s = (($LevelZones.$current_level).name)
-	GetContentFolderIndexFromFile <FileName>
-	if (<device> = content)
-		if NOT Downloads_OpenContentFolder content_index = <content_index>
-			DownloadContentLost
-			return
-		endif
-	endif
-	if NOT SetPakManCurrentBlock map = zones pak = (($LevelZones.$current_level).zone) block_scripts = <block_scripts>
-		DownloadContentLost
-		return
-	endif
-	if (<device> = content)
-		Downloads_CloseContentFolder content_index = <content_index>
-	endif
-	GH3_Change_crowd_reverb_settings_by_Venue
+	//GetPakManCurrentName \{map = zones}
+	//if GotParam \{pakname}
+	//	if (<pakname> = (($LevelZones.$current_level).name))
+	//		Transitions_ResetZone
+	//		return
+	//	else
+	//		ResetWaypoints
+	//		SetPakManCurrentBlock \{map = zones pak = None}
+	//	endif
+	//endif
+	//ResetPulseEvents
+	//FormatText textname = FileName '%s.pak' s = (($LevelZones.$current_level).name)
+	//GetContentFolderIndexFromFile <FileName>
+	//if (<device> = content)
+	//	if NOT Downloads_OpenContentFolder content_index = <content_index>
+	//		DownloadContentLost
+	//		return
+	//	endif
+	//endif
+	//if NOT SetPakManCurrentBlock map = zones pak = (($LevelZones.$current_level).zone) block_scripts = <block_scripts>
+	//	DownloadContentLost
+	//	return
+	//endif
+	//if (<device> = content)
+	//	Downloads_CloseContentFolder content_index = <content_index>
+	//endif
+	//GH3_Change_crowd_reverb_settings_by_Venue
+	
 endscript
 
 script start_song\{device_num = 0 practice_intro = 0 endtime = 999999999}
 	mark_unsafe_for_shutdown
 	set_rich_presence_game_mode
+	//Load_Venue
 	//MassiveInit \{sku = 'atvi_guitar_hero_3_pc_na' startZone = 'GlobalZone'}
-	Load_Venue
 	Transition_SelectTransition practice_intro = <practice_intro>
-	if NOT (($game_mode = p2_faceoff)|| ($game_mode = p2_pro_faceoff)|| ($game_mode = p2_coop)|| ($game_mode = p2_battle)|| ($game_mode = p2_career))
+	if NOT (($game_mode = p2_faceoff) ||
+			($game_mode = p2_pro_faceoff) ||
+			($game_mode = p2_coop) ||
+			($game_mode = p2_battle) ||
+			($game_mode = p2_career))
 		Change player1_device = (<device_num>)
 		Change StructureName = player1_status controller = (<device_num>)
 	else

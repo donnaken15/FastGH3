@@ -74,6 +74,7 @@ DATA/ZONES/__themes/*/
 /DATA/ZONES/__themes/*.gfx
 /DATA/ZONES/__themes/*.gfx.xen
 /DATA/ZONES/__themes/*.zip
+/DATA/MODS
 SOURCE/q/test
 
 # if i add items to this list that were already committed before, will it remove it from the repo?

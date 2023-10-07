@@ -420,7 +420,8 @@ script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
 	endif
 	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
-endscript*///
+endscript/**///
+
 ProfilingStart = $EmptyScript
 ProfilingEnd = $EmptyScript
 

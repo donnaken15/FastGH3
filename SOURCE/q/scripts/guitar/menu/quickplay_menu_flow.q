@@ -97,6 +97,11 @@ quickplay_pause_fs = {
 			flow_state = extras_fs
 		}
 		{
+			action = select_modes
+			flow_state = modes_fs
+			func = reset_mode_setup
+		}
+		{
 			action = select_options
 			flow_state = quickplay_pause_options_fs
 		}
@@ -321,6 +326,7 @@ winport_quickplay_calibrate_lag_fs = {
 	actions = [
 		{
 			$quickplay_play_song_action
+			func = career_restart_song
 			action = go_back
 		}
 	]

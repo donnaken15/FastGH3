@@ -3,8 +3,8 @@ script create_press_any_button_menu
 	ReAcquireControllers
 	Change \{primary_controller_assigned = 0}
 	Change \{main_menu_movie_first_time = 0}
-	SoundEvent \{event = Menu_Guitar_Lick_SFX}
-	spawnscriptnow \{Menu_Music_On params = {waitforguitarlick = 1}}
+	//SoundEvent \{event = Menu_Guitar_Lick_SFX}
+	//spawnscriptnow \{Menu_Music_On params = {waitforguitarlick = 1}}
 	create_menu_backdrop \{texture = black}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = pab_container Pos = (0.0, 0.0)}
 	menu_press_any_button_create_obvious_text

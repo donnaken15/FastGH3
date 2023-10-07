@@ -1566,6 +1566,12 @@ class Program
 							#region BUILD ENTIRE QB FILE
 							#region GUITAR VALUES
 
+							OffsetTransformer OT = new OffsetTransformer(chart);
+							string[] td = { "Easy", "Medium", "Hard", "Expert" };
+							string[] ti = { "Single", "DoubleBass", "DoubleGuitar", "DoubleBass" };
+							// doublebass would exist both on rhythm and rhythmcoop? lol?
+							// depend on enhanced bass for singleplayer rhythm kek
+
 							vl(vstr[45], chartConvColor);
 							//vl("Creating note arrays...", chartConvColor);
 							string[] diffs = { "easy", "medium", "hard", "expert" };
@@ -1586,11 +1592,6 @@ class Program
 										QbKey.Create("fastgh3_song" + insts[i] + '_' + diffs[d]);
 								}
 							}
-							OffsetTransformer OT = new OffsetTransformer(chart);
-							string[] td = { "Easy", "Medium", "Hard", "Expert" };
-							string[] ti = { "Single", "DoubleBass", "DoubleGuitar", "DoubleBass" };
-							// doublebass would exist both on rhythm and rhythmcoop? lol?
-							// depend on enhanced bass for singleplayer rhythm kek
 
 							bool atleast1track = false;
 
@@ -1613,6 +1614,7 @@ class Program
 							scrs.ItemQbKey = QbKey.Create(0x195F3B95); // fastgh3_scripts
 							scr_arr.Create(QbItemType.ArrayStruct);
 							List<QbItemStruct> scripts = new List<QbItemStruct>();
+							bool[] hasCoopTracks = { false, false };
 
 							int dd = 0;
 							int ii = 0;
@@ -1633,6 +1635,10 @@ class Program
 									if (chart.NoteTracks[d + i] != null)
 									{
 										atleast1track = true;
+										if (i == "DoubleGuitar")
+											hasCoopTracks[0] = true;
+										if (i == "DoubleBass")
+											hasCoopTracks[1] = true;
 										vl("Parsing " + d + i, chartConvColor);
 										try
 										{
@@ -2332,13 +2338,21 @@ class Program
 							// so, use expert track
 							// TODO: if not in that track, use lower diff
 							NoteTrack font = null; // lol
+							bool gotfont = false;
 							for (int j = 0; j < 4; j++)
+							{
 								for (int i = 3; i >= 0; i--)
 								{
 									font = chart.NoteTracks[td[i] + ti[j]]; // ugh
 									if (font != null)
+									{
+										gotfont = true;
 										break;
+									}
 								}
+								if (gotfont)
+									break;
+							}
 							if (font != null)
 								foreach (Note a in font)
 								{
@@ -2352,12 +2366,16 @@ class Program
 											(int)Math.Floor(OT.GetTime(a.Offset) * 1000),
 											(int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
 										};
+										vl("Got face-off marker: " + faceoff_bit.Values[0] +
+																"," + faceoff_bit.Values[1]);
 										if (a.SpecialFlag == 0)
 											fop1a.AddItem(faceoff_bit);
 										else
 											fop2a.AddItem(faceoff_bit);
 									}
 								}
+							//if (!gotfo[0] && !gotfo[1])
+							//	vl("No face-off markers found");
 							// if there isn't, put only one marker
 							// so they're played like pro faceoff
 							{
@@ -2418,9 +2436,10 @@ class Program
 									ts.Add(chart.SyncTrack[i]);
 								}
 							}
-							if (ts.Count == 0) // bruh
-											   // legitimately happens on some charts for some reason
-											   // causes infinite starpower
+							if (ts.Count == 0)
+								// bruh
+								// legitimately happens on some charts for some reason
+								// causes infinite starpower
 							{
 								vl(vstr[61], ConsoleColor.Yellow); // megamind
 								SyncTrackEntry tsfault = new SyncTrackEntry();
@@ -2600,9 +2619,19 @@ class Program
 							#endregion
 							#endregion
 
+							if (isBoss || (hasCoopTracks[0] && hasCoopTracks[1]))
+								mid.AddItem(fastgh3_extra);
+							if (hasCoopTracks[0] && hasCoopTracks[1])
+							{
+								QbItemQbKey s = new QbItemQbKey(mid);
+								s.Create(QbItemType.StructItemQbKey);
+								s.ItemQbKey = QbKey.Create(0x00000000);
+								s.Values[0] = QbKey.Create("use_coop_notetracks");
+								fastgh3_extra.AddItem(s);
+								vl("Has both Co-op tracks");
+							}
 							if (isBoss)
 							{
-								mid.AddItem(fastgh3_extra);
 								fastgh3_extra.AddItem(QB_bossboss);
 								mid.AddItem(QB_bosstime);
 								mid.AddItem(QB_bossname);

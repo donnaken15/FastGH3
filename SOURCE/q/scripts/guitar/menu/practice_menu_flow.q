@@ -129,6 +129,7 @@ script enter_mode
 		case p2_battle
 			action = career
 		case p2_faceoff
+		case p2_pro_faceoff
 			action = faceoff
 		case p2_coop
 			action = coop
@@ -364,6 +365,11 @@ practice_pause_fs = {
 		{
 			action = select_extras
 			flow_state = extras_fs
+		}
+		{
+			action = select_modes
+			flow_state = modes_fs
+			func = reset_mode_setup
 		}
 		{
 			action = select_options
