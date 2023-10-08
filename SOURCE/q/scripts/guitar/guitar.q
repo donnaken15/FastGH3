@@ -420,14 +420,14 @@ script guitar_startup
 	change current_difficulty=($difficulty_list[<value>])
 	FGH3Config \{sect='Player1' 'Part' #"0x1ca1ff20"=0}
 	change structurename=player1_status part=($parts[<value>])
-	FGH3Config \{sect='Player1' 'Bot' #"0x1ca1ff20"=1}
+	FGH3Config \{sect='Player1' 'Bot' #"0x1ca1ff20"=0}
 	change structurename=player1_status bot_play=<value>
 	// PLAYER 2 CONFIG
 	FGH3Config \{sect='Player2' 'Diff' #"0x1ca1ff20"=3}
 	change current_difficulty2=($difficulty_list[<value>])
 	FGH3Config \{sect='Player2' 'Part' #"0x1ca1ff20"=1}
 	change structurename=player2_status part=($parts[<value>])
-	FGH3Config \{sect='Player2' 'Bot' #"0x1ca1ff20"=1}
+	FGH3Config \{sect='Player2' 'Bot' #"0x1ca1ff20"=0}
 	change structurename=player2_status bot_play=<value>
 	FGH3Config \{sect='GFX' 'GemScale' #"0x1ca1ff20"=1.0}
 	ProfilingEnd <...> 'INI read'
