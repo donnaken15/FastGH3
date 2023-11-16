@@ -268,34 +268,36 @@ endscript
 
 script GuitarEvent_HitNotes
 	if ($enable_solos = 1)
-		if (($<player_status>.text)= 'p1')
-			Player = 1
-			Change note_index_p1 = <array_entry>
-		elseif (($<player_status>.text)= 'p2')
-			Player = 2
-			Change note_index_p2 = <array_entry>
-		endif
-		set_solo_hit_buffer Player = <Player>
-		FormatText checksumName = sa_p 'solo_active_p%d' d = <Player>
-		update_text = 1
-		if ($<sa_p> = 1)
-			if (<Player> = 1)
-				if ($last_solo_index_p1 < ($last_solo_total_p1 + 1))
-					num = ($last_solo_hits_p1 + 1)
-					Change last_solo_hits_p1 = <num>
-				else
-					update_text = 0
-				endif
-			elseif (<Player> = 2)
-				if ($last_solo_index_p2 < ($last_solo_total_p2 + 1))
-					num = ($last_solo_hits_p2 + 1)
-					Change last_solo_hits_p2 = <num>
-				else
-					update_text = 0
-				endif
+		if NOT (($<player_status>.highway_layout) = solo_highway)
+			if (($<player_status>.text)= 'p1')
+				Player = 1
+				Change note_index_p1 = <array_entry>
+			elseif (($<player_status>.text)= 'p2')
+				Player = 2
+				Change note_index_p2 = <array_entry>
 			endif
-			if (<update_text> = 1)
-				solo_ui_update Player = <Player>
+			set_solo_hit_buffer Player = <Player>
+			FormatText checksumName = sa_p 'solo_active_p%d' d = <Player>
+			update_text = 1
+			if ($<sa_p> = 1)
+				if (<Player> = 1)
+					if ($last_solo_index_p1 < ($last_solo_total_p1 + 1))
+						num = ($last_solo_hits_p1 + 1)
+						Change last_solo_hits_p1 = <num>
+					else
+						update_text = 0
+					endif
+				elseif (<Player> = 2)
+					if ($last_solo_index_p2 < ($last_solo_total_p2 + 1))
+						num = ($last_solo_hits_p2 + 1)
+						Change last_solo_hits_p2 = <num>
+					else
+						update_text = 0
+					endif
+				endif
+				if (<update_text> = 1)
+					solo_ui_update Player = <Player>
+				endif
 			endif
 		endif
 	endif

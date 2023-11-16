@@ -148,88 +148,90 @@ script solo\{part = guitar diff = expert}
 			player_difficulty = current_difficulty2
 		endif
 		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
-			// get player's raw note track (time,fret,len)
-			gemarrayid = ($<player_status>.current_song_gem_array)
-			song_array = $<gemarrayid>
-			//song_array = ($($<player_status>.current_song_gem_array))
-			GetArraySize \{song_array}
-			// find index with >= %time
-			ProfilingStart
-			solo_first_note = 0
-			// while ([i*3] < %time && i < sizeof)
-			begin
-				if (<song_array>[<solo_first_note>] >= <time>)
-					break
-				endif
-				solo_first_note = (<solo_first_note> + 3)
-			repeat <array_size>
-			// current note index
-			if (<i> = 1)
-				Change last_solo_index_p1 = 0
-				note_index = $note_index_p1
-			elseif (<i> = 2)
-				Change last_solo_index_p2 = 0
-				note_index = $note_index_p2
-			endif
-			note_index = (<note_index> * 3)
-			current_first_note = 0
-			//if NOT ($current_starttime = 0) // crashes on wii for some reason
-			//{
-				// find first playable note (if skipped into song)
-				startTime = $current_starttime
+			if NOT (($<player_status>.highway_layout) = solo_highway)
+				// get player's raw note track (time,fret,len)
+				gemarrayid = ($<player_status>.current_song_gem_array)
+				song_array = $<gemarrayid>
+				//song_array = ($($<player_status>.current_song_gem_array))
+				GetArraySize \{song_array}
+				// find index with >= %time
+				ProfilingStart
+				solo_first_note = 0
+				// while ([i*3] < %time && i < sizeof)
 				begin
-					if (<song_array>[<current_first_note>] >= <startTime>)
+					if (<song_array>[<solo_first_note>] >= <time>)
 						break
 					endif
-					current_first_note = (<current_first_note> + 3)
-				repeat <array_Size>
-			//}
-			ProfilingEnd <...> 'solo find first note'
-			//			  first solo note, first playable note
-			note_index = (<note_index> + <current_first_note> + 3)
-			// count notes hit before this executed
-			earlyhits = ((<note_index> - <solo_first_note>) / 3)
-			// if you have a solo where you can hit over 10 notes
-			// before the actual time of the solo is reached, find god
-			if (<i> = 1)
-				hit_buffer = $solo_hit_buffer_p1
-			elseif (<i> = 2)
-				hit_buffer = $solo_hit_buffer_p2
-			endif
-			GetArraySize \{hit_buffer}
-			j = 0
-			l = 0
-			if (<earlyhits> > 0)
-				begin
-					if (<hit_buffer>[(<array_Size> - 1)] = 1 && <song_array> [(<note_index> - (<l> * 3))] >= <time>)
-						Increment \{j}
-					endif
-					Increment \{l}
-				repeat <earlyhits>
-			endif
-			// while ([i*3] < soloend.time)
-			GetArraySize \{song_array}
-			k = <solo_first_note>
-			begin // do i need this condition even, because of the below
-				if (<song_array>[<k>] >= <endtime> || <k> > <array_size>)
-					break
+					solo_first_note = (<solo_first_note> + 3)
+				repeat <array_size>
+				// current note index
+				if (<i> = 1)
+					Change last_solo_index_p1 = 0
+					note_index = $note_index_p1
+				elseif (<i> = 2)
+					Change last_solo_index_p2 = 0
+					note_index = $note_index_p2
 				endif
-				k = (<k> + 3)
-			repeat (((<array_Size> - <k>)/ 3))
-			k = ((<k> - <solo_first_note>) / 3)
-			// why
-			if (<i> = 1)
-				Change \{solo_active_p1 = 1}
-				Change last_solo_hits_p1 = <j>
-				Change last_solo_index_p1 = <j>
-				Change last_solo_total_p1 = <k>
-			elseif (<i> = 2)
-				Change \{solo_active_p2 = 1}
-				Change last_solo_hits_p2 = <j>
-				Change last_solo_index_p2 = <j>
-				Change last_solo_total_p2 = <k>
+				note_index = (<note_index> * 3)
+				current_first_note = 0
+				//if NOT ($current_starttime = 0) // crashes on wii for some reason
+				//{
+					// find first playable note (if skipped into song)
+					startTime = $current_starttime
+					begin
+						if (<song_array>[<current_first_note>] >= <startTime>)
+							break
+						endif
+						current_first_note = (<current_first_note> + 3)
+					repeat <array_Size>
+				//}
+				ProfilingEnd <...> 'solo find first note'
+				//			  first solo note, first playable note
+				note_index = (<note_index> + <current_first_note> + 3)
+				// count notes hit before this executed
+				earlyhits = ((<note_index> - <solo_first_note>) / 3)
+				// if you have a solo where you can hit over 10 notes
+				// before the actual time of the solo is reached, find god
+				if (<i> = 1)
+					hit_buffer = $solo_hit_buffer_p1
+				elseif (<i> = 2)
+					hit_buffer = $solo_hit_buffer_p2
+				endif
+				GetArraySize \{hit_buffer}
+				j = 0
+				l = 0
+				if (<earlyhits> > 0)
+					begin
+						if (<hit_buffer>[(<array_Size> - 1)] = 1 && <song_array> [(<note_index> - (<l> * 3))] >= <time>)
+							Increment \{j}
+						endif
+						Increment \{l}
+					repeat <earlyhits>
+				endif
+				// while ([i*3] < soloend.time)
+				GetArraySize \{song_array}
+				k = <solo_first_note>
+				begin // do i need this condition even, because of the below
+					if (<song_array>[<k>] >= <endtime> || <k> > <array_size>)
+						break
+					endif
+					k = (<k> + 3)
+				repeat (((<array_Size> - <k>)/ 3))
+				k = ((<k> - <solo_first_note>) / 3)
+				// why
+				if (<i> = 1)
+					Change \{solo_active_p1 = 1}
+					Change last_solo_hits_p1 = <j>
+					Change last_solo_index_p1 = <j>
+					Change last_solo_total_p1 = <k>
+				elseif (<i> = 2)
+					Change \{solo_active_p2 = 1}
+					Change last_solo_hits_p2 = <j>
+					Change last_solo_index_p2 = <j>
+					Change last_solo_total_p2 = <k>
+				endif
+				solo_ui_create Player = <i>
 			endif
-			solo_ui_create Player = <i>
 		endif
 		Increment \{i}
 	repeat ($current_num_players)
@@ -261,43 +263,54 @@ script soloend \{part = guitar diff = expert}
 			endif
 		endif
 		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
-			begin
+			if NOT (($<player_status>.highway_layout) = solo_highway)
+				begin
+					if (<i> = 1)
+						if ($last_solo_index_p1 >= $last_solo_total_p1 || $solo_active_p1 = 0)
+							break
+						endif
+					elseif (<i> = 2)
+						if ($last_solo_index_p2 >= $last_solo_total_p2 || $solo_active_p2 = 0)
+							break
+						endif
+					endif
+					printf \{'waiting for something to happen to the last few notes'}
+					wait \{1 gameframe}
+				repeat
 				if (<i> = 1)
-					if ($last_solo_index_p1 >= $last_solo_total_p1 || $solo_active_p1 = 0)
-						break
-					endif
+					num = ($player1_status.score + ($last_solo_hits_p1 * $solo_bonus_pts))
+					Change StructureName = player1_status score = <num>
+					num1 = $last_solo_hits_p1
+					num2 = $last_solo_total_p1
+					spawnscriptnow solo_ui_end params = { Player = 1 }
+					Change last_solo_hits_p1 = 0
+					Change last_solo_total_p1 = 0
 				elseif (<i> = 2)
-					if ($last_solo_index_p2 >= $last_solo_total_p2 || $solo_active_p2 = 0)
-						break
-					endif
+					num = ($player2_status.score + ($last_solo_hits_p2 * $solo_bonus_pts))
+					Change StructureName = player2_status score = <num>
+					num1 = $last_solo_hits_p2
+					num2 = $last_solo_total_p2
+					spawnscriptnow solo_ui_end params = { Player = 2 }
+					Change last_solo_hits_p2 = 0
+					Change last_solo_total_p2 = 0
 				endif
-				printf \{'waiting for something to happen to the last few notes'}
-				wait \{1 gameframe}
-			repeat
-			if (<i> = 1)
-				num = ($player1_status.score + ($last_solo_hits_p1 * $solo_bonus_pts))
-				Change StructureName = player1_status score = <num>
-				num1 = $last_solo_hits_p1
-				num2 = $last_solo_total_p1
-				spawnscriptnow solo_ui_end params = { Player = 1 }
-				Change last_solo_hits_p1 = 0
-				Change last_solo_total_p1 = 0
-			elseif (<i> = 2)
-				num = ($player2_status.score + ($last_solo_hits_p2 * $solo_bonus_pts))
-				Change StructureName = player2_status score = <num>
-				num1 = $last_solo_hits_p2
-				num2 = $last_solo_total_p2
-				spawnscriptnow solo_ui_end params = { Player = 2 }
-				Change last_solo_hits_p2 = 0
-				Change last_solo_total_p2 = 0
+				solo_reset i = <i>
 			endif
-			solo_reset i = <i>
 		endif
 		Increment \{i}
 	repeat ($current_num_players)
 endscript
 solo_on = $solo
 solo_off = $soloend
+
+script solo_net \{ player = 2 hits = 0 total = 0 index = 0 }
+	FormatText ChecksumName = lsh_p 'last_solo_hits_p%d' d = <player>
+	FormatText ChecksumName = lst_p 'last_solo_total_p%d' d = <player>
+	FormatText ChecksumName = lsi_p 'last_solo_index_p%d' d = <player>
+	change GlobalName = <lsh_p> newValue  = <#"0xE57093D4">
+	change GlobalName = <lst_p> newValue  = <#"0x3DD01EA1">
+	change GlobalName = <lsi_p> newValue  = <index>
+endscript
 
 script solo_ui_create\{Player = 1}
 	FormatText checksumName = lsh_p 'last_solo_hits_p%d' d = <Player>

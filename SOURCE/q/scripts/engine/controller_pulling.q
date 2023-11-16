@@ -2,7 +2,7 @@ controller_unplugged_frame_count = 5
 unplugged_controller = -1
 
 script controller_unplugged
-	printf \{"--- controller_unplugged"}
+	printf \{'--- controller_unplugged'}
 	Change unplugged_controller = <device_num>
 	if ($playing_song = 1)
 		if NOT GameIsPaused
@@ -21,7 +21,7 @@ script controller_unplugged
 endscript
 
 script create_controller_unplugged_dialog\{pad_choose_script = controller_refresh}
-	printf \{"--- create_controller_unplugged_dialog"}
+	printf \{'--- create_controller_unplugged_dialog'}
 	if ScreenElementExists \{id = ui_mainmenu_wait_anchor}
 		return
 	endif
@@ -50,10 +50,10 @@ script create_controller_unplugged_dialog\{pad_choose_script = controller_refres
 	endif
 	if GotParam \{leaving_net_game}
 		CreatePlatformMessageBox {
-			title = "CONTROLLER DISCONNECTED"
-			message = "Please reconnect the controller."
+			title = 'CONTROLLER DISCONNECTED'
+			message = 'Please reconnect the controller.'
 			buttons = [
-				"GO TO MAIN MENU"
+				'GO TO MAIN MENU'
 			]
 			user = <device_num>
 			active_button = 0
@@ -61,10 +61,10 @@ script create_controller_unplugged_dialog\{pad_choose_script = controller_refres
 		controller_reconnected \{leaving_net_game}
 	else
 		CreatePlatformMessageBox {
-			title = "CONTROLLER"
-			message = "Please reconnect the controller."
+			title = 'CONTROLLER'
+			message = 'Please reconnect the controller.'
 			buttons = [
-				"CONTINUE"
+				'CONTINUE'
 			]
 			user = <device_num>
 			active_button = 0
@@ -122,7 +122,7 @@ script controller_reconnected
 		endif
 	endif
 	if GotParam \{leaving_net_game}
-		printf \{"quitting network game!!!!!!!!!!!!!!!!!!!"}
+		printf \{'quitting network game!!!!!!!!!!!!!!!!!!!'}
 		UnPauseGame
 		quit_network_game
 	else

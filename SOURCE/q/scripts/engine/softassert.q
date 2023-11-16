@@ -7,7 +7,7 @@ script soft_assert
 	printf "SOFT ASSERT: %s" s = <reason>
 	if IsTrue \{$#"0x4f659345"}
 		if IsTrue \{$soft_assert_active}
-			printf \{"Soft Assert already active, ignoring!"}
+			printf \{'Soft Assert already active, ignoring!'}
 		else
 			pause_game = 1
 			if GlobalExists \{Type = integer name = view_mode}

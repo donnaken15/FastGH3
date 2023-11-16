@@ -67,147 +67,147 @@ endscript
 generic_helper_text = {
 	helper_text_elements = [
 		{
-			text = "\b7/\b4 SELECT"
+			text = '\b7/\b4 SELECT'
 		}
 		{
-			text = "\m1 BACK"
+			text = '\m1 BACK'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }
 generic_helper_text_no_back = {
 	helper_text_elements = [
 		{
-			text = "\b7/\b4 SELECT"
+			text = '\b7/\b4 SELECT'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }
 generic_helper_text_no_accept = {
 	helper_text_elements = [
 		{
-			text = "\b7/\b4 SELECT"
+			text = '\b7/\b4 SELECT'
 		}
 		{
-			text = "\m1 BACK"
+			text = '\m1 BACK'
 		}
 	]
 }
 generic_helper_text_cas = {
 	helper_text_elements = [
 		{
-			text = "\b7/\b4 SELECT"
+			text = '\b7/\b4 SELECT'
 		}
 		{
-			text = "\m1 BACK"
+			text = '\m1 BACK'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 		{
-			text = "\be/\bf ROTATE"
+			text = '\be/\bf ROTATE'
 		}
 	]
 }
 generic_helper_text_cas_z = {
 	helper_text_elements = [
 		{
-			text = "\b7/\b4 SELECT"
+			text = '\b7/\b4 SELECT'
 		}
 		{
-			text = "\m1 BACK"
+			text = '\m1 BACK'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 		{
-			text = "\be/\bf ROTATE"
+			text = '\be/\bf ROTATE'
 		}
 		{
-			text = "\mj ZOOM"
+			text = '\mj ZOOM'
 		}
 	]
 }
 generic_helper_text_left_right = {
 	helper_text_elements = [
 		{
-			text = "\b6/\b5 SELECT"
+			text = '\b6/\b5 SELECT'
 		}
 		{
-			text = "\m1 BACK"
+			text = '\m1 BACK'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }
 generic_helper_text_left_right_no_back = {
 	helper_text_elements = [
 		{
-			text = "\b6/\b5 SELECT"
+			text = '\b6/\b5 SELECT'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }
 generic_helper_text_up_down_left_right = {
 	helper_text_elements = [
 		{
-			text = "\b7/\b4/\b6/\b5 SELECT"
+			text = '\b7/\b4/\b6/\b5 SELECT'
 		}
 		{
-			text = "\m1 BACK"
+			text = '\m1 BACK'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }
 generic_helper_text_left_right_up_down = {
 	helper_text_elements = [
 		{
-			text = "\b7/\b4 SELECT"
+			text = '\b7/\b4 SELECT'
 		}
 		{
-			text = "\b6/\b5 ADJUST"
+			text = '\b6/\b5 ADJUST'
 		}
 		{
-			text = "\m1 BACK"
+			text = '\m1 BACK'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }
 generic_dialog_helper_text = {
 	helper_text_elements = [
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }
 generic_dialog_helper_text2 = {
 	helper_text_elements = [
 		{
-			text = "\b7/\b4 SELECT"
+			text = '\b7/\b4 SELECT'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }
 generic_dialog_helper_text3 = {
 	helper_text_elements = [
 		{
-			text = "\m1 BACK"
+			text = '\m1 BACK'
 		}
 		{
-			text = "\m0 ACCEPT"
+			text = '\m0 ACCEPT'
 		}
 	]
 }

@@ -159,11 +159,11 @@ script ViewerRight
 endscript
 
 script ViewerUp
-	printf \{"ViewerUp - Deprecated"}
+	printf \{'ViewerUp - Deprecated'}
 endscript
 
 script ViewerDown
-	printf \{"ViewerDown - Deprecated"}
+	printf \{'ViewerDown - Deprecated'}
 endscript
 
 script viewer_print_debug_info

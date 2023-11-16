@@ -62,6 +62,7 @@ modes_fs = {
 }
 script start_custom_game
 	params = ($mode_setup)
+	printstruct <params>
 	change game_mode = ($modes[(<params>.mode)])
 	change current_num_players = ((<params>.players) + 1)
 	change player1_device = ((<params>.devices)[0])
@@ -98,7 +99,7 @@ script save_mode_data
 		FormatText textname=sect 'Player%d' d=(<i> + 1)
 		FGH3Config sect=<sect> 'Device' set=(<params>.players[<i>])
 		Increment \{i}
-	repeat 2*/
+	repeat 2*///
 	// TODO: show warning that controller IDs can
 	// change when connecting/disconnecting devices
 endscript
@@ -277,61 +278,7 @@ script mode_menu
 		SetScreenElementProps id=<id> text=($<texts>[<value>])
 	endif
 endscript
-mode_buttons = [
-	{ range = 5 param = mode texts = mode_text id = select_gamemode }
-	{ range = 1 param = players texts = playercount_text id = select_playercount
-		cont = {
-			pos_off = (10,0) just = [center top]
-		}
-	}
-	{ text = 'Bind' id = select_players button }
-	{ range = 3 param = diff
-		texts = diff_text id = select_diff
-		cont = {
-			pos_off = (60,0) just = [center top]
-		}
-	}
-	{ range = 3 param = diff2
-		texts = diff_text id = select_diff2
-		cont = {
-			pos_off = (200,-50) just = [center top]
-		}
-	}
-	{ range = 1 param = part
-		texts = part_text id = select_part
-		cont = {
-			pos_off = ( 60,-50) just = [center top]
-		}
-	}
-	{ range = 1 param = part2
-		texts = part_text id = select_part2
-		cont = {
-			pos_off = (200,-100) just = [center top]
-		}
-	}
-	{ range = 1 param = bot
-		texts = toggle_text id = select_bot
-		cont = {
-			pos_off = ( 60,-100) just = [center top]
-		}
-	}
-	{ range = 1 param = bot2
-		texts = toggle_text id = select_bot2
-		cont = {
-			pos_off = (200,-150) just = [center top]
-		}
-	}
-	{ text = 'Save Settings' id = select_save button
-		cont = {
-			pos_off = (0,-150) just = [left top]
-		}
-	}
-	{ text = 'Start!' id = select_start button
-		cont = {
-			pos_off = (0,-150) just = [left top]
-		}
-	}
-]
+mode_buttons = []
 mode_setup = {
 	mode	= 0
 	players	= 0
@@ -424,11 +371,11 @@ endscript
 // menu
 script new_menu\{menu_pos = $menu_pos event_handlers = $default_event_handlers use_backdrop = 0 z = 1 dims = (400.0, 480.0) font = text_a1 font_size = 0.75 default_colors = 1 just = [left top] no_focus = 0 internal_just = [center top]}
 	if ScreenElementExists id = <scrollid>
-		printf "script new_menu - %s Already exists." s = <scrollid>
+		printf 'script new_menu - %s Already exists.' s = <scrollid>
 		return
 	endif
 	if ScreenElementExists id = <vmenuid>
-		printf "script new_menu - %s Already exists." s = <vmenuid>
+		printf 'script new_menu - %s Already exists.' s = <vmenuid>
 		return
 	endif
 	CreateScreenElement {
@@ -727,44 +674,19 @@ script set_unfocus_color\{rgba = $menu_unfocus_color}
 endscript
 
 particle_modes=['All' 'Minimal' 'Disabled']
-extras_menu = [
-	// guide
-	// (NO NAME) = variable to set
-	// name = display name
-	// type = type of item (bool, int, etc)
-	// min = minimum value allowed (int)
-	// max = maximum value allowed (int)
-	// sect = INI section
-	// key = INI key
-	// restart = (1) requires restarting the song (2) requires restarting game?
-	{ Cheat_Hyperspeed name='Hyperspeed' type=int min=-13 max=10 sect='Player' restart=1 }
-	{ fps_max name='Frame Rate' type=int min=0 max=1000 step=5 sect='GFX' key='MaxFPS' }
-	{ disable_particles name='Particles' type=int min=0 max=2 sect='GFX' key='NoParticles' }
-	{ hudless name='No HUD' type=bool sect='GFX' key='NoHUD' restart=1 }
-	{ disable_intro name='No Intro' type=bool sect='GFX' key='NoIntro' restart=1 }
-	{ disable_shake name='No Highway Shake' type=bool sect='GFX' key='NoShake' }
-	{ exit_on_song_end name='Exit on Song End' type=bool sect='Player' key='ExitOnSongEnd' }
-	{ kill_gems_on_hit name='Hide Gems Upon Hit' type=bool sect='GFX' key='KillGemsHit' }
-	{ enable_button_cheats name='Debug Menu' type=bool key='Debug' }
-	{ Cheat_NoFail name='No Fail' type=bool sect='Player' key='NoFail' }
-	{ Cheat_EasyExpert name='Easy Expert' type=bool sect='Player' key='EasyExpert' restart=1 }
-	{ Cheat_PrecisionMode name='Precision' type=bool sect='Player' key='Precision' restart=1 }
-	{ FC_MODE name='FC Mode' type=bool sect='Player' key='FCMode' restart=1 }
-	{ gem_scalar name='Gem Scale' type=int min=0.0 max=100.0 step=0.05 sect='GFX' key='GemScale' restart=1 }
-	{ current_speedfactor name='Speed Factor' type=int min=0.05 max=100.0 step=0.05 sect='Player' key='Speed' }
-]
+extras_menu = []
 script extra_format
 	FormatText textname=strval '%s' s=<#"0x00000000">
 	switch <type>
 		case bool
 			if (<#"0x00000000"> = 1)
-				strval = "On"
+				strval = 'On'
 			elseif (<#"0x00000000"> = 0)
-				strval = "Off"
+				strval = 'Off'
 			elseif (<#"0x00000000"> = true)
-				strval = "On"
+				strval = 'On'
 			elseif (<#"0x00000000"> = false)
-				strval = "Off"
+				strval = 'Off'
 			endif
 	endswitch
 	return strval = <strval>
@@ -773,12 +695,12 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 	if (<key> = '')
 		key = <name>
 	endif
+	value = ($<#"0x00000000">)
 	switch <type>
 		case bool
 			switch <b>
 				case choose
 					//SoundEvent \{event = ui_sfx_select}
-					value = ($<#"0x00000000">)
 					if (<value> = 1)
 						value=0
 						check=0
@@ -801,24 +723,25 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 			switch <b>
 				// can cases fall into others? x to doubt
 				case choose
-					if ($<#"0x00000000"> >= <max>)
-						change globalname=<#"0x00000000"> newvalue=<min>
+					if (<value> >= <max>)
+						value = <min>
 					else
-						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> + <step>)
+						value = (<value> + <step>)
 					endif
 				case left
-					if ($<#"0x00000000"> <= <min>)
+					if (<value> <= <min>)
 						return
 					else
-						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> - <step>)
+						value = (<value> - <step>)
 					endif
 				case right
-					if ($<#"0x00000000"> >= <max>)
+					if (<value> >= <max>)
 						return
 					else
-						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> + <step>)
+						value = (<value> + <step>)
 					endif
 			endswitch
+			change globalname=<#"0x00000000"> newvalue=<value>
 			generic_menu_up_or_down_sound
 	endswitch
 	if (<restart> = 1)
@@ -1460,7 +1383,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 	if ($is_network_game = 0)
 		if NOT isSinglePlayerGame
 			if NOT GotParam \{practice}
-				FormatText textname = player_paused_text "PLAYER %d PAUSED. ONLY PLAYER %d OPTIONS ARE AVAILABLE." d = <Player>
+				FormatText textname = player_paused_text 'PLAYER %d PAUSED. ONLY PLAYER %d OPTIONS ARE AVAILABLE.' d = <Player>
 				displaySprite {
 					parent = pause_menu_frame_container
 					id = pause_helper_text_bg
@@ -1588,7 +1511,7 @@ endscript
 
 script fit_text_in_rectangle\{dims = (100.0, 100.0) just = center keep_ar = 0 only_if_larger_x = 0 only_if_larger_y = 0 start_x_scale = 1.0 start_y_scale = 1.0}
 	if NOT GotParam \{id}
-		ScriptAssert \{"No id passed to fit_text_in_rectangle!"}
+		ScriptAssert \{'No id passed to fit_text_in_rectangle!'}
 	endif
 	GetScreenElementDims id = <id>
 	x_dim = (<dims>.(1.0, 0.0))
@@ -1672,26 +1595,26 @@ script add_user_control_helper\{z = 10 pill = 1 fit_to_rectangle = 1}
 	if GotParam \{button}
 		switch (<button>)
 			case green
-				buttonchar = "\m0"
+				buttonchar = '\m0'
 			case red
-				buttonchar = "\m1"
+				buttonchar = '\m1'
 			case yellow
-				buttonchar = "\b6"
+				buttonchar = '\b6'
 			case blue
-				buttonchar = "\b7"
+				buttonchar = '\b7'
 			case orange
-				buttonchar = "\b8"
+				buttonchar = '\b8'
 			case strumbar
-				buttonchar = "\bb"
+				buttonchar = '\bb'
 				offset_for_strumbar = 1
 			case start
-				buttonchar = "\ba"
+				buttonchar = '\ba'
 				offset_for_strumbar = 1
 			case leftright
-				buttonchar = "\bh"
+				buttonchar = '\bh'
 		endswitch
 	else
-		buttonchar = ""
+		buttonchar = ''
 	endif
 	if (<pill> = 0)
 		CreateScreenElement {
@@ -2113,7 +2036,7 @@ endscript
 
 script get_diff_completion_percentage\{for_p2_career = 0}
 endscript
-winport_confirm_exit_msg = "Are you sure you want to exit?"
+winport_confirm_exit_msg = 'Are you sure you want to exit?'
 
 script winport_create_confirm_exit_popup
 	create_popup_warning_menu \{textblock = {text = $winport_confirm_exit_msg}menu_pos = (640.0, 490.0) dialog_dims = (288.0, 64.0) options = [{func = {ui_flow_manager_respond_to_action params = {action = continue}}text = "Yes" Scale = (1.0, 1.0)}{func = {ui_flow_manager_respond_to_action params = {action = go_back}}text = "No" Scale = (1.0, 1.0)}]}

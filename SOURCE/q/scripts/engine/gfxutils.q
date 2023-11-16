@@ -15,11 +15,11 @@ script HiResScreenshot\{Scale = 1}
 	printstruct <...>
 	<i> = 0
 	wait \{30 frames ignoreslomo}
-	printf \{"11111111111111111111111111111111111111"}
+	printf \{'11111111111111111111111111111111111111'}
 	begin
 		<j> = 0
 		begin
-			printf \{"222222222222222222222222222222222"}
+			printf \{'222222222222222222222222222222222'}
 			FormatText textname = text 'hi_res_screen_%a_%b_' a = <i> b = <j>
 			sub = ((<i> * <Scale>)+ <j>)
 			<cameraid> ::SetSubFrustum res = <Scale> subImage = <sub>

@@ -92,12 +92,12 @@ script pause_game_and_create_pause_menu
 endscript
 
 script do_actual_pause
-	printf \{"--- do_actual_pause"}
+	printf \{'--- do_actual_pause'}
 	if NOT CD
 		DumpProgressLog
 	endif
 	if NOT InNetGame
-		printf \{"-------------------- PAUSING GAME ----------------------"}
+		printf \{'-------------------- PAUSING GAME ----------------------'}
 		PauseGame
 		GMan_PauseAllGoals
 	endif
@@ -119,15 +119,15 @@ script do_actual_pause
 endscript
 
 script unpause_game_and_destroy_pause_menu
-	printf \{"--- unpause_game_and_destroy_pause_menu"}
+	printf \{'--- unpause_game_and_destroy_pause_menu'}
 	do_actual_unpause <...>
-	printf \{"unpause_game_and_destroy_pause_menu 1"}
+	printf \{'unpause_game_and_destroy_pause_menu 1'}
 	ui_change_state \{state = Uistate_gameplay}
-	printf \{"unpause_game_and_destroy_pause_menu 2"}
+	printf \{'unpause_game_and_destroy_pause_menu 2'}
 endscript
 
 script do_actual_unpause
-	printf \{"--- do_actual_unpause"}
+	printf \{'--- do_actual_unpause'}
 	Change \{check_for_unplugged_controllers = 0}
 	ClearViewerObject
 	Debounce \{X time = 0.3}
@@ -185,23 +185,23 @@ script handle_start_pressed
 		return
 	endif
 	if IsTrue \{$paused_for_hardware}
-		printf \{"handle_start_pressed: $paused_for_hardware is true, ending"}
+		printf \{'handle_start_pressed: $paused_for_hardware is true, ending'}
 		return
 	endif
 	if IsTrue \{$sysnotify_wait_in_progress}
-		printf \{"handle_start_pressed: $sysnotify_wait_in_progress is true, ending"}
+		printf \{'handle_start_pressed: $sysnotify_wait_in_progress is true, ending'}
 		return
 	endif
 	if ($is_changing_levels = 1)
-		printf \{"handle_start_pressed: $is_changing_levels is true, ending"}
+		printf \{'handle_start_pressed: $is_changing_levels is true, ending'}
 		return
 	endif
 	if IsTrue \{$ingame_save_active}
-		printf \{"handle_start_pressed: $ingame_save_active is true, ending"}
+		printf \{'handle_start_pressed: $ingame_save_active is true, ending'}
 		return
 	endif
 	if InFrontEnd
-		printf \{"handle_start_pressed: InFrontEnd is true, ending"}
+		printf \{'handle_start_pressed: InFrontEnd is true, ending'}
 		return
 	endif
 	root_window ::GetTags
@@ -394,7 +394,7 @@ script menu_quit_no
 endscript
 
 script change_gamemode_career
-	printf \{"********** CHANGING GAME MODE TO CAREER"}
+	printf \{'********** CHANGING GAME MODE TO CAREER'}
 	EnableSun
 	SetGameType \{career}
 	SetCurrentGameType
@@ -402,7 +402,7 @@ script change_gamemode_career
 endscript
 
 script change_gamemode_classic
-	printf \{"********** CHANGING GAME MODE TO CLASSIC"}
+	printf \{'********** CHANGING GAME MODE TO CLASSIC'}
 	EnableSun
 	SetGameType \{classic}
 	SetCurrentGameType
@@ -410,7 +410,7 @@ script change_gamemode_classic
 endscript
 
 script change_gamemode_coop
-	printf \{"********** CHANGING GAME MODE TO CO-OP"}
+	printf \{'********** CHANGING GAME MODE TO CO-OP'}
 	EnableSun
 	SetGameType \{coop}
 	SetCurrentGameType
@@ -418,7 +418,7 @@ script change_gamemode_coop
 endscript
 
 script change_gamemode_net
-	printf \{"********** CHANGING GAME MODE TO NET!!!"}
+	printf \{'********** CHANGING GAME MODE TO NET!!!'}
 	DisableSun
 	SetGameType \{net}
 	SetCurrentGameType
@@ -529,7 +529,7 @@ script generic_menu_update_arrows\{menu_id = current_menu}
 endscript
 
 script generic_menu_pad_back
-	printf \{"generic_menu_pad_back Parameters = "}
+	printf \{'generic_menu_pad_back Parameters = '}
 	generic_menu_pad_back_sound
 	if GotParam \{callback}
 		<callback> <...>
@@ -554,7 +554,7 @@ endscript
 disable_menu_sounds = 0
 
 script generic_menu_up_or_down_sound\{menu_id = current_menu}
-	//printf \{"--- generic_menu_up_or_down_sound"}
+	//printf \{'--- generic_menu_up_or_down_sound'}
 	if ($disable_menu_sounds = 0)
 		SoundEvent \{event = ui_sfx_scroll}
 		SoundEvent \{event = ui_sfx_scroll_add}
@@ -661,9 +661,9 @@ script menu_get_sponsor_sound
 endscript
 
 script menu_setlist_bonus_tab_sound
-	printf \{"here %s" s = $disable_menu_sounds}
+	printf \{'here %s' s = $disable_menu_sounds}
 	if ($disable_menu_sounds = 0)
-		printf \{"sklajkjahsdflhasdlasdf"}
+		printf \{'sklajkjahsdflhasdlasdf'}
 		SoundEvent \{event = ui_sfx_select}
 	endif
 endscript
@@ -693,7 +693,7 @@ script reset_gamemode
 	GetArraySize \{$STORY_CLEAR_GLOBAL_FLAGS}
 	index = 0
 	begin
-		printf "clearing global flag %d" d = ($STORY_CLEAR_GLOBAL_FLAGS [<index>])
+		printf 'clearing global flag %d' d = ($STORY_CLEAR_GLOBAL_FLAGS [<index>])
 		UnsetGlobalFlag flag = ($STORY_CLEAR_GLOBAL_FLAGS [<index>])
 		<index> = (<index> + 1)
 	repeat <array_Size>

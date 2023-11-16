@@ -1,14 +1,14 @@
 tmpinput = ''
 
-script create_winport_input_field_flow
+/*script create_winport_input_field_flow
 	create_winport_input_field {
 		mode = loginAccount
 		title = "Enter text"
 		container = accountLoginContainer
 	}
-endscript
+endscript*///
 
-script create_winport_input_field
+//script create_winport_input_field
 	// keyboard input hack
 	// TODO: better one
 	/*printf \{"--- create_winport_account_management_screen"}
@@ -160,19 +160,19 @@ script create_winport_input_field
 		case loginAborted
 			cancel_winport_account_management_screen mode = <mode>
 	endswitch*///
-endscript
-textinput_username = ''
-textinput_password = ''
-textinput_newPassword2 = ''
-textinput_license = ''
+//endscript
+//textinput_username = ''
+//textinput_password = ''
+//textinput_newPassword2 = ''
+//textinput_license = ''
 
-script executeScriptFromString
+//script executeScriptFromString
 	//FormatText checksumName = Scr '%s' s = ($textinput_username)
 	//if (ScriptExists <Scr>)
 	//	spawnscriptnow <Scr>
 	//endif
-endscript
-fastgh3_test_fs = {
+//endscript
+/*fastgh3_test_fs = {
 	create = create_winport_input_field_flow
 	Destroy = destroy_winport_account_login_screen
 	actions = [
@@ -198,7 +198,7 @@ fastgh3_test_fs = {
 			flow_state = quickplay_pause_options_fs
 		}
 	]
-}
+}*///
 
 script lefty_toggle\{player_status = player1_status}
 	if ($<player_status>.player = 1)
@@ -262,12 +262,29 @@ script everyone_deploy // :P
 endscript
 
 fastgh3_path_triggers = []
+// soulless 5
 //fastgh3_path_triggers = [33230 120000 148610 187610 246610 307460 350760 431200 507690 585000 658960 716300 794530 831380 876460 900920 983070]
 // soulless 1 path from CHOpt
 //fastgh3_path_triggers = [9446 18638 37851 57127 85851 151148 191936 265276 298148 334978]
 script muh_arby_bot_star
+	if ($is_network_game)
+		return
+	endif
 	if ($player1_status.bot_play = 0 & $player2_status.bot_play = 0)
 		printf \{'bot not turned on!!!!!!!!!!!!!'}
+		return
+	endif
+	if ($game_mode = p2_battle)
+		printf \{'fake battle bot, fire every two seconds'}
+		begin
+			wait \{2 seconds}
+			if ($player1_status.bot_play = 1)
+				battle_trigger_on \{player_status = player1_status}
+			endif
+			if ($player2_status.bot_play = 1)
+				battle_trigger_on \{player_status = player2_status}
+			endif
+		repeat
 		return
 	endif
 	if (($game_mode = p2_career || $game_mode = p2_coop) & ($player1_status.bot_play = 0 || $player2_status.bot_play = 0))

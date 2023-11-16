@@ -619,7 +619,7 @@ coop_career_newspaper_fs = {
 	actions = [
 		{
 			action = continue
-			flow_state_func = coop_career_find_newspaper_successor
+			func = ExitGameConfirmed
 		}
 		{
 			action = try_again
@@ -634,8 +634,7 @@ coop_career_newspaper_fs = {
 		}
 		{
 			action = quit
-			func = progression_push_current
-			flow_state = main_menu_fs
+			func = ExitGameConfirmed
 		}
 	]
 }

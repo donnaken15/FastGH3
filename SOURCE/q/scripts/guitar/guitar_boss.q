@@ -80,6 +80,9 @@ script bossbattle_init
 		Change StructureName = <player_status> hold_difficulty_up = 0.0
 		Player = (<Player> + 1)
 	repeat 2
+	if ($boss_battle = 0) // wtf
+		return
+	endif
 	Change \{StructureName = player2_status part = rhythm}
 	Change boss_controller = ($player2_status.controller)
 	Change \{boss_pattern = 0}

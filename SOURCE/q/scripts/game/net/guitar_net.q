@@ -81,13 +81,13 @@ check_if_selecting_tie_breaker = $EmptyScript
 connection_lost_end_song = $EmptyScript
 
 script test_events\{passed_in_value = 'test value'}
-	printf \{"test_events"}
+	printf \{'test_events'}
 	printstruct <...>
 	NetSessionFunc \{Obj = stats func = write_key_value params = {wtf_value = 'test value' key = 'test key'}}
 endscript
 
 script xenon_auto_load_progress
-	printf \{"--- xenon_auto_load_progress"}
+	printf \{'--- xenon_auto_load_progress'}
 	if (($ui_flow_manager_state [0])= online_signin_fs)
 		if ($online_signin_autoload_required = 1)
 			Change \{online_signin_autoload_required = 0}
@@ -229,7 +229,7 @@ script WritePerformance\{band_id = default_band_id venue = 'test venue' mode = '
 	if ($Cheat_BretMichaels = 1)
 		bret_michaels = bret_michaels
 	endif
-	printf \{"WritePerformance"}
+	printf \{'WritePerformance'}
 	NetSessionFunc Obj = stats func = write_performance params = {<...> }
 endscript
 
@@ -255,7 +255,7 @@ script invite_accepted
 		endif
 		create_popup_warning_menu {
 			textblock = {
-				text = "Are you sure you want to leave this game session?"
+				text = 'Are you sure you want to leave this game session?'
 				Pos = (640.0, 380.0)
 			}
 			player_device = <controllerid>
@@ -264,11 +264,11 @@ script invite_accepted
 			options = [
 				{
 					func = accepted_invite_agree
-					text = "YES"
+					text = 'YES'
 				}
 				{
 					func = accepted_invite_disagree
-					text = "NO"
+					text = 'NO'
 				}
 			]
 			no_background
@@ -362,7 +362,7 @@ script coop_attempt_star_power
 endscript
 
 script test_write_leaderboards
-	printf \{"test_write_leaderboards"}
+	printf \{'test_write_leaderboards'}
 	begin_singleplayer_game
 	wait \{0.3 seconds ignoreslomo}
 	if NOT should_update_stats_leader_board
@@ -419,7 +419,7 @@ endscript
 new_message_of_the_day = 0
 
 script splash_callback
-	printf \{"splash_callback"}
+	printf \{'splash_callback'}
 	printstruct <...>
 	if GotParam \{motd_text}
 		Change \{new_message_of_the_day = 1}
@@ -437,7 +437,7 @@ script test_send
 endscript
 
 script test_callback
-	printf \{"test_callback"}
+	printf \{'test_callback'}
 	printstruct <...>
 endscript
 
@@ -512,7 +512,7 @@ endscript
 gSavedElementInFocus = 0
 
 script connection_lost_resume_play
-	printf \{"---connection_lost_resume_play"}
+	printf \{'---connection_lost_resume_play'}
 	DestroyScreenElement \{id = connectionLostContainer}
 	RestoreFocus
 	UnPauseGame
@@ -622,7 +622,7 @@ script start_final_song
 endscript
 
 script server_disconnection_cleanup
-	printf \{"---server_disconnection_cleanup"}
+	printf \{'---server_disconnection_cleanup'}
 	determine_if_game_over
 	Change \{player2_present = 0}
 	if ($ui_flow_manager_state [0] = online_loading_fs)
@@ -673,7 +673,7 @@ script searching_menu_unfocus
 endscript
 
 script set_other_player_present
-	printf \{"set_other_player_present"}
+	printf \{'set_other_player_present'}
 	if NOT ($player2_present)
 		Change \{player2_present = 1}
 		spawnscriptnow \{net_hub_stream}
@@ -738,7 +738,7 @@ script retrieve_player_net_id
 		SetArrayElement ArrayName = net_id index = 0 NewValue = ($player1_status.net_id_first)
 		SetArrayElement ArrayName = net_id index = 1 NewValue = ($player1_status.net_id_second)
 	endif
-	printf \{"retrieve_player_net_id"}
+	printf \{'retrieve_player_net_id'}
 	printstruct <...>
 	return net_id = <net_id>
 endscript
@@ -839,7 +839,7 @@ script fit_text_into_menu_item
 endscript
 
 script net_coop_init_star_power
-	printf \{"Trying to init star power"}
+	printf \{'Trying to init star power'}
 	if NOT (($player1_status.star_power_used = 1)|| ($player2_status.star_power_used = 1))
 		spawnscriptnow \{star_power_activate_and_drain params = {player_status = player1_status Player = 1 player_text = 'p1'}}
 		spawnscriptnow \{star_power_activate_and_drain params = {player_status = player2_status Player = 2 player_text = 'p2'}}
@@ -862,7 +862,7 @@ gHandlingWindowClosed = 0
 gIsInNetGame = 0
 
 script netNotifyWindowClosed
-	printf \{"GTB - netNotifyWindowClosed"}
+	printf \{'GTB - netNotifyWindowClosed'}
 	if ($gIsInNetGame = 1)
 		if ($gHandlingWindowClosed = 0)
 			Change \{gHandlingWindowClosed = 1}
