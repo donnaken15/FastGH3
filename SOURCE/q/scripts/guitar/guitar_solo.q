@@ -87,7 +87,7 @@ script solo\{part = guitar diff = expert}
 			return
 		endif
 	repeat <array_size>
-	if (<why> = 0)
+	if (<found_self> = 0)
 		printf \{'why'}
 	endif
 	Increment \{k}

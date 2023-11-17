@@ -1,10 +1,10 @@
 
-script #"0x1851973a"{= gh3 {
-			menu_id = online_song_select_menu
-			vmenu_id = online_song_select_vmenu
-			pad_back_script = check_back_action_song_select
-			Pos = (($menu_pos)- (200.0, 0.0))
-		}}
+script create_online_song_select_menu version = gh3 {
+		menu_id = online_song_select_menu
+		vmenu_id = online_song_select_vmenu
+		pad_back_script = check_back_action_song_select
+		Pos = (($menu_pos)- (200.0, 0.0))
+	}
 	online_song_select_event_handlers = [
 		{pad_back <pad_back_script>}
 	]

@@ -14,6 +14,7 @@ show_sensor_debug = 0
 player1_device = 0
 player2_device = 1
 coop_tracks = 0
+autostart_coop = 0
 current_song = fastgh3
 current_difficulty = expert
 current_difficulty2 = expert
@@ -163,8 +164,9 @@ mode_index = {
 }
 
 fastgh3_build = '1.0-999010889'
+fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [10 06 2023]
+build_timestamp = [11 17 2023]
 
 script FileExists \{#"0x00000000" = ''}
 	if exists <#"0x00000000">
@@ -425,6 +427,9 @@ script guitar_startup
 		else
 			printf \{'Invalid game mode index!!!!!!!!'}
 		endif
+		if (<value> = 2)
+			change \{autostart_coop = 1}
+		endif
 		FGH3Config \{sect='Player' '2Player' #"0x1ca1ff20"=0}
 		if (<value> = 1)
 			change \{current_num_players = 2}
@@ -573,6 +578,8 @@ script guitar_startup
 		AllocArray \{size = $highway_lines set = 0.0 time_accum_table}
 		ProfilingEnd <...> 'AllocArray x12'
 		// 5 ms (michael scott gif)
+		
+		create_loading_strings
 		
 		change mode_buttons = [
 			{ range = 5 param = mode texts = mode_text id = select_gamemode }
@@ -788,25 +795,29 @@ endscript
 
 script autolaunch_spawned
 	NewShowStorageSelector
-	flow = quickplay_play_song_fs
-	switch $game_mode
-		case training
-			flow = practice_play_song_fs
-		case p2_coop
-		case p2_career
-			flow = coop_career_play_song_fs
-		case p2_faceoff
-			flow = mp_faceoff_play_song_fs
-		case p2_battle
-		case p1_quickplay
-		default
-			flow = quickplay_play_song_fs
-	endswitch
-	start_flow_manager flow_state = <flow>
-	Change \{primary_controller = $startup_controller}
-	Change \{player1_device = $startup_controller}
-	Change \{player2_device = $startup_controller2}
-	SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
+	Change primary_controller = ($startup_controller)
+	Change player1_device = ($startup_controller)
+	Change player2_device = ($startup_controller2)
+	if ($fastgh3_online = 1)
+		start_flow_manager \{flow_state = online_winport_start_connection_fs}
+	else
+		flow = quickplay_play_song_fs
+		switch $game_mode
+			case training
+				flow = practice_play_song_fs
+			case p2_coop
+			case p2_career
+				flow = coop_career_play_song_fs
+			case p2_faceoff
+				flow = mp_faceoff_play_song_fs
+			case p2_battle
+			case p1_quickplay
+			default
+				flow = quickplay_play_song_fs
+		endswitch
+		start_flow_manager flow_state = <flow>
+		SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
+	endif
 endscript
 kill_dummy_bg_camera = $EmptyScript
 restore_dummy_bg_camera = $EmptyScript

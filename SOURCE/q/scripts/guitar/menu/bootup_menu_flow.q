@@ -53,6 +53,12 @@ bootup_attract_mode_fs = {
 		}
 	]
 }
+exit_fs = {
+	create = ExitGameConfirmed
+	Destroy = EmptyScript
+	actions = [
+	]
+}
 legal_timer = 0
 login_hack = 1
 
@@ -94,11 +100,13 @@ endscript
 
 script bootup_check_autologin
 	killspawnedscript \{name = attract_mode_spawner}
-	Change \{enable_saving = 1}
+	//Change \{enable_saving = 1}
 	if GotParam \{device_num}
 		Change primary_controller = <device_num>
 		Change \{primary_controller_assigned = 1}
+		Change player1_device = ($primary_controller)
 		Change StructureName = player1_status controller = ($primary_controller)
+		Change structurename = player2_status controller = ($startup_controller2)
 	endif
 	NetSessionFunc \{func = GetAutoLoginSetting}
 	if (<autoLoginSetting> = autoLoginOff || $login_hack = 1)

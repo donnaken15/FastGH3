@@ -413,7 +413,7 @@ script win_song
 		end_s = ((<total_end_time> - <startTime>)/ 1000.0)
 		printf "Waiting %s seconds for song end marker." s = <end_s>
 		if (<end_s> > 0)
-			wait <end_s> seconds
+			wait <end_s> seconds // totally good idea
 		endif
 	endif
 	if ($current_num_players = 2)
@@ -690,6 +690,11 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		if NOT GotParam \{no_score_update}
 			SpawnScriptLater update_score_fast params = {<...> }
 		endif
+		if ($autostart_coop = 1) // wtf
+			// co-op on startup was crashing because first player struct for update score code had a null pointer
+			// how
+			SpawnScriptLater \{update_score_fast params = {player_status = player1_status}}
+		endif
 		if (($is_network_game)& ($player1_status.highway_layout = solo_highway))
 			SpawnScriptLater \{update_score_fast params = {player_status = player2_status}}
 		endif
@@ -716,6 +721,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		endif
 		Player = (<Player> + 1)
 	repeat $current_num_players
+	change \{autostart_coop = 0}
 	GetPakManCurrent \{map = zones}
 	if ($boss_battle = 1)
 		if should_play_boss_intro

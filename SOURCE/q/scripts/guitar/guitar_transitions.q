@@ -125,15 +125,6 @@ Default_Practice_Transition = $Default_Generic_Transition
 Common_Practice_Transition = $Common_Generic_Transition
 Default_Intro_Transition = $Default_Generic_Transition
 Common_Intro_Transition = $Common_Generic_Transition
-uselater = [
-	{
-		time = -1
-		Scr = lefty_toggle
-		params = {
-			player_status = player1_status
-		}
-	}
-]
 Default_PreEncore_Transition = {
 	time = 8000
 	ScriptTable = [
@@ -234,21 +225,6 @@ Common_SongWon_Transition = {
 	]
 	EndWithDefaultCamera
 }
-unused = [
-	{
-		time = 0
-		Scr = play_win_anims
-		params = {
-		}
-	}
-	{
-		time = 0
-		Scr = play_outro
-		params = {
-			kill_cameracuts_iterator
-		}
-	}
-]
 Default_SongLost_Transition = {
 	time = 3400
 	ScriptTable = [

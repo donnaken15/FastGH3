@@ -391,10 +391,10 @@ script keytest
 	CreateScreenElement {
 		Type = TextElement
 		parent = root_window
-		id = #"0xd968b859"
+		id = keytest_text
 		font = text_a1
 		Pos = (128.0, 64.0)
-		just = [left , top]
+		just = [left top]
 		Scale = (1.0, 1.0)
 		rgba = [255 255 255 255]
 		text = 'test'
@@ -402,17 +402,15 @@ script keytest
 		alpha = 1
 	}
 	begin
-		WinPortSioGetControlPress deviceNum = ($winport_bb_device_num)actionNum = 0
-		FormatText textname = text 'test: %d: %d' d = ($winport_bb_device_num)d = <controlNum>
-		SetScreenElementProps id = #"0xd968b859" text = <text>
-		wait 1 gameframe
-	repeat (10000)
-	if (ScreenElementExists {
-			id = #"0xd968b859"
-		})
-		DestroyScreenElement {
-			id = #"0xd968b859"
-		}
+		WinPortSioGetControlPress \{deviceNum = $player1_device actionNum = 0}
+		if NOT (<controlNum> = -1)
+			FormatText textname=text 'test: %d: %e' d=$player1_device e=<controlNum>
+			SetScreenElementProps id=keytest_text text=<text>
+		endif
+		wait \{1 gameframe}
+	repeat 10000
+	if ScreenElementExists \{id = keytest_text}
+		DestroyScreenElement \{id = keytest_text}
 	endif
 endscript
 

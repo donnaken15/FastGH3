@@ -558,10 +558,18 @@ class Program
 							// song converting launcher is active
 							// 1 or [0] = probably this process
 							//if (micn > 1)
-								if (cfg("Temp","ConvPID",-1) > -1 && (File.Exists(args[0]) || args[0] == "dl"))
+							int pid = cfg("Temp", "ConvPID", -1);
+								if (pid > -1 && (File.Exists(args[0]) || args[0] == "dl"))
 								{
-									MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
+									try
+									{
+										if (NP(Process.GetProcessById(pid).MainModule.FileName) == NP(Application.ExecutablePath))
+										{
+											MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+											Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
+										}
+									}
+									catch { }
 									break;
 								}
 						}
@@ -692,7 +700,7 @@ class Program
 					// settings file 31kb
 				}
 				#region SHUFFLE
-				else if (args[0] == "-shuffle")
+				else if (args[0].ToLower() == "-shuffle")
 				{
 					// 0.5-1 kb
 					Console.WriteLine(vstr[101]);
@@ -745,7 +753,7 @@ class Program
 				}
 				#endregion
 				#region GFXSWAP
-				else if (args[0] == "-gfxswap")
+				else if (args[0].ToLower() == "-gfxswap")
 				{
 					// 0.5-1 kb?
 					// TODO: replace SCN with one that has the name of the .tex
@@ -792,6 +800,8 @@ class Program
 											MessageBoxButtons.OK, MessageBoxIcon.Error);
 										Environment.Exit(1);
 									}
+									// someone actually tried dragging default.scn into this
+									// maybe should prevent that here, idk
 									pe.ReplaceFile("zones\\global\\global_gfx"+".tex", gfx.ToArray());
 									if (scn != null)
 									{
@@ -969,13 +979,13 @@ class Program
 						Process mid2chart = cmd(folder + "mid2chart.exe",
 							paksongmid.Quotes() + " -k -u -p -m");
 						print(vstr[16], chartConvColor); // "Reading file."
-						if (Path.GetFileName(args[0]).EndsWith(chartext))
+						if (Path.GetFileName(args[0]).ToLower().EndsWith(chartext))
 						{
 							vl(vstr[17], chartConvColor); // "Detected chart file."
 							ischart = true;
 						}
-						else if (Path.GetFileName(args[0]).EndsWith(midext) ||
-							Path.GetFileName(args[0]).EndsWith(midext + 'i'))
+						else if (Path.GetFileName(args[0]).ToLower().EndsWith(midext) ||
+							Path.GetFileName(args[0]).ToLower().EndsWith(midext + 'i'))
 						{
 							vl(vstr[18], chartConvColor); // "Detected midi file."
 							vl(vstr[19], chartConvColor); // "Converting to chart..."
@@ -1247,6 +1257,7 @@ class Program
 							DialogResult audiolost, playsilent = DialogResult.No, searchaudioresult = DialogResult.Cancel;
 							OpenFileDialog searchaudio = new OpenFileDialog()
 							{
+								// support online URLs in input text box?
 								CheckFileExists = true,
 								CheckPathExists = true,
 								InitialDirectory = Path.GetDirectoryName(args[0]),
@@ -2954,8 +2965,8 @@ class Program
 					#endregion
 					#region FSP EXTRACT
 					else if (File.Exists(args[0]) &&
-						(args[0].EndsWith(".fsp") || args[0].EndsWith(".zip") ||
-						args[0].EndsWith(".7z") || args[0].EndsWith(".rar")))
+						(args[0].ToLower().EndsWith(".fsp") || args[0].ToLower().EndsWith(".zip") ||
+						args[0].ToLower().EndsWith(".7z") || args[0].ToLower().EndsWith(".rar")))
 					{
 						// 7kb
 						log.WriteLine(vstr[77]);
@@ -3077,7 +3088,7 @@ class Program
 							{
 								zipReadBlatantfail = true;
 							}
-							if ((args[0].EndsWith(".zip") || args[0].EndsWith(".fsp" /* :( */)) && !zipReadBlatantfail)
+							if ((args[0].ToLower().EndsWith(".zip") || args[0].ToLower().EndsWith(".fsp" /* :( */)) && !zipReadBlatantfail)
 							{
 								using (ZipFile file = ZipFile.Read(args[0]))
 								{
@@ -3139,6 +3150,8 @@ class Program
 												f.EndsWith(".mp3") ||
 												f.EndsWith(".wav") ||
 												f.EndsWith(".opus"))
+												// TODO: filter to files that would
+												// actually be used by the chart
 											{
 												vl("Found audio, extracting...", FSPcolor);
 												data.Extract(tmpf);

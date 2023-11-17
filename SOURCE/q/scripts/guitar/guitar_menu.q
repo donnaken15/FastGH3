@@ -62,7 +62,6 @@ modes_fs = {
 }
 script start_custom_game
 	params = ($mode_setup)
-	printstruct <params>
 	change game_mode = ($modes[(<params>.mode)])
 	change current_num_players = ((<params>.players) + 1)
 	change player1_device = ((<params>.devices)[0])
@@ -983,7 +982,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 			endif
 			quit_script = ui_flow_manager_respond_to_action
 			quit_script_params = {action = select_quit create_params = {Player = <Player>}}
-			if ($is_network_game)
+			/*if ($is_network_game)
 				quit_script = create_leaving_lobby_dialog
 				quit_script_params = {
 					create_pause_menu
@@ -991,7 +990,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 					pad_choose_script = pause_menu_really_quit_net_game
 					z = 300
 				}
-			endif
+			endif*///
 			new_pause_menu_button {
 				<params_params>
 				id = pause_quit
@@ -1447,7 +1446,7 @@ script destroy_pause_menu
 	endif
 endscript
 
-script create_menu_backdrop\{texture = venue_bg rgba = [255 255 255 255]}
+script create_menu_backdrop\{texture = venue_bg rgba = [255 255 255 255] z = 0}
 	if ScreenElementExists \{id = menu_backdrop_container}
 		DestroyScreenElement \{id = menu_backdrop_container}
 	endif
@@ -1461,7 +1460,7 @@ script create_menu_backdrop\{texture = venue_bg rgba = [255 255 255 255]}
 		Pos = (640.0, 360.0)
 		dims = (1280.0, 720.0)
 		just = [center center]
-		z_priority = 0
+		z_priority = <z>
 	}
 endscript
 

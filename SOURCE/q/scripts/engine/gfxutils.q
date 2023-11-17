@@ -32,7 +32,7 @@ script HiResScreenshot\{Scale = 1}
 	repeat <Scale>
 	<cameraid> ::SetSubFrustum res = 1 subImage = 0
 	root_window ::DoMorph \{alpha = 1}
-	if GotParam \{Do2D}
+	if GotParam \{Do2D}	
 		if isXenon
 			Change \{ISOLATE_2D_RENDER = 1}
 			wait \{3 frames}

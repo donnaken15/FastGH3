@@ -1,4 +1,4 @@
-Z_Video_movie_viewport = {
+/*Z_Video_movie_viewport = {
 	id = movie1_viewport
 	texture = viewport9
 	textureasset = None
@@ -21,15 +21,12 @@ Z_Video_movie_viewport_ps3 = {
 	loop_start = 0
 	loop_end = -1
 	viewport_style = cutscene_movie_surface_ps3
-}
+}*///
+
+movie_viewport = z_viewer_movie_viewport
 
 script create_movie_viewport
-	GetPakManCurrentName \{map = zones}
-	if isps3
-		FormatText checksumName = movie_viewport '%s_movie_viewport_ps3' s = <pakname>
-	else
-		FormatText checksumName = movie_viewport '%s_movie_viewport' s = <pakname>
-	endif
+	movie_viewport = ($movie_viewport)
 	if NOT GlobalExists name = <movie_viewport>
 		return
 	endif
@@ -55,8 +52,7 @@ script create_movie_viewport
 endscript
 
 script destroy_movie_viewport
-	GetPakManCurrentName \{map = zones}
-	FormatText checksumName = movie_viewport '%s_movie_viewport' s = <pakname>
+	movie_viewport = ($movie_viewport)
 	if NOT GlobalExists name = <movie_viewport>
 		return
 	endif

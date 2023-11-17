@@ -210,6 +210,9 @@ practice_select_speed_fs = {
 	]
 }
 
+practice_pressed_select_key = 0
+practice_pressed_too_fast = 0
+
 script practice_start_song\{device_num = 0}
 	Change \{game_mode = training}
 	Change \{current_transition = practice}
@@ -241,7 +244,13 @@ script practice_restart_song
 		menu_audio_settings_update_band_volume \{vol = 0}
 	endif*/
 	//SetSoundBussParams \{Crowd = {vol = -100.0}}
+	spawnscriptnow \{practice_select_wait}
 	spawnscriptnow \{practice_update}
+endscript
+
+script practice_select_wait
+	Wait \{5 gameframes}
+	change \{practice_pressed_too_fast = 0}
 endscript
 
 script practice_restore_select_key_binding
@@ -258,7 +267,24 @@ endscript
 
 script practice_update
 	begin
-		//practice_audio_filter
+		if ($practice_pressed_too_fast = 0)
+			device_num = ($player1_device)
+			if WinPortSioIsKeyboard deviceNum = <device_num>
+				WinPortSioGetControlBinding deviceNum = <device_num> actionNum = 5
+				target_key = <controlNum>
+				WinPortSioGetControlPress deviceNum = <device_num> actionNum = 0
+				if (<controlNum> = <target_key>)
+					if ($practice_pressed_select_key = 0)
+						change \{practice_pressed_select_key = 1}
+						change \{practice_pressed_too_fast = 1}
+						spawnscriptnow \{practice_instarestart}
+					endif
+				else
+					change \{practice_pressed_select_key = 0}
+				endif
+			endif
+		endif
+		practice_audio_filter
 		GetSongTimeMs
 		if ($practice_loop_mode = 0)
 			if (<time> > ($practice_end_time + ($Song_Win_Delay * 1000 - 100)))

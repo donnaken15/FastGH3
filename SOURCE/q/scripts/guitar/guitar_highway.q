@@ -487,6 +487,7 @@ script move_highway_2d
 		endif
 		i1000 = (1000.0 / <interval>)
 		generate_move_table interval=<interval> pos_start_orig=<pos_start_orig>
+		GetArraySize \{moveTable}
 		start_time = (<time> - (400.0 * <movetime>)) // instantly appear animating into screen
 		last_time = -1
 		begin
@@ -498,7 +499,7 @@ script move_highway_2d
 				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<y> * (0.0, 1.0)))
 				last_time = <time2>
 			endif
-			if (<y> <= <pos_start_orig>)
+			if (<y> <= <pos_start_orig> || <time2> > <array_size>)
 				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))
 				break
 			endif
