@@ -13,6 +13,8 @@ output_song_stats = 1
 show_sensor_debug = 0
 player1_device = 0
 player2_device = 1
+coop_tracks = 0
+autostart_coop = 0
 current_song = fastgh3
 current_difficulty = expert
 current_difficulty2 = expert
@@ -141,10 +143,30 @@ gem_scale_orig2 = 0.0
 part_index = { guitar = 0 rhythm = 1 }
 parts = [ guitar rhythm ]
 part_names = { guitar = 'Guitar' rhythm = 'Rhythm' }
+diff_index = { easy = 0 medium = 1 hard = 2 expert = 3 }
+modes = [
+	p1_quickplay
+	training
+	p2_coop
+	p2_faceoff
+	p2_pro_faceoff
+	p2_battle
+]
+mode_index = {
+	p1_quickplay = 0
+	p1_career = 0 // lol
+	training = 1
+	p2_coop = 2
+	p2_career = 2
+	p2_faceoff = 3
+	p2_pro_faceoff = 4
+	p2_battle = 5
+}
 
 fastgh3_build = '1.0-999010889'
-bleeding_edge = 0
-build_timestamp = [07 04 2023]
+fastgh3_branch = unpak
+bleeding_edge = 1
+build_timestamp = [11 17 2023]
 
 script FileExists \{#"0x00000000" = ''}
 	if exists <#"0x00000000">
@@ -230,270 +252,313 @@ script guitar_startup
 	//if CD
 	//	printf \{'is CD'}
 	//endif
-	SetConfig \{NotCD GotExtraMemory}
+	//SetConfig \{NotCD GotExtraMemory}
 	//if NotCD
 	//	printf \{'isn\'t CD'}
 	//endif
 	ProfilingStart
-	change player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }
-	change player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }
-	printf \{'Initializing unneeded stuff'}
-	//CompositeObjectManager_startup
-	//MemCardSystemInitialize // probably destroyed and broke save functionality
-	InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
-	//InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
-	LightShow_Init \{notes = $LightShow_NoteMapping nodeflags = $LightShow_StateNodeFlags ColorOverrideExclusions = $LightShow_ColorOverrideExcludeLights}
-	printf \{'Initializing Replay buffer'}
-	AllocateDataBuffer \{name = replay kb = 5120}
-	ProfilingEnd <...> 'init things'
+	// region player init struct and deflate file size :/
+		change player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }
+		change player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }
+	// endregion
+	
+	// region useless
+		printf \{'Initializing unneeded stuff'}
+		//CompositeObjectManager_startup
+		//MemCardSystemInitialize // probably destroyed and broke save functionality
+		InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
+		//InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
+		LightShow_Init \{notes = $LightShow_NoteMapping nodeflags = $LightShow_StateNodeFlags ColorOverrideExclusions = $LightShow_ColorOverrideExcludeLights}
+		printf \{'Initializing Replay buffer'}
+		AllocateDataBuffer \{name = replay kb = 5120}
+		ProfilingEnd <...> 'init things'
+	// endregion
 	printf \{'Creating sound busses'}
 	Master_SFX_Adding_Sound_Busses
-	printf \{'Loading user config'}
-	ProfilingStart
-	migrate = 0
-	if FileExists \{'config.qb'}
-		LoadQB \{'config.qb'}
-		migrate = 1
-	elseif FileExists \{'user.pak'}
-		LoadPak \{'user.pak'}
-		migrate = 1
-	endif
-	if FileExists \{'gameplay_BG.img.xen'}
-		LoadTexture \{'../gameplay_BG'}
-	elseif FileExists \{'bkgd.pak.xen'} // deprecated, BTFO'd by above
-		LoadPak \{'bkgd.pak' Heap = heap_global_pak}
-	endif
-	ProfilingEnd <...> 'load config files'
-	// move old (common) config values over from QB since this will be used less now
-	// i'll probably have to package release with MigratedConfig values set for new users
-	if IsTrue <migrate>
+	
+	// region user config
+		printf \{'Loading user config'}
 		ProfilingStart
-		FGH3Config \{sect='Temp' 'MigratedConfig' #"0x1ca1ff20"=0}
-		ProfilingEnd <...> 'INI read x1'
-		if NOT IsTrue <value>
-			ProfilingStart
-			FGH3Config sect='Player' 'Hyperspeed' set=($Cheat_Hyperspeed)
-			FGH3Config sect='Player' 'Autostart' set=($autolaunch_startnow)
-			if GlobalExists \{name=p1_part type=int}
-				FGH3Config sect='Player1' 'Part' set=($p1_part) // this is my fault but because i had limited resources
-			else
-				FGH3Config sect='Player1' 'Part' set=($part_index.($player1_status.part))
-			endif
-			if GlobalExists \{name=p2_part type=int}
-				FGH3Config sect='Player2' 'Part' set=($p2_part)
-			else
-				FGH3Config sect='Player2' 'Part' set=($part_index.($player2_status.part))
-			endif
-			FGH3Config sect='Player1' 'Device' set=($startup_controller)
-			FGH3Config sect='Player2' 'Device' set=($startup_controller2)
-			FGH3Config sect='Player1' 'Diff' set=($difficulty_list_props.$current_difficulty.index)
-			FGH3Config sect='Player2' 'Diff' set=($difficulty_list_props.$current_difficulty2.index)
-			FGH3Config sect='GFX' 'MaxFPS' set=($fps_max)
-			FGH3Config sect='GFX' 'NoIntro' set=($disable_intro)
-			FGH3Config sect='Player' 'ExitOnSongEnd' set=($exit_on_song_end)
-			FGH3Config sect='Player' 'FCMode' set=($FC_MODE)
-			FGH3Config sect='Player' 'EasyExpert' set=($Cheat_EasyExpert)
-			FGH3Config sect='Player' 'Precision' set=($Cheat_PrecisionMode)
-			FGH3Config sect='Player' 'EarlySustains' set=($anytime_sustain_activation)
-			FGH3Config sect='Player' 'NoFail' set=($Cheat_NoFail)
-			FGH3Config sect='GFX' 'NoIntroReadyTime' set=($nointro_ready_time)
-			FGH3Config sect='GFX' 'BGVideo' set=($enable_video)
-			FGH3Config sect='GFX' 'NoHUD' set=($hudless)
-			FGH3Config sect='GFX' 'KillGemsHit' set=($kill_gems_on_hit)
-			FGH3Config sect='GFX' 'NoStreakDisp' set=($disable_notestreak_notif)
-			FGH3Config sect='GFX' 'NoParticles' set=($disable_particles)
-			FGH3Config sect='GFX' 'Performance' set=($Cheat_PerformanceMode)
-			FGH3Config sect='Misc' 'Debug' set=($enable_button_cheats)
-			ProfilingEnd <...> 'INI write x24'
-			FGH3Config \{sect='Temp' 'MigratedConfig' set=1}
+		migrate = 0
+		if FileExists \{'config.qb'}
+			LoadQB \{'config.qb'}
+			migrate = 1
+		elseif FileExists \{'user.pak'}
+			LoadPak \{'user.pak'}
+			migrate = 1
 		endif
-	endif
-	
-	printf \{'Reading INI'}
-	ProfilingStart
-	
-	icc = [ // ini_common_config
-		// BLOATED BY 4KB IF GLOBAL
-		// takes 0.038ms |:|
-		// 0 = default if not specified
-		{ sect='Player' [
-			{'Hyperspeed' out=Cheat_Hyperspeed #"0x1ca1ff20"=3}
-			{'Autostart' out=autolaunch_startnow #"0x1ca1ff20"=1}
-			{'ExitOnSongEnd' out=exit_on_song_end}
-			{'FCMode' out=FC_MODE}
-			{'EasyExpert' out=Cheat_EasyExpert}
-			{'Precision' out=Cheat_PrecisionMode}
-			{'EarlySustains' out=anytime_sustain_activation}
-			{'NoFail' out=Cheat_NoFail}
-			//{'Speed' out=current_speedfactor #"0x1ca1ff20"=1.0}
-		] }
-		{ sect='GFX' [
-			{'MaxFPS' out=fps_max #"0x1ca1ff20"=1000}
-			{'NoIntro' out=disable_intro}
-			{'NoIntroReadyTime' out=nointro_ready_time #"0x1ca1ff20"=400}
-			{'BGVideo' out=enable_video}
-			{'BGVideoStartTime' out=video_start_on_time}
-			{'BGVideoLoop' out=video_looping}
-			{'BGVideoHold' out=video_hold_last_frame}
-			{'NoHUD' out=hudless}
-			{'KillGemsHit' out=kill_gems_on_hit}
-			{'NoStreakDisp' out=disable_notestreak_notif}
-			{'NoParticles' out=disable_particles}
-			{'Performance' out=Cheat_PerformanceMode}
-			{'NoShake' out=disable_shake}
-		] }
-		{ sect='Misc' [
-			{'Debug' out=enable_button_cheats}
-		] }
-		{ sect='Player1' [
-			{'Device' out=startup_controller}
-			{'Lefty' out=p1_lefty}
-		] }
-		{ sect='Player2' [
-			{'Device' out=startup_controller2 #"0x1ca1ff20"=1}
-			{'Lefty' out=p2_lefty}
-		] }
-	]
-	GetArraySize \{icc}
-	i = 0
-	begin
-		ii = (<icc>[<i>].#"0x00000000")
-		sect = (<icc>[<i>].sect)
-		j = 0
-		GetArraySize \{ii}
+		if FileExists \{'gameplay_BG.img.xen'}
+			LoadTexture \{'../gameplay_BG'}
+		elseif FileExists \{'bkgd.pak.xen'} // deprecated, BTFO'd by above
+			LoadPak \{'bkgd.pak' Heap = heap_global_pak}
+		endif
+		ProfilingEnd <...> 'load config files'
+		// region move old (common) config values over from QB since this will be used less now
+			// i'll probably have to package release with MigratedConfig values set for new users
+			//
+			// might just disable this for the time being, what percentage of users might've even
+			// moved their old configs over
+			/**
+			if IsTrue <migrate>
+				ProfilingStart
+				FGH3Config \{sect='Temp' 'MigratedConfig' #"0x1ca1ff20"=0}
+				ProfilingEnd <...> 'INI read x1'
+				if NOT IsTrue <value>
+					ProfilingStart
+					FGH3Config sect='Player' 'Hyperspeed' set=($Cheat_Hyperspeed)
+					FGH3Config sect='Player' 'Autostart' set=($autolaunch_startnow)
+					if GlobalExists \{name=p1_part type=int}
+						FGH3Config sect='Player1' 'Part' set=($p1_part) // this is my fault but because i had limited resources
+					else
+						FGH3Config sect='Player1' 'Part' set=($part_index.($player1_status.part))
+					endif
+					if GlobalExists \{name=p2_part type=int}
+						FGH3Config sect='Player2' 'Part' set=($p2_part)
+					else
+						FGH3Config sect='Player2' 'Part' set=($part_index.($player2_status.part))
+					endif
+					FGH3Config sect='Player1' 'Device' set=($startup_controller)
+					FGH3Config sect='Player2' 'Device' set=($startup_controller2)
+					FGH3Config sect='Player1' 'Diff' set=($difficulty_list_props.$current_difficulty.index)
+					FGH3Config sect='Player2' 'Diff' set=($difficulty_list_props.$current_difficulty2.index)
+					FGH3Config sect='GFX' 'MaxFPS' set=($fps_max)
+					FGH3Config sect='GFX' 'NoIntro' set=($disable_intro)
+					FGH3Config sect='Player' 'ExitOnSongEnd' set=($exit_on_song_end)
+					FGH3Config sect='Player' 'FCMode' set=($FC_MODE)
+					FGH3Config sect='Player' 'EasyExpert' set=($Cheat_EasyExpert)
+					FGH3Config sect='Player' 'Precision' set=($Cheat_PrecisionMode)
+					FGH3Config sect='Player' 'EarlySustains' set=($anytime_sustain_activation)
+					FGH3Config sect='Player' 'NoFail' set=($Cheat_NoFail)
+					FGH3Config sect='GFX' 'NoIntroReadyTime' set=($nointro_ready_time)
+					FGH3Config sect='GFX' 'BGVideo' set=($enable_video)
+					FGH3Config sect='GFX' 'NoHUD' set=($hudless)
+					FGH3Config sect='GFX' 'KillGemsHit' set=($kill_gems_on_hit)
+					FGH3Config sect='GFX' 'NoStreakDisp' set=($disable_notestreak_notif)
+					FGH3Config sect='GFX' 'NoParticles' set=($disable_particles)
+					FGH3Config sect='GFX' 'Performance' set=($Cheat_PerformanceMode)
+					FGH3Config sect='Misc' 'Debug' set=($enable_button_cheats)
+					ProfilingEnd <...> 'INI write x24'
+					FGH3Config \{sect='Temp' 'MigratedConfig' set=1}
+				endif
+			endif
+			/**///
+		// endregion
+		
+		printf \{'Reading INI'}
+		ProfilingStart
+		
+		icc = [ // ini_common_config
+			// BLOATED BY 4KB IF GLOBAL
+			// takes 0.038ms |:|
+			// 0 = default if not specified
+			{ sect='Player' [
+				{'Hyperspeed' out=Cheat_Hyperspeed #"0x1ca1ff20"=3}
+				{'Autostart' out=autolaunch_startnow #"0x1ca1ff20"=1}
+				{'ExitOnSongEnd' out=exit_on_song_end}
+				{'FCMode' out=FC_MODE}
+				{'EasyExpert' out=Cheat_EasyExpert}
+				{'Precision' out=Cheat_PrecisionMode}
+				{'EarlySustains' out=anytime_sustain_activation}
+				{'NoFail' out=Cheat_NoFail}
+				{'CoopTracks' out=coop_tracks} // effective only when chart actually has both co-op parts
+				//{'Speed' out=current_speedfactor #"0x1ca1ff20"=1.0}
+				{'OutputStats' out=output_song_stats}
+			] }
+			{ sect='GFX' [
+				{'MaxFPS' out=fps_max #"0x1ca1ff20"=1000}
+				{'NoIntro' out=disable_intro}
+				{'NoIntroReadyTime' out=nointro_ready_time #"0x1ca1ff20"=400}
+				{'BGVideo' out=enable_video}
+				{'BGVideoStartTime' out=video_start_on_time}
+				{'BGVideoLoop' out=video_looping}
+				{'BGVideoHold' out=video_hold_last_frame}
+				{'NoHUD' out=hudless}
+				{'KillGemsHit' out=kill_gems_on_hit}
+				{'NoStreakDisp' out=disable_notestreak_notif}
+				{'NoParticles' out=disable_particles}
+				{'Performance' out=Cheat_PerformanceMode}
+				{'NoShake' out=disable_shake}
+			] }
+			{ sect='Misc' [
+				{'Debug' out=enable_button_cheats}
+			] }
+			{ sect='Player1' [
+				{'Device' out=startup_controller}
+				{'Lefty' out=p1_lefty}
+			] }
+			{ sect='Player2' [
+				{'Device' out=startup_controller2 #"0x1ca1ff20"=1}
+				{'Lefty' out=p2_lefty}
+			] }
+		]
+		GetArraySize \{icc}
+		i = 0
 		begin
-			jj = (<ii>[<j>])
-			k = 0
-			if StructureContains \{structure=jj #"0x1ca1ff20"}
-				k = (<jj>.#"0x1ca1ff20")
-			endif
-			SetValueFromConfig sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k> out=(<jj>.out)
-			Increment \{j}
+			ii = (<icc>[<i>].#"0x00000000")
+			sect = (<icc>[<i>].sect)
+			j = 0
+			GetArraySize \{ii}
+			begin
+				jj = (<ii>[<j>])
+				k = 0
+				if StructureContains \{structure=jj #"0x1ca1ff20"}
+					k = (<jj>.#"0x1ca1ff20")
+				endif
+				SetValueFromConfig sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k> out=(<jj>.out)
+				Increment \{j}
+			repeat <array_size>
+			Increment \{i}
+			// 2MS >:(
 		repeat <array_size>
-		Increment \{i}
-		// 2MS >:(
-	repeat <array_size>
-	FGH3Config \{sect='Player' 'Speed' #"0x1ca1ff20"=1.0}
-	change current_speedfactor = <value>
-	if ($current_speedfactor <= 0.0)
-		if FGH3Config \{sect='Player' 'Speed' #"0x1ca1ff20"=1.0}
-			printf \{'Can\'t have zero percent speed!!!!!'}
-			FGH3Config \{sect='Player' 'Speed' set=1.0}
-		endif
-		change \{current_speedfactor = 1.0}
-	endif
-	
-	// PLAYER 1 CONFIG
-	FGH3Config \{sect='Player1' 'Diff' #"0x1ca1ff20"=3}
-	change current_difficulty=($difficulty_array[<value>])
-	FGH3Config \{sect='Player1' 'Part' #"0x1ca1ff20"=0}
-	change structurename=player1_status part=($parts[<value>])
-	// PLAYER 2 CONFIG
-	FGH3Config \{sect='Player2' 'Diff' #"0x1ca1ff20"=3}
-	change current_difficulty2=($difficulty_array[<value>])
-	FGH3Config \{sect='Player2' 'Part' #"0x1ca1ff20"=1}
-	change structurename=player2_status part=($parts[<value>])
-	FGH3Config \{sect='GFX' 'GemScale' #"0x1ca1ff20"=1.0}
-	ProfilingEnd <...> 'INI read'
-	change gem_scalar = <value>
-	change \{gem_scale_orig1 = $gem_start_scale1}
-	change \{gem_scale_orig2 = $gem_start_scale2}
-	change gem_start_scale1 = ($gem_start_scale1 * <value>)
-	change gem_start_scale2 = ($gem_start_scale2 * <value>)
-	
-	ProfilingStart
-	if ScriptExists \{startup}
-		startup
-	endif
-	printf \{'Loading user mods'}
-	StartWildcardSearch \{wildcard = 'MODS\*.qb.xen'}
-	begin
-		if NOT GetWildcardFile
-			break
-		endif
-		change \{mod_info = {}}
-		printf 'Loading %f.qb' f = <basename>
-		formattext textname = file 'MODS/%f.qb' f = <basename>
-		LoadQB <file>
-		formattext checksumname = mod_info_name '%f_mod_info' f = <basename>
-		if GlobalExists name = <mod_info_name> type = structure
-			mod_info = ($<mod_info_name>)
-		elseif GlobalExists \{name = mod_info type = structure}
-			mod_info = $mod_info
+		FGH3Config \{sect='Player' 'Speed' #"0x1ca1ff20"=1.0}
+		if (<value> > 0.0)
+			change current_speedfactor = <value>
 		else
-			mod_info = {failed}
-		endif
-		//printstruct <mod_info>
-		name = 'Untitled'
-		author = 'Unknown'
-		version = 'unknown'
-		if StructureContains \{structure=mod_info name}
-			name = (<mod_info>.name)
-		endif
-		if StructureContains \{structure=mod_info author}
-			author = (<mod_info>.author)
-		endif
-		if StructureContains \{structure=mod_info version}
-			version = (<mod_info>.version)
-		endif
-		FSZ <filesize>
-		printf "Mod info: %t by %a / version %v, size: %s" t=<name> a=<author> v=<version> s=<textsize>
-		if StructureContains \{structure=mod_info desc}
-			printf "Description: %d" d=(<mod_info>.desc)
-		endif
-		formattext checksumname = startup_script '%f_startup' f = <basename>
-		if ScriptExists <startup_script>
-			SpawnScriptNow <startup_script> params = { filename = <filename> basename = <basename> }
-		else
-			if ScriptExists \{mod_startup}
-				SpawnScriptNow mod_startup params = { filename = <filename> basename = <basename> }
+			if FGH3Config \{sect='Player' 'Speed' #"0x1ca1ff20"=1.0}
+				printf \{'Can\'t have zero percent speed!!!!!'}
+				FGH3Config \{sect='Player' 'Speed' set=1.0}
 			endif
+			change \{current_speedfactor = 1.0}
 		endif
-	repeat
-	EndWildcardSearch
-	ProfilingEnd <...> 'mod load'
-	
-	printf \{'Loading Paks'}
-	ProfilingStart
-	LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile}
-	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
-	// test time to load
-	ProfilingEnd <...> 'LoadPak global.pak'
-	ProfilingStart
-	LoadPak \{'zones/default.pak'}
-	ProfilingEnd <...> 'LoadPak default.pak'
-	printf \{'Loading unpacked images'}
-	ProfilingStart
-	StartWildcardSearch \{wildcard = 'IMAGES\*.img.xen'}
-	begin
-		if NOT GetWildcardFile
-			break
+		
+		FGH3Config \{sect='Player' 'Mode' #"0x1ca1ff20"=0}
+		if (<value> < 6)
+			change game_mode = ($modes[<value>])
+		else
+			printf \{'Invalid game mode index!!!!!!!!'}
 		endif
-		printf 'Loading images/%f.img' f = <basename>
-		LoadTexture <basename>
-	repeat
-	EndWildcardSearch
-	ProfilingEnd <...> 'LoadTexture *'
+		if (<value> = 2)
+			change \{autostart_coop = 1}
+		endif
+		FGH3Config \{sect='Player' '2Player' #"0x1ca1ff20"=0}
+		if (<value> = 1)
+			change \{current_num_players = 2}
+		else
+			change \{current_num_players = 1}
+		endif
+		
+		// PLAYER 1 CONFIG
+		FGH3Config \{sect='Player1' 'Diff' #"0x1ca1ff20"=3}
+		change current_difficulty=($difficulty_list[<value>])
+		FGH3Config \{sect='Player1' 'Part' #"0x1ca1ff20"=0}
+		change structurename=player1_status part=($parts[<value>])
+		FGH3Config \{sect='Player1' 'Bot' #"0x1ca1ff20"=0}
+		change structurename=player1_status bot_play=<value>
+		// PLAYER 2 CONFIG
+		FGH3Config \{sect='Player2' 'Diff' #"0x1ca1ff20"=3}
+		change current_difficulty2=($difficulty_list[<value>])
+		FGH3Config \{sect='Player2' 'Part' #"0x1ca1ff20"=1}
+		change structurename=player2_status part=($parts[<value>])
+		FGH3Config \{sect='Player2' 'Bot' #"0x1ca1ff20"=0}
+		change structurename=player2_status bot_play=<value>
+		FGH3Config \{sect='GFX' 'GemScale' #"0x1ca1ff20"=1.0}
+		ProfilingEnd <...> 'INI read'
+		change gem_scalar = <value>
+		change \{gem_scale_orig1 = $gem_start_scale1}
+		change \{gem_scale_orig2 = $gem_start_scale2}
+		change gem_start_scale1 = ($gem_start_scale1 * <value>)
+		change gem_start_scale2 = ($gem_start_scale2 * <value>)
+		
+		if ScriptExists \{startup}
+			startup // optional thing to load from config.qb
+		endif
+	// endregion
 	
-	ProfilingStart
-	SetFontProperties \{'text_A1' color_tab = $Default_Font_Colors}
-	SetFontProperties \{'ButtonsXenon' buttons_font}
-	SetFontProperties \{'text_a3' color_tab = $Default_Font_Colors}
-	SetFontProperties \{'text_a4' color_tab = $Default_Font_Colors}
-	SetFontProperties \{'text_a6' color_tab = $Default_Font_Colors}
-	SetFontProperties \{'num_a7' color_tab = $Default_Font_Colors}
-	SetFontProperties \{'num_a9' color_tab = $Default_Font_Colors}
-	SetFontProperties \{'text_a10' color_tab = $Default_Font_Colors}
-	SetFontProperties \{'text_a11' color_tab = $Default_Font_Colors}
-	SetFontProperties \{'fontgrid_title_gh3' color_tab = $Default_Font_Colors}
-	ProfilingEnd <...> 'font properties'
+	// region mod load
+		ProfilingStart
+		printf \{'Loading user mods'}
+		StartWildcardSearch \{wildcard = 'MODS\*.qb.xen'}
+		begin
+			if NOT GetWildcardFile
+				break
+			endif
+			change \{mod_info = {}}
+			printf 'Loading %f.qb' f = <basename>
+			formattext textname = file 'MODS/%f.qb' f = <basename>
+			LoadQB <file>
+			formattext checksumname = mod_info_name '%f_mod_info' f = <basename>
+			if GlobalExists name = <mod_info_name> type = structure
+				mod_info = ($<mod_info_name>)
+			elseif GlobalExists \{name = mod_info type = structure}
+				mod_info = $mod_info
+			else
+				mod_info = {failed}
+			endif
+			//printstruct <mod_info>
+			name = 'Untitled'
+			author = 'Unknown'
+			version = 'unknown'
+			if StructureContains \{structure=mod_info name}
+				name = (<mod_info>.name)
+			endif
+			if StructureContains \{structure=mod_info author}
+				author = (<mod_info>.author)
+			endif
+			if StructureContains \{structure=mod_info version}
+				version = (<mod_info>.version)
+			endif
+			FSZ <filesize>
+			printf "Mod info: %t by %a / version %v, size: %s" t=<name> a=<author> v=<version> s=<textsize>
+			if StructureContains \{structure=mod_info desc}
+				printf "Description: %d" d=(<mod_info>.desc)
+			endif
+			formattext checksumname = startup_script '%f_startup' f = <basename>
+			if ScriptExists <startup_script>
+				SpawnScriptNow <startup_script> params = { filename = <filename> basename = <basename> }
+			else
+				if ScriptExists \{mod_startup}
+					SpawnScriptNow mod_startup params = { filename = <filename> basename = <basename> }
+				endif
+			endif
+		repeat
+		EndWildcardSearch
+		ProfilingEnd <...> 'mod load'
+	// endregion
 	
-	ProfilingStart
-	if IsFmodEnabled
-		EnableRemoveSoundEntry \{enable}
-		LoadPak \{'zones/global_sfx.pak' Heap = heap_audio}
-	endif
-	CreatePakManMap \{map = zones links = GH3Zones folder = 'zones/' uselinkslots}
+	// region grafisxs and snoud
+		printf \{'Loading Paks'}
+		ProfilingStart
+		LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile}
+		SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
+		// test time to load
+		ProfilingEnd <...> 'LoadPak global.pak'
+		ProfilingStart
+		LoadPak \{'zones/default.pak'}
+		ProfilingEnd <...> 'LoadPak default.pak'
+		
+		printf \{'Loading unpacked images'}
+		ProfilingStart
+		StartWildcardSearch \{wildcard = 'IMAGES\*.img.xen'}
+		begin
+			if NOT GetWildcardFile
+				break
+			endif
+			printf 'Loading images/%f.img' f = <basename>
+			LoadTexture <basename>
+		repeat
+		EndWildcardSearch
+		ProfilingEnd <...> 'LoadTexture *'
+		
+		ProfilingStart
+		SetFontProperties \{'text_A1' color_tab = $Default_Font_Colors}
+		SetFontProperties \{'ButtonsXenon' buttons_font}
+		SetFontProperties \{'text_a3' color_tab = $Default_Font_Colors}
+		SetFontProperties \{'text_a4' color_tab = $Default_Font_Colors}
+		SetFontProperties \{'text_a6' color_tab = $Default_Font_Colors}
+		SetFontProperties \{'num_a7' color_tab = $Default_Font_Colors}
+		SetFontProperties \{'num_a9' color_tab = $Default_Font_Colors}
+		SetFontProperties \{'text_a10' color_tab = $Default_Font_Colors}
+		SetFontProperties \{'text_a11' color_tab = $Default_Font_Colors}
+		SetFontProperties \{'fontgrid_title_gh3' color_tab = $Default_Font_Colors}
+		ProfilingEnd <...> 'font properties'
+		
+		ProfilingStart
+		if IsFmodEnabled
+			EnableRemoveSoundEntry \{enable}
+			LoadPak \{'zones/global_sfx.pak' Heap = heap_audio}
+		endif
+		CreatePakManMap \{map = zones links = GH3Zones folder = 'zones/' uselinkslots}
+	// endregion
 	
 	printf \{'Initializing screen element system'}
 	ScreenElementSystemInit
@@ -503,25 +568,187 @@ script guitar_startup
 	setup_sprites
 	ProfilingEnd <...> 'screen element stuff'
 	
-	printf \{'Allocating new big arrays'}
-	// sick of seeing a bunch of zeroes :/
-	ProfilingStart
-	// {
-	AllocArray \{size = 97 p1_last_song_detailed_stats}
-	AllocArray \{size = 97 p2_last_song_detailed_stats}
-	AllocArray \{size = 97 p1_last_song_detailed_stats_max}
-	AllocArray \{size = 97 p2_last_song_detailed_stats_max}
-	AllocArray \{WhammyWibble0 set = 1.0 size = 136}
-	AllocArray \{WhammyWibble1 set = 1.0 size = 136}
-	// } ran for 0.3ms
-	AllocArray \{size = 32 solo_hit_buffer_p1}
-	AllocArray \{size = 32 solo_hit_buffer_p2}
-	AllocArray \{size = $highway_lines set = 0.0 gem_time_table512}
-	AllocArray \{size = $highway_lines set = 0.0 rowHeightNormalizedDistance}
-	AllocArray \{size = $highway_lines set = 0.0 rowHeight}
-	AllocArray \{size = $highway_lines set = 0.0 time_accum_table}
-	ProfilingEnd <...> 'AllocArray x12'
-	// 5 ms (michael scott gif)
+	//Load_Venue
+	SetPakManCurrentBlock \{map = zones pak = z_viewer block_scripts = 0}
+	
+	// region initialize big stuff
+		printf \{'Allocating new big arrays'}
+		// sick of seeing a bunch of zeroes :/
+		ProfilingStart
+		// {
+		AllocArray \{size = 500 p1_last_song_detailed_stats}
+		AllocArray \{size = 500 p2_last_song_detailed_stats}
+		AllocArray \{size = 500 p1_last_song_detailed_stats_max}
+		AllocArray \{size = 500 p2_last_song_detailed_stats_max}
+		AllocArray \{WhammyWibble0 set = 1.0 size = 136}
+		AllocArray \{WhammyWibble1 set = 1.0 size = 136}
+		// } ran for 0.3ms
+		AllocArray \{size = 32 solo_hit_buffer_p1}
+		AllocArray \{size = 32 solo_hit_buffer_p2}
+		AllocArray \{size = $highway_lines set = 0.0 gem_time_table512}
+		AllocArray \{size = $highway_lines set = 0.0 rowHeightNormalizedDistance}
+		AllocArray \{size = $highway_lines set = 0.0 rowHeight}
+		AllocArray \{size = $highway_lines set = 0.0 time_accum_table}
+		ProfilingEnd <...> 'AllocArray x12'
+		// 5 ms (michael scott gif)
+		
+		create_loading_strings
+		
+		change mode_buttons = [
+			{ range = 5 param = mode texts = mode_text id = select_gamemode }
+			{ range = 1 param = players texts = playercount_text id = select_playercount
+				cont = {
+					pos_off = (10,0) just = [center top]
+				}
+			}
+			{ text = 'Bind' id = select_players button }
+			{ range = 3 param = diff
+				texts = diff_text id = select_diff
+				cont = {
+					pos_off = (60,0) just = [center top]
+				}
+			}
+			{ range = 3 param = diff2
+				texts = diff_text id = select_diff2
+				cont = {
+					pos_off = (200,-50) just = [center top]
+				}
+			}
+			{ range = 1 param = part
+				texts = part_text id = select_part
+				cont = {
+					pos_off = ( 60,-50) just = [center top]
+				}
+			}
+			{ range = 1 param = part2
+				texts = part_text id = select_part2
+				cont = {
+					pos_off = (200,-100) just = [center top]
+				}
+			}
+			{ range = 1 param = bot
+				texts = toggle_text id = select_bot
+				cont = {
+					pos_off = ( 60,-100) just = [center top]
+				}
+			}
+			{ range = 1 param = bot2
+				texts = toggle_text id = select_bot2
+				cont = {
+					pos_off = (200,-150) just = [center top]
+				}
+			}
+			{ text = 'Save Settings' id = select_save button
+				cont = {
+					pos_off = (0,-150) just = [left top]
+				}
+			}
+			{ text = 'Start!' id = select_start button
+				cont = {
+					pos_off = (0,-150) just = [left top]
+				}
+			}
+		]
+		
+		change extras_menu = [
+			// guide
+			// (NO NAME) = variable to set
+			// name = display name
+			// type = type of item (bool, int, etc)
+			// min = minimum value allowed (int)
+			// max = maximum value allowed (int)
+			// sect = INI section (default: Misc)
+			// key = INI key
+			// restart = (1) requires restarting the song (2) requires restarting game?
+			{
+				Cheat_Hyperspeed
+				name='Hyperspeed'
+				sect='Player'
+				type=int min=-13 max=10
+				restart=1
+			}
+			{
+				fps_max
+				name='Frame Rate'
+				sect='GFX' key='MaxFPS'
+				type=int min=0 max=1000 step=5
+			}
+			{
+				disable_particles
+				name='Particles'
+				sect='GFX' key='NoParticles'
+				type=int min=0 max=2
+			}
+			{
+				hudless
+				name='No HUD'
+				type=bool sect='GFX' key='NoHUD'
+				restart=1
+			}
+			{
+				disable_intro
+				name='No Intro'
+				type=bool sect='GFX' key='NoIntro'
+				restart=1
+			}
+			{
+				disable_shake
+				name='No Highway Shake'
+				type=bool sect='GFX' key='NoShake'
+			}
+			{
+				exit_on_song_end
+				name='Exit on Song End'
+				type=bool sect='Player' key='ExitOnSongEnd'
+			}
+			{
+				kill_gems_on_hit
+				name='Hide Gems Upon Hit'
+				type=bool sect='GFX' key='KillGemsHit'
+			}
+			{
+				enable_button_cheats
+				name='Debug Menu'
+				type=bool key='Debug'
+			}
+			{
+				Cheat_NoFail
+				name='No Fail'
+				type=bool sect='Player' key='NoFail'
+			}
+			{
+				Cheat_EasyExpert
+				name='Easy Expert'
+				type=bool sect='Player' key='EasyExpert'
+				restart=1
+			}
+			{
+				Cheat_PrecisionMode
+				name='Precision'
+				type=bool sect='Player' key='Precision'
+				restart=1
+			}
+			{
+				FC_MODE
+				name='FC Mode'
+				type=bool sect='Player' key='FCMode'
+				restart=1
+			}
+			{
+				gem_scalar
+				name='Gem Scale'
+				sect='GFX' key='GemScale'
+				type=int min=0.0 max=100.0 step=0.05
+				restart=1
+			}
+			{
+				current_speedfactor
+				name='Speed Factor'
+				sect='Player' key='Speed'
+				type=int min=0.05 max=100.0 step=0.05
+			}
+		]
+	// endregion
 	
 	ProfilingStart
 	printf \{'Done initializing - into game...'}
@@ -536,6 +763,11 @@ script guitar_startup
 		SpawnScriptLater create_guitar_events params = { <...> }
 		Increment \{player}
 	repeat ($max_num_players)
+	Change primary_controller = ($startup_controller)
+	Change player1_device = ($startup_controller)
+	Change player2_device = ($startup_controller2)
+	Change StructureName = player1_status controller = ($primary_controller)
+	Change structurename = player2_status controller = ($startup_controller2)
 	if ($autolaunch_startnow = 0)
 		start_flow_manager \{flow_state = bootup_sequence_fs}
 	else
@@ -581,18 +813,30 @@ endscript
 
 script autolaunch_spawned
 	NewShowStorageSelector
-	start_flow_manager \{flow_state = quickplay_play_song_fs}
-	Change \{primary_controller = $startup_controller}
-	SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
+	Change \{primary_controller_assigned = 1}
+	if ($fastgh3_online = 1)
+		start_flow_manager \{flow_state = online_winport_start_connection_fs}
+	else
+		flow = quickplay_play_song_fs
+		switch $game_mode
+			case training
+				flow = practice_play_song_fs
+			case p2_coop
+			case p2_career
+				flow = coop_career_play_song_fs
+			case p2_faceoff
+				flow = mp_faceoff_play_song_fs
+			case p2_battle
+			case p1_quickplay
+			default
+				flow = quickplay_play_song_fs
+		endswitch
+		start_flow_manager flow_state = <flow>
+		SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
+	endif
 endscript
 kill_dummy_bg_camera = $EmptyScript
 restore_dummy_bg_camera = $EmptyScript
-
-dummy = {zone = z_viewer name = 'z_viewer' title = "viewer"}
-LevelZones = {
-	viewer = {$dummy}
-	load_z_viewer = {$dummy}
-}
 Terrain_Actions = $nullArray
 Terrain_Types = $nullArray
 

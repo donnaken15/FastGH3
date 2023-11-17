@@ -248,8 +248,27 @@ class Program
 	{
 		cfgW("Temp", fl, 1);
 		cfgW("Temp", "ConvPID", -1);
+		cfgW("Temp", "LoadingLock", 0);
 		if (wl && log != null)
+		{
 			log.Close();
+			wl = false; // actually die i'm not kidding you deserve it life would be so much better if you did not exist take a bow
+		}
+	}
+	public static void stupid(Process p)
+	{
+		if (!p.HasExited)
+			p.Kill();
+		/*try
+		{
+			foreach (Process proc in Process.GetProcessesByName("game"))
+				if (NP(proc.MainModule.FileName) == NP(folder + "game.exe"))
+					proc.Kill();
+			foreach (Process proc in Process.GetProcessesByName("game!"))
+				if (NP(proc.MainModule.FileName) == NP(folder + "game!.exe"))
+					proc.Kill();
+		}
+		catch { }*/
 	}
 
 	// print base
@@ -503,19 +522,19 @@ class Program
 		n.OutputDataReceived += ___;
 		return n;
 	}
-	public static void alen(string f, int i)
+	public static float alen(string f)
 	{
 		try {
-			vl("alen args: sox.exe --i -d " + f.Quotes());
-			Process c = cmd(mt + "sox.exe", "--i -d " + f.Quotes());
+			vl("alen args: sox.exe --i -D " + f.Quotes());
+			Process c = cmd(mt + "sox.exe", "--i -D " + f.Quotes());
 			c.OutputDataReceived -= ___;
-			c.OutputDataReceived += (p, d) => __(d.Data, i);
+			//c.OutputDataReceived += (p, d) => __(d.Data, i);
 			c.Start();
 			c.BeginErrorReadLine();
-			c.BeginOutputReadLine();
-			if (!c.HasExited)
-				c.WaitForExit();
-		} catch { }
+			return Convert.ToSingle(c.StandardOutput.ReadToEnd());
+			//if (!c.HasExited) // uhh
+			//	c.WaitForExit();
+		} catch { return -1f; }
 	}
 	public static string[] vstr;
 
@@ -555,10 +574,18 @@ class Program
 							// song converting launcher is active
 							// 1 or [0] = probably this process
 							//if (micn > 1)
-								if (cfg("Temp","ConvPID",-1) > -1 && (File.Exists(args[0]) || args[0] == "dl"))
+							int pid = cfg("Temp", "ConvPID", -1);
+								if (pid > -1 && (File.Exists(args[0]) || args[0] == "dl"))
 								{
-									MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
+									try
+									{
+										if (NP(Process.GetProcessById(pid).MainModule.FileName) == NP(Application.ExecutablePath))
+										{
+											MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+											Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
+										}
+									}
+									catch { }
 									break;
 								}
 						}
@@ -689,7 +716,7 @@ class Program
 					// settings file 31kb
 				}
 				#region SHUFFLE
-				else if (args[0] == "-shuffle")
+				else if (args[0].ToLower() == "-shuffle")
 				{
 					// 0.5-1 kb
 					Console.WriteLine(vstr[101]);
@@ -742,7 +769,7 @@ class Program
 				}
 				#endregion
 				#region GFXSWAP
-				else if (args[0] == "-gfxswap")
+				else if (args[0].ToLower() == "-gfxswap")
 				{
 					// 0.5-1 kb?
 					// TODO: replace SCN with one that has the name of the .tex
@@ -789,6 +816,8 @@ class Program
 											MessageBoxButtons.OK, MessageBoxIcon.Error);
 										Environment.Exit(1);
 									}
+									// someone actually tried dragging default.scn into this
+									// maybe should prevent that here, idk
 									pe.ReplaceFile("zones\\global\\global_gfx"+".tex", gfx.ToArray());
 									if (scn != null)
 									{
@@ -876,7 +905,7 @@ class Program
 					if (datecheck && caching)
 					{
 						if (ini(cs, "Date", 0, cachf) != 0) // STUPID
-							lastmod_cached = new DateTime(Convert.ToInt64(ini(cs, "Date", 0, cachf)));
+							lastmod_cached = new DateTime(Convert.ToInt64(ini(cs, "Date", "0", cachf)));
 						else
 							lastmod_cached = new DateTime(0);
 						if (lastmod_cached.Ticks == 0)
@@ -891,6 +920,7 @@ class Program
 							if (lastmod.Ticks == lastmod_cached.Ticks && lastmod_cached.Ticks != 0)
 							{
 								vl("Unchanged"+fdp+"Using "+adf, cacheColor);
+								tF = ini(cs, "File", "null", cachf);
 								goto skipToGame;
 							}
 							else
@@ -948,7 +978,7 @@ class Program
 					exit();
 					cfgW("Temp", fl, 0);
 					// "already running" >:(
-					Process.Start(Application.ExecutablePath, SubstringExtensions.Quotes(tF));
+					Process.Start(Application.ExecutablePath, tF.Quotes());
 					die();
 				}
 				#endregion
@@ -965,13 +995,13 @@ class Program
 						Process mid2chart = cmd(folder + "mid2chart.exe",
 							paksongmid.Quotes() + " -k -u -p -m");
 						print(vstr[16], chartConvColor); // "Reading file."
-						if (Path.GetFileName(args[0]).EndsWith(chartext))
+						if (Path.GetFileName(args[0]).ToLower().EndsWith(chartext))
 						{
 							vl(vstr[17], chartConvColor); // "Detected chart file."
 							ischart = true;
 						}
-						else if (Path.GetFileName(args[0]).EndsWith(midext) ||
-							Path.GetFileName(args[0]).EndsWith(midext + 'i'))
+						else if (Path.GetFileName(args[0]).ToLower().EndsWith(midext) ||
+							Path.GetFileName(args[0]).ToLower().EndsWith(midext + 'i'))
 						{
 							vl(vstr[18], chartConvColor); // "Detected midi file."
 							vl(vstr[19], chartConvColor); // "Converting to chart..."
@@ -1007,6 +1037,7 @@ class Program
 								cacheList[i] = Path.GetFileNameWithoutExtension(cacheList[i]);
 							}
 						}
+						cfgW("Temp", "LoadingLock", 1);
 						Chart chart = new Chart();
 						if (ischart)
 						{
@@ -1115,7 +1146,7 @@ class Program
 						}
 						string[] audstnames = { "song", "guitar", "rhythm" },
 							audextnames = { "ogg", "mp3", "wav", "opus" };
-						// if Stream values above can't be found, use FOF named files
+						// if Stream values above can't be found, check if audio name matching chart exists
 						for (int i = 0; i < 4; i++)
 						{
 							if (!File.Exists(audiostreams[0]))
@@ -1123,29 +1154,31 @@ class Program
 								audtmpstr = chf + Path.GetFileNameWithoutExtension(args[0]) + '.' + audextnames[i];
 								if (File.Exists(audtmpstr))
 								{
-									vl(vstr[24], FSBcolor);
-									//vl("Found audio with the chart name", FSBcolor);
+									vl(vstr[24], FSBcolor); //vl("Found audio with the chart name", FSBcolor);
 									audiostreams[0] = audtmpstr;
 									break;
 								}
 							}
 						}
+						//if that fails, use FOF named files
+						// iterate over stream names
 						for (int i = 0; i < audstnames.Length; i++)
 						{
+							// if current stream doesn't exist
 							if (!File.Exists(audiostreams[i]))
+								// check every extension under the stream name until a file is found
 								for (int j = 0; j < 4; j++)
 								{
 									audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 									if (File.Exists(audtmpstr))
 									{
-										vl(vstr[25] + audstnames[i], FSBcolor);
-										//vl("Found FOF structure files / " + audstnames[i], FSBcolor);
+										vl(vstr[25] + audstnames[i], FSBcolor); //vl("Found FOF structure files / " + audstnames[i], FSBcolor);
 										audiostreams[i] = audtmpstr;
 										break;
 									}
 								}
 						}
-						// TODO: allow NJ3T routine even when song.ogg exists
+						// alternate names for guitar/rhythm if above don't exist
 						audstnames = new string[] { "lead", "bass" };
 						for (int i = 0; i < audstnames.Length; i++)
 						{
@@ -1155,17 +1188,17 @@ class Program
 									audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 									if (File.Exists(audtmpstr))
 									{
-										vl(vstr[25] + audstnames[i], FSBcolor);
-										//vl("Found FOF structure files / " + audstnames[i], FSBcolor);
+										vl(vstr[25] + audstnames[i], FSBcolor); //vl("Found FOF structure files / " + audstnames[i], FSBcolor);
 										audiostreams[i + 1] = audtmpstr;
 										break;
 									}
 								}
 						}
+						// TODO: allow NJ3T routine even when song.ogg exists
 						bool nj3t = false; // nj3ts.Count smh // "3 Count!"
 						List<string> nj3ts = new List<string>();
-						vl(vstr[26], FSBcolor);
-						//vl("Checking if extra audio exists", FSBcolor);
+						vl(vstr[26], FSBcolor); //vl("Checking if extra audio exists", FSBcolor);
+						// numbered drum streams
 						for (int j = 0; j < 4; j++)
 						{
 							for (int i = 1; i < 9; i++)
@@ -1173,21 +1206,20 @@ class Program
 								audtmpstr = chf + "drums_" + i + '.' + audextnames[j];
 								if (File.Exists(audtmpstr))
 								{
-									vl(vstr[27] + i + ')', FSBcolor);
-									//vl("Found isolated drums audio (" + i + ')', FSBcolor);
+									vl(vstr[27] + i + ')', FSBcolor); //vl("Found isolated drums audio (" + i + ')', FSBcolor);
 									nj3t = true;
 									nj3ts.Add(audtmpstr);
 								}
 							}
 						}
 						// also maybe ignore drums.ogg if numbered files exist
+						// numbered vocal streams
 						for (int j = 0; j < 4; j++)
 						{
 							audtmpstr = chf + "vocals." + audextnames[j];
 							if (File.Exists(audtmpstr))
 							{
-								vl(vstr[28], FSBcolor);
-								//vl("Found isolated vocals audio", FSBcolor);
+								vl(vstr[28], FSBcolor); //vl("Found isolated vocals audio", FSBcolor);
 								nj3t = true;
 								nj3ts.Add(audtmpstr);
 								break;
@@ -1216,8 +1248,23 @@ class Program
 							audiostreams[0] = nj3ts[0];
 							nj3t = false;
 						}
-						vl(vstr[29], FSBcolor);
-						//vl("Current selected audio streams are:", FSBcolor);
+						// CH sucks
+						if (!File.Exists(audiostreams[0]))
+						{
+							for (int i = 0; i < 4; i++)
+							{
+								audtmpstr = chf + "guitar" + '.' + audextnames[i];
+								Console.WriteLine(audtmpstr);
+								if (File.Exists(audtmpstr))
+								{
+									vl("Found cringe compatibility", FSBcolor);
+									audiostreams[0] = audtmpstr;
+									audiostreams[1] = mt + "blank.mp3";
+									break;
+								}
+							}
+						}
+						vl(vstr[29], FSBcolor); //vl("Current selected audio streams are:", FSBcolor);
 						foreach (string a in audiostreams)
 							vl(a, FSBcolor);
 						if (!File.Exists(audiostreams[0]) && !nj3t)
@@ -1226,6 +1273,7 @@ class Program
 							DialogResult audiolost, playsilent = DialogResult.No, searchaudioresult = DialogResult.Cancel;
 							OpenFileDialog searchaudio = new OpenFileDialog()
 							{
+								// support online URLs in input text box?
 								CheckFileExists = true,
 								CheckPathExists = true,
 								InitialDirectory = Path.GetDirectoryName(args[0]),
@@ -1339,7 +1387,7 @@ class Program
 						const bool MTFSB = true; // enable asynchronous audio track encoding
 												 //if (cacheEnabled)
 						pbl = new short[3] { -1, -1, -1 };
-						al = new int[3] { -1, -1, -1 };
+						float[] al = new float[3] { -1, -1, -1 };
 						killgame();
 						string CMDpath = where("cmd.exe");
 						if (CMDpath == "") // somehow someone got an error of a process starting
@@ -1376,12 +1424,13 @@ class Program
 								addaud = cmd(CMDpath, (mt + "nj3t.bat").Quotes());
 								addaud.StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
 								addaud.StartInfo.EnvironmentVariables["BM"] = VBR_param;
-								int maxl = 0;
+								float maxl = 0;
 								foreach (string a in nj3ts)
 								{
 									addaud.StartInfo.Arguments += " \"" + a + '"';
-									alen(a, 0); maxl = Math.Max(maxl, al[0]);
+									maxl = Math.Max(maxl, alen(a));
 								}
+								al[0] = maxl;
 								addaud.StartInfo.WorkingDirectory = mt;
 								addaud.StartInfo.Arguments = "/c " + addaud.StartInfo.Arguments.Quotes();
 								addaud.Start();
@@ -1414,7 +1463,8 @@ class Program
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								for (int i = 0; i < fsbbuild2.Length; i++)
 								{
-									alen(audiostreams[i], i);
+									if ((i != 0 && nj3t) || i > 0)
+										al[i] = alen(audiostreams[i]);
 									fsbbuild2[i] = cmd(CMDpath, "/c " + ((mt + "c128ks.bat").Quotes() + " " + audiostreams[i].Quotes() + " \"" + mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").Quotes());
 									fsbbuild2[i].StartInfo.WorkingDirectory = mt;
 									fsbbuild2[i].StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
@@ -1543,6 +1593,12 @@ class Program
 							#region BUILD ENTIRE QB FILE
 							#region GUITAR VALUES
 
+							OffsetTransformer OT = new OffsetTransformer(chart);
+							string[] td = { "Easy", "Medium", "Hard", "Expert" };
+							string[] ti = { "Single", "DoubleBass", "DoubleGuitar", "DoubleBass" };
+							// doublebass would exist both on rhythm and rhythmcoop? lol?
+							// depend on enhanced bass for singleplayer rhythm kek
+
 							vl(vstr[45], chartConvColor);
 							//vl("Creating note arrays...", chartConvColor);
 							string[] diffs = { "easy", "medium", "hard", "expert" };
@@ -1563,11 +1619,6 @@ class Program
 										QbKey.Create("fastgh3_song" + insts[i] + '_' + diffs[d]);
 								}
 							}
-							OffsetTransformer OT = new OffsetTransformer(chart);
-							string[] td = { "Easy", "Medium", "Hard", "Expert" };
-							string[] ti = { "Single", "DoubleBass", "DoubleGuitar", "DoubleBass" };
-							// doublebass would exist both on rhythm and rhythmcoop? lol?
-							// depend on enhanced bass for singleplayer rhythm kek
 
 							bool atleast1track = false;
 
@@ -1590,6 +1641,7 @@ class Program
 							scrs.ItemQbKey = QbKey.Create(0x195F3B95); // fastgh3_scripts
 							scr_arr.Create(QbItemType.ArrayStruct);
 							List<QbItemStruct> scripts = new List<QbItemStruct>();
+							bool[] hasCoopTracks = { false, false };
 
 							int dd = 0;
 							int ii = 0;
@@ -1610,6 +1662,10 @@ class Program
 									if (chart.NoteTracks[d + i] != null)
 									{
 										atleast1track = true;
+										if (i == "DoubleGuitar")
+											hasCoopTracks[0] = true;
+										if (i == "DoubleBass")
+											hasCoopTracks[1] = true;
 										vl("Parsing " + d + i, chartConvColor);
 										try
 										{
@@ -2308,24 +2364,45 @@ class Program
 							// game only allows two face-off tracks for all difficulties
 							// so, use expert track
 							// TODO: if not in that track, use lower diff
-							foreach (Note a in chart.NoteTracks["ExpertSingle"])
+							NoteTrack font = null; // lol
+							bool gotfont = false;
+							for (int j = 0; j < 4; j++)
 							{
-								if (a.Type == NoteType.Special &&
-									(a.SpecialFlag == 0) || (a.SpecialFlag == 1))
+								for (int i = 3; i >= 0; i--)
 								{
-									gotfo[a.SpecialFlag] = true;
-									QbItemInteger faceoff_bit = new QbItemInteger(mid);
-									faceoff_bit.Create(QbItemType.ArrayInteger);
-									faceoff_bit.Values = new int[] {
-										(int)Math.Floor(OT.GetTime(a.Offset) * 1000),
-										(int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
-									};
-									if (a.SpecialFlag == 0)
-										fop1a.AddItem(faceoff_bit);
-									else
-										fop2a.AddItem(faceoff_bit);
+									font = chart.NoteTracks[td[i] + ti[j]]; // ugh
+									if (font != null)
+									{
+										gotfont = true;
+										break;
+									}
 								}
+								if (gotfont)
+									break;
 							}
+							if (font != null)
+								foreach (Note a in font)
+								{
+									if (a.Type == NoteType.Special &&
+										(a.SpecialFlag == 0) || (a.SpecialFlag == 1))
+									{
+										gotfo[a.SpecialFlag] = true;
+										QbItemInteger faceoff_bit = new QbItemInteger(mid);
+										faceoff_bit.Create(QbItemType.ArrayInteger);
+										faceoff_bit.Values = new int[] {
+											(int)Math.Floor(OT.GetTime(a.Offset) * 1000),
+											(int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
+										};
+										vl("Got face-off marker: " + faceoff_bit.Values[0] +
+																"," + faceoff_bit.Values[1]);
+										if (a.SpecialFlag == 0)
+											fop1a.AddItem(faceoff_bit);
+										else
+											fop2a.AddItem(faceoff_bit);
+									}
+								}
+							//if (!gotfo[0] && !gotfo[1])
+							//	vl("No face-off markers found");
 							// if there isn't, put only one marker
 							// so they're played like pro faceoff
 							{
@@ -2386,9 +2463,10 @@ class Program
 									ts.Add(chart.SyncTrack[i]);
 								}
 							}
-							if (ts.Count == 0) // bruh
-											   // legitimately happens on some charts for some reason
-											   // causes infinite starpower
+							if (ts.Count == 0)
+								// bruh
+								// legitimately happens on some charts for some reason
+								// causes infinite starpower
 							{
 								vl(vstr[61], ConsoleColor.Yellow); // megamind
 								SyncTrackEntry tsfault = new SyncTrackEntry();
@@ -2568,9 +2646,19 @@ class Program
 							#endregion
 							#endregion
 
+							if (isBoss || (hasCoopTracks[0] && hasCoopTracks[1]))
+								mid.AddItem(fastgh3_extra);
+							if (hasCoopTracks[0] && hasCoopTracks[1])
+							{
+								QbItemQbKey s = new QbItemQbKey(mid);
+								s.Create(QbItemType.StructItemQbKey);
+								s.ItemQbKey = QbKey.Create(0x00000000);
+								s.Values[0] = QbKey.Create("use_coop_notetracks");
+								fastgh3_extra.AddItem(s);
+								vl("Has both Co-op tracks");
+							}
 							if (isBoss)
 							{
-								mid.AddItem(fastgh3_extra);
 								fastgh3_extra.AddItem(QB_bossboss);
 								mid.AddItem(QB_bosstime);
 								mid.AddItem(QB_bossname);
@@ -2712,12 +2800,19 @@ class Program
 							File.Delete(paksongchart);
 						}
 						#region COMPILE AUDIO TO FSB
+						vl(vstr[74]);
+						//vl("Creating GH3 process...");
+						Process gh3 = new Process();
+						gh3.StartInfo.WorkingDirectory = folder;
+						gh3.StartInfo.FileName = GH3EXEPath;
+						gh3.Start();
 						if (!audCache)
 						{
 							if (!MTFSB)
 							{
 								if (!fsbbuild.HasExited)
 								{
+									vl("Launching game early");
 									print(vstr[70], FSBcolor);
 									//print("Waiting for song encoding to finish.", FSBcolor);
 									fsbbuild.WaitForExit();
@@ -2733,6 +2828,7 @@ class Program
 							}
 							else
 							{
+								vl("Launching game early");
 								print(vstr[70], FSBcolor);
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								try
@@ -2783,9 +2879,8 @@ class Program
 									for (int i = 0; i < 3; i++)
 										if (!locks[i])
 											if (File.Exists(mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3"))
-												pb(((float)new FileInfo(
-													mt + "fsbtmp\\fastgh3_" +
-													fsbnames[i] + ".mp3").Length / (al[i] * (AB_param / 4))), i);
+												pb(new FileInfo(mt + "fsbtmp\\fastgh3_" +
+													fsbnames[i] + ".mp3").Length / 1000 / (al[i] * (AB_param / 4)), i);
 									for (int i = 0; i < fsbbuild2.Length; i++)
 										if (!nj3t || (nj3t && i != 0))
 											if (!locks[i])
@@ -2815,6 +2910,7 @@ class Program
 								}
 							}
 						}
+						cfgW("Temp", "LoadingLock", 0);
 						#endregion
 						cSV("background.bik");
 						unkillgame();
@@ -2826,11 +2922,6 @@ class Program
 						}
 						Console.ResetColor();
 						//print("Speeding up.");
-						vl(vstr[74]);
-						//vl("Creating GH3 process...");
-						Process gh3 = new Process();
-						gh3.StartInfo.WorkingDirectory = folder;
-						gh3.StartInfo.FileName = GH3EXEPath;
 						if (cfg("Player", "MaxNotesAuto", "0") == "1")
 						{
 							vl("Getting max notes...");
@@ -2851,7 +2942,6 @@ class Program
 						}
 						print(vstr[75]);
 						//print("Ready, go!");
-						gh3.Start();
 						cfgW("Temp", fl, 1);
 						try
 						{
@@ -2891,8 +2981,8 @@ class Program
 					#endregion
 					#region FSP EXTRACT
 					else if (File.Exists(args[0]) &&
-						(args[0].EndsWith(".fsp") || args[0].EndsWith(".zip") ||
-						args[0].EndsWith(".7z") || args[0].EndsWith(".rar")))
+						(args[0].ToLower().EndsWith(".fsp") || args[0].ToLower().EndsWith(".zip") ||
+						args[0].ToLower().EndsWith(".7z") || args[0].ToLower().EndsWith(".rar")))
 					{
 						// 7kb
 						log.WriteLine(vstr[77]);
@@ -3014,7 +3104,7 @@ class Program
 							{
 								zipReadBlatantfail = true;
 							}
-							if ((args[0].EndsWith(".zip") || args[0].EndsWith(".fsp" /* :( */)) && !zipReadBlatantfail)
+							if ((args[0].ToLower().EndsWith(".zip") || args[0].ToLower().EndsWith(".fsp" /* :( */)) && !zipReadBlatantfail)
 							{
 								using (ZipFile file = ZipFile.Read(args[0]))
 								{
@@ -3076,6 +3166,8 @@ class Program
 												f.EndsWith(".mp3") ||
 												f.EndsWith(".wav") ||
 												f.EndsWith(".opus"))
+												// TODO: filter to files that would
+												// actually be used by the chart
 											{
 												vl("Found audio, extracting...", FSPcolor);
 												data.Extract(tmpf);
@@ -3440,6 +3532,11 @@ class Program
 			// upload log for diagnostics
 			exit();
 			Program.log = null;
+			if (!File.Exists(folder + "launcher.txt"))
+			{
+				print("Failed to load own launcher log.");
+				return;
+			}
 			string log = File.ReadAllText(folder + "launcher.txt");
 			if (cfg("Launcher","ErrorReporting",1)==1 && log.Length < 0x20000) // max 128 KB to upload
 			{

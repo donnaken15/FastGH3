@@ -121,11 +121,13 @@ script setup_gemarrays
 	if ($game_mode = p2_career || $game_mode = p2_coop ||
 		($game_mode = training & ($<player_status>.part = rhythm)))
 		if StructureContains structure = <song_struct> use_coop_notetracks
-		// make packed struct ? ^
-			if (($<player_status>.part)= rhythm)
-				<part> = 'rhythmcoop_'
-			else
-				<part> = 'guitarcoop_'
+			// make packed struct ? ^
+			if ($coop_tracks = 1)
+				if (($<player_status>.part)= rhythm)
+					<part> = 'rhythmcoop_'
+				else
+					<part> = 'guitarcoop_'
+				endif
 			endif
 		endif
 	endif
@@ -390,10 +392,12 @@ script get_song_end_time
 	get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythm_expert>
 	get_song_struct song = <song>
 	if StructureContains structure = <song_struct> use_coop_notetracks
-		FormatText checksumName = guitarcoop_expert '%s_song_guitarcoop_expert' s = <song_prefix> AddToStringLookup
-		FormatText checksumName = rhythmcoop_expert '%s_song_rhythmcoop_expert' s = <song_prefix> AddToStringLookup
-		get_song_end_time_for_array total_end_time = <total_end_time> song_array = <guitarcoop_expert>
-		get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythmcoop_expert>
+		if ($coop_tracks = 1)
+			FormatText checksumName = guitarcoop_expert '%s_song_guitarcoop_expert' s = <song_prefix> AddToStringLookup
+			FormatText checksumName = rhythmcoop_expert '%s_song_rhythmcoop_expert' s = <song_prefix> AddToStringLookup
+			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <guitarcoop_expert>
+			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythmcoop_expert>
+		endif
 	endif
 	return total_end_time = <total_end_time>
 endscript
@@ -409,7 +413,7 @@ script win_song
 		end_s = ((<total_end_time> - <startTime>)/ 1000.0)
 		printf "Waiting %s seconds for song end marker." s = <end_s>
 		if (<end_s> > 0)
-			wait <end_s> seconds
+			wait <end_s> seconds // totally good idea
 		endif
 	endif
 	if ($current_num_players = 2)
@@ -458,6 +462,34 @@ script load_songqpak\{async = 0}
 		unload_songqpak
 		//get_song_prefix song = <song_name>
 		//songqpak = 'pak/song.pak'
+		
+		ProfileTime
+		if StructureContains structure=<...> time
+			begin_wait_time = <time>
+			FGH3Config \{sect='Temp' 'LoadingLock' #"0x1ca1ff20"=0}
+			if (<value> = 1)
+				printf \{'Chart is still processing, waiting...'}
+				begin
+					FGH3Config \{sect='Temp' 'LoadingLock' #"0x1ca1ff20"=0}
+					if (<value> = 1)
+						ProfileTime
+						// sleep hack because i suck
+						begin_time = <time>
+						begin
+							ProfileTime
+							if ((<time> - <begin_time>) >= 333333)
+								break
+							endif
+						repeat
+					else
+						break
+					endif
+				repeat
+				ProfileTime
+				printf 'Waited %d seconds' d=((<time> - <begin_wait_time>) * 0.0000001)
+			endif
+		endif
+		
 		printf \{"Loading Song q pak"}
 		if FileExists \{'pak/song.pak'}
 			if NOT LoadPakAsync pak_name = 'pak/song.pak' Heap = heap_song no_vram async = <async>
@@ -590,7 +622,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	song_start_time = <startTime>
 	call_startup_scripts <...>
 	setup_bg_viewport
-	//Change current_transition = fastintro
+	Change \{current_transition = fastintro}
 	starttimeafterintro = <startTime>
 	//printf "Current Transition = %s" s = ($current_transition)
 	if ($disable_intro = 1)
@@ -658,6 +690,11 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		if NOT GotParam \{no_score_update}
 			SpawnScriptLater update_score_fast params = {<...> }
 		endif
+		if ($autostart_coop = 1) // wtf
+			// co-op on startup was crashing because first player struct for update score code had a null pointer
+			// how
+			SpawnScriptLater \{update_score_fast params = {player_status = player1_status}}
+		endif
 		if (($is_network_game)& ($player1_status.highway_layout = solo_highway))
 			SpawnScriptLater \{update_score_fast params = {player_status = player2_status}}
 		endif
@@ -684,6 +721,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		endif
 		Player = (<Player> + 1)
 	repeat $current_num_players
+	change \{autostart_coop = 0}
 	GetPakManCurrent \{map = zones}
 	if ($boss_battle = 1)
 		if should_play_boss_intro
@@ -1128,42 +1166,47 @@ script kill_startup_script
 endscript
 
 script Load_Venue\{block_scripts = 0}
-	GetPakManCurrentName \{map = zones}
-	if GotParam \{pakname}
-		if (<pakname> = (($LevelZones.$current_level).name))
-			Transitions_ResetZone
-			return
-		else
-			ResetWaypoints
-			SetPakManCurrentBlock \{map = zones pak = None}
-		endif
-	endif
-	ResetPulseEvents
-	FormatText textname = FileName '%s.pak' s = (($LevelZones.$current_level).name)
-	GetContentFolderIndexFromFile <FileName>
-	if (<device> = content)
-		if NOT Downloads_OpenContentFolder content_index = <content_index>
-			DownloadContentLost
-			return
-		endif
-	endif
-	if NOT SetPakManCurrentBlock map = zones pak = (($LevelZones.$current_level).zone) block_scripts = <block_scripts>
-		DownloadContentLost
-		return
-	endif
-	if (<device> = content)
-		Downloads_CloseContentFolder content_index = <content_index>
-	endif
-	GH3_Change_crowd_reverb_settings_by_Venue
+	//GetPakManCurrentName \{map = zones}
+	//if GotParam \{pakname}
+	//	if (<pakname> = (($LevelZones.$current_level).name))
+	//		Transitions_ResetZone
+	//		return
+	//	else
+	//		ResetWaypoints
+	//		SetPakManCurrentBlock \{map = zones pak = None}
+	//	endif
+	//endif
+	//ResetPulseEvents
+	//FormatText textname = FileName '%s.pak' s = (($LevelZones.$current_level).name)
+	//GetContentFolderIndexFromFile <FileName>
+	//if (<device> = content)
+	//	if NOT Downloads_OpenContentFolder content_index = <content_index>
+	//		DownloadContentLost
+	//		return
+	//	endif
+	//endif
+	//if NOT SetPakManCurrentBlock map = zones pak = (($LevelZones.$current_level).zone) block_scripts = <block_scripts>
+	//	DownloadContentLost
+	//	return
+	//endif
+	//if (<device> = content)
+	//	Downloads_CloseContentFolder content_index = <content_index>
+	//endif
+	//GH3_Change_crowd_reverb_settings_by_Venue
+	
 endscript
 
 script start_song\{device_num = 0 practice_intro = 0 endtime = 999999999}
 	mark_unsafe_for_shutdown
 	set_rich_presence_game_mode
+	//Load_Venue
 	//MassiveInit \{sku = 'atvi_guitar_hero_3_pc_na' startZone = 'GlobalZone'}
-	Load_Venue
 	Transition_SelectTransition practice_intro = <practice_intro>
-	if NOT (($game_mode = p2_faceoff)|| ($game_mode = p2_pro_faceoff)|| ($game_mode = p2_coop)|| ($game_mode = p2_battle)|| ($game_mode = p2_career))
+	if NOT (($game_mode = p2_faceoff) ||
+			($game_mode = p2_pro_faceoff) ||
+			($game_mode = p2_coop) ||
+			($game_mode = p2_battle) ||
+			($game_mode = p2_career))
 		Change player1_device = (<device_num>)
 		Change StructureName = player1_status controller = (<device_num>)
 	else

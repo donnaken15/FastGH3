@@ -19,24 +19,24 @@ script sysnotify_wait_until_safe
 		<should_wait> = 0
 		if SystemUIDelayed
 			<should_wait> = 1
-			printf \{"WAITING FOR SYSTEM UI"}
+			printf \{'WAITING FOR SYSTEM UI'}
 		endif
 		if IsTrue \{$is_changing_levels}
 			<should_wait> = 1
-			printf \{"WAITING FOR ISCHANGINGLEVELS"}
+			printf \{'WAITING FOR ISCHANGINGLEVELS'}
 		endif
 		if IsTrue \{$igc_playing}
 			<should_wait> = 1
-			printf \{"WAITING FOR IGC"}
+			printf \{'WAITING FOR IGC'}
 		endif
 		if NOT CutsceneFinished \{name = cutscene}
 			<should_wait> = 1
-			printf \{"WAITING FOR CUTSCENE"}
+			printf \{'WAITING FOR CUTSCENE'}
 		endif
 		if ($ui_pro_success_screen_active = 0)
 			if ScreenElementExists \{id = screenfader}
 				<should_wait> = 1
-				printf \{"WAITING FOR SCREENFADER"}
+				printf \{'WAITING FOR SCREENFADER'}
 			endif
 		endif
 		if (<should_wait> = 1)
@@ -51,7 +51,7 @@ endscript
 
 script sysnotify_handle_pause_eject
 	if isps3
-		notify_box \{container_id = notify_eject_static_text_container line1 = "Disc Ejected" line2 = "Please reinsert" menu_z = 510001}
+		notify_box \{container_id = notify_eject_static_text_container line1 = 'Disc Ejected' line2 = 'Please reinsert' menu_z = 510001}
 		if (RenderingEnabled)
 			Change \{pause_no_render = 0}
 			fade_overlay_on
@@ -68,7 +68,7 @@ endscript
 
 script sysnotify_handle_pause_controller
 	if isps3
-		notify_box \{container_id = notify_controller_static_text_container line1 = "YOU ARE ROCKING OUT A BIT TOO HARD" line2 = "Please ensure a controller is connected properly" menu_z = 510000}
+		notify_box \{container_id = notify_controller_static_text_container line1 = 'YOU ARE ROCKING OUT A BIT TOO HARD' line2 = 'Please ensure a controller is connected properly' menu_z = 510000}
 		if (RenderingEnabled)
 			Change \{pause_no_render = 0}
 			fade_overlay_on
@@ -99,9 +99,9 @@ script sysnotify_handle_pause_console
 endscript
 
 script sysnotify_handle_pause
-	printf \{"----------------------"}
-	printf \{"sysnotify_handle_pause"}
-	printf \{"----------------------"}
+	printf \{'----------------------'}
+	printf \{'sysnotify_handle_pause'}
+	printf \{'----------------------'}
 	if ($paused_for_hardware = 1)
 		return
 	endif
@@ -113,7 +113,7 @@ script sysnotify_handle_pause
 	Change \{blade_active = 1}
 	Change \{sysnotify_game_already_paused = 1}
 	if GameIsPaused
-		printf \{"Game is already paused"}
+		printf \{'Game is already paused'}
 		return
 	endif
 	Change \{sysnotify_game_already_paused = 0}
@@ -172,9 +172,9 @@ script sysnotify_handle_unpause_console
 endscript
 
 script sysnotify_handle_unpause
-	printf \{"------------------------"}
-	printf \{"sysnotify_handle_unpause"}
-	printf \{"------------------------"}
+	printf \{'------------------------'}
+	printf \{'sysnotify_handle_unpause'}
+	printf \{'------------------------'}
 	if (($is_network_game)|| ($g_connection_loss_dialogue))
 		return
 	endif
@@ -238,12 +238,12 @@ endscript
 signin_change_happening = 0
 
 script sysnotify_handle_signin_change
-	printf \{"------------------------------"}
-	printf \{"sysnotify_handle_signin_change"}
-	printf \{"------------------------------"}
+	printf \{'------------------------------'}
+	printf \{'sysnotify_handle_signin_change'}
+	printf \{'------------------------------'}
 	Change \{invite_controller = -1}
 	if ($signin_change_happening = 1)
-		printf \{"ALREADY BEING PROCESSED"}
+		printf \{'ALREADY BEING PROCESSED'}
 		return
 	endif
 	Change \{signin_change_happening = 1}
@@ -280,12 +280,12 @@ script sysnotify_handle_signin_change
 				return
 			endif
 		case user_changed
-			printf \{"sysnotify_handle_signin_change - user changed"}
+			printf \{'sysnotify_handle_signin_change - user changed'}
 			if ($respond_to_signin_changed = 1)
 				handle_signin_changed
 			endif
 		default
-			printf \{"- no response required"}
+			printf \{'- no response required'}
 			Change \{signin_change_happening = 0}
 			return
 	endswitch
@@ -294,9 +294,9 @@ endscript
 sysnotify_allow_invite = 1
 
 script sysnotify_handle_game_invite
-	printf \{"----------------------------"}
-	printf \{"sysnotify_handle_game_invite"}
-	printf \{"----------------------------"}
+	printf \{'----------------------------'}
+	printf \{'sysnotify_handle_game_invite'}
+	printf \{'----------------------------'}
 	sysnotify_invite_go <...>
 endscript
 
@@ -306,7 +306,7 @@ script sysnotify_invite_cancel
 endscript
 
 script sysnotify_invite_go
-	printf \{"----sysnotify_invite_go"}
+	printf \{'----sysnotify_invite_go'}
 	if GotParam \{cross_game}
 		cross_game_invite_accepted <...>
 	else
@@ -320,9 +320,9 @@ endscript
 g_connection_loss_dialogue = 0
 
 script sysnotify_handle_connection_loss
-	printf \{"--------------------------------"}
-	printf \{"sysnotify_handle_connection_loss"}
-	printf \{"--------------------------------"}
+	printf \{'--------------------------------'}
+	printf \{'sysnotify_handle_connection_loss'}
+	printf \{'--------------------------------'}
 	Change \{g_connection_loss_dialogue = 1}
 	sysnotify_wait_until_safe
 	wait_for_safe_shutdown
@@ -412,9 +412,9 @@ wait_for_sysnotify_unpause_flag = 0
 
 script wait_for_sysnotify_unpause
 	Change \{wait_for_sysnotify_unpause_flag = 0}
-	printf \{"Waiting for sysnotify Pause Off"}
+	printf \{'Waiting for sysnotify Pause Off'}
 	begin
-		printf "Waiting for sysnotify paused_for_hardware = %i" i = ($paused_for_hardware)
+		printf 'Waiting for sysnotify paused_for_hardware = %i' i = ($paused_for_hardware)
 		if ($wait_for_sysnotify_unpause_flag = 1)
 			break
 		endif

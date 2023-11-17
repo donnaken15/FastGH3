@@ -35,6 +35,273 @@ extras_fs = {
 		}
 	]
 }
+modes_fs = {
+	create = create_pause_menu
+	create_params = {
+		submenu = modes
+	}
+	Destroy = destroy_pause_menu
+	actions = [
+		{
+			action = go_back
+			flow_state_func = pause_flow_from_mode
+		}
+		{
+			action = select_players
+			flow_state_func = controller_select_flow_state
+		}
+		{
+			action = select_save
+			func = save_mode_data
+		}
+		{
+			action = select_start
+			flow_state_func = start_custom_game
+		}
+	]
+}
+script start_custom_game
+	params = ($mode_setup)
+	change game_mode = ($modes[(<params>.mode)])
+	change current_num_players = ((<params>.players) + 1)
+	change player1_device = ((<params>.devices)[0])
+	change player2_device = ((<params>.devices)[1])
+	change primary_controller = $player1_device
+	Change \{StructureName = player1_status controller = $player1_device}
+	Change \{StructureName = player2_status controller = $player2_device}
+	//printstruct ($player2_status.part)
+	change structurename=player1_status part=($parts[(<params>.part)])
+	change structurename=player2_status part=($parts[(<params>.part2)])
+	//printstruct ($player2_status)
+	change current_difficulty=($difficulty_list[(<params>.diff)])
+	change current_difficulty2=($difficulty_list[(<params>.diff2)])
+	change structurename=player1_status bot_play=(<params>.bot)
+	change structurename=player2_status bot_play=(<params>.bot2)
+	restore_start_key_binding
+	return \{flow_state = enter_mode_fs}
+endscript
+script save_mode_data
+	params = ($mode_setup)
+	// OPTIMIZE!!
+	FGH3Config sect='Player' 'Mode' set=(<params>.mode)
+	FGH3Config sect='Player' '2Player' set=(<params>.players)
+	FGH3Config sect='Player1' 'Device' set=(<params>.devices[<i>])
+	FGH3Config sect='Player2' 'Device' set=(<params>.devices[<i>])
+	FGH3Config sect='Player1' 'Part' set=(<params>.part)
+	FGH3Config sect='Player2' 'Part' set=(<params>.part2)
+	FGH3Config sect='Player1' 'Diff' set=(<params>.diff)
+	FGH3Config sect='Player2' 'Diff' set=(<params>.diff2)
+	FGH3Config sect='Player1' 'Bot' set=(<params>.bot)
+	FGH3Config sect='Player2' 'Bot' set=(<params>.bot2)
+	/*i = 0
+	begin
+		FormatText textname=sect 'Player%d' d=(<i> + 1)
+		FGH3Config sect=<sect> 'Device' set=(<params>.players[<i>])
+		Increment \{i}
+	repeat 2*///
+	// TODO: show warning that controller IDs can
+	// change when connecting/disconnecting devices
+endscript
+script pause_flow_from_mode // stupid
+	reset_mode_setup
+	switch $game_mode
+		case p1_career
+			return \{flow_state = career_pause_fs}
+		case training
+			return \{flow_state = practice_pause_fs}
+		case p2_coop
+		case p2_career
+			return \{flow_state = coop_career_pause_fs}
+		case p2_faceoff
+			return \{flow_state = mp_faceoff_pause_fs}
+		case training
+			return \{flow_state = practice_pause_fs}
+		case p1_quickplay
+		case p2_battle
+		default
+			return \{flow_state = quickplay_pause_fs}
+	endswitch
+endscript
+script detect_controller_by_button
+	ReAcquireControllers
+	CreateScreenElement \{Type = ContainerElement parent = root_window id = pab_container Pos = (0.0, 0.0)}
+	CreateScreenElement \{ Type = TextBlockElement parent = pab_container font = fontgrid_title_gh3 text = 'Press any button on any controller' dims = (800.0, 320.0) Pos = (640.0, 320.0) just = [center top] internal_just = [center top] rgba = [255 255 255 255] Scale = 1.4 allow_expansion }
+	spawnscriptnow \{check_for_any_input}
+endscript
+script stop_detecting_buttons
+	destroy_menu \{menu_id = pab_container}
+	killspawnedscript \{name = check_for_any_input}
+	SoundEvent \{event=ui_select_sfx}
+endscript
+script controller_texture
+	texture = missing_sprite
+	if IsWinPort
+		if WinPortSioIsKeyboard deviceNum = <#"0x00000000">
+			texture = controller_2p_keyboard
+		else
+			if IsGuitarController controller = <#"0x00000000">
+				texture = controller_2p_lespaul
+			else
+				if WinPortSioIsDirectInputGamepad controller = <#"0x00000000">
+					texture = controller_2p_controller_ps3
+				else
+					texture = controller_2p_controller_XBOX
+				endif
+			endif
+		endif
+	endif
+	//printstruct <...>
+	return <...>
+endscript
+script set_p1_device
+	devices = ($mode_setup.devices)
+	setarrayelement { // wtf
+		arrayname=devices index=0 newvalue=<device_num>
+	}
+	change mode_setup = {
+		($mode_setup) // why
+		devices=<devices>
+	}
+	return \{flow_state = modes_fs}
+endscript
+script set_p2_device
+	devices = [ 0 0 ]
+	setarrayelement \{ arrayname=devices index=0 newvalue=$player1_device }
+	setarrayelement \{ arrayname=devices index=1 newvalue=$player2_device }
+	change mode_setup = {
+		($mode_setup) // why
+		devices=<devices>
+	}
+	return \{flow_state = modes_fs}
+endscript
+script reset_mode_setup
+	devices = [ 0 0 ]
+	setarrayelement { // why
+		arrayname=devices index=0
+		newvalue=($player1_device)
+	}
+	setarrayelement { // why
+		arrayname=devices index=1
+		newvalue=($player2_device)
+	}
+	// https://i.kym-cdn.com/entries/icons/original/000/002/085/Kornheiser_Why.JPG
+	change mode_setup = {
+		mode = ($mode_index.$game_mode)
+		players = ($current_num_players - 1)
+		devices = <devices>
+		part = ($part_index.($player1_status.part))
+		part2 = ($part_index.($player2_status.part))
+		diff = ($diff_index.($current_difficulty))
+		diff2 = ($diff_index.($current_difficulty2))
+		bot = ($player1_status.bot_play)
+		bot2 = ($player2_status.bot_play)
+	}
+endscript
+sp_ctrlsel_fs = {
+	create = detect_controller_by_button
+	Destroy = stop_detecting_buttons
+	actions = [
+		{
+			action = continue
+			flow_state_func = set_p1_device
+		}
+	]
+}
+mp_ctrlsel_fs = {
+	create = create_select_controller_menu
+	Destroy = destroy_select_controller_menu
+	actions = [
+		{
+			action = continue
+			flow_state_func = set_p2_device
+		}
+		{
+			action = go_back
+			use_last_flow_state
+		}
+	]
+}
+script controller_select_flow_state
+	// ternary CFunc/script when
+	if ($mode_setup.players = 0)
+		return \{flow_state = sp_ctrlsel_fs}
+	else
+		return \{flow_state = mp_ctrlsel_fs}
+	endif
+endscript
+script mode_menu
+	if GotParam \{button}
+		if GotParam \{select}
+			ui_flow_manager_respond_to_action action = <id>
+		endif
+		return
+	endif
+	value = ($mode_setup.<param>)
+	if GotParam \{left}
+		value = (<value> - 1)
+	else
+		Increment \{value}
+	endif
+	if (<value> < 0)
+		value = <range>
+	endif
+	if (<value> > <range>)
+		value = 0
+	endif
+	switch (<param>) // so cringe!!!!!!111!!!111111!1!1!!!!!1111111!!!
+		case mode
+			out = { mode=<value> }
+		case diff
+			out = { diff=<value> }
+		case diff2
+			out = { diff2=<value> }
+		case part
+			out = { part=<value> }
+		case part2
+			out = { part2=<value> }
+		case bot
+			out = { bot=<value> }
+		case bot2
+			out = { bot2=<value> }
+		case players
+			out = { players=<value> }
+			if ScreenElementExists id=p2_icon
+				SetScreenElementProps id=p2_icon alpha=<value>
+			endif
+	endswitch
+	generic_menu_up_or_down_sound
+	change mode_setup = {
+		($mode_setup) <out>
+	}
+	if ScreenElementExists id=<id>
+		SetScreenElementProps id=<id> text=($<texts>[<value>])
+	endif
+endscript
+mode_buttons = []
+mode_setup = {
+	mode	= 0
+	players	= 0
+	devices	= [ 0 1 ] // controllers
+	part	= 0
+	part2	= 0
+	diff	= 3
+	diff2	= 3
+	bot		= 0
+	bot2	= 0
+}
+mode_text = [
+	'Quickplay'
+	'Training'
+	'Co-op'
+	'Face-off'
+	'Pro Face-off'
+	'Battle'
+]
+part_text = [ 'Guitar' 'Rhythm' ]
+diff_text = [ 'Easy' 'Medium' 'Hard' 'Expert' ]
+toggle_text = [ 'OFF' 'ON' ]
+playercount_text = [ '1' '2' ] // uhhhhhhh
+// wonder if i can get device name somehow
 menu_text_color = [ 255 255 255 255 ]
 menu_text_sel = 'Select'
 menu_text_conf = 'Confirm'
@@ -103,11 +370,11 @@ endscript
 // menu
 script new_menu\{menu_pos = $menu_pos event_handlers = $default_event_handlers use_backdrop = 0 z = 1 dims = (400.0, 480.0) font = text_a1 font_size = 0.75 default_colors = 1 just = [left top] no_focus = 0 internal_just = [center top]}
 	if ScreenElementExists id = <scrollid>
-		printf "script new_menu - %s Already exists." s = <scrollid>
+		printf 'script new_menu - %s Already exists.' s = <scrollid>
 		return
 	endif
 	if ScreenElementExists id = <vmenuid>
-		printf "script new_menu - %s Already exists." s = <vmenuid>
+		printf 'script new_menu - %s Already exists.' s = <vmenuid>
 		return
 	endif
 	CreateScreenElement {
@@ -335,7 +602,7 @@ menu_focus_color = [ 255 105 0 224 ]
 default_menu_unfocus_color = [ 255 255 255 191 ]
 default_menu_focus_color = [ 255 105 0 224 ]
 
-script new_pause_menu_button \{cont_params = {} event_handlers = [] fit = (250.0, 0.0)}
+script new_pause_menu_button \{cont_params = {} event_handlers = [] just = [left top] fit = (250.0, 0.0) pos_off = (0, 0)}
 	id2 = <id>
 	CreateScreenElement { <cont_params> event_handlers = <event_handlers> }
 	//printstruct <...>
@@ -347,8 +614,9 @@ script new_pause_menu_button \{cont_params = {} event_handlers = [] fit = (250.0
 		rgba = $menu_unfocus_color
 		text = <text>
 		id = <id2>
-		just = [left top]
+		just = <just>
 		z_priority = <z>
+		pos = <pos_off>
 		exclusive_device = <player_device>
 	}
 	GetScreenElementDims id = <id>
@@ -359,6 +627,7 @@ script new_pause_menu_button \{cont_params = {} event_handlers = [] fit = (250.0
 		start_x_scale = (<scale>.(1.0, 0.0))
 		start_y_scale = (<scale>.(0.0, 1.0))
 	}
+	return container_id = <id>
 endscript
 
 script checkbox_sound
@@ -404,44 +673,19 @@ script set_unfocus_color\{rgba = $menu_unfocus_color}
 endscript
 
 particle_modes=['All' 'Minimal' 'Disabled']
-extras_menu = [
-	// guide
-	// (NO NAME) = variable to set
-	// name = display name
-	// type = type of item (bool, int, etc)
-	// min = minimum value allowed (int)
-	// max = maximum value allowed (int)
-	// sect = INI section
-	// key = INI key
-	// restart = (1) requires restarting the song (2) requires restarting game?
-	{ Cheat_Hyperspeed name='Hyperspeed' type=int min=-13 max=10 sect='Player' restart=1 }
-	{ fps_max name='Frame Rate' type=int min=0 max=1000 step=5 sect='GFX' key='MaxFPS' }
-	{ disable_particles name='Particles' type=int min=0 max=2 sect='GFX' key='NoParticles' }
-	{ hudless name='No HUD' type=bool sect='GFX' key='NoHUD' restart=1 }
-	{ disable_intro name='No Intro' type=bool sect='GFX' key='NoIntro' restart=1 }
-	{ disable_shake name='No Highway Shake' type=bool sect='GFX' key='NoShake' }
-	{ exit_on_song_end name='Exit on Song End' type=bool sect='Player' key='ExitOnSongEnd' }
-	{ kill_gems_on_hit name='Hide Gems Upon Hit' type=bool sect='GFX' key='KillGemsHit' }
-	{ enable_button_cheats name='Debug Menu' type=bool key='Debug' }
-	{ Cheat_NoFail name='No Fail' type=bool sect='Player' key='NoFail' }
-	{ Cheat_EasyExpert name='Easy Expert' type=bool sect='Player' key='EasyExpert' restart=1 }
-	{ Cheat_PrecisionMode name='Precision' type=bool sect='Player' key='Precision' restart=1 }
-	{ FC_MODE name='FC Mode' type=bool sect='Player' key='FCMode' restart=1 }
-	{ gem_scalar name='Gem Scale' type=int min=0.0 max=100.0 step=0.05 sect='GFX' key='GemScale' restart=1 }
-	{ current_speedfactor name='Speed Factor' type=int min=0.05 max=100.0 step=0.05 sect='Player' key='Speed' }
-]
+extras_menu = []
 script extra_format
 	FormatText textname=strval '%s' s=<#"0x00000000">
 	switch <type>
 		case bool
 			if (<#"0x00000000"> = 1)
-				strval = "On"
+				strval = 'On'
 			elseif (<#"0x00000000"> = 0)
-				strval = "Off"
+				strval = 'Off'
 			elseif (<#"0x00000000"> = true)
-				strval = "On"
+				strval = 'On'
 			elseif (<#"0x00000000"> = false)
-				strval = "Off"
+				strval = 'Off'
 			endif
 	endswitch
 	return strval = <strval>
@@ -450,12 +694,12 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 	if (<key> = '')
 		key = <name>
 	endif
+	value = ($<#"0x00000000">)
 	switch <type>
 		case bool
 			switch <b>
 				case choose
 					//SoundEvent \{event = ui_sfx_select}
-					value = ($<#"0x00000000">)
 					if (<value> = 1)
 						value=0
 						check=0
@@ -478,24 +722,25 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 			switch <b>
 				// can cases fall into others? x to doubt
 				case choose
-					if ($<#"0x00000000"> >= <max>)
-						change globalname=<#"0x00000000"> newvalue=<min>
+					if (<value> >= <max>)
+						value = <min>
 					else
-						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> + <step>)
+						value = (<value> + <step>)
 					endif
 				case left
-					if ($<#"0x00000000"> <= <min>)
+					if (<value> <= <min>)
 						return
 					else
-						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> - <step>)
+						value = (<value> - <step>)
 					endif
 				case right
-					if ($<#"0x00000000"> >= <max>)
+					if (<value> >= <max>)
 						return
 					else
-						change globalname=<#"0x00000000"> newvalue=($<#"0x00000000"> + <step>)
+						value = (<value> + <step>)
 					endif
 			endswitch
+			change globalname=<#"0x00000000"> newvalue=<value>
 			generic_menu_up_or_down_sound
 	endswitch
 	if (<restart> = 1)
@@ -570,9 +815,13 @@ script create_pause_menu\{Player = 1 submenu = none}
 	endif
 	pause_z = 11000000
 	menu_pos = (130.0, 140.0)
+	menu_offset = (0.0, 0.0)
 	spacing = -59
 	text_scale = (0.85, 0.85)
-	switch (<submenu>)
+	switch <submenu>
+		case modes
+			spacing = -50
+			menu_offset = (250.0, 15.0)
 		case extras
 			spacing = -72
 			text_scale = (0.63, 0.63)
@@ -580,7 +829,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 	new_menu {
 		scrollid = scrolling_pause
 		vmenuid = vmenu_pause
-		menu_pos = <menu_pos>
+		menu_pos = (<menu_pos> + <menu_offset>)
 		rot_angle = 0
 		event_handlers = [
 			{pad_back ui_flow_manager_respond_to_action params = {action = go_back}}
@@ -609,6 +858,8 @@ script create_pause_menu\{Player = 1 submenu = none}
 				pause_player_text = "Options"
 			elseif (<submenu> = extras)
 				pause_player_text = "Extras"
+			elseif ChecksumEquals a = <submenu> b = modes // why do you exist
+				pause_player_text = "Change Mode"
 			else
 				pause_player_text = "Unknown menu"
 			endif
@@ -708,6 +959,17 @@ script create_pause_menu\{Player = 1 submenu = none}
 				endif
 				new_pause_menu_button {
 					<params_params>
+					id = pause_mode
+					event_handlers = [
+						{focus retail_menu_focus params = {id = pause_mode}}
+						{focus generic_menu_up_or_down_sound}
+						{unfocus retail_menu_unfocus params = {id = pause_mode}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = select_modes create_params = {player_device = <player_device>}}}
+					]
+					text = 'Change Mode'
+				}
+				new_pause_menu_button {
+					<params_params>
 					id = pause_options
 					event_handlers = [
 						{focus retail_menu_focus params = {id = pause_options}}
@@ -720,7 +982,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 			endif
 			quit_script = ui_flow_manager_respond_to_action
 			quit_script_params = {action = select_quit create_params = {Player = <Player>}}
-			if ($is_network_game)
+			/*if ($is_network_game)
 				quit_script = create_leaving_lobby_dialog
 				quit_script_params = {
 					create_pause_menu
@@ -728,7 +990,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 					pad_choose_script = pause_menu_really_quit_net_game
 					z = 300
 				}
-			endif
+			endif*///
 			new_pause_menu_button {
 				<params_params>
 				id = pause_quit
@@ -947,6 +1209,96 @@ script create_pause_menu\{Player = 1 submenu = none}
 					]
 					text = 'Back'
 				}
+			case modes
+				params_params = {
+					<params_params> scale=0.8
+				}
+				titles = [
+					'Game Mode: '
+					'Players: '
+					'Controllers: '
+					'Difficulty:'
+					'Instrument(s): '
+					'Autoplay: '
+				]
+				getarraysize \{titles}
+				i = 0
+				begin
+					CreateScreenElement {
+						Type = TextElement
+						parent = pause_menu_frame_container
+						text = (<titles>[<i>])
+						font = <font>
+						just = [right top]
+						Pos = (<menu_pos> + ((230,64) + ((0, 50) * <i>)))
+						Scale = 0.8
+						rgba = [255 255 255 255]
+						z = (<pause_z> + 10)
+					}
+					Increment \{i}
+				repeat <array_size>
+				buttons = ($mode_buttons)
+				GetArraySize \{buttons}
+				i = 0
+				begin
+					params = (<buttons>[<i>])
+					id = (<params>.id)
+					if StructureContains \{structure=params cont}
+						cont = (<params>.cont)
+					else
+						cont = {}
+					endif
+					if StructureContains \{structure=params texts}
+						texts = (<params>.texts) // unironically die
+						text = ($<texts>[($mode_setup.(<params>.param))])
+					else
+						text = (<params>.text)
+					endif
+					new_pause_menu_button {
+						<params_params>
+						id = <id>
+						event_handlers = [
+							{focus		retail_menu_focus params = {id = <id>}}
+							{focus		generic_menu_up_or_down_sound}
+							{unfocus	retail_menu_unfocus params = {id = <id> unfocus}}
+							{pad_choose	mode_menu params = { <params> select } }
+							{pad_left	mode_menu params = { <params> left } }
+							{pad_right	mode_menu params = { <params> right } }
+						]
+						<cont>
+						text = <text>
+					}
+					if (<id> = select_players)
+						ctrls_container = <container_id>
+					endif
+					Increment \{i}
+				repeat <array_size>
+				controller_texture ($mode_setup.devices[0])
+				p1_tex = <texture>
+				controller_texture ($mode_setup.devices[1])
+				p2_tex = <texture>
+				CreateScreenElement {
+					Type = SpriteElement
+					parent = <ctrls_container>
+					id = p1_icon
+					texture = <p1_tex>
+					just = [left bottom]
+					Pos = (130.0, 60.0)
+					Scale = 0.6
+				}
+				CreateScreenElement {
+					Type = SpriteElement
+					parent = <ctrls_container>
+					id = p2_icon
+					texture = <p2_tex>
+					just = [left bottom]
+					Pos = (220.0, 60.0)
+					Scale = 0.6
+				}
+				if ScreenElementExists id=p2_icon // :/
+					SetScreenElementProps id=p2_icon alpha=($mode_setup.players)
+				endif
+				add_user_control_helper \{text = ' Cycle Option' button = leftright z = 100000}
 			case extras
 				//params_params = {<params_params> scale=0.7}
 				
@@ -1030,7 +1382,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 	if ($is_network_game = 0)
 		if NOT isSinglePlayerGame
 			if NOT GotParam \{practice}
-				FormatText textname = player_paused_text "PLAYER %d PAUSED. ONLY PLAYER %d OPTIONS ARE AVAILABLE." d = <Player>
+				FormatText textname = player_paused_text 'PLAYER %d PAUSED. ONLY PLAYER %d OPTIONS ARE AVAILABLE.' d = <Player>
 				displaySprite {
 					parent = pause_menu_frame_container
 					id = pause_helper_text_bg
@@ -1094,7 +1446,7 @@ script destroy_pause_menu
 	endif
 endscript
 
-script create_menu_backdrop\{texture = venue_bg rgba = [255 255 255 255]}
+script create_menu_backdrop\{texture = venue_bg rgba = [255 255 255 255] z = 0}
 	if ScreenElementExists \{id = menu_backdrop_container}
 		DestroyScreenElement \{id = menu_backdrop_container}
 	endif
@@ -1108,7 +1460,7 @@ script create_menu_backdrop\{texture = venue_bg rgba = [255 255 255 255]}
 		Pos = (640.0, 360.0)
 		dims = (1280.0, 720.0)
 		just = [center center]
-		z_priority = 0
+		z_priority = <z>
 	}
 endscript
 
@@ -1158,7 +1510,7 @@ endscript
 
 script fit_text_in_rectangle\{dims = (100.0, 100.0) just = center keep_ar = 0 only_if_larger_x = 0 only_if_larger_y = 0 start_x_scale = 1.0 start_y_scale = 1.0}
 	if NOT GotParam \{id}
-		ScriptAssert \{"No id passed to fit_text_in_rectangle!"}
+		ScriptAssert \{'No id passed to fit_text_in_rectangle!'}
 	endif
 	GetScreenElementDims id = <id>
 	x_dim = (<dims>.(1.0, 0.0))
@@ -1242,26 +1594,26 @@ script add_user_control_helper\{z = 10 pill = 1 fit_to_rectangle = 1}
 	if GotParam \{button}
 		switch (<button>)
 			case green
-				buttonchar = "\m0"
+				buttonchar = '\m0'
 			case red
-				buttonchar = "\m1"
+				buttonchar = '\m1'
 			case yellow
-				buttonchar = "\b6"
+				buttonchar = '\b6'
 			case blue
-				buttonchar = "\b7"
+				buttonchar = '\b7'
 			case orange
-				buttonchar = "\b8"
+				buttonchar = '\b8'
 			case strumbar
-				buttonchar = "\bb"
+				buttonchar = '\bb'
 				offset_for_strumbar = 1
 			case start
-				buttonchar = "\ba"
+				buttonchar = '\ba'
 				offset_for_strumbar = 1
 			case leftright
-				buttonchar = "\bh"
+				buttonchar = '\bh'
 		endswitch
 	else
-		buttonchar = ""
+		buttonchar = ''
 	endif
 	if (<pill> = 0)
 		CreateScreenElement {
@@ -1683,7 +2035,7 @@ endscript
 
 script get_diff_completion_percentage\{for_p2_career = 0}
 endscript
-winport_confirm_exit_msg = "Are you sure you want to exit?"
+winport_confirm_exit_msg = 'Are you sure you want to exit?'
 
 script winport_create_confirm_exit_popup
 	create_popup_warning_menu \{textblock = {text = $winport_confirm_exit_msg}menu_pos = (640.0, 490.0) dialog_dims = (288.0, 64.0) options = [{func = {ui_flow_manager_respond_to_action params = {action = continue}}text = "Yes" Scale = (1.0, 1.0)}{func = {ui_flow_manager_respond_to_action params = {action = go_back}}text = "No" Scale = (1.0, 1.0)}]}

@@ -15,33 +15,33 @@ namespace ChartEdit
 			this.Events = new EventsSection();
 			this.NoteTracks = new NoteTracks();
 		}
-        
-        public Chart(string fileName)
-        {
-            this.Song = new SongSection();
-            this.SyncTrack = new SyncTrackSection();
-            this.Events = new EventsSection();
-            this.NoteTracks = new NoteTracks();
-            /*string[] RawFile = File.ReadAllText(fileName).Split('\n');
-            bool temp = false;
-            for (int i = 0; i < RawFile.Length; i++)
-            {
-                if (temp)
-                {
+		
+		public Chart(string fileName)
+		{
+			this.Song = new SongSection();
+			this.SyncTrack = new SyncTrackSection();
+			this.Events = new EventsSection();
+			this.NoteTracks = new NoteTracks();
+			/*string[] RawFile = File.ReadAllText(fileName).Split('\n');
+			bool temp = false;
+			for (int i = 0; i < RawFile.Length; i++)
+			{
+				if (temp)
+				{
 
-                }
-                else if (!temp && (RawFile[i].Contains("Single") || RawFile[i].Contains("Bass")))
-                {
+				}
+				else if (!temp && (RawFile[i].Contains("Single") || RawFile[i].Contains("Bass")))
+				{
 
-                }
-            }
-            this.StarPowerTracks = new int[][] { new int[] { 0 },
-                                                 new int[] { 0 },
-                                                 new int[] { 0 },
-                                                 new int[] { 0 } };*/
-            this.Load(fileName);
+				}
+			}
+			this.StarPowerTracks = new int[][] { new int[] { 0 },
+												 new int[] { 0 },
+												 new int[] { 0 },
+												 new int[] { 0 } };*/
+			this.Load(fileName);
 		}
-        
+		
 		public void GetResolution()
 		{
 			if (this.Song.ContainsKey("Resolution"))
@@ -53,7 +53,7 @@ namespace ChartEdit
 				this.Resolution = 192;
 			}
 		}
-        
+		
 		private bool HandleEvents(string entry)
 		{
 			EventsSectionEntry eventsSectionEntry = EventsSectionEntry.Parse(entry);
@@ -73,7 +73,7 @@ namespace ChartEdit
 			}
 			return result;
 		}
-        
+		
 		private bool HandleKeyValue(string title, string entry)
 		{
 			bool result;
@@ -95,7 +95,7 @@ namespace ChartEdit
 			}
 			return result;
 		}
-        
+		
 		private bool HandleNote(string title, string entry)
 		{
 			Note note = Note.Parse(entry);
@@ -120,7 +120,7 @@ namespace ChartEdit
 			}
 			return result;
 		}
-        
+		
 		private bool HandleSong(string entry)
 		{
 			SongSectionEntry songSectionEntry = SongSectionEntry.Parse(entry);
@@ -136,7 +136,7 @@ namespace ChartEdit
 			}
 			return result;
 		}
-        
+		
 		private bool HandleSyncTrack(string entry)
 		{
 			SyncTrackEntry syncTrackEntry = SyncTrackEntry.Parse(entry);
@@ -156,7 +156,7 @@ namespace ChartEdit
 			}
 			return result;
 		}
-        
+		
 		public void Load(string fileName)
 		{
 			if (!File.Exists(fileName))
@@ -174,7 +174,7 @@ namespace ChartEdit
 			this.GetResolution();
 			this._ot = new OffsetTransformer(this);
 		}
-        
+		
 		private void ParseChartData(string chartData)
 		{
 			foreach (object obj in Chart.TrackRegex.Matches(chartData))
@@ -190,7 +190,7 @@ namespace ChartEdit
 				}
 			}
 		}
-        
+		
 		// read only app
 		/*public void Save(string fileName)
 		{
@@ -204,7 +204,7 @@ namespace ChartEdit
 			}
 			File.WriteAllText(fileName, stringBuilder.ToString());
 		}
-        
+		
 		private void WriteEventData(StringBuilder chartData)
 		{
 			chartData.Append("[Events]\r\n");
@@ -231,7 +231,7 @@ namespace ChartEdit
 			}
 			chartData.Append("}\r\n");
 		}
-        
+		
 		private void WriteNoteTrackData(StringBuilder chartData, NoteTrack noteTrack)
 		{
 			chartData.Append("[" + noteTrack.Name + "]\r\n");
@@ -267,7 +267,7 @@ namespace ChartEdit
 			}
 			chartData.Append("}\r\n");
 		}
-        
+		
 		private void WriteSongData(StringBuilder chartData)
 		{
 			chartData.Append("[Song]\r\n");
@@ -285,7 +285,7 @@ namespace ChartEdit
 			}
 			chartData.Append("}\r\n");
 		}
-        
+		
 		private void WriteSyncTrackData(StringBuilder chartData)
 		{
 			chartData.Append("[SyncTrack]\r\n");
@@ -309,7 +309,7 @@ namespace ChartEdit
 			}
 			chartData.Append("}\r\n");
 		}*/
-        
+		
 		public int EighthResolution
 		{
 			get
@@ -318,10 +318,10 @@ namespace ChartEdit
 			}
 		}
 
-        public int[][] StarPowerTracks;
-        
+		public int[][] StarPowerTracks;
+		
 		public EventsSection Events { get; set; }
-        
+		
 		public int HalfResolution
 		{
 			get
@@ -329,15 +329,15 @@ namespace ChartEdit
 				return this.hRes;
 			}
 		}
-        
+		
 		public int LastIndex { get; set; }
-        
+		
 		public string LoadPath { get; set; }
-        
+		
 		public string Name { get; set; }
-        
+		
 		public NoteTracks NoteTracks { get; set; }
-        
+		
 		public int QuarterResolution
 		{
 			get
@@ -398,7 +398,7 @@ namespace ChartEdit
 		private int sRes;
 
 		// Token: 0x0400008E RID: 142
-		private static readonly Regex TrackRegex = new Regex("\\[(?<title>[a-zA-Z]+)\\]\\r\\n\\{\\r\\n(\\s(?<entry>.+?)\\r\\n)+\\}", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
+		private static readonly Regex TrackRegex = new Regex("\\[(?<title>[a-zA-Z]+)\\]\\r?\\n\\{\\r?\\n(\\s(?<entry>.+?)\\r?\\n)+\\}", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
 		// Token: 0x0400008F RID: 143
 		private int tRes;

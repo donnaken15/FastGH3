@@ -43,7 +43,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <LangVersion>3</LangVersion>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>portable</DebugType>
     <DefineConstants>
     </DefineConstants>
     <Optimize>true</Optimize>

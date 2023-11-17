@@ -18,7 +18,7 @@ script TOD_Proxim_Update_LightFX
 endscript
 
 script toggle_default_sceenfx
-	printf \{"--- toggle_default_screenfx"}
+	printf \{'--- toggle_default_screenfx'}
 	TOD_Proxim_Update_LightFX_Viewport
 	toggle_screenfx_instances
 endscript

@@ -53,11 +53,11 @@ script toggle_screenfx_instances
 endscript
 
 script start_viewer_screen_fx
-	printf \{"--- start_viewer_screen_fx"}
+	printf \{'--- start_viewer_screen_fx'}
 	ScreenFX_ClearFXInstances \{viewport = 0}
 	good_saved_screenfx_settings
 	if (<is_good> = 0)
-		printf \{"returned"}
+		printf \{'returned'}
 		return
 	endif
 	printstruct ($screenfx_instances_default_state)
@@ -75,7 +75,7 @@ script start_viewer_screen_fx
 endscript
 
 script save_current_screen_fx_setup
-	printf \{"--- save_current_screen_fx_setup"}
+	printf \{'--- save_current_screen_fx_setup'}
 	if LevelIs \{viewer}
 		wait \{1 Second}
 		ScreenFX_GetActiveScreenFXInstances \{viewport = 0}
@@ -85,13 +85,13 @@ script save_current_screen_fx_setup
 endscript
 
 script good_saved_screenfx_settings
-	printf \{"--- good_saved_screenfx_settings"}
+	printf \{'--- good_saved_screenfx_settings'}
 	if NOT IsArray ($screenfx_instances_default_state)
-		printf \{"not array"}
+		printf \{'not array'}
 		return \{is_good = 0}
 	else
 		if checksumequals a = (($screenfx_instances_default_state)[0].name)b = NULL
-			printf \{"null"}
+			printf \{'null'}
 			return \{is_good = 0}
 		endif
 	endif

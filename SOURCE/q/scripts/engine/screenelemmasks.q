@@ -1,7 +1,7 @@
 
 script CreateMaskedScreenElements
 	if NOT GotParam \{mask_element}
-		script_assert \{"Must pass mask_element to CreateMaskedScreenElements"}
+		script_assert \{'Must pass mask_element to CreateMaskedScreenElements'}
 	endif
 	if NOT GotParam \{z_priority}
 		<z_priority> = 0

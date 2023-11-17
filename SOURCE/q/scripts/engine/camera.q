@@ -15,19 +15,19 @@ camera_lock_button_pressed_time = 300
 script screen_setup_standard
 	SetScreen \{Aspect = 1.3333334 angle = camera_fov letterbox = 0}
 	Change \{current_screen_mode = standard_screen_mode}
-	printf \{"change to standard"}
+	printf \{'change to standard'}
 endscript
 
 script screen_setup_widescreen
 	SetScreen \{Aspect = 1.7777778 angle = $widescreen_camera_fov letterbox = 0}
 	Change \{current_screen_mode = widescreen_screen_mode}
-	printf \{"change to widescreen"}
+	printf \{'change to widescreen'}
 endscript
 
 script screen_setup_letterbox
 	SetScreen \{Aspect = 1.7777778 angle = $widescreen_camera_fov letterbox = 1}
 	Change \{current_screen_mode = letterbox_screen_mode}
-	printf \{"change to letterbox"}
+	printf \{'change to letterbox'}
 endscript
 
 script fake_letterboxing
@@ -41,22 +41,22 @@ script fake_letterboxing
 			case letterbox_screen_mode
 				Change \{last_screen_mode = letterbox_screen_mode}
 			default
-				printf \{"current screen mode = %d" d = $current_screen_mode}
-				script_assert \{"Unrecognized screen mode"}
+				printf \{'current screen mode = %d' d = $current_screen_mode}
+				script_assert \{'Unrecognized screen mode'}
 		endswitch
 	else
 		switch ($last_screen_mode)
 			case standard_screen_mode
 				fake_letterboxing_elements \{remove}
 			case widescreen_screen_mode
-				printf \{"last screen mode = %d" d = $last_screen_mode}
+				printf \{'last screen mode = %d' d = $last_screen_mode}
 				nullscript
 			case letterbox_screen_mode
-				printf \{"last screen mode = %d" d = $last_screen_mode}
+				printf \{'last screen mode = %d' d = $last_screen_mode}
 				nullscript
 			default
-				printf \{"last screen mode = %d" d = $last_screen_mode}
-				script_assert \{"Unrecognized screen mode"}
+				printf \{'last screen mode = %d' d = $last_screen_mode}
+				script_assert \{'Unrecognized screen mode'}
 		endswitch
 	endif
 endscript

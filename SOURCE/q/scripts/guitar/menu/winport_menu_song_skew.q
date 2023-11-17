@@ -47,7 +47,7 @@ winport_calibrate_lag_real_time_requirement = 0
 winport_calibrate_lag_dirty = 0
 winport_calibrate_lag_end_checks = 0
 winport_calibrate_lag_started_finish = 0
-winport_calibrate_lag_cap = 200
+winport_calibrate_lag_cap = 1000
 winport_calibrate_lag_early_window = -100
 winport_calibrate_lag_late_window = 400
 winport_cl_ready_for_input = 0
@@ -130,7 +130,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 		z = (<z> + 2)
 		rot_angle = 100
 	}
-	upper_helper = "This value may be set between 0 ms and 200 ms.\n\nSome computer hardware may cause audio and gameplay to fall out of sync.	If you have to play notes ahead of the music, try adding 20 ms to the value.  Subtract 20 ms if you have to play behind the music.\nFine tune the number from there based on your personal preferences."
+	upper_helper = "Some computer hardware may cause audio and gameplay to fall out of sync.	If you have to play notes ahead of the music, try adding 20 ms to the value.  Subtract 20 ms if you have to play behind the music.\nFine tune the number from there based on your personal preferences."
 	CreateScreenElement {
 		Type = TextBlockElement
 		parent = winport_cl_container

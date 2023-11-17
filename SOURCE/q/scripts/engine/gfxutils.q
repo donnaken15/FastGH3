@@ -15,11 +15,11 @@ script HiResScreenshot\{Scale = 1}
 	printstruct <...>
 	<i> = 0
 	wait \{30 frames ignoreslomo}
-	printf \{"11111111111111111111111111111111111111"}
+	printf \{'11111111111111111111111111111111111111'}
 	begin
 		<j> = 0
 		begin
-			printf \{"222222222222222222222222222222222"}
+			printf \{'222222222222222222222222222222222'}
 			FormatText textname = text 'hi_res_screen_%a_%b_' a = <i> b = <j>
 			sub = ((<i> * <Scale>)+ <j>)
 			<cameraid> ::SetSubFrustum res = <Scale> subImage = <sub>
@@ -32,7 +32,7 @@ script HiResScreenshot\{Scale = 1}
 	repeat <Scale>
 	<cameraid> ::SetSubFrustum res = 1 subImage = 0
 	root_window ::DoMorph \{alpha = 1}
-	if GotParam \{Do2D}
+	if GotParam \{Do2D}	
 		if isXenon
 			Change \{ISOLATE_2D_RENDER = 1}
 			wait \{3 frames}

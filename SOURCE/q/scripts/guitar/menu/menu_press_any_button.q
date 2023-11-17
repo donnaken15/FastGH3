@@ -3,8 +3,8 @@ script create_press_any_button_menu
 	ReAcquireControllers
 	Change \{primary_controller_assigned = 0}
 	Change \{main_menu_movie_first_time = 0}
-	SoundEvent \{event = Menu_Guitar_Lick_SFX}
-	spawnscriptnow \{Menu_Music_On params = {waitforguitarlick = 1}}
+	//SoundEvent \{event = Menu_Guitar_Lick_SFX}
+	//spawnscriptnow \{Menu_Music_On params = {waitforguitarlick = 1}}
 	create_menu_backdrop \{texture = black}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = pab_container Pos = (0.0, 0.0)}
 	menu_press_any_button_create_obvious_text
@@ -161,7 +161,7 @@ script check_for_any_input\{button1 = {}button2 = {}}
 	begin
 		if NOT IsWinPort
 			if IsStandardGuitarControllerPluggedIn
-				notify_box scale1 = (0.6000000238418579, 0.75) scale2 = (0.5, 0.6000000238418579) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "An unsupported guitar peripheral has been detected." line2 = "Connect either a Guitar Hero guitar or" line3 = "Xbox 360 controller and press START to continue." menu_z = 510000
+				notify_box scale1 = (0.6, 0.75) scale2 = (0.5, 0.6) container_pos = (0.0, 350.0) container_id = notify_invalid_device line1 = "An unsupported guitar peripheral has been detected." line2 = "Connect either a Guitar Hero guitar or" line3 = "Xbox 360 controller and press START to continue." menu_z = 510000
 				CreateScreenElement \{Type = SpriteElement id = controller_fader parent = root_window texture = black rgba = [0 0 0 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 509000 alpha = 0.7}
 				Change \{invalid_controller_lock = 1}
 				begin

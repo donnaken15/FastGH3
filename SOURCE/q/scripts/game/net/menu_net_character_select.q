@@ -289,4 +289,4 @@ script pause_menu_really_quit_net_game
 	leaving_lobby_dialog_unfocus
 	destroy_leaving_lobby_dialog
 	ui_flow_manager_respond_to_action \{action = select_quit create_params = {Player = 1}}
-endscript*/
+endscript*///

@@ -1,7 +1,7 @@
 
 script menu_stack_push\{menu_params = {}}
 	if NOT GotParam \{menu_script}
-		ScriptAssert \{"need menu_script=some_script plz"}
+		ScriptAssert \{'need menu_script=some_script plz'}
 	endif
 	menu_stack_push_or_pop_menu <...> func = push
 	if NOT GotParam \{no_create}
@@ -29,7 +29,7 @@ script menu_stack_create_latest
 		<menu_script> <menu_params>
 		return \{true}
 	else
-		printf \{"No menu to create in menu_stack_create_latest!"}
+		printf \{'No menu to create in menu_stack_create_latest!'}
 		return \{FALSE}
 	endif
 endscript
@@ -54,7 +54,7 @@ endscript
 
 script menu_stack_push_or_pop_menu\{func = push}
 	menu_stack_get_local_stack
-	printf \{"--- menu_stack_push_or_pop_menu"}
+	printf \{'--- menu_stack_push_or_pop_menu'}
 	<func> menu_script
 	<func> menu_params
 	menu_stack_clear

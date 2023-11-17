@@ -86,7 +86,7 @@ script create_select_controller_menu
 	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow2 texture = controller_2p_arrow rgba = [130 90 205 255] dims = (64.0, 128.0) Pos = (705.0, 445.0) just = [left top] flip_v flip_h rot_angle = -20}
 	<id> ::SetTags old_pos = (680.0, 420.0)
 	spawnscriptnow \{cs_bounce_arrows}
-	spawnscriptnow \{jump_up_and_down_peasants}
+	//spawnscriptnow \{jump_up_and_down_peasants}
 	common_control_helpers \{select back nav}
 	create_ready_icons \{pos1 = (300.0, 450.0) pos2 = (835.0, 510.0)}
 	i = 0
@@ -103,7 +103,7 @@ script destroy_select_controller_menu
 	Change \{menu_select_num_controllers = 0}
 	clean_up_user_control_helpers
 	killspawnedscript \{name = cs_bounce_arrows}
-	killspawnedscript \{name = jump_up_and_down_peasants}
+	//killspawnedscript \{name = jump_up_and_down_peasants}
 	killspawnedscript \{name = menu_select_controller_poll_for_controllers}
 	destroy_menu \{menu_id = msc_container}
 	destroy_menu_backdrop
@@ -162,29 +162,26 @@ endscript
 script menu_select_controller_add_controllable_icon\{controller_index = 0 wait_to_drop_controller = 0}
 	FormatText checksumName = controller_icon_id 'controller%d_icon' d = <controller_index>
 	if NOT ScreenElementExists id = <controller_icon_id>
+		c_texture = missing_sprite
+		c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].c)
 		if IsWinPort
 			if WinPortSioIsKeyboard deviceNum = <controller_index>
 				c_texture = controller_2p_keyboard
 				c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].c)
 			else
-				c_texture = controller_2p_lespaul
-				c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].g)
-			endif
-		else
-			if IsGuitarController controller = <controller_index>
-				c_texture = controller_2p_lespaul
-				c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].g)
-			else
-				GetPlatform
-				switch <Platform>
-					case Xenon
-						c_texture = controller_2p_controller_XBOX
-					case PS3
+				if IsGuitarController controller = <controller_index>
+					c_texture = controller_2p_lespaul
+					c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].g)
+				else
+					if WinPortSioIsDirectInputGamepad deviceNum = <controller_index>
 						c_texture = controller_2p_controller_ps3
-					default
-						ScriptAssert \{"Unrecognized platform for controller select"}
-				endswitch
-				c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].c)
+						// my NES controller isn't picking up,
+						// so need to see if this works
+					else
+						c_texture = controller_2p_controller_XBOX
+					endif
+					c_pos = ($menu_select_controller_icon_positions [(<controller_index> + 2)].c)
+				endif
 			endif
 		endif
 		CreateScreenElement {

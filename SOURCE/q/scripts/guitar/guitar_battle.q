@@ -945,17 +945,18 @@ endscript
 
 script death_text
 	text_start_pos = (640.0, 430.0)
-	text_offset = (225.0, 0.0)
+	text_offset = ((1.0, 0.0) * ($x_offset_p2)) // swag
 	if (($<other_player_status>.Player)= 1)
 		<text_start_pos> = (<text_start_pos> - <text_offset>)
 	else
 		<text_start_pos> = (<text_start_pos> + <text_offset>)
 	endif
-	FormatText checksumName = text_bg_checksum 'sudden_death_text_bg_%s' s = ($<other_player_status>.text)
-	FormatText checksumName = text_wing_r_checksum 'sudden_death_wing_r_%s' s = ($<other_player_status>.text)
-	FormatText checksumName = text_wing_l_checksum 'sudden_death_wing_l_%s' s = ($<other_player_status>.text)
-	FormatText checksumName = text_checksum 'sudden_death_text_%s' s = ($<other_player_status>.text)
-	FormatText checksumName = text_checksum2 'sudden_death_text2_%s' s = ($<other_player_status>.text)
+	player_text = ($<other_player_status>.text)
+	ExtendCrc out = text_bg_checksum		sudden_death_text_bg_	<player_text>
+	ExtendCrc out = text_wing_r_checksum	sudden_death_wing_r_	<player_text>
+	ExtendCrc out = text_wing_l_checksum	sudden_death_wing_l_	<player_text>
+	ExtendCrc out = text_checksum			sudden_death_text_		<player_text>
+	ExtendCrc out = text_checksum2			sudden_death_text2_		<player_text>
 	if ScreenElementExists id = <text_bg_checksum>
 		DestroyScreenElement id = <text_bg_checksum>
 	endif
@@ -998,14 +999,10 @@ script death_text
 		just = [right top]
 		z_priority = 52
 	}
-	CreateScreenElement {
+	text_params = {
 		Type = TextElement
-		id = <text_checksum>
 		parent = <text_bg_checksum>
-		Pos = (130.0, -53.0)
-		text = "DEATH"
 		font = text_a10
-		Scale = 1
 		rgba = [255 255 255 255]
 		just = [center bottom]
 		z_priority = 53
@@ -1014,19 +1011,18 @@ script death_text
 		shadow_rgba = [0 0 0 255]
 	}
 	CreateScreenElement {
-		Type = TextElement
+		<text_params>
+		id = <text_checksum>
+		Pos = (130.0, -53.0)
+		text = "DEATH"
+		Scale = 1
+	}
+	CreateScreenElement {
+		<text_params>
 		id = <text_checksum2>
-		parent = <text_bg_checksum>
 		Pos = (130.0, 5.0)
 		text = "DRAIN"
-		font = text_a10
 		Scale = 1.6
-		rgba = [255 255 255 255]
-		just = [center bottom]
-		z_priority = 53
-		Shadow
-		shadow_offs = (3.0, 3.0)
-		shadow_rgba = [0 0 0 255]
 	}
 	DoScreenElementMorph {
 		id = <text_bg_checksum>

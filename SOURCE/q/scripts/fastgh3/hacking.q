@@ -262,12 +262,29 @@ script everyone_deploy // :P
 endscript
 
 fastgh3_path_triggers = []
+// soulless 5
 //fastgh3_path_triggers = [33230 120000 148610 187610 246610 307460 350760 431200 507690 585000 658960 716300 794530 831380 876460 900920 983070]
 // soulless 1 path from CHOpt
 //fastgh3_path_triggers = [9446 18638 37851 57127 85851 151148 191936 265276 298148 334978]
 script muh_arby_bot_star
+	if ($is_network_game)
+		return
+	endif
 	if ($player1_status.bot_play = 0 & $player2_status.bot_play = 0)
 		printf \{'bot not turned on!!!!!!!!!!!!!'}
+		return
+	endif
+	if ($game_mode = p2_battle)
+		printf \{'fake battle bot, fire every two seconds'}
+		begin
+			wait \{2 seconds}
+			if ($player1_status.bot_play = 1)
+				battle_trigger_on \{player_status = player1_status}
+			endif
+			if ($player2_status.bot_play = 1)
+				battle_trigger_on \{player_status = player2_status}
+			endif
+		repeat
 		return
 	endif
 	if (($game_mode = p2_career || $game_mode = p2_coop) & ($player1_status.bot_play = 0 || $player2_status.bot_play = 0))
@@ -371,16 +388,6 @@ script PrintPlayer\{player_status = player1_status}
 endscript
 
 script keytest
-	//i = 0
-	//begin
-		// WHY IS THIS CRASHING
-		//WinPortSioGetControlName deviceNum = $winport_bb_device_num controlNum=<i>
-		//printf 'Key %i' i=<i>
-		//Increment \{i}
-	//repeat 600
-	if ScreenElementExists \{id=keytest_text}
-		DestroyScreenElement \{id=keytest_text}
-	endif
 	CreateScreenElement {
 		Type = TextElement
 		parent = root_window

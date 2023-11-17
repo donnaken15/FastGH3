@@ -1,7 +1,7 @@
 
 script TileSprite\{parent = root_window container_type = ContainerElement tile_dims = (1280.0, 720.0) Pos = (0.0, 0.0) sprite_props = {}container_props = {}}
 	if NOT GotParam \{texture}
-		printf \{"TileSprite needs a texture"}
+		printf \{'TileSprite needs a texture'}
 		return
 	endif
 	CreateScreenElement {
@@ -22,7 +22,7 @@ script TileSprite\{parent = root_window container_type = ContainerElement tile_d
 		}
 		GetScreenElementDims id = <id>
 		if ((<width> < 1)|| (<height> < 1))
-			printf \{"why is the width or height not positive?"}
+			printf \{'why is the width or height not positive?'}
 			DestroyScreenElement id = <container_id>
 			return
 		endif
@@ -99,11 +99,11 @@ script TileSpriteLoop\{move_x = 1 move_y = 0}
 		<height> = (<height> * 2)
 	endif
 	if ((<move_x> > <width>)|| (<move_x> < (<width> * -1)))
-		printf \{"move_x is greater then the width of the image"}
+		printf \{'move_x is greater then the width of the image'}
 		return
 	endif
 	if ((<move_y> > <height>)|| (<move_y> < (<height> * -1)))
-		printf \{"move_y is greater then the height of the image"}
+		printf \{'move_y is greater then the height of the image'}
 		return
 	endif
 	<X> = 0

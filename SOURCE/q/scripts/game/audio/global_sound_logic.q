@@ -1,10 +1,8 @@
 
 script stars
-	printf \{channel = SFX "*******************************************************"}
-	printf \{channel = SFX "*******************************************************"}
-	printf \{channel = SFX "*******************************************************"}
-	printf \{channel = SFX "*******************************************************"}
-	printf \{channel = SFX "*******************************************************"}
+	begin
+		printf \{channel = SFX '*******************************************************'}
+	repeat 5
 endscript
 InteriorPanningRadius = 10
 Global_User_SFX_Number = 10
@@ -90,17 +88,17 @@ endscript
 script PrintPushPopDebugInfo
 	if NOT GotParam \{push}
 		if NOT GotParam \{pop}
-			printf \{"Did not specify push or pop!"}
+			printf \{'Did not specify push or pop!'}
 			return
 		endif
 	endif
 	if GotParam \{push}
-		pushPop = "push"
+		pushPop = 'push'
 	else
-		pushPop = "pop"
+		pushPop = 'pop'
 	endif
 	if NOT GotParam \{name}
-		printf \{"Did not specify script name!"}
+		printf \{'Did not specify script name!'}
 		return
 	endif
 	printf "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= %a %b" a = <name> b = <pushPop>
@@ -149,64 +147,64 @@ endscript
 script GH_Guitar_Battle_DSP_Effects_Player1
 	switch <attack_effect>
 		case double_note_flange
-			printf \{channel = SFX "setting to doublenote flange"}
+			printf \{channel = SFX 'setting to doublenote flange'}
 			setsoundbusseffects \{effect = $Flange_DoubleNotes1}
-			printf \{channel = SFX "changing p1 balance buss"}
+			printf \{channel = SFX 'changing p1 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 2}}
 		case overload_highpass
-			printf \{channel = SFX "setting to overload highpass"}
+			printf \{channel = SFX 'setting to overload highpass'}
 			setsoundbusseffects \{effect = $HighPass_Thin1}
-			printf \{channel = SFX "changing p1 balance buss"}
+			printf \{channel = SFX 'changing p1 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 3}}
 		case brokenstring_chorus
-			printf \{channel = SFX "setting to broken string chorus"}
+			printf \{channel = SFX 'setting to broken string chorus'}
 			setsoundbusseffects \{effect = $Chorus_Generic1}
-			printf \{channel = SFX "changing p1 balance buss"}
+			printf \{channel = SFX 'changing p1 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 0}}
 		case lefty_eq
-			printf \{channel = SFX "setting to lefty eq"}
+			printf \{channel = SFX 'setting to lefty eq'}
 			setsoundbusseffects \{effect = $LowPass_Muffled1}
-			printf \{channel = SFX "changing p1 balance buss"}
+			printf \{channel = SFX 'changing p1 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 6}}
 		case diffup_eq
-			printf \{channel = SFX "setting to diffup eq"}
+			printf \{channel = SFX 'setting to diffup eq'}
 			setsoundbusseffects \{effect = $EQ_Wah1}
-			printf \{channel = SFX "changing p1 balance buss"}
+			printf \{channel = SFX 'changing p1 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_First_Player = {vol = -6}}
 		default
-			printf \{channel = SFX "default"}
+			printf \{channel = SFX 'default'}
 	endswitch
 endscript
 
 script GH_Guitar_Battle_DSP_Effects_Player2
 	switch <attack_effect>
 		case double_note_flange
-			printf \{channel = SFX "setting to doublenote flange"}
+			printf \{channel = SFX 'setting to doublenote flange'}
 			setsoundbusseffects \{effect = $Flange_DoubleNotes2}
-			printf \{channel = SFX "changing p2 balance buss"}
+			printf \{channel = SFX 'changing p2 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 2}}
 		case overload_highpass
-			printf \{channel = SFX "setting to overload highpass"}
+			printf \{channel = SFX 'setting to overload highpass'}
 			setsoundbusseffects \{effect = $HighPass_Thin2}
-			printf \{channel = SFX "changing p2 balance buss"}
+			printf \{channel = SFX 'changing p2 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 3}}
 		case brokenstring_chorus
-			printf \{channel = SFX "setting to broken string chorus"}
+			printf \{channel = SFX 'setting to broken string chorus'}
 			setsoundbusseffects \{effect = $Chorus_Generic2}
-			printf \{channel = SFX "changing p2 balance buss"}
+			printf \{channel = SFX 'changing p2 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 0}}
 		case lefty_eq
-			printf \{channel = SFX "setting to lefty eq"}
+			printf \{channel = SFX 'setting to lefty eq'}
 			setsoundbusseffects \{effect = $LowPass_Muffled2}
-			printf \{channel = SFX "changing p2 balance buss"}
+			printf \{channel = SFX 'changing p2 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 6}}
 		case diffup_eq
-			printf \{channel = SFX "setting to diffup eq"}
+			printf \{channel = SFX 'setting to diffup eq'}
 			setsoundbusseffects \{effect = $EQ_Wah2}
-			printf \{channel = SFX "changing p2 balance buss"}
+			printf \{channel = SFX 'changing p2 balance buss'}
 			SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = -6}}
 		default
-			printf \{channel = SFX "default"}
+			printf \{channel = SFX 'default'}
 	endswitch
 endscript
 
@@ -238,7 +236,7 @@ script Reset_Battle_DSP_Effects_Player1
 	setsoundbusseffects \{effect = $Flange_Default1 time = 0.15}
 	setsoundbusseffects \{effect = $Chorus_Default1 time = 0.15}
 	setsoundbusseffects \{effect = $EQ_Default1 time = 0.15}
-	printf \{channel = SFX "RESTTING p1 balance buss"}
+	printf \{channel = SFX 'RESTTING p1 balance buss'}
 	SetSoundBussParams \{Guitar_Balance_First_Player = {vol = 0}}
 endscript
 
@@ -248,7 +246,7 @@ script Reset_Battle_DSP_Effects_Player2
 	setsoundbusseffects \{effect = $Flange_Default2 time = 0.15}
 	setsoundbusseffects \{effect = $Chorus_Default2 time = 0.15}
 	setsoundbusseffects \{effect = $EQ_Default2 time = 0.15}
-	printf \{channel = SFX "RESTTING p2 balance buss"}
+	printf \{channel = SFX 'RESTTING p2 balance buss'}
 	SetSoundBussParams \{Guitar_Balance_Second_Player = {vol = 0}}
 endscript
 
@@ -457,7 +455,7 @@ script GH3_Battle_Play_Whammy_Pitch_Up_Sound
 		case expert
 			<total_strums> = ($battlemode_powerups [6].expert_repair)
 		default
-			printf \{"moron"}
+			printf \{'moron'}
 	endswitch
 	<change_pitch> = (1.3 * <num_strums> / <total_strums>)
 	<local_pitch> = (100.0 - (10.0 * <change_pitch>))
@@ -655,7 +653,7 @@ script Battle_SFX_Repair_Broken_String
 					case expert
 						<total_strums> = ($battlemode_powerups [5].expert_repair)
 					default
-						printf \{"moron"}
+						printf \{'moron'}
 				endswitch
 				<change_pitch> = (1.0 * <num_strums> / <total_strums>)
 				<local_pitch> = (100.0 - (10.0 * <change_pitch>))

@@ -2,12 +2,12 @@
 script flashsounds
 	EnableRemoveSoundEntry \{enable}
 	stars
-	printf \{"Flashing global_sfx pak"}
+	printf \{'Flashing global_sfx pak'}
 	UnLoadPak \{'zones/global/global_sfx.pak' Heap = heap_audio localized}
 	WaitUnloadPak \{'zones/global/global_sfx.pak'}
 	LoadPak \{'zones/global/global_sfx.pak' no_vram Heap = heap_audio localized}
 	stars
-	printf \{"Sfx Pak flashing done."}
+	printf \{'Sfx Pak flashing done.'}
 endscript
 SfxPreviewEventTree_FAM = {
 	Type = FAM
@@ -59,16 +59,16 @@ endscript
 script PreviewSoundEvent
 	ExtendCrc <event> '_container' out = container_name
 	if StructureContains structure = $<container_name> Command
-		printf "Previewing SoundEvent %s" s = <event>
+		printf 'Previewing SoundEvent %s' s = <event>
 		if checksumequals a = ($<container_name>.Command)b = PlaySound
-			printf \{"Playsound!"}
+			printf \{'Playsound!'}
 			SoundEvent event = <event>
 		elseif checksumequals a = ($<container_name>.Command)b = Obj_PlaySound
-			printf \{"Obj_Playsound!"}
+			printf \{'Obj_Playsound!'}
 			SfxCreateTestObject
 			SoundEvent event = <event> object = SfxPreviewEventObject
 		elseif checksumequals a = ($<container_name>.Command)b = Agent_PlayVO
-			printf \{"Agent_PlayVO!"}
+			printf \{'Agent_PlayVO!'}
 			<stream_priority> = 1
 			<logic_priority> = 50
 			<animate_mouth> = true
@@ -81,7 +81,7 @@ script PreviewSoundEvent
 			SfxCreateTestFAMObject
 			SoundEvent event = <event> object = SfxPreviewEventObject <...>
 		else
-			printf \{"Sound Event Command is invalid"}
+			printf \{'Sound Event Command is invalid'}
 		endif
 		waitTime = 0
 		begin
@@ -97,6 +97,6 @@ script PreviewSoundEvent
 		repeat
 		SfxDestroyTestObject
 	else
-		printf "sound event does not exist: %s" s = <container_name>
+		printf 'sound event does not exist: %s' s = <container_name>
 	endif
 endscript

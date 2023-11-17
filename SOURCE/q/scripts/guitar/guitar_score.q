@@ -286,7 +286,7 @@ script unnecessary_note
 endscript
 
 script update_score_fast
-	if ($Cheat_PerformanceMode = 1 || hudless = 1)
+	if ($Cheat_PerformanceMode = 1 || $hudless = 1)
 		if ($game_mode = training)
 			begin
 				GetSongTimeMs

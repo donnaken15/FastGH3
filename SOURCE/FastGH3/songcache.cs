@@ -100,6 +100,8 @@ public partial class songcache : Form
 
 	private void cdblc(object sender, DataGridViewCellEventArgs e)
 	{
+		if (e.RowIndex < 0)
+			return;
 		r(e);
 	}
 
@@ -109,7 +111,7 @@ public partial class songcache : Form
 		{
 			string s = (string)d.Cells[0].Value;
 			File.Delete(folder + s);
-			File.Delete(folder + Program.ini(s, "Audio", null, 17, i));
+			File.Delete(folder + Program.ini(s, "Audio", null, 32, i));
 			Program.WSec(s, null, i);
 			c.Rows.Remove(d);
 		}
