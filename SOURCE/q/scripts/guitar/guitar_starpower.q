@@ -443,14 +443,21 @@ script reset_star_array
 			endif
 		endif
 	endif
-	get_song_prefix song = <song_name>
 	get_difficulty_text_nl difficulty = <difficulty>
+	key_parts = [ '_' '' '' '_star' ]
+	SetArrayElement arrayname=key_parts index=1 newvalue=<part> // wtf
+	SetArrayElement arrayname=key_parts index=2 newvalue=<difficulty_text_nl>
+	GetArraySize \{key_parts}
+	song = ($current_song)
+	i = 0
+	begin
+		ExtendCrc <song> (<key_parts>[<i>]) out=song
+		Increment i
+	repeat <array_size>
 	if ($game_mode = p2_battle ||
 		$boss_battle = 1)
-		FormatText checksumName = song '%s_%p%d_starbattlemode' s = <song_prefix> p = <part> d = <difficulty_text_nl> AddToStringLookup
+		ExtendCrc <song> 'battlemode' out=song
 		Change StructureName = <player_status> sp_phrases_total = 0
-	else
-		FormatText checksumName = song '%s_%p%d_star' s = <song_prefix> p = <part> d = <difficulty_text_nl> AddToStringLookup
 	endif
 	Change StructureName = <player_status> current_song_star_array = <song>
 	Change StructureName = <player_status> current_star_array_entry = 0

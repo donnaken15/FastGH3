@@ -273,11 +273,6 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 	else
 		<z> = -4
 	endif
-	if NOT (<popup>)
-		create_menu_backdrop \{texture = options_calibrate_starpower_posterwall}
-	else
-		displaySprite \{parent = spc_container tex = options_calibrate_starpower_posterwall Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 107}
-	endif
 	displaySprite {
 		parent = spc_container
 		tex = options_calibrate_starpower_bg

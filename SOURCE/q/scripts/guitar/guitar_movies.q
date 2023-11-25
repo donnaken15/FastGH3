@@ -26,6 +26,7 @@ Z_Video_movie_viewport_ps3 = {
 movie_viewport = z_viewer_movie_viewport
 
 script create_movie_viewport
+	return
 	movie_viewport = ($movie_viewport)
 	if NOT GlobalExists name = <movie_viewport>
 		return
@@ -52,6 +53,7 @@ script create_movie_viewport
 endscript
 
 script destroy_movie_viewport
+	return
 	movie_viewport = ($movie_viewport)
 	if NOT GlobalExists name = <movie_viewport>
 		return
@@ -145,7 +147,7 @@ script preload_bgbink
 		params = { <params> no_hold }
 	endif
 	stop_bgbink
-	PreLoadMovie { movie = 'backgrnd_video' textureSlot = 2 TexturePri = -9999999 <params> }
+	PreLoadMovie { movie = 'backgrnd_video' textureSlot = 2 TexturePri = -9999999 <params> } // non_blocking_seeking
 endscript
 script start_bgbink
 	if isMoviePreLoaded \{textureSlot = 2}

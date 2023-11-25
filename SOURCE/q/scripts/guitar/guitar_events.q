@@ -101,8 +101,8 @@ endscript
 
 script event_iterator
 	printf "Event Iterator started with time %d" d = <time_offset>
-	get_song_prefix song = <song_name>
-	FormatText checksumName = song '%s_%e' s = <song_prefix> e = <event_string> AddToStringLookup
+	ExtendCrc <song_name> '_' out=song
+	ExtendCrc <song> <event_string> out=song
 	array_entry = 0
 	GetArraySize $<song>
 	if (<array_Size> = 0)
@@ -1018,7 +1018,7 @@ script GuitarEvent_SongWon_Spawned
 			rgba = [255 255 255 255]
 			Scale = <winner_scale>
 			z_priority = 95
-			font = text_a10_large
+			font = text_a10
 			rgba = [223 223 223 255]
 			just = [center center]
 			alpha = 1

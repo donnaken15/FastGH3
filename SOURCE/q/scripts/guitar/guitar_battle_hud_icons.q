@@ -87,7 +87,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = battle_alert_fill_hard
+			texture = battle_alert_fill_hard_double
 			Pos = (0.0, 0.0)
 			dims = (256.0, 40.0)
 			just = [center center]
@@ -98,7 +98,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = battle_alert_fill_hard
+			texture = battle_alert_fill_hard_lefty
 			Pos = (0.0, 0.0)
 			dims = (256.0, 40.0)
 			just = [center center]
@@ -109,7 +109,7 @@ script create_battle_alert_frames
 			Type = SpriteElement
 			parent = <battle_alert_container_id>
 			id = <new_container_id>
-			texture = battle_alert_fill_double
+			texture = battle_alert_fill_double_lefty
 			Pos = (0.0, 0.0)
 			dims = (256.0, 40.0)
 			just = [center center]

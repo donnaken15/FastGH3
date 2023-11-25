@@ -381,7 +381,7 @@ endscript
 script SetSeekPosition_Song\{position = 0}
 	WinPortGetSongSkew
 	position = (<position> + <value>)
-	printstruct <...>
+	//printstruct <...>
 	if NOT ($song_unique_id = NULL)
 		SetSoundSeekPosition unique_id = $song_unique_id position = <position>
 	endif

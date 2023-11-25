@@ -27,6 +27,7 @@ namespace ChartEdit
 				{
 					num = int.MaxValue;
 				}
+				syncTrackEntry.TimeSignature2 = -1;
 				syncTrackEntry.Offset = offset;
 				string text2 = text;
 				if (text2 != null)
@@ -36,6 +37,9 @@ namespace ChartEdit
 						if (text2 == "TS")
 						{
 							syncTrackEntry.TimeSignature = num;
+							var ts2 = match.Groups["ts2"];
+							if (ts2.Success)
+								syncTrackEntry.TimeSignature2 = int.Parse(ts2.Value.Trim());
 							syncTrackEntry.Type = SyncType.TimeSignature;
 							return syncTrackEntry;
 						}
@@ -67,9 +71,10 @@ namespace ChartEdit
 		public int Offset { get; set; }
 
 		public int TimeSignature { get; set; }
+		public int TimeSignature2 { get; set; }
 
 		public SyncType Type { get; set; }
 
-		private static readonly Regex SyncTrackRegex = new Regex("(?<offset>\\d+)\\s*\\=\\s*(?<type>.*?)\\s*(?<value>\\d+)", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
+		private static readonly Regex SyncTrackRegex = new Regex("(?<offset>\\d+)\\s*\\=\\s*(?<type>.*?)\\s*(?<value>\\d+)(\\s(?<ts2>\\d+))?", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnorePatternWhitespace);
 	}
 }

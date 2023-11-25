@@ -101,7 +101,7 @@ script PrintPushPopDebugInfo
 		printf \{'Did not specify script name!'}
 		return
 	endif
-	printf "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= %a %b" a = <name> b = <pushPop>
+	printf "%c %a %b" a = <name> b = <pushPop> c = '=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-='
 endscript
 
 script Generic_Reverb_Functionality_Script\{NewEchoSettings = $Echo_Generic_Outside_Slap EchoFadeTime = 0.5 NewReverbSettings = $Reverb_Generic_Outside_Verb ReverbFadeTime = 0.5}

@@ -198,17 +198,17 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	Change StructureName = <player_status> check_time_early = ($check_time_early * $current_speedfactor)
 	Change StructureName = <player_status> check_time_late = ($check_time_late * $current_speedfactor)
 	ExtendCrc input_array <player_text> out = input_array
-	printf \{"-----------------------------------"}
-	printf \{"-----------------------------------"}
-	printf \{"-----------------------------------"}
-	printf \{"-----------------------------------"}
-	printf \{"-----------------------------------"}
-	printf "Creating array for %p" p = <player_text>
-	printf \{"-----------------------------------"}
-	printf \{"-----------------------------------"}
-	printf \{"-----------------------------------"}
-	printf \{"-----------------------------------"}
-	printf \{"-----------------------------------"}
+	printf \{'-----------------------------------'}
+	printf \{'-----------------------------------'}
+	printf \{'-----------------------------------'}
+	printf \{'-----------------------------------'}
+	printf \{'-----------------------------------'}
+	printf 'Creating array for %p' p = <player_text>
+	printf \{'-----------------------------------'}
+	printf \{'-----------------------------------'}
+	printf \{'-----------------------------------'}
+	printf \{'-----------------------------------'}
+	printf \{'-----------------------------------'}
 	InputArrayCreate name = <input_array>
 	if (<Player> = 1)
 		if ($input_mode = record)
@@ -286,7 +286,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 		SpawnScriptLater gem_iterator params = {iterator_text = 'bot' song_name = <song_name> difficulty = <difficulty> part = <part> use_input_array = 'input_array' one_event_per_frame
 			time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)strum_function = check_buttons_bot skipleadin = ($<player_status>.scroll_time * 1000.0)
 			Player = <Player> player_status = <player_status> player_text = <player_text>}
-		printf \{channel = log "Spawned bot!"}
+		printf \{channel = log 'Spawned bot!'}
 	endif
 	if ($new_net_logic)
 		if (<Player> = 2)
@@ -382,19 +382,16 @@ script get_song_end_time_for_array
 endscript
 
 script get_song_end_time
-	//get_song_prefix song = <song>
-	//FormatText checksumName = song_expert '%s_song_expert' s = <song_prefix> AddToStringLookup
-	//FormatText checksumName = rhythm_expert '%s_song_rhythm_expert' s = <song_prefix> AddToStringLookup
-	ExtendCrc \{$current_song '_song_expert' out = song_expert}
-	ExtendCrc \{$current_song '_song_rhythm_expert' out = rhythm_expert}
+	ExtendCrc <song> '_song_expert' out = song_expert
+	ExtendCrc <song> '_song_rhythm_expert' out = rhythm_expert
 	total_end_time = 2.0
 	get_song_end_time_for_array total_end_time = <total_end_time> song_array = <song_expert>
 	get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythm_expert>
 	get_song_struct song = <song>
 	if StructureContains structure = <song_struct> use_coop_notetracks
 		if ($coop_tracks = 1)
-			FormatText checksumName = guitarcoop_expert '%s_song_guitarcoop_expert' s = <song_prefix> AddToStringLookup
-			FormatText checksumName = rhythmcoop_expert '%s_song_rhythmcoop_expert' s = <song_prefix> AddToStringLookup
+			ExtendCrc <song> '_song_guitarcoop_expert' out = guitarcoop_expert
+			ExtendCrc <song> '_song_rhythmcoop_expert' out = rhythmcoop_expert
 			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <guitarcoop_expert>
 			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythmcoop_expert>
 		endif
@@ -411,7 +408,7 @@ script win_song
 	if NOT (<array_Size> = 0)
 		get_song_end_time song = ($current_song)
 		end_s = ((<total_end_time> - <startTime>)/ 1000.0)
-		printf "Waiting %s seconds for song end marker." s = <end_s>
+		printf 'Waiting %s seconds for song end marker.' s = <end_s>
 		if (<end_s> > 0)
 			wait <end_s> seconds // totally good idea
 		endif
@@ -442,15 +439,15 @@ script win_song
 			no_hold
 		}
 	endif
-	printf \{"Waiting %s seconds for extra song win delay." s = $Song_Win_Delay}
+	printf \{'Waiting %s seconds for extra song win delay.' s = $Song_Win_Delay}
 	wait \{$Song_Win_Delay seconds}
 	Change num_players_finished = ($num_players_finished + 1)
-	printf "win_song finished %i %f" i = ($num_players_finished)f = ($current_num_players)
+	printf 'win_song finished %i/%f' i = ($num_players_finished)f = ($current_num_players)
 	if ($num_players_finished >= $current_num_players)
 		if ($is_network_game)
 			spawnscriptnow \{online_end_song}
 		else
-			printf \{"Broadcasting song won event."}
+			printf \{'Broadcasting song won event.'}
 			ExtendCrc song_won <player_text> out = Type
 			broadcastevent Type = <Type>
 		endif
@@ -490,7 +487,7 @@ script load_songqpak\{async = 0}
 			endif
 		endif
 		
-		printf \{"Loading Song q pak"}
+		printf \{'Loading Song q pak'}
 		if FileExists \{'pak/song.pak'}
 			if NOT LoadPakAsync pak_name = 'pak/song.pak' Heap = heap_song no_vram async = <async>
 				DownloadContentLost
@@ -513,7 +510,7 @@ endscript
 script unload_songqpak
 	if NOT ($current_song_qpak = None)
 		//songqpak = 'pak/song.pak'
-		printf \{"UnLoading Song q pak"}
+		printf \{'UnLoading Song q pak'}
 		if FileExists \{'pak/song.pak'}
 			UnLoadPak \{'pak/song.pak'}
 		elseif FileExists \{'pak/song.qb'}
@@ -526,7 +523,7 @@ playing_song = 0
 
 script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 endtime = 99999999 devil_finish_restart = 0 end_credits_restart = 0}
 	if (<devil_finish_restart> = 1)
-		printf \{"FINISH DEVIL RESTART"}
+		printf \{'FINISH DEVIL RESTART'}
 	else
 		Change \{devil_finish = 0}
 		if ($current_song = bossdevil)
@@ -534,7 +531,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		endif
 	endif
 	if (<end_credits_restart> = 1)
-		printf \{"END CREDITS RESTART"}
+		printf \{'END CREDITS RESTART'}
 	else
 		if NOT ($current_song = thrufireandflames)
 			Change \{end_credits = 0}
@@ -587,44 +584,44 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		//	Change \{StructureName = player2_status outfit = 1}
 		//	Change \{StructureName = player2_status style = 1}
 		//endif
-		printf \{channel = log "Starting bot for boss"}
+		printf \{channel = log 'Starting bot for boss'}
 	else
 		if ($player2_status.bot_play = 1 || $new_net_logic)
 			Change boss_oldcontroller = ($player2_status.controller)
 			GetInputHandlerBotIndex \{Player = 2}
 			Change StructureName = player2_status controller = <controller>
-			printf \{channel = log "Starting bot for player 2"}
+			printf \{channel = log 'Starting bot for player 2'}
 		endif
 	endif
 	if ($player1_status.bot_play = 1)
 		GetInputHandlerBotIndex \{Player = 1}
 		Change StructureName = player1_status controller = <controller>
-		printf \{channel = log "Starting bot for player 1"}
+		printf \{channel = log 'Starting bot for player 1'}
 	endif
 	//if ($input_mode = play)
 	//	Change \{StructureName = player1_status bot_play = 0}
 	//	Change \{StructureName = player2_status bot_play = 0}
 	//endif
 	if ($game_mode = p2_battle || $boss_battle = 1)
-		printf \{"Initiating BossBattle"}
+		printf \{'Initiating BossBattle'}
 		bossbattle_init
 	endif
 	if ($new_net_logic)
 		new_net_logic_init
 	endif
-	//printf \{"-------------------------------------"}
-	//printf \{"-------------------------------------"}
-	//printf \{"-------------------------------------"}
-	//printf \{"Now playing %s %d" s = $current_song d = $current_difficulty}
-	//printf \{"-------------------------------------"}
-	//printf \{"-------------------------------------"}
-	//printf \{"-------------------------------------"}
+	//printf \{'-------------------------------------'}
+	//printf \{'-------------------------------------'}
+	//printf \{'-------------------------------------'}
+	//printf \{'Now playing %s %d' s = $current_song d = $current_difficulty}
+	//printf \{'-------------------------------------'}
+	//printf \{'-------------------------------------'}
+	//printf \{'-------------------------------------'}
 	song_start_time = <startTime>
 	call_startup_scripts <...>
 	setup_bg_viewport
 	Change \{current_transition = fastintro}
 	starttimeafterintro = <startTime>
-	//printf "Current Transition = %s" s = ($current_transition)
+	//printf 'Current Transition = %s' s = ($current_transition)
 	if ($disable_intro = 1)
 		Change \{current_transition = immediate}
 	endif
@@ -756,6 +753,7 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	endif
 	spawnscriptnow begin_video_after_intro params = {starttimeafterintro = <starttimeafterintro>}
 	spawnscriptnow begin_song_after_intro params = {starttimeafterintro = <starttimeafterintro>}
+//	spawnscriptnow movie_test_thing
 	if ($boss_battle = 1)
 		if ($show_boss_helper_screen = 1)
 			disable_bg_viewport
@@ -781,6 +779,13 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	ProfilingEnd <...> 'start_gem_scroller'
 endscript
 
+//script movie_test_thing
+//	Wait \{2 seconds}
+//	//PlaysBinkMovie
+//	//printstruct <...>
+//	AdjustTextureMovieSprite textureSlot = 2 width = 640 height = 360 base_x = 320 base_y = 240
+//endscript
+
 show_boss_helper_screen = 0
 
 script wait_and_show_boss_helper_after_intro
@@ -801,7 +806,7 @@ endscript
 script kill_gem_scroller\{no_render = 0}
 	ProfilingStart
 	mark_unsafe_for_shutdown
-	printf \{"kill_gem_scroller - Start"}
+	printf \{'kill_gem_scroller - Start'}
 	//if NOT GotParam \{restarting}
 		//StopRendering
 	//endif
@@ -948,9 +953,9 @@ script kill_gem_scroller\{no_render = 0}
 	killspawnedscript \{name = begin_song_after_intro}
 	hud_flash_red_bg_kill \{Player = 1}
 	hud_flash_red_bg_kill \{Player = 2}
-	printf \{"kill_gem_scroller - Killing Event Scripts"}
+	printf \{'kill_gem_scroller - Killing Event Scripts'}
 	killspawnedscript \{id = song_event_scripts}
-	printf \{"kill_gem_scroller - Killing Event Scripts Finished"}
+	printf \{'kill_gem_scroller - Killing Event Scripts Finished'}
 	killspawnedscript \{id = zone_scripts}
 	GetPakManCurrentName \{map = zones}
 	FormatText checksumName = zone_killsong '%s_KillSong' s = <pakname>
@@ -968,16 +973,16 @@ script kill_gem_scroller\{no_render = 0}
 	shut_down_practice_mode
 	destroy_menu \{menu_id = you_rock_container}
 	KillMovie \{textureSlot = 1}
-	//printf \{"kill_gem_scroller - waiting for dead objects"}
+	//printf \{'kill_gem_scroller - waiting for dead objects'}
 	//wait \{2 gameframes}
-	//printf \{"kill_gem_scroller - waiting for dead objects End"}
+	//printf \{'kill_gem_scroller - waiting for dead objects End'}
 	end_song
 	//if NOT (<no_render> = 1)
 	//	if ($shutdown_game_for_signin_change_flag = 0)
 	//		StartRendering
 	//	endif
 	//endif
-	printf \{"kill_gem_scroller - End"}
+	printf \{'kill_gem_scroller - End'}
 	mark_safe_for_shutdown
 	Change \{playing_song = 0}
 	richpres_stop_song
@@ -1212,7 +1217,7 @@ script start_song\{device_num = 0 practice_intro = 0 endtime = 999999999}
 	else
 		Change \{StructureName = player1_status controller = $player1_device}
 		Change \{StructureName = player2_status controller = $player2_device}
-		printf "Pads assigned: Player 1: %p Player 2: %q" p = ($player1_status.controller)q = ($player2_status.controller)
+		printf 'Pads assigned: Player 1: %p Player 2: %q' p = ($player1_status.controller)q = ($player2_status.controller)
 	endif
 	Change \{battle_sudden_death = 0}
 	if ($game_mode = p2_battle)
@@ -1264,7 +1269,7 @@ script restart_song\{practice_intro = 0 sudden_death = 0}
 	endif
 	if ($current_song = bosstom || $current_song = bossslash)
 		Change boss_wuss_out = ($boss_wuss_out + 1)
-		printf \{channel = trchen "Boss Wuss Out %s" s = $boss_wuss_out}
+		printf \{channel = trchen 'Boss Wuss Out %s' s = $boss_wuss_out}
 	endif
 	StopSoundEvent \{Crowd_Fail_Song_SFX}
 	if (<practice_intro> = 0)

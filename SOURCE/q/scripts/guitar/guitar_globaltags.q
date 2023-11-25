@@ -93,7 +93,7 @@ script setup_songtags
 		begin
 			get_songlist_checksum index = <song_count>
 			get_song_prefix song = <song_checksum>
-			FormatText checksumName = songname '%s_%d' s = (<song_prefix>)d = <difficulty_text_nl> AddToStringLookup = true
+			FormatText checksumName = songname '%s_%d' s = <song_prefix> d = <difficulty_text_nl> AddToStringLookup = true
 			if GotParam \{globaltag_checksum}
 				globaltag_checksum = (<globaltag_checksum> + <songname>)
 			endif

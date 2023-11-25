@@ -45,8 +45,7 @@ script practice_check_song_for_parts
 		Change \{StructureName = player1_status part = guitar}
 		return \{flow_state = practice_select_difficulty_fs}
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_rhythm_array_id '%s_song_rhythm_easy' s = <song_prefix>
+	ExtendCrc \{$current_song '_song_rhythm_easy' out=song_rhythm_array_id}
 	if GlobalExists name = <song_rhythm_array_id> Type = array
 		GetArraySize $<song_rhythm_array_id>
 		if (<array_Size> > 0)
@@ -66,8 +65,7 @@ script practice_check_song_for_parts_back
 	if StructureContains structure = <song_struct> no_rhythm_track
 		return \{flow_state = practice_setlist_fs}
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_rhythm_array_id '%s_song_rhythm_easy' s = <song_prefix>
+	ExtendCrc \{$current_song '_song_rhythm_easy' out=song_rhythm_array_id}
 	if GlobalExists name = <song_rhythm_array_id> Type = array
 		GetArraySize $<song_rhythm_array_id>
 		if (<array_Size> > 0)

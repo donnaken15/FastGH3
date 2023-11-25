@@ -20,7 +20,7 @@ outdir="${2:-$1_build}/"
 bin=$(dirname "$bin"); wbin=$(cygpath -w "$bin"); NL=$'\n'; nul=/dev/null
 echo "${y}*****  Q COMPILATION   *****${rc}"
 
-(cd "$indir" && $find * -type f -name "*.q") | while read -r f; do
+(cd "$indir" && $find * -type f -name "*.q" 2>$nul) | while read -r f; do
 	out="$outdir${f%%.*}.qb.xen"
 	# (re)compile files after being modified / or if they're new
 	if [ ! -f "$out" ] || [ "$out" -ot "$indir/$f" ]; then

@@ -141,8 +141,8 @@ script create_audio_settings_menu\{popup = 0}
 	if (<popup>)
 		FormatText textname = text "BAND: %d" d = <band_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
-		displaySprite \{parent = pause_menu_frame_container tex = circle_64 rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (58.0, 58.0) just = [center center] z = 200}
-		displaySprite \{parent = pause_menu_frame_container id = band_yeller tex = circle_64 rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (44.0, 44.0) just = [center center] z = 201}
+		displaySprite \{parent = pause_menu_frame_container tex = newspaper_circle rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (58.0, 58.0) just = [center center] z = 200}
+		displaySprite \{parent = pause_menu_frame_container id = band_yeller tex = newspaper_circle rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (44.0, 44.0) just = [center center] z = 201}
 		displayText {
 			parent = pause_menu_frame_container
 			id = band_volume_text_id
@@ -181,7 +181,7 @@ script create_audio_settings_menu\{popup = 0}
 		FormatText textname = text "GUITAR: %d" d = <guitar_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
 		displaySprite \{parent = pause_menu_frame_container tex = hud_score_nixie_2a rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (58.0, 58.0) just = [center center] z = 200}
-		displaySprite \{parent = pause_menu_frame_container id = guitar_yeller tex = circle_64 rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (44.0, 44.0) just = [center center] z = 201}
+		displaySprite \{parent = pause_menu_frame_container id = guitar_yeller tex = newspaper_circle rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (44.0, 44.0) just = [center center] z = 201}
 		displayText {
 			parent = pause_menu_frame_container
 			id = guitar_volume_text_id
@@ -218,7 +218,7 @@ script create_audio_settings_menu\{popup = 0}
 		FormatText textname = text "FX: %d" d = <sfx_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
 		displaySprite \{parent = pause_menu_frame_container tex = hud_score_nixie_2a rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (58.0, 58.0) just = [center center] z = 200}
-		displaySprite \{parent = pause_menu_frame_container id = fx_yeller tex = circle_64 rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (44.0, 44.0) just = [center center] z = 201}
+		displaySprite \{parent = pause_menu_frame_container id = fx_yeller tex = newspaper_circle rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (44.0, 44.0) just = [center center] z = 201}
 		displayText {
 			parent = pause_menu_frame_container
 			id = fx_volume_text_id

@@ -91,3 +91,5 @@ PLUGINS/Logger.dll
 /DATA/MUSIC/fastgh3.fsb.xen
 /DATA/PAK/player.pak.xen
 /DATA/PAK/song.pak.xen
+SOURCE/Zones/highway/__output.scn
+SOURCE/Zones/highway/__output.tex

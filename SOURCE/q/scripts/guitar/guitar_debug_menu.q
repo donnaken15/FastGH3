@@ -888,8 +888,7 @@ script create_skipbytime_menu
 			]
 		}
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = fretbar_array '%s_fretbars' s = <song_prefix> AddToStringLookup
+	ExtendCrc \{$current_song '_fretbars' out=fretbar_array}
 	GetArraySize $<fretbar_array>
 	max_time = (($<fretbar_array> [(<array_Size> - 1)])/ 1000)
 	current_time = 0
@@ -968,8 +967,7 @@ script create_skipbymarker_menu
 			]
 		}
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = marker_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=marker_array}
 	GetArraySize $<marker_array>
 	if (<array_Size> = 0)
 		CreateScreenElement {
@@ -1056,9 +1054,8 @@ script create_skipbymeasure_menu
 			]
 		}
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = fretbar_array '%s_fretbars' s = <song_prefix> AddToStringLookup
-	FormatText checksumName = timesig '%s_timesig' s = <song_prefix> AddToStringLookup
+	ExtendCrc \{$current_song '_fretbars' out=fretbar_array}
+	ExtendCrc \{$current_song '_timesig' out=timesig}
 	GetArraySize $<timesig>
 	timesig_entry = 0
 	timesig_size = <array_Size>

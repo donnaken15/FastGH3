@@ -11,6 +11,7 @@ powerup_base = {
 	}
 	drain_time = 5000
 	fire_bolt = 1
+	dont_push = 0
 }
 battlemode_powerups = [
 	{
@@ -48,6 +49,8 @@ battlemode_powerups = [
 		Scr = battle_steal
 		card_texture = icon_attack_drain
 		drain_time = 10
+		fire_bolt = 0
+		dont_push = 1
 	}
 	{
 		$powerup_base
@@ -102,11 +105,12 @@ battlemode_powerups = [
 		$powerup_base
 		name = starpower
 		name_text = "Star Power"
-		weight = 0
+		weight = 10
 		Scr = battle_starpower
-		card_texture = icon_battle_star
+		card_texture = icon_attack_star
 		drain_time = 10
 		fire_bolt = 0
+		dont_push = 1
 	}
 ]
 
@@ -717,8 +721,9 @@ script battle_trigger_on
 		printf "num powerups: %i" i = ($<player_status>.current_num_powerups)
 		printf "Trying to use powerup: %i" i = <select>
 	endif
+	powerup = ($battlemode_powerups[<select>])
 	update_battlecards_remove player_status = <player_status>
-	drain_time = ($battlemode_powerups [<select>].drain_time)
+	drain_time = (<powerup>.drain_time)
 	other_player_difficulty = easy
 	if ($<player_status>.Player = 1)
 		<other_player_difficulty> = $current_difficulty2
@@ -737,23 +742,25 @@ script battle_trigger_on
 	endswitch
 	Change StructureName = <player_status> final_blow_powerup = <select>
 	if NOT ($<player_status>.highway_layout = solo_highway)
-		spawnscriptnow ($battlemode_powerups [<select>].Scr)id = battlemode params = {drain_time = <drain_time>
+		spawnscriptnow (<powerup>.Scr)id = battlemode params = {drain_time = <drain_time>
 			Player = <other_player>
 			player_text = <other_player_text>
 			other_player_status = <other_player_status>
 			player_status = <player_status>
 			difficulty = <other_difficulty>
-			($battlemode_powerups [<select>].params)}
+			(<powerup>.params)}
 	endif
 	Change StructureName = <player_status> battle_num_attacks = ($<player_status>.battle_num_attacks + 1)
-	Band_PlayAttackAnim name = ($<player_status>.band_member)Type = <select>
-	Band_PlayResponseAnim name = ($<other_player_status>.band_member)Type = <select>
+	//Band_PlayAttackAnim name = ($<player_status>.band_member)Type = <select>
+	//Band_PlayResponseAnim name = ($<other_player_status>.band_member)Type = <select>
 	if ($<player_status>.highway_layout = solo_highway)
 		spawnscriptnow hammer_rock_meter params = {other_player_text = <other_player_text>}
 	else
-		spawnscriptnow hammer_highway params = {other_player_text = <other_player_text>}
+		if (<powerup>.dont_push = 0)
+			spawnscriptnow hammer_highway params = {other_player_text = <other_player_text>}
+		endif
 	endif
-	if ($battlemode_powerups [<select>].fire_bolt = 1)
+	if (<powerup>.fire_bolt = 1)
 		spawnscriptnow attack_bolt params = {player_status = <player_status> other_player_status = <other_player_status>}
 	endif
 endscript
@@ -827,18 +834,16 @@ script attack_bolt\{bolt_angle = 60}
 	Destroy2DParticleSystem id = <attack_bolt_particle> kill_when_empty
 endscript
 
+death_drain_factor = 1.0
 script battle_death_lick\{death_speed = 0.2}
 	if NOT ($boss_battle = 1)
-		switch <difficulty>
-			case easy
-				<death_speed> = ($battlemode_powerups [7].easy_kill_rate)
-			case medium
-				<death_speed> = ($battlemode_powerups [7].medium_kill_rate)
-			case hard
-				<death_speed> = ($battlemode_powerups [7].hard_kill_rate)
-			case expert
-				<death_speed> = ($battlemode_powerups [7].expert_kill_rate)
-		endswitch
+		ExtendCrc <difficulty> '_kill_rate' out = kill_rate
+		factor = ($death_drain_factor)
+		if (<factor> <= 0.0)
+			factor = 1.0
+		endif
+		printstruct <...>
+		<death_speed> = ($battlemode_powerups[7].<kill_rate> / <factor>)
 	endif
 	spawnscriptnow attack_bolt params = {bolt_angle = 80 player_status = <player_status> other_player_status = <other_player_status>}
 	if ($<other_player_status>.Player = 1)
@@ -1489,10 +1494,16 @@ script animate_steal
 		hand_scale = (-1.0, 1.0)
 		hand_y_offset = (0.0, -10.0)
 		hand_x_offset = (-40.0, 0.0)
+		;hand_scale = (-0.66, 0.66)
+		;hand_y_offset = (0.0, -8.0)
+		;hand_x_offset = (-10.0, 0.0)
 	else
 		hand_scale = (1.0, 1.0)
 		hand_y_offset = (0.0, -10.0)
 		hand_x_offset = (40.0, 0.0)
+		;hand_scale = (0.66, 0.66)
+		;hand_y_offset = (0.0, -8.0)
+		;hand_x_offset = (10.0, 0.0)
 	endif
 	FormatText checksumName = steal_hand_open_checksum 'steal_hand_open_%i_%p' i = ($<other_player_status>.stealing_powerup)p = ($<other_player_status>.Player)
 	if ScreenElementExists id = <steal_hand_open_checksum>
@@ -1510,13 +1521,17 @@ script animate_steal
 		Scale = <hand_scale>
 		alpha = 0
 		just = [center center]
-		z_priority = 25
+		z_priority = (($battle_hud_2d_elements.z)+ 26)
+	}
+	DoScreenElementMorph {
+		id = <steal_hand_open_checksum>
+		alpha = 1
+		time = (0.2 / $current_speedfactor)
 	}
 	DoScreenElementMorph {
 		id = <steal_hand_open_checksum>
 		Pos = (<start_pos> + <hand_y_offset> - <hand_x_offset>)
-		alpha = 1
-		time = 0.5
+		time = (0.5 / $current_speedfactor)
 	}
 	wait \{0.5 seconds}
 	if ScreenElementExists id = <steal_hand_open_checksum>
@@ -1546,12 +1561,12 @@ script animate_steal
 			Pos = <start_pos>
 			dims = (64.0, 64.0)
 			just = [center center]
-			z_priority = (($battle_hud_2d_elements.z)+ 19)
+			z_priority = (($battle_hud_2d_elements.z)+ 26)
 		}
 		DoScreenElementMorph {
 			id = <held_card_checksum>
 			Pos = <morph_to_pos>
-			time = 0.5
+			time = (0.5 / $current_speedfactor)
 		}
 		if ScreenElementExists id = <steal_hand_checksum>
 			DestroyScreenElement id = <steal_hand_checksum>
@@ -1566,19 +1581,19 @@ script animate_steal
 			Scale = <hand_scale>
 			alpha = 1
 			just = [center center]
-			z_priority = 25
+			z_priority = (($battle_hud_2d_elements.z)+ 25)
 		}
 		DoScreenElementMorph {
 			id = <steal_hand_checksum>
 			texture = battle_hud_steal_hand
 			Pos = (<morph_to_pos> + <hand_y_offset> - <hand_x_offset>)
-			time = 0.5
+			time = (0.5 / $current_speedfactor)
 		}
 		wait \{0.4 seconds}
 		DoScreenElementMorph {
 			id = <steal_hand_checksum>
 			alpha = 0
-			time = 0.1
+			time = (0.1 / $current_speedfactor)
 		}
 		wait \{0.1 seconds}
 		if ScreenElementExists id = <held_card_checksum>
@@ -1647,6 +1662,8 @@ script battle_lefty_notes
 	GuitarEvent_BattleAttackFinished <...>
 endscript
 
+bot_battle_lastwhammytime_p1 = 0.0
+bot_battle_lastwhammytime_p2 = 0.0
 script battle_whammy_attack
 	repair_ammount = 5
 	switch <difficulty>
@@ -1664,6 +1681,13 @@ script battle_whammy_attack
 	else
 		SpawnScript GH_BattleMode_Player2_SFX_Whammy_Start params = {holdtime = (<drain_time> / 1000.0)}id = battlemode
 	endif
+	if (($boss_battle = 1 & <other_player_status>.Player = 2) | <other_player_status>.bot_play = 1)
+		GetSongTimeMs
+		ExtendCrc bot_battle_lastwhammytime_ (<other_player_status>.text) out = lastwhammytime
+		if (<time> < $<lastwhammytime>)
+			Change globalname = <lastwhammytime> newvalue = <time>
+		endif
+	endif
 	if ($<other_player_status>.whammy_attack < 1)
 		Change StructureName = <other_player_status> whammy_attack = <repair_ammount>
 		whammy_on = 0
@@ -1671,17 +1695,27 @@ script battle_whammy_attack
 		frame_count = 0
 		shake_frequency = 1
 		mask = 65536
-		Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
-		mask = 4096
-		Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
-		mask = 256
-		Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
-		mask = 16
-		Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
-		mask = 1
-		Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
+		begin
+			Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
+			mask = (<mask> / 16)
+		repeat 5
+		;mask = 4096
+		;Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
+		;mask = 256
+		;Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
+		;mask = 16
+		;Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
+		;mask = 1
+		;Change StructureName = <other_player_status> broken_string_mask = ($<other_player_status>.broken_string_mask || <mask>)
 		update_training_whammy_bar other_player_status = <other_player_status>
 		if ($<other_player_status>.is_local_client)
+			if ($boss_battle = 1)
+				interval = ($current_boss.WhammySpeed.($current_difficulty))
+				lastwhammytime = boss_lastwhammytime
+			else
+				interval = 150
+				ExtendCrc bot_battle_lastwhammytime_ (<other_player_status>.text) out = lastwhammytime
+			endif
 			begin
 				if ($<other_player_status>.whammy_attack = 0)
 					break
@@ -1703,12 +1737,11 @@ script battle_whammy_attack
 				else
 					<len> = 0
 				endif
-				if (($boss_battle = 1 &
-					<other_player_status>.Player = 2) | <other_player_status>.bot_play = 1)
+				if (($boss_battle = 1 & <other_player_status>.Player = 2) | <other_player_status>.bot_play = 1)
 					GetSongTimeMs
-					if (<time> - $boss_lastwhammytime > 250)
+					if (<time> - $<lastwhammytime> > <interval>)
 						len = 0.5
-						Change boss_lastwhammytime = <time>
+						Change globalname = <lastwhammytime> newvalue = <time>
 					else
 						len = 0
 					endif
@@ -2085,29 +2118,46 @@ endscript
 script battle_starpower
 	if ($<other_player_status>.Player = 1)
 		player_status = player2_status
-		Player = 2
-		player_text = 'p2'
+		difficulty = ($current_difficulty2)
 	else
 		player_status = player1_status
-		Player = 1
-		player_text = 'p1'
+		difficulty = ($current_difficulty)
 	endif
+	Player = ($<player_status>.player)
+	player_text = ($<player_status>.text)
 	Change StructureName = <player_status> star_power_amount = 50.0
 	spawnscriptnow star_power_activate_and_drain params = {
 		player_status = <player_status>
 		Player = <Player>
 		player_text = <player_text>
 	}
-	printf '%d' d = ($<player_status>.star_power_used)
-	printf 'sp on'
+	//printf '%d' d = ($<player_status>.star_power_used)
+	//printf 'sp on'
+	// hack :( lazy to detour but also thinking about how i would have to patch it and how it works out in the long run if something needs to change
+	last_health = ($<player_status>.current_health)
+	ExtendCrc health_change_good_battle_ ($difficulty_list_props.<difficulty>.text_nl) out = health_change
 	begin
 		if ($<player_status>.star_power_amount = 0)
 			break
 		endif
+		if ($<player_status>.current_health > <last_health>)
+			printf 'boost'
+			change structurename=player1_status current_health=($<player_status>.current_health + ($<health_change> * 2.0))
+			CrowdIncrease player_status = <player_status>
+		endif
+		last_health = ($<player_status>.current_health)
 		wait 1 gameframe
 	repeat
-	printf 'sp off'
+	//printf 'sp off'
 endscript
+;health_change_bad_battle_easy = -0.053
+;health_change_good_battle_easy = 0.029
+;health_change_bad_battle_medium = -0.0267
+;health_change_good_battle_medium = 0.0145
+;health_change_bad_battle_hard = -0.0374
+;health_change_good_battle_hard = 0.0135
+;health_change_bad_battle_expert = -0.048
+;health_change_good_battle_expert = 0.012
 
 script animate_lefty_flip
 	GetArraySize \{$gem_colors}

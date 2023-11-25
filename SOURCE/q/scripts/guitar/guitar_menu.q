@@ -1139,6 +1139,17 @@ script create_pause_menu\{Player = 1 submenu = none}
 							]
 							text = 'Calibrate whammy'
 						}
+						/*new_pause_menu_button {
+							<params_params>
+							id = winport_options_calibrate_tilt
+							event_handlers = [
+								{focus retail_menu_focus params = {id = winport_options_calibrate_tilt}}
+								{focus generic_menu_up_or_down_sound}
+								{unfocus retail_menu_unfocus params = {id = winport_options_calibrate_tilt}}
+								{pad_choose ui_flow_manager_respond_to_action params = {action = select_calibrate_star_power_trigger create_params = {Player = <Player>}}}
+							]
+							text = 'Calibrate guitar tilt'
+						}*///
 					endif
 				endif
 				if isSinglePlayerGame
@@ -1386,7 +1397,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				displaySprite {
 					parent = pause_menu_frame_container
 					id = pause_helper_text_bg
-					tex = helper_pill_body
+					tex = control_pill_body
 					Pos = (640.0, 600.0)
 					just = [center center]
 					rgba = [96 0 0 255]
@@ -1407,7 +1418,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				pause_helper_text_bg ::SetProps dims = <bg_dims>
 				displaySprite {
 					parent = pause_menu_frame_container
-					tex = helper_pill_end
+					tex = control_pill_end
 					Pos = ((640.0, 600.0) - <width> * (0.5, 0.0))
 					rgba = [96 0 0 255]
 					just = [right center]
@@ -1416,7 +1427,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				}
 				displaySprite {
 					parent = pause_menu_frame_container
-					tex = helper_pill_end
+					tex = control_pill_end
 					Pos = ((640.0, 601.0) + <width> * (0.5, 0.0))
 					rgba = [96 0 0 255]
 					just = [left center]

@@ -74,6 +74,10 @@ Common_Immediate_Transition = {
 			time = 10
 			Scr = muh_arby_bot_star
 		}
+		{
+			time = 10
+			Scr = key_events
+		}
 	]
 }
 Default_Generic_Transition = {
@@ -110,6 +114,10 @@ Common_Generic_Transition = {
 		{
 			time = 300
 			Scr = muh_arby_bot_star
+		}
+		{
+			time = 300
+			Scr = key_events
 		}
 	]
 	EndWithDefaultCamera

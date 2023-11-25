@@ -19,7 +19,7 @@ current_intro = fast_intro_sequence_props
 
 script play_intro
 	printf \{"Playing Intro"}
-	printstruct <...>
+	//printstruct <...>
 	if ($show_boss_helper_screen = 1)
 		return
 	endif
@@ -61,7 +61,7 @@ script nointro
 		return
 	endif
 	printf \{"Intro... NOT!"}
-	printstruct <...>
+	//printstruct <...>
 	if ($show_boss_helper_screen = 1)
 		return
 	endif
@@ -102,6 +102,9 @@ script nointro
 		nointro_hud_move morph_time = 0.0001
 		Player = (<Player> + 1)
 	repeat ($current_num_players)
+	if ($game_mode = p2_battle & $battle_sudden_death = 1)
+		restore_saved_powerups
+	endif
 	EnableInput controller = ($<player_status>.controller)
 endscript
 
