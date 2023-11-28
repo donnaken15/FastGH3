@@ -166,7 +166,7 @@ mode_index = {
 fastgh3_build = '1.0-999010889'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [11 17 2023]
+build_timestamp = [11 27 2023]
 
 script FileExists \{#"0x00000000" = ''}
 	if exists <#"0x00000000">
@@ -174,7 +174,7 @@ script FileExists \{#"0x00000000" = ''}
 	endif
 	GetPlatformExt
 	// would concatenation be faster than this
-	Formattext textname = xen '%s.%x' s = <#"0x00000000"> x = <platform_ext>
+	Formattext textname = xen "%s.%x" s = <#"0x00000000"> x = <platform_ext>
 	if exists <xen>
 		return \{true}
 	endif
@@ -202,6 +202,7 @@ endscript
 script AllocArray \{set = 0 size = 10}
 	// basically memset lol
 	element = <set>
+	RemoveComponent \{set}
 	array = []
 	begin
 		AddArrayElement <...>
@@ -278,7 +279,7 @@ script guitar_startup
 		//MemCardSystemInitialize // probably destroyed and broke save functionality
 		InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
 		//InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
-		LightShow_Init \{notes = $LightShow_NoteMapping nodeflags = $LightShow_StateNodeFlags ColorOverrideExclusions = $LightShow_ColorOverrideExcludeLights}
+		LightShow_Init \{notes = $nullArray nodeflags = $nullArray ColorOverrideExclusions = $nullArray}
 		printf \{'Initializing Replay buffer'}
 		AllocateDataBuffer \{name = replay kb = 5120}
 		ProfilingEnd <...> 'init things'
@@ -490,7 +491,7 @@ script guitar_startup
 			if GlobalExists name = <mod_info_name> type = structure
 				mod_info = ($<mod_info_name>)
 			elseif GlobalExists \{name = mod_info type = structure}
-				mod_info = $mod_info
+				mod_info = ($mod_info)
 			else
 				mod_info = {failed}
 			endif
@@ -765,6 +766,7 @@ script guitar_startup
 		Increment \{player}
 	repeat ($max_num_players)
 	if ($autolaunch_startnow = 0)
+		HideLoadingScreen
 		start_flow_manager \{flow_state = bootup_sequence_fs}
 	else
 		StartRendering
@@ -787,7 +789,6 @@ script guitar_startup
 		load_highway \{player_status = player2_status filename = 'hway.pak'}
 	endif
 	ProfilingEnd <...> 'load highways'
-	HideLoadingScreen
 	Change \{tutorial_disable_hud = 0}
 endscript
 // @script | load_highway | load highway pak

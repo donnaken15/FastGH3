@@ -268,7 +268,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	<do_bot> = 0
 	if ($boss_battle = 1)
 		if (<Player> = 2)
-			FormatText checksumName = bossresponse_array 'bossresponse_array%p' p = <player_text>
+			ExtendCrc bossresponse_array <player_text> out = bossresponse_array
 			InputArrayCreate name = <bossresponse_array>
 			SpawnScriptLater gem_iterator params = {iterator_text = 'fill_bossarray' song_name = <song_name> difficulty = <difficulty> part = <part> input_array = <bossresponse_array>
 				time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)strum_function = fill_input_array skipleadin = ($<player_status>.scroll_time * 1000.0)
@@ -290,7 +290,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	endif
 	if ($new_net_logic)
 		if (<Player> = 2)
-			FormatText checksumName = bossresponse_array 'bossresponse_array%p' p = <player_text>
+			ExtendCrc bossresponse_array <player_text> out = bossresponse_array
 			InputArrayCreate name = <bossresponse_array>
 			SpawnScriptLater gem_iterator params = {iterator_text = 'fill_bossarray' song_name = <song_name> difficulty = <difficulty> part = <part> input_array = <bossresponse_array>
 				time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)strum_function = fill_input_array skipleadin = ($<player_status>.scroll_time * 1000.0)
@@ -1052,6 +1052,7 @@ script restart_gem_scroller\{no_render = 0}
 	Change \{check_for_unplugged_controllers = 1}
 	UnBindGuitarControllerStatus
 	LaunchEvent \{Type = focus target = root_window}
+	HideLoadingScreen
 	gh3_start_pressed
 endscript
 

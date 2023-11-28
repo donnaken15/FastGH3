@@ -25,6 +25,7 @@ PLAY NOW!
 * [Q Unpack (Experimental)](https://github.com/donnaken15/FastGH3/tree/unpak)
   * [Download](https://github.com/donnaken15/FastGH3/archive/refs/heads/unpak.zip)
 <br>![last commit](https://img.shields.io/github/last-commit/donnaken15/FastGH3/unpak)
+<br>![unpak size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.cf%2Ffastgh3%2F__final_size.php?unpak)
 * [Previous Releases + Changelog](https://donnaken15.cf/fastgh3/dev.html)
 * [Previous Dev Builds](https://donnaken15.cf/fastgh3/unstab.html)
 

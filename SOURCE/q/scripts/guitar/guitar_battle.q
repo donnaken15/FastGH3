@@ -768,7 +768,7 @@ endscript
 script attack_bolt\{bolt_angle = 60}
 	bolt_pos_middle = (640.0, 230.0)
 	bolt_pos_offset = (330.0, 0.0)
-	FormatText checksumName = attack_bolt 'attack_bolt%p' p = ($<player_status>.text)AddToStringLookup = true
+	ExtendCrc attack_bolt ($<player_status>.text) out = attack_bolt
 	if ScreenElementExists id = <attack_bolt>
 		DestroyScreenElement id = <attack_bolt>
 	endif
@@ -1099,12 +1099,12 @@ endscript
 
 script bite_particle
 	if (<random_rot> > 0)
-		FormatText checksumName = death_bite 'death_bite_r_%s' s = ($<other_player_status>.text)AddToStringLook = true
+		ExtendCrc death_bite_r_ ($<other_player_status>.text) out = death_bite
 		spawnscriptnow hammer_highway params = {push_p1 = (0.0, 30.0) push_p2 = (0.0, 30.0) other_player_text = ($<other_player_status>.text)time = 0.01}
 		Pos = (190.0, 120.0)
 	else
 		if NOT (<random_rot> = 0)
-			FormatText checksumName = death_bite 'death_bite_l_%s' s = ($<other_player_status>.text)AddToStringLook = true
+			ExtendCrc death_bite_l_ ($<other_player_status>.text) out = death_bite
 			spawnscriptnow hammer_highway params = {push_p1 = (0.0, 30.0) push_p2 = (0.0, 30.0) other_player_text = ($<other_player_status>.text)time = 0.01}
 			Pos = (65.0, 120.0)
 		endif
@@ -1192,7 +1192,7 @@ script flicker_gems
 endscript
 
 script shake_highway
-	FormatText checksumName = container_id 'gem_container%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc gem_container <player_text> out = container_id
 	GetScreenElementPosition id = <container_id>
 	original_position = <ScreenElementPos>
 	shake_frequency = 0.05
@@ -1244,7 +1244,7 @@ script shake_highway
 endscript
 
 script shake_highway_death
-	FormatText checksumName = container_id 'gem_container%p' p = ($<other_player_status>.text)AddToStringLookup = true
+	ExtendCrc gem_container ($<other_player_status>.text) out = container_id
 	GetScreenElementPosition id = <container_id>
 	original_position = <ScreenElementPos>
 	shake_frequency = 0.05
@@ -1300,7 +1300,7 @@ script hammer_highway\{push_p1 = (-70.0, 50.0) push_p2 = (70.0, 50.0) time = 0.1
 		else
 			Change \{battle_p2_highway_hammer = 1}
 		endif
-		FormatText checksumName = container_id 'gem_container%p' p = <other_player_text> AddToStringLookup = true
+		ExtendCrc gem_container <other_player_text> out = container_id
 		GetScreenElementPosition id = <container_id>
 		original_position = <ScreenElementPos>
 		DoScreenElementMorph {
@@ -1339,7 +1339,7 @@ script hammer_rock_meter
 		else
 			Change \{battle_p2_highway_hammer = 1}
 		endif
-		FormatText checksumName = container_id 'HUD2D_rock_container%p' p = <other_player_text> AddToStringLookup = true
+		ExtendCrc HUD2D_rock_container <other_player_text> out = container_id
 		GetScreenElementPosition id = <container_id>
 		original_position = <ScreenElementPos>
 		DoScreenElementMorph {
@@ -1365,7 +1365,7 @@ endscript
 
 script shake_rock_meter
 	shake_ammount = (3.0, 0.0)
-	FormatText checksumName = container_id 'HUD2D_rock_container%p' p = ($<other_player_status>.text)AddToStringLookup = true
+	ExtendCrc HUD2D_rock_container ($<other_player_status>.text) out = container_id
 	GetScreenElementPosition id = <container_id>
 	original_position = <ScreenElementPos>
 	begin
@@ -1827,7 +1827,7 @@ script break_string
 	else
 		<begin_pos> = (<begin_pos> + (230.0, 0.0))
 	endif
-	FormatText checksumName = name 'String_break_%p' p = ($<other_player_status>.text)AddToStringLookup = true
+	Extendcrc String_break_ ($<other_player_status>.text) out = name
 	if ScreenElementExists id = <name>
 		DestroyScreenElement id = <name>
 	endif
@@ -1857,7 +1857,8 @@ script break_string
 				<Color> = green
 		endswitch
 	endif
-	FormatText checksumName = name_string '%s_string%p' s = ($button_up_models.<Color>.name_string)p = ($<other_player_status>.text)AddToStringLookup = true
+	ExtendCrc ($button_up_models.<Color>.name) '_string' out = name_string
+	ExtendCrc <name_string> ($<other_player_status>.text) out = name_string
 	if ScreenElementExists id = <name_string>
 		DoScreenElementMorph {
 			id = <name_string>
@@ -1886,7 +1887,8 @@ script repair_string
 				<Color> = green
 		endswitch
 	endif
-	FormatText checksumName = name_string '%s_string%p' s = ($button_up_models.<Color>.name_string)p = ($<other_player_status>.text)AddToStringLookup = true
+	ExtendCrc ($button_up_models.<Color>.name) '_string' out = name_string
+	ExtendCrc <name_string> ($<other_player_status>.text) out = name_string
 	if ScreenElementExists id = <name_string>
 		DoScreenElementMorph {
 			id = <name_string>
@@ -2166,7 +2168,8 @@ script animate_lefty_flip
 	begin
 		Color = ($gem_colors [<array_count>])
 		pixels = ($<pixel_array> [<array_count>])
-		FormatText checksumName = name_base '%s_base%p' s = ($button_up_models.<Color>.name_string)p = ($<other_player_status>.text)AddToStringLookup = true
+		ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
+		ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 		if ($<other_player_status>.lefthanded_button_ups = 1)
 			start_bottom_bar_pos = ($button_up_models.<Color>.left_pos_2d)
 			end_bottom_bar_pos = ($button_up_models.<Color>.pos_2d)
@@ -2189,7 +2192,8 @@ script animate_lefty_flip
 	<array_count> = 0
 	begin
 		Color = ($gem_colors [<array_count>])
-		FormatText checksumName = name_base '%s_base%p' s = ($button_up_models.<Color>.name_string)p = ($<other_player_status>.text)AddToStringLookup = true
+		ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
+		ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 		DoScreenElementMorph {
 			id = <name_base>
 			Pos = (0.0, 0.0)
@@ -2251,7 +2255,8 @@ script animate_whammy_bar
 		array_count = 0
 		begin
 			Color = ($gem_colors [<array_count>])
-			FormatText checksumName = name_base '%s_base%p' s = ($button_up_models.<Color>.name_string)p = ($<other_player_status>.text)AddToStringLookup = true
+			ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
+			ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 			original_bottom_bar_pos = (0.0, 0.0)
 			bottom_bar_pos = (<original_bottom_bar_pos> - ((0.0, 15.0) * ($<other_player_status>.whammy_attack)))
 			if NOT ($<other_player_status>.whammy_attack < 1)
@@ -2320,7 +2325,8 @@ script animate_whammy_bar
 			array_count = 0
 			begin
 				Color = ($gem_colors [<array_count>])
-				FormatText checksumName = name_base '%s_base%p' s = ($button_up_models.<Color>.name_string)p = ($<other_player_status>.text)AddToStringLookup = true
+				ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
+				ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 				DoScreenElementMorph {
 					id = <name_base>
 					alpha = 1
@@ -2378,7 +2384,7 @@ script update_broken_string_arrows
 	if ScreenElementExists id = <text_checksum>
 		DestroyScreenElement id = <text_checksum>
 	endif
-	FormatText checksumName = container_id 'gem_container%p' p = ($<other_player_status>.text)AddToStringLookup = true
+	ExtendCrc gem_container ($<other_player_status>.text) out = container_id
 	Color = ($gem_colors [<id>])
 	arrow_pos = (($button_up_models.<Color>.pos_2d)- (0.0, 30.0))
 	lefty_arrow_pos = (($button_up_models.<Color>.left_pos_2d)- (0.0, 30.0))
@@ -2510,8 +2516,8 @@ script create_battlemode_highway_effects
 		rangle = (0.0 - ($sidebar_angle))
 		Scale = (($sidebar_x_scale * (1.0, 0.0))+ ($sidebar_y_scale * (0.0, 1.0)))
 		rscale = (((0 - $sidebar_x_scale)* (1.0, 0.0))+ ($sidebar_y_scale * (0.0, 1.0)))
-		FormatText checksumName = container_id 'gem_container%p' p = <player_text> AddToStringLookup = true
-		FormatText checksumName = cont 'battle_sidebar_container_left%p' p = <player_text> AddToStringLookup = true
+		ExtendCrc gem_container <player_text> out = container_id
+		ExtendCrc battle_sidebar_container_left <player_text> out = cont
 		if ScreenElementExists id = <cont>
 			DestroyScreenElement id = <cont>
 		endif
@@ -2526,7 +2532,7 @@ script create_battlemode_highway_effects
 		}
 		starpower_pos = (((-55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
 		starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
-		FormatText checksumName = name 'battle_sidebar_left_glow%p' p = <player_text> AddToStringLookup = true
+		ExtendCrc battle_sidebar_left_glow <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
 			id = <name>
@@ -2540,7 +2546,7 @@ script create_battlemode_highway_effects
 		}
 		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
 		starpower_scale = (((-2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-		FormatText checksumName = name 'battle_sidebar_left_Lightning01%p' p = <player_text> AddToStringLookup = true
+		ExtendCrc battle_sidebar_left_Lightning01 <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
 			id = <name>
@@ -2553,7 +2559,7 @@ script create_battlemode_highway_effects
 			just = [center top]
 			z_priority = 0
 		}
-		FormatText checksumName = cont 'battle_sidebar_container_right%p' p = <player_text> AddToStringLookup = true
+		ExtendCrc battle_sidebar_container_right <player_text> out = cont
 		if ScreenElementExists id = <cont>
 			DestroyScreenElement id = <cont>
 		endif
@@ -2568,7 +2574,7 @@ script create_battlemode_highway_effects
 		}
 		starpower_pos = (((55.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((55.0 * $starpower_fx_scale)* (0.0, 1.0)))
 		starpower_scale = (((-2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((1.1 * $starpower_fx_scale)* (0.0, 1.0)))
-		FormatText checksumName = name 'battle_sidebar_Right_glow%p' p = <player_text> AddToStringLookup = true
+		ExtendCrc battle_sidebar_Right_glow <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
 			id = <name>
@@ -2582,7 +2588,7 @@ script create_battlemode_highway_effects
 		}
 		starpower_pos = (((0.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0 * $starpower_fx_scale)* (0.0, 1.0)))
 		starpower_scale = (((2.0 * $starpower_fx_scale)* (1.0, 0.0))+ ((0.9 * $starpower_fx_scale)* (0.0, 1.0)))
-		FormatText checksumName = name 'battle_sidebar_Right_Lightning01%p' p = <player_text> AddToStringLookup = true
+		ExtendCrc battle_sidebar_Right_Lightning01 <player_text> out = name
 		CreateScreenElement {
 			Type = SpriteElement
 			id = <name>

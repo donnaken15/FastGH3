@@ -22,15 +22,16 @@ copy fonts\*.fnt.xen "!cache" > nul
 echo ###### compiling optional scripts  ######
 sh ../q/qcomp ./zones/scripts ./!cache/scripts
 echo ######        compiling PAK        ######
-node "E:\GHWTDE\guitar-hero-sdk\sdk.js" createpak -zone global -out ..\..\data\zones\global.pak.xen -pab "!cache"
+node "..\q\GHSDK\sdk.js" createpak -zone global -out ..\..\data\zones\global.pak.xen -pab "!cache"
 
 echo GLOBAL_SFX.PAK
 echo ###### RENAMING SOUND FILES SRSLY  ######
+pushd sounds
 rename *.mp3 *.wav.xen
-node "E:\GHWTDE\guitar-hero-sdk\sdk.js" createpak -out ..\..\DATA\ZONES\global_sfx.pak.xen sounds
+node "..\..\q\GHSDK\sdk.js" createpak -zone global_sfx -out ..\..\..\DATA\ZONES\global_sfx.pak.xen .
 rename *.wav.xen *.
 rename *.wav *.mp3
-exit /b
+popd
 
 echo DEFAULT.PAK
 echo ######   emptying output folder    ######
@@ -43,5 +44,12 @@ echo ###### moving new generated images ######
 move default\*.img.xen "default\!cache" > nul
 echo ######     copying fonts (raw)     ######
 copy default\*.fnt.xen "default\!cache" > nul
-node "E:\GHWTDE\guitar-hero-sdk\sdk.js" createpak -out ..\..\DATA\ZONES\default.pak.xen "default\!cache"
+node "..\q\GHSDK\sdk.js" createpak -out ..\..\DATA\ZONES\default.pak.xen "default\!cache"
+
+pushd ..\..\data\zones
+copy "global.pak.xen" "!global.pak.xen" /y
+copy "global.pab.xen" "!global.pab.xen" /y
+copy "global_sfx.pak.xen" "!global_sfx.pak.xen" /y
+popd
+
 exit /b

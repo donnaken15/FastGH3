@@ -326,7 +326,7 @@ script IndexOf \{delegate = IntegerEquals #"0x00000000" = 0 array = []}
 	return \{ false indexof = -1 }
 endscript
 
-/**///
+/*///
 script ProfilingStart
 	//return
 	AddParams \{time = 0.0} // fallback if ProfileTime is not patched by FastGH3 plugin

@@ -183,7 +183,7 @@ endscript
 
 script highway_pulse_black
 	<half_time> = ($highway_pulse_time / 2.0)
-	FormatText checksumName = highway 'Highway_2D%p' p = <player_text> AddToStringLookup = true
+	ExtendCrc Highway_2D <player_text> out = highway
 	DoScreenElementMorph id = <highway> rgba = ($highway_pulse)time = <half_time>
 	wait <half_time> seconds
 	DoScreenElementMorph id = <highway> rgba = ($highway_normal)time = <half_time>
@@ -469,8 +469,8 @@ script set_sidebar_flash
 	if ($Cheat_PerformanceMode = 1)
 		return
 	endif
-	FormatText checksumName = left 'sidebar_left%p' p = ($<player_status>.text)AddToStringLookup = true
-	FormatText checksumName = right 'sidebar_right%p' p = ($<player_status>.text)AddToStringLookup = true
+	ExtendCrc sidebar_left ($<player_status>.text) out = left
+	ExtendCrc sidebar_right ($<player_status>.text) out = right
 	if ($<player_status>.star_power_used = 1)
 		if ($beat_flip = 0)
 			SetScreenElementProps id = <left> rgba = ($sidebar_starpower0)
@@ -1696,7 +1696,7 @@ script Open_NoteFX\{Player = 1 player_status = player1_status}
 		open_color2 = [0 247 255 255]
 	endif
 	FormatText checksumName = container_id 'gem_container%p' p = ($<player_status>.text)
-	FormatText checksumName = fx_id '%fp%p_%t' f = 'open_particle' p = <Player> t = <time>
+	FormatText checksumName = fx_id 'open_particlep%p_%t' p = <Player> t = <time>
 	ExtendCrc <fx_id> '_2' out = fx2_id
 	fx1_scale = (1.0, 1.0)
 	fx2_scale = (2.2, 2.4)

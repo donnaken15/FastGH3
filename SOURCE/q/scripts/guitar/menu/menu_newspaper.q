@@ -326,7 +326,7 @@ script create_newspaper_menu\{for_practice = 0}
 					endif
 				endif
 			endif
-			FormatText textname = who_won_text "%s	Rules!" s = <winner_text>
+			FormatText textname = who_won_text "%s Rules!" s = <winner_text>
 			displayText {
 				parent = newspaper_container
 				text = <who_won_text>

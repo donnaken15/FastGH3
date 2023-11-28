@@ -8,7 +8,7 @@ jowYellow = -3267073
 	printf \{"*******************************************************************"}
 	printf <...>
 	printf \{"*******************************************************************"}
-endscript*/
+endscript*///
 
 script SafeGetUniqueCompositeObjectID\{preferredID = safeFXID01}
 	if NOT GotParam \{objID}
