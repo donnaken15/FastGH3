@@ -19,9 +19,6 @@ partial class settings
 	{
 		this.components = new System.ComponentModel.Container();
 		this.ok = new System.Windows.Forms.Button();
-		// desparate to reduce file size by renaming these
-		// to smaller things, but it looks like it's worth it
-		// because it's actually taking effect
 		this.resL = new System.Windows.Forms.Label();
 		this.hypers = new System.Windows.Forms.NumericUpDown();
 		this.hLabel = new System.Windows.Forms.Label();
@@ -41,7 +38,7 @@ partial class settings
 		this.setbgimg = new System.Windows.Forms.Button();
 		this.bImg = new System.Windows.Forms.PictureBox();
 		this.dCtrl = new System.Windows.Forms.NumericUpDown();
-		this.aqlvl = new System.Windows.Forms.NumericUpDown();
+		this.aqlvl_ = new System.Windows.Forms.NumericUpDown();
 		this.ctmpb = new System.Windows.Forms.Button();
 		this.res = new System.Windows.Forms.ComboBox();
 		this.MaxN = new System.Windows.Forms.NumericUpDown();
@@ -66,12 +63,17 @@ partial class settings
 		this.modelbl = new System.Windows.Forms.Label();
 		this.mode = new System.Windows.Forms.ComboBox();
 		this.modsbtn = new System.Windows.Forms.Button();
+		this.aqlvl = new System.Windows.Forms.DomainUpDown();
+		this.fChCbx = new System.Windows.Forms.CheckBox();
+		this.fChLbl = new System.Windows.Forms.Label();
+		this.fCSCbx = new System.Windows.Forms.CheckBox();
+		this.fCSLbl = new System.Windows.Forms.Label();
 		((System.ComponentModel.ISupportInitialize)(this.hypers)).BeginInit();
 		((System.ComponentModel.ISupportInitialize)(this.speed)).BeginInit();
 		((System.ComponentModel.ISupportInitialize)(this.RTnoi)).BeginInit();
 		((System.ComponentModel.ISupportInitialize)(this.bImg)).BeginInit();
 		((System.ComponentModel.ISupportInitialize)(this.dCtrl)).BeginInit();
-		((System.ComponentModel.ISupportInitialize)(this.aqlvl)).BeginInit();
+		((System.ComponentModel.ISupportInitialize)(this.aqlvl_)).BeginInit();
 		((System.ComponentModel.ISupportInitialize)(this.MaxN)).BeginInit();
 		((System.ComponentModel.ISupportInitialize)(this.maxFPS)).BeginInit();
 		this.tPanel.SuspendLayout();
@@ -272,7 +274,7 @@ partial class settings
 		// RTnoi
 		// 
 		this.RTnoi.Enabled = false;
-		this.RTnoi.Location = new System.Drawing.Point(5, 96);
+		this.RTnoi.Location = new System.Drawing.Point(5, 114);
 		this.RTnoi.Maximum = new decimal(new int[] {
 		999999,
 		0,
@@ -298,7 +300,7 @@ partial class settings
 		// p2partt
 		// 
 		this.p2partt.FlatStyle = System.Windows.Forms.FlatStyle.System;
-		this.p2partt.Location = new System.Drawing.Point(6, 234);
+		this.p2partt.Location = new System.Drawing.Point(6, 252);
 		this.p2partt.Name = "p2partt";
 		this.p2partt.Size = new System.Drawing.Size(90, 18);
 		this.p2partt.TabIndex = 42;
@@ -343,34 +345,36 @@ partial class settings
 		this.dCtrl.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 		this.dCtrl.ValueChanged += new System.EventHandler(this.dCtrlUpd);
 		// 
-		// aqlvl
+		// aqlvl_
 		// 
-		this.aqlvl.Increment = new decimal(new int[] {
+		this.aqlvl_.Enabled = false;
+		this.aqlvl_.Increment = new decimal(new int[] {
 		8,
 		0,
 		0,
 		0});
-		this.aqlvl.Location = new System.Drawing.Point(5, 57);
-		this.aqlvl.Maximum = new decimal(new int[] {
+		this.aqlvl_.Location = new System.Drawing.Point(165, 466);
+		this.aqlvl_.Maximum = new decimal(new int[] {
 		256,
 		0,
 		0,
 		0});
-		this.aqlvl.Minimum = new decimal(new int[] {
+		this.aqlvl_.Minimum = new decimal(new int[] {
 		96,
 		0,
 		0,
 		0});
-		this.aqlvl.Name = "aqlvl";
-		this.aqlvl.Size = new System.Drawing.Size(59, 20);
-		this.aqlvl.TabIndex = 44;
-		this.aqlvl.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-		this.aqlvl.Value = new decimal(new int[] {
+		this.aqlvl_.Name = "aqlvl_";
+		this.aqlvl_.Size = new System.Drawing.Size(59, 20);
+		this.aqlvl_.TabIndex = 44;
+		this.aqlvl_.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+		this.aqlvl_.Value = new decimal(new int[] {
 		128,
 		0,
 		0,
 		0});
-		this.aqlvl.ValueChanged += new System.EventHandler(this.cAQ);
+		this.aqlvl_.Visible = false;
+		this.aqlvl_.ValueChanged += new System.EventHandler(this.cAQ);
 		// 
 		// ctmpb
 		// 
@@ -422,7 +426,7 @@ partial class settings
 		542101086,
 		0});
 		this.maxFPS.Name = "maxFPS";
-		this.maxFPS.Size = new System.Drawing.Size(60, 20);
+		this.maxFPS.Size = new System.Drawing.Size(59, 20);
 		this.maxFPS.TabIndex = 38;
 		this.maxFPS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 		this.maxFPS.ValueChanged += new System.EventHandler(this.mxFPSc);
@@ -498,7 +502,7 @@ partial class settings
 		// 
 		this.RTlbl.Enabled = false;
 		this.RTlbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-		this.RTlbl.Location = new System.Drawing.Point(3, 80);
+		this.RTlbl.Location = new System.Drawing.Point(3, 98);
 		this.RTlbl.Name = "RTlbl";
 		this.RTlbl.Size = new System.Drawing.Size(92, 13);
 		this.RTlbl.TabIndex = 35;
@@ -509,7 +513,7 @@ partial class settings
 		this.RTms.AutoSize = true;
 		this.RTms.Enabled = false;
 		this.RTms.FlatStyle = System.Windows.Forms.FlatStyle.System;
-		this.RTms.Location = new System.Drawing.Point(66, 101);
+		this.RTms.Location = new System.Drawing.Point(66, 119);
 		this.RTms.Name = "RTms";
 		this.RTms.Size = new System.Drawing.Size(20, 13);
 		this.RTms.TabIndex = 36;
@@ -542,8 +546,12 @@ partial class settings
 		this.tPanel.AutoScroll = true;
 		this.tPanel.BackColor = System.Drawing.SystemColors.Window;
 		this.tPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-		this.tPanel.Controls.Add(this.kbpslbl);
+		this.tPanel.Controls.Add(this.fCSLbl);
+		this.tPanel.Controls.Add(this.fCSCbx);
+		this.tPanel.Controls.Add(this.fChLbl);
+		this.tPanel.Controls.Add(this.fChCbx);
 		this.tPanel.Controls.Add(this.aqlvl);
+		this.tPanel.Controls.Add(this.kbpslbl);
 		this.tPanel.Controls.Add(this.aqlbl);
 		this.tPanel.Controls.Add(this.p2partt);
 		this.tPanel.Controls.Add(this.modList);
@@ -592,7 +600,7 @@ partial class settings
 		"Hopos to taps",
 		"Mirror mode",
 		"Color shuffle"});
-		this.modList.Location = new System.Drawing.Point(5, 137);
+		this.modList.Location = new System.Drawing.Point(5, 155);
 		this.modList.Name = "modList";
 		this.modList.Size = new System.Drawing.Size(88, 91);
 		this.modList.TabIndex = 41;
@@ -603,7 +611,7 @@ partial class settings
 		// 
 		this.modl.AutoSize = true;
 		this.modl.FlatStyle = System.Windows.Forms.FlatStyle.System;
-		this.modl.Location = new System.Drawing.Point(3, 121);
+		this.modl.Location = new System.Drawing.Point(3, 139);
 		this.modl.Name = "modl";
 		this.modl.Size = new System.Drawing.Size(52, 13);
 		this.modl.TabIndex = 40;
@@ -685,6 +693,73 @@ partial class settings
 		this.modsbtn.UseVisualStyleBackColor = true;
 		this.modsbtn.Click += new System.EventHandler(this.showmods);
 		// 
+		// aqlvl
+		// 
+		this.aqlvl.Items.Add("256");
+		this.aqlvl.Items.Add("224");
+		this.aqlvl.Items.Add("192");
+		this.aqlvl.Items.Add("160");
+		this.aqlvl.Items.Add("128");
+		this.aqlvl.Items.Add("112");
+		this.aqlvl.Items.Add("96");
+		this.aqlvl.Items.Add("80");
+		this.aqlvl.Items.Add("64");
+		this.aqlvl.Items.Add("56");
+		this.aqlvl.Items.Add("48");
+		this.aqlvl.Location = new System.Drawing.Point(5, 58);
+		this.aqlvl.Name = "aqlvl";
+		this.aqlvl.Size = new System.Drawing.Size(59, 20);
+		this.aqlvl.TabIndex = 46;
+		this.aqlvl.Text = "96";
+		this.aqlvl.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+		this.aqlvl.SelectedItemChanged += new System.EventHandler(this.cAQ);
+		// 
+		// fChCbx
+		// 
+		this.fChCbx.AutoSize = true;
+		this.fChCbx.Location = new System.Drawing.Point(5, 82);
+		this.fChCbx.Name = "fChCbx";
+		this.fChCbx.Size = new System.Drawing.Size(15, 14);
+		this.fChCbx.TabIndex = 47;
+		this.fChCbx.UseVisualStyleBackColor = true;
+		this.fChCbx.CheckedChanged += new System.EventHandler(this.cFC);
+		// 
+		// fChLbl
+		// 
+		this.fChLbl.AutoSize = true;
+		this.fChLbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.fChLbl.Location = new System.Drawing.Point(20, 82);
+		this.fChLbl.Name = "fChLbl";
+		this.fChLbl.Size = new System.Drawing.Size(34, 13);
+		this.fChLbl.TabIndex = 48;
+		this.fChLbl.Text = "Force";
+		this.fChLbl.Click += new System.EventHandler(this.cFChL);
+		// 
+		// fCSCbx
+		// 
+		this.fCSCbx.AutoSize = true;
+		this.fCSCbx.Checked = true;
+		this.fCSCbx.CheckState = System.Windows.Forms.CheckState.Checked;
+		this.fCSCbx.Enabled = false;
+		this.fCSCbx.Location = new System.Drawing.Point(50, 82);
+		this.fCSCbx.Name = "fCSCbx";
+		this.fCSCbx.Size = new System.Drawing.Size(15, 14);
+		this.fCSCbx.TabIndex = 49;
+		this.fCSCbx.UseVisualStyleBackColor = true;
+		this.fCSCbx.CheckedChanged += new System.EventHandler(this.cFS);
+		// 
+		// fCSLbl
+		// 
+		this.fCSLbl.AutoSize = true;
+		this.fCSLbl.Enabled = false;
+		this.fCSLbl.FlatStyle = System.Windows.Forms.FlatStyle.System;
+		this.fCSLbl.Location = new System.Drawing.Point(64, 82);
+		this.fCSLbl.Name = "fCSLbl";
+		this.fCSLbl.Size = new System.Drawing.Size(38, 13);
+		this.fCSLbl.TabIndex = 50;
+		this.fCSLbl.Text = "Stereo";
+		this.fCSLbl.Click += new System.EventHandler(this.cFSL);
+		// 
 		// settings
 		// 
 		this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -692,6 +767,7 @@ partial class settings
 		this.ClientSize = new System.Drawing.Size(280, 476);
 		this.Controls.Add(this.modsbtn);
 		this.Controls.Add(this.vlbl);
+		this.Controls.Add(this.aqlvl_);
 		this.Controls.Add(this.mode);
 		this.Controls.Add(this.modelbl);
 		this.Controls.Add(this.dCtrl);
@@ -735,13 +811,14 @@ partial class settings
 		((System.ComponentModel.ISupportInitialize)(this.RTnoi)).EndInit();
 		((System.ComponentModel.ISupportInitialize)(this.bImg)).EndInit();
 		((System.ComponentModel.ISupportInitialize)(this.dCtrl)).EndInit();
-		((System.ComponentModel.ISupportInitialize)(this.aqlvl)).EndInit();
+		((System.ComponentModel.ISupportInitialize)(this.aqlvl_)).EndInit();
 		((System.ComponentModel.ISupportInitialize)(this.MaxN)).EndInit();
 		((System.ComponentModel.ISupportInitialize)(this.maxFPS)).EndInit();
 		this.tPanel.ResumeLayout(false);
 		this.tPanel.PerformLayout();
 		this.ResumeLayout(false);
 		this.PerformLayout();
+
 	}
 
 	#endregion
@@ -783,7 +860,7 @@ partial class settings
 	private PictureBox bImg;
 	private OpenFileDialog selImg;
 	private Label kbpslbl;
-	private NumericUpDown aqlvl;
+	private NumericUpDown aqlvl_;
 	private Label aqlbl;
 	private Label vlbl;
 	private Label dCtrlLBL;
@@ -791,4 +868,9 @@ partial class settings
 	private Label modelbl;
 	private ComboBox mode;
 	private Button modsbtn;
+	private DomainUpDown aqlvl;
+	private Label fCSLbl;
+	private CheckBox fCSCbx;
+	private Label fChLbl;
+	private CheckBox fChCbx;
 }

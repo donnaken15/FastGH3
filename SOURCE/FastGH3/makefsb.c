@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// sources:
+// http://www.mp3-tech.org/programmer/frame_header.html
+// http://www.datavoyage.com/mpgscript/mpeghdr.htm
 
 //#define LOG
 #ifdef LOG
@@ -65,18 +68,26 @@ enum samprate_index {
 };
 // VERSION 1, LAYER 3
 // only format we're using (i'm pretty sure)
+// helix only can encode above with bitrates from 96k to 320k(?)
 uint16_t bitrates(uint8_t index) {
 	if (!index) return 0; // free (to parse for special data by program)
 	if (index < 15)
 		// lfg so based
 		return (32 + ((--index&3)<<3) << (index>>2));
 	return -1; // bad
+	// macro won't work >:(
 }
 uint16_t samprates[] = {
 	44100,
 	48000,
 	32000,
-	-1 // bad
+	-1, // bad
+};
+enum channels_index {
+	M_c2 = 0b00, // stereo
+	M_cj = 0b01, // joint
+	M_cd = 0b10, // dual channel ??????
+	M_c1 = 0b11 // single channel
 };
 
 // 0xFFFB504C & 0xFFE00000 >> 21 & 0x7FF
@@ -168,11 +179,25 @@ FENTRY fileent = {
 	var_vol: 0,
 	var_pan: 0
 };
+#define mfrsz(hdr) (144*(bitrates(MFRAME_GET_BTIDX(hdr))*1000)/samprates[MFRAME_GET_FRIDX(hdr)])
+#if 0
 uint32_t MFRAME_SIZE(uint32_t hdr)
 {
 	// MAKING 144 A FLOAT BLOATED THE PROGRAM SUPER HARD WTFFFFF
 	// time to use linking with FASM (which i have already for another thing)
-	return 144*(bitrates(MFRAME_GET_BTIDX(hdr))*1000)/samprates[MFRAME_GET_FRIDX(hdr)];
+	return mfrsz(hdr);
+}
+#else
+#define MFRAME_SIZE mfrsz
+#endif
+
+int fsize(FILE*f)
+{
+	int pos = ftell(f);
+	fseek(f,0,SEEK_END);
+	int size = ftell(f);
+	fseek(f,pos,SEEK_SET);
+	return size;
 }
 
 int __getmainargs(int * _Argc, char *** _Argv, char *** _Env, int _DoWildCard);
@@ -203,39 +228,58 @@ _start() //int main(int argc, char*argv[])
 	FILE*FSB = fopen(argv[5],"wb"), *MP3;
 	fwrite(&constheader,4,6,FSB);
 	int i;
+	MHDR h;
 	for (i = 0; i < fc; i++)
 	{
 		print("loading audio (1): %s\n",argv[i+1]);
 		
-		MHDR h;
+		char firstframe = 1;
+		char channels = 0;
 		MP3 = fopen(argv[i+1],"rb");
 		if (!MP3)
 		{
 			print("fail: %s\n",argv[i+1]);
 			return 1;
 		}
-		fseek(MP3,0,SEEK_END);
-		size_t _EOF = ftell(MP3);
+		size_t _EOF = fsize(MP3);
 		fileent.datasize = _EOF + align(_EOF, 4);
 		int samplecount = 0;
-		fseek(MP3,0,SEEK_SET);
 		while (ftell(MP3) < _EOF) // WHY NO WORK !feof(MP3)
 		{
 			fread(&h,sizeof(MHDR),1,MP3);
+			#if 0
 			*(int*)(&h) = ESWAP((int)h);
+			#else
+			__asm__ __volatile__ (
+				"   mov      %0, %%eax\n"
+				"   bswap    %%eax\n"
+				"   mov      %%eax, %0\n"
+				:"=m"(h)
+				:
+				:"memory"
+			);
+			#endif
 			fseek(MP3, MFRAME_SIZE(h)-4, SEEK_CUR);
 			fseek(MP3, MFRAME_GET_PADBT(h), SEEK_CUR); // WHY
 			//print("got frame: %u bytes\n",MFRAME_SIZE(h));
 			samplecount += spf;
 			// does the | 0x000FF000 mean there is audio?
 			// yeah i definitely wont figure out DCT anytime soon probably
+			if (firstframe)
+			{
+				fileent.rate = samprates[MFRAME_GET_FRIDX(h)]; // :/
+				channels = MFRAME_GET_CHNLM(h);
+				firstframe = 0;
+			}
 		}
+		channels = (channels == 3 ? 1 : 2); // actually die unironically why do i need to do it like this
+		fileent.chs = channels;
 		fseek(MP3,0,SEEK_SET);
 		fileent.samples = samplecount;
 		//print("audio length: %f\n", songlength);
 		fclose(MP3);
 		
-		sprintf(fileent.fname,filebase,names[i]);
+		sprintf_s(fileent.fname,__FNSIZE,filebase,names[i]);
 		fwrite(&fileent,sizeof(FENTRY),1,FSB);
 	}
 	AlignFile(FSB,4);
@@ -245,10 +289,8 @@ _start() //int main(int argc, char*argv[])
 		print("loading audio (2): %s\n",argv[i+1]);
 		
 		MP3 = fopen(argv[i+1],"rb");
-		fseek(MP3,0,SEEK_END);
-		int size = ftell(MP3);
-		char*MP3f = (char*)malloc(size);
-		fseek(MP3,0,SEEK_SET);
+		int size = fsize(MP3);
+		char*MP3f = (char*)calloc(size,1);
 		fread(MP3f,1,size,MP3);
 		fwrite(MP3f,1,size,FSB);
 		//free(MP3f);

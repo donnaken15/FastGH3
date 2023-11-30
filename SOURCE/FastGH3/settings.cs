@@ -553,7 +553,13 @@ public partial class settings : Form
 			p2partt.Checked = false;
 		else
 			p2partt.Checked = true;
-		aqlvl.Value = Math.Max(96, Convert.ToInt32(Program.cfg("Audio", "AB", "128")));
+		aqlvl.Text = Math.Max(48, Convert.ToInt32(Program.cfg("Audio", "AB", "128"))).ToString();
+
+		{
+			int fch = Program.cfg("Audio", "ForceChannels", 0);
+			fChCbx.Checked = fCSCbx.Enabled = fCSLbl.Enabled = fch > 0;
+			fCSCbx.Checked = (fch > 0) ? (fch > 1) : true;
+		}
 
 		{
 			Program.vl("Loading scripts for override checks...");
@@ -797,7 +803,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("Audio", "AB", aqlvl.Value.ToString());
+		Program.cfgW("Audio", "AB", aqlvl.Text);
 	}
 
 	void mU(object sender, ItemCheckEventArgs e)
@@ -1108,6 +1114,36 @@ public partial class settings : Form
 	void showmods(object sender, EventArgs e)
 	{
 		new moddiag().ShowDialog();
+	}
+
+	private void cFChL(object sender, EventArgs e)
+	{
+		fChCbx.Checked = !fChCbx.Checked;
+	}
+
+	private void cFSL(object sender, EventArgs e)
+	{
+		fCSCbx.Checked = !fCSCbx.Checked;
+	}
+
+	private void cFC(object sender, EventArgs e)
+	{
+		if (disableEvents)
+			return;
+		fCSCbx.Enabled = fCSLbl.Enabled = fChCbx.Checked;
+		setForceChannels();
+	}
+
+	private void cFS(object sender, EventArgs e)
+	{
+		if (disableEvents)
+			return;
+		setForceChannels();
+	}
+
+	void setForceChannels()
+	{
+		Program.cfgW("Audio", "ForceChannels", (fChCbx.Checked ? (fCSCbx.Checked ? 2 : 1) : 0).ToString());
 	}
 
 	void spVC(object sender, EventArgs e)
