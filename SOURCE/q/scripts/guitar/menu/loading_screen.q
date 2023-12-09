@@ -105,6 +105,7 @@ script create_loading_screen\{mode = play_song}
 endscript
 
 script destroy_loading_screen
+	printf 'test'
 	destroy_menu \{menu_id = loading_tip_text}
 	killspawnedscript \{name = jiggle_text_array_elements}
 	if ScreenElementExists \{id = FGH3_load_logo}
@@ -113,7 +114,7 @@ script destroy_loading_screen
 	if ScreenElementExists \{id = $g_loading_screen_split_container_id}
 		DestroyScreenElement \{id = $g_loading_screen_split_container_id}
 	endif
-	spawnscriptnow \{destroy_loading_screen_spawned params={time=0.0}}
+	spawnscriptnow \{destroy_loading_screen_spawned params={time=0.1}}
 	HideLoadingScreen
 	if ($playing_song = 0)
 		Change \{is_changing_levels = 0}

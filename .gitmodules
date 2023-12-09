@@ -1,5 +1,5 @@
 [submodule "SOURCE/GH3Plus"]
-	path = SOURCE/GH3Plus
+	path = ../../SOURCE/GH3Plus
 	url = https://github.com/donnaken15/GH3-Plus
 [submodule "SOURCE/q/QBC"]
 	path = SOURCE/q/QBC

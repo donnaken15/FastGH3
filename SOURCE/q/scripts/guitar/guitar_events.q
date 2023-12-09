@@ -752,15 +752,15 @@ script GuitarEvent_SongWon\{battle_win = 0}
 				FormatText textname = text 'Base score: %b' b = ($<player_status>.base_score)
 				TextOutput text = <text>
 				if (($<player_status>.base_score) = 0)
-					FormatText \{textname = text "Score Scale: n/a"}
+					FormatText \{textname = text 'Score Scale: n/a'}
 				else
-					FormatText textname = text "Score Scale: %s" s = (($<player_status>.score) / ($<player_status>.base_score))
+					FormatText textname = text 'Score Scale: %s' s = (($<player_status>.score) / ($<player_status>.base_score))
 				endif
 				TextOutput text = <text>
 				if (($<player_status>.total_notes) = 0)
-					FormatText \{textname = text "Notes Hit Percentage: n/a"} // lol
+					FormatText \{textname = text 'Notes Hit Percentage: n/a'} // lol
 				else
-					FormatText textname = text "Notes Hit Percentage: %s" s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
+					FormatText textname = text 'Notes Hit Percentage: %s' s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
 				endif
 				/*GetArraySize \{$fastgh3_markers}
 				if (<array_size> > 0)
@@ -784,7 +784,7 @@ script GuitarEvent_SongWon\{battle_win = 0}
 				Increment \{i}
 			repeat $current_num_players
 			timestamp
-			formattext textname = filename '..\..\stats_%a_-_%t_%n' a = <song_artist> t = <song_title> n = <timestamp>
+			formattext textname = filename "..\..\stats_%a_-_%t_%n" a = <song_artist> t = <song_title> n = <timestamp>
 			TextOutputEnd output_text FileName = <filename>
 		endif
 	//endif

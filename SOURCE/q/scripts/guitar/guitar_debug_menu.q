@@ -109,9 +109,9 @@ script screen_shot
 	get_song_title \{song = $current_song}
 	get_song_artist \{song = $current_song with_year = 0}
 	timestamp
-	formattext textname = filename 'scrsh_%a_-_%t_%n' a = <song_artist> t = <song_title> n = <timestamp>
+	formattext textname = filename "scrsh_%a_-_%t_%n" a = <song_artist> t = <song_title> n = <timestamp>
 	if ScreenShot FileName = <FileName>
-		printf '%f saved' f = <filename>
+		printf "%f saved" f = <filename>
 	else
 		printf \{'Failed to save screenshot'}
 	endif
