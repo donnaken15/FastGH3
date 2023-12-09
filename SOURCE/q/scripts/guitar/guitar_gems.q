@@ -634,9 +634,6 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		practicemode_init
 	endif
 	preload_song song_name = <song_name> startTime = <song_start_time>
-	if IsTrue \{$enable_video}
-		preload_bgbink
-	endif
 	calc_score = true
 	if NOT (<devil_finish_restart> = 1 || $end_credits = 1)
 		if ($use_last_player_scores = 0)
@@ -664,6 +661,9 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		if (<Player> = 1)
 			Change StructureName = <player_status> lefthanded_gems = ($p1_lefty)
 			Change StructureName = <player_status> lefthanded_button_ups = ($p1_lefty)
+			//SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty>
+			//	time_offset = <gem_offset> fretbar_function = mbt_test skipleadin = 0
+			//	Player = <Player> player_status = <player_status> player_text = <player_text>}
 		else
 			if ($is_network_game = 0)
 				Change StructureName = <player_status> lefthanded_gems = ($p2_lefty)
@@ -805,6 +805,7 @@ endscript
 
 script kill_gem_scroller\{no_render = 0}
 	ProfilingStart
+	stop_bgbink
 	mark_unsafe_for_shutdown
 	printf \{'kill_gem_scroller - Start'}
 	//if NOT GotParam \{restarting}

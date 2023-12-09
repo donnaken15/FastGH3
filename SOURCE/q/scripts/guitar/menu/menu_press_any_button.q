@@ -7,7 +7,8 @@ script create_press_any_button_menu
 	//spawnscriptnow \{Menu_Music_On params = {waitforguitarlick = 1}}
 	create_menu_backdrop \{texture = black}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = pab_container Pos = (0.0, 0.0)}
-	menu_press_any_button_create_obvious_text
+	CreateScreenElement \{ Type = SpriteElement parent = pab_container texture = FastGH3_logo just = [center center] Pos = (640.0, 160.0) Scale = 1.2 }
+	CreateScreenElement \{ Type = TextBlockElement parent = pab_container font = fontgrid_title_gh3 text = 'PRESS ANY\nBUTTON TO PLAY' dims = (800.0, 320.0) Pos = (640.0, 320.0) just = [center top] internal_just = [center top] rgba = [255 255 255 255] Scale = 1.4 allow_expansion }
 	spawnscriptnow \{check_for_any_input}
 endscript
 
@@ -15,40 +16,11 @@ script destroy_press_any_button_menu
 	destroy_menu \{menu_id = pab_container}
 	destroy_menu_backdrop
 	killspawnedscript \{name = check_for_any_input}
-	killspawnedscript \{name = attract_mode_spawner}
 endscript
 
-script attract_mode_spawner
-endscript
 last_attract_mode = -1
 is_attract_mode = 0
 
-script create_attract_mode
-endscript
-
-script create_attract_mode_text
-endscript
-
-script destroy_attract_mode_text
-endscript
-
-script check_for_attract_mode_input
-	begin
-		GetButtonsPressed
-		if NOT (<makes> = 0)
-			break
-		endif
-		if NOT ($invite_controller = -1)
-			break
-		endif
-		wait \{1 gameframe}
-	repeat
-	wait_for_safe_shutdown
-	spawnscriptnow \{ui_flow_manager_respond_to_action params = {action = exit_attract_mode}}
-endscript
-
-script destroy_attract_mode
-endscript
 invalid_controller_lock = 0
 
 script check_for_any_input\{button1 = {}button2 = {}}
@@ -99,9 +71,4 @@ script check_for_any_input\{button1 = {}button2 = {}}
 		endif
 		wait \{1 gameframe}
 	repeat
-endscript
-
-script menu_press_any_button_create_obvious_text
-	CreateScreenElement \{ Type = SpriteElement parent = pab_container texture = FastGH3_logo just = [center center] Pos = (640.0, 160.0) Scale = 1.2 }
-	CreateScreenElement \{ Type = TextBlockElement parent = pab_container font = fontgrid_title_gh3 text = 'PRESS ANY\nBUTTON TO PLAY' dims = (800.0, 320.0) Pos = (640.0, 320.0) just = [center top] internal_just = [center top] rgba = [255 255 255 255] Scale = 1.4 allow_expansion }
 endscript

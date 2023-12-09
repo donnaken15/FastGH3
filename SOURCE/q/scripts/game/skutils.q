@@ -54,7 +54,7 @@ endscript
 
 script change_level
 	script_assert \{"This is now gone..."}
-endscript*/
+endscript*///
 
 script KillElement3d
 	wait \{1 gameframe}
@@ -62,14 +62,6 @@ script KillElement3d
 endscript
 
 script setup_ped_speech
-endscript
-
-script script_assert
-	printf \{"ASSERT MESSAGE:"}
-	ScriptAssert <...>
-endscript
-
-script nullscript
 endscript
 
 script DumpMetrics
@@ -97,19 +89,6 @@ endscript
 script ClearSkaterCamOverride
 	GetSkaterCam
 	<skatercam> ::SC_ClearSkaterCamOverride <...>
-endscript
-
-script empty_script
-endscript
-
-script restore_start_key_binding
-	printf \{"+++ RESTORE START KEY"}
-	SetScreenElementProps \{id = root_window event_handlers = [{pad_start gh3_start_pressed}] replace_handlers}
-endscript
-
-script kill_start_key_binding
-	printf \{"--- KILL START KEY"}
-	SetScreenElementProps \{id = root_window event_handlers = [{pad_start null_script}] replace_handlers}
 endscript
 
 script BlockPendingPakManLoads\{map = all block_scripts = 0 noparse = 0}
@@ -228,4 +207,4 @@ script Zones_PakMan_DeInit
 	DestroyZoneEntities zone_name = <zone_name> zone_string_name = <zone_string_name>
 	UpdatePakManVisibility \{map = zones}
 	printf \{"Zones_PakMan_DeInit end"}
-endscript*/
+endscript*///

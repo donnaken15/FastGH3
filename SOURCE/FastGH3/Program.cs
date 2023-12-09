@@ -1260,18 +1260,19 @@ class Program
 							audiostreams[0] = nj3ts[0];
 							nj3t = false;
 						}
+						string blankmp3 = mt + "blank.mp3";
 						// CH sucks
 						if (!File.Exists(audiostreams[0]))
 						{
 							for (int i = 0; i < 4; i++)
 							{
 								audtmpstr = chf + "guitar" + '.' + audextnames[i];
-								Console.WriteLine(audtmpstr);
+								vl(audtmpstr);
 								if (File.Exists(audtmpstr))
 								{
 									vl("Found cringe compatibility", FSBcolor);
 									audiostreams[0] = audtmpstr;
-									audiostreams[1] = mt + "blank.mp3";
+									audiostreams[1] = blankmp3;
 									break;
 								}
 							}
@@ -1305,12 +1306,14 @@ class Program
 									searchaudioresult = searchaudio.ShowDialog();
 									if (searchaudioresult == DialogResult.OK)
 									{
+										// TODO: OPTIMIZE!!!!!
 										//vl("User responded with " + SubstringExtensions.EncloseWithQuoteMarks(searchaudio.FileName), FSBcolor);
 										audiostreams[0] = searchaudio.FileName;
 										playsilent = DialogResult.OK;
 										if (!File.Exists(audiostreams[1]))
 										{
 											DialogResult audiolosthasguitartrack = MessageBox.Show("Is there a guitar track too?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+										retryguitaraud:
 											if (audiolosthasguitartrack == DialogResult.Yes)
 											{
 												searchaudio.FileName = "";
@@ -1319,10 +1322,15 @@ class Program
 												{
 													audiostreams[1] = searchaudio.FileName;
 												}
+												else
+													goto retryguitaraud;
 											}
+											else
+												audiostreams[1] = blankmp3;
 										}
 										if (!File.Exists(audiostreams[2]))
 										{
+											retrybassaud:
 											if (MessageBox.Show("Is there a rhythm track too?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
 											{
 												searchaudio.FileName = "";
@@ -1331,7 +1339,11 @@ class Program
 												{
 													audiostreams[2] = searchaudio.FileName;
 												}
+												else
+													goto retrybassaud;
 											}
+											else
+												audiostreams[1] = blankmp3;
 										}
 									}
 								}
@@ -1342,7 +1354,7 @@ class Program
 									if (playsilent == DialogResult.Yes)
 									{
 										vl("Using blank music file", FSBcolor);
-										audiostreams[0] = mt + "blank.mp3";
+										audiostreams[0] = blankmp3;
 									}
 								}
 							}
@@ -1351,7 +1363,7 @@ class Program
 						for (int i = 0; i < 3; i++)
 							if (!File.Exists(audiostreams[i]))
 							{
-								audiostreams[i] = mt + "blank.mp3";
+								audiostreams[i] = blankmp3;
 							}
 						//im stupid
 						//this cache stuff is a mess
@@ -1487,7 +1499,7 @@ class Program
 							else
 							{
 								Directory.CreateDirectory(mt + "fsbtmp");
-								File.Copy(mt + "blank.mp3", mt + "fsbtmp\\fastgh3_preview.mp3", true);
+								File.Copy(blankmp3, mt + "fsbtmp\\fastgh3_preview.mp3", true);
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								for (int i = 0; i < fsbbuild2.Length; i++)
 								{
@@ -1524,7 +1536,7 @@ class Program
 									audiostreams[0].Quotes() + ' ' +
 									audiostreams[1].Quotes() + ' ' +
 									audiostreams[2].Quotes() + ' ' +
-									(mt + "blank.mp3").Quotes() + ' ' + fsb.Quotes()).Quotes();
+									(blankmp3).Quotes() + ' ' + fsb.Quotes()).Quotes();
 								vl("MP3 args: c128ks " + fsbbuild.StartInfo.Arguments, FSBcolor);
 								fsbbuild.Start();
 								if (vb || wl)
@@ -2876,7 +2888,7 @@ class Program
 									Console.WriteLine("Encoding progress:");
 									for (int i = 0; i < 3; i++)
 									{
-										if (audiostreams[i].ToLower() == (mt + "blank.mp3").ToLower())
+										if (audiostreams[i].ToLower() == (blankmp3).ToLower())
 											continue;
 										pbl[i] = (short)(Console.CursorTop);
 										Console.WriteLine(fsbnames[i].PadRight(6) + ":   0% (" + ")".PadLeft(33)); // leet optimization

@@ -335,15 +335,6 @@ script begin_video_after_intro
 	if ($enable_video = 0)
 		return
 	endif
-	if ($video_start_on_time < 0)
-		begin
-			if isMoviePreLoaded \{textureSlot = 2}
-				StartPreLoadedMovie \{textureSlot = 2}
-				return
-			endif
-			Wait \{1 gameframe}
-		repeat
-	endif
 	starttimeafterintro = (<starttimeafterintro> + $video_start_on_time)
 	begin
 		GetSongTimeMs
@@ -352,6 +343,7 @@ script begin_video_after_intro
 		endif
 		wait \{1 gameframe}
 	repeat
+	preload_bgbink
 	begin
 		if isMoviePreLoaded \{textureSlot = 2}
 			StartPreLoadedMovie \{textureSlot = 2}
@@ -381,7 +373,12 @@ endscript
 script SetSeekPosition_Song\{position = 0}
 	WinPortGetSongSkew
 	position = (<position> + <value>)
-	//printstruct <...>
+	;printstruct <...>
+	;printf 'SEEK SUCKS'
+	;printf '%d' d=($song_unique_id)
+	;printf '%d' d=($guitar_player1_unique_id)
+	;printf '%d' d=($guitar_player2_unique_id)
+	;printf '%d' d=($extra_unique_id)
 	if NOT ($song_unique_id = NULL)
 		SetSoundSeekPosition unique_id = $song_unique_id position = <position>
 	endif

@@ -47,6 +47,7 @@ script trim \{c = 1}
 endscript
 
 script lefty_toggle \{player_status = player1_status}
+	killspawnedscript \{id=lefty_toggle}
 	if ($<player_status>.player = 1)
 		toggle_global \{p1_lefty}
 		left = $p1_lefty
@@ -108,9 +109,9 @@ script everyone_deploy // :P
 endscript
 
 fastgh3_path_triggers = []
-; soulless 5
+// soulless 5
 ;fastgh3_path_triggers = [33230 120000 148610 187610 246610 307460 350760 431200 507690 585000 658960 716300 794530 831380 876460 900920 983070]
-; soulless 1 path from CHOpt
+// soulless 1 path from CHOpt
 ;fastgh3_path_triggers = [9446 18638 37851 57127 85851 151148 191936 265276 298148 334978]
 script muh_arby_bot_star
 	if ($is_network_game)
@@ -277,40 +278,46 @@ script keytest
 	endif
 endscript
 
-// console command like
-script give \{player = 1}
-	if (<player> = 2)
-		player_status = player2_status
-	else
-		player_status = player1_status
+// ../guitar/guitar_gems.q:664
+mbt_b = 1
+script mbt_test
+	if NOT ScreenElementExists \{id = mbt_test}
+		CreateScreenElement {
+			type = TextElement
+			font = num_a9
+			pos = (1100.0, 80.0)
+			just = [right top]
+			text = 'test'
+			scale = 1.0
+			parent = root_window
+			id = mbt_test
+			font_spacing = 5
+		}
 	endif
-	if NOT ($game_mode = p2_battle)
-		switch <#"0x00000000">
-			case starpower
-				change structurename = <player_status> star_power_amount = ($player1_status.star_power_amount + 50.0)
-		endswitch
+	if (<fretbar_scale> = thick)
+		change \{mbt_b = 0}
+	endif
+	change mbt_b = ($mbt_b + 1)
+	Increment \{measure}
+	pad <measure> count = 4
+	m = <pad>
+	pad ($mbt_b) count = 2
+	FormatText textname = text 'M.B.T: %m:%b' m = <m> b = <pad>
+	SetScreenElementProps id = mbt_test text = <text>
+endscript
+
+script Ternary \{out = ternary}
+	if (<#"0x00000000"> = 0)
+		ternary = <b>
 	else
-		params = { player_status = <player_status> battle_text = 1 }
-		switch <#"0x00000000">
-			case starpower
-				battlemode_ready { battle_gem = 8 <params> }
-			case lightning
-				battlemode_ready { battle_gem = 0 <params> }
-			case difficulty
-				battlemode_ready { battle_gem = 1 <params> }
-			case double
-				battlemode_ready { battle_gem = 2 <params> }
-			case steal
-				battlemode_ready { battle_gem = 3 <params> }
-			case lefty
-				battlemode_ready { battle_gem = 4 <params> }
-			case string
-				battlemode_ready { battle_gem = 5 <params> }
-			case whammy
-				battlemode_ready { battle_gem = 6 <params> }
-			case deth
-				battlemode_ready { battle_gem = 7 <params> }
-		endswitch
+		ternary = <a>
+	endif
+	AddParams \{output = {}}
+	AddParam structure_name = output name = <out> value = <ternary>
+	if StructureContains structure=<output> <out>
+		return <output>
+	else
+		return ternary = <ternary>
 	endif
 endscript
 

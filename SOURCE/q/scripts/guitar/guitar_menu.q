@@ -113,9 +113,8 @@ script pause_flow_from_mode // stupid
 		case p2_career
 			return \{flow_state = coop_career_pause_fs}
 		case p2_faceoff
+		case p2_pro_faceoff
 			return \{flow_state = mp_faceoff_pause_fs}
-		case training
-			return \{flow_state = practice_pause_fs}
 		case p1_quickplay
 		case p2_battle
 		default
