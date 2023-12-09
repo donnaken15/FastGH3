@@ -42,12 +42,16 @@ guitar_volume = 1.0
 artist_text_by = "by"
 artist_text_as_made_famous_by = "as made famous by"
 
+script assert_song_data
+	printstruct <...>
+	ScriptAssert \{'Song not found'}
+endscript
+
 script get_song_original_artist\{song = invalid}
 	if StructureContains structure = $gh3_songlist_props <song>
 		return original_artist = ($gh3_songlist_props.<song>.original_artist)
 	endif
-	printstruct <...>
-	ScriptAssert \{"Song not found"}
+	assert_song_data <...>
 endscript
 
 script get_song_title
@@ -58,8 +62,7 @@ script get_song_prefix\{song = invalid}
 	if StructureContains structure = $gh3_songlist_props <song>
 		return song_prefix = ($gh3_songlist_props.<song>.name)
 	endif
-	printstruct <...>
-	ScriptAssert \{"Song not found"}
+	assert_song_data <...>
 endscript
 
 script get_song_artist
@@ -70,16 +73,14 @@ script get_song_artist_text\{song = invalid}
 	if StructureContains structure = $gh3_songlist_props <song>
 		return song_artist_text = ($gh3_songlist_props.<song>.artist_text)
 	endif
-	printstruct <...>
-	ScriptAssert \{"Song not found"}
+	assert_song_data <...>
 endscript
 
 script get_song_struct\{song = invalid}
 	if StructureContains structure = $gh3_songlist_props <song>
 		return song_struct = ($gh3_songlist_props.<song>)
 	endif
-	printstruct <...>
-	ScriptAssert \{"Song not found"}
+	assert_song_data <...>
 endscript
 
 script get_songlist_size
@@ -119,6 +120,5 @@ script get_song_rhythm_track\{song = invalid}
 	if StructureContains structure = $gh3_songlist_props <song>
 		return rhythm_track = ($gh3_songlist_props.<song>.rhythm_track)
 	endif
-	printstruct <...>
-	ScriptAssert \{"Song not found"}
+	assert_song_data <...>
 endscript

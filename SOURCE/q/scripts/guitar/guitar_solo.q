@@ -331,9 +331,9 @@ script solo_ui_create\{Player = 1}
 		Scale = 0.8
 		rgba = [255 255 255 255]
 		text = <text>
-		just = [center , center]
+		just = [center center]
 		z_priority = 20
-		Pos = (640.0, 296.0)
+		Pos = (640.0, 280.0)
 	}
 endscript
 

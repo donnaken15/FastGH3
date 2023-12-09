@@ -47,8 +47,7 @@ script create_choose_practice_section_menu
 		rgba = [190 29 30 255]
 		Scale = (1.0, 1.75)
 	}
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_section_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=song_section_array}
 	GetArraySize (<song_section_array>)
 	num_entries = ($menu_choose_practice_section_num_entries)
 	if ($menu_choose_practice_section_base = 0)
@@ -223,8 +222,7 @@ script practice_songpreview_fadeinandrepeat
 endscript
 
 script menu_choose_practice_section_refresh_entries
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_section_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=song_section_array}
 	GetArraySize (<song_section_array>)
 	cps_menu ::GetTags
 	entry = 0
@@ -299,8 +297,7 @@ script menu_choose_practice_section_input_down
 	if ($in_destroy_choose_practice_section_menu = 1)
 		return
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_section_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=song_section_array}
 	GetArraySize (<song_section_array>)
 	if ($menu_choose_practice_section_index < (<array_Size>))
 		Change menu_choose_practice_section_index = ($menu_choose_practice_section_index + 1)
@@ -407,8 +404,7 @@ script menu_choose_practice_section_refreshsongpreviewposition
 	if ($in_destroy_choose_practice_section_menu = 1)
 		return
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_section_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=song_section_array}
 	GetArraySize (<song_section_array>)
 	if (<startindex> = -1)
 	elseif (<startindex> = 0)
@@ -435,8 +431,7 @@ script menu_choose_practice_section_play_full_song
 	if ($transitions_locked = 0)
 		LaunchEvent \{Type = unfocus target = cps_menu}
 	endif
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_section_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=song_section_array}
 	GetArraySize (<song_section_array>)
 	cps_menu ::SetTags \{start_index = 1}
 	cps_menu ::SetTags end_index = (<array_Size> + 1)
@@ -447,8 +442,7 @@ endscript
 
 script menu_choose_practice_section_set_times
 	cps_menu ::GetTags
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_section_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=song_section_array}
 	GetArraySize (<song_section_array>)
 	if (<array_Size> > 0)
 		Change practice_start_time = ((<song_section_array> [(<start_index> - 1)]).time)
@@ -475,8 +469,7 @@ script practice_setup_bg
 	Change \{relative_screen_y_position = 0}
 	Change center_column_x = (($left_column_x)+ (0.5 * ($right_column_x - $left_column_x)))
 	detailed_stats_create_container \{for_practice = 1}
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_section_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=song_section_array}
 	add_section_stats_and_desc {
 		section_index = 0
 		section_array = <song_section_array>

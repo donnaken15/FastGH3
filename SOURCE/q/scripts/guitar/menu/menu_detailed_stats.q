@@ -174,8 +174,7 @@ script create_detailed_stats_menu
 	add_text_to_column \{column = 'center' text = ""}
 	add_text_to_column \{column = 'right' text = ""}
 	add_divider_graphic
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = song_section_array '%s_markers' s = <song_prefix>
+	ExtendCrc \{$current_song '_markers' out=song_section_array}
 	GetArraySize (<song_section_array>)
 	section_index = 0
 	highlight = 1

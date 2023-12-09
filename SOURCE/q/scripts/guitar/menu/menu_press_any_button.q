@@ -9,12 +9,6 @@ script create_press_any_button_menu
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = pab_container Pos = (0.0, 0.0)}
 	menu_press_any_button_create_obvious_text
 	spawnscriptnow \{check_for_any_input}
-	if NotCD
-		if ($show_movies = 0)
-			return
-		endif
-	endif
-	spawnscriptnow \{attract_mode_spawner}
 endscript
 
 script destroy_press_any_button_menu
@@ -30,96 +24,12 @@ last_attract_mode = -1
 is_attract_mode = 0
 
 script create_attract_mode
-	Change \{is_attract_mode = 1}
-	create_loading_screen
-	SoundBussUnlock \{Guitar_Balance}
-	SoundBussUnlock \{Band_Balance}
-	SetSoundBussParams \{Guitar_Balance = {vol = -100.0}time = 1.5}
-	SetSoundBussParams \{Band_Balance = {vol = -100.0}time = 1.5}
-	SoundBussLock \{Guitar_Balance}
-	SoundBussLock \{Band_Balance}
-	kill_start_key_binding
-	GetArraySize \{$Attract_Mode_Info}
-	if (<array_Size> = 1)
-		attract_mode_index = 0
-	else
-		if ($last_attract_mode >= 0)
-			GetRandomValue name = attract_mode_index integer a = 0 b = (<array_Size> - 2)
-			if (<attract_mode_index> >= $last_attract_mode)
-				attract_mode_index = (<attract_mode_index> + 1)
-			endif
-		else
-			GetRandomValue name = attract_mode_index integer a = 0 b = (<array_Size> - 1)
-		endif
-		Change last_attract_mode = <attract_mode_index>
-	endif
-	p1_outfit = 1
-	p2_outfit = 1
-	p1_style = 1
-	p2_style = 1
-	AddParams ($Attract_Mode_Info [<attract_mode_index>])
-	Change \{StructureName = player1_status bot_play = 1}
-	Change \{StructureName = player2_status bot_play = 1}
-	Change current_level = <level>
-	Change game_mode = <mode>
-	if ($game_mode = p2_faceoff || $game_mode = p2_pro_faceoff)
-		Change \{current_num_players = 2}
-	else
-		Change \{current_num_players = 1}
-	endif
-	Change StructureName = player1_status character_id = <p1_character_id>
-	Change StructureName = player2_status character_id = <p2_character_id>
-	Change StructureName = player1_status instrument_id = <p1_instrument_id>
-	Change StructureName = player2_status instrument_id = <p2_instrument_id>
-	Change StructureName = player1_status outfit = <p1_outfit>
-	Change StructureName = player2_status outfit = <p2_outfit>
-	Change StructureName = player1_status style = <p1_style>
-	Change StructureName = player2_status style = <p2_style>
-	SoundBussUnlock \{Master}
-	SetSoundBussParams \{Master = {vol = -11.0}time = 0.5}
-	SoundBussLock \{Master}
-	mark_unsafe_for_shutdown
-	UnPauseGame
-	Load_Venue
-	start_gem_scroller song_name = <song> difficulty = <p1_difficulty> difficulty2 = <p2_difficulty> startTime = 0 device_num = ($player1_status.controller)
-	create_attract_mode_text
-	StopRendering
-	destroy_loading_screen
-	SoundBussUnlock \{Guitar_Balance}
-	SoundBussUnlock \{Band_Balance}
-	SetSoundBussParams {Guitar_Balance = {vol = (($Default_BussSet.Guitar_Balance.vol)- 1.5)}}
-	SetSoundBussParams {Band_Balance = {vol = (($Default_BussSet.Band_Balance.vol)- 1.5)}}
-	SoundBussLock \{Guitar_Balance}
-	SoundBussLock \{Band_Balance}
-	spawnscriptnow \{check_for_attract_mode_input}
 endscript
 
 script create_attract_mode_text
-	CreateScreenElement \{Type = ContainerElement parent = root_window id = am_container Pos = (0.0, 0.0)}
-	text = " PRESS GREEN TWICE TO ROCK "
-	text_pos = (640.0, 637.0)
-	CreateScreenElement {
-		Type = TextElement
-		text = <text>
-		Pos = <text_pos>
-		parent = am_container
-		rgba = [220 220 220 255]
-		font = fontgrid_title_gh3
-		just = [center bottom]
-		Scale = 0.9
-		Shadow
-		shadow_offs = (3.0, 3.0)
-		shadow_rgba = [110 20 80 250]
-	}
-	CreateScreenElement \{Type = SpriteElement parent = am_container texture = logo_gh3_lor_256 dims = (225.0, 225.0) Pos = (640.0, 490.0) just = [center center]}
 endscript
 
 script destroy_attract_mode_text
-	destroy_menu \{menu_id = am_container}
-	StopAllSounds
-	SoundBussUnlock \{Master}
-	SetSoundBussParams {Master = {vol = ($Default_BussSet.Master.vol)}}
-	SoundBussLock \{Master}
 endscript
 
 script check_for_attract_mode_input
@@ -138,15 +48,6 @@ script check_for_attract_mode_input
 endscript
 
 script destroy_attract_mode
-	PauseGame
-	destroy_attract_mode_text
-	killspawnedscript \{name = check_for_attract_mode_input}
-	kill_gem_scroller
-	Change \{StructureName = player1_status bot_play = 0}
-	Change \{StructureName = player2_status bot_play = 0}
-	UnPauseGame
-	kill_start_key_binding
-	Change \{is_attract_mode = 0}
 endscript
 invalid_controller_lock = 0
 

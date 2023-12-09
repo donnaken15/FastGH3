@@ -15,6 +15,7 @@ JUNK*
 *.obj
 *.tlog
 *.log
+!/FastGH3.pdb
 PLUGINS/disabled
 PLUGINS/disabled3
 /PLUGINS/RichPresence.dll
@@ -73,6 +74,7 @@ DATA/ZONES/__themes/*/
 /DATA/ZONES/__themes/*.gfx
 /DATA/ZONES/__themes/*.gfx.xen
 /DATA/ZONES/__themes/*.zip
+/DATA/MODS
 SOURCE/q/test
 
 # if i add items to this list that were already committed before, will it remove it from the repo?
@@ -89,3 +91,5 @@ PLUGINS/Logger.dll
 /DATA/MUSIC/fastgh3.fsb.xen
 /DATA/PAK/player.pak.xen
 /DATA/PAK/song.pak.xen
+SOURCE/Zones/highway/__output.scn
+SOURCE/Zones/highway/__output.tex

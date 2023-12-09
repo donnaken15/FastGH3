@@ -1,206 +1,60 @@
-tmpinput = ''
 
-script create_winport_input_field_flow
-	create_winport_input_field {
-		mode = loginAccount
-		title = "Enter text"
-		container = accountLoginContainer
-	}
-endscript
-
-script create_winport_input_field
-	// keyboard input hack
-	// TODO: better one
-	/*printf \{"--- create_winport_account_management_screen"}
-	z = 110
-	create_menu_backdrop \{texture = Online_Background}
-	if ((GotParam yellowButtonAction)& (GotParam blueButtonAction))
-		Handlers = [
-			{focus net_warning_focus}
-			{unfocus net_warning_unfocus}
-			{pad_choose ui_flow_manager_respond_to_action params = {action = executeLogin}}
-			{pad_option2 <yellowButtonAction>}
-			{pad_option <blueButtonAction>}
-			{pad_back cancel_winport_account_management_screen params = {mode = <mode>}}
-		]
-	elseif (GotParam yellowButtonAction)
-		Handlers = [
-			{focus net_warning_focus}
-			{unfocus net_warning_unfocus}
-			{pad_choose ui_flow_manager_respond_to_action params = {action = executeLogin}}
-			{pad_option2 <yellowButtonAction>}
-			{pad_back cancel_winport_account_management_screen params = {mode = <mode>}}
-		]
-	elseif (GotParam blueButtonAction)
-		Handlers = [
-			{focus net_warning_focus}
-			{unfocus net_warning_unfocus}
-			{pad_choose ui_flow_manager_respond_to_action params = {action = executeLogin}}
-			{pad_option <blueButtonAction>}
-			{pad_back cancel_winport_account_management_screen params = {mode = <mode>}}
-		]
-	else
-		Handlers = [
-			{focus net_warning_focus}
-			{unfocus net_warning_unfocus}
-			{pad_choose ui_flow_manager_respond_to_action params = {action = executeLogin}}
-			{pad_back cancel_winport_account_management_screen params = {mode = <mode>}}
-		]
-	endif
-	CreateScreenElement {
-		Type = ContainerElement
-		parent = root_window
-		id = <container>
-		Pos = (0.0, 0.0)
-		event_handlers = <Handlers>
-	}
-	NetSessionFunc func = InitializeLoginFields params = {loginMode = <mode>}
-	displaySprite parent = <container> tex = dialog_title_bg dims = (300.0, 230.0) z = 9 Pos = (640.0, 40.0) just = [right top] flip_v
-	displaySprite parent = <container> tex = dialog_title_bg dims = (300.0, 230.0) z = 9 Pos = (640.0, 40.0) just = [left top]
-	CreateScreenElement {
-		Type = TextElement
-		parent = <container>
-		font = fontgrid_title_gh3
-		Scale = 1.0
-		rgba = [223 223 223 250]
-		text = <title>
-		just = [center top]
-		z_priority = 10.0
-		Pos = (640.0, 125.0)
-		Shadow
-		shadow_offs = (3.0, 3.0)
-		shadow_rgba = [0 0 0 255]
-	}
-	fit_text_in_rectangle id = <id> dims = (400.0, 75.0) Pos = (640.0, 125.0) only_if_larger_x = 1 only_if_larger_y = 1 just = center
-	CreateScreenElement {
-		Type = TextElement
-		parent = <container>
-		id = capsLockField
-		font = text_a4
-		Scale = 0.6
-		rgba = [255 0 0 255]
-		text = "(Caps Lock Is On)"
-		just = [center top]
-		z_priority = 10.0
-		Pos = (640.0, 530.0)
-		Shadow
-		shadow_offs = (1.0, 1.0)
-		shadow_rgba = [0 0 0 255]
-	}
-	fit_text_in_rectangle id = <id> dims = (600.0, 25.0) Pos = (640.0, 595.0) only_if_larger_x = 1 only_if_larger_y = 1 just = center keep_ar = 1
-	<Pos> = (375.0, 290.0)
-	create_winport_login_field container = <container> Pos = <Pos> label = "Script:	  " labelId = usernameLabelId prefixId = usernamePrefixId cursorId = usernameCursorId suffixId = usernameSuffixId ang = 0.0
-	GetScreenElementDims \{id = usernameLabelId}
-	lineHeight = (<height> + 8)
-	if (<mode> = loginAccount || <mode> = deleteAccount || <mode> = changeAccount)
-		Pos = (<Pos> + ((0.0, 1.0) * <lineHeight>))
-		create_winport_login_field container = <container> Pos = <Pos> label = "dummy	  " labelId = passwordLabelId prefixId = passwordPrefixId cursorId = passwordCursorId suffixId = passwordSuffixId ang = 0.2
-	endif
-	if (<mode> = createAccount || <mode> = changeAccount || <mode> = resetAccount)
-		Pos = (<Pos> + ((0.0, 1.0) * <lineHeight>))
-		create_winport_login_field container = <container> Pos = <Pos> label = "New Password: " labelId = newPassword1LabelId prefixId = newPassword1PrefixId cursorId = newPassword1CursorId suffixId = newPassword1SuffixId ang = -0.6
-		Pos = (<Pos> + ((0.0, 1.0) * <lineHeight>))
-		create_winport_login_field container = <container> Pos = <Pos> label = "Repeat New Password: " labelId = newPassword2LabelId prefixId = newPassword2PrefixId cursorId = newPassword2CursorId suffixId = newPassword2SuffixId ang = 0.5
-	endif
-	if (<mode> = createAccount || <mode> = resetAccount)
-		Pos = (<Pos> + ((0.0, 1.0) * <lineHeight>))
-		create_winport_login_field container = <container> Pos = <Pos> label = "License: " labelId = licenseLabelId prefixId = licensePrefixId cursorId = licenseCursorId suffixId = licenseSuffixId ang = 1.5
-	endif
-	add_user_control_helper \{text = "ACCEPT" button = green z = 100}
-	add_user_control_helper \{text = $menu_text_back button = red z = 100}
-	if GotParam \{yellowButtonText}
-		add_user_control_helper text = <yellowButtonText> button = yellow z = 100
-	endif
-	if GotParam \{blueButtonText}
-		add_user_control_helper text = <blueButtonText> button = blue z = 100
-	endif
-	LaunchEvent Type = focus target = <container>
+script key_events
 	begin
-		if (IsCapsLockOn)
-			SetScreenElementProps \{id = capsLockField alpha = 1.0}
+		//if ($toggle_console = 0)
+		// emulator moment
+		WinPortSioGetControlPress \{deviceNum = $player1_device}
+		if NOT (<controlNum> = -1)
+			if (<controlNum> = 323) // Tab
+				if (($console_pause = 1 & $toggle_console = 0) | $console_pause = 0)
+					if ($hold_tab = 0)
+						change old_speed = ($current_speedfactor)
+						change current_speedfactor = ($old_speed * $fastforward)
+						update_slomo
+						change \{hold_tab = 1}
+					endif
+				endif
+			endif
+			if (<controlNum> = 253) // ~
+				if NOT ($last_key = <controlNum>)
+					toggle = toggle_console
+					change globalname = <toggle> newvalue = (1 - $<toggle>)
+					if ($toggle_console)
+						//printf 'opened console'
+						create_keyboard_input
+					else
+						destroy_keyboard_input
+					endif
+				endif
+			endif
+			if (<controlNum> = 267 | <controlNum> = 311) // l/rshift
+				if ($might_hold_shift = 0)
+					change might_hold_shift = 1
+				endif
+			endif
 		else
-			SetScreenElementProps \{id = capsLockField alpha = 0.0}
+			if ($might_hold_shift = 1)
+				change might_hold_shift = 0
+			endif
 		endif
-		update_winport_login_field \{Field = username labelId = usernameLabelId prefixId = usernamePrefixId cursorId = usernameCursorId suffixId = usernameSuffixId}
-		update_winport_login_field \{Field = password labelId = passwordLabelId prefixId = passwordPrefixId cursorId = passwordCursorId suffixId = passwordSuffixId}
-		update_winport_login_field \{Field = newPassword1 labelId = newPassword1LabelId prefixId = newPassword1PrefixId cursorId = newPassword1CursorId suffixId = newPassword1SuffixId}
-		update_winport_login_field \{Field = newPassword2 labelId = newPassword2LabelId prefixId = newPassword2PrefixId cursorId = newPassword2CursorId suffixId = newPassword2SuffixId}
-		update_winport_login_field \{Field = license labelId = licenseLabelId prefixId = licensePrefixId cursorId = licenseCursorId suffixId = licenseSuffixId}
-		wait \{1 Frame}
-		if NOT (ScreenElementExists id = <container>)
-			return
+		if NOT (<controlNum> = 323)
+			if ($hold_tab = 1)
+				change current_speedfactor = ($old_speed)
+				update_slomo
+				change \{hold_tab = 0}
+			endif
 		endif
-		NetSessionFunc \{func = GetLoginEntry}
-		if (<loginEntry> = loginAccepted)
-			break
-		endif
-		if (<loginEntry> = loginAborted)
-			break
-		endif
-		if ((GotParam yellowButtonAction)& (<loginEntry> = loginOption1))
-			printf \{"Got yellowButtonAction button"}
-			break
-		endif
-		if ((GotParam blueButtonAction)& (<loginEntry> = loginOption2))
-			printf \{"Got blueButtonAction button"}
-			break
-		endif
+		change last_key = <controlNum>
+		Wait \{1 gameframe}
 	repeat
-	text = $textinput_username
-	printstruct <...>
-	switch <loginEntry>
-		case loginAccepted
-			ui_flow_manager_respond_to_action \{action = executeLogin}
-		case loginOption1
-			printf \{"Executing option 1"}
-			ui_flow_manager_respond_to_action \{action = executeOption1}
-		case loginOption2
-			printf \{"Executing option 2"}
-			ui_flow_manager_respond_to_action \{action = executeOption2}
-		case loginAborted
-			cancel_winport_account_management_screen mode = <mode>
-	endswitch*///
 endscript
-textinput_username = ''
-textinput_password = ''
-textinput_newPassword2 = ''
-textinput_license = ''
+last_key = 0
+old_speed = -1.0
+hold_tab = 0
+fastforward = 2.0
 
-script executeScriptFromString
-	//FormatText checksumName = Scr '%s' s = ($textinput_username)
-	//if (ScriptExists <Scr>)
-	//	spawnscriptnow <Scr>
-	//endif
-endscript
-fastgh3_test_fs = {
-	create = create_winport_input_field_flow
-	Destroy = destroy_winport_account_login_screen
-	actions = [
-		{
-			action = executeLogin
-			func = executeScriptFromString
-			flow_state = quickplay_pause_options_fs
-		}
-		{
-			action = executeOption1
-			flow_state = quickplay_pause_options_fs
-		}
-		{
-			action = executeOption2
-			flow_state = quickplay_pause_options_fs
-		}
-		{
-			action = back_to_connection_status
-			flow_state = quickplay_pause_options_fs
-		}
-		{
-			action = back_to_main
-			flow_state = quickplay_pause_options_fs
-		}
-	]
-}
-
-script lefty_toggle\{player_status = player1_status}
+script lefty_toggle \{player_status = player1_status}
+	killspawnedscript \{id=lefty_toggle}
 	if ($<player_status>.player = 1)
 		toggle_global \{p1_lefty}
 		left = $p1_lefty
@@ -228,20 +82,6 @@ script lefty_toggle\{player_status = player1_status}
 	Change StructureName = <player_status> lefthanded_button_ups = <left>
 endscript
 
-script wait_beats\{1}
-	begin
-		last_beat_flip = $beat_flip
-		begin
-			cur_beat_flip = $beat_flip
-			if NOT (<last_beat_flip> = <cur_beat_flip>)
-				break
-			endif
-			wait 1 gameframe
-		repeat
-	repeat (<#"0x00000000">)
-	return
-endscript
-
 script everyone_deploy // :P
 	player = 1
 	begin
@@ -263,9 +103,9 @@ endscript
 
 fastgh3_path_triggers = []
 // soulless 5
-//fastgh3_path_triggers = [33230 120000 148610 187610 246610 307460 350760 431200 507690 585000 658960 716300 794530 831380 876460 900920 983070]
+;fastgh3_path_triggers = [33230 120000 148610 187610 246610 307460 350760 431200 507690 585000 658960 716300 794530 831380 876460 900920 983070]
 // soulless 1 path from CHOpt
-//fastgh3_path_triggers = [9446 18638 37851 57127 85851 151148 191936 265276 298148 334978]
+;fastgh3_path_triggers = [9446 18638 37851 57127 85851 151148 191936 265276 298148 334978]
 script muh_arby_bot_star
 	if ($is_network_game)
 		return
@@ -275,15 +115,32 @@ script muh_arby_bot_star
 		return
 	endif
 	if ($game_mode = p2_battle)
-		printf \{'fake battle bot, fire every two seconds'}
+		printf \{'fake battle bot (with self awareness!!!!!!)'}
 		begin
-			wait \{2 seconds}
-			if ($player1_status.bot_play = 1)
-				battle_trigger_on \{player_status = player1_status}
-			endif
-			if ($player2_status.bot_play = 1)
-				battle_trigger_on \{player_status = player2_status}
-			endif
+			wait \{0.1 seconds}
+			i = 1
+			j = 3
+			begin
+				formattext checksumname = player_status 'player%i_status' i = <i>
+				if ($<player_status>.bot_play = 1)
+					count = ($<player_status>.current_num_powerups)
+					if (<count> > 0)
+						ExtendCrc current_powerups_ ($<player_status>.text) out=pows
+						current_powerup = ($<pows>[(<count> - 1)])
+						if (randomrange (0.0, 100.0) > 90.0 || <current_powerup> = 3 || <current_powerup> = 8)
+							formattext checksumname = other_player_status 'player%i_status' i = (<j> - <i>)
+							if NOT ((<current_powerup> = 3 & $<other_player_status>.current_num_powerups = 0) || (<current_powerup> = 8 & ($<player_status>.current_health > $health_medium_good | $<player_status>.star_power_used = 1)))
+								// can't use multiple NOTs within conditions, stupid
+								if (<current_powerup> = 8 & $<player_status>.star_power_used = 1)
+									wait \{2 gameframe} // causes display glitch if i don't wait when the bot has 2 star powers
+								endif
+								battle_trigger_on player_status = <player_status>
+							endif
+						endif
+					endif
+				endif
+				Increment \{i}
+			repeat ($current_num_players)
 		repeat
 		return
 	endif
@@ -317,7 +174,7 @@ endscript
 
 // TODO: only print necessary info
 script PrintPlayer\{player_status = player1_status}
-	/**/player_status = $<player_status>
+	/**player_status = $<player_status>
 	printstruct {
 		player = {
 			controller = (<player_status>.controller)
@@ -414,6 +271,108 @@ script keytest
 	endif
 endscript
 
+// ../guitar/guitar_gems.q:664
+mbt_b = 1
+script mbt_test
+	if NOT ScreenElementExists \{id = mbt_test}
+		CreateScreenElement {
+			type = TextElement
+			font = num_a9
+			pos = (1100.0, 80.0)
+			just = [right top]
+			text = 'test'
+			scale = 1.0
+			parent = root_window
+			id = mbt_test
+			font_spacing = 5
+		}
+	endif
+	if (<fretbar_scale> = thick)
+		change \{mbt_b = 0}
+	endif
+	change mbt_b = ($mbt_b + 1)
+	Increment \{measure}
+	pad <measure> count = 4
+	m = <pad>
+	pad ($mbt_b) count = 2
+	FormatText textname = text 'M.B.T: %m:%b' m = <m> b = <pad>
+	SetScreenElementProps id = mbt_test text = <text>
+endscript
+
+script Ternary \{out = ternary}
+	if (<#"0x00000000"> = 0)
+		ternary = <b>
+	else
+		ternary = <a>
+	endif
+	AddParams \{output = {}}
+	AddParam structure_name = output name = <out> value = <ternary>
+	if StructureContains structure=<output> <out>
+		return <output>
+	else
+		return ternary = <ternary>
+	endif
+endscript
+
+
+script fakenote \{#"0x00000000" = 0 player = 1}
+	Ternary (<player> = 2) a = player2_status b = player1_status out = player_status
+	player = ($<player_status>.player)
+	player_text = ($<player_status>.player_text)
+	player_status = ($<player_status>.player_status)
+	ExtendCrc input_array <player_text> out = input_array
+	GetSongTimeMs
+	MathFloor <time>
+	Create2DGem {
+		color = mine
+		marker = 0
+		time = 0
+		song = <input_array>
+		entry = 0
+		gem_count = <#"0x00000000">
+		player = <player>
+		player_text = <player_text>
+		player_status = <player_status>
+	}
+endscript
+
+// notes disappear when speed is backwards
+/**script rewind \{3000.0}
+	GetSongTimeMs
+	current_time = <time>
+	return_to = (<time> - <#"0x00000000">)
+	if (<return_to> < 0.0)
+		return_to = 0.0
+	endif
+	//WinPortSongHighwaySync \{sync = 0}
+	PauseGh3Sounds
+	setslomo \{-1.0}
+	begin
+		GetSongTimeMs
+		i = 1
+		begin
+			formattext checksumname = button_ups 'button_up_pixel_arrayp%i' i = <i>
+			j = 0
+			begin
+				setarrayelement arrayname = <button_ups> globalarray index = <j> newvalue = 0.0
+				Increment \{j}
+			repeat 5
+			Increment \{i}
+		repeat $current_num_players
+		if (<time> < <return_to>)
+			break
+		endif
+		wait \{1 gameframe}
+	repeat
+	setslomo \{1.0}
+	UnpauseGh3Sounds
+	printstruct <...>
+	CastToInteger \{return_to}
+	SetSeekPosition_Song position = <return_to>
+	//WinPortSongHighwaySync \{sync = 1}
+endscript/**///
+
+/*///
 script ProfilingStart
 	//return
 	AddParams \{time = 0.0} // fallback if ProfileTime is not patched by FastGH3 plugin
@@ -435,5 +394,8 @@ script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
 	endif
 	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
-endscript
+endscript/**///
+
+//ProfilingStart = $EmptyScript
+//ProfilingEnd = $EmptyScript
 

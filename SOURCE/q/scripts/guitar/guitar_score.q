@@ -261,7 +261,7 @@ script calc_songscoreinfo\{player_status = player1_status}
 		<fast_max_notes> != <max_notes> ||
 		<fast_sp_phrases_total> != <sp_phrases_total>)
 		ScriptAssert \{"Mismatch in CalcSongScoreInfo"}
-	endif*/
+	endif*///
 endscript
 
 script hit_note

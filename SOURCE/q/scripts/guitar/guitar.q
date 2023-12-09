@@ -166,13 +166,15 @@ mode_index = {
 fastgh3_build = '1.0-999010889'
 fastgh3_branch = unpak
 bleeding_edge = 1
-build_timestamp = [11 17 2023]
+build_timestamp = [12 10 2023]
 
 script FileExists \{#"0x00000000" = ''}
 	if exists <#"0x00000000">
 		return \{true}
 	endif
-	Formattext textname = xen '%s.xen' s = <#"0x00000000">
+	GetPlatformExt
+	// would concatenation be faster than this
+	Formattext textname = xen "%s.%x" s = <#"0x00000000"> x = <platform_ext>
 	if exists <xen>
 		return \{true}
 	endif
@@ -200,6 +202,7 @@ endscript
 script AllocArray \{set = 0 size = 10}
 	// basically memset lol
 	element = <set>
+	RemoveComponent \{set}
 	array = []
 	begin
 		AddArrayElement <...>
@@ -232,7 +235,15 @@ random_seed = -1
 // ^ originally 107482099
 // @script | guitar_startup | Initialization script
 script guitar_startup
-	HideLoadingScreen
+	GetTrueStartTime
+	DisplayLoadingScreen \{'../../zones/load_scr' spin_texture = '../../zones/load_disc' spin_x = 560 spin_y = 500}
+	StopRendering
+	begin
+		GetTrueElapsedTime startTime = <startTime>
+		if (<ElapsedTime> >= 100)
+			break
+		endif
+	repeat
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
 	printf \{'Version %v' v=$fastgh3_build}
 	if ($bleeding_edge = 1)
@@ -263,12 +274,13 @@ script guitar_startup
 	// endregion
 	
 	// region useless
+		ProfilingStart
 		printf \{'Initializing unneeded stuff'}
 		//CompositeObjectManager_startup
 		//MemCardSystemInitialize // probably destroyed and broke save functionality
 		InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
 		//InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
-		LightShow_Init \{notes = $LightShow_NoteMapping nodeflags = $LightShow_StateNodeFlags ColorOverrideExclusions = $LightShow_ColorOverrideExcludeLights}
+		LightShow_Init \{notes = $nullArray nodeflags = $nullArray ColorOverrideExclusions = $nullArray}
 		printf \{'Initializing Replay buffer'}
 		AllocateDataBuffer \{name = replay kb = 5120}
 		ProfilingEnd <...> 'init things'
@@ -480,7 +492,7 @@ script guitar_startup
 			if GlobalExists name = <mod_info_name> type = structure
 				mod_info = ($<mod_info_name>)
 			elseif GlobalExists \{name = mod_info type = structure}
-				mod_info = $mod_info
+				mod_info = ($mod_info)
 			else
 				mod_info = {failed}
 			endif
@@ -560,6 +572,191 @@ script guitar_startup
 		CreatePakManMap \{map = zones links = GH3Zones folder = 'zones/' uselinkslots}
 	// endregion
 	
+	// region initialize big stuff
+		printf \{'Allocating new big arrays'}
+		// sick of seeing a bunch of zeroes :/
+		ProfilingStart
+		// {
+		AllocArray \{size = 500 p1_last_song_detailed_stats}
+		AllocArray \{size = 500 p2_last_song_detailed_stats}
+		AllocArray \{size = 500 p1_last_song_detailed_stats_max}
+		AllocArray \{size = 500 p2_last_song_detailed_stats_max}
+		AllocArray \{size = 136 WhammyWibble0 set = 1.0}
+		AllocArray \{size = 136 WhammyWibble1 set = 1.0}
+		// } ran for 0.3ms
+		AllocArray \{size = 32 solo_hit_buffer_p1}
+		AllocArray \{size = 32 solo_hit_buffer_p2}
+		AllocArray \{size = $highway_lines set = 0.0 gem_time_table512}
+		AllocArray \{size = $highway_lines set = 0.0 rowHeightNormalizedDistance}
+		AllocArray \{size = $highway_lines set = 0.0 rowHeight}
+		AllocArray \{size = $highway_lines set = 0.0 time_accum_table}
+		ProfilingEnd <...> 'AllocArray x12'
+		// 5 ms (michael scott gif)
+		
+		ProfilingStart
+		create_loading_strings
+		
+		change mode_buttons = [
+			{ range = 5 param = mode texts = mode_text id = select_gamemode }
+			{ range = 1 param = players texts = playercount_text id = select_playercount
+				cont = {
+					pos_off = (10,0) just = [center top]
+				}
+			}
+			{ text = 'Bind' id = select_players button }
+			{ range = 3 param = diff
+				texts = diff_text id = select_diff
+				cont = {
+					pos_off = (60,0) just = [center top]
+				}
+			}
+			{ range = 3 param = diff2
+				texts = diff_text id = select_diff2
+				cont = {
+					pos_off = (200,-50) just = [center top]
+				}
+			}
+			{ range = 1 param = part
+				texts = part_text id = select_part
+				cont = {
+					pos_off = ( 60,-50) just = [center top]
+				}
+			}
+			{ range = 1 param = part2
+				texts = part_text id = select_part2
+				cont = {
+					pos_off = (200,-100) just = [center top]
+				}
+			}
+			{ range = 1 param = bot
+				texts = toggle_text id = select_bot
+				cont = {
+					pos_off = ( 60,-100) just = [center top]
+				}
+			}
+			{ range = 1 param = bot2
+				texts = toggle_text id = select_bot2
+				cont = {
+					pos_off = (200,-150) just = [center top]
+				}
+			}
+			{ text = 'Save Settings' id = select_save button
+				cont = {
+					pos_off = (0,-150) just = [left top]
+				}
+			}
+			{ text = 'Start!' id = select_start button
+				cont = {
+					pos_off = (0,-150) just = [left top]
+				}
+			}
+		]
+		
+		change extras_menu = [
+			// guide
+			// (NO NAME) = variable to set
+			// name = display name
+			// type = type of item (bool, int, etc)
+			// min = minimum value allowed (int)
+			// max = maximum value allowed (int)
+			// sect = INI section (default: Misc)
+			// key = INI key
+			// restart = (1) requires restarting the song (2) requires restarting game?
+			{
+				Cheat_Hyperspeed
+				name='Hyperspeed'
+				sect='Player'
+				type=int min=-13 max=10
+				restart=1
+			}
+			{
+				fps_max
+				name='Frame Rate'
+				sect='GFX' key='MaxFPS'
+				type=int min=0 max=1000 step=5
+			}
+			{
+				disable_particles
+				name='Particles'
+				sect='GFX' key='NoParticles'
+				type=int min=0 max=2
+			}
+			{
+				hudless
+				name='No HUD'
+				type=bool sect='GFX' key='NoHUD'
+				restart=1
+			}
+			{
+				disable_intro
+				name='No Intro'
+				type=bool sect='GFX' key='NoIntro'
+				restart=1
+			}
+			{
+				disable_shake
+				name='No Highway Shake'
+				type=bool sect='GFX' key='NoShake'
+			}
+			{
+				exit_on_song_end
+				name='Exit on Song End'
+				type=bool sect='Player' key='ExitOnSongEnd'
+			}
+			{
+				kill_gems_on_hit
+				name='Hide Gems Upon Hit'
+				type=bool sect='GFX' key='KillGemsHit'
+			}
+			{
+				enable_button_cheats
+				name='Debug Menu'
+				type=bool key='Debug'
+			}
+			{
+				Cheat_NoFail
+				name='No Fail'
+				type=bool sect='Player' key='NoFail'
+			}
+			{
+				Cheat_EasyExpert
+				name='Easy Expert'
+				type=bool sect='Player' key='EasyExpert'
+				restart=1
+			}
+			{
+				Cheat_PrecisionMode
+				name='Precision'
+				type=bool sect='Player' key='Precision'
+				restart=1
+			}
+			{
+				FC_MODE
+				name='FC Mode'
+				type=bool sect='Player' key='FCMode'
+				restart=1
+			}
+			{
+				gem_scalar
+				name='Gem Scale'
+				sect='GFX' key='GemScale'
+				type=int min=0.0 max=100.0 step=0.05
+				restart=1
+			}
+			{
+				current_speedfactor
+				name='Speed Factor'
+				sect='Player' key='Speed'
+				type=int min=0.05 max=100.0 step=0.05
+			}
+		]
+		ProfilingEnd <...> 'test'
+	// endregion
+	
+	//Load_Venue
+	SetPakManCurrentBlock \{map = zones pak = z_viewer block_scripts = 0}
+	
+	ProfilingStart
 	printf \{'Initializing screen element system'}
 	ScreenElementSystemInit
 	SetShadowProjectionTexture \{texture = white}
@@ -769,6 +966,7 @@ script guitar_startup
 	Change StructureName = player1_status controller = ($primary_controller)
 	Change structurename = player2_status controller = ($startup_controller2)
 	if ($autolaunch_startnow = 0)
+		HideLoadingScreen
 		start_flow_manager \{flow_state = bootup_sequence_fs}
 	else
 		StartRendering
@@ -814,6 +1012,10 @@ endscript
 script autolaunch_spawned
 	NewShowStorageSelector
 	Change \{primary_controller_assigned = 1}
+	Change primary_controller = ($startup_controller)
+	Change player1_device = ($startup_controller)
+	Change player2_device = ($startup_controller2)
+	//Change structurename = player2_status controller = ($startup_controller2)
 	if ($fastgh3_online = 1)
 		start_flow_manager \{flow_state = online_winport_start_connection_fs}
 	else

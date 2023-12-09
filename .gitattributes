@@ -6,3 +6,4 @@
 *.xen	binary
 *.dbg.xen text
 *.dbg	text
+*.cs	eol=crlf

@@ -16,9 +16,9 @@ script create_top_rockers_menu
 		menu_top_rockers_init_band_name_creation score_index = <new_score>
 		clean_up_user_control_helpers
 		add_user_control_helper \{text = $menu_text_sel button = green z = 100}
-		add_user_control_helper \{text = "DELETE" button = red z = 100}
+		add_user_control_helper \{text = 'DELETE' button = red z = 100}
 		add_user_control_helper \{text = $menu_text_nav button = strumbar z = 100}
-		add_user_control_helper \{text = "ACCEPT" button = start z = 100}
+		add_user_control_helper \{text = 'ACCEPT' button = start z = 100}
 	else
 		menu_top_rockers_create_continue_button
 		add_user_control_helper \{text = $menu_text_back button = red z = 100}
@@ -36,7 +36,7 @@ endscript
 script menu_top_rockers_create_poster
 	displaySprite \{parent = tr_container tex = Venue_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
 	//CreateScreenElement \{Type = SpriteElement parent = tr_container texture = #"0x1c8a86f3" Pos = (740.0, 30.0) just = [right top] dims = (620.0, 620.0) z_priority = 1.2 rot_angle = -3}
-	FormatText \{textname = Rockers_title "\c9%T\c0%R" t = "TOP" r = "ROCKERS"}
+	FormatText \{textname = Rockers_title '\c9%T\c0%R' t = 'TOP' r = 'ROCKERS'}
 	CreateScreenElement {
 		Type = TextElement
 		parent = tr_container
@@ -53,8 +53,8 @@ endscript
 script menu_top_rockers_create_paper
 	CreateScreenElement \{Type = ContainerElement parent = tr_container id = tr_paper_container Pos = (630.0, 90.0)}
 	get_difficulty_text_nl difficulty = ($current_difficulty)
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = songname '%s_%d' s = <song_prefix> d = <difficulty_text_nl>
+	ExtendCrc \{$current_song '_' out=songname}
+	ExtendCrc <songname> <difficulty_text_nl> out=songname
 	GetGlobalTags <songname>
 	get_difficulty_text difficulty = ($current_difficulty)
 	get_song_title song = ($current_song)
@@ -77,7 +77,7 @@ script menu_top_rockers_create_paper
 			endif
 			if (<char_index> >= <max_characters>)
 				if ((<char_array> [<char_index>])= " ")
-					printf \{"found space"}
+					printf \{'found space'}
 					break
 				endif
 			endif
@@ -237,8 +237,8 @@ script menu_top_rockers_check_for_new_top_score\{nowrite = 0}
 	casttointeger \{player_score}
 	player_stars = ($player1_status.stars)
 	get_difficulty_text_nl difficulty = ($current_difficulty)
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = songname '%s_%d' s = <song_prefix> d = <difficulty_text_nl>
+	ExtendCrc \{$current_song '_' out=songname}
+	ExtendCrc <songname> <difficulty_text_nl> out=songname
 	GetGlobalTags <songname>
 	score_array = [0 0 0 0 0]
 	name_array = ["" "" "" "" ""]
@@ -319,7 +319,7 @@ script menu_tr_get_band_name_text
 endscript
 
 script menu_tr_refresh_band_name\{score_index = 0}
-	printf "Score index is %d" d = <score_index>
+	printf 'Score index is %d' d = <score_index>
 	FormatText checksumName = score_name_id 'score_name%d' d = (<score_index> + 1)
 	menu_tr_get_band_name_text
 	SetScreenElementProps id = <score_name_id> text = (<band_name_text_string>)
@@ -338,8 +338,8 @@ script menu_tr_confirm_band_name
 	menu_tr_get_band_name_text
 	StringRemoveTrailingWhitespace string = <band_name_text_string>
 	get_difficulty_text_nl difficulty = ($current_difficulty)
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = songname '%s_%d' s = <song_prefix> d = <difficulty_text_nl>
+	ExtendCrc \{$current_song '_' out=songname}
+	ExtendCrc <songname> <difficulty_text_nl> out=songname
 	switch (<score_index> + 1)
 		case 1
 			SetGlobalTags <songname> params = {name1 = <new_string>}

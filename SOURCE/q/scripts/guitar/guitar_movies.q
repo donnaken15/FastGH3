@@ -147,7 +147,7 @@ script preload_bgbink
 		params = { <params> no_hold }
 	endif
 	stop_bgbink
-	PreLoadMovie { movie = 'backgrnd_video' textureSlot = 2 TexturePri = -9999999 <params> }
+	PreLoadMovie { movie = 'backgrnd_video' textureSlot = 2 TexturePri = -9999999 <params> } // non_blocking_seeking
 endscript
 script start_bgbink
 	if isMoviePreLoaded \{textureSlot = 2}

@@ -326,7 +326,7 @@ script create_newspaper_menu\{for_practice = 0}
 					endif
 				endif
 			endif
-			FormatText textname = who_won_text "%s	Rules!" s = <winner_text>
+			FormatText textname = who_won_text "%s Rules!" s = <winner_text>
 			displayText {
 				parent = newspaper_container
 				text = <who_won_text>
@@ -904,7 +904,7 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_icon_skull
 				parent = newspaper_container
-				tex = 2p_song_summary_icon_loser
+				tex = Song_Summary_Icon_Loser_2p
 				Pos = (<p2_stats_pos> + (-55.0, 294.0))
 				rgba = $g_ss_p2_violetish
 				dims = (64.0, 64.0)
@@ -913,7 +913,7 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_icon_thumb
 				parent = newspaper_container
-				tex = 2p_song_summary_icon_winner
+				tex = Song_Summary_Icon_Winner_2p
 				Pos = (<p2_stats_pos> + (-16.0, 320.0))
 				rgba = $g_ss_p2_violetish
 				just = [center center]
@@ -923,7 +923,7 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_icon_skull
 				parent = newspaper_container
-				tex = 2p_song_summary_icon_loser
+				tex = Song_Summary_Icon_Loser_2p
 				Pos = (<p1_stats_pos> + (22.0, 294.0))
 				rgba = $g_ss_p1_orangeish
 				dims = (64.0, 64.0)

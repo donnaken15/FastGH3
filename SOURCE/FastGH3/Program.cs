@@ -463,17 +463,17 @@ class Program
 		}
 		return Tuple.Create(sT, sNC);
 	}
-
-	static short lx, ly;
 	// progress bars
 	static short[] pbl; // lines to write to
-	static int[] al;
 	static void pb(float p, int l) // update progress bar at that line
 	{
+		//Console.WriteLine(p);
+		//Console.WriteLine(l);
 		if (p < 0 || pbl[l] < 0)
 			return;
 		try
 		{
+			short lx, ly;
 			//if (wl)
 			//_l("track "+l.ToString()+": "+(p*100).ToString("0.0"), true);
 			lx = (short)Console.CursorLeft;
@@ -488,21 +488,6 @@ class Program
 			vl("Progress bar fail");
 		}
 	}
-	static void __(string l, int i)
-	{
-		if (l == "") return; // >:(
-		// get audio duration from SoX
-		try {
-			string[] b = l.Split(':');
-			al[i] = (int.Parse(b[0]) * 60 * 60000) +
-				(int.Parse(b[1]) * 60000) +
-				(int)(float.Parse(b[2]) * 1000);
-		}
-		catch {
-			vl("Error getting audio length for stream " + i + ": " + l);
-		}
-	}
-
 	static void ___(object p, DataReceivedEventArgs a)
 	{
 		vl(a.Data);
@@ -522,20 +507,44 @@ class Program
 		n.OutputDataReceived += ___;
 		return n;
 	}
-	public static float alen(string f)
+	public static string soxi(string f, string param)
 	{
 		try {
-			vl("alen args: sox.exe --i -D " + f.Quotes());
-			Process c = cmd(mt + "sox.exe", "--i -D " + f.Quotes());
+			string args = "--i " + param + " " + f.Quotes();
+			vl("soxi args: " + args);
+			Process c = cmd(mt + "sox.exe", args);
 			c.OutputDataReceived -= ___;
 			//c.OutputDataReceived += (p, d) => __(d.Data, i);
 			c.Start();
 			c.BeginErrorReadLine();
-			return Convert.ToSingle(c.StandardOutput.ReadToEnd());
+			return c.StandardOutput.ReadToEnd();
 			//if (!c.HasExited) // uhh
 			//	c.WaitForExit();
+		} catch { return null ; }
+	}
+	public static float alen(string f)
+	{
+		try {
+			return Convert.ToSingle(soxi(f, "-D"));
 		} catch { return -1f; }
 	}
+	public static int ach(string f)
+	{
+		try {
+			return Convert.ToInt32(soxi(f, "-c"));
+		} catch { return 2; }
+	}
+
+	public static void ec(ref Process p, ushort ab, ushort ar, bool ac, bool var)
+	{
+		p.StartInfo.EnvironmentVariables["ab"] = (ab << 1 /*ugh*/).ToString();
+		p.StartInfo.EnvironmentVariables["ar"] = ar.ToString();
+		p.StartInfo.EnvironmentVariables["ac"] = ac ? "2" : "1";
+		p.StartInfo.EnvironmentVariables["bm"] = !var ? "B" : "V";
+		p.StartInfo.EnvironmentVariables["ff"] = ffmpeg;
+	}
+	public static string ffmpeg = "";
+
 	public static string[] vstr;
 
 	public static string version = "1.0-999010889";
@@ -614,7 +623,7 @@ class Program
 			// too many items in [Misc]
 			// hate me
 			// also finally INI CFunc
-			if (cfg("Temp", "MigratedConfig2", 0) == 0)
+			/*if (cfg("Temp", "MigratedConfig2", 0) == 0)
 			{
 				cfgW(l, settings.t.SongCaching.ToString(), cfg(m, settings.t.Windowed.ToString(), 1));
 				cfgW(l, settings.t.PreserveLog.ToString(), cfg(m, settings.t.PreserveLog.ToString(), 0));
@@ -631,7 +640,7 @@ class Program
 				cfgW("GFX", settings.t.Borderless.ToString(), cfg(m, settings.t.Borderless.ToString(), 0));
 				cfgW("GFX", settings.t.Windowed.ToString(), cfg(m, settings.t.Windowed.ToString(), 0));
 				cfgW("Temp", "MigratedConfig2", 1);
-			}
+			}*/
 
 			vl(vstr[0]);// "Initializing..."
 			caching = cfg(l, settings.t.SongCaching.ToString(), 1) == 1;
@@ -708,7 +717,10 @@ class Program
 					FSPcolor = ConsoleColor.Magenta;
 				if (args[0] == "-settings")
 				{
-					builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
+					try
+					{
+						builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
+					} catch { builddate = DateTime.MinValue; }
 					// muh classic theme
 					//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
 					Directory.SetCurrentDirectory(folder);
@@ -1404,13 +1416,29 @@ class Program
 							vl(e);
 						}
 						TimeSpan audioConv_start = time, audioConv_end = time;
-						int AB_param = 64;
+						ushort AB_param = 64, AR_param = 32000;
+						bool stereo = true;
+						bool forcestereoopt = false;
+						bool[] is_stereo = { false, false, false };
 						if (!audCache)
 						{
-							AB_param =
-								(cfg("Audio", "AB", 128) >> 1/*thx helix*/);
+							ffmpeg = where("ffmpeg.exe");
+							AB_param = (ushort)(cfg("Audio", "AB", 128) >> 1/*thx helix*/);
+							AR_param =
+								Math.Max(
+									Math.Min(
+										(ushort)(cfg("Audio", "SampRate", AB_param)),
+										(ushort)48000),
+									(ushort)32000);
+							{
+								int forcech = (cfg("Audio", "ForceChannels", 0));
+								if (forcech > 0)
+									forcestereoopt = true;
+								if (forcestereoopt)
+									stereo = (forcech > 1);
+							}
 							if (AB_param == 0) AB_param = 64; // i hate myself
-							AB_param = Math.Max(AB_param, 48);
+							AB_param = Math.Max(AB_param, (ushort)24); // AB > 48 ? AB : 48
 							bool VBR = false;
 							VBR = (cfg("Audio", "VBR", 0) == 1);
 							string VBR_param = VBR ? "V" : "B";
@@ -1422,14 +1450,15 @@ class Program
 								print(vstr[33], FSBcolor);
 								//print("Found more than three audio tracks, merging.", FSBcolor);
 								addaud = cmd(CMDpath, (mt + "nj3t.bat").Quotes());
-								addaud.StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
-								addaud.StartInfo.EnvironmentVariables["BM"] = VBR_param;
 								float maxl = 0;
 								foreach (string a in nj3ts)
 								{
 									addaud.StartInfo.Arguments += " \"" + a + '"';
 									maxl = Math.Max(maxl, alen(a));
+									if (ach(a) > 1)
+										is_stereo[0] = true;
 								}
+								ec(ref addaud, AB_param, AR_param, is_stereo[0], VBR);
 								al[0] = maxl;
 								addaud.StartInfo.WorkingDirectory = mt;
 								addaud.StartInfo.Arguments = "/c " + addaud.StartInfo.Arguments.Quotes();
@@ -1454,7 +1483,6 @@ class Program
 							{
 								fsbbuild = cmd(CMDpath, null);
 								fsbbuild.StartInfo.WorkingDirectory = mt;
-								v("S", FSBcolor); // lol
 							}
 							else
 							{
@@ -1463,19 +1491,25 @@ class Program
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								for (int i = 0; i < fsbbuild2.Length; i++)
 								{
-									if ((i != 0 && nj3t) || i > 0)
-										al[i] = alen(audiostreams[i]);
-									fsbbuild2[i] = cmd(CMDpath, "/c " + ((mt + "c128ks.bat").Quotes() + " " + audiostreams[i].Quotes() + " \"" + mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").Quotes());
+									string a_s = audiostreams[i];
+									if ((i != 0 && nj3t) || i > 0 || (i == 0 && !nj3t)) // wtf
+									{
+										al[i] = alen(a_s);
+										is_stereo[i] = ach(a_s) > 1;
+									}
+									fsbbuild2[i] = cmd(CMDpath,
+										"/c " + ((mt + "c128ks.bat").Quotes() + " " + a_s.Quotes() +
+											" \"" + mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").Quotes());
 									fsbbuild2[i].StartInfo.WorkingDirectory = mt;
-									fsbbuild2[i].StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
-									fsbbuild2[i].StartInfo.EnvironmentVariables["BM"] = VBR_param;
+									if (forcestereoopt)
+										is_stereo[i] = stereo;
+									ec(ref fsbbuild2[i], AB_param, AR_param, is_stereo[i], VBR);
 									vl("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments, FSBcolor);
 								}
 								fsbbuild3 = cmd(CMDpath, "/c " + ((mt + "fsbbuild.bat").Quotes()));
 								fsbbuild3.StartInfo.WorkingDirectory = mt;
-								v("As", FSBcolor);
 							}
-							v(vstr[35], FSBcolor);
+							vl((MTFSB ? "As" : "S") + vstr[35], FSBcolor);
 							vl(vstr[36], FSBcolor);
 							//v("ynchronous mode set\n", FSBcolor);
 							//vl("Starting FSB building...", FSBcolor);
@@ -1483,12 +1517,14 @@ class Program
 								audioConv_start = time;
 							if (!MTFSB)
 							{
-								fsbbuild.StartInfo.EnvironmentVariables["AB"] = AB_param.ToString();
 								fsbbuild.StartInfo.WorkingDirectory = mt;
-								fsbbuild.StartInfo.EnvironmentVariables["BM"] = VBR_param;
-								fsbbuild.StartInfo.Arguments = "/c " + ((mt + "fsbbuild.bat").Quotes() + ' ' +
-								audiostreams[0].Quotes() + ' ' + audiostreams[1].Quotes() + ' ' + audiostreams[2].Quotes() + ' ' +
-								(mt + "blank.mp3").Quotes() + ' ' + fsb.Quotes()).Quotes();
+								ec(ref fsbbuild, AB_param, AR_param, true, VBR);
+								fsbbuild.StartInfo.Arguments =
+									"/c " + ((mt + "fsbbuild.bat").Quotes() + ' ' +
+									audiostreams[0].Quotes() + ' ' +
+									audiostreams[1].Quotes() + ' ' +
+									audiostreams[2].Quotes() + ' ' +
+									(mt + "blank.mp3").Quotes() + ' ' + fsb.Quotes()).Quotes();
 								vl("MP3 args: c128ks " + fsbbuild.StartInfo.Arguments, FSBcolor);
 								fsbbuild.Start();
 								if (vb || wl)
@@ -1530,14 +1566,17 @@ class Program
 								print(vstr[38]);
 								//print("Failed to copy cached FSB. WHY?!!!");
 								print(e);
+								vl("DO YOU HAVE THE GAME OPEN????");
+								foreach (Process p in Process.GetProcessesByName("fastgh3"))
+								{
+									vl(NP(Application.ExecutablePath) + " == " + NP(p.MainModule.FileName));
+								}
 								//print("Attempting to kill game if \"it is used by another process\" somehow.");
 								//disallowGameStartup();
 								print(vstr[39]);
 								//print("Deleting the currently loaded FSB in case.");
 								File.Delete(fsb);
-								File.Copy(
-									cf + audhash.ToString("X16"),
-									fsb, true);
+								File.Copy(cf + audhash.ToString("X16"), fsb, true);
 							}
 						}
 						#endregion
@@ -2499,7 +2538,7 @@ class Program
 								//verboseline("Setting TS #" + (i).ToString() + " values (2/3) (" + Convert.ToInt32(ts[i].TimeSignature) + ")...", chartConvColor);
 								ts_q[i].Values[1] = Convert.ToInt32(ts[i].TimeSignature);
 								//verboseline("Setting TS #" + (i).ToString() + " values (3/3) (" + 4 + ")...", chartConvColor);
-								ts_q[i].Values[2] = 4; // what this part for
+								ts_q[i].Values[2] = Convert.ToInt32(ts[i].TimeSignature2 == -1 ? 4 : ts[i].TimeSignature2); // what this part for
 								// what does changing # in */# even do in general
 							}
 							//vl("Adding time signature arrays to QB...", chartConvColor);
@@ -2806,6 +2845,7 @@ class Program
 						gh3.StartInfo.WorkingDirectory = folder;
 						gh3.StartInfo.FileName = GH3EXEPath;
 						gh3.Start();
+						unkillgame();
 						if (!audCache)
 						{
 							if (!MTFSB)
@@ -2836,9 +2876,9 @@ class Program
 									Console.WriteLine("Encoding progress:");
 									for (int i = 0; i < 3; i++)
 									{
-										if (audiostreams[i] == mt + "blank.mp3")
+										if (audiostreams[i].ToLower() == (mt + "blank.mp3").ToLower())
 											continue;
-										pbl[i] = (short)Console.CursorTop;
+										pbl[i] = (short)(Console.CursorTop);
 										Console.WriteLine(fsbnames[i].PadRight(6) + ":   0% (" + ")".PadLeft(33)); // leet optimization
 									}
 									if (nj3t)
@@ -2875,12 +2915,12 @@ class Program
 									// this whole part made out of
 									// sox not immediately flushing text
 									// as it's printing it
-									System.Threading.Thread.Sleep(9);
+									System.Threading.Thread.Sleep(50);
 									for (int i = 0; i < 3; i++)
 										if (!locks[i])
 											if (File.Exists(mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3"))
 												pb(new FileInfo(mt + "fsbtmp\\fastgh3_" +
-													fsbnames[i] + ".mp3").Length / 1000 / (al[i] * (AB_param / 4)), i);
+													fsbnames[i] + ".mp3").Length / 1000 / (al[i] * (AB_param >> (is_stereo[i] ? 1 : 2))), i);
 									for (int i = 0; i < fsbbuild2.Length; i++)
 										if (!nj3t || (nj3t && i != 0))
 											if (!locks[i])
@@ -2890,6 +2930,7 @@ class Program
 										if (addaud.HasExited)
 											locks[0] = true;
 								}
+								audioConv_end = time;
 								fsbbuild3.Start();
 								if (vb | wl)
 								{
@@ -2898,7 +2939,6 @@ class Program
 								}
 								if (!fsbbuild3.HasExited)
 									fsbbuild3.WaitForExit();
-								audioConv_end = time;
 								{
 									if (caching)
 									{
@@ -2952,19 +2992,20 @@ class Program
 							// stupid SoX
 							// didn't happen on the previous version from 2010
 							// so WHY DOES IT CREATE THESE
-							foreach (var f in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
+							// happens with the NJ3T encoding
+							string tmpf = Path.GetTempPath() + "Z.FGH3.TMP\\";
+							if (nj3t)
 							{
-								try { f.Delete(); } catch { }
+								foreach (var f in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
+									try { f.Delete(); } catch { }
+								//foreach (var f in new DirectoryInfo(tmpf).EnumerateFiles())
+								//	try { f.Delete(); } catch { }
+								//foreach (var f in new DirectoryInfo(tmpf).EnumerateDirectories())
+								//	try { f.Delete(true); } catch { }
 							}
-							foreach (var f in new DirectoryInfo(Path.GetTempPath()+"Z.FGH3.TMP\\").EnumerateFiles())
-							{
-								try { f.Delete(); } catch { }
-							}
-							foreach (var f in new DirectoryInfo(Path.GetTempPath()+"Z.FGH3.TMP\\").EnumerateDirectories())
-							{
-								try { f.Delete(true); } catch { }
-							}
-							Directory.Delete(Path.GetTempPath()+"Z.FGH3.TMP\\",true);
+							if (NP(Directory.GetCurrentDirectory()) == NP(tmpf))
+								if (Directory.Exists(tmpf))
+									Directory.Delete(tmpf, true);
 						}
 						catch
 						{

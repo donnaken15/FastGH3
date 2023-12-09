@@ -87,7 +87,7 @@ script test_events\{passed_in_value = 'test value'}
 endscript
 
 script xenon_auto_load_progress
-	printf \{"--- xenon_auto_load_progress"}
+	printf \{'--- xenon_auto_load_progress'}
 	if (($ui_flow_manager_state [0])= online_signin_fs)
 		if ($online_signin_autoload_required = 1)
 			Change \{online_signin_autoload_required = 0}
@@ -512,7 +512,7 @@ endscript
 gSavedElementInFocus = 0
 
 script connection_lost_resume_play
-	printf \{"---connection_lost_resume_play"}
+	printf \{'---connection_lost_resume_play'}
 	DestroyScreenElement \{id = connectionLostContainer}
 	RestoreFocus
 	UnPauseGame

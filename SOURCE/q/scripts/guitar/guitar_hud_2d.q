@@ -856,21 +856,21 @@ script hud_lightning_alert
 	if NOT ScreenElementExists id = <alert_id>
 		return
 	endif
-	FormatText checksumName = streak_lightning_01 'HUD_lightning_01_%d' d = <Player>
-	FormatText checksumName = streak_lightning_03 'HUD_lightning_03_%d' d = <Player>
-	FormatText checksumName = streak_lightning_05 'HUD_lightning_05_%d' d = <Player>
-	FormatText checksumName = streak_lightning_07 'HUD_lightning_07_%d' d = <Player>
+	FormatText checksumName = HUD_lightning_01 'HUD_lightning_01_%d' d = <Player>
+	FormatText checksumName = HUD_lightning_03 'HUD_lightning_03_%d' d = <Player>
+	FormatText checksumName = HUD_lightning_05 'HUD_lightning_05_%d' d = <Player>
+	FormatText checksumName = HUD_lightning_07 'HUD_lightning_07_%d' d = <Player>
 	GetScreenElementProps id = <alert_id>
 	lightning_pos = (<Pos> - (0.0, 20.0))
 	lightning_dims = (800.0, 100.0)
 	lightning_time = 0.2
-	if ScreenElementExists id = <streak_lightning_01>
-		DestroyScreenElement id = <streak_lightning_01>
+	if ScreenElementExists id = <HUD_lightning_01>
+		DestroyScreenElement id = <HUD_lightning_01>
 	endif
 	CreateScreenElement {
 		Type = SpriteElement
-		id = <streak_lightning_01>
-		texture = streak_lightning_01
+		id = <HUD_lightning_01>
+		texture = HUD_lightning_01
 		parent = <player_container>
 		Pos = <lightning_pos>
 		dims = <lightning_dims>
@@ -878,13 +878,13 @@ script hud_lightning_alert
 		z_priority = 45
 		alpha = 0
 	}
-	if ScreenElementExists id = <streak_lightning_03>
-		DestroyScreenElement id = <streak_lightning_03>
+	if ScreenElementExists id = <HUD_lightning_03>
+		DestroyScreenElement id = <HUD_lightning_03>
 	endif
 	CreateScreenElement {
 		Type = SpriteElement
-		id = <streak_lightning_03>
-		texture = streak_lightning_03
+		id = <HUD_lightning_03>
+		texture = HUD_lightning_03
 		parent = <player_container>
 		Pos = <lightning_pos>
 		dims = <lightning_dims>
@@ -892,13 +892,13 @@ script hud_lightning_alert
 		z_priority = 45
 		alpha = 0
 	}
-	if ScreenElementExists id = <streak_lightning_05>
-		DestroyScreenElement id = <streak_lightning_05>
+	if ScreenElementExists id = <HUD_lightning_05>
+		DestroyScreenElement id = <HUD_lightning_05>
 	endif
 	CreateScreenElement {
 		Type = SpriteElement
-		id = <streak_lightning_05>
-		texture = streak_lightning_05
+		id = <HUD_lightning_05>
+		texture = HUD_lightning_05
 		parent = <player_container>
 		Pos = <lightning_pos>
 		dims = <lightning_dims>
@@ -906,13 +906,13 @@ script hud_lightning_alert
 		z_priority = 45
 		alpha = 0
 	}
-	if ScreenElementExists id = <streak_lightning_07>
-		DestroyScreenElement id = <streak_lightning_07>
+	if ScreenElementExists id = <HUD_lightning_07>
+		DestroyScreenElement id = <HUD_lightning_07>
 	endif
 	CreateScreenElement {
 		Type = SpriteElement
-		id = <streak_lightning_07>
-		texture = streak_lightning_07
+		id = <HUD_lightning_07>
+		texture = HUD_lightning_07
 		parent = <player_container>
 		Pos = <lightning_pos>
 		dims = <lightning_dims>
@@ -920,46 +920,46 @@ script hud_lightning_alert
 		z_priority = 45
 		alpha = 0
 	}
-	if ScreenElementExists id = <streak_lightning_01>
-		DoScreenElementMorph id = <streak_lightning_01> alpha = 1 time = <lightning_time>
+	if ScreenElementExists id = <HUD_lightning_01>
+		DoScreenElementMorph id = <HUD_lightning_01> alpha = 1 time = <lightning_time>
 		wait <lightning_time> seconds
 	endif
-	if ScreenElementExists id = <streak_lightning_01>
-		DoScreenElementMorph id = <streak_lightning_01> alpha = 0 time = <lightning_time>
-		if ScreenElementExists id = <streak_lightning_03>
-			DoScreenElementMorph id = <streak_lightning_03> alpha = 1 time = <lightning_time>
+	if ScreenElementExists id = <HUD_lightning_01>
+		DoScreenElementMorph id = <HUD_lightning_01> alpha = 0 time = <lightning_time>
+		if ScreenElementExists id = <HUD_lightning_03>
+			DoScreenElementMorph id = <HUD_lightning_03> alpha = 1 time = <lightning_time>
 		endif
 		wait <lightning_time> seconds
 	endif
-	if ScreenElementExists id = <streak_lightning_03>
-		DoScreenElementMorph id = <streak_lightning_03> alpha = 0 time = <lightning_time>
-		if ScreenElementExists id = <streak_lightning_05>
-			DoScreenElementMorph id = <streak_lightning_05> alpha = 1 time = <lightning_time>
+	if ScreenElementExists id = <HUD_lightning_03>
+		DoScreenElementMorph id = <HUD_lightning_03> alpha = 0 time = <lightning_time>
+		if ScreenElementExists id = <HUD_lightning_05>
+			DoScreenElementMorph id = <HUD_lightning_05> alpha = 1 time = <lightning_time>
 		endif
 		wait <lightning_time> seconds
 	endif
-	if ScreenElementExists id = <streak_lightning_05>
-		DoScreenElementMorph id = <streak_lightning_05> alpha = 0 time = <lightning_time>
-		if ScreenElementExists id = <streak_lightning_07>
-			DoScreenElementMorph id = <streak_lightning_07> alpha = 1 time = <lightning_time>
+	if ScreenElementExists id = <HUD_lightning_05>
+		DoScreenElementMorph id = <HUD_lightning_05> alpha = 0 time = <lightning_time>
+		if ScreenElementExists id = <HUD_lightning_07>
+			DoScreenElementMorph id = <HUD_lightning_07> alpha = 1 time = <lightning_time>
 		endif
 		wait <lightning_time> seconds
 	endif
-	if ScreenElementExists id = <streak_lightning_07>
-		DoScreenElementMorph id = <streak_lightning_07> alpha = 0 time = <lightning_time>
+	if ScreenElementExists id = <HUD_lightning_07>
+		DoScreenElementMorph id = <HUD_lightning_07> alpha = 0 time = <lightning_time>
 		wait <lightning_time> seconds
 	endif
-	if ScreenElementExists id = <streak_lightning_01>
-		DestroyScreenElement id = <streak_lightning_01>
+	if ScreenElementExists id = <HUD_lightning_01>
+		DestroyScreenElement id = <HUD_lightning_01>
 	endif
-	if ScreenElementExists id = <streak_lightning_03>
-		DestroyScreenElement id = <streak_lightning_03>
+	if ScreenElementExists id = <HUD_lightning_03>
+		DestroyScreenElement id = <HUD_lightning_03>
 	endif
-	if ScreenElementExists id = <streak_lightning_05>
-		DestroyScreenElement id = <streak_lightning_05>
+	if ScreenElementExists id = <HUD_lightning_05>
+		DestroyScreenElement id = <HUD_lightning_05>
 	endif
-	if ScreenElementExists id = <streak_lightning_07>
-		DestroyScreenElement id = <streak_lightning_07>
+	if ScreenElementExists id = <HUD_lightning_07>
+		DestroyScreenElement id = <HUD_lightning_07>
 	endif
 endscript
 

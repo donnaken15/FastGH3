@@ -9,8 +9,7 @@ button_values = [
 hammer_on_measure_scale = 0
 
 script check_buttons_fast
-	get_song_prefix song = <song_name>
-	FormatText checksumName = guitar_stream '%s_guitar' s = <song_prefix> AddToStringLookup
+	ExtendCrc <song_name> '_guitar' out = guitar_stream
 	GuitarInputLogicInit player_status = <player_status> guitar_stream = <guitar_stream> time_offset = <time_offset>
 	begin
 		if ($ui_flow_manager_state [(<Player> -1)] = online_pause_fs)
@@ -31,7 +30,7 @@ endscript
 
 script check_buttons_bot
 	if NOT ($input_mode = Play)
-		FormatText checksumName = input_array 'input_array%p' p = <player_text>
+		ExtendCrc input_array <player_text> out = input_array
 		song = <input_array>
 		GetStrumPattern song = <song> entry = <array_entry>
 		do_hammer = ($<song> [<array_entry>] [6])

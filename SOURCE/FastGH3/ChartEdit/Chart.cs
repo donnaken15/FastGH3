@@ -398,7 +398,7 @@ namespace ChartEdit
 		private int sRes;
 
 		// Token: 0x0400008E RID: 142
-		private static readonly Regex TrackRegex = new Regex("\\[(?<title>[a-zA-Z]+)\\]\\r?\\n\\{\\r?\\n(\\s(?<entry>.+?)\\r?\\n)+\\}", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
+		private static readonly Regex TrackRegex = new Regex("\\[(?<title>[a-zA-Z]+)\\]\\r?\\n\\{\\r?\\n(\\s+(?<entry>.+?)\\r?\\n)+\\}", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
 
 		// Token: 0x0400008F RID: 143
 		private int tRes;

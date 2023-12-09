@@ -6,4 +6,4 @@ align_to_obj_orient = $WhyAmIBeingCalled
 emitRate_Speed = $WhyAmIBeingCalled
 emitRate_Size_Speed = $WhyAmIBeingCalled
 rotDir_Turn = $WhyAmIBeingCalled
-starPower_Butterflies = $WhyAmIBeingCalled*/
+starPower_Butterflies = $WhyAmIBeingCalled*///
