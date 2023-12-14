@@ -1,34 +1,57 @@
 #!/bin/zsh
 
-y=$(tput setaf 11)
-w=$(tput setaf 15)
-rc=$(tput sgr0)
-echo "${y}(not as fake) qcomp${rc}"
+#echo "${y}(not as fake) qcomp${rc}"
 # no args
-[ $# -eq 0 ] && { echo "usage: qcomp [folder] [output]"; exit 1; }
+[ $# -eq 0 ] && { echo "usage: qcomp [scripts folder] [output folder]"; exit 1; }
 # non existent input dir arg
 [ ! -d "$1" ] && { echo "invalid path"; exit 1; }
-indir=$1; find=/usr/bin/find
+indir="$1"; NL=$'\n'; nul=/dev/null
+find=/usr/bin/find
 # >:(
-
+r="[91m"
+y="[93m"
+w="[97m"
+rc="[0m"
 # check for manually specified output
 outdir="${2:-$1_build}/"
 [ ! "$(dirname "$0")" = "." ] && bin="$(realpath "$0")/" || bin="$(which "$0")/"
-								#???						# required when script is pathed
-#thx luke / https://stackoverflow.com/a/21913843
+								# ???						# required when script is pathed
+# thx luke / https://stackoverflow.com/a/21913843
+bin=$(dirname "$bin"); wbin=$(cygpath -w "$bin" 2>$nul || wslpath -m "$bin")
 
-bin=$(dirname "$bin"); wbin=$(cygpath -w "$bin"); NL=$'\n'; nul=/dev/null
 echo "${y}*****  Q COMPILATION   *****${rc}"
 
+# for whatever reason
+node="node.exe"
+# from WSL to node, an error comes up about failing to open stderr
+#which bun && { node="$(command -v bun)" && wbin="$bin"; } || node="node.exe"
+# screwing with cygwin though
+
+# TODO soon: run QBC on each individual directory instead of every file one by one
+
+got_error=0
+no_update=1
 (cd "$indir" && $find * -type f -name "*.q" 2>$nul) | while read -r f; do
 	out="$outdir${f%%.*}.qb.xen"
 	# (re)compile files after being modified / or if they're new
-	if [ ! -f "$out" ] || [ "$out" -ot "$indir/$f" ]; then
+	[ ! -f "$out" -o "$out" -ot "$indir/$f" ] && {
+		[ $no_update -eq 1 ] && {
+			no_update=0
+			rm qcomp.log qcomp.log.xz 2>$nul
+		}
 		mkdir -p "${outdir}$(dirname $f)"
 		echo "${w}Compiling $f...${rc}"
-		node "$wbin/QBC/QBC.js" c -g gh3 "$indir/$f" -o "$out"
-	fi
+		# dash doesn't capture newlines in variables, somehow pipe errors to sed while getting the error code
+		log=$("${node}" "$wbin/QBC/QBC.js" c -g gh3 "$indir/$f" -v -o "$out" 2>&1 >$nul) || {
+			echo "${r}Error compiling ${f}. Last lines:${rc}"
+			echo $log > test2.txt
+			echo "${r}$(echo $log | tail -20)${rc}"
+		}
+		echo $log>>qcomp.log
+	}
 done
+
+[ -e qcomp.log ] && xz -9 -e -T 0 qcomp.log 2>$nul >$nul &
 
 echo done...
 

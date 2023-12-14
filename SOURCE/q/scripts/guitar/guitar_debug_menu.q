@@ -20,12 +20,15 @@ script create_debugging_menu
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu id = toggle_playermode_menuitem text = 'Play Song: 1p_quickplay' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left toggle_playermode_left}{pad_right toggle_playermode_right}{pad_choose select_playermode}]}
 	toggle_playermode_setprop
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Settings' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_settings_menu}]}
-	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Character Select" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_character_viewer_menu}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Skip Into Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipintosong_menu}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Screenshot" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose screen_shot}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Save Replay Buffer" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Load Replay" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
-	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Play Credits" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
+	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Zones" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose RefreshCurrentZones}]}
+	if ($fastgh3_branch = unpak)
+		CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Images (unstable)" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose reload_images}]}
+		CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Sounds" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose reload_sounds}]}
+	endif
 	LaunchEvent \{Type = focus target = debug_vmenu}
 endscript
 
@@ -58,63 +61,6 @@ endscript
 script destroy_all_debug_menus
 	kill_debug_menus
 	destroy_debugging_menu
-endscript
-
-script pad \{#"0x00000000" = 0 count = 2 pad = '0'}
-	formattext textname=text '%d' d=<#"0x00000000">
-	if (<count> > 0)
-		digits = 1
-		begin
-			if (<#"0x00000000"> < 10)
-				break
-			endif
-			#"0x00000000" = (<#"0x00000000"> / 10)
-			Increment \{digits}
-		repeat <count>
-		// i think i had this better optimized in my mind but im half asleep
-		if (<count> > <digits>)
-			begin
-				formattext textname = text '%p%d' p = <pad> d = <text>
-			repeat (<count> - <digits>)
-		endif
-	endif
-	return pad = <text>
-endscript
-/*script pad_2 \{#"0x00000000" = 0 pad = '0'}
-	if (<#"0x00000000"> >= 10)
-		pad = ''
-	endif
-	formattext textname = text '%p%d' p = <pad> d = <#"0x00000000">
-	return pad = <text>
-endscript*///
-script timestamp
-	GetLocalSystemTime
-	AddParams <localsystemtime>
-	pad (<month>+1) // why is it one less
-	month = <pad>
-	pad <dayofmonth>
-	dayofmonth = <pad>
-	pad <hour>
-	hour = <pad>
-	pad <minute>
-	minute = <pad>
-	pad <second>
-	second = <pad>
-	FormatText { textname = timestamp "%y-%m-%d_%h-%n-%s"
-		y = <year> m = <month> d = <dayofmonth> h = <hour> n = <minute> s = <second> }
-	return timestamp = <timestamp>
-endscript
-
-script screen_shot
-	get_song_title \{song = $current_song}
-	get_song_artist \{song = $current_song with_year = 0}
-	timestamp
-	formattext textname = filename 'scrsh_%a_-_%t_%n' a = <song_artist> t = <song_title> n = <timestamp>
-	if ScreenShot FileName = <FileName>
-		printf '%f saved' f = <filename>
-	else
-		printf \{'Failed to save screenshot'}
-	endif
 endscript
 
 script back_to_online_menu
@@ -308,6 +254,8 @@ script create_settings_menu
 	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_visibility_menuitem text = "Toggle visibility" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_togglevisibility_menu}]}
 	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = select_slomo_menuitem text = "Select Slomo : 1.0" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_slomo}]}
 	select_slomo_setprop
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_gemtext_menuitem text = "Gem Debug Text" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_gemtext}]}
+	toggle_gemtext_setprop
 	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showmeasures_menuitem text = "Show Measures" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showmeasures}]}
 	//toggle_showmeasures_setprop
 	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showcameraname_menuitem text = "Show Camera Name" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showcameraname}]}
@@ -330,6 +278,23 @@ script create_settings_menu
 	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_forcescore_menuitem text = "Force Score" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_forcescore}]}
 	toggle_forcescore_setprop
 	LaunchEvent \{Type = focus target = settings_vmenu}
+endscript
+
+script toggle_gemtext
+	ui_menu_select_sfx
+	kill_debug_elements
+	Change gem_debug_text = (1 - $gem_debug_text)
+	toggle_gemtext_setprop
+endscript
+
+script toggle_gemtext_setprop
+	if ($gem_debug_text = 0)
+		text = "off"
+	else
+		text = "on"
+	endif
+	FormatText textname = text "Gem Debug Text : %s" s = <text>
+	toggle_gemtext_menuitem ::SetProps text = <text>
 endscript
 
 script back_to_settings_menu
@@ -491,6 +456,7 @@ script update_slomo
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player>
 		// this is probably meant to tighten it as if it were still 100% but it doesn't take effect until restart
+		// because at that point, it's loaded into static memory
 		Change StructureName = <player_status> check_time_early = ($check_time_early * $current_speedfactor)
 		Change StructureName = <player_status> check_time_late = ($check_time_late * $current_speedfactor)
 		Player = (<Player> + 1)
@@ -501,7 +467,7 @@ script select_slomo_setprop
 	FormatText \{textname = slomo_text "Select Slomo : %s" s = $current_speedfactor}
 	select_slomo_menuitem ::SetProps text = <slomo_text>
 endscript
-debug_showmeasures = OFF
+debug_showmeasures = ON
 
 script toggle_inputlog
 	ui_menu_select_sfx

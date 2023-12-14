@@ -314,26 +314,96 @@ script Ternary \{out = ternary}
 	endif
 endscript
 
+script create_debug_gem
+	Create2DGem {
+		color = <color>
+		marker = <marker>
+		time = <time>
+		song = <song>
+		entry = <entry>
+		gem_count = <gem_count>
+		player = <player>
+		player_text = <player_text>
+		player_status = <player_status>
+	}
+	if ($gem_debug_text = 0)
+		return
+	endif
+	input = ($<song>[<entry>])
+	// useful maybe (probably input_arrayp1):
+	// 0: time
+	// 1-5: G/R/Y/B/O lengths
+	// 6: hammer/tap flags
+	// 7: (input) time end??
+	FormatText textname = gem_text '%g_%e_gem_p%p' e = <entry> g = ($gem_colors_text[<gem_count>]) p = <player>
+	FormatText checksumname = gem '%g' g = <gem_text>
+	pad (<input>[(<gem_count>+1)]) count = 5 pad = ' '
+	//FormatText textname = gem_text '%l' l = (<input>[(<gem_count>+1)])
+	flag = ''
+	switch (<input>[6])
+		case 1
+			flag = ' H'
+		case 2
+			flag = ' T'
+	endswitch
+	FormatText textname = gem_text '%l%f' l = <pad> f = <flag>
+	//ExtendCrc <gem> '_text' out = gem_debug_id
+	if ScreenElementExists id = <gem>
+		CreateScreenElement {
+			id = <gem_debug_id> parent = <gem>
+			type = textblockelement text = <gem_text>
+			just = [left bottom] pos = (-32.0, 0.0)
+			internal_just = [left bottom]
+			dims = (160.0, 64.0)
+			font = text_a1 scale = 1.2 }
+		//SetScreenElementProps id = <gem> material = sys_Gem2D_Red_sys_Gem2D_Red
+	endif
+endscript
+
+fakearray = [
+	[ 0 100 100 0 0 0 1 0 ]
+]
+
+script debugNoteCRC \{name = 'gem' color = 'green' array_entry = 0 player = 1}
+	formattext checksumName = debug_id '%c_%e_%t_p%p' c = <color> e = <array_entry> t = <name> p = <player>
+	//printf '%c_%e_%t_p%p' c = <color> e = <array_entry> t = <name> p = <player>
+	return debug_id = <debug_id>
+endscript
 
 script fakenote \{#"0x00000000" = 0 player = 1}
 	Ternary (<player> = 2) a = player2_status b = player1_status out = player_status
 	player = ($<player_status>.player)
-	player_text = ($<player_status>.player_text)
-	player_status = ($<player_status>.player_status)
+	player_text = ($<player_status>.text)
 	ExtendCrc input_array <player_text> out = input_array
 	GetSongTimeMs
 	MathFloor <time>
+	//debugNoteCRC name = ($gem_colors_text[<#"0x00000000">]) array_entry = 0 color = 'gem' player = <player>
+	//gem = <debug_id>
+	FormatText textname = gem_text '%g_%e_%t_p%p' g = ($gem_colors_text[<#"0x00000000">]) e = 0 t = 'gem' p = <player>
+	FormatText checksumname = gem '%g' g = <gem_text>
 	Create2DGem {
 		color = mine
 		marker = 0
 		time = 0
-		song = <input_array>
+		song = fakearray
 		entry = 0
 		gem_count = <#"0x00000000">
 		player = <player>
 		player_text = <player_text>
 		player_status = <player_status>
 	}
+	if ScreenElementExists id = <gem>
+		CreateScreenElement {
+			id = testgem parent = <gem>
+			type = textelement text = 'test'
+			just = [left bottom] pos = (0.0, 0.0)
+			font = text_a4 scale = 1.0 }
+		SetScreenElementProps id = <gem> material = sys_Gem2D_Red_sys_Gem2D_Red
+		killtime = ($<player_status>.scroll_time) // is this correct?
+		Wait <killtime> seconds
+		printf '%d' d = <killtime>
+		DestroyGem name = <gem>
+	endif
 endscript
 
 // notes disappear when speed is backwards
@@ -372,15 +442,12 @@ endscript
 	//WinPortSongHighwaySync \{sync = 1}
 endscript/**///
 
-/*///
 script ProfilingStart
-	//return
 	AddParams \{time = 0.0} // fallback if ProfileTime is not patched by FastGH3 plugin
 	ProfileTime
 	return ____profiling_checkpoint_1 = <time>
 endscript
 script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____profiling_interval = 60 }
-	//return
 	AddParams \{time = 0.0}
 	ProfileTime
 	<____profiling_time> = ((<time> - <____profiling_checkpoint_1>) * 0.0001)
@@ -394,8 +461,5 @@ script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
 	endif
 	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
-endscript/**///
-
-//ProfilingStart = $EmptyScript
-//ProfilingEnd = $EmptyScript
+endscript
 

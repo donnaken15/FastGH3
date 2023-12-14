@@ -113,6 +113,7 @@ script pause_flow_from_mode // stupid
 		case p2_career
 			return \{flow_state = coop_career_pause_fs}
 		case p2_faceoff
+		case p2_pro_faceoff
 			return \{flow_state = mp_faceoff_pause_fs}
 		case training
 			return \{flow_state = practice_pause_fs}
@@ -134,7 +135,7 @@ script stop_detecting_buttons
 	SoundEvent \{event=ui_select_sfx}
 endscript
 script controller_texture
-	texture = missing_sprite
+	texture = sprite_missing
 	if IsWinPort
 		if WinPortSioIsKeyboard deviceNum = <#"0x00000000">
 			texture = controller_2p_keyboard
@@ -337,6 +338,28 @@ script create_version_text
 		Scale = 0.7
 		z = <z>
 	}
+	branch_text = ''
+	switch ($fastgh3_branch)
+		case main
+			branch_text = 'main'
+		case unpak
+			branch_text = 'unpak'
+		case wii
+			branch_text = 'wii'
+		case online
+			branch_text = 'online'
+	endswitch
+	CreateScreenElement {
+		Type = TextElement
+		parent = pause_menu_frame_container
+		text = <branch_text>
+		font = text_a4
+		just = [right bottom]
+		Pos = (600,710)
+		rgba = [ 127 255 255 191 ]
+		Scale = 0.7
+		z = <z>
+	}
 	pad ($build_timestamp[0])
 	d = <pad>
 	pad ($build_timestamp[1])
@@ -349,7 +372,7 @@ script create_version_text
 			text = <vertext2>
 			font = text_a4
 			just = [right bottom]
-			Pos = (1000,710)
+			Pos = (985,710)
 			rgba = [ 255 0 0 191 ]
 			Scale = 0.7
 			z = <z>
@@ -670,6 +693,163 @@ endscript
 
 script set_unfocus_color\{rgba = $menu_unfocus_color}
 	Change menu_unfocus_color = <rgba>
+endscript
+
+script decompress_extras
+	change mode_buttons = [
+		{ range = 5 param = mode texts = mode_text id = select_gamemode }
+		{ range = 1 param = players texts = playercount_text id = select_playercount
+			cont = {
+				pos_off = (10,0) just = [center top]
+			}
+		}
+		{ text = 'Bind' id = select_players button }
+		{ range = 3 param = diff
+			texts = diff_text id = select_diff
+			cont = {
+				pos_off = (60,0) just = [center top]
+			}
+		}
+		{ range = 3 param = diff2
+			texts = diff_text id = select_diff2
+			cont = {
+				pos_off = (200,-50) just = [center top]
+			}
+		}
+		{ range = 1 param = part
+			texts = part_text id = select_part
+			cont = {
+				pos_off = ( 60,-50) just = [center top]
+			}
+		}
+		{ range = 1 param = part2
+			texts = part_text id = select_part2
+			cont = {
+				pos_off = (200,-100) just = [center top]
+			}
+		}
+		{ range = 1 param = bot
+			texts = toggle_text id = select_bot
+			cont = {
+				pos_off = ( 60,-100) just = [center top]
+			}
+		}
+		{ range = 1 param = bot2
+			texts = toggle_text id = select_bot2
+			cont = {
+				pos_off = (200,-150) just = [center top]
+			}
+		}
+		{ text = 'Save Settings' id = select_save button
+			cont = {
+				pos_off = (0,-150) just = [left top]
+			}
+		}
+		{ text = 'Start!' id = select_start button
+			cont = {
+				pos_off = (0,-150) just = [left top]
+			}
+		}
+	]
+	
+	change extras_menu = [
+		// guide
+		// (NO NAME) = variable to set
+		// name = display name
+		// type = type of item (bool, int, etc)
+		// min = minimum value allowed (int)
+		// max = maximum value allowed (int)
+		// sect = INI section (default: Misc)
+		// key = INI key
+		// restart = (1) requires restarting the song (2) requires restarting game?
+		{
+			Cheat_Hyperspeed
+			name='Hyperspeed'
+			sect='Player'
+			type=int min=-13 max=10
+			restart=1
+		}
+		{
+			fps_max
+			name='Frame Rate'
+			sect='GFX' key='MaxFPS'
+			type=int min=0 max=1000 step=5
+		}
+		{
+			disable_particles
+			name='Particles'
+			sect='GFX' key='NoParticles'
+			type=int min=0 max=2
+		}
+		{
+			hudless
+			name='No HUD'
+			type=bool sect='GFX' key='NoHUD'
+			restart=1
+		}
+		{
+			disable_intro
+			name='No Intro'
+			type=bool sect='GFX' key='NoIntro'
+			restart=1
+		}
+		{
+			disable_shake
+			name='No Highway Shake'
+			type=bool sect='GFX' key='NoShake'
+		}
+		{
+			exit_on_song_end
+			name='Exit on Song End'
+			type=bool sect='Player' key='ExitOnSongEnd'
+		}
+		{
+			kill_gems_on_hit
+			name='Hide Gems Upon Hit'
+			type=bool sect='GFX' key='KillGemsHit'
+		}
+		{
+			enable_button_cheats
+			name='Debug Menu'
+			type=bool key='Debug'
+		}
+		{
+			Cheat_NoFail
+			name='No Fail'
+			type=bool sect='Player' key='NoFail'
+		}
+		{
+			Cheat_EasyExpert
+			name='Easy Expert'
+			type=bool sect='Player' key='EasyExpert'
+			restart=1
+		}
+		{
+			Cheat_PrecisionMode
+			name='Precision'
+			type=bool sect='Player' key='Precision'
+			restart=1
+		}
+		{
+			FC_MODE
+			name='FC Mode'
+			type=bool sect='Player' key='FCMode'
+			restart=1
+		}
+		{
+			gem_scalar
+			name='Gem Scale'
+			sect='GFX' key='GemScale'
+			type=int min=0.0 max=100.0 step=0.05
+			restart=1
+		}
+		{
+			current_speedfactor
+			name='Speed Factor'
+			sect='Player' key='Speed'
+			type=int min=0.05 max=100.0 step=0.05
+		}
+	]
 endscript
 
 particle_modes=['All' 'Minimal' 'Disabled']

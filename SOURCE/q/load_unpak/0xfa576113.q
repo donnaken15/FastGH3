@@ -1,6 +1,9 @@
 player1_status = {}
 player2_status = {}
 
+qdir = []
+
+// todo: recursive wildcard?
 script init
 	printf \{'Q Unpack'}
 	printf \{'Loading scripts...'}
@@ -38,6 +41,9 @@ script init
 		'engine/viewports'
 		'engine/viewport_params'
 		'fastgh3/hacking'
+		'fastgh3/console'
+		'fastgh3/convars'
+		'fastgh3/eval'
 		'fx/env_fx'
 		'fx/lightshow'
 		'fx/misc_fx'
@@ -210,6 +216,7 @@ script init
 		'guitar/store_data'
 		'misclightutils'
 	]
+	change qdir = <qdir>
 	GetArraySize \{qdir}
 	i = 0
 	begin

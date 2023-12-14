@@ -180,6 +180,8 @@ script create_gem
 	printstruct <...>
 endscript
 
+gem_debug_text = 0
+
 script gem_scroller\{Player = 1 training_mode = 0}
 	setup_gemarrays song_name = <song_name> difficulty = <difficulty> player_status = <player_status>
 	calc_health_invincible_time song = <song_name> player_status = <player_status>
@@ -253,16 +255,20 @@ script gem_scroller\{Player = 1 training_mode = 0}
 			endif
 		endif
 	endif
+	out_of_bounds = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)
+	out_of_bounds_1s = (<out_of_bounds> - 1000.0)
+	early_time = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)
+	scroll_time = ($<player_status>.scroll_time * 1000.0)
 	//FormatText checksumName = input_array 'input_array%p' p = <player_text>
 	SpawnScriptLater gem_iterator params = {iterator_text = 'fill_array' song_name = <song_name> difficulty = <difficulty> part = <part> input_array = <input_array>
-		time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)strum_function = fill_input_array skipleadin = ($<player_status>.scroll_time * 1000.0)
+		time_offset = <out_of_bounds> strum_function = fill_input_array skipleadin = <scroll_time>
 		Player = <Player> player_status = <player_status> player_text = <player_text>}
 	if ($game_mode = p2_faceoff)
 		SpawnScriptLater faceoff_init params = {song_name = <song_name> difficulty = <difficulty> part = <part>
-			time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)skipleadin = ($<player_status>.scroll_time * 1000.0)
+			time_offset = <out_of_bounds> skipleadin = <scroll_time>
 			Player = <Player> player_status = <player_status> player_text = <player_text>}
 		SpawnScriptLater faceoff_volumes_init params = {song_name = <song_name> difficulty = <difficulty> part = <part>
-			time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)skipleadin = ($<player_status>.scroll_time * 1000.0)
+			time_offset = <early_time> skipleadin = <scroll_time>
 			Player = <Player> player_status = <player_status> player_text = <player_text>}
 	endif
 	<do_bot> = 0
@@ -271,10 +277,10 @@ script gem_scroller\{Player = 1 training_mode = 0}
 			ExtendCrc bossresponse_array <player_text> out = bossresponse_array
 			InputArrayCreate name = <bossresponse_array>
 			SpawnScriptLater gem_iterator params = {iterator_text = 'fill_bossarray' song_name = <song_name> difficulty = <difficulty> part = <part> input_array = <bossresponse_array>
-				time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)strum_function = fill_input_array skipleadin = ($<player_status>.scroll_time * 1000.0)
+				time_offset = <out_of_bounds> strum_function = fill_input_array skipleadin = <scroll_time>
 				Player = <Player> player_status = <player_status> player_text = <player_text>}
 			SpawnScriptLater gem_iterator params = {iterator_text = 'boss' song_name = <song_name> difficulty = <difficulty> part = <part> use_input_array = 'bossresponse_array'
-				time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)strum_function = check_buttons_boss skipleadin = ($<player_status>.scroll_time * 1000.0)
+				time_offset = <early_time> strum_function = check_buttons_boss skipleadin = <scroll_time>
 				Player = <Player> player_status = <player_status> player_text = <player_text>}
 		elseif ($<player_status>.bot_play = 1)
 			<do_bot> = 1
@@ -284,7 +290,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	endif
 	if (<do_bot> = 1)
 		SpawnScriptLater gem_iterator params = {iterator_text = 'bot' song_name = <song_name> difficulty = <difficulty> part = <part> use_input_array = 'input_array' one_event_per_frame
-			time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)strum_function = check_buttons_bot skipleadin = ($<player_status>.scroll_time * 1000.0)
+			time_offset = <early_time> strum_function = check_buttons_bot skipleadin = <scroll_time>
 			Player = <Player> player_status = <player_status> player_text = <player_text>}
 		printf \{channel = log 'Spawned bot!'}
 	endif
@@ -293,32 +299,37 @@ script gem_scroller\{Player = 1 training_mode = 0}
 			ExtendCrc bossresponse_array <player_text> out = bossresponse_array
 			InputArrayCreate name = <bossresponse_array>
 			SpawnScriptLater gem_iterator params = {iterator_text = 'fill_bossarray' song_name = <song_name> difficulty = <difficulty> part = <part> input_array = <bossresponse_array>
-				time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)strum_function = fill_input_array skipleadin = ($<player_status>.scroll_time * 1000.0)
+				time_offset = <out_of_bounds> strum_function = fill_input_array skipleadin = <scroll_time>
 				Player = <Player> player_status = <player_status> player_text = <player_text>}
 			SpawnScriptLater gem_iterator params = {iterator_text = 'boss' song_name = <song_name> difficulty = <difficulty> part = <part> use_input_array = 'bossresponse_array'
-				time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)strum_function = check_buttons_boss skipleadin = ($<player_status>.scroll_time * 1000.0)
+				time_offset = <early_time> strum_function = check_buttons_boss skipleadin = <scroll_time>
 				Player = <Player> player_status = <player_status> player_text = <player_text>}
 		endif
 	endif
 	SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty> thin_fretbars
-		time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset>)fretbar_function = create_fretbar skipleadin = ($<player_status>.scroll_time * 1000.0)
+		time_offset = <out_of_bounds_1s> fretbar_function = create_fretbar skipleadin = <scroll_time>
 		Player = <Player> player_status = <player_status> player_text = <player_text>}
+	//if ($gem_debug_text = 1)
+		func = create_debug_gem
+	//else
+	//	func = create_gem
+	//endif
 	SpawnScriptLater gem_iterator params = {iterator_text = 'create_gem' song_name = <song_name> difficulty = <difficulty> part = <part> use_input_array = 'input_array'
-		time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset>)gem_function = create_gem skipleadin = ($<player_status>.scroll_time * 1000.0)
+		time_offset = <out_of_bounds_1s> gem_function = <func> skipleadin = <scroll_time>
 		Player = <Player> player_status = <player_status> player_text = <player_text>}
 	if ((<player_status>.is_local_client)|| ($new_net_logic))
 		SpawnScriptLater check_buttons_fast params = {song_name = <song_name> difficulty = <difficulty>
-			time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)Player = <Player>
+			time_offset = <early_time> Player = <Player>
 			player_status = <player_status> player_text = <player_text>}
 	else
 		SpawnScriptLater net_check_buttons params = {song_name = <song_name> player_status = <player_status>
 			time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)}
 	endif
 	SpawnScriptLater fretbar_update_tempo params = {song_name = <song_name> difficulty = <difficulty>
-		time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <gem_offset>)Player = <Player> skipleadin = ($<player_status>.scroll_time * 1000.0)
+		time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <gem_offset>)Player = <Player> skipleadin = <scroll_time>
 		player_status = <player_status> player_text = <player_text>}
 	SpawnScriptLater fretbar_update_hammer_on_tolerance params = {song_name = <song_name> difficulty = <difficulty>
-		time_offset = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)Player = <Player> skipleadin = ($<player_status>.scroll_time * 1000.0)
+		time_offset = <out_of_bounds> Player = <Player> skipleadin = <scroll_time>
 		player_status = <player_status> player_text = <player_text>}
 	if (<Player> = 1)
 		if ($is_network_game)
@@ -634,9 +645,6 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		practicemode_init
 	endif
 	preload_song song_name = <song_name> startTime = <song_start_time>
-	if IsTrue \{$enable_video}
-		preload_bgbink
-	endif
 	calc_score = true
 	if NOT (<devil_finish_restart> = 1 || $end_credits = 1)
 		if ($use_last_player_scores = 0)
@@ -664,6 +672,9 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		if (<Player> = 1)
 			Change StructureName = <player_status> lefthanded_gems = ($p1_lefty)
 			Change StructureName = <player_status> lefthanded_button_ups = ($p1_lefty)
+			//SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty>
+			//	time_offset = <gem_offset> fretbar_function = mbt_test skipleadin = 0
+			//	Player = <Player> player_status = <player_status> player_text = <player_text>}
 		else
 			if ($is_network_game = 0)
 				Change StructureName = <player_status> lefthanded_gems = ($p2_lefty)
@@ -805,6 +816,7 @@ endscript
 
 script kill_gem_scroller\{no_render = 0}
 	ProfilingStart
+	stop_bgbink
 	mark_unsafe_for_shutdown
 	printf \{'kill_gem_scroller - Start'}
 	//if NOT GotParam \{restarting}
@@ -1299,6 +1311,10 @@ script kill_object_later
 			if ($anytime_sustain_activation = 0)
 				SetScreenElementProps id = <gem_id> alpha = 0
 			else
+				/*if ($gem_debug_text = 1)
+					ExtendCrc <gem_id> '_text' out = gem_text
+					DestroyScreenElement id = <gem_text>
+				endif*///
 				DestroyGem name = <gem_id>
 				return
 			endif

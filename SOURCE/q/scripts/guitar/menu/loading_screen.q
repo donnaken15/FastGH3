@@ -1,7 +1,7 @@
 loading_screen_tips = []
 g_loading_screen_split_container_id = id
 
-script create_loading_strings
+script decompress_loading
 	change loading_screen_tips = [
 		'Loading...' 'LOADING' 'LOADING THE LOADING' '<placeholder message>'
 		'FPS: 999999999999' 'Made by donnaken15' 'Nnnn gdgdga, KHH!'

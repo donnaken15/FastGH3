@@ -2,6 +2,12 @@
 script EmptyScript
 endscript
 
+script nullscript
+endscript
+
+script empty_script
+endscript
+
 script WhyAmIBeingCalled
 	printstruct <...>
 	printf 'MY PRESENCE IS RUINING THIS GAME'

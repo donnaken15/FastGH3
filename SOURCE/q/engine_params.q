@@ -88,3 +88,21 @@ memory_startup_params = [
         ]
     }
 ]
+
+script screen_setup_standard
+	SetScreen \{Aspect = 1.3333334 angle = camera_fov letterbox = 0}
+	Change \{current_screen_mode = standard_screen_mode}
+	printf \{'change to standard'}
+endscript
+
+script screen_setup_widescreen
+	SetScreen \{Aspect = 1.7777778 angle = $widescreen_camera_fov letterbox = 0}
+	Change \{current_screen_mode = widescreen_screen_mode}
+	printf \{'change to widescreen'}
+endscript
+
+script screen_setup_letterbox
+	SetScreen \{Aspect = 1.7777778 angle = $widescreen_camera_fov letterbox = 1}
+	Change \{current_screen_mode = letterbox_screen_mode}
+	printf \{'change to letterbox'}
+endscript

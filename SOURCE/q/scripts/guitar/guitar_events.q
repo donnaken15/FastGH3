@@ -88,10 +88,6 @@ script create_guitar_events
 		SetEventHandler response = call_script event = <event> Scr = event_spawner params = {event_spawned = <array_entry>}
 		array_entry = (<array_entry> + 1)
 	repeat <array_Size>
-	if IsWinPort
-		WinPortGetConfigNumber \{name = "Sound.ClapDelay" defaultValue = 0}
-		Change winport_clap_delay = <value>
-	endif
 	Block
 endscript
 
@@ -469,6 +465,7 @@ script set_sidebar_flash
 	if ($Cheat_PerformanceMode = 1)
 		return
 	endif
+	// optimize????????
 	ExtendCrc sidebar_left ($<player_status>.text) out = left
 	ExtendCrc sidebar_right ($<player_status>.text) out = right
 	if ($<player_status>.star_power_used = 1)
@@ -752,15 +749,15 @@ script GuitarEvent_SongWon\{battle_win = 0}
 				FormatText textname = text 'Base score: %b' b = ($<player_status>.base_score)
 				TextOutput text = <text>
 				if (($<player_status>.base_score) = 0)
-					FormatText \{textname = text 'Score Scale: n/a'}
+					FormatText \{textname = text "Score Scale: n/a"}
 				else
-					FormatText textname = text 'Score Scale: %s' s = (($<player_status>.score) / ($<player_status>.base_score))
+					FormatText textname = text "Score Scale: %s" s = (($<player_status>.score) / ($<player_status>.base_score))
 				endif
 				TextOutput text = <text>
 				if (($<player_status>.total_notes) = 0)
-					FormatText \{textname = text 'Notes Hit Percentage: n/a'} // lol
+					FormatText \{textname = text "Notes Hit Percentage: n/a"} // lol
 				else
-					FormatText textname = text 'Notes Hit Percentage: %s' s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
+					FormatText textname = text "Notes Hit Percentage: %s" s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
 				endif
 				/*GetArraySize \{$fastgh3_markers}
 				if (<array_size> > 0)

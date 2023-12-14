@@ -1,0 +1,1 @@
+@if exist qcomp.log.xz ( @xz -d -k -c -T 0 qcomp.log.xz | nl | less -R ) else ( @echo Log does not exist & pause )

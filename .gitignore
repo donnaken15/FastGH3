@@ -76,17 +76,14 @@ DATA/ZONES/__themes/*/
 /DATA/ZONES/__themes/*.zip
 /DATA/MODS
 SOURCE/q/test
+!__config.ini
 
 # if i add items to this list that were already committed before, will it remove it from the repo?
 stats_*.txt
 /DATA/HIGHWAYS
 /DATA/ZONES/__themes/*
 SOURCE/.editorconfig
-
-# if i add items to this list that were already committed before, will it remove it from the repo?
 PLUGINS/Logger.dll
-
-# i put this and its showing these as untracked still
 /DATA/MOVIES/BIK/backgrnd_video.bik.xen
 /DATA/MUSIC/fastgh3.fsb.xen
 /DATA/PAK/player.pak.xen

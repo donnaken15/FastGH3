@@ -81,11 +81,11 @@ script ui_flow_manager_respond_to_action\{device_num = 0 Player = 1 create_param
 						<flow_state_func> <flow_state_func_params>
 						Change \{transitions_locked = 0}
 						if NOT GotParam \{flow_state}
-							ScriptAssert \{"flow_state_func did not return flow_state"}
+							ScriptAssert \{'flow_state_func did not return flow_state'}
 						endif
 						<new_state_name> = <flow_state>
 					else
-						ScriptAssert \{"Action does not define flow_state, use_last_flow_state, or flow_state_func"}
+						ScriptAssert \{'Action does not define flow_state, use_last_flow_state, or flow_state_func'}
 					endif
 				endif
 				break

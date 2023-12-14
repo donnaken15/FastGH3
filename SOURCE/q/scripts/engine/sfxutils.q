@@ -1,14 +1,4 @@
 
-script flashsounds
-	EnableRemoveSoundEntry \{enable}
-	stars
-	printf \{'Flashing global_sfx pak'}
-	UnLoadPak \{'zones/global/global_sfx.pak' Heap = heap_audio localized}
-	WaitUnloadPak \{'zones/global/global_sfx.pak'}
-	LoadPak \{'zones/global/global_sfx.pak' no_vram Heap = heap_audio localized}
-	stars
-	printf \{'Sfx Pak flashing done.'}
-endscript
 SfxPreviewEventTree_FAM = {
 	Type = FAM
 	[

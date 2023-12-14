@@ -1,0 +1,2 @@
+default PAK contains fallback textures/images that standard GH3 zones do not have and are specific to this mod
+this is done for compatibility of old zones, that is until the game crashes if it doesn't have necessary textures/materials like what GH3+ requires, or if old zones don't have new additions like open note particles or overlapping starpower gems, or even..... mines(????)

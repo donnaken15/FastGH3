@@ -1491,19 +1491,13 @@ endscript
 
 script animate_steal
 	if ($<other_player_status>.Player = 1)
-		hand_scale = (-1.0, 1.0)
-		hand_y_offset = (0.0, -10.0)
-		hand_x_offset = (-40.0, 0.0)
-		;hand_scale = (-0.66, 0.66)
-		;hand_y_offset = (0.0, -8.0)
-		;hand_x_offset = (-10.0, 0.0)
+		hand_scale = (-0.66, 0.66)
+		hand_y_offset = (0.0, -8.0)
+		hand_x_offset = (-10.0, 0.0)
 	else
-		hand_scale = (1.0, 1.0)
-		hand_y_offset = (0.0, -10.0)
-		hand_x_offset = (40.0, 0.0)
-		;hand_scale = (0.66, 0.66)
-		;hand_y_offset = (0.0, -8.0)
-		;hand_x_offset = (10.0, 0.0)
+		hand_scale = (0.66, 0.66)
+		hand_y_offset = (0.0, -8.0)
+		hand_x_offset = (10.0, 0.0)
 	endif
 	FormatText checksumName = steal_hand_open_checksum 'steal_hand_open_%i_%p' i = ($<other_player_status>.stealing_powerup)p = ($<other_player_status>.Player)
 	if ScreenElementExists id = <steal_hand_open_checksum>
@@ -1516,7 +1510,6 @@ script animate_steal
 		id = <steal_hand_open_checksum>
 		parent = battlemode_container
 		texture = battle_hud_steal_hand_open
-		rgba = [255 255 255 255]
 		Pos = (<morph_to_pos> + <hand_y_offset>)
 		Scale = <hand_scale>
 		alpha = 0
@@ -1713,7 +1706,7 @@ script battle_whammy_attack
 				interval = ($current_boss.WhammySpeed.($current_difficulty))
 				lastwhammytime = boss_lastwhammytime
 			else
-				interval = 150
+				interval = 75
 				ExtendCrc bot_battle_lastwhammytime_ (<other_player_status>.text) out = lastwhammytime
 			endif
 			begin
@@ -1897,6 +1890,8 @@ script repair_string
 	endif
 endscript
 
+bot_battle_lastrepairtime_p1 = 0.0
+bot_battle_lastrepairtime_p2 = 0.0
 script battle_broken_string
 	if (($is_network_game = 1)& ($<other_player_status>.Player = 1))
 		if NOT GotParam \{string_to_break}
@@ -2011,6 +2006,15 @@ script battle_broken_string
 	GetHeldPattern controller = ($<other_player_status>.controller)nobrokenstring
 	total_broken_strings = 1
 	GetArraySize \{$gem_colors}
+	if (<victim_is_local> = 1)
+		if ($boss_battle = 1)
+			interval = ($current_boss.BrokenStringSpeed.($current_difficulty))
+			lastrepairtime = boss_lastbrokenstringtime
+		else
+			interval = 75
+			ExtendCrc bot_battle_lastrepairtime_ (<other_player_status>.text) out = lastrepairtime
+		endif
+	endif
 	begin
 		last_hold_pattern = <hold_pattern>
 		GetHeldPattern controller = ($<other_player_status>.controller)nobrokenstring
@@ -2073,10 +2077,10 @@ script battle_broken_string
 							endif
 						endif
 						total_broken_strings = ($<other_player_status>.broken_string_green +
-						$<other_player_status>.broken_string_red +
-						$<other_player_status>.broken_string_yellow +
-						$<other_player_status>.broken_string_blue +
-						$<other_player_status>.broken_string_orange)
+												$<other_player_status>.broken_string_red +
+												$<other_player_status>.broken_string_yellow +
+												$<other_player_status>.broken_string_blue +
+												$<other_player_status>.broken_string_orange)
 					endif
 				endif
 				<check_button> = (<check_button> / 16)
@@ -2096,16 +2100,17 @@ script battle_broken_string
 		if (<total_broken_strings> = 0)
 			break
 		endif
-		if (($boss_battle = 1 &
-			<other_player_status>.Player = 2) | <other_player_status>.bot_play = 1)
+		if (($boss_battle = 1 & <other_player_status>.Player = 2) | <other_player_status>.bot_play = 1)
 			if ($<other_player_status>.whammy_attack < 1)
 				GetSongTimeMs
-				if (<time> - $boss_lastbrokenstringtime > 250)
+				if (<time> - $<lastrepairtime> > <interval>)
+					printf 'PUSH'
 					Change structurename = <other_player_status> bot_pattern = ($<other_player_status>.broken_string_mask)
 					Change boss_pattern = ($<other_player_status>.broken_string_mask)
-					Change boss_lastbrokenstringtime = <time>
+					Change globalname = <lastrepairtime> newvalue = <time>
 				else
-					Change \{boss_pattern = 0}
+					Change structurename = <other_player_status> bot_pattern = 0
+					Change boss_pattern = 0
 				endif
 			endif
 		endif
@@ -2115,6 +2120,19 @@ script battle_broken_string
 		Change StructureName = <other_player_status> broken_string_mask = 0
 	endif
 	GuitarEvent_BattleAttackFinished <...>
+endscript
+
+script anarchy_but_not_actually
+	GetArraySize \{$battlemode_powerups}
+	i = 1
+	begin
+		FormatText checksumname = player_status 'player%d_status' d = <i>
+		begin
+			GetRandomValue name = gem a = 0 b = (<array_size> - 1) integer
+			battlemode_ready battle_gem = <gem> player_status = <player_status>
+		repeat 3
+		Increment \{i}
+	repeat ($current_num_players)
 endscript
 
 script battle_starpower
@@ -2143,7 +2161,7 @@ script battle_starpower
 			break
 		endif
 		if ($<player_status>.current_health > <last_health>)
-			printf 'boost'
+			//printf 'boost'
 			change structurename=player1_status current_health=($<player_status>.current_health + ($<health_change> * 2.0))
 			CrowdIncrease player_status = <player_status>
 		endif
