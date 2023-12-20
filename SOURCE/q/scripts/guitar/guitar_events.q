@@ -97,8 +97,7 @@ endscript
 
 script event_iterator
 	printf "Event Iterator started with time %d" d = <time_offset>
-	ExtendCrc <song_name> '_' out=song
-	ExtendCrc <song> <event_string> out=song
+	FastFormatCrc <song_name> a = '_' b = <event_string> out=song
 	array_entry = 0
 	GetArraySize $<song>
 	if (<array_Size> = 0)
@@ -265,15 +264,16 @@ endscript
 script GuitarEvent_HitNotes
 	if ($enable_solos = 1)
 		if NOT (($<player_status>.highway_layout) = solo_highway)
-			if (($<player_status>.text)= 'p1')
+			player_text = ($<player_status>.text)
+			if (<player_text> = 'p1')
 				Player = 1
 				Change note_index_p1 = <array_entry>
-			elseif (($<player_status>.text)= 'p2')
+			elseif (<player_text> = 'p2')
 				Player = 2
 				Change note_index_p2 = <array_entry>
 			endif
 			set_solo_hit_buffer Player = <Player>
-			FormatText checksumName = sa_p 'solo_active_p%d' d = <Player>
+			ExtendCrc solo_active_ <player_text> out = sa_p
 			update_text = 1
 			if ($<sa_p> = 1)
 				if (<Player> = 1)
@@ -401,7 +401,7 @@ endscript
 winport_clap_delay = 0.18
 
 script GuitarEvent_PreFretbar
-	if ($winport_clap_delay > 0)
+	/*if ($winport_clap_delay > 0)
 		wait \{$winport_clap_delay seconds}
 		if ($<player_status>.star_power_used = 1)
 			if ($game_mode != tutorial)
@@ -413,12 +413,13 @@ script GuitarEvent_PreFretbar
 				SoundEvent \{event = Crowd_Individual_Clap_To_Beat}
 			endif
 		endif
-	endif
+	endif*///
 endscript
 beat_flip = 0
 
 script GuitarEvent_Fretbar
 	if ($Cheat_PerformanceMode = 1)
+		Change beat_flip = (1 - $beat_flip) // still need for starpower bot, even though it can't be seen
 		return
 	endif
 	if ($current_num_players = 2)
@@ -465,46 +466,27 @@ script set_sidebar_flash
 	if ($Cheat_PerformanceMode = 1)
 		return
 	endif
-	// optimize????????
-	ExtendCrc sidebar_left ($<player_status>.text) out = left
-	ExtendCrc sidebar_right ($<player_status>.text) out = right
+	// about 0.005ms slower than original code
+	text = ($<player_status>.text)
+	ExtendCrc sidebar_left <text> out = left
+	ExtendCrc sidebar_right <text> out = right
+	Ternary \{$beat_flip a = '0' b = '1'}
 	if ($<player_status>.star_power_used = 1)
-		if ($beat_flip = 0)
-			SetScreenElementProps id = <left> rgba = ($sidebar_starpower0)
-			SetScreenElementProps id = <right> rgba = ($sidebar_starpower0)
-		else
-			SetScreenElementProps id = <left> rgba = ($sidebar_starpower1)
-			SetScreenElementProps id = <right> rgba = ($sidebar_starpower1)
-		endif
+		color = sidebar_starpower
 	else
 		if (<dying> = 1)
-			if ($beat_flip = 0)
-				SetScreenElementProps id = <left> rgba = ($sidebar_dying0)
-				SetScreenElementProps id = <right> rgba = ($sidebar_dying0)
-			else
-				SetScreenElementProps id = <left> rgba = ($sidebar_dying1)
-				SetScreenElementProps id = <right> rgba = ($sidebar_dying1)
-			endif
+			color = sidebar_dying
 		else
 			if ($<player_status>.star_power_amount >= 50.0)
-				if ($beat_flip = 0)
-					SetScreenElementProps id = <left> rgba = ($sidebar_starready0)
-					SetScreenElementProps id = <right> rgba = ($sidebar_starready0)
-				else
-					SetScreenElementProps id = <left> rgba = ($sidebar_starready1)
-					SetScreenElementProps id = <right> rgba = ($sidebar_starready1)
-				endif
+				color = sidebar_starready
 			else
-				if ($beat_flip = 0)
-					SetScreenElementProps id = <left> rgba = ($sidebar_normal0)
-					SetScreenElementProps id = <right> rgba = ($sidebar_normal0)
-				else
-					SetScreenElementProps id = <left> rgba = ($sidebar_normal1)
-					SetScreenElementProps id = <right> rgba = ($sidebar_normal1)
-				endif
+				color = sidebar_normal
 			endif
 		endif
 	endif
+	ExtendCrc <color> <ternary> out = rgba
+	SetScreenElementProps id = <left> rgba = ($<rgba>)
+	SetScreenElementProps id = <right> rgba = ($<rgba>)
 endscript
 
 script GuitarEvent_Fretbar_Early
@@ -1376,36 +1358,29 @@ script GuitarEvent_StarSequenceBonus
 	if ($Cheat_PerformanceMode = 1)
 		return
 	endif
+	if ($disable_particles > 1)
+		return
+	endif
+	player_text = ($<player_status>.text)
 	if ($disable_particles = 0)
 		i = 0
 		begin
-			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = ($<player_status>.text)e = <i> AddToStringLookup = true
+			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx2_id>
-			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = ($<player_status>.text)e = <i> AddToStringLookup = true
+			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx3_id>
 			Increment \{i}
 		repeat (5)
-		spawnscriptnow {
-			StarSequenceFX
-			params = {
-				<...>
-			}
-		}
 	endif
+	spawnscriptnow StarSequenceFX params = <...>
 	if ($disable_particles = 1)
-		spawnscriptnow {
-			StarSequenceFX
-			params = {
-				<...>
-			}
-		}
 		i = 0
 		begin
-			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = ($<player_status>.text)e = <i> AddToStringLookup = true
+			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx_id>
-			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = ($<player_status>.text)e = <i> AddToStringLookup = true
+			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx2_id>
-			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = ($<player_status>.text)e = <i> AddToStringLookup = true
+			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx3_id>
 			Increment \{i}
 		repeat (5)
@@ -1417,12 +1392,22 @@ script StarSequenceFX
 		return
 	endif
 	Change StructureName = <player_status> sp_phrases_hit = ($<player_status>.sp_phrases_hit + 1)
-	ExtendCrc gem_container ($<player_status>.text) out = container_id
+	player_text = ($<player_status>.text)
+	ExtendCrc gem_container <player_text> out = container_id
 	GetArraySize \{$gem_colors}
 	gem_count = 0
 	begin
+		if (<gem_count> = 5)
+			gem_count = 7
+			color = yellow // hack maybe :/
+			// gemMutation open injection only applies to button_models global
+		endif
 		<note> = ($<song> [<array_entry>] [(<gem_count> + 1)])
+		//printstruct <...> ($<song>[<array_entry>])
 		if (<note> > 0)
+			if (<gem_count> = 7)
+				gem_count = 2
+			endif
 			Color = ($gem_colors [<gem_count>])
 			if ($<player_status>.lefthanded_button_ups = 1)
 				<pos2d> = ($button_up_models.<Color>.left_pos_2d)
@@ -1431,7 +1416,7 @@ script StarSequenceFX
 				<pos2d> = ($button_up_models.<Color>.pos_2d)
 				<angle> = ($button_models.<Color>.left_angle)
 			endif
-			FormatText checksumName = name 'big_bolt%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = name 'big_bolt%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			CreateScreenElement {
 				Type = SpriteElement
 				id = <name>
@@ -1444,7 +1429,7 @@ script StarSequenceFX
 				just = [center bottom]
 				z_priority = 6
 			}
-			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx_id>
 			<particle_pos> = (<pos2d> - (0.0, 0.0))
 			Create2DParticleSystem {
@@ -1469,7 +1454,7 @@ script StarSequenceFX
 				friction = (0.0, 66.0)
 				time = 2.0
 			}
-			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			<particle_pos> = (<pos2d> - (0.0, 0.0))
 			Create2DParticleSystem {
 				id = <fx2_id>
@@ -1493,7 +1478,7 @@ script StarSequenceFX
 				friction = (0.0, 55.0)
 				time = 2.0
 			}
-			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			<particle_pos> = (<pos2d> - (0.0, 15.0))
 			Create2DParticleSystem {
 				id = <fx3_id>
@@ -1523,15 +1508,21 @@ script StarSequenceFX
 	wait \{$star_power_bolt_time seconds}
 	gem_count = 0
 	begin
+		if (<gem_count> = 5)
+			gem_count = 7
+		endif
 		<note> = ($<song>[<array_entry>][(<gem_count> + 1)])
 		if (<note> > 0)
-			FormatText checksumName = name 'big_bolt%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
+			if (<gem_count> = 7)
+				gem_count = 2
+			endif
+			FormatText checksumName = name 'big_bolt%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			DestroyScreenElement id = <name>
-			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx_id> kill_when_empty
-			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx2_id> kill_when_empty
-			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = ($<player_status>.text)e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx3_id> kill_when_empty
 			wait \{1 gameframe}
 		endif

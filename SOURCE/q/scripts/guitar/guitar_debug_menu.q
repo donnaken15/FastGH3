@@ -22,6 +22,7 @@ script create_debugging_menu
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Settings' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_settings_menu}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Skip Into Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipintosong_menu}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Screenshot" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose screen_shot}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Credits Test" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Save Replay Buffer" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Load Replay" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
 	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Zones" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose RefreshCurrentZones}]}
@@ -30,6 +31,16 @@ script create_debugging_menu
 		CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Sounds" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose reload_sounds}]}
 	endif
 	LaunchEvent \{Type = focus target = debug_vmenu}
+endscript
+debug_playcredits_active = 0
+
+script debug_playcredits
+	kill_gem_scroller
+	destroy_debugging_menu
+	reset_score \{player_status = player1_status}
+	Change \{end_credits = 1}
+	Change \{debug_playcredits_active = 1}
+	Progression_EndCredits
 endscript
 
 script destroy_debugging_menu

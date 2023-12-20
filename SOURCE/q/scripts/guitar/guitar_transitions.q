@@ -1,6 +1,9 @@
 transition_playing = true
 current_playing_transition = Default_FastIntro_Transition
 Transition_Types = {
+	generic = {
+		textnl = 'generic'
+	}
 	immediate = {
 		textnl = 'immediate'
 	}
@@ -332,10 +335,14 @@ script Transition_GetTime\{Type = Intro}
 		ScriptAssert \{"Unknown transition type"}
 	endif
 	GetPakManCurrentName \{map = zones}
-	FormatText checksumName = Transition_Props '%s_%p_Transition' p = <type_textnl> s = <pakname>
+	FastFormatCrc a = <pakname> b = '_' c = <type_textnl> d = '_Transition' out = Transition_Props
 	if NOT GlobalExists name = <Transition_Props>
-		FormatText checksumName = Transition_Props 'default_%p_Transition' p = <type_textnl> s = <pakname>
+		FastFormatCrc #"0x1ca1ff20" a = '_' b = <type_textnl> c = '_Transition' out = Transition_Props
+		//type_textnl = 'default'
 	endif
+	printstruct <...>
+	//FormatText checksumName = Transition_Props '%s_%p_Transition' p = <type_textnl> s = <pakname>
+	//	FormatText checksumName = Transition_Props 'default_%p_Transition' p = <type_textnl> s = <pakname>
 	return transition_time = ($<Transition_Props>.time)
 endscript
 

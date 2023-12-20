@@ -727,26 +727,35 @@ script GH3_SFX_Stop_Sounds_For_KillSong
 endscript
 
 script GH_SFX_Countoff_Logic
-	get_song_struct song = ($current_song)
+	printf 'does this even get called'
+	printstruct <...>
+	return
+	/*get_song_struct song = ($current_song)
 	if StructureContains structure = <song_struct> name = countoff
 		countoff_sound = (<song_struct>.countoff)
 	else
 		countoff_sound = 'sticks_normal'
 	endif
 	if (<velocity> > 99)
-		FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Hard' s = <countoff_sound>
+		velocity = 'Hard'
+		;FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Hard' s = <countoff_sound>
 	else
 		if (<velocity> > 74)
-			FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Med' s = <countoff_sound>
+			velocity = 'Med'
+			;FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Med' s = <countoff_sound>
 		else
-			if (<velocity> > 49)
-				FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Soft' s = <countoff_sound>
-			else
-				FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Soft' s = <countoff_sound>
-			endif
+			velocity = 'Soft'
+			; ????
+			;if (<velocity> > 49)
+			;	FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Soft' s = <countoff_sound>
+			;else
+			;	FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Soft' s = <countoff_sound>
+			;endif
 		endif
 	endif
-	SoundEvent event = <sound_event_name>
+	// as if this script will even matter because i got rid of most stuff not pertaining so much to gameplay
+	FastFormatCrc Countoff_SFX_ a = <velocity> b = '_' c = <countoff_sound> out = sound_event_name
+	SoundEvent event = <sound_event_name>*///
 endscript
 
 script GH_SFX_Training_Tuning_Strings

@@ -1,11 +1,12 @@
 
 script key_events
 	begin
+		//ProfilingStart
 		//if ($toggle_console = 0)
-		// emulator moment
 		WinPortSioGetControlPress \{deviceNum = $player1_device}
 		if NOT (<controlNum> = -1)
 			if (<controlNum> = 323) // Tab
+				// emulator moment
 				if (($console_pause = 1 & $toggle_console = 0) | $console_pause = 0)
 					if ($hold_tab = 0)
 						change old_speed = ($current_speedfactor)
@@ -45,6 +46,7 @@ script key_events
 			endif
 		endif
 		change last_key = <controlNum>
+		//ProfilingEnd <...> 'test' loop ____profiling_interval = 800
 		Wait \{1 gameframe}
 	repeat
 endscript
@@ -291,8 +293,7 @@ script mbt_test
 		change \{mbt_b = 0}
 	endif
 	change mbt_b = ($mbt_b + 1)
-	Increment \{measure}
-	pad <measure> count = 4
+	pad (<measure> + 1) count = 4
 	m = <pad>
 	pad ($mbt_b) count = 2
 	FormatText textname = text 'M.B.T: %m:%b' m = <m> b = <pad>
@@ -300,10 +301,15 @@ script mbt_test
 endscript
 
 script Ternary \{out = ternary}
+	//ProfilingStart
 	if (<#"0x00000000"> = 0)
 		ternary = <b>
 	else
 		ternary = <a>
+	endif
+	if (<out> = ternary)
+		//ProfilingEnd <...> 'ternary'
+		return ternary = <ternary>
 	endif
 	AddParams \{output = {}}
 	AddParam structure_name = output name = <out> value = <ternary>
@@ -314,7 +320,55 @@ script Ternary \{out = ternary}
 	endif
 endscript
 
+// for concatenating simple strings into QbKey
+// because i can't just shove a local var into array declaration
+script FastFormatCrc \{#"0xFFFFFFFF"}
+	// key a = '_' b = 'p1' out = testkey
+	//
+	// perfect real world example:
+	// FormatText checksumName = gem_array '%s_%t_%p%d' s = <song_prefix> t = 'song' p = <part> d = <difficulty_text_nl> AddToStringLookup
+	// replaced with
+	// FastFormatCrc $current_song a = '_song_' b = <part> c = <difficulty_text_nl> out = gem_array
+	// also why does the game have a conniption fit when i create a variable named "test"
+	if NOT GotParam \{#"0x00000000"}
+		return
+	endif
+	if NOT GotParam \{out}
+		return
+	endif
+	if NOT GotParam \{a}
+		return
+	endif
+	//x = <#"0x00000000">
+	//ProfilingStart
+	AddParams \{params = [a b c d e]}
+	// allow as many strings as i'll necessarily need
+	GetArraySize \{params}
+	i = 0
+	z = ''
+	begin
+		param = (<params>[<i>])
+		if NOT GotParam <param>
+			break
+		endif
+		ExtendCrc <#"0x00000000"> (<...>.<param>) out = #"0x00000000"
+		z = (<z> + (<...>.<param>))
+		Increment \{i}
+	repeat <array_size>
+	AddParam structure_name = output name = <out> value = <#"0x00000000">
+	//ProfilingEnd <...> 'FastFormatCrc'
+	//printf '%x%z' x = <x> z = <z>
+	//printstruct <...>
+	return <output>
+endscript
+script SysTex
+	name = ('sys_' + <#"0x00000000">)
+	ExtendCrc #"0xFFFFFFFF" (<name> + '_' + <name>) out = sys_tex
+	return sys_tex = <sys_tex>
+endscript
+
 script create_debug_gem
+	//return
 	Create2DGem {
 		color = <color>
 		marker = <marker>
@@ -326,6 +380,9 @@ script create_debug_gem
 		player_text = <player_text>
 		player_status = <player_status>
 	}
+	//if (<color> = open) // oh no
+	//	gem_count = 2
+	//endif
 	if ($gem_debug_text = 0)
 		return
 	endif
@@ -336,7 +393,7 @@ script create_debug_gem
 	// 6: hammer/tap flags
 	// 7: (input) time end??
 	FormatText textname = gem_text '%g_%e_gem_p%p' e = <entry> g = ($gem_colors_text[<gem_count>]) p = <player>
-	FormatText checksumname = gem '%g' g = <gem_text>
+	ExtendCrc <gem_text> out = gem
 	pad (<input>[(<gem_count>+1)]) count = 5 pad = ' '
 	//FormatText textname = gem_text '%l' l = (<input>[(<gem_count>+1)])
 	flag = ''
@@ -442,24 +499,36 @@ endscript
 	//WinPortSongHighwaySync \{sync = 1}
 endscript/**///
 
-script ProfilingStart
-	AddParams \{time = 0.0} // fallback if ProfileTime is not patched by FastGH3 plugin
+script ProfilingStart \{ time = 0.0 }
 	ProfileTime
 	return ____profiling_checkpoint_1 = <time>
 endscript
-script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____profiling_interval = 60 }
-	AddParams \{time = 0.0}
+script ProfilingEnd \{ time = 0.0 #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____profiling_interval = 60 }
 	ProfileTime
-	<____profiling_time> = ((<time> - <____profiling_checkpoint_1>) * 0.0001)
+	____profiling_time = ((<time> - <____profiling_checkpoint_1>) * 0.0001)
 	if NOT GotParam \{ loop }
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time>
 		return profile_time = <____profiling_time>
 	endif
+	if (<____profiling_i> = 0)
+		____profiling_samples = []
+	endif
+	element=(<____profiling_time> * 10000)
+	CastToInteger \{element}
+	AddArrayElement array=<____profiling_samples> element=<element>
 	Increment \{____profiling_i}
 	if (<____profiling_i> > <____profiling_interval>)
-		<____profiling_i> = 0
-		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
+		____profiling_i = 0
+		RemoveComponent \{____profiling_samples}
+		Avg <array>
+		GetArraySize \{array}
+		//printstruct <...>
+		printf 'profiled script %s, %t ms, %n samples' n = (<array_size> - 1) s = <#"0x00000000"> t = (<avg> * 0.0001) // C++ broken >:(
 	endif
-	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
+	return {
+		profile_time = <____profiling_time>
+		____profiling_i = <____profiling_i>
+		____profiling_samples = <array>
+	}
 endscript
 

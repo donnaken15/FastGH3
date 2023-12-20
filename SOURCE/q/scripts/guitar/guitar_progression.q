@@ -116,7 +116,7 @@ script Progression_SongFailed
 endscript
 
 script Progression_SongWon
-	printf \{"Progression_SongWon"}
+	/*printf \{"Progression_SongWon"}
 	additional_cash = 0
 	Change \{progression_beat_game_last_song = 0}
 	Change \{progression_unlock_tier_last_song = 0}
@@ -144,7 +144,8 @@ script Progression_SongWon
 	endif
 	get_difficulty_text_nl difficulty = ($current_difficulty)
 	get_song_prefix song = ($current_song)
-	FormatText checksumName = songname '%s_%d' s = <song_prefix> d = <difficulty_text_nl>
+	FastFormatCrc $current_song a = '_' b = <difficulty_text_nl> out = songname
+	//FormatText checksumName = songname '%s_%d' s = <song_prefix> d = <difficulty_text_nl>
 	if ($player1_status.total_notes > 0)
 		p1_percent_complete = (100 * $player1_status.notes_hit / $player1_status.total_notes)
 		if (<p1_percent_complete> = 100)
@@ -209,19 +210,19 @@ script Progression_SongWon
 		updateatoms \{name = Progression}
 	endif
 	Change \{Achievements_SongWonFlag = 1}
-	updateatoms \{name = achievement}
+	updateatoms \{name = achievement}*///
 endscript
 end_credits = 0
 boss_devil_score = 0
 
 script Progression_EndCredits
 	printf \{"CREDITS BEGIN"}
-	Change boss_devil_score = ($player1_status.score)
-	Change \{current_level = load_z_credits}
+	//Change boss_devil_score = ($player1_status.score)
+	//Change \{current_level = load_z_credits}
 	ui_flow_manager_respond_to_action \{action = select_retry}
-	Change \{current_song = thrufireandflames}
+	Change \{current_song = fastgh3} // secret song when
 	create_loading_screen
-	Load_Venue
+	//Load_Venue
 	restart_gem_scroller song_name = ($current_song)difficulty = ($current_difficulty)difficulty2 = ($current_difficulty2)startTime = 0 end_credits_restart = 1
 	destroy_loading_screen
 	start_flow_manager \{flow_state = career_play_song_fs}

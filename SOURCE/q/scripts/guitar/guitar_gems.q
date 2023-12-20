@@ -16,6 +16,7 @@ gem_colors = [
 	yellow
 	blue
 	orange
+	open
 ]
 gem_colors_text = [
 	'green'
@@ -23,6 +24,7 @@ gem_colors_text = [
 	'yellow'
 	'blue'
 	'orange'
+	'open'
 ]
 broken_strings = [
 	broken_string_green
@@ -109,6 +111,21 @@ button_models = {
 		dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
 		name = button_o
 	}
+	// already injected by GH3+ but whatever
+	open = {
+		gem_material = sys_gem2d_open_sys_gem2d_open
+		gem_hammer_material = sys_gem2d_open_hammer_sys_gem2d_open_hammer
+		star_material = sys_star2d_open_sys_star2d_open
+		star_hammer_material = sys_star2d_open_hammer_sys_star2d_open_hammer
+		battle_star_material = sys_star2d_open_sys_star2d_open
+		battle_star_hammer_material = sys_star2d_open_hammer_sys_star2d_open_hammer
+		whammy_material = sys_whammy2d_open_sys_whammy2d_open
+		star_power_material = sys_gem2d_open_starpower_sys_gem2d_open_starpower
+		star_power_hammer_material = sys_gem2d_open_starpower_hammer_sys_gem2d_open_starpower_hammer
+		star_power_whammy_material = sys_whammy2d_open_sys_whammy2d_open
+		dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
+		name = button_z
+	}
 }
 
 script setup_gemarrays
@@ -134,9 +151,7 @@ script setup_gemarrays
 	get_song_prefix song = <song_name>
 	get_difficulty_text_nl difficulty = <difficulty>
 	//FormatText checksumName = gem_array '%s_%t_%p%d' s = <song_prefix> t = 'song' p = <part> d = <difficulty_text_nl> AddToStringLookup
-	ExtendCrc \{$current_song '_song_' out = gem_array}
-	ExtendCrc <gem_array> <part> out = gem_array
-	ExtendCrc <gem_array> <difficulty_text_nl> out = gem_array
+	FastFormatCrc $current_song a = '_song_' b = <part> c = <difficulty_text_nl> out = gem_array
 	//FormatText checksumName = fretbar_array '%s_fretbars' s = <song_prefix> AddToStringLookup
 	ExtendCrc \{$current_song '_fretbars' out = fretbar_array}
 	Change StructureName = <player_status> current_song_gem_array = <gem_array>

@@ -3,11 +3,12 @@ script solo\{part = guitar diff = expert}
 	if ($game_mode = p2_battle || $enable_solos = 0)
 		return
 	endif
+	printstruct <...>
 	// for performance sake since S5 has the event for all difficulties
 	// and executes part of main for 6ms >:(
 	coop_track = 0
 	matched_player = 0
-	ExtendCrc $current_song '_extra' out = extra_struct
+	ExtendCrc \{$current_song '_extra' out = extra_struct}
 	i = 1
 	begin
 		FormatText checksumName = player_status 'player%d_status' d = <i>
@@ -58,7 +59,7 @@ script solo\{part = guitar diff = expert}
 		// 1003.50 >= 1000 because %$#@ you - neversoft
 		// execution time offset is within 0-10ms for me
 		// probably tied to framerate
-		if ((<Scr>.time + 40)>= (<time>)& (<Scr>.time)< (<time>)& (<Scr>.Scr)= solo)
+		if ((<Scr>.time + 40) >= <time> & (<Scr>.time) < <time> & (<Scr>.Scr) = solo)
 			// fallback for no param entered
 			part2 = guitar
 			diff2 = expert
@@ -249,7 +250,7 @@ script soloend \{part = guitar diff = expert}
 		elseif (<i> = 2)
 			player_difficulty = current_difficulty2
 		endif
-		ExtendCrc $current_song '_extra' out = extra_struct
+		ExtendCrc \{$current_song '_extra' out = extra_struct}
 		if StructureContains structure = ($<extra_struct>) use_coop_notetracks
 			if ChecksumEquals a = guitarcoop b = <part>
 				if ChecksumEquals a = guitar b = ($<player_status>.part)

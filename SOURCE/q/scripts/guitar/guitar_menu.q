@@ -1391,6 +1391,17 @@ script create_pause_menu\{Player = 1 submenu = none}
 				<id> ::SetProps Pos = (<width> * (1.0, 0.0) + (22.0, 24.0))
 				new_pause_menu_button {
 					<params_params>
+					id = pause_credits
+					event_handlers = [
+						{focus retail_menu_focus params = {id = pause_credits}}
+						{focus generic_menu_up_or_down_sound}
+						{unfocus retail_menu_unfocus params = {id = pause_credits}}
+						{pad_choose ui_flow_manager_respond_to_action params = {action = select_credits create_params = {player_device = <player_device>}}}
+					]
+					text = 'Credits'
+				}
+				new_pause_menu_button {
+					<params_params>
 					id = options_exit
 					event_handlers = [
 						{focus retail_menu_focus params = {id = options_exit}}

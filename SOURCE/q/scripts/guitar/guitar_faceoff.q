@@ -16,8 +16,7 @@ script faceoff_init
 			endif
 		endif
 	endif
-	ExtendCrc \{$current_song '_faceoff' out=note_array}
-	ExtendCrc <note_array> <player_text> out=note_array
+	FastFormatCrc $current_song a = '_faceoff' b = <player_text> out=note_array
 	GetArraySize $<note_array>
 	if (<array_Size> = 0)
 		time = 1000000
@@ -47,8 +46,7 @@ script faceoff_volumes_init
 		return
 	endif
 	printf "Faceoff Volume Iterator started with time %d" d = <time_offset>
-	ExtendCrc \{$current_song '_faceoff' out=note_array}
-	ExtendCrc <note_array> <player_text> out=note_array
+	FastFormatCrc $current_song a = '_faceoff' b = <player_text> out=note_array
 	GetArraySize $<note_array>
 	if (<array_Size> = 0)
 		time = 1000000

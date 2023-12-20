@@ -63,7 +63,7 @@ script check_user_input
 					if (<shift> = 0)
 						GetLowerCaseString <char>
 						char = <lowercasestring>
-						formattext checksumname = id "%a" a = <char>
+						ExtendCrc #"0xFFFFFFFF" <char> out = <id>
 						if StructureContains structure=($key_chars_lower) <id>
 							char = ($key_chars_lower.<id>)
 						endif

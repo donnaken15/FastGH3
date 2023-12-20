@@ -432,7 +432,7 @@ script guitar_startup
 			printf 'Loading %f.qb' f = <basename>
 			formattext textname = file 'MODS/%f.qb' f = <basename>
 			LoadQB <file>
-			formattext checksumname = mod_info_name '%f_mod_info' f = <basename>
+			FastFormatCrc a = <basename> b = '_mod_info' out = mod_info_name
 			if GlobalExists name = <mod_info_name> type = structure
 				mod_info = ($<mod_info_name>)
 			elseif GlobalExists \{name = mod_info type = structure}
@@ -458,7 +458,7 @@ script guitar_startup
 			if StructureContains \{structure=mod_info desc}
 				printf "Description: %d" d=(<mod_info>.desc)
 			endif
-			formattext checksumname = startup_script '%f_startup' f = <basename>
+			FastFormatCrc a = <basename> b = '_startup' out = startup_script
 			if ScriptExists <startup_script>
 				SpawnScriptNow <startup_script> params = { filename = <filename> basename = <basename> }
 			else
@@ -466,23 +466,32 @@ script guitar_startup
 					SpawnScriptNow mod_startup params = { filename = <filename> basename = <basename> }
 				endif
 			endif
+			// get rid of ambiguously named mod_info global struct after loading?
 		repeat
 		EndWildcardSearch
 		ProfilingEnd <...> 'mod load'
 	// endregion
 	
 	// region grafisxs and snoud
-		printf \{'Loading unpacked images'}
-		load_images print
-		
 		printf \{'Loading Paks'}
 		ProfilingStart
 		LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile}
-		SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
+		//if NOT ($fastgh3_branch = unpak)
+			SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
+		//else
+		//	AddToMaterialLibrary \{scene = 'zones/global/global_gfx.scn'}
+		//endif
 		// test time to load
 		ProfilingEnd <...> 'LoadPak global.pak'
+		
+		if (1 = 1)
+			printf \{'Loading unpacked images'}
+			load_images print
+		endif
+		
 		ProfilingStart
 		LoadPak \{'zones/default.pak'}
+		AddToMaterialLibrary \{scene = 'default.scn'}
 		ProfilingEnd <...> 'LoadPak default.pak'
 		
 		ProfilingStart
@@ -511,14 +520,12 @@ script guitar_startup
 		printf \{'Allocating new big arrays'}
 		// sick of seeing a bunch of zeroes :/
 		ProfilingStart
-		// {
 		AllocArray \{size = 500 p1_last_song_detailed_stats}
 		AllocArray \{size = 500 p2_last_song_detailed_stats}
 		AllocArray \{size = 500 p1_last_song_detailed_stats_max}
 		AllocArray \{size = 500 p2_last_song_detailed_stats_max}
 		AllocArray \{size = 136 WhammyWibble0 set = 1.0}
 		AllocArray \{size = 136 WhammyWibble1 set = 1.0}
-		// } ran for 0.3ms
 		AllocArray \{size = 32 solo_hit_buffer_p1}
 		AllocArray \{size = 32 solo_hit_buffer_p2}
 		AllocArray \{size = $highway_lines set = 0.0 gem_time_table512}
@@ -526,7 +533,6 @@ script guitar_startup
 		AllocArray \{size = $highway_lines set = 0.0 rowHeight}
 		AllocArray \{size = $highway_lines set = 0.0 time_accum_table}
 		ProfilingEnd <...> 'AllocArray x12'
-		// 5 ms (michael scott gif)
 		
 		ProfilingStart
 		
@@ -614,7 +620,8 @@ script load_highway \{player_status = player1_status name = 'axel' filename = 'h
 	endif
 	FormatText textname = highway_name 'Guitarist_%n_Outfit%o_Style%s' n = <name> o = 1 s = 1
 	AddToMaterialLibrary scene = <highway_name>
-	FormatText checksumName = highway_material 'sys_%a_1_highway_sys_%a_1_highway' a = <name>
+	FastFormatCrc sys_ a = <name> b = '_1_highway' c = '_' d = <name> e = '_1_highway' out = highway_material
+	//FormatText checksumName = highway_material 'sys_%a_1_highway_sys_%a_1_highway' a = <name>
 	Change StructureName = <player_status> highway_material = <highway_material>
 endscript
 

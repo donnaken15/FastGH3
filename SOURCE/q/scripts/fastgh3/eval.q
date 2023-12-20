@@ -1,14 +1,17 @@
 
 /**///
 
-evalverbose = 0
+evalverbose = 1
 
-script eval \{'printf \'no command specified\''} // uh oh
+script eval \{'printf \'no command specified\''}
 	printf "] %l" l = <#"0x00000000">
 	if NOT evaltokenizer <#"0x00000000">
 		printf \{'tokenizer did not return successfully'}
 		return false
 	endif
+	//printstruct <tokens>
+	//Block
+	//return
 	array = [] // nodes
 	getarraysize \{tokens}
 	i = 0
@@ -426,11 +429,11 @@ script decompress_eval
 	change evaltokens_alphabet = <text>
 	formattext textname = text "%s" s = '0123456789'
 	change evaltokens_digits = <text>
-	evaltokens_syntax = [ "=" ":" "." "," "(" ")" "{" "}" "[" "]" "+" "-" "*" "/" "$" "!=" "!" "&" "|" "<" "<=" ">" ">=" "<...>" ]
-	evaltokens_syntax_nosep = "(){}[]"
-	eval_syntax2bytecodes = [ 7 66 8 9 14 15 3 4 5 6 11 10 13 12 75 77 57 58 59 18 19 20 21 44 ]
-	evaltokens_keywords = [ "if" "else" "elseif" "endif" "return" "switch" "endswitch" "case" "default" "begin" "repeat" "not" "break" /*"script" "endscript"*/ ]
-	eval_kw2bytecodes = [ 37 38 39 40 41 60 61 62 63 32 33 57 34 /*35 36*/ ]
+	change evaltokens_syntax = [ "=" ":" "." "," "(" ")" "{" "}" "[" "]" "+" "-" "*" "/" "$" "!=" "!" "&" "|" "<" "<=" ">" ">=" "<...>" ]
+	change evaltokens_syntax_nosep = "(){}[]"
+	change eval_syntax2bytecodes = [ 7 66 8 9 14 15 3 4 5 6 11 10 13 12 75 77 57 58 59 18 19 20 21 44 ]
+	change evaltokens_keywords = [ "if" "else" "elseif" "endif" "return" "switch" "endswitch" "case" "default" "begin" "repeat" "not" "break" /*"script" "endscript"*/ ]
+	change eval_kw2bytecodes = [ 37 38 39 40 41 60 61 62 63 32 33 57 34 /*35 36*/ ]
 endscript
 
 script evaltokenizer \{debug = $evalverbose}
@@ -443,7 +446,7 @@ script evaltokenizer \{debug = $evalverbose}
 	parser_pos = 0
 	current_token = ""
 	FormatText textname = #"0x00000000" "%a" a = <#"0x00000000">
-	StringRemoveTrailingWhitespace param = #"0x00000000"
+	StringRemoveTrailingWhitespace \{param = #"0x00000000"}
 	// ensure widestring because i imagine expressions won't work when comparing cstring and wstring
 	StringToCharArray string = <#"0x00000000">
 	getarraysize \{char_array}
@@ -472,7 +475,7 @@ script evaltokenizer \{debug = $evalverbose}
 			
 			current_char = (<parser_text>[<parser_pos>])
 			
-			if IndexOf <WStr> <current_char> array = ($evaltokens_whitespace)
+			if ArrayContains contains = <current_char> array = ($evaltokens_whitespace)
 				if (<new_token> = 1)
 					new_token = 0
 					break
@@ -514,11 +517,12 @@ script evaltokenizer \{debug = $evalverbose}
 			endif
 			if (<matched> = none)
 				StringToCharArray \{string = $evaltokens_alphabet}
-				if IndexOf <WStr> <current_char> array = <char_array>
+				if ArrayContains contains = <current_char> array = <char_array>
 					matched = name
 					break
 				endif
 			endif
+			// comment
 			if (<matched> = none)
 				if LocalizedStringEquals a = <current_char> b = "/"
 					if (<parser_pos> < <parser_size>)
@@ -561,7 +565,7 @@ script evaltokenizer \{debug = $evalverbose}
 			if (<matched> = none)
 				StringToCharArray string = ($evaltokens_digits + "-")
 				// feels repetitive to have this condition over and over
-				if IndexOf <WStr> <current_char> array = <char_array>
+				if ArrayContains contains = <current_char> array = <char_array>
 					//printf <current_char>
 					matched = digits
 					break
@@ -573,7 +577,7 @@ script evaltokenizer \{debug = $evalverbose}
 					matched = bytecode
 					value = ($eval_syntax2bytecodes[(<indexof> + 4)])
 				else
-					if IndexOf <WStr> <current_char> array = ($evaltokens_syntax)
+					if ArrayContains contains = <current_char> array = ($evaltokens_syntax)
 						matched = bytecode
 						//value = ($eval_syntax2bytecodes[<indexof>])
 						break
@@ -602,7 +606,7 @@ script evaltokenizer \{debug = $evalverbose}
 					if (<parser_pos> >= <parser_size>)
 						finish = 1
 					endif
-					if NOT IndexOf <WStr> <current_char> array = <char_array>
+					if NOT ArrayContains contains = <current_char> array = <char_array>
 						finish = 1
 					endif
 					if (<finish> = 0)
@@ -610,7 +614,7 @@ script evaltokenizer \{debug = $evalverbose}
 						Increment \{parser_pos}
 					endif
 					if (<finish> = 1)
-						formattext checksumname = value '%a' a = <name>
+						ExtendCrc #"0xFFFFFFFF" <name> out = <value>
 						RemoveComponent \{name}
 						break
 					endif
@@ -671,7 +675,7 @@ script evaltokenizer \{debug = $evalverbose}
 							break
 						endif
 						current_char = (<parser_text>[<parser_pos>])
-						if NOT IndexOf <WStr> <current_char> array = ($evaltokens_syntax)
+						if NOT ArrayContains contains = <current_char> array = ($evaltokens_syntax)
 							break
 						endif
 					repeat

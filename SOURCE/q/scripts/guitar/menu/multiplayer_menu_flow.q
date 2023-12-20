@@ -412,6 +412,11 @@ mp_faceoff_pause_options_fs = {
 			flow_state = mp_faceoff_lefty_flip_warning
 		}
 		{
+			action = select_credits
+			flow_state = options_credits_fs
+			transition_right
+		}
+		{
 			action = go_back
 			flow_state = mp_faceoff_pause_fs
 		}

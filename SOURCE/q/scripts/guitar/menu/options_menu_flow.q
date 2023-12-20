@@ -429,11 +429,13 @@ options_credits_fs = {
 	actions = [
 		{
 			action = continue
-			flow_state = options_bonus_videos_fs
+			use_last_flow_state
+			transition_left
 		}
 		{
 			action = go_back
-			flow_state = options_bonus_videos_fs
+			use_last_flow_state
+			transition_left
 		}
 	]
 }

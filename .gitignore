@@ -90,3 +90,4 @@ PLUGINS/Logger.dll
 /DATA/PAK/song.pak.xen
 SOURCE/Zones/highway/__output.scn
 SOURCE/Zones/highway/__output.tex
+*.log.xz

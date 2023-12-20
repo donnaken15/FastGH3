@@ -26,7 +26,7 @@ echo [38;2;95;95;255m######     copying fonts (raw)     ######[0m
 copy fonts\*.fnt.xen "!cache" > nul %OKNOTOK%
 echo [38;2;255;127;0m###### compiling optional scripts  ######[0m
 mkdir scripts 2>nul
-dash ../q/qcomp ./scripts ./!cache/scripts
+zsh ../q/qcomp ./scripts ./!cache/scripts
 echo [95m######        compiling PAK        ######[0m
 del ..\..\data\zones\global.pak.xen 2>nul
 cmd /c ..\q\sdk createpak -zone global -out ..\..\data\zones\global.pak.xen -pab "!cache" >nul
@@ -57,6 +57,13 @@ del "default\!cache\*" /S/Q > nul
 mkdir default\!cache 2>nul
 echo [96m######      image generation       ######[0m
 imggen default\*.png default\*.jpg default\*.dds > nul
+
+pushd default_scene
+..\buildtex >nul
+popd
+copy "default_scene\__output.scn" "default\!cache\default.scn.xen" /y >nul
+copy "default_scene\__output.tex" "default\!cache\default.tex.xen" /y >nul
+
 echo [96m###### moving new generated images ######[0m
 move default\*.img.xen "default\!cache" > nul
 echo [96m######     copying fonts (raw)     ######[0m

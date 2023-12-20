@@ -15,7 +15,7 @@ script menu_transition_out_right\{transition_time = 0.125}
 	CreateScreenElement \{id = transition_container Type = ContainerElement parent = root_window Pos = (0.0, 0.0) alpha = 0}
 	CreateScreenElement \{Type = SpriteElement parent = transition_container texture = white just = [left top] Pos = (0.0, 0.0) rgba = [0 0 0 255] dims = (1280.0, 720.0) z_priority = 5000}
 	if IsWinPort
-	else
+	//else
 		root_window ::SetProps \{just = [right top]}
 		RunScriptOnScreenElement id = root_window fade_element params = {Pos = (1280.0, 0.0) alpha = 1 time = <transition_time> Scale = (2.0, 1.0)}
 		transition_container ::DoMorph alpha = 1 time = <transition_time>
