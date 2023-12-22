@@ -44,7 +44,7 @@ Default_Fast_Particle_LOD_Dist_Pair = (0.0, 0.0)*///
 // endregion
 
 // region fx/lightshow
-/**lightshow_enabled = 0
+/**/lightshow_enabled = 0
 lightvolume_flarecutoff_low = 0.2
 lightvolume_flarecutoff_high = 0.35
 lightvolume_flarematerialcrc = FlareMaterial_FlareMaterial
@@ -59,6 +59,16 @@ endscript
 
 LightShow_ColorOverrideExcludeLights = $nullArray
 LightShow_StateNodeFlags = $nullArray
+LightShow_StateNodeFlagMapping = {
+	performance = {
+		poor = $nullArray
+		medium = $nullArray
+		good = $nullArray
+	}
+	mood = {
+		blackout = $nullArray
+	}
+}
 LightShow_NoteMapping = $nullArray
 LightShow_SharedProcessors = $nullArray/**///
 
