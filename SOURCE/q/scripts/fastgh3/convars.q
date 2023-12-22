@@ -147,8 +147,12 @@ script sv_speed
 		help \{sv_speed}
 		return
 	endif
-	change current_speedfactor = <#"0x00000000">
-	update_slomo
+	if NOT ($toggle_console)
+		change current_speedfactor = <#"0x00000000">
+		update_slomo
+	else
+		change old_speed = <#"0x00000000">
+	endif
 endscript
 
 script sv_mode \{players = 0}

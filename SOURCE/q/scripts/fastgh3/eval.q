@@ -68,11 +68,13 @@ script eval \{'printf \'no command specified\''}
 	//if NOT (<script_lastresult> = #"  invalid  ")
 	//	printstruct <script_locals>
 	//endif
+	//Block
 	
 	return \{true}
 endscript
 
-script evalrun // isolate parameters returned from scripts being called
+script evalrun
+	// isolate parameters returned from scripts being called
 	if NOT GotParam \{elevated}
 		if NOT GotParam \{params}
 			params = {}
@@ -135,11 +137,12 @@ script evalparseglobal
 		return \{false}
 	endif
 	next_token = (<#"0x00000000">[(<i> + 1)])
+	//printstruct <next_token>
 	if NOT (<next_token>.type = name)
 		printf \{'parser prematurely ended when global pointer wasn\'t followed by a name!!!!!!'}
 		return \{false}
 	endif
-	return true value = (<next_token>.value)
+	return true value = (<next_token>.value) i = (<i> + 1)
 endscript
 
 script evalparsestruct \{depth = 0 debug = $evalverbose}
@@ -191,6 +194,10 @@ script evalparsestruct \{depth = 0 debug = $evalverbose}
 											target = (<token>.value)
 											value = ($<value>)
 											i = (<i> + 4)
+										//case 14
+										//	evalparseexpr <#"0x00000000"> token_count = <token_count> i = (<i> + 2)
+										//	target = (<token>.value)
+										//	i = (<i> + 4)
 											//printstruct <...>
 										//case 5
 										//	type = array
@@ -209,6 +216,14 @@ script evalparsestruct \{depth = 0 debug = $evalverbose}
 									//printstruct <token>
 									target = (<token>.value)
 									value = (<next_token>.value)
+									if (<next_token>.type = string)
+										if (<next_token>.wide = true)
+											RemoveComponent \{value}
+											AddParam_WStr name = <target> (<next_token>.value)
+											struct = { <struct> <value> }
+											skip = 1
+										endif
+									endif
 									i = (<i> + 2)
 							endswitch
 						else
@@ -226,19 +241,22 @@ script evalparsestruct \{depth = 0 debug = $evalverbose}
 			case int
 			case float
 				value = (<token>.value)
+				//type = (<token>.type)
 				if (<token>.type = string)
 					if (<token>.wide = true)
-						printf '/!\ widestring gets ignored by AddParam!!!!! >:('
+						//printf '/!\ widestring gets ignored by AddParam!!!!! >:('
+						AddParam_WStr name = #"0x00000000" (<token>.value)
+						struct = { <struct> <value> }
+						skip = 1
 					endif
 				endif
-				//type = (<token>.type)
 			case bytecode
 				if (<token>.value = 3)
 					evalparsestruct <#"0x00000000"> token_count = <token_count> i = <i> depth = (<depth> + 1)
 					i = <t>
 				endif
 				if (<token>.value = 75)
-					evalparseglobal <#"0x00000000"> token_count = <token_count> <i>
+					evalparseglobal <#"0x00000000"> token_count = <token_count> i = <i>
 					i = (<t> + 2)
 					target = #"0x00000000"
 					tmp = ($<value>)
@@ -274,10 +292,63 @@ script evalparsestruct \{depth = 0 debug = $evalverbose}
 	if (<debug>)
 		printf '}'
 	endif
-	if (<depth> = 0)
+	//if (<depth> = 0)
 		//printstruct <struct>
-	endif
+	//endif
 	return value = <struct> t = <i>
+endscript
+
+// :(
+script AddParam_WStr
+	#"  name  " = <name>
+	#"  value  " = <#"0x00000000">
+	RemoveComponent \{name}
+	RemoveComponent \{#"0x00000000"}
+	if NOT (<#"  name  "> = #"0x00000000")
+		FormatText textname = <#"  name  "> "%a" a = <#"  value  ">
+	else
+		FormatText textname = name "%a" a = <#"  value  ">
+		#"0x00000000" = <name>
+		RemoveComponent \{name}
+	endif
+	RemoveComponent \{#"  name  "}
+	RemoveComponent \{#"  value  "}
+	return value = { <...> }
+endscript
+
+script stupid
+	// guessing game
+	// you'll be stupid too
+	switch <name>
+		case #"0x00000000"
+			EmptyScript
+		case test2
+			test2 = <#"0x00000000">
+		case value
+			value = <#"0x00000000">
+		case pos
+			pos = <#"0x00000000">
+		case dims
+			dims = <#"0x00000000">
+		case scale
+			scale = <#"0x00000000">
+		case pair
+			pair = <#"0x00000000">
+		case vector
+			vector = <#"0x00000000">
+		case name
+			name = <#"0x00000000">
+			overwrite_name = 1
+		default
+			printf \{'unknown name for my stupid hack in struct string parsing'}
+			printf <name>
+	endswitch
+	if NOT (<overwrite_name> = 1)
+		RemoveComponent \{name}
+	else
+		RemoveComponent \{overwrite_name}
+	endif
+	return value = {<...>}
 endscript
 
 script evalparseline \{debug = $evalverbose}
@@ -293,7 +364,6 @@ script evalparseline \{debug = $evalverbose}
 		//pad <t> count = 3 pad = ' '
 		//printf '>%i: token: [%v] <%t>' i = <pad> t = (<token>.type) v = (<token>.value)
 		printtoken t = <token> i = <i> debug = <debug>
-		
 		//printf 'token: %v <%t>' t = (<token>.type) v = (<token>.value)
 		//printstruct (<token>.value)
 		//printf '%a' a = (<token>.type)
@@ -460,6 +530,7 @@ script evaltokenizer \{debug = $evalverbose}
 	matched = none
 	new_token = 0
 	eof = 0
+	literal = ""
 	
 	WStr = { delegate = LocalizedStringEquals }
 	
@@ -614,7 +685,8 @@ script evaltokenizer \{debug = $evalverbose}
 						Increment \{parser_pos}
 					endif
 					if (<finish> = 1)
-						ExtendCrc #"0xFFFFFFFF" <name> out = <value>
+						literal = <name>
+						ExtendCrc #"0xFFFFFFFF" <name> out = value
 						RemoveComponent \{name}
 						break
 					endif
@@ -652,6 +724,7 @@ script evaltokenizer \{debug = $evalverbose}
 						finish = 1
 					endif
 					if (<finish> = 1)
+						literal = (<delim> + <string> + <delim>)
 						if (<string_type> = c)
 							formattext textname = value '%a' a = <string>
 						else
@@ -679,6 +752,7 @@ script evaltokenizer \{debug = $evalverbose}
 							break
 						endif
 					repeat
+					literal = <syntax>
 					if IndexOf <WStr> <syntax> array = ($evaltokens_syntax)
 						value = ($eval_syntax2bytecodes[<indexof>])
 					else
@@ -697,16 +771,17 @@ script evaltokenizer \{debug = $evalverbose}
 				// don't exceed 1 for either
 				dashes = 0
 				dots = 0
-				
 				digits = 0
 				number = 0
 				decimals = 0
 				matched = int
 				StringToCharArray string = ("-." + $evaltokens_digits)
+				literal = ""
 				begin
 					current_char = (<parser_text>[<parser_pos>])
 					//printf <current_char>
 					if IndexOf <WStr> <current_char> array = <char_array>
+						literal = (<literal> + <current_char>)
 						switch <indexof>
 							case 0
 								Increment \{dashes}
@@ -749,6 +824,8 @@ script evaltokenizer \{debug = $evalverbose}
 				RemoveComponent \{digits}
 				RemoveComponent \{decimals}
 				RemoveComponent \{char_array}
+				RemoveComponent \{current_char}
+				RemoveComponent \{current_char}
 			case none
 				EmptyScript
 			default
@@ -763,9 +840,11 @@ script evaltokenizer \{debug = $evalverbose}
 					type = <matched>
 					value = <value>
 					wide = <wide>
+					literal = <literal>
 				}
 			}
 			RemoveComponent \{wide}
+			RemoveComponent \{literal}
 			//printf '%d %e' d = <parser_pos> e = <token_count>
 			Increment \{token_count}
 		endif

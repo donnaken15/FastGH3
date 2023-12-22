@@ -380,9 +380,9 @@ script create_debug_gem
 		player_text = <player_text>
 		player_status = <player_status>
 	}
-	//if (<color> = open) // oh no
-	//	gem_count = 2
-	//endif
+	if (<color> = open) // oh no
+		gem_count = 2
+	endif
 	if ($gem_debug_text = 0)
 		return
 	endif
@@ -393,7 +393,10 @@ script create_debug_gem
 	// 6: hammer/tap flags
 	// 7: (input) time end??
 	FormatText textname = gem_text '%g_%e_gem_p%p' e = <entry> g = ($gem_colors_text[<gem_count>]) p = <player>
-	ExtendCrc <gem_text> out = gem
+	ExtendCrc #"0xFFFFFFFF" <gem_text> out = gem
+	if (<color> = open)
+		gem_count = 5
+	endif
 	pad (<input>[(<gem_count>+1)]) count = 5 pad = ' '
 	//FormatText textname = gem_text '%l' l = (<input>[(<gem_count>+1)])
 	flag = ''
@@ -418,7 +421,7 @@ script create_debug_gem
 endscript
 
 fakearray = [
-	[ 0 100 100 0 0 0 1 0 ]
+	[ 100 100 100 0 0 0 1 0 ]
 ]
 
 script debugNoteCRC \{name = 'gem' color = 'green' array_entry = 0 player = 1}

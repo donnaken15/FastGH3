@@ -21,7 +21,8 @@ script create_keyboard_input
 	update_console_input
 	if ($console_pause = 1)
 		change old_speed = ($current_speedfactor)
-		sv_speed 0.0
+		change current_speedfactor = 0.0
+		update_slomo
 	endif
 	spawnscriptnow \{check_user_input}
 endscript
@@ -33,7 +34,8 @@ script destroy_keyboard_input
 	KillSpawnedScript \{name = check_user_input}
 	change \{console_input = ""}
 	if ($console_pause = 1)
-		sv_speed ($old_speed)
+		change current_speedfactor = ($old_speed)
+		update_slomo
 		change old_speed = -1.0
 	endif
 endscript
@@ -63,8 +65,8 @@ script check_user_input
 					if (<shift> = 0)
 						GetLowerCaseString <char>
 						char = <lowercasestring>
-						ExtendCrc #"0xFFFFFFFF" <char> out = <id>
-						if StructureContains structure=($key_chars_lower) <id>
+						FormatText checksumname = id "%a" a = <char>
+						if StructureContains structure=$key_chars_lower <id>
 							char = ($key_chars_lower.<id>)
 						endif
 					endif
@@ -115,8 +117,10 @@ script trim \{c = 1}
 endscript
 console_input = ""
 key_chars_lower = {
-	#"0xf89d5196" = "'" // "
-	#"0xd6295c17" = "-" // _
+	#"0xF89D5196" = "'" // "
+	#"0xD6295C17" = "-" // _
+	#"0xEA2AB8C6" = "[" // {
+	#"0x03491DF3" = "]" // }
 }
 key_chars = {}
 script decompress_chars
@@ -163,8 +167,8 @@ script decompress_chars
 		
 		#"273" = "_"
 		#"234" = "="
-		#"263" = "["
-		#"306" = "]"
+		#"263" = "{"
+		#"306" = "}"
 		#"213" = "+"
 		#"225" = ","
 		#"299" = "."

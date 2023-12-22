@@ -61,6 +61,7 @@ button_up_pixel_arrayp1 = [
 	0.0
 	0.0
 	0.0
+	//0.0
 ]
 button_up_pixel_arrayp2 = [
 	0.0
@@ -68,6 +69,7 @@ button_up_pixel_arrayp2 = [
 	0.0
 	0.0
 	0.0
+	//0.0
 ]
 
 script button_checker

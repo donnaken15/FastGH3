@@ -16,7 +16,6 @@ gem_colors = [
 	yellow
 	blue
 	orange
-	open
 ]
 gem_colors_text = [
 	'green'
@@ -24,7 +23,6 @@ gem_colors_text = [
 	'yellow'
 	'blue'
 	'orange'
-	'open'
 ]
 broken_strings = [
 	broken_string_green

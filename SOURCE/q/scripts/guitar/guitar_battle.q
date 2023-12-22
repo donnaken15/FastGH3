@@ -2186,7 +2186,7 @@ script animate_lefty_flip
 	begin
 		Color = ($gem_colors [<array_count>])
 		pixels = ($<pixel_array> [<array_count>])
-		FastFormatCrc ($button_up_models.<Color>.name) a = '_base' c = ($<other_player_status>.text) out = name_base
+		FastFormatCrc ($button_up_models.<Color>.name) a = '_base' b = ($<other_player_status>.text) out = name_base
 		if ($<other_player_status>.lefthanded_button_ups = 1)
 			start_bottom_bar_pos = ($button_up_models.<Color>.left_pos_2d)
 			end_bottom_bar_pos = ($button_up_models.<Color>.pos_2d)
@@ -2209,7 +2209,7 @@ script animate_lefty_flip
 	<array_count> = 0
 	begin
 		Color = ($gem_colors [<array_count>])
-		FastFormatCrc ($button_up_models.<Color>.name) a = '_base' c = ($<other_player_status>.text) out = name_base
+		FastFormatCrc ($button_up_models.<Color>.name) a = '_base' b = ($<other_player_status>.text) out = name_base
 		DoScreenElementMorph {
 			id = <name_base>
 			Pos = (0.0, 0.0)
