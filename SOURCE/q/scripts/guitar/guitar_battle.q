@@ -1850,7 +1850,8 @@ script break_string
 				<Color> = green
 		endswitch
 	endif
-	FastFormatCrc ($button_up_models.<Color>.name) a = '_string' c = ($<other_player_status>.text) out = name_string
+	ExtendCrc ($button_up_models.<Color>.name) '_string' out = name_string
+	ExtendCrc <name_string> ($<other_player_status>.text) out = name_string
 	if ScreenElementExists id = <name_string>
 		DoScreenElementMorph {
 			id = <name_string>
@@ -1879,9 +1880,8 @@ script repair_string
 				<Color> = green
 		endswitch
 	endif
-	// there should be a small script thing to replace these repetitive things
-	// since they're formatted the same way except for the middle of the string
-	FastFormatCrc ($button_up_models.<Color>.name) a = '_string' c = ($<other_player_status>.text) out = name_string
+	ExtendCrc ($button_up_models.<Color>.name) '_string' out = name_string
+	ExtendCrc <name_string> ($<other_player_status>.text) out = name_string
 	if ScreenElementExists id = <name_string>
 		DoScreenElementMorph {
 			id = <name_string>
@@ -2186,7 +2186,8 @@ script animate_lefty_flip
 	begin
 		Color = ($gem_colors [<array_count>])
 		pixels = ($<pixel_array> [<array_count>])
-		FastFormatCrc ($button_up_models.<Color>.name) a = '_base' b = ($<other_player_status>.text) out = name_base
+		ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
+		ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 		if ($<other_player_status>.lefthanded_button_ups = 1)
 			start_bottom_bar_pos = ($button_up_models.<Color>.left_pos_2d)
 			end_bottom_bar_pos = ($button_up_models.<Color>.pos_2d)
@@ -2209,7 +2210,8 @@ script animate_lefty_flip
 	<array_count> = 0
 	begin
 		Color = ($gem_colors [<array_count>])
-		FastFormatCrc ($button_up_models.<Color>.name) a = '_base' b = ($<other_player_status>.text) out = name_base
+		ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
+		ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 		DoScreenElementMorph {
 			id = <name_base>
 			Pos = (0.0, 0.0)
@@ -2253,7 +2255,7 @@ script update_training_whammy_bar
 		parent = <training_whammy_checksum>
 		id = <training_whammy_text_checksum>
 		Pos = (120.0, 145.0)
-		text = 'WHAMMY'
+		text = "WHAMMY"
 		rot_angle = 53
 		font = text_a4
 		rgba = [255 255 255 255]
@@ -2271,7 +2273,8 @@ script animate_whammy_bar
 		array_count = 0
 		begin
 			Color = ($gem_colors [<array_count>])
-			FastFormatCrc ($button_up_models.<Color>.name) a = '_base' c = ($<other_player_status>.text) out = name_base
+			ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
+			ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 			original_bottom_bar_pos = (0.0, 0.0)
 			bottom_bar_pos = (<original_bottom_bar_pos> - ((0.0, 15.0) * ($<other_player_status>.whammy_attack)))
 			if NOT ($<other_player_status>.whammy_attack < 1)
@@ -2340,7 +2343,8 @@ script animate_whammy_bar
 			array_count = 0
 			begin
 				Color = ($gem_colors [<array_count>])
-				FastFormatCrc ($button_up_models.<Color>.name) a = '_base' c = ($<other_player_status>.text) out = name_base
+				ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
+				ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 				DoScreenElementMorph {
 					id = <name_base>
 					alpha = 1
@@ -2360,8 +2364,8 @@ script update_broken_button
 	broken_string_id = ($broken_strings [<id>])
 	Color = ($gem_colors [<id>])
 	button_up_name = ($button_up_models.<Color>.name)
+	ExtendCrc button_up_pixel_array ($<other_player_status>.text)out = pixel_array
 	<player_text> = ($<other_player_status>.text)
-	ExtendCrc button_up_pixel_array <text> out = pixel_array
 	begin
 		<num_hammers> = 0
 		if NOT ($<other_player_status>.<broken_string_id> = 0)
@@ -2433,7 +2437,7 @@ script update_broken_string_arrows
 		parent = <arrow_checksum>
 		id = <text_checksum>
 		Pos = ((53.0, 150.0) + (<x_offset> * (1.0, 0.0)))
-		text = 'PUSH'
+		text = "PUSH"
 		font = text_a4
 		rgba = [255 255 255 255]
 		just = [center bottom]
