@@ -120,8 +120,8 @@ button_models = {
 		whammy_material = sys_whammy2d_open_sys_whammy2d_open
 		star_power_material = sys_gem2d_open_starpower_sys_gem2d_open_starpower
 		star_power_hammer_material = sys_gem2d_open_starpower_hammer_sys_gem2d_open_starpower_hammer
-		star_power_whammy_material = sys_whammy2d_open_sys_whammy2d_open
-		dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
+		star_power_whammy_material = sys_whammy2d_open_star_sys_whammy2d_open_star
+		dead_whammy = sys_whammy2d_open_dead_sys_whammy2d_open_dead // not working
 		name = button_z
 	}
 }

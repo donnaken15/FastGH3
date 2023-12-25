@@ -352,6 +352,7 @@ script begin_video_after_intro
 		wait \{1 gameframe}
 	repeat
 	preload_bgbink
+	spawnscriptnow \{bgbink_calc_fps}
 	begin
 		if isMoviePreLoaded \{textureSlot = 2}
 			StartPreLoadedMovie \{textureSlot = 2}

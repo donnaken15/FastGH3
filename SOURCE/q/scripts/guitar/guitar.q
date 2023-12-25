@@ -166,7 +166,7 @@ mode_index = {
 fastgh3_build = '1.0-999010889'
 fastgh3_branch = unpak
 bleeding_edge = 1
-build_timestamp = [12 14 2023]
+build_timestamp = [12 25 2023]
 
 random_seed = -1
 // ^ originally 107482099
@@ -322,6 +322,7 @@ script guitar_startup
 				{'BGVideoStartTime' out=video_start_on_time}
 				{'BGVideoLoop' out=video_looping}
 				{'BGVideoHold' out=video_hold_last_frame}
+				{'BGVideoFixDesync' out=try_fix_video_desync}
 				{'NoHUD' out=hudless}
 				{'KillGemsHit' out=kill_gems_on_hit}
 				{'NoStreakDisp' out=disable_notestreak_notif}
@@ -354,7 +355,8 @@ script guitar_startup
 				if StructureContains \{structure=jj #"0x1ca1ff20"}
 					k = (<jj>.#"0x1ca1ff20")
 				endif
-				SetValueFromConfig sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k> out=(<jj>.out)
+				FGH3Config sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k>
+				change globalname=(<jj>.out) newvalue=<value>
 				Increment \{j}
 			repeat <array_size>
 			Increment \{i}

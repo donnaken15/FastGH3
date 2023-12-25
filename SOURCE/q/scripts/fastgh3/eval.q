@@ -9,7 +9,7 @@ script eval \{'printf \'no command specified\''}
 		printf \{'tokenizer did not return successfully'}
 		return false
 	endif
-	//printstruct <tokens>
+	printstruct <tokens>
 	//Block
 	//return
 	array = [] // nodes
@@ -110,24 +110,24 @@ script printtoken \{indent = 0 debug = $evalverbose}
 	if NOT (<debug>)
 		return
 	endif
-	if (<t>.type = bytecode)
-		if (<t>.value > 1)
-			if IndexOf (<t>.value) array = ($eval_syntax2bytecodes)
-				literal = ($evaltokens_syntax[<indexof>])
-			else
-				literal = 'unknown'
-			endif
-		else
-			literal = 'newline'
-		endif
-		type = 'bytecode' // display properly because it'e not a debug name
-	else
-		literal = (<t>.value)
-		type = (<t>.type)
-	endif
+	//if (<t>.type = bytecode)
+		//if (<t>.value > 1)
+		//	if IndexOf (<t>.value) array = ($eval_syntax2bytecodes)
+		//		literal = ($evaltokens_syntax[<indexof>])
+		//	else
+		//		literal = 'unknown'
+		//	endif
+		//else
+		//	literal = 'newline'
+		//endif
+		//type = 'bytecode' // display properly because it's not a debug name // now it is ;)
+	//else
+		//literal = (<t>.value)
+		//type = (<t>.type)
+	//endif
 	pad <i> count = (3) pad = ' '
 	indent <indent>
-	printf '%n>%i: %v <%t>' n = <indent> i = <pad> t = <type> v = <literal>
+	printf '%n>%i: %v <%t>' n = <indent> i = <pad> t = (<t>.type) v = (<t>.literal)
 endscript
 
 script evalparseglobal
@@ -137,12 +137,123 @@ script evalparseglobal
 		return \{false}
 	endif
 	next_token = (<#"0x00000000">[(<i> + 1)])
+	printtoken t = <next_token> i = <i>
 	//printstruct <next_token>
 	if NOT (<next_token>.type = name)
 		printf \{'parser prematurely ended when global pointer wasn\'t followed by a name!!!!!!'}
 		return \{false}
 	endif
+	//printstruct true value = (<next_token>.value) i = (<i> + 1)
 	return true value = (<next_token>.value) i = (<i> + 1)
+endscript
+
+script evalparseexpr \{depth = 0 debug = $evalverbose}
+	expression_value = 0
+	operator = 0
+	position = 0
+	operation = 0
+	mode = 0
+	printf 'expression evaluating ('
+	begin
+		// don't know what the order of operations in qscript is
+		// but i can somehow imagine if comparison isolates
+		// the two values around it, somehow this random scenario came to mind
+		// if without parentheses, this (4+5=5) could be executed as (4+(5=5))
+		skip = 0
+		token = (<#"0x00000000">[<i>])
+		if (<token>.type = bytecode)
+			operator = (<token>.value)
+			if NOT (<operator> >= 7 & <operator> <= 15)
+				if NOT (<operator> = 75)
+					printf 'invalid or unimplemented bytecode in expression: %a <%b>, skipping' a = (<token>.literal) b = (<token>.value)
+					skip = 1
+				endif
+			endif
+		else
+			operator = 0
+		endif
+		if (<skip> = 0)
+			printtoken t = <token> i = <i> indent = (<depth> + 1) depth = <depth>
+			//if NOT (<position> = 0)
+				switch (<mode>)
+					// 0 - get lvalue (first)
+					// 1 - get operator
+					// 2 - get rvalue, apply operator (subsequent values)
+					case 0
+					case 2
+						if (<token>.type = bytecode)
+							switch (<token>.value)
+								case 15
+									if (<mode> = 0)
+										printf \{'warning: empty expression'}
+									endif
+									break
+								case 14 // (
+									evalparseexpr <#"0x00000000"> token_count = <token_count> i = (<i> + 1) depth = (<depth> + 1)
+									i = <t>
+								case 75 // $
+									evalparseglobal <#"0x00000000"> token_count = <token_count> i = <i>
+									value = ($<value>)
+									//printstruct <...>
+								default
+									printf 'invalid operator (mode 0): %a' a = (<token>.literal)
+									return false
+							endswitch
+						else
+							value = (<token>.value)
+						endif
+						if (<mode> = 0)
+							expression_value = <value>
+						else
+							switch <operation>
+								case 7
+									expression_value = (<expression_value> = <value>)
+								case 11
+									expression_value = (<expression_value> + <value>)
+								case 10
+									expression_value = (<expression_value> - <value>)
+								case 13
+									expression_value = (<expression_value> * <value>)
+								case 12
+									expression_value = (<expression_value> / <value>)
+								case 8
+									// uhhhh, will need to put in another expression
+									expression_value = (<expression_value>.<value>)
+								default
+								//case 9
+									// uhhhhh
+									printf 'oh no (%e)' e = <operation>
+									return false
+							endswitch
+						endif
+						printf 'current value = %a' a = <expression_value>
+						mode = 1
+					case 1
+						switch <operator>
+							case 7 // =(=)
+							case 8 // .
+							case 9 // ,
+							case 11 // +
+							case 10 // -
+							case 13 // *
+							case 12 // /
+								operation = <operator>
+							case 15
+								break
+							default
+								printf 'invalid operator (mode 1): %a' a = (<operator>)
+								return false
+						endswitch
+						mode = 2
+				endswitch
+			//endif
+		endif
+		Increment \{i}
+		//Increment \{position}
+	repeat
+	printf ')'
+	//printstruct <...>
+	return true value = <expression_value> t = (<i>)
 endscript
 
 script evalparsestruct \{depth = 0 debug = $evalverbose}
@@ -168,72 +279,64 @@ script evalparsestruct \{depth = 0 debug = $evalverbose}
 		switch (<token>.type)
 			case name
 				//printf '%t' t = (<token>.value)
-				if (<i> + 1 < <token_count>)
-					next_token = (<#"0x00000000">[(<i> + 1)])
-					// this feels like a tumor i'm writing
-					if (<next_token>.type = bytecode & <next_token>.value = 7)
-						if (<i> + 2 < <token_count>)
-							next_token = (<#"0x00000000">[(<i> + 2)])
-							//j = (<i> + 3)
-							//pad <j> count = 3 pad = ' '
-							//printf '%i: token: [%v] <%t>' i = <pad> t = (<next_token>.type) v = (<next_token>.value)
-							switch (<next_token>.type)
-								case bytecode
-									switch (<next_token>.value)
-										//case 14
-										case 3
-										//	type = struct
-										//	target = (<token>.value)
-										//	value = (<next_token>.value)
-										//	i = (<i> + 3)
-											evalparsestruct <#"0x00000000"> token_count = <token_count> i = (<i> + 2) depth = (<depth> + 1)
-											i = <t>
-											target = (<token>.value)
-										case 75
-											evalparseglobal <#"0x00000000"> token_count = <token_count> i = (<i> + 2)
-											target = (<token>.value)
-											value = ($<value>)
-											i = (<i> + 4)
-										//case 14
-										//	evalparseexpr <#"0x00000000"> token_count = <token_count> i = (<i> + 2)
-										//	target = (<token>.value)
-										//	i = (<i> + 4)
-											//printstruct <...>
-										//case 5
-										//	type = array
-											//target = (<token>.value)
-											//value = (<next_token>.value)
-											//i = (<i> + 2)
-										default
-											printf 'invalid syntax for assignment!!!!!!!!!!!!!'
-											break
-									endswitch
-								case string
-								case int
-								case float
-								case name
-								//	type = (<next_token>.type)
-									//printstruct <token>
-									target = (<token>.value)
-									value = (<next_token>.value)
-									if (<next_token>.type = string)
-										if (<next_token>.wide = true)
-											RemoveComponent \{value}
-											AddParam_WStr name = <target> (<next_token>.value)
-											struct = { <struct> <value> }
-											skip = 1
-										endif
-									endif
-									i = (<i> + 2)
-							endswitch
-						else
-							printf 'parser prematurely ended when variable assignment wasn\'t followed by a value!!!!!!'
-							break
-						endif
-					else
-						value = (<token>.value)
-						//printf 'no assignment'
+				next_token = (<#"0x00000000">[(<i> + 1)])
+				// this feels like a tumor i'm writing
+				if (<i> + 1 < <token_count> & <next_token>.type = bytecode & <next_token>.value = 7)
+					if NOT (<i> + 2 < <token_count>)
+						printf 'parser prematurely ended when variable assignment wasn\'t followed by a value!!!!!!'
+						break
 					endif
+					next_token = (<#"0x00000000">[(<i> + 2)])
+					//j = (<i> + 3)
+					//pad <j> count = 3 pad = ' '
+					//printf '%i: token: [%v] <%t>' i = <pad> t = (<next_token>.type) v = (<next_token>.value)
+					switch (<next_token>.type)
+						case bytecode
+							switch (<next_token>.value)
+								//case 14
+								case 3
+								//	type = struct
+								//	target = (<token>.value)
+								//	value = (<next_token>.value)
+								//	i = (<i> + 3)
+									evalparsestruct <#"0x00000000"> token_count = <token_count> i = (<i> + 2) depth = (<depth> + 1)
+									i = <t>
+									target = (<token>.value)
+								case 75
+									evalparseglobal <#"0x00000000"> token_count = <token_count> i = (<i> + 2)
+									target = (<token>.value)
+									value = ($<value>)
+									i = (<i> + 4)
+								case 14
+									evalparseexpr <#"0x00000000"> token_count = <token_count> i = (<i> + 3)
+									target = (<token>.value)
+									i = <t>
+									//printstruct <...>
+								//case 5
+								//	type = array
+									//target = (<token>.value)
+									//value = (<next_token>.value)
+									//i = (<i> + 2)
+								default
+									printf 'invalid syntax for assignment!!!!!!!!!!!!!'
+									break
+							endswitch
+						case string
+						case int
+						case float
+						case name
+						//	type = (<next_token>.type)
+							//printstruct <token>
+							target = (<token>.value)
+							value = (<next_token>.value)
+							if (<next_token>.type = string & <next_token>.wide = true)
+								RemoveComponent \{value}
+								AddParam_WStr name = <target> (<next_token>.value)
+								struct = { <struct> <value> }
+								skip = 1
+							endif
+							i = (<i> + 2)
+					endswitch
 				else
 					value = (<token>.value)
 				endif
@@ -251,18 +354,18 @@ script evalparsestruct \{depth = 0 debug = $evalverbose}
 					endif
 				endif
 			case bytecode
-				if (<token>.value = 3)
-					evalparsestruct <#"0x00000000"> token_count = <token_count> i = <i> depth = (<depth> + 1)
-					i = <t>
-				endif
-				if (<token>.value = 75)
-					evalparseglobal <#"0x00000000"> token_count = <token_count> i = <i>
-					i = (<t> + 2)
-					target = #"0x00000000"
-					tmp = ($<value>)
-					RemoveComponent \{value}
-					value = <tmp>
-				endif
+				switch (<token>.value)
+					case 3
+						evalparsestruct <#"0x00000000"> token_count = <token_count> i = <i> depth = (<depth> + 1)
+						i = <t>
+					case 75
+						evalparseglobal <#"0x00000000"> token_count = <token_count> i = <i>
+						i = (<t> + 2)
+						target = #"0x00000000"
+						tmp = ($<value>)
+						RemoveComponent \{value}
+						value = <tmp>
+				endswitch
 				;if (<token>.value = 44)
 				;	passthru = 1
 				;endif
@@ -286,6 +389,9 @@ script evalparsestruct \{depth = 0 debug = $evalverbose}
 		endif
 		Increment \{i}
 		if (<i> >= <token_count>)
+			if (<brackets> = 1)
+				printf 'warning: unclosed brackets'
+			endif
 			break
 		endif
 	repeat
@@ -411,7 +517,9 @@ script evalparseline \{debug = $evalverbose}
 					case 75
 						switch <op>
 							case 14
-								//evalparseexpr
+								evalparseexpr <#"0x00000000"> token_count = <token_count> i = (<i> + 2)
+								i = <t>
+								right_op = <value>
 							case 3
 								//evalparsestruct
 							case 5
@@ -500,7 +608,7 @@ script decompress_eval
 	formattext textname = text "%s" s = '0123456789'
 	change evaltokens_digits = <text>
 	change evaltokens_syntax = [ "=" ":" "." "," "(" ")" "{" "}" "[" "]" "+" "-" "*" "/" "$" "!=" "!" "&" "|" "<" "<=" ">" ">=" "<...>" ]
-	change evaltokens_syntax_nosep = "(){}[]"
+	change evaltokens_syntax_nosep = "=:.,(){}[]+-*/$" // should be named in a way that indicates these are each one character
 	change eval_syntax2bytecodes = [ 7 66 8 9 14 15 3 4 5 6 11 10 13 12 75 77 57 58 59 18 19 20 21 44 ]
 	change evaltokens_keywords = [ "if" "else" "elseif" "endif" "return" "switch" "endswitch" "case" "default" "begin" "repeat" "not" "break" /*"script" "endscript"*/ ]
 	change eval_kw2bytecodes = [ 37 38 39 40 41 60 61 62 63 32 33 57 34 /*35 36*/ ]
@@ -517,7 +625,7 @@ script evaltokenizer \{debug = $evalverbose}
 	current_token = ""
 	FormatText textname = #"0x00000000" "%a" a = <#"0x00000000">
 	StringRemoveTrailingWhitespace \{param = #"0x00000000"}
-	// ensure widestring because i imagine expressions won't work when comparing cstring and wstring
+	// ensure wstring because i imagine expressions won't work when comparing cstring and wstring, or even concat
 	StringToCharArray string = <#"0x00000000">
 	getarraysize \{char_array}
 	parser_text = <char_array>
@@ -573,8 +681,8 @@ script evaltokenizer \{debug = $evalverbose}
 		
 		matched = none
 		// region check what kind of item the current character is
-		begin // HACK!!1/!/1///!/!/!/1!!!///!
-			if (<matched> = none)
+		begin // *
+			//if (<matched> = none)
 				if LocalizedStringEquals a = <current_char> b = "'"
 					matched = string
 					string_type = c
@@ -585,16 +693,16 @@ script evaltokenizer \{debug = $evalverbose}
 					string_type = w
 					break
 				endif
-			endif
-			if (<matched> = none)
+			//endif
+			//if (<matched> = none)
 				StringToCharArray \{string = $evaltokens_alphabet}
 				if ArrayContains contains = <current_char> array = <char_array>
 					matched = name
 					break
 				endif
-			endif
+			//endif
 			// comment
-			if (<matched> = none)
+			//if (<matched> = none)
 				if LocalizedStringEquals a = <current_char> b = "/"
 					if (<parser_pos> < <parser_size>)
 						Increment \{parser_pos}
@@ -620,8 +728,8 @@ script evaltokenizer \{debug = $evalverbose}
 						endif
 					endif
 				endif
-			endif
-			if (<matched> = none)
+			//endif
+			//if (<matched> = none)
 				if (<current_char> = "\\")
 					Increment \{parser_pos}
 					current_char = (<parser_text>[<parser_pos>])
@@ -632,21 +740,23 @@ script evaltokenizer \{debug = $evalverbose}
 						break
 					endif
 				endif
-			endif
-			if (<matched> = none)
+			//endif
+			//if (<matched> = none)
 				StringToCharArray string = ($evaltokens_digits + "-")
 				// feels repetitive to have this condition over and over
+				// array of token arrays? (trollface)
 				if ArrayContains contains = <current_char> array = <char_array>
 					//printf <current_char>
 					matched = digits
 					break
 				endif
-			endif
-			if (<matched> = none)
+			//endif
+			//if (<matched> = none)
 				StringToCharArray string = ($evaltokens_syntax_nosep)
 				if IndexOf <WStr> <current_char> array = <char_array>
 					matched = bytecode
-					value = ($eval_syntax2bytecodes[(<indexof> + 4)])
+					value = ($eval_syntax2bytecodes[<indexof>])
+					literal = <current_char>
 				else
 					if ArrayContains contains = <current_char> array = ($evaltokens_syntax)
 						matched = bytecode
@@ -654,7 +764,7 @@ script evaltokenizer \{debug = $evalverbose}
 						break
 					endif
 				endif
-			endif
+			//endif
 			;if (<matched> = none)
 			;	StringToCharArray \{string = $evaltokens_syntax}
 			;	if WStringIsInArray <current_char> array = <char_array>
@@ -662,7 +772,7 @@ script evaltokenizer \{debug = $evalverbose}
 			;		break
 			;	endif
 			;endif
-		repeat 1
+		repeat 1 // *HACK!!1/!/1///!/!/!/1!!!///!
 		RemoveComponent \{char_array}
 		// endregion
 		// region parse the rest of the text until no more characters match the type of text to parse
@@ -829,7 +939,7 @@ script evaltokenizer \{debug = $evalverbose}
 			case none
 				EmptyScript
 			default
-				printf \{'unknown token!!!!!!!'}
+				printf 'unknown token!!!!!!! symbol: %a' a = <current_char>
 		endswitch
 		// endregion
 		// save token

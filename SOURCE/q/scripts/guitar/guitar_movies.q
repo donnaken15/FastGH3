@@ -167,6 +167,121 @@ endscript
 script unpause_bgbink
 	if IsMoviePlaying \{textureSlot = 2}
 		ResumeMovie \{textureSlot = 2}
+		seek_bgbink
 	endif
 endscript
+script seek_bgbink
+	if ($try_fix_video_desync = 0)
+		return
+	endif
+	if NOT IsMoviePlaying \{textureSlot = 2}
+		return
+	endif
+	if ($estimate_video_fps = 0.0)
+		return
+	endif
+	GetSongTimeMs
+	MathPow ($estimate_video_fps / 30) exp = 2
+	MathFloor ((((<time> + $video_start_on_time) / $estimate_video_fps) / 1.105) * <pow>)
+	SeekMovie textureSlot = 2 frame = <floor> nowait
+	//GetMovieFrame \{textureSlot = 2}
+	//SeekMovie textureSlot = 2 frame = (<frame> - 1) nowait
+endscript
+script bgbink_calc_fps
+	if ($try_fix_video_desync = 0)
+		return
+	endif
+	//spawnscriptnow \{frame_display_test}
+	begin
+		if IsMoviePlaying \{textureSlot = 2}
+			break
+		endif
+		Wait \{1 gameframe}
+	repeat
+	;begin
+	;	GetMovieFrame \{textureSlot = 2}
+	;	if (<frame> > 10)
+	;		break
+	;	endif
+	;	Wait \{1 gameframe}
+	;repeat
+	sample_time = 0
+	end_time = 10
+	time = 0.0
+	current_frame = 0
+	array = [] // delta samples
+	begin
+		if NOT IsMoviePlaying \{textureSlot = 2}
+			change \{estimate_video_fps = 0.0}
+			return // in the case of restarting
+		endif
+		//ProfilingStart
+		GetDeltaTime \{ignore_slomo}
+		time = (<time> + <delta_time>)
+		sample_time = (<sample_time> + <delta_time>)
+		GetMovieFrame \{textureSlot = 2}
+		if NOT (<current_frame> = <frame>)
+			printf 'frame %f' f = <frame>
+			time = (<time> * 1000000)
+			CastToInteger \{time}
+			AddArrayElement array=<array> element=<time>
+			time = 0.0
+			current_frame = <frame>
+		endif
+		//ProfilingEnd <...> 'bgbink_calc_fps' loop ____profiling_interval = ($fps_max)
+		if (<sample_time> > <end_time>)
+			break
+		endif
+		Wait \{1 gameframe}
+	repeat
+	Avg <array>
+	change estimate_video_fps = (1 / (<avg> / 1000000))
+	printstruct avg = <avg> fps = ($estimate_video_fps)
+endscript
+;script frame_display_test
+;	if NOT ScreenElementExists \{id = frame_test}
+;		CreateScreenElement {
+;			type = TextElement
+;			font = text_a1
+;			pos = (90.0, 700.0)
+;			just = [left bottom]
+;			text = 'test'
+;			scale = 0.7
+;			rgba = [ 255 0 0 255 ]
+;			parent = root_window
+;			id = frame_test
+;			font_spacing = -10
+;			z_priority = 1000
+;		}
+;	endif
+;	begin
+;		if NOT IsMoviePlaying \{textureSlot = 2}
+;			begin
+;				if IsMoviePlaying \{textureSlot = 2}
+;					break
+;				endif
+;				Wait \{1 gameframe}
+;			repeat
+;		endif
+;		GetMovieFrame \{textureSlot = 2}
+;		GetSongTimeMs
+;		video_time = (<time> + $video_start_on_time)
+;		MathFloor ((<video_time> / $estimate_video_fps) / 1.105)
+;		MathPow ($estimate_video_fps / 30) exp = 2
+;		if NOT ($estimate_video_fps = 0.0)
+;			o = (<video_time> - <floor> * $estimate_video_fps)
+;		else
+;			o = 'n/a'
+;		endif
+;		FormatText {
+;			textname = text 'TIME: %s, OFF: %o, FPS: %t, FRAME: %f, CALC SEEK: %c'
+;			f = <frame> s = <video_time> o = <o> t = ($estimate_video_fps) c = (<floor> * <pow>)
+;		}
+;		SetScreenElementProps id = frame_test text = <text>
+;		Wait \{1 gameframe}
+;	repeat
+;endscript
 enable_video = 0
+safe_to_seek = 0
+estimate_video_fps = 0.0
+try_fix_video_desync = 0
