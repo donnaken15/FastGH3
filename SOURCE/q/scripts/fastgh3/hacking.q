@@ -251,33 +251,6 @@ script PrintPlayer\{player_status = player1_status}
 	//printstruct $<player_status>
 endscript
 
-script keytest
-	CreateScreenElement {
-		Type = TextElement
-		parent = root_window
-		id = keytest_text
-		font = text_a1
-		Pos = (128.0, 64.0)
-		just = [left top]
-		Scale = (1.0, 1.0)
-		rgba = [255 255 255 255]
-		text = 'test'
-		z_priority = 1000
-		alpha = 1
-	}
-	begin
-		WinPortSioGetControlPress \{deviceNum = $player1_device actionNum = 0}
-		if NOT (<controlNum> = -1)
-			FormatText textname=text 'test: %d: %e' d=$player1_device e=<controlNum>
-			SetScreenElementProps id=keytest_text text=<text>
-		endif
-		wait \{1 gameframe}
-	repeat 10000
-	if ScreenElementExists \{id = keytest_text}
-		DestroyScreenElement \{id = keytest_text}
-	endif
-endscript
-
 // ../guitar/guitar_gems.q:664
 mbt_b = 1
 script mbt_test
@@ -312,27 +285,39 @@ script Ternary \{out = ternary}
 	else
 		ternary = <a>
 	endif
-	AddParams \{output = {}}
-	AddParam structure_name = output name = <out> value = <ternary>
-	if StructureContains structure=<output> <out>
-		return <output>
-	else
+	if (<out> = ternary)
 		return ternary = <ternary>
 	endif
+	AddParams \{output = {}} // should i even do it like this
+	AddParam structure_name = output name = <out> value = <ternary>
+	return <output>
 endscript
-
-script IndexOf \{delegate = IntegerEquals #"0x00000000" = 0 array = []}
-	GetArraySize \{array}
-	i = 0
-	begin
-		if <delegate> a = <#"0x00000000"> b = (<array>[<i>])
-			return true indexof = <i>
-		endif
-		Increment \{i}
-	repeat <array_size>
-	return \{ false indexof = -1 }
+// tired of all this code that has to awkwardly fetch for player_status
+// including formattext and stuff
+script GetPlayer \{#"0x00000000" = 1}
+	Ternary (<#"0x00000000"> = 2) a = player2_status b = player1_status out = info
+	if GotParam \{player_status}
+		player_status = <info>
+	endif
+	if GotParam \{player_text}
+		player_text = ($<info>.text)
+	endif
+	if GotParam \{player}
+		player = ($<info>.player)
+	endif
+	return player_status = <player_status> player_text = <player_text> player = <player>
 endscript
+	/*if GotParam \{gem_container}
+		ExtendCrc gem_container ($<info>.text) out = gem_container
+	endif
+	if GotParam \{input_array}
+		ExtendCrc input_array ($<info>.text) out = input_array
+	endif*///
+	// SOMEHOW THIS TREEVIEW OFFSETTING BECAUSE OF INLINE COMMENT
+	// GLITCH DOESN'T HAPPEN ON MY THUG1 SCRIPT FILE WHERE
+	// I DON'T USE THE // FIX FOR IT
 
+// enabled on unpak for testing performance
 /*///
 script ProfilingStart
 	//return
@@ -357,6 +342,6 @@ script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____
 	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
 endscript/**///
 
-//ProfilingStart = $EmptyScript
-//ProfilingEnd = $EmptyScript
+ProfilingStart = $EmptyScript
+ProfilingEnd = $EmptyScript
 

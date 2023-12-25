@@ -166,71 +166,8 @@ mode_index = {
 fastgh3_build = '1.0-999010889'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [11 27 2023]
+build_timestamp = [12 25 2023]
 
-script FileExists \{#"0x00000000" = ''}
-	if exists <#"0x00000000">
-		return \{true}
-	endif
-	GetPlatformExt
-	// would concatenation be faster than this
-	Formattext textname = xen "%s.%x" s = <#"0x00000000"> x = <platform_ext>
-	if exists <xen>
-		return \{true}
-	endif
-	return \{false}
-endscript
-script exists \{#"0x00000000" = ''}
-	StartWildcardSearch wildcard = <#"0x00000000">
-	begin
-		if GetWildcardFile
-			EndWildcardSearch
-			return \{true}
-		else
-			break
-		endif
-	repeat
-	EndWildcardSearch
-	return \{false}
-endscript
-
-// fancifying
-// @script | AllocArray | create new array with a defined size and element to fill with
-// thanks q
-// @parm name | set | the element and it's type to set the array with
-// @parm name | size | size of the array
-script AllocArray \{set = 0 size = 10}
-	// basically memset lol
-	element = <set>
-	RemoveComponent \{set}
-	array = []
-	begin
-		AddArrayElement <...>
-	repeat <size>
-	change globalname = <#"0x00000000"> newvalue = <array>
-endscript
-script FSZ \{1024}
-	AddParams \{units = [' ' 'K' 'M' 'G'] u = 0}
-	begin
-		if (<#"0x00000000"> >= 1024)
-			<#"0x00000000"> = (<#"0x00000000"> / 1024.0)
-			Increment \{u}
-		else
-			FormatText textname=text '%d%ub' d = <#"0x00000000"> u = (<units>[<u>])
-			break
-		endif
-	repeat
-	return textsize = <text>
-endscript
-script SetValueFromConfig
-	/*if NOT StructureContains structure=<...> #"0x1ca1ff20"
-		#"0x1ca1ff20" = ($<out>)
-		printstruct <...>
-		// not working :(
-	endif*///
-	FGH3Config sect=<sect> <#"0x00000000"> #"0x1ca1ff20"=<#"0x1ca1ff20">
-	change globalname=<out> newvalue=<value>
-endscript
 random_seed = -1
 // ^ originally 107482099
 // @script | guitar_startup | Initialization script
@@ -243,16 +180,18 @@ script guitar_startup
 		if (<ElapsedTime> >= 100)
 			break
 		endif
+		// just to get loading screen to display
 	repeat
+	//printf \{'[2J[0m####### [92mFA[91mST[93mG[94mH[38;2;255;127;0m3[0m INITIALIZING... #######'}
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
 	printf \{'Version %v' v=$fastgh3_build}
 	if ($bleeding_edge = 1)
+		//printf \{'[91mOn developmental build[0m'}
 		printf \{'On developmental build'}
 		pad ($build_timestamp[0])
 		d = <pad>
 		pad ($build_timestamp[1])
-		e = <pad>
-		printf 'Timestamp: %f.%d.%e' d=<d> e=<e> f=($build_timestamp[2])
+		printf 'Timestamp: %f.%d.%e' d=<d> e=<pad> f=($build_timestamp[2])
 	endif
 	if IntegerEquals \{a=$random_seed b=-1}
 		Randomize
@@ -471,7 +410,7 @@ script guitar_startup
 		change gem_start_scale2 = ($gem_start_scale2 * <value>)
 		
 		if ScriptExists \{startup}
-			startup // optional thing to load from config.qb
+			startup // optional thing to load from config.qb/user.pak
 		endif
 	// endregion
 	
@@ -555,8 +494,8 @@ script guitar_startup
 			EnableRemoveSoundEntry \{enable}
 			LoadPak \{'zones/global_sfx.pak' Heap = heap_audio}
 		endif
+		ProfilingEnd <...> 'LoadPak global_sfx.pak'
 		CreatePakManMap \{map = zones links = GH3Zones folder = 'zones/' uselinkslots}
-		ProfilingEnd <...> 'font properties'
 	// endregion
 	
 	// region initialize big stuff
@@ -756,6 +695,10 @@ script guitar_startup
 	printf \{'Done initializing - into game...'}
 	InitAtoms
 	SetProgressionMaxDifficulty \{difficulty = 3}
+	/*if IsWinPort
+		WinPortGetConfigNumber \{name = "Sound.ClapDelay" defaultValue = 0}
+		Change winport_clap_delay = <value>
+	endif*///
 	setup_globaltags
 	kill_start_key_binding
 	Player = 1
@@ -765,6 +708,11 @@ script guitar_startup
 		SpawnScriptLater create_guitar_events params = { <...> }
 		Increment \{player}
 	repeat ($max_num_players)
+	Change primary_controller = ($startup_controller)
+	Change player1_device = ($startup_controller)
+	Change player2_device = ($startup_controller2)
+	Change StructureName = player1_status controller = ($primary_controller)
+	Change structurename = player2_status controller = ($startup_controller2)
 	if ($autolaunch_startnow = 0)
 		HideLoadingScreen
 		start_flow_manager \{flow_state = bootup_sequence_fs}
@@ -815,26 +763,22 @@ script autolaunch_spawned
 	Change player1_device = ($startup_controller)
 	Change player2_device = ($startup_controller2)
 	//Change structurename = player2_status controller = ($startup_controller2)
-	if ($fastgh3_online = 1)
-		start_flow_manager \{flow_state = online_winport_start_connection_fs}
-	else
-		flow = quickplay_play_song_fs
-		switch $game_mode
-			case training
-				flow = practice_play_song_fs
-			case p2_coop
-			case p2_career
-				flow = coop_career_play_song_fs
-			case p2_faceoff
-				flow = mp_faceoff_play_song_fs
-			case p2_battle
-			case p1_quickplay
-			default
-				flow = quickplay_play_song_fs
-		endswitch
-		start_flow_manager flow_state = <flow>
-		SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
-	endif
+	flow = quickplay_play_song_fs
+	switch $game_mode
+		case training
+			flow = practice_play_song_fs
+		case p2_coop
+		case p2_career
+			flow = coop_career_play_song_fs
+		case p2_faceoff
+			flow = mp_faceoff_play_song_fs
+		case p2_battle
+		case p1_quickplay
+		default
+			flow = quickplay_play_song_fs
+	endswitch
+	start_flow_manager flow_state = <flow>
+	SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
 endscript
 kill_dummy_bg_camera = $EmptyScript
 restore_dummy_bg_camera = $EmptyScript

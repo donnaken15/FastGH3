@@ -15,7 +15,7 @@ script create_loading_strings
 		'NO LONGER WREAKING HAVOK' 'PROGRAMMER SOX ARE LAME' 'DIRECTLY CALLING OUT MY EX' 'ONE CLICK MAGIC!'
 		'you need more than debug\n- revup90' '\bf\bf\bc\bc\be\bd\be\bd\b2\b3\ba' 'subscribe for daily \b2ideos'
 		'Switch up the style and get yourself some c00l zonez by going to donnaken15.cf/fastgh3/zones.html'
-		'6 MEGABYTE ZONES' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:\\windows\\fastgh3' '' '\'\'the clone hero version of gh3\'\''
+		'6 MEGABYTE ZONES' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:/windows/fastgh3' '' '\'\'the clone hero version of gh3\'\''
 		'' 'RUNNING ON APOCALYPSE' 'start_gem_scroller()' 'SALUTE TO THE SUN!!' 'UNIVERSES FC, YES! @#!^ YEAH!!'
 		'Now you can DOWNLOAD CHARTS THROUGH THIS GAME?! WHY DIDN\'T ANYONE THINK OF THIS!!'
 		'5atu6w4zaw5atu6w4zaw5atu6w4zaw5atu6w4zaw' 'IT\'S NOT FAST ENOUGH!' 'MASSIVE ADBLOCK!' 'SHE\'S TOO STONED! NINTENDO!'
@@ -86,7 +86,7 @@ script create_loading_screen\{mode = play_song}
 			font = text_a4
 			Scale = 0.9
 			just = [center center]
-			dims = (350.0, 480.0)
+			dims = (450.0, 480.0)
 			Pos = (860.0, 300.0)
 			rgba = [255 255 255 255]
 			z_priority = 5000
@@ -105,6 +105,7 @@ script create_loading_screen\{mode = play_song}
 endscript
 
 script destroy_loading_screen
+	printf 'test'
 	destroy_menu \{menu_id = loading_tip_text}
 	killspawnedscript \{name = jiggle_text_array_elements}
 	if ScreenElementExists \{id = FGH3_load_logo}

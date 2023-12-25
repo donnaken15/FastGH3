@@ -11,6 +11,7 @@ donnaken15       - other QbScript hacking,
 Zedek the P.D.   - Guitar Hero SDK (pak tools), NodeQBC (q compiler)
 raphaelgoulart   - mid2chart
 HATRED           - better No-CD/SecuROM fix/deobfs. than BATTERY
+Nanook           - QueenBee + Parser
 No1mann          \
 Invo             \
 szymmirr         \
@@ -28,7 +29,6 @@ adituv           - QbScript reverse engineering, (old)
                    compiler/decompiler,
                    vsync flame fix,
                    built in QB decompiler
-Nanook           - QueenBee + Parser
 GameZelda        - original modding and game data R.E.
 Activision       \
 RedOctane        \

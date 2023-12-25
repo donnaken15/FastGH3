@@ -63,11 +63,12 @@ Section
 	WriteRegStr HKCR "$1.FSP$3" "" "Play"
 	WriteRegStr HKCR "$1.FSP$3command" "" "$2"
 	CreateShortCut "$DESKTOP\$1.lnk" "$4" "" "$4" 0
-	CreateDirectory "$SMPROGRAMS\$1"
-	CreateShortCut "$SMPROGRAMS\$1\$1.lnk" "$4" "" "$4" 0
-	CreateShortCut "$SMPROGRAMS\$1\$1 Settings.lnk" "$4" "-settings" "$4" 0
-	CreateShortCut "$SMPROGRAMS\$1\Shuffle.lnk" "$4" "-shuffle" "$4" 0
-	CreateShortCut "$SMPROGRAMS\$1\Updater.lnk" "$0\Updater.exe" "" "$4" 0
+	StrCpy $3 "$SMPROGRAMS\$1"
+	CreateDirectory "$3"
+	CreateShortCut "$3\$1.lnk" "$4" "" "$4" 0
+	CreateShortCut "$3\$1 Settings.lnk" "$4" "-settings" "$4" 0
+	CreateShortCut "$3\Shuffle.lnk" "$4" "-shuffle" "$4" 0
+	CreateShortCut "$3\Updater.lnk" "$0\Updater.exe" "" "$4" 0
 SectionEnd
 
 Var DIALOG

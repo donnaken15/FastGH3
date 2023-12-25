@@ -441,7 +441,7 @@ script disable_highway_prepass
 				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = FALSE}
 			endif
 		endif
-	endif*/
+	endif*///
 endscript
 
 script enable_highway_prepass
@@ -455,12 +455,15 @@ script enable_highway_prepass
 				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = true}
 			endif
 		endif
-	endif*/
+	endif*///
 endscript
 start_2d_move = 0
 
 PC_HIGHWAY_ANIM = 0
 script move_highway_2d
+	if ($disable_intro = 1)
+		return
+	endif
 	Change \{start_2d_move = 0}
 	begin
 		if ($start_2d_move = 1)

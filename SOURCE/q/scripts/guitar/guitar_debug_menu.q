@@ -24,7 +24,7 @@ script create_debugging_menu
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Screenshot" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose screen_shot}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Save Replay Buffer" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Load Replay" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
-	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Zones" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose RefreshCurrentZones}]}
+	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Zones" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose RefreshCurrentZones}]}
 	if ($fastgh3_branch = unpak)
 		CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Scripts" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose reload_scripts}]}
 	endif

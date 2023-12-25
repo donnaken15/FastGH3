@@ -19,6 +19,9 @@ partial class settings
 	{
 		this.components = new System.ComponentModel.Container();
 		this.ok = new System.Windows.Forms.Button();
+		// desparate to reduce file size by renaming these
+		// to smaller things, but it looks like it's worth it
+		// because it's actually taking effect
 		this.resL = new System.Windows.Forms.Label();
 		this.hypers = new System.Windows.Forms.NumericUpDown();
 		this.hLabel = new System.Windows.Forms.Label();

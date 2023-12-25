@@ -680,9 +680,9 @@ class Program
 			{
 				// combine logs from any of 3 processes to easily look for errors from all of them
 				bool newfile = cfg("Temp", fl, 1) == 1;
-				if (args[0] != "-settings" &&
-					args[0] != "-gfxswap" &&
-					args[0] != "-shuffle")
+				if (args[0].ToLower() != "-settings" &&
+					args[0].ToLower() != "-gfxswap" &&
+					args[0].ToLower() != "-shuffle")
 					if (wl)
 					{
 						// half kb?

@@ -864,10 +864,10 @@ namespace Nanook.QueenBee.Parser
 
 		public long PakPabMinDataOffset;
 
-		private uint _zLibChunkSize;
-		private uint _zLibHeaderLen;
+		//private uint _zLibChunkSize;
+		//private uint _zLibHeaderLen;
 		public uint ZlibBlockPad = 0x400; //2k  //0x800
-		public uint ZlibFilePadGH5 = 0x4000; //16k
+		//public uint ZlibFilePadGH5 = 0x4000; //16k
 		public uint ZlibFilePad = 0x8000; //32k
 
 	}

@@ -80,23 +80,22 @@ guitar_events = [
 script create_guitar_events
 	printf "create_guitar_events %a .........." a = <player_text>
 	GetArraySize \{$guitar_events}
-	array_entry = 0
+	i = 0
 	begin
 		//printf \{"adding..."}
-		event = ($guitar_events [<array_entry>].event)
+		event = ($guitar_events[<i>].event)
 		ExtendCrc <event> <player_text> out = event
-		SetEventHandler response = call_script event = <event> Scr = event_spawner params = {event_spawned = <array_entry>}
-		array_entry = (<array_entry> + 1)
+		SetEventHandler response = call_script event = <event> Scr = event_spawner params = {event_spawned = <i>}
+		Increment \{i}
 	repeat <array_Size>
-	if IsWinPort
-		WinPortGetConfigNumber \{name = "Sound.ClapDelay" defaultValue = 0}
-		Change winport_clap_delay = <value>
-	endif
+	RemoveComponent \{event}
+	RemoveComponent \{player_text}
+	RemoveComponent \{i}
 	Block
 endscript
 
 script event_spawner
-	spawnscriptnow ($guitar_events [<event_spawned>].Scr)params = {<...> }id = song_event_scripts
+	spawnscriptnow ($guitar_events[<event_spawned>].Scr)params = {<...> }id = song_event_scripts
 endscript
 
 script event_iterator
@@ -469,6 +468,7 @@ script set_sidebar_flash
 	if ($Cheat_PerformanceMode = 1)
 		return
 	endif
+	// optimize????????
 	ExtendCrc sidebar_left ($<player_status>.text) out = left
 	ExtendCrc sidebar_right ($<player_status>.text) out = right
 	if ($<player_status>.star_power_used = 1)
@@ -784,7 +784,7 @@ script GuitarEvent_SongWon\{battle_win = 0}
 				Increment \{i}
 			repeat $current_num_players
 			timestamp
-			formattext textname = filename '..\..\stats_%a_-_%t_%n' a = <song_artist> t = <song_title> n = <timestamp>
+			formattext textname = filename "..\..\stats_%a_-_%t_%n" a = <song_artist> t = <song_title> n = <timestamp>
 			TextOutputEnd output_text FileName = <filename>
 		endif
 	//endif
