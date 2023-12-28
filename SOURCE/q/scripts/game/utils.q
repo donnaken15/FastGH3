@@ -1,33 +1,74 @@
 
 // some cool muh t00lz
 
+// for floats
+script Modulo \{mod = 10}
+	// do if (v < 0) v+= mod???
+	begin
+		if (<#"0x00000000"> >= <mod>)
+			#"0x00000000" = (<#"0x00000000"> - <mod>)
+		else
+			return mod = <#"0x00000000">
+		endif
+	repeat
+endscript
+script Sum
+	getarraysize \{#"0x00000000"}
+	sum = 0.0
+	i = 0
+	begin
+		sum = (<sum> + (<#"0x00000000">[<i>] * 1.0))
+		Increment \{i}
+	repeat <array_size>
+	return sum = <sum>
+endscript
+script Avg
+	Sum <#"0x00000000">
+	getarraysize \{#"0x00000000"}
+	return avg = (<sum> / <array_size>)
+endscript
+script Max \{a = 0 b = 0}
+	if (<a> < <b>)
+		return max = <b>
+	else
+		return max = <a>
+	endif
+endscript
+
 // fancifying
 // @script | AllocArray | create new array with a defined size and element to fill with
 // thanks q
 // @parm name | set | the element and it's type to set the array with (floats don't work >:(   )
 // @parm name | size | size of the array
-script AllocArray \{set = 0 size = 10}
+script AllocArray \{size = 10}
+	if NOT GotParam \{set}
+		//set = 0
+		CreateIndexArray <size>
+		change globalname = <#"0x00000000"> newvalue = <index_array>
+		return
+	endif
 	// basically memset lol
 	element = <set>
 	RemoveComponent \{set}
 	array = []
 	begin
-		RemoveComponent \{set}
 		AddArrayElement <...>
 	repeat <size>
 	change globalname = <#"0x00000000"> newvalue = <array>
 endscript
+// CreateIndexArray CFunc creates an integer array
+// where each item is incremented after another
 
 // @script | FSZ | convert exact file size to a readable string
 // @parm name | | integer of file size
 script FSZ \{1024}
-	AddParams \{units = [' ' 'K' 'M' 'G' 'T'] u = 0}
+	AddParams \{units = [' bytes' 'Kb' 'Mb' 'Gb' 'Tb'] u = 0}
 	begin
 		if (<#"0x00000000"> >= 1024)
 			<#"0x00000000"> = (<#"0x00000000"> / 1024.0)
 			Increment \{u}
 		else
-			FormatText textname=text '%d%ub' d = <#"0x00000000"> u = (<units>[<u>])
+			FormatText textname=text '%d%u' d = <#"0x00000000"> u = (<units>[<u>])
 			break
 		endif
 	repeat
@@ -41,6 +82,9 @@ endscript
 // @return name | | status of whether the item was found or not
 // @return name | indexof | index of the item in the array, if not found, it is set to -1
 script IndexOf \{delegate = IntegerEquals #"0x00000000" = 0 array = []}
+	;if NOT ArrayContains array = <array> contains = <#"0x00000000">
+	;	return
+	;endif
 	GetArraySize \{array}
 	if (<array_size> > 0)
 		i = 0
@@ -62,8 +106,12 @@ endscript
 // @return name | pad | the padded number
 script pad \{#"0x00000000" = 0 count = 2 pad = '0'}
 	formattext textname=text "%d" d=<#"0x00000000">
+	// optimize with stringlength
 	pad_chars = ""
 	if (<count> > 0)
+		if (<#"0x00000000"> < 0)
+			pad_chars = "-"
+		endif
 		digits = 1
 		begin
 			if (<#"0x00000000"> < 10)
@@ -162,7 +210,6 @@ script wait_beats \{1}
 			wait 1 gameframe
 		repeat
 	repeat <#"0x00000000">
-	return
 endscript
 
 script script_assert
@@ -180,72 +227,7 @@ script kill_start_key_binding
 	SetScreenElementProps \{id = root_window event_handlers = [{pad_start null_script}] replace_handlers}
 endscript
 
-/*script reload_scripts
-	StopRendering
-	SetSaveZoneNameToCurrent
-	SetPakManCurrentBlock \{map = zones pak = None}
-	RefreshPakManSizes \{map = zones}
-	ScriptCacheDeleteZeroUsage
-	UnLoadPak \{'pak/qb.pak'}
-	WaitUnloadPak \{'pak/qb.pak' block}
-	LoadPak \{'pak/qb.pak' splitfile no_vram}
-	GetSaveZoneName
-	SetPakManCurrentBlock map = zones pakname = <save_zone>
-	StartRendering
-endscript*///
-
-script RefreshCurrentZones
-	SpawnScriptLater \{reload_zones}
-endscript
-
-script reload_zones
-	//return
-	//pauseskaters
-	StopRendering
-	StopMusic
-	StopAudioStreams
-	//wait \{2 gameframes}
-	SetSaveZoneNameToCurrent
-	//SetEnableMovies \{1}
-	//kill_blur
-	SetPakManCurrentBlock \{map = zones pak = None block_scripts = 1}
-	RefreshPakManSizes \{map = zones}
-	ScriptCacheDeleteZeroUsage
-	//PauseSpawnedScripts
-	
-	// these crash >:(
-	// i was so close
-	//UnloadPak \{'zones/global.pak' heap = heap_global_pak}
-	//WaitUnloadPak \{'zones/global.pak' block}
-	//UnlinkRawAsset 'zones/global/global_gfx.scn' pak = 'zones/global.pak.xen'
-	//UnlinkRawAsset 'zones/global/global_gfx.tex' pak = 'zones/global.pak.xen'
-	
-	//LinkRawAsset 'zones/global/global_gfx.tex' pak = 'zones/global.pak.xen'
-	//QuickReload scene = 'zones/global/global_gfx.scn'
-	ProfilingStart
-	LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile}
-	SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
-	// test time to load
-	ProfilingEnd <...> 'LoadPak global.pak'
-	ProfilingStart
-	//UnLoadPak \{'zones/default.pak'}
-	//WaitUnloadPak \{'zones/global.pak' block}
-	LoadPak \{'zones/default.pak'}
-	ProfilingEnd <...> 'LoadPak default.pak'
-	
-	flashsounds
-	
-	//UnpauseSpawnedScripts
-	
-	GetSaveZoneName
-	SetPakManCurrentBlock map = zones pakname = <save_zone> block_scripts = 0
-	StartRendering
-	//if NOT ($view_mode = 1)
-	//	unpauseskaters
-	//endif
-endscript
-
-script flashsounds
+script reload_sounds
 	EnableRemoveSoundEntry \{enable}
 	//stars
 	//printf \{'Flashing global_sfx pak'}
@@ -256,12 +238,6 @@ script flashsounds
 	ProfilingEnd <...> 'LoadPak global_sfx.pak'
 	//stars
 	printf \{'Sfx Pak flashing done.'}
-endscript
-
-script SafeKill
-	if IsCreated <nodeName>
-		kill name = <nodeName>
-	endif
 endscript
 
 script SetValueFromConfig

@@ -25,8 +25,8 @@ paint.net
 FileOptimizer
 Guitar Hero SDK
 upx              - Programs used
-adituv           - QbScript reverse engineering, (old)
-                   compiler/decompiler,
+adituv           - QbScript reverse engineering,
+                   (old) compiler/decompiler,
                    vsync flame fix,
                    built in QB decompiler
 GameZelda        - original modding and game data R.E.

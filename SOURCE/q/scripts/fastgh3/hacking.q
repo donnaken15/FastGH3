@@ -2,15 +2,17 @@
 script key_events
 	begin
 		//if ($toggle_console = 0)
-		// emulator moment
 		WinPortSioGetControlPress \{deviceNum = $player1_device}
 		if NOT (<controlNum> = -1)
 			if (<controlNum> = 323) // Tab
-				if ($hold_tab = 0)
-					change old_speed = ($current_speedfactor)
-					change current_speedfactor = ($old_speed * $fastforward)
-					update_slomo
-					change \{hold_tab = 1}
+				// emulator moment
+				if (($console_pause = 1 & $toggle_console = 0) | $console_pause = 0)
+					if ($hold_tab = 0)
+						change old_speed = ($current_speedfactor)
+						change current_speedfactor = ($old_speed * $fastforward)
+						update_slomo
+						change \{hold_tab = 1}
+					endif
 				endif
 			endif
 		endif
@@ -25,26 +27,10 @@ script key_events
 		Wait \{1 gameframe}
 	repeat
 endscript
-toggle_console = 0
 last_key = 0
 old_speed = -1.0
 hold_tab = 0
 fastforward = 2.0
-
-script trim \{c = 1}
-	StringToCharArray string = <#"0x00000000">
-	getarraysize \{char_array}
-	if (<array_size> > 1)
-		AddParams \{ trim = "" i = 0 } // stupid
-		begin
-			trim = (<trim> + <char_array>[<i>])
-			Increment \{i}
-		repeat (<array_size> - <c>)
-		return trim = <trim>
-	elseif (<array_size> = 1)
-		return \{trim = ""}
-	endif
-endscript
 
 script lefty_toggle \{player_status = player1_status}
 	killspawnedscript \{id=lefty_toggle}
@@ -73,20 +59,6 @@ script lefty_toggle \{player_status = player1_status}
 	wait ((0.28 / $current_speedfactor) * $<player_status>.scroll_time) seconds
 	animate_lefty_flip other_player_status = <player_status>
 	Change StructureName = <player_status> lefthanded_button_ups = <left>
-endscript
-
-script wait_beats \{1}
-	begin
-		last_beat_flip = $beat_flip
-		begin
-			cur_beat_flip = $beat_flip
-			if NOT (<last_beat_flip> = <cur_beat_flip>)
-				break
-			endif
-			wait 1 gameframe
-		repeat
-	repeat <#"0x00000000">
-	return
 endscript
 
 script everyone_deploy // :P
@@ -290,7 +262,58 @@ script Ternary \{out = ternary}
 	endif
 	AddParams \{output = {}} // should i even do it like this
 	AddParam structure_name = output name = <out> value = <ternary>
+	if StructureContains structure=<output> <out>
+		return <output>
+	else
+		return ternary = <ternary>
+	endif
+endscript
+
+// for concatenating simple strings into QbKey
+// because i can't just shove a local var into array declaration
+script FastFormatCrc \{#"0xFFFFFFFF"}
+	// key a = '_' b = 'p1' out = testkey
+	//
+	// perfect real world example:
+	// FormatText checksumName = gem_array '%s_%t_%p%d' s = <song_prefix> t = 'song' p = <part> d = <difficulty_text_nl> AddToStringLookup
+	// replaced with
+	// FastFormatCrc $current_song a = '_song_' b = <part> c = <difficulty_text_nl> out = gem_array
+	// also why does the game have a conniption fit when i create a variable named "test"
+	if NOT GotParam \{#"0x00000000"}
+		return
+	endif
+	if NOT GotParam \{out}
+		return
+	endif
+	if NOT GotParam \{a}
+		return
+	endif
+	//x = <#"0x00000000">
+	//ProfilingStart
+	AddParams \{params = [a b c d e]}
+	// allow as many strings as i'll necessarily need
+	GetArraySize \{params}
+	i = 0
+	z = ''
+	begin
+		param = (<params>[<i>])
+		if NOT GotParam <param>
+			break
+		endif
+		ExtendCrc <#"0x00000000"> (<...>.<param>) out = #"0x00000000"
+		z = (<z> + (<...>.<param>))
+		Increment \{i}
+	repeat <array_size>
+	AddParam structure_name = output name = <out> value = <#"0x00000000">
+	//ProfilingEnd <...> 'FastFormatCrc'
+	//printf '%x%z' x = <x> z = <z>
+	//printstruct <...>
 	return <output>
+endscript
+script SysTex
+	name = ('sys_' + <#"0x00000000">)
+	ExtendCrc #"0xFFFFFFFF" (<name> + '_' + <name>) out = sys_tex
+	return sys_tex = <sys_tex>
 endscript
 // tired of all this code that has to awkwardly fetch for player_status
 // including formattext and stuff

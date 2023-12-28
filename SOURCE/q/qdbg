@@ -1,0 +1,42 @@
+#!/bin/dash
+
+[ $# -eq 0 ] && { echo -e "usage: qdbg [folder] [output]"; exit 1; }
+[ ! -d "$1" ] && { echo "invalid path"; exit 1; }
+indir=$1; find=/usr/bin/find; nul="/dev/null"
+[ -z "$2" ] && outdir="$1_debug/" || outdir="$2/"
+#rm "$outdir" -rf
+[ ! "$(dirname "$0")" = "." ] && bin="$(realpath "$0")/" || bin="$(which "$0")/"
+
+bin=$(dirname "$bin"); wbin=$(cygpath -w "$bin" 2>$nul || wslpath -m "$bin"); nul=/dev/null; #NL=$'\n'
+which wslpath 2>$nul >$nul && crc32="crc32" || crc32="crc32.exe"
+[ "$(basename "$indir")" = "scripts" ] && scripts_root="scripts/" || scripts_root="" # uhhh
+
+(cd "$indir" && $find * -type f -name "*.q" 2>$nul) | while read -r f; do
+	out="$outdir${f%%.*}.dbg.xen"
+	[ ! -f "$out" -o "$out" -ot "$indir/$f" ] && {
+		mkdir -p "${outdir}$(dirname $f)"
+		echo "Processing $f..."
+		fn="$scripts_root${f%%.*}.qb"
+		echo "[LineNumbers]" > $out
+		echo "" >> $out
+		echo "[Checksums]" >> $out
+		echo "0x$(./crc32 \"$fn\") $fn" >> $out
+		(
+			# i hate free software
+			sed -E -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba' "$indir/$f" |
+			sed -e "s/\/\/.*//g" -e "s/\\[\"']//g" -e "s/'.*'//g" -e "s/\".*\"//g" \
+				-e 's/0x[0-9A-Fa-f]//g' | grep -Eio -e "[a-z][a-z0-9_]*?" - |
+			grep -Evi -e "(begin|break|(end)?switch|case|(end)?if|default|return|else(if)?|(end)?script|not)" - |
+			sort -u | uniq -i
+		) | while read -r k; do
+			# >just feed all keys into one call to crc32 and create key for every argument
+			echo "${chk}0x$(./$crc32 $k) ${k}" >> $out
+		done
+	}
+done
+
+echo done...
+
+
+
+
