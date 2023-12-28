@@ -44,21 +44,21 @@ Default_Fast_Particle_LOD_Dist_Pair = (0.0, 0.0)*///
 // endregion
 
 // region fx/lightshow
-/**/lightshow_enabled = 0
-lightvolume_flarecutoff_low = 0.2
-lightvolume_flarecutoff_high = 0.35
-lightvolume_flarematerialcrc = FlareMaterial_FlareMaterial
-lightvolume_flaresaturate = 0.6
-lightshow_defaultblendtime = 0.15
-lightshow_coloroverrideblend = 0.4
-lightshow_offset_ms = 100
-
+//lightshow_enabled = 0
+//lightvolume_flarecutoff_low = 0.2
+//lightvolume_flarecutoff_high = 0.35
+//lightvolume_flarematerialcrc = FlareMaterial_FlareMaterial
+//lightvolume_flaresaturate = 0.6
+//lightshow_defaultblendtime = 0.15
+//lightshow_coloroverrideblend = 0.4
+//lightshow_offset_ms = 100
+/**/
 script LS_AllOff
 	killspawnedscript \{id = LightShow}
+	WhyAmIBeingCalled
 endscript
+//LS_AllOff = $WhyAmIBeingCalled
 
-LightShow_ColorOverrideExcludeLights = $nullArray
-LightShow_StateNodeFlags = $nullArray
 LightShow_StateNodeFlagMapping = {
 	performance = {
 		poor = $nullArray
@@ -69,8 +69,7 @@ LightShow_StateNodeFlagMapping = {
 		blackout = $nullArray
 	}
 }
-LightShow_NoteMapping = $nullArray
-LightShow_SharedProcessors = $nullArray/**///
+/**///
 
 //lightshow_iterator = $WhyAmIBeingCalled
 // endregion

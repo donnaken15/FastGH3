@@ -1688,7 +1688,7 @@ script Open_NoteFX\{Player = 1 player_status = player1_status}
 	ExtendCrc <fx_id> '_2' out = fx2_id
 	fx1_scale = (1.0, 1.0)
 	fx2_scale = (2.2, 2.4)
-	if ($current_num_players = 2)
+	if ($current_num_players = 2 | $end_credits = 1)
 		fx1_scale = (0.76, 0.9)
 		fx2_scale = (1.7, 2.4)
 	endif

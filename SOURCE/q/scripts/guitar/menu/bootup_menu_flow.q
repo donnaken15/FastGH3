@@ -25,7 +25,8 @@ bootup_to_game_fs = {
 	Destroy = EmptyScript
 	actions = [
 		{
-			$quickplay_play_song_action
+			action = continue
+			flow_state = enter_mode_fs
 		}
 	]
 }
@@ -99,7 +100,7 @@ script start_checking_for_signin_change
 endscript
 
 script bootup_check_autologin
-	killspawnedscript \{name = attract_mode_spawner}
+	//killspawnedscript \{name = attract_mode_spawner}
 	//Change \{enable_saving = 1}
 	if GotParam \{device_num}
 		Change primary_controller = <device_num>

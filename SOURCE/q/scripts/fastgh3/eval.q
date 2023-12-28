@@ -1,7 +1,7 @@
 
 /**///
 
-evalverbose = 1
+evalverbose = 0
 
 script eval \{'printf \'no command specified\''}
 	printf "] %l" l = <#"0x00000000">
@@ -9,7 +9,7 @@ script eval \{'printf \'no command specified\''}
 		printf \{'tokenizer did not return successfully'}
 		return false
 	endif
-	printstruct <tokens>
+	//printstruct <tokens>
 	//Block
 	//return
 	array = [] // nodes
@@ -94,42 +94,6 @@ script evalrun
 	endif
 endscript
 
-script indent \{1}
-	if (<#"0x00000000"> = 0)
-		return indent = ''
-	endif
-	indent = ''
-	begin
-		indent = (<indent> + '    ')
-	repeat <#"0x00000000">
-	RemoveComponent \{#"0x00000000"}
-	return indent = <indent>
-endscript
-
-script printtoken \{indent = 0 debug = $evalverbose}
-	if NOT (<debug>)
-		return
-	endif
-	//if (<t>.type = bytecode)
-		//if (<t>.value > 1)
-		//	if IndexOf (<t>.value) array = ($eval_syntax2bytecodes)
-		//		literal = ($evaltokens_syntax[<indexof>])
-		//	else
-		//		literal = 'unknown'
-		//	endif
-		//else
-		//	literal = 'newline'
-		//endif
-		//type = 'bytecode' // display properly because it's not a debug name // now it is ;)
-	//else
-		//literal = (<t>.value)
-		//type = (<t>.type)
-	//endif
-	pad <i> count = (3) pad = ' '
-	indent <indent>
-	printf '%n>%i: %v <%t>' n = <indent> i = <pad> t = (<t>.type) v = (<t>.literal)
-endscript
-
 script evalparseglobal
 	//printstruct <...>
 	if (<i> + 1 >= <token_count>)
@@ -150,7 +114,6 @@ endscript
 script evalparseexpr \{depth = 0 debug = $evalverbose}
 	expression_value = 0
 	operator = 0
-	position = 0
 	operation = 0
 	mode = 0
 	printf 'expression evaluating ('
@@ -174,82 +137,79 @@ script evalparseexpr \{depth = 0 debug = $evalverbose}
 		endif
 		if (<skip> = 0)
 			printtoken t = <token> i = <i> indent = (<depth> + 1) depth = <depth>
-			//if NOT (<position> = 0)
-				switch (<mode>)
-					// 0 - get lvalue (first)
-					// 1 - get operator
-					// 2 - get rvalue, apply operator (subsequent values)
-					case 0
-					case 2
-						if (<token>.type = bytecode)
-							switch (<token>.value)
-								case 15
-									if (<mode> = 0)
-										printf \{'warning: empty expression'}
-									endif
-									break
-								case 14 // (
-									evalparseexpr <#"0x00000000"> token_count = <token_count> i = (<i> + 1) depth = (<depth> + 1)
-									i = <t>
-								case 75 // $
-									evalparseglobal <#"0x00000000"> token_count = <token_count> i = <i>
-									value = ($<value>)
-									//printstruct <...>
-								default
-									printf 'invalid operator (mode 0): %a' a = (<token>.literal)
-									return false
-							endswitch
-						else
-							value = (<token>.value)
-						endif
-						if (<mode> = 0)
-							expression_value = <value>
-						else
-							switch <operation>
-								case 7
-									expression_value = (<expression_value> = <value>)
-								case 11
-									expression_value = (<expression_value> + <value>)
-								case 10
-									expression_value = (<expression_value> - <value>)
-								case 13
-									expression_value = (<expression_value> * <value>)
-								case 12
-									expression_value = (<expression_value> / <value>)
-								case 8
-									// uhhhh, will need to put in another expression
-									expression_value = (<expression_value>.<value>)
-								default
-								//case 9
-									// uhhhhh
-									printf 'oh no (%e)' e = <operation>
-									return false
-							endswitch
-						endif
-						printf 'current value = %a' a = <expression_value>
-						mode = 1
-					case 1
-						switch <operator>
-							case 7 // =(=)
-							case 8 // .
-							case 9 // ,
-							case 11 // +
-							case 10 // -
-							case 13 // *
-							case 12 // /
-								operation = <operator>
+			switch (<mode>)
+				// 0 - get lvalue (first)
+				// 1 - get operator
+				// 2 - get rvalue, apply operator (subsequent values)
+				case 0
+				case 2
+					if (<token>.type = bytecode)
+						switch (<token>.value)
 							case 15
+								if (<mode> = 0)
+									printf \{'warning: empty expression'}
+								endif
 								break
+							case 14 // (
+								evalparseexpr <#"0x00000000"> token_count = <token_count> i = (<i> + 1) depth = (<depth> + 1)
+								i = <t>
+							case 75 // $
+								evalparseglobal <#"0x00000000"> token_count = <token_count> i = <i>
+								value = ($<value>)
+								//printstruct <...>
 							default
-								printf 'invalid operator (mode 1): %a' a = (<operator>)
+								printf 'invalid operator (mode 0): %a' a = (<token>.literal)
 								return false
 						endswitch
-						mode = 2
-				endswitch
-			//endif
+					else
+						value = (<token>.value)
+					endif
+					if (<mode> = 0)
+						expression_value = <value>
+					else
+						switch <operation>
+							case 7
+								expression_value = (<expression_value> = <value>)
+							case 11
+								expression_value = (<expression_value> + <value>)
+							case 10
+								expression_value = (<expression_value> - <value>)
+							case 13
+								expression_value = (<expression_value> * <value>)
+							case 12
+								expression_value = (<expression_value> / <value>)
+							case 8
+								// uhhhh, will need to put in another expression
+								expression_value = (<expression_value>.<value>)
+							default
+							//case 9
+								// uhhhhh
+								printf 'oh no (%e)' e = <operation>
+								return false
+						endswitch
+					endif
+					printf 'current value = %a' a = <expression_value>
+					mode = 1
+				case 1
+					switch <operator>
+						case 7 // =(=)
+						case 8 // .
+						case 9 // ,
+						case 11 // +
+						case 10 // -
+						case 13 // *
+						case 12 // /
+							operation = <operator>
+						case 15
+							break
+						default
+							printf 'invalid operator (mode 1): %a' a = (<operator>)
+							return false
+					endswitch
+					mode = 2
+			endswitch
 		endif
 		Increment \{i}
-		//Increment \{position}
 	repeat
 	printf ')'
 	//printstruct <...>
@@ -404,59 +364,6 @@ script evalparsestruct \{depth = 0 debug = $evalverbose}
 	return value = <struct> t = <i>
 endscript
 
-// :(
-script AddParam_WStr
-	#"  name  " = <name>
-	#"  value  " = <#"0x00000000">
-	RemoveComponent \{name}
-	RemoveComponent \{#"0x00000000"}
-	if NOT (<#"  name  "> = #"0x00000000")
-		FormatText textname = <#"  name  "> "%a" a = <#"  value  ">
-	else
-		FormatText textname = name "%a" a = <#"  value  ">
-		#"0x00000000" = <name>
-		RemoveComponent \{name}
-	endif
-	RemoveComponent \{#"  name  "}
-	RemoveComponent \{#"  value  "}
-	return value = { <...> }
-endscript
-
-script stupid
-	// guessing game
-	// you'll be stupid too
-	switch <name>
-		case #"0x00000000"
-			EmptyScript
-		case test2
-			test2 = <#"0x00000000">
-		case value
-			value = <#"0x00000000">
-		case pos
-			pos = <#"0x00000000">
-		case dims
-			dims = <#"0x00000000">
-		case scale
-			scale = <#"0x00000000">
-		case pair
-			pair = <#"0x00000000">
-		case vector
-			vector = <#"0x00000000">
-		case name
-			name = <#"0x00000000">
-			overwrite_name = 1
-		default
-			printf \{'unknown name for my stupid hack in struct string parsing'}
-			printf <name>
-	endswitch
-	if NOT (<overwrite_name> = 1)
-		RemoveComponent \{name}
-	else
-		RemoveComponent \{overwrite_name}
-	endif
-	return value = {<...>}
-endscript
-
 script evalparseline \{debug = $evalverbose}
 	//line_type = call
 	//line_type = assign
@@ -542,14 +449,14 @@ script evalparseline \{debug = $evalverbose}
 						endif
 						break
 					default
-						if IndexOf (<token>.value) array = ($eval_syntax2bytecodes)
-							literal = ($evaltokens_syntax[<indexof>])
-						else
-							literal = 'unknown'
-						endif
+						//if IndexOf (<token>.value) array = ($eval_syntax2bytecodes)
+						//	literal = ($evaltokens_syntax[<indexof>])
+						//else
+						//	literal = 'unknown'
+						//endif
 						printf {
 							'unknown bytecode %a!!!!!!!! literal: \'%b\''
-							a = <op> b = <literal>
+							a = <op> b = (<token>.literal)
 						}
 						return false
 				endswitch
@@ -590,28 +497,6 @@ script evalparseline \{debug = $evalverbose}
 		}
 		i = (<t> - 1) // :/
 	}
-endscript
-
-evaltokens_whitespace = [ ]
-evaltokens_alphabet = ""
-evaltokens_digits = ""
-evaltokens_syntax = [ ]
-evaltokens_syntax_nosep = ""
-eval_syntax2bytecodes = [ ]
-evaltokens_keywords = [ ]
-eval_kw2bytecodes = [ ]
-
-script decompress_eval
-	change evaltokens_whitespace = [ " " "	" "\n" ]
-	formattext textname = text "%s" s = 'ABCDEFGHIJKLMNOPRQSTUWXYZabcdefghijklmnopqrstuvwxyz_'
-	change evaltokens_alphabet = <text>
-	formattext textname = text "%s" s = '0123456789'
-	change evaltokens_digits = <text>
-	change evaltokens_syntax = [ "=" ":" "." "," "(" ")" "{" "}" "[" "]" "+" "-" "*" "/" "$" "!=" "!" "&" "|" "<" "<=" ">" ">=" "<...>" ]
-	change evaltokens_syntax_nosep = "=:.,(){}[]+-*/$" // should be named in a way that indicates these are each one character
-	change eval_syntax2bytecodes = [ 7 66 8 9 14 15 3 4 5 6 11 10 13 12 75 77 57 58 59 18 19 20 21 44 ]
-	change evaltokens_keywords = [ "if" "else" "elseif" "endif" "return" "switch" "endswitch" "case" "default" "begin" "repeat" "not" "break" /*"script" "endscript"*/ ]
-	change eval_kw2bytecodes = [ 37 38 39 40 41 60 61 62 63 32 33 57 34 /*35 36*/ ]
 endscript
 
 script evaltokenizer \{debug = $evalverbose}
@@ -885,17 +770,17 @@ script evaltokenizer \{debug = $evalverbose}
 				number = 0
 				decimals = 0
 				matched = int
-				StringToCharArray string = ("-." + $evaltokens_digits)
+				//StringToCharArray string = ("-." + $evaltokens_digits)
 				literal = ""
 				begin
 					current_char = (<parser_text>[<parser_pos>])
 					//printf <current_char>
-					if IndexOf <WStr> <current_char> array = <char_array>
+					if ArrayContains contains = <current_char> array = <char_array>
 						literal = (<literal> + <current_char>)
-						switch <indexof>
-							case 0
+						switch <current_char>
+							case "-"
 								Increment \{dashes}
-							case 1
+							case "."
 								Increment \{dots}
 								number = (<number> * 1.0)
 								matched = float
@@ -933,7 +818,7 @@ script evaltokenizer \{debug = $evalverbose}
 				RemoveComponent \{dots}
 				RemoveComponent \{digits}
 				RemoveComponent \{decimals}
-				RemoveComponent \{char_array}
+				//RemoveComponent \{char_array}
 				RemoveComponent \{current_char}
 				RemoveComponent \{current_char}
 			case none
@@ -971,4 +856,119 @@ script evaltokenizer \{debug = $evalverbose}
 	//	printstruct <...>
 	//endif
 	return true tokens = <array> token_count = <token_count>
+endscript
+
+evaltokens_whitespace = [ ]
+evaltokens_alphabet = ""
+evaltokens_digits = ""
+evaltokens_syntax = [ ]
+evaltokens_syntax_nosep = ""
+eval_syntax2bytecodes = [ ]
+evaltokens_keywords = [ ]
+eval_kw2bytecodes = [ ]
+
+script decompress_eval
+	change evaltokens_whitespace = [ " " "	" "\n" ]
+	formattext textname = text "%s" s = 'ABCDEFGHIJKLMNOPRQSTUWXYZabcdefghijklmnopqrstuvwxyz_'
+	change evaltokens_alphabet = <text>
+	formattext textname = text "%s" s = '0123456789'
+	change evaltokens_digits = <text>
+	change evaltokens_syntax = [ "=" ":" "." "," "(" ")" "{" "}" "[" "]" "+" "-" "*" "/" "$" "!=" "!" "&" "|" "<" "<=" ">" ">=" "<...>" ]
+	change evaltokens_syntax_nosep = "=:.,(){}[]+-*/$"
+	// should be named in a way that indicates these are each one character
+	// because later part of tokenizer continuously adds up characters
+	// until the next char doesn't match the type like whitespace, and
+	// that doesn't need to happen for above chars
+	change eval_syntax2bytecodes = [ 7 66 8 9 14 15 3 4 5 6 11 10 13 12 75 77 57 58 59 18 19 20 21 44 ]
+	change evaltokens_keywords = [ "if" "else" "elseif" "endif" "return" "switch" "endswitch" "case" "default" "begin" "repeat" "not" "break" /*"script" "endscript"*/ ]
+	change eval_kw2bytecodes = [ 37 38 39 40 41 60 61 62 63 32 33 57 34 /*35 36*/ ]
+endscript
+
+script indent \{1}
+	if (<#"0x00000000"> = 0)
+		return indent = ''
+	endif
+	indent = ''
+	begin
+		indent = (<indent> + '    ')
+	repeat <#"0x00000000">
+	//RemoveComponent \{#"0x00000000"}
+	return indent = <indent>
+endscript
+
+script printtoken \{indent = 0 debug = $evalverbose}
+	if NOT (<debug>)
+		return
+	endif
+	//if (<t>.type = bytecode)
+		//if (<t>.value > 1)
+		//	if IndexOf (<t>.value) array = ($eval_syntax2bytecodes)
+		//		literal = ($evaltokens_syntax[<indexof>])
+		//	else
+		//		literal = 'unknown'
+		//	endif
+		//else
+		//	literal = 'newline'
+		//endif
+		//type = 'bytecode' // display properly because it's not a debug name // now it is ;)
+	//else
+		//literal = (<t>.value)
+		//type = (<t>.type)
+	//endif
+	pad <i> count = (3) pad = ' '
+	indent <indent>
+	printf '%n>%i: %v <%t>' n = <indent> i = <pad> t = (<t>.type) v = (<t>.literal)
+endscript
+
+// :(
+script AddParam_WStr
+	#"  name  " = <name>
+	#"  value  " = <#"0x00000000">
+	RemoveComponent \{name}
+	RemoveComponent \{#"0x00000000"}
+	if NOT (<#"  name  "> = #"0x00000000")
+		FormatText textname = <#"  name  "> "%a" a = <#"  value  ">
+	else
+		FormatText textname = name "%a" a = <#"  value  ">
+		#"0x00000000" = <name>
+		RemoveComponent \{name}
+	endif
+	RemoveComponent \{#"  name  "}
+	RemoveComponent \{#"  value  "}
+	return value = { <...> }
+endscript
+
+script stupid
+	// guessing game
+	// you'll be stupid too
+	switch <name>
+		case #"0x00000000"
+			EmptyScript
+		case test2
+			test2 = <#"0x00000000">
+		case value
+			value = <#"0x00000000">
+		case pos
+			pos = <#"0x00000000">
+		case dims
+			dims = <#"0x00000000">
+		case scale
+			scale = <#"0x00000000">
+		case pair
+			pair = <#"0x00000000">
+		case vector
+			vector = <#"0x00000000">
+		case name
+			name = <#"0x00000000">
+			overwrite_name = 1
+		default
+			printf \{'unknown name for my stupid hack in struct string parsing'}
+			printf <name>
+	endswitch
+	if NOT (<overwrite_name> = 1)
+		RemoveComponent \{name}
+	else
+		RemoveComponent \{overwrite_name}
+	endif
+	return value = {<...>}
 endscript

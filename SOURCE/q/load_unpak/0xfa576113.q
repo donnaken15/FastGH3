@@ -35,6 +35,7 @@ script init
 		'fastgh3/console'
 		'fastgh3/convars'
 		'fastgh3/eval'
+		'fastgh3/firstplay'
 		'fx/misc_fx'
 		'fx/particle_scripts'
 		'game/audio/audio_effects_settings'

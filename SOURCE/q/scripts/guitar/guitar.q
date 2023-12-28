@@ -216,7 +216,7 @@ script guitar_startup
 		printf \{'Initializing unneeded stuff'}
 		//CompositeObjectManager_startup
 		//MemCardSystemInitialize // probably destroyed and broke save functionality
-		InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
+		InitAnimSystem \{AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0}
 		//InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
 		LightShow_Init \{notes = $nullArray nodeflags = $nullArray ColorOverrideExclusions = $nullArray}
 		printf \{'Initializing Replay buffer'}
@@ -303,7 +303,7 @@ script guitar_startup
 			// 0 = default if not specified
 			{ sect='Player' [
 				{'Hyperspeed' out=Cheat_Hyperspeed #"0x1ca1ff20"=3}
-				{'Autostart' out=autolaunch_startnow #"0x1ca1ff20"=1}
+				{'Autostart' out=autolaunch_startnow #"0x1ca1ff20"=-1}
 				{'ExitOnSongEnd' out=exit_on_song_end}
 				{'FCMode' out=FC_MODE}
 				{'EasyExpert' out=Cheat_EasyExpert}
@@ -417,7 +417,7 @@ script guitar_startup
 		
 		decompress_eval
 		
-		printf 'Running autoexec line'
+		printf \{'Running autoexec line'}
 		FGH3Config \{sect='Misc' 'AutoExec' #"0x1ca1ff20"="printf 'no autoexec specified!!!!!'"}
 		eval <value> // evalu8 for fun
 	// endregion
@@ -562,7 +562,7 @@ script guitar_startup
 	ProfilingStart
 	printf \{'Done initializing - into game...'}
 	InitAtoms
-	SetProgressionMaxDifficulty \{difficulty = 3}
+	//SetProgressionMaxDifficulty \{difficulty = 3}
 	/*if IsWinPort
 		WinPortGetConfigNumber \{name = "Sound.ClapDelay" defaultValue = 0}
 		Change winport_clap_delay = <value>
@@ -582,13 +582,19 @@ script guitar_startup
 	Change StructureName = player1_status controller = ($primary_controller)
 	Change structurename = player2_status controller = ($startup_controller2)
 	KillSpawnedScript \{name = empty_script}
-	if ($autolaunch_startnow = 0)
-		HideLoadingScreen
-		start_flow_manager \{flow_state = bootup_sequence_fs}
-	else
-		StartRendering
-		SpawnScriptLater \{autolaunch_spawned}
-	endif
+	switch ($autolaunch_startnow)
+		case 0
+			HideLoadingScreen
+			start_flow_manager \{flow_state = bootup_sequence_fs}
+		case -1
+			printf \{'---- First play ----'}
+			HideLoadingScreen
+			StartRendering
+			start_flow_manager \{flow_state = first_launch_fs}
+		default
+			StartRendering
+			SpawnScriptLater \{autolaunch_spawned}
+	endswitch
 	ProfilingEnd <...> 'start game'	
 	ProfilingStart
 	if FileExists \{'hway.pak'}

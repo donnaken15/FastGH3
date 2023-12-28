@@ -32,6 +32,9 @@ script destroy_credits_menu
 	clean_up_user_control_helpers
 	destroy_menu \{menu_id = mc_scroll}
 	destroy_menu \{menu_id = credits_list_container}
+	if ScreenElementExists \{id = credits_list_container}
+		DestroyScreenElement \{id = credits_list_container}
+	endif
 	killspawnedscript \{name = scrolling_list_begin}
 	killspawnedscript \{name = fade_in_credit_item}
 	destroy_menu_backdrop
@@ -70,7 +73,7 @@ script scrolling_list_add_item\{i = 0}
 	endif
 	if NOT StructureContains structure = ($Credits[<i>]) image
 		if StructureContains structure = ($Credits[<i>]) item
-			text = (($Credits [<i>]).item)
+			text = (($Credits[<i>]).item)
 		else
 			text = " "
 		endif
