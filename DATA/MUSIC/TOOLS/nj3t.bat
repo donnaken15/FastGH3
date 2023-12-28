@@ -7,15 +7,15 @@ IF "%ab%"=="" set ab=64
 IF "%bm%"=="" set bm=B
 IF "%ac%"=="" set ac=1
 IF "%ac%"=="1" ( set m=3 ) else ( set m=1 )
-set "HELIX=wav - | "%~dp0helix" - "%~dp0fsbtmp\fastgh3_song.mp3" -%bm%%ab% -%m%1 -U2 -q1 -D"
+set "HELIX=| "%~dp0helix" - "%~dp0fsbtmp\fastgh3_song.mp3" -%bm%%ab% -M%m% -X0 -U2 -Qquick -A1 -D -EC"
 IF "%ff%"=="" (
-	"%~dp0sox" -m %* -S --multi-threaded channels %ac% rate %ar% norm -0.1 -t %HELIX%
+	"%~dp0sox" -m %* -S --multi-threaded -t wav - channels %ac% rate %ar% norm -0.1 %HELIX%
 ) else (
 	setlocal enabledelayedexpansion
 	set mix=
 	set count=0
 	for %%x in (%*) do ( set "mix=!mix! -i %%x" && set /a count+=1 )
-	"%ff%" -hide_banner !mix! -filter_complex amix=inputs=!count!:duration=longest -ac %ac% -ar %ar% -f %HELIX%
+	"%ff%" -hide_banner !mix! -filter_complex amix=inputs=!count!:duration=longest -ac %ac% -ar %ar% -f wav pipe: %HELIX%
 	endlocal
 )
 goto :EOF

@@ -22,6 +22,7 @@ script create_debugging_menu
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Settings' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_settings_menu}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Skip Into Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipintosong_menu}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Screenshot" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose screen_shot}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Credits Test" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Save Replay Buffer" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Load Replay" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
 	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Zones" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose RefreshCurrentZones}]}
@@ -436,6 +437,7 @@ script update_slomo
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player>
 		// this is probably meant to tighten it as if it were still 100% but it doesn't take effect until restart
+		// because at that point, it's loaded into static memory
 		Change StructureName = <player_status> check_time_early = ($check_time_early * $current_speedfactor)
 		Change StructureName = <player_status> check_time_late = ($check_time_late * $current_speedfactor)
 		Player = (<Player> + 1)
@@ -446,7 +448,7 @@ script select_slomo_setprop
 	FormatText \{textname = slomo_text "Select Slomo : %s" s = $current_speedfactor}
 	select_slomo_menuitem ::SetProps text = <slomo_text>
 endscript
-debug_showmeasures = OFF
+debug_showmeasures = ON
 
 script toggle_inputlog
 	ui_menu_select_sfx

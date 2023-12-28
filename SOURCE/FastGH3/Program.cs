@@ -1017,10 +1017,10 @@ class Program
 						{
 							vl(vstr[18], chartConvColor); // "Detected midi file."
 							vl(vstr[19], chartConvColor); // "Converting to chart..."
-							// why isnt this working
-							//mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
-							//Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
-							//Console.ReadKey();
+														  // why isnt this working
+														  //mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
+														  //Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
+														  //Console.ReadKey();
 							File.Copy(args[0], paksongmid, true);
 							vl(vstr[135]);
 							mid2chart.Start();
@@ -1210,7 +1210,7 @@ class Program
 						bool nj3t = false; // nj3ts.Count smh // "3 Count!"
 						List<string> nj3ts = new List<string>();
 						vl(vstr[26], FSBcolor); //vl("Checking if extra audio exists", FSBcolor);
-						// numbered drum streams
+												// numbered drum streams
 						for (int j = 0; j < 4; j++)
 						{
 							for (int i = 1; i < 9; i++)
@@ -1261,19 +1261,22 @@ class Program
 							nj3t = false;
 						}
 						string blankmp3 = mt + "blank.mp3";
-						// CH sucks
-						if (!File.Exists(audiostreams[0]))
+						if (!nj3t)
 						{
-							for (int i = 0; i < 4; i++)
+							// CH sucks
+							if (!File.Exists(audiostreams[0]))
 							{
-								audtmpstr = chf + "guitar" + '.' + audextnames[i];
-								vl(audtmpstr);
-								if (File.Exists(audtmpstr))
+								for (int i = 0; i < 4; i++)
 								{
-									vl("Found cringe compatibility", FSBcolor);
-									audiostreams[0] = audtmpstr;
-									audiostreams[1] = blankmp3;
-									break;
+									audtmpstr = chf + "guitar" + '.' + audextnames[i];
+									vl(audtmpstr);
+									if (File.Exists(audtmpstr))
+									{
+										vl("Found cringe compatibility", FSBcolor);
+										audiostreams[0] = audtmpstr;
+										audiostreams[1] = blankmp3;
+										break;
+									}
 								}
 							}
 						}

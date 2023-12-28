@@ -291,8 +291,8 @@ script setup_highway\{Player = 1}
 			j = 0
 			begin
 				ExtendCRC name (<names>[<j>]) out = tmpname
-				ExtendCRC ($button_up_models.<Color>.name) (<names>[<j>]) out = tmp
-				ExtendCRC <tmp> <player_text> out = <tmpname>
+				// don't know why i can't make a = '_' and b = names, somehow crashes
+				FastFormatCrc ($button_up_models.<Color>.name) a = (<names>[<j>]) b = <player_text> out = <tmpname>
 				Increment \{j}
 			repeat 6
 			<Pos> = (((<pos2d>.(1.0, 0.0))* (1.0, 0.0))+ (1024 * (0.0, 1.0)))
@@ -441,7 +441,7 @@ script disable_highway_prepass
 				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = FALSE}
 			endif
 		endif
-	endif*///
+	endif*/
 endscript
 
 script enable_highway_prepass
@@ -455,15 +455,12 @@ script enable_highway_prepass
 				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = true}
 			endif
 		endif
-	endif*///
+	endif*/
 endscript
 start_2d_move = 0
 
-PC_HIGHWAY_ANIM = 0
+//PC_HIGHWAY_ANIM = 0
 script move_highway_2d
-	if ($disable_intro = 1)
-		return
-	endif
 	Change \{start_2d_move = 0}
 	begin
 		if ($start_2d_move = 1)
@@ -471,8 +468,10 @@ script move_highway_2d
 		endif
 		wait \{1 gameframe}
 	repeat
+	//drawtext id = move_test y = 50 parent = <container_id> text = '--- TOP ---'
 	//if ($PC_HIGHWAY_ANIM = 0)
 		// a bit slow
+		//ProfilingStart
 		GetDeltaTime \{ignore_slomo}
 		interval = (1.0/<delta_time>/$current_speedfactor)
 		if (<interval> < 60)
@@ -489,11 +488,14 @@ script move_highway_2d
 			return
 		endif
 		i1000 = (1000.0 / <interval>)
+		//ProfilingEnd <...> 'move highway start'
 		generate_move_table interval=<interval> pos_start_orig=<pos_start_orig>
 		GetArraySize \{moveTable}
 		start_time = (<time> - (400.0 * <movetime>)) // instantly appear animating into screen
+		// TODO: adjust offset to go with ^ highway or sidebar height
 		last_time = -1
 		begin
+			//ProfilingStart
 			GetSongTimeMs
 			time2 = (((<time> - <start_time>) / <i1000>) / <movetime>)
 			CastToInteger \{time2}
@@ -506,8 +508,10 @@ script move_highway_2d
 				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))
 				break
 			endif
+			//ProfilingEnd <...> 'move highway frame'
 			wait \{1 gameframe}
 		repeat
+	//killelement id = move_test
 	/**else
 		highway_start_y = 720
 		pos_start_orig = 0

@@ -19,7 +19,7 @@ popup_event_handlers_nooptions = [
 ]
 
 script create_popup_warning_menu\{player_device = $primary_controller}
-	printstruct <...>
+	//printstruct <...>
 	<menu_pos> = (640.0, 510.0)
 	<menu_bg_offset> = (0.0, -28.0)
 	<event_handlers> = {}
@@ -48,8 +48,10 @@ script create_popup_warning_menu\{player_device = $primary_controller}
 	endif
 	offwhite = [223 223 223 255]
 	z = 100
-	displaySprite parent = popup_warning_container tex = Dialog_Title_BG flip_v Pos = (416.0, 100.0) dims = (224.0, 224.0) z = <z>
-	displaySprite parent = popup_warning_container tex = Dialog_Title_BG Pos = (640.0, 100.0) dims = (224.0, 224.0) z = <z>
+	if NOT GotParam \{no_title}
+		displaySprite parent = popup_warning_container tex = Dialog_Title_BG flip_v Pos = (416.0, 100.0) dims = (224.0, 224.0) z = <z>
+		displaySprite parent = popup_warning_container tex = Dialog_Title_BG Pos = (640.0, 100.0) dims = (224.0, 224.0) z = <z>
+	endif
 	if GotParam \{options}
 		CreateScreenElement {
 			Type = VMenu
@@ -77,6 +79,9 @@ script destroy_popup_warning_menu
 endscript
 
 script create_popup_warning_text\{title = "WARNING"}
+	if GotParam \{no_title}
+		return
+	endif
 	<title_scale> = 1.2
 	if GotParam \{title_props}
 		title_scale = (<title_props>.Scale)

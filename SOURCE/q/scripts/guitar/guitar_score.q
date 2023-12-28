@@ -42,6 +42,48 @@ script reset_score
 	Change \{gStar_Power_Triggered = 0}
 endscript
 
+script hit_note
+	Change StructureName = <player_status> notes_hit = ($<player_status>.notes_hit + 1)
+	Change StructureName = <player_status> current_run = ($<player_status>.current_run + 1)
+	Change StructureName = <player_status> total_notes = ($<player_status>.total_notes + 1)
+	if ($<player_status>.current_run > $<player_status>.best_run)
+		Change StructureName = <player_status> best_run = ($<player_status>.current_run)
+	endif
+	get_current_multiplier player_status = <player_status>
+	difficulty = $current_difficulty
+	Change StructureName = <player_status> score = ($<player_status>.score + (<multiplier> * $points_per_note.<difficulty>))
+endscript
+
+script miss_note
+	Change StructureName = <player_status> total_notes = ($<player_status>.total_notes + 1)
+	Change StructureName = <player_status> current_run = 0
+endscript
+
+script unnecessary_note
+	Change StructureName = <player_status> current_run = 0
+endscript
+
+script update_score_fast
+	if ($Cheat_PerformanceMode = 1 || $hudless = 1)
+		if ($game_mode = training)
+			begin
+				GetSongTimeMs
+				if (<time> > $current_section_array[($current_section_array_entry + 1)].time)
+					change current_section_array_entry = ($current_section_array_entry + 1)
+				endif
+				wait \{1 gameframe}
+			repeat
+		endif
+		return
+	endif
+	UpdateScoreFastInit player_status = <player_status>
+	begin
+		GetSongTimeMs
+		UpdateScoreFastPerFrame player_status = <player_status> time = <time>
+		wait \{1 gameframe}
+	repeat
+endscript
+
 script calc_songscoreinfo\{player_status = player1_status}
 	get_song_prefix song = ($current_song)
 	CalcSongScoreInfo <...>
@@ -262,46 +304,4 @@ script calc_songscoreinfo\{player_status = player1_status}
 		<fast_sp_phrases_total> != <sp_phrases_total>)
 		ScriptAssert \{"Mismatch in CalcSongScoreInfo"}
 	endif*///
-endscript
-
-script hit_note
-	Change StructureName = <player_status> notes_hit = ($<player_status>.notes_hit + 1)
-	Change StructureName = <player_status> current_run = ($<player_status>.current_run + 1)
-	Change StructureName = <player_status> total_notes = ($<player_status>.total_notes + 1)
-	if ($<player_status>.current_run > $<player_status>.best_run)
-		Change StructureName = <player_status> best_run = ($<player_status>.current_run)
-	endif
-	get_current_multiplier player_status = <player_status>
-	difficulty = $current_difficulty
-	Change StructureName = <player_status> score = ($<player_status>.score + (<multiplier> * $points_per_note.<difficulty>))
-endscript
-
-script miss_note
-	Change StructureName = <player_status> total_notes = ($<player_status>.total_notes + 1)
-	Change StructureName = <player_status> current_run = 0
-endscript
-
-script unnecessary_note
-	Change StructureName = <player_status> current_run = 0
-endscript
-
-script update_score_fast
-	if ($Cheat_PerformanceMode = 1 || $hudless = 1)
-		if ($game_mode = training)
-			begin
-				GetSongTimeMs
-				if (<time> > $current_section_array[($current_section_array_entry + 1)].time)
-					change current_section_array_entry = ($current_section_array_entry + 1)
-				endif
-				wait \{1 gameframe}
-			repeat
-		endif
-		return
-	endif
-	UpdateScoreFastInit player_status = <player_status>
-	begin
-		GetSongTimeMs
-		UpdateScoreFastPerFrame player_status = <player_status> time = <time>
-		wait \{1 gameframe}
-	repeat
 endscript

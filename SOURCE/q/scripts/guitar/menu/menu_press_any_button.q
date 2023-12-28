@@ -2,9 +2,6 @@
 script create_press_any_button_menu
 	ReAcquireControllers
 	Change \{primary_controller_assigned = 0}
-	Change \{main_menu_movie_first_time = 0}
-	//SoundEvent \{event = Menu_Guitar_Lick_SFX}
-	//spawnscriptnow \{Menu_Music_On params = {waitforguitarlick = 1}}
 	create_menu_backdrop \{texture = black}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = pab_container Pos = (0.0, 0.0)}
 	CreateScreenElement \{ Type = SpriteElement parent = pab_container texture = FastGH3_logo just = [center center] Pos = (640.0, 160.0) Scale = 1.2 }

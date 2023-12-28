@@ -18,21 +18,16 @@ script enable_pause
 endscript
 
 script pausegh3
-	printf \{"--------------"}
-	printf \{"Pausing Game"}
-	printf \{"--------------"}
+	printf \{'--------------'}
+	printf \{'Pausing Game'}
+	printf \{'--------------'}
 	broadcastevent \{Type = event_pause_game}
+	pause_bgbink
 	PauseGh3Sounds <...>
 	PauseFullScreenMovie
 	PauseGame
-	if IsMoviePlaying \{textureSlot = 2}
-		PauseMovie \{textureSlot = 2}
-	endif
 	if IsMoviePlaying \{textureSlot = 1}
 		PauseMovie \{textureSlot = 1}
-	endif
-	if NOT (SkaterCamAnimFinished name = cutscene)
-		MovieMembFunc \{name = cutscene func = Cut_GEL_Pause}
 	endif
 	ui_flow_manager_respond_to_action \{action = pause_game}
 	wait \{1 gameframe}
@@ -40,21 +35,18 @@ script pausegh3
 endscript
 
 script unpausegh3
-	printf \{"------------"}
-	printf \{"Unpausing Game"}
-	printf \{"------------"}
+	printf \{'------------'}
+	printf \{'Unpausing Game'}
+	printf \{'------------'}
 	wait \{1 gameframe}
-	UnpauseGh3Sounds <...>
-	UnPauseFullScreenMovie
-	UnPauseGame
 	if IsMoviePlaying \{textureSlot = 2}
 		ResumeMovie \{textureSlot = 2}
 	endif
+	UnpauseGh3Sounds <...>
+	UnPauseFullScreenMovie
+	UnPauseGame
 	if IsMoviePlaying \{textureSlot = 1}
 		ResumeMovie \{textureSlot = 1}
-	endif
-	if NOT (SkaterCamAnimFinished name = cutscene)
-		MovieMembFunc \{name = cutscene func = Cut_GEL_Pause params = {OFF}}
 	endif
 	Change \{toggleviewmode_enabled = true}
 	if NOT isps3

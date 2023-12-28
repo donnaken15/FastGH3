@@ -115,6 +115,8 @@ script pause_flow_from_mode // stupid
 		case p2_faceoff
 		case p2_pro_faceoff
 			return \{flow_state = mp_faceoff_pause_fs}
+		case training
+			return \{flow_state = practice_pause_fs}
 		case p1_quickplay
 		case p2_battle
 		default
@@ -122,18 +124,24 @@ script pause_flow_from_mode // stupid
 	endswitch
 endscript
 script detect_controller_by_button
+	if GotParam \{background}
+		create_menu_backdrop \{texture = black}
+	endif
 	ReAcquireControllers
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = pab_container Pos = (0.0, 0.0)}
 	CreateScreenElement \{ Type = TextBlockElement parent = pab_container font = fontgrid_title_gh3 text = 'Press any button on any controller' dims = (800.0, 320.0) Pos = (640.0, 320.0) just = [center top] internal_just = [center top] rgba = [255 255 255 255] Scale = 1.4 allow_expansion }
 	spawnscriptnow \{check_for_any_input}
 endscript
 script stop_detecting_buttons
+	if GotParam \{background}
+		destroy_menu_backdrop
+	endif
 	destroy_menu \{menu_id = pab_container}
 	killspawnedscript \{name = check_for_any_input}
 	SoundEvent \{event=ui_select_sfx}
 endscript
 script controller_texture
-	texture = missing_sprite
+	texture = sprite_missing
 	if IsWinPort
 		if WinPortSioIsKeyboard deviceNum = <#"0x00000000">
 			texture = controller_2p_keyboard
@@ -333,6 +341,28 @@ script create_version_text
 		just = [right bottom]
 		Pos = (1200,710)
 		alpha = 0.8
+		Scale = 0.7
+		z = <z>
+	}
+	branch_text = ''
+	switch ($fastgh3_branch)
+		case main
+			branch_text = 'main'
+		case unpak
+			branch_text = 'unpak'
+		case wii
+			branch_text = 'wii'
+		case online
+			branch_text = 'online'
+	endswitch
+	CreateScreenElement {
+		Type = TextElement
+		parent = pause_menu_frame_container
+		text = <branch_text>
+		font = text_a4
+		just = [right bottom]
+		Pos = (600,710)
+		rgba = [ 127 255 255 191 ]
 		Scale = 0.7
 		z = <z>
 	}
@@ -1208,6 +1238,19 @@ script create_pause_menu\{Player = 1 submenu = none}
 				}
 				GetScreenElementDims \{id = pause_options_lefty}
 				<id> ::SetProps Pos = (<width> * (1.0, 0.0) + (22.0, 24.0))
+				if NOT ($end_credits = 1)
+					new_pause_menu_button {
+						<params_params>
+						id = pause_credits
+						event_handlers = [
+							{focus retail_menu_focus params = {id = pause_credits}}
+							{focus generic_menu_up_or_down_sound}
+							{unfocus retail_menu_unfocus params = {id = pause_credits}}
+							{pad_choose ui_flow_manager_respond_to_action params = {action = select_credits create_params = {player_device = <player_device>}}}
+						]
+						text = 'Credits'
+					}
+				endif
 				new_pause_menu_button {
 					<params_params>
 					id = options_exit

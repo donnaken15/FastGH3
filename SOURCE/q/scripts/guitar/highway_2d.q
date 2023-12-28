@@ -1240,26 +1240,40 @@ endscript
 
 script generate_move_table \{interval=60 pos_start_orig=0}
 	ProfilingStart
-	MathPow ((<interval>)/60.0) exp = 2
+	MathPow (<interval>/60.0) exp = 2
 	y = 720
 	pos_add = -720
 	pos_sub = 1.0
 	pos_sub_add = (0.0004386 / <pow>)
 	intervalth = (1.0/<interval>)
-	array = []
+	size = (<interval>*2.5)
+	CastToInteger \{size}
+	CreateIndexArray <size>
+	i = 0
 	begin
 		<y> = (<y> + (<pos_add> * <intervalth>))
 		<pos_add> = (<pos_add> * <pos_sub>)
 		<pos_sub> = (<pos_sub> - <pos_sub_add>)
 		element = (<y> * 1000.0)
 		CastToInteger \{element}
-		AddArrayElement <...> // doesn't support floats, makes entire array zero >:(
+		SetArrayElement arrayname=index_array index=<i> newvalue=<element>
 		if (<y> <= <pos_start_orig> || <pos_add> >= -0.002)
+			break
+		endif
+		Increment \{i}
+		if (<i> >= <size>)
 			break
 		endif
 	repeat
 	ProfilingEnd <...> 'generate_move_table'
-	return moveTable = <array>
+	if (<i> >= <size>)
+		begin
+			printf \{'overshot move table index!!!!!!!!!!!!!'}
+		repeat 10
+	endif
+	//GetArraySize \{index_array}
+	//PrintStruct <...>
+	return moveTable = <index_array>
 endscript
 
 

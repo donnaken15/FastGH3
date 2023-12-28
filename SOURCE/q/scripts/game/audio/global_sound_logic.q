@@ -305,131 +305,85 @@ script GH3_Set_Guitar_Verb_And_Echo_to_Dry
 	setsoundbusseffects \{effect = $Reverb_Guitar_Buss_Dry}
 endscript
 
-script GH_SFX_Overloaded_Static_Player1
-endscript
-
-script GH_SFX_wait_then_kill_Overloaded_Static_Player1
-endscript
-
-script GH_SFX_Overloaded_Static_Player2
-endscript
-
-script GH_SFX_wait_then_kill_Overloaded_Static_Player2
-endscript
-
-script GH_BattleMode_Modulate_HPF_Cutoff
-endscript
-
-script gh_battlemode_modulate_HPF_value
-endscript
-
-script GH_BattleMode_Modulate_LPF_Cutoff
-endscript
-
-script gh_battlemode_modulate_LPF_value
-endscript
-
-script GH_BattleMode_Modulate_Phaser_Delay
-endscript
-
-script gh_modulate_Phaser_Delay_Value
-endscript
-
-script gh_battlemode_modulate_Wah_value
-endscript
+GH_SFX_Overloaded_Static_Player1 = $EmptyScript
+GH_SFX_wait_then_kill_Overloaded_Static_Player1 = $EmptyScript
+GH_SFX_Overloaded_Static_Player2 = $EmptyScript
+GH_SFX_wait_then_kill_Overloaded_Static_Player2 = $EmptyScript
+GH_BattleMode_Modulate_HPF_Cutoff = $EmptyScript
+gh_battlemode_modulate_HPF_value = $EmptyScript
+GH_BattleMode_Modulate_LPF_Cutoff = $EmptyScript
+gh_battlemode_modulate_LPF_value = $EmptyScript
+GH_BattleMode_Modulate_Phaser_Delay = $EmptyScript
+gh_modulate_Phaser_Delay_Value = $EmptyScript
+gh_battlemode_modulate_Wah_value = $EmptyScript
 
 script GH_BattleMode_Player1_SFX_DiffUp_Start
 	SoundEvent \{event = GH_SFX_BattleMode_DiffUp_P1}
 endscript
-
 script GH_BattleMode_Player2_SFX_DiffUp_Start
 	SoundEvent \{event = GH_SFX_BattleMode_DiffUp_P2}
 endscript
-
 script GH_BattleMode_Player1_SFX_DoubleNotes_Start
 	SoundEvent \{event = GH_SFX_BattleMode_DoubleNote_P1}
 endscript
-
 script GH_BattleMode_Player2_SFX_DoubleNotes_Start
 	SoundEvent \{event = GH_SFX_BattleMode_DoubleNote_P2}
 endscript
-
 script GH_BattleMode_Player1_SFX_Shake_Start
 	SoundEvent \{event = GH_SFX_BattleMode_Lightning_Player1}
 endscript
-
 script GH_BattleMode_Player2_SFX_Shake_Start
 	SoundEvent \{event = GH_SFX_BattleMode_Lightning_Player2}
 endscript
-
 script GH_BattleMode_Player1_SFX_LeftyNotes_Start
 	SoundEvent \{event = GH_SFX_BattleMode_Lefty_P1}
 endscript
-
 script GH_BattleMode_Player2_SFX_LeftyNotes_Start
 	SoundEvent \{event = GH_SFX_BattleMode_Lefty_P2}
 endscript
-
 script GH_BattleMode_Player1_SFX_BrokenString_Start
 	SoundEvent \{event = GH_SFX_BattleMode_StringBreak_P1}
 endscript
-
 script GH_BattleMode_Player2_SFX_BrokenString_Start
 	SoundEvent \{event = GH_SFX_BattleMode_StringBreak_P2}
 endscript
-
 script GH_BattleMode_Player1_SFX_Steal
 	SoundEvent \{event = GH_SFX_BattleMode_Steal_P1}
 endscript
-
 script GH_BattleMode_Player2_SFX_Steal
 	SoundEvent \{event = GH_SFX_BattleMode_Steal_P2}
 endscript
-
 script GH_BattleMode_Player1_SFX_Whammy_Start
 	SoundEvent \{event = GH_SFX_BattleMode_WhammyAttack_P1}
 endscript
-
 script GH_BattleMode_Player2_SFX_Whammy_Start
 	SoundEvent \{event = GH_SFX_BattleMode_WhammyAttack_P2}
 endscript
-
 script GH_BattleMode_Player1_SFX_Death_Drain
 	SoundEvent \{event = GH_SFX_BattleMode_Death_Drain_P1}
 endscript
-
 script GH_BattleMode_Player2_SFX_Death_Drain
 	SoundEvent \{event = GH_SFX_BattleMode_Death_Drain_P2}
 endscript
-
 script GH_BattleMode_Start_Heartbeat_P1
 	SoundEvent \{event = Battlemode_HeartBeat_P1}
 endscript
-
 script GH_BattleMode_Stop_Heartbeat_P1
 	StopSoundEvent \{Battlemode_HeartBeat_P1}
 endscript
-
 script GH_BattleMode_Start_Heartbeat_P2
 	SoundEvent \{event = Battlemode_HeartBeat_P2}
 endscript
-
 script GH_BattleMode_Stop_Heartbeat_P2
 	StopSoundEvent \{Battlemode_HeartBeat_P2}
 endscript
-
 script GH_BattleMode_SFX_Sudden_Death
 	SoundEvent \{event = GH_SFX_BattleMode_Sudden_Death}
 endscript
 
-script GH3_Battle_Play_Crowd_Reaction_SFX
-endscript
-
-script Battle_Attack_Cheer_Based_On_Venue_P1
-endscript
-
-script Battle_Attack_Cheer_Based_On_Venue_P2
-endscript
+GH3_Battle_Play_Crowd_Reaction_SFX = $EmptyScript
+Battle_Attack_Cheer_Based_On_Venue_P1 = $EmptyScript
+Battle_Attack_Cheer_Based_On_Venue_P2 = $EmptyScript
 
 script GH3_Battle_Play_Whammy_Pitch_Up_Sound
 	num_strums = ($<other_player_status>.whammy_attack)
@@ -469,42 +423,17 @@ GH3_Play_A_Crowd_OneShot_Positive_Based_On_Venue = $EmptyScript
 GH3_Play_A_Crowd_OneShot_Negative_Based_On_Venue = $EmptyScript
 GH3_SFX_Encore_Accept = $EmptyScript
 
-script GH3_SFX_Encore_Decline
-endscript
-
-script GH3_AdjustCrowdSingingVolumeUp
-endscript
-
-script GH3_AdjustCrowdSingingVolumeDown
-endscript
-
-script GH3_AdjustCrowdFastSurge
-endscript
-
-script GH3_AdjustCrowdSlowSurge
-endscript
-
-script Crowd_Singalong_Volume_Up
-endscript
-
-script Crowd_Singalong_Volume_Down
-endscript
-
-script Menu_Music_On
-endscript
-
-script Menu_music_Checking
-endscript
-
-script Menu_Music_Off
-	//EnableUserMusic \{disable}
-	//killspawnedscript \{name = Menu_Music_On}
-	//StopSoundEvent \{Menu_Music_SE}
-endscript
-
-script PlayEncoreStreamSFX
-endscript
-
+GH3_SFX_Encore_Decline = $EmptyScript
+GH3_AdjustCrowdSingingVolumeUp = $EmptyScript
+GH3_AdjustCrowdSingingVolumeDown = $EmptyScript
+GH3_AdjustCrowdFastSurge = $EmptyScript
+GH3_AdjustCrowdSlowSurge = $EmptyScript
+Crowd_Singalong_Volume_Up = $EmptyScript
+Crowd_Singalong_Volume_Down = $EmptyScript
+Menu_Music_On = $EmptyScript
+Menu_music_Checking = $EmptyScript
+Menu_Music_Off = $EmptyScript
+PlayEncoreStreamSFX = $EmptyScript
 script Song_Intro_Kick_SFX_Waiting
 	printingtext = ($current_intro.hud_move_time)
 	wait ($current_intro.hud_move_time / 1000.0)seconds
@@ -521,83 +450,33 @@ script Song_Intro_Highway_Up_SFX_Waiting
 	SoundEvent \{event = Song_Intro_Highway_Up}
 endscript
 
-script Change_Crowd_Looping_SFX
-endscript
+Change_Crowd_Looping_SFX = $EmptyScript
+do_actual_changing_of_looping_sound = $EmptyScript
+Change_Crowd_Looping_SFX_Bad = $EmptyScript
+Change_Crowd_Looping_SFX_Neutral = $EmptyScript
+Change_Crowd_Looping_SFX_Good = $EmptyScript
+Crowd_Transition_SFX_Poor_To_Medium = $EmptyScript
+Crowd_Transition_SFX_Medium_To_Good = $EmptyScript
+Crowd_Transition_SFX_Medium_To_Poor = $EmptyScript
+Crowd_Transition_SFX_Good_To_Medium = $EmptyScript
+Crowd_generic_transition_sfx = $EmptyScript
+transition_sfx_left_side = $EmptyScript
+transition_sfx_right_side = $EmptyScript
+transition_sfx_both_sides = $EmptyScript
+Do_Actual_Transition_SFX_Poor_To_Medium = $EmptyScript
+Do_Actual_Transition_SFX_Poor_To_Medium_P1 = $EmptyScript
+Do_Actual_Transition_SFX_Poor_To_Medium_P2 = $EmptyScript
+Do_Actual_Transition_SFX_Medium_To_Good = $EmptyScript
+Do_Actual_Transition_SFX_Medium_To_Good_P1 = $EmptyScript
+Do_Actual_Transition_SFX_Medium_To_Good_P2 = $EmptyScript
+Do_Actual_Transition_SFX_Medium_To_Poor = $EmptyScript
+Do_Actual_Transition_SFX_Medium_To_Poor_P1 = $EmptyScript
+Do_Actual_Transition_SFX_Medium_To_Poor_P2 = $EmptyScript
+Do_Actual_Transition_SFX_Good_To_Medium = $EmptyScript
+Do_Actual_Transition_SFX_Good_To_Medium_P1 = $EmptyScript
+Do_Actual_Transition_SFX_Good_To_Medium_P2 = $EmptyScript
+You_Rock_Waiting_Crowd_SFX = $EmptyScript
 
-script do_actual_changing_of_looping_sound
-endscript
-
-script Change_Crowd_Looping_SFX_Bad
-endscript
-
-script Change_Crowd_Looping_SFX_Neutral
-endscript
-
-script Change_Crowd_Looping_SFX_Good
-endscript
-
-script Crowd_Transition_SFX_Poor_To_Medium
-endscript
-
-script Crowd_Transition_SFX_Medium_To_Good
-endscript
-
-script Crowd_Transition_SFX_Medium_To_Poor
-endscript
-
-script Crowd_Transition_SFX_Good_To_Medium
-endscript
-
-script Crowd_generic_transition_sfx
-endscript
-
-script transition_sfx_left_side
-endscript
-
-script transition_sfx_right_side
-endscript
-
-script transition_sfx_both_sides
-endscript
-
-script Do_Actual_Transition_SFX_Poor_To_Medium
-endscript
-
-script Do_Actual_Transition_SFX_Poor_To_Medium_P1
-endscript
-
-script Do_Actual_Transition_SFX_Poor_To_Medium_P2
-endscript
-
-script Do_Actual_Transition_SFX_Medium_To_Good
-endscript
-
-script Do_Actual_Transition_SFX_Medium_To_Good_P1
-endscript
-
-script Do_Actual_Transition_SFX_Medium_To_Good_P2
-endscript
-
-script Do_Actual_Transition_SFX_Medium_To_Poor
-endscript
-
-script Do_Actual_Transition_SFX_Medium_To_Poor_P1
-endscript
-
-script Do_Actual_Transition_SFX_Medium_To_Poor_P2
-endscript
-
-script Do_Actual_Transition_SFX_Good_To_Medium
-endscript
-
-script Do_Actual_Transition_SFX_Good_To_Medium_P1
-endscript
-
-script Do_Actual_Transition_SFX_Good_To_Medium_P2
-endscript
-
-script You_Rock_Waiting_Crowd_SFX
-endscript
 save_check_time_early = 0.0
 save_check_time_late = 0.0
 
@@ -615,15 +494,9 @@ script Audio_Sync_Test_Enable_Highway
 	Change \{check_time_late = $save_check_time_late}
 endscript
 
-script GH_SFX_Intro_WarmUp
-endscript
-
-script PreEncore_Crowd_Build_SFX
-endscript
-
-script PreEncore_Crowd_Build_SFX_STOP
-endscript
-
+GH_SFX_Intro_WarmUp = $EmptyScript
+PreEncore_Crowd_Build_SFX = $EmptyScript
+PreEncore_Crowd_Build_SFX_STOP = $EmptyScript
 script GH_BossDevil_Death_Transition_SFX
 	SoundEvent \{event = Devil_Die_Transition_SFX}
 endscript
@@ -672,11 +545,8 @@ Slash_Intro_Back_Speakers_unique_id = NULL
 Lou_Intro_Front_Speakers_unique_id = NULL
 Lou_Intro_Back_Speakers_unique_id = NULL
 
-script GH_SFX_Preload_Boss_Intro_Audio
-endscript
-
-script GH_SFX_Play_Boss_Audio_From_Zone_Memory
-endscript
+GH_SFX_Preload_Boss_Intro_Audio = $EmptyScript
+GH_SFX_Play_Boss_Audio_From_Zone_Memory = $EmptyScript
 
 script GH3_SFX_fail_song_stop_sounds
 	StopSoundsByBuss \{Crowd}
@@ -727,26 +597,35 @@ script GH3_SFX_Stop_Sounds_For_KillSong
 endscript
 
 script GH_SFX_Countoff_Logic
-	get_song_struct song = ($current_song)
+	printf 'does this even get called'
+	printstruct <...>
+	return
+	/*get_song_struct song = ($current_song)
 	if StructureContains structure = <song_struct> name = countoff
 		countoff_sound = (<song_struct>.countoff)
 	else
 		countoff_sound = 'sticks_normal'
 	endif
 	if (<velocity> > 99)
-		FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Hard' s = <countoff_sound>
+		velocity = 'Hard'
+		;FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Hard' s = <countoff_sound>
 	else
 		if (<velocity> > 74)
-			FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Med' s = <countoff_sound>
+			velocity = 'Med'
+			;FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Med' s = <countoff_sound>
 		else
-			if (<velocity> > 49)
-				FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Soft' s = <countoff_sound>
-			else
-				FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Soft' s = <countoff_sound>
-			endif
+			velocity = 'Soft'
+			; ????
+			;if (<velocity> > 49)
+			;	FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Soft' s = <countoff_sound>
+			;else
+			;	FormatText checksumName = sound_event_name 'Countoff_SFX_%s_Soft' s = <countoff_sound>
+			;endif
 		endif
 	endif
-	SoundEvent event = <sound_event_name>
+	// as if this script will even matter because i got rid of most stuff not pertaining so much to gameplay
+	FastFormatCrc Countoff_SFX_ a = <velocity> b = '_' c = <countoff_sound> out = sound_event_name
+	SoundEvent event = <sound_event_name>*///
 endscript
 
 script GH_SFX_Training_Tuning_Strings

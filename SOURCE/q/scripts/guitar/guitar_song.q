@@ -58,20 +58,28 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 	SoundBussLock \{Band_Balance}
 	SoundBussLock \{Guitar_Balance}
 	Change stream_config = <stream_config>
-	FormatText checksumName = song_stream '%s_song' s = <song_prefix> AddToStringLookup
-	FormatText checksumName = guitar_stream '%s_guitar' s = <song_prefix> AddToStringLookup
-	FormatText checksumName = rhythm_stream '%s_rhythm' s = <song_prefix> AddToStringLookup
-	FormatText checksumName = crowd_stream '%s_crowd' s = <song_prefix> AddToStringLookup
+	stream_infix = '_'
+	//FormatText checksumName = song_stream '%s_song' s = <song_prefix> AddToStringLookup
+	//FormatText checksumName = guitar_stream '%s_guitar' s = <song_prefix> AddToStringLookup
+	//FormatText checksumName = rhythm_stream '%s_rhythm' s = <song_prefix> AddToStringLookup
+	//FormatText checksumName = crowd_stream '%s_crowd' s = <song_prefix> AddToStringLookup
 	if ($game_mode = p2_career || $game_mode = p2_coop ||
 		($game_mode = training & ($player1_status.part = rhythm)))
 		if StructureContains structure = <song_struct> use_coop_stream // :(
 			if ($coop_tracks = 1)
-				FormatText checksumName = song_stream '%s_coop_song' s = <song_prefix> AddToStringLookup
-				FormatText checksumName = guitar_stream '%s_coop_guitar' s = <song_prefix> AddToStringLookup
-				FormatText checksumName = rhythm_stream '%s_coop_rhythm' s = <song_prefix> AddToStringLookup
+				//FastFormatCrc <song_name> a = '_coop_' b = 'song' out = song_stream
+				//FastFormatCrc <song_name> a = '_coop_' b = 'guitar' out = guitar_stream
+				//FastFormatCrc <song_name> a = '_coop_' b = 'rhythm' out = rhythm_stream
+				stream_infix = '_coop_'
+				//FormatText checksumName = song_stream '%s_coop_song' s = <song_prefix> AddToStringLookup
+				//FormatText checksumName = guitar_stream '%s_coop_guitar' s = <song_prefix> AddToStringLookup
+				//FormatText checksumName = rhythm_stream '%s_coop_rhythm' s = <song_prefix> AddToStringLookup
 			endif
 		endif
 	endif
+	FastFormatCrc <song_name> a = <stream_infix> b = 'song' out = song_stream
+	FastFormatCrc <song_name> a = <stream_infix> b = 'guitar' out = guitar_stream
+	FastFormatCrc <song_name> a = <stream_infix> b = 'rhythm' out = rhythm_stream
 	Change song_stream_id = <song_stream>
 	if PreloadStream <song_stream> buss = Master useForSongTimeSync = 1
 		Change song_unique_id = <unique_id>
@@ -80,14 +88,14 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 	endif
 	extra_stream = NULL
 	if (<stream_config> = gh3)
-		Change crowd_stream_id = <crowd_stream>
-		if PreloadStream <crowd_stream> buss = Master
-			Change crowd_unique_id = <unique_id>
-		endif
+		//Change crowd_stream_id = <crowd_stream>
+		//if PreloadStream <crowd_stream> buss = Master
+		//	Change crowd_unique_id = <unique_id>
+		//endif
 		<extra_stream> = <rhythm_stream>
 	endif
 	if StructureContains structure = <song_struct> name = extra_stream
-		FormatText checksumName = extra_stream '%s_%t' s = <song_prefix> t = (<song_struct>.extra_stream)AddToStringLookup
+		FastFormatCrc <song_name> a = '_' b = (<song_struct>.extra_stream) out = extra_stream
 	endif
 	if ($current_num_players = 1)
 		if (($player1_status.part)= rhythm & (<stream_config> != gh1))
@@ -373,12 +381,7 @@ endscript
 script SetSeekPosition_Song\{position = 0}
 	WinPortGetSongSkew
 	position = (<position> + <value>)
-	;printstruct <...>
-	;printf 'SEEK SUCKS'
-	;printf '%d' d=($song_unique_id)
-	;printf '%d' d=($guitar_player1_unique_id)
-	;printf '%d' d=($guitar_player2_unique_id)
-	;printf '%d' d=($extra_unique_id)
+	//printstruct <...>
 	if NOT ($song_unique_id = NULL)
 		SetSoundSeekPosition unique_id = $song_unique_id position = <position>
 	endif

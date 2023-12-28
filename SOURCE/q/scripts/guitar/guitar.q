@@ -182,7 +182,6 @@ script guitar_startup
 		endif
 		// just to get loading screen to display
 	repeat
-	//printf \{'[2J[0m####### [92mFA[91mST[93mG[94mH[38;2;255;127;0m3[0m INITIALIZING... #######'}
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
 	printf \{'Version %v' v=$fastgh3_build}
 	if ($bleeding_edge = 1)
@@ -192,6 +191,8 @@ script guitar_startup
 		d = <pad>
 		pad ($build_timestamp[1])
 		printf 'Timestamp: %f.%d.%e' d=<d> e=<pad> f=($build_timestamp[2])
+		RemoveComponent \{d}
+		RemoveComponent \{pad}
 	endif
 	if IntegerEquals \{a=$random_seed b=-1}
 		Randomize
@@ -216,7 +217,7 @@ script guitar_startup
 		printf \{'Initializing unneeded stuff'}
 		//CompositeObjectManager_startup
 		//MemCardSystemInitialize // probably destroyed and broke save functionality
-		InitAnimSystem \{ AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0 }
+		InitAnimSystem \{AnimHeapSize = 0 CacheBlockAlign = 0 AnimNxBufferSize = 1 DefCacheType = fullres MaxAnimStages = 0 MaxAnimSubsets = 0 MaxDegenerateAnims = 0}
 		//InitLightManager \{max_lights = 1 max_model_lights = 0 max_groups = 1 max_render_verts_per_geom = 0}
 		LightShow_Init \{notes = $nullArray nodeflags = $nullArray ColorOverrideExclusions = $nullArray}
 		printf \{'Initializing Replay buffer'}
@@ -229,13 +230,13 @@ script guitar_startup
 	// region user config
 		printf \{'Loading user config'}
 		ProfilingStart
-		migrate = 0
+		//migrate = 0
 		if FileExists \{'config.qb'}
 			LoadQB \{'config.qb'}
-			migrate = 1
+			//migrate = 1
 		elseif FileExists \{'user.pak'}
 			LoadPak \{'user.pak'}
-			migrate = 1
+			//migrate = 1
 		endif
 		if FileExists \{'gameplay_BG.img.xen'}
 			LoadTexture \{'../gameplay_BG'}
@@ -303,7 +304,7 @@ script guitar_startup
 			// 0 = default if not specified
 			{ sect='Player' [
 				{'Hyperspeed' out=Cheat_Hyperspeed #"0x1ca1ff20"=3}
-				{'Autostart' out=autolaunch_startnow #"0x1ca1ff20"=1}
+				{'Autostart' out=autolaunch_startnow #"0x1ca1ff20"=-1}
 				{'ExitOnSongEnd' out=exit_on_song_end}
 				{'FCMode' out=FC_MODE}
 				{'EasyExpert' out=Cheat_EasyExpert}
@@ -354,7 +355,8 @@ script guitar_startup
 				if StructureContains \{structure=jj #"0x1ca1ff20"}
 					k = (<jj>.#"0x1ca1ff20")
 				endif
-				SetValueFromConfig sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k> out=(<jj>.out)
+				FGH3Config sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k>
+				change globalname=(<jj>.out) newvalue=<value>
 				Increment \{j}
 			repeat <array_size>
 			Increment \{i}
@@ -426,7 +428,7 @@ script guitar_startup
 			printf 'Loading %f.qb' f = <basename>
 			formattext textname = file 'MODS/%f.qb' f = <basename>
 			LoadQB <file>
-			formattext checksumname = mod_info_name '%f_mod_info' f = <basename>
+			FastFormatCrc a = <basename> b = '_mod_info' out = mod_info_name
 			if GlobalExists name = <mod_info_name> type = structure
 				mod_info = ($<mod_info_name>)
 			elseif GlobalExists \{name = mod_info type = structure}
@@ -452,7 +454,7 @@ script guitar_startup
 			if StructureContains \{structure=mod_info desc}
 				printf "Description: %d" d=(<mod_info>.desc)
 			endif
-			formattext checksumname = startup_script '%f_startup' f = <basename>
+			FastFormatCrc a = <basename> b = '_startup' out = startup_script
 			if ScriptExists <startup_script>
 				SpawnScriptNow <startup_script> params = { filename = <filename> basename = <basename> }
 			else
@@ -460,6 +462,7 @@ script guitar_startup
 					SpawnScriptNow mod_startup params = { filename = <filename> basename = <basename> }
 				endif
 			endif
+			// get rid of ambiguously named mod_info global struct after loading?
 		repeat
 		EndWildcardSearch
 		ProfilingEnd <...> 'mod load'
@@ -469,7 +472,11 @@ script guitar_startup
 		printf \{'Loading Paks'}
 		ProfilingStart
 		LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile}
-		SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
+		//if NOT ($fastgh3_branch = unpak)
+			SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
+		//else
+		//	AddToMaterialLibrary \{scene = 'zones/global/global_gfx.scn'}
+		//endif
 		// test time to load
 		ProfilingEnd <...> 'LoadPak global.pak'
 		ProfilingStart
@@ -502,14 +509,12 @@ script guitar_startup
 		printf \{'Allocating new big arrays'}
 		// sick of seeing a bunch of zeroes :/
 		ProfilingStart
-		// {
 		AllocArray \{size = 500 p1_last_song_detailed_stats}
 		AllocArray \{size = 500 p2_last_song_detailed_stats}
 		AllocArray \{size = 500 p1_last_song_detailed_stats_max}
 		AllocArray \{size = 500 p2_last_song_detailed_stats_max}
 		AllocArray \{size = 136 WhammyWibble0 set = 1.0}
 		AllocArray \{size = 136 WhammyWibble1 set = 1.0}
-		// } ran for 0.3ms
 		AllocArray \{size = 32 solo_hit_buffer_p1}
 		AllocArray \{size = 32 solo_hit_buffer_p2}
 		AllocArray \{size = $highway_lines set = 0.0 gem_time_table512}
@@ -517,10 +522,8 @@ script guitar_startup
 		AllocArray \{size = $highway_lines set = 0.0 rowHeight}
 		AllocArray \{size = $highway_lines set = 0.0 time_accum_table}
 		ProfilingEnd <...> 'AllocArray x12'
-		// 5 ms (michael scott gif)
 		
 		ProfilingStart
-		create_loading_strings
 		
 		change mode_buttons = [
 			{ range = 5 param = mode texts = mode_text id = select_gamemode }
@@ -694,7 +697,7 @@ script guitar_startup
 	ProfilingStart
 	printf \{'Done initializing - into game...'}
 	InitAtoms
-	SetProgressionMaxDifficulty \{difficulty = 3}
+	//SetProgressionMaxDifficulty \{difficulty = 3}
 	/*if IsWinPort
 		WinPortGetConfigNumber \{name = "Sound.ClapDelay" defaultValue = 0}
 		Change winport_clap_delay = <value>
@@ -713,13 +716,20 @@ script guitar_startup
 	Change player2_device = ($startup_controller2)
 	Change StructureName = player1_status controller = ($primary_controller)
 	Change structurename = player2_status controller = ($startup_controller2)
-	if ($autolaunch_startnow = 0)
-		HideLoadingScreen
-		start_flow_manager \{flow_state = bootup_sequence_fs}
-	else
-		StartRendering
-		SpawnScriptLater \{autolaunch_spawned}
-	endif
+	KillSpawnedScript \{name = empty_script}
+	switch ($autolaunch_startnow)
+		case 0
+			HideLoadingScreen
+			start_flow_manager \{flow_state = bootup_sequence_fs}
+		case -1
+			printf \{'---- First play ----'}
+			HideLoadingScreen
+			StartRendering
+			start_flow_manager \{flow_state = first_launch_fs}
+		default
+			StartRendering
+			SpawnScriptLater \{autolaunch_spawned}
+	endswitch
 	ProfilingEnd <...> 'start game'	
 	ProfilingStart
 	if FileExists \{'hway.pak'}
@@ -753,7 +763,8 @@ script load_highway \{player_status = player1_status name = 'axel' filename = 'h
 	endif
 	FormatText textname = highway_name 'Guitarist_%n_Outfit%o_Style%s' n = <name> o = 1 s = 1
 	AddToMaterialLibrary scene = <highway_name>
-	FormatText checksumName = highway_material 'sys_%a_1_highway_sys_%a_1_highway' a = <name>
+	FastFormatCrc sys_ a = <name> b = '_1_highway' c = '_sys_' d = <name> e = '_1_highway' out = highway_material
+	//FormatText checksumName = highway_material 'sys_%a_1_highway_sys_%a_1_highway' a = <name>
 	Change StructureName = <player_status> highway_material = <highway_material>
 endscript
 

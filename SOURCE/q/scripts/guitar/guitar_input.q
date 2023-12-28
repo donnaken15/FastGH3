@@ -349,7 +349,7 @@ script playback_timer
 endscript
 
 script save_replay
-	destroy_debugging_menu
+	//destroy_debugging_menu
 	//CreateScreenElement \{Type = TextElement parent = root_window id = info_text font = text_a1 Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Saving replay" z_priority = 1.0}
 	//wait \{2 gameframes}
 	//get_difficulty_text_nl difficulty = ($current_difficulty)
@@ -360,7 +360,7 @@ script save_replay
 	WriteDataBuffer name = replay FileName = <FileName>
 	printf 'fgh3_%t_%s.rep saved' t = <song_title> s = <timestamp>
 	//DestroyScreenElement \{id = info_text}
-	create_debugging_menu
+	//create_debugging_menu
 endscript
 
 script autodetectleftys

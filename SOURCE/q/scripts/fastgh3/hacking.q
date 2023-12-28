@@ -252,12 +252,14 @@ script mbt_test
 endscript
 
 script Ternary \{out = ternary}
+	//ProfilingStart
 	if (<#"0x00000000"> = 0)
 		ternary = <b>
 	else
 		ternary = <a>
 	endif
 	if (<out> = ternary)
+		//ProfilingEnd <...> 'ternary'
 		return ternary = <ternary>
 	endif
 	AddParams \{output = {}} // should i even do it like this
@@ -348,23 +350,32 @@ script ProfilingStart
 	ProfileTime
 	return ____profiling_checkpoint_1 = <time>
 endscript
-script ProfilingEnd \{ #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____profiling_interval = 60 }
-	//return
-	AddParams \{time = 0.0}
+script ProfilingEnd \{ time = 0.0 #"0x00000000" = 'unnamed script' ____profiling_i = 0 ____profiling_interval = 60 }
 	ProfileTime
-	<____profiling_time> = ((<time> - <____profiling_checkpoint_1>) * 0.0001)
+	____profiling_time = ((<time> - <____profiling_checkpoint_1>) * 0.0001)
 	if NOT GotParam \{ loop }
 		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time>
 		return profile_time = <____profiling_time>
 	endif
+	if (<____profiling_i> = 0)
+		____profiling_samples = []
+	endif
+	element=(<____profiling_time> * 10000)
+	CastToInteger \{element}
+	AddArrayElement array=<____profiling_samples> element=<element>
 	Increment \{____profiling_i}
 	if (<____profiling_i> > <____profiling_interval>)
-		<____profiling_i> = 0
-		printf 'profiled script %s, %t ms' s = <#"0x00000000"> t = <____profiling_time> // C++ broken >:(
+		____profiling_i = 0
+		RemoveComponent \{____profiling_samples}
+		Avg <array>
+		GetArraySize \{array}
+		//printstruct <...>
+		printf 'profiled script %s, %t ms, %n samples' n = (<array_size> - 1) s = <#"0x00000000"> t = (<avg> * 0.0001) // C++ broken >:(
 	endif
-	return profile_time = <____profiling_time> ____profiling_i = <____profiling_i>
-endscript/**///
-
-ProfilingStart = $EmptyScript
-ProfilingEnd = $EmptyScript
+	return {
+		profile_time = <____profiling_time>
+		____profiling_i = <____profiling_i>
+		____profiling_samples = <array>
+	}
+endscript
 
