@@ -12,35 +12,56 @@ script create_loading_strings
 		'NOT FAST ENOUGH!' 'GO!' 'SPEED' 'Follow @FastGH3 on Twitter for more updates.' '1.0 HOYP!!!'
 		'%VER%' 'NOW WITH CACHING!' 'donnaken15.cf/fastgh3' 'JURGEN IS HERE'
 		'IMPOSSIBLE!' 'fastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfast' 'fast'
-		'NO LONGER WREAKING HAVOK' 'PROGRAMMER SOX ARE LAME' 'DIRECTLY CALLING OUT MY EX' 'ONE CLICK MAGIC!'
+		'NO LONGER WREAKING HAVOK' 'PROGRAMMER SOX ARE LAME' 'PRAISE THE FOSSIL THAT IS HELIX' 'DIRECTLY CALLING OUT MY EX' 'ONE CLICK MAGIC!'
 		'you need more than debug\n- revup90' '\bf\bf\bc\bc\be\bd\be\bd\b2\b3\ba' 'subscribe for daily \b2ideos'
 		'Switch up the style and get yourself some c00l zonez by going to donnaken15.cf/fastgh3/zones.html'
-		'6 MEGABYTE ZONES' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:/windows/fastgh3' '' '\'\'the clone hero version of gh3\'\''
-		'' 'RUNNING ON APOCALYPSE' 'start_gem_scroller()' 'SALUTE TO THE SUN!!' 'UNIVERSES FC, YES! @#!^ YEAH!!'
-		'Now you can DOWNLOAD CHARTS THROUGH THIS GAME?! WHY DIDN\'T ANYONE THINK OF THIS!!'
+		'6 MEGABYTE ZONES' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:/windows/fastgh3' '\'\'the clone hero version of gh3\'\''
+		'RUNNING ON APOCALYPSE' 'start_gem_scroller()' 'SALUTE TO THE SUN!!' 'UNIVERSES FC, YES! @#!^ YEAH!!'
+		'Now you can DOWNLOAD CHARTS THROUGH THIS MOD?! WHY DIDN\'T ANYONE THINK OF THIS!?!'
 		'5atu6w4zaw5atu6w4zaw5atu6w4zaw5atu6w4zaw' 'IT\'S NOT FAST ENOUGH!' 'MASSIVE ADBLOCK!' 'SHE\'S TOO STONED! NINTENDO!'
-		'I\nI\nO\n$\nV' 'Aligning pointers...' '' 'ScreenShot Paused\n\b0\nScreen\b1\b2Drop    \n\b3\nViewer'
+		'I\nI\nO\n$\nV' 'Aligning pointers...' 'ScreenShot Paused\n\b0\nScreen\b1\b2Drop    \n\b3\nViewer'
+		'Frequently updated at github.com/donnaken15/FastGH3 !'
 		'For more fun with GH3 in general, check out progress on GH3+ at github.com/donnaken15/GH3-Plus'
-		'3 PAK files? WHAT?!?' 'ASPIRING TO REKT ASPYR' 'FROM 4.7 GB TO 13.0 MB! WOW!' 'Hey look, it works now! I think...'
-		'IS THIS WORKING?!?!' 'DON\'T CRASH!!' 'SecuROM tried to kill Exile, but it failed, as HATRED struck it down, to the ground!'
+		'3 PAK files? WHAT?!?' 'ASPIRING TO REKT ASPYR' 'FROM 4.7 GB TO 12.4 MB! WOW!' 'Hey look, it works now! I think...'
+		'IS THIS WORKING?!?!' 'DON\'T CRASH!!' 'DON\'T BREAK!!' 'SecuROM tried to kill Exile, but it failed, as HATRED struck it down, to the ground!'
 		'Convenient!' 'I got heX-ray mode on!' 'New loading text for no reason!!' 'Check out the FastGH3 settings for extra customization.'
 		'Unlock even more fun by enabling Debug Menu in settings!'
-		'I figured out..... I figured out animated textures. T/N: I did not figure out animated textures PSPS: I did (4 years later) PSPSPS: Actually, no PSPSPSPS: Actually, yes'
+		'\'\'I figured out..... I figured out animated textures. T/N: I did not figure out animated textures\'\' PSPS: I did (4 years later) PSPSPS: Actually, no PSPSPSPS: Actually, yes'
 		'I bet you can\'t read this FAST enough!' 'FC THIS!!!' 'FIXED!' 'BLOODY FAST\n100% No Slow Guaranteed'
 		'I\'M RUNNING OUT OF THINGS TO SAY!' 'YOU RESTARTED JUST TO SEE THIS MESSAGE!'
 		'HAX!' 'BOT!' 'FAAAKE!!' 'EPIC FAIL' 'WHAT ARE YOU DOING' 'WARNING: Requires x0.5 \b3 Presses'
-		'unCHARTed' '\c9INVISIBLE INK' 'are you actually reading these?' 'CHARTS ON DEMAND' 'FITS 5026 TIMES ON A FLASH DRIVE!'
-		/* formula: 1024/((13720000/1024/1024)/64)
-		64 = usual flash drive GB capacity
+		'unCHARTed' '\c9INVISIBLE INK' 'are you actually reading these?' 'CHARTS ON DEMAND' 'FITS 5275 TIMES ON A FLASH DRIVE!'
+		'these texts are my version of minecraft splash text at this point' // was going to just make this a comment but this also works :P
+		//
+		// lord squill quotes, just because
+		// https://donnaken15.cf/sunfish/wiki/index.php/Level:Lord_Squill
+		'Do you think this game is funny?'
+		'This used to contain text from a game i decided i would never release.'
+		'i stayed up all night working on this mod'
+		'Is this game art?'
+		//'Brains are evil. Destroy them. Destroy yours today.'
+		'I wish the list of stuff i say was infinite.'
+		'I am getting bored of writing these texts, or not, I don\'t know.'
+		'Take your chances with surgery done for electronic plastic toys.'
+		//
+		'Everything comes from something.'
+		'\n\n\n<YOU ARE ONLY HUMAN>\n\nor are you?'
+		//
+		'No one will be able to find this text... maybe...'
+		'HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE'
+		'door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123'
+		/* formula: 1024/((13012884/1024/1024)/64)
+		64 = usual flash drive GB capacity (<-- stuck in 2011 or something thinking this is common)
 		"DO THE MATH"
 		Reverse of original calc: (15*4346)/1024 *///
 		'uber song fc' 'NAIL THE 540' '58,473 X 4\nStar Power + BS 360 Riff + Kissed the Sustain + FS Solo + FS 1440 GRYBRYBO'
-		'ROCKING OUT IN THE ABYSS!!' 'IN SECONDS...!' '\c4ACCESS GRANTED' 'sudo skate8.exe -gem_array fastgh3_song_expert'
+		'ROCKING OUT IN THE ABYSS!!' 'IN SECONDS...!' '\c4ACCESS GRANTED' '>sudo skate8.exe -gem_array fastgh3_song_expert'
 		'It looks like you\'re trying to hit the note. Would you like help with:\n\b3 Strumming\n\b2 Holding down the frets\n\b0 SHUT UP!!!\n\b1 Applying tinfoil'
 		'!!!!!!! Guitarist not found !!!!!!!' '(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)'
-		'LEXER ERROR (3337): Unknown token in array:   ()' 'A.K.A: GH3DE, GH3DX, or GH3++' '__FASTcall void initGH3(int*)'
+		'LEXER ERROR (4811): Unknown token in array:   ()' 'A.K.A: GH3DE, GH3DX, or GH3++' '__FASTcall void initGH3(int*)'
 		'dummy' 'This game is practically a mod of Tony Hawk\'s Project 8' 'Powered by Tony Hawk'
-		'\c2I WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED'
+		'This is a mod of Project 8 which is an update of American Wasteland which is an update of Underground 2 which is an update of Underground 1 which is an update of Pro Skater 4 which is an update of Pro Skater 3 which is an update of Pro Skater 2 which is an update of Pro Skater 1 which is an update of Apocalypse which is an update of MDK'
+		'\c2I WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED'
 	]
 endscript
 
@@ -86,8 +107,9 @@ script create_loading_screen\{mode = play_song}
 			font = text_a4
 			Scale = 0.9
 			just = [center center]
-			dims = (450.0, 480.0)
-			Pos = (860.0, 300.0)
+			internal_just = [center center]
+			dims = (550.0, 680.0)
+			Pos = (860.0, 360.0)
 			rgba = [255 255 255 255]
 			z_priority = 5000
 			Shadow
