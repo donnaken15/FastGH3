@@ -5,7 +5,7 @@ mkdir "%~dp0fsbtmp" 2>nul
 IF "%ar%"=="" set ar=32000
 IF "%ab%"=="" set ab=64
 IF "%bm%"=="" set bm=B
-IF "%ac%"=="" set ac=1
+IF "%ac%"=="" set ac=2
 IF "%ac%"=="1" ( set m=3 ) else ( set m=1 )
 set "HELIX=| "%~dp0helix" - "%~dp0fsbtmp\fastgh3_song.mp3" -%bm%%ab% -M%m% -X0 -U2 -Qquick -A1 -D -EC"
 IF "%ff%"=="" (

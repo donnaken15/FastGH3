@@ -1,2 +1,3 @@
--target:exe -debug- -nostdlib- -o+ -reference:System.Drawing.dll -reference:System.Windows.Forms.dll
---runtime:v4 -sdk:4
+-target:exe -debug- -nostdlib- -o+
+-reference:System.Drawing.dll -reference:System.Windows.Forms.dll
+--runtime:v2 -sdk:2

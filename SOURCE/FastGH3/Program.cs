@@ -535,15 +535,17 @@ class Program
 		} catch { return 2; }
 	}
 
-	public static void ec(ref Process p, ushort ab, ushort ar, bool ac, bool var)
+	public static void ec(ref Process p, ushort ab, bool fr, ushort ar, bool fc, bool s, bool var)
 	{
-		p.StartInfo.EnvironmentVariables["ab"] = (ab << 1 /*ugh*/).ToString();
-		p.StartInfo.EnvironmentVariables["ar"] = ar.ToString();
-		p.StartInfo.EnvironmentVariables["ac"] = ac ? "2" : "1";
-		p.StartInfo.EnvironmentVariables["bm"] = !var ? "B" : "V";
-		p.StartInfo.EnvironmentVariables["ff"] = ffmpeg;
+		p.StartInfo.Arguments += " -b " + (ab << 1 /*ugh*/).ToString();
+		if (fr)
+			p.StartInfo.Arguments += " -r " + ar.ToString();
+		if (fc)
+			p.StartInfo.Arguments += " -c " + (s ? '2' : '1');
+		if (var)
+			p.StartInfo.Arguments += " -v ";
 	}
-	public static string ffmpeg = "";
+	//public static string ffmpeg = "";
 
 	public static string[] vstr;
 
@@ -1437,7 +1439,7 @@ class Program
 						bool[] is_stereo = { false, false, false };
 						if (!audCache)
 						{
-							ffmpeg = where("ffmpeg.exe");
+							//ffmpeg = where("ffmpeg.exe");
 							AB_param = (ushort)(cfg("Audio", "AB", 128) >> 1/*thx helix*/);
 							AR_param =
 								Math.Max(
@@ -1470,10 +1472,12 @@ class Program
 								{
 									addaud.StartInfo.Arguments += " \"" + a + '"';
 									maxl = Math.Max(maxl, alen(a));
-									if (ach(a) > 1)
-										is_stereo[0] = true;
 								}
-								ec(ref addaud, AB_param, AR_param, is_stereo[0], VBR);
+								addaud.StartInfo.EnvironmentVariables["ab"] = (AB_param /*????*/).ToString();
+								addaud.StartInfo.EnvironmentVariables["ar"] = AR_param.ToString();
+								addaud.StartInfo.EnvironmentVariables["ac"] = stereo ? "2" : "1";
+								addaud.StartInfo.EnvironmentVariables["bm"] = !VBR ? "B" : "V";
+								addaud.StartInfo.EnvironmentVariables["ff"] = where("ffmpeg.exe");
 								al[0] = maxl;
 								addaud.StartInfo.WorkingDirectory = mt;
 								addaud.StartInfo.Arguments = "/c " + addaud.StartInfo.Arguments.Quotes();
@@ -1512,13 +1516,12 @@ class Program
 										al[i] = alen(a_s);
 										is_stereo[i] = ach(a_s) > 1;
 									}
-									fsbbuild2[i] = cmd(CMDpath,
-										"/c " + ((mt + "c128ks.bat").Quotes() + " " + a_s.Quotes() +
-											" \"" + mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3\"").Quotes());
+									fsbbuild2[i] = cmd((mt + "c128ks.exe"), a_s.Quotes() +
+											' ' + (mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3").Quotes() + " -p");
 									fsbbuild2[i].StartInfo.WorkingDirectory = mt;
 									if (forcestereoopt)
 										is_stereo[i] = stereo;
-									ec(ref fsbbuild2[i], AB_param, AR_param, is_stereo[i], VBR);
+									ec(ref fsbbuild2[i], AB_param, true, AR_param, forcestereoopt, is_stereo[i], VBR);
 									vl("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments, FSBcolor);
 								}
 								fsbbuild3 = cmd(CMDpath, "/c " + ((mt + "fsbbuild.bat").Quotes()));
@@ -1533,7 +1536,7 @@ class Program
 							if (!MTFSB)
 							{
 								fsbbuild.StartInfo.WorkingDirectory = mt;
-								ec(ref fsbbuild, AB_param, AR_param, true, VBR);
+								ec(ref fsbbuild, AB_param, true, AR_param, true, true, VBR);
 								fsbbuild.StartInfo.Arguments =
 									"/c " + ((mt + "fsbbuild.bat").Quotes() + ' ' +
 									audiostreams[0].Quotes() + ' ' +
