@@ -632,8 +632,7 @@ partial class settings
 		// 
 		// selImg
 		// 
-		this.selImg.Filter = "Supported image formats|*.png;*.jpg;*.bmp;*.dds|Portable Network Graphics|*.png|J" +
-"PEG|*.jpeg|Bitmap|*.bmp|DirectDraw Surface|*.dds|Any type|*.*";
+		this.selImg.Filter = "";
 		this.selImg.Title = "Select background image";
 		this.selImg.FileOk += new System.ComponentModel.CancelEventHandler(this.confirmImageReplace);
 		// 

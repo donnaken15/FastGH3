@@ -9,18 +9,10 @@ public class songtxtfmt : Form
 
 	public string f;
 
-	static readonly string[] p = {
-		"Hiroaki Sano",
-		"Circus Game",
-		"8BIT MUSIC POWER",
-		"donnaken15",
-		"2016",
-		"2:22",
-		"Chiptune"
-	};
+	static readonly string[] p = Launcher.T[188].Split('%');
 	private void C(object sender, EventArgs e)
 	{
-		x.Text = "Example:\n" + Program.FormatText(i.Text, p);
+		x.Text = "Example:\n" + Launcher.FormatText(i.Text, p);
 		f = i.Text;
 	}
 
@@ -53,7 +45,7 @@ public class songtxtfmt : Form
 				Location = new Point(0, 115),
 				Size = new Size(288, 38),
 				TabIndex = 1,
-				Text = Program.vstr[128]
+				Text = Launcher.T[128]
 			};
 			x = new Label()
 			{

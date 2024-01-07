@@ -9,7 +9,7 @@ public partial class bgprev : Form
 		BackColor = Color.Black,
 		BackgroundImageLayout = ImageLayout.Stretch,
 		Dock = DockStyle.Fill,
-		ImageLocation = "https://donnaken15.cf/fastgh3/gameBlank.png",
+		ImageLocation = Launcher.T[138],
 		Location = new Point(0, 0),
 		Size = size,
 		SizeMode = PictureBoxSizeMode.Zoom
@@ -20,7 +20,7 @@ public partial class bgprev : Form
 		Controls.Add(game);
 		ShowIcon = false;
 		StartPosition = FormStartPosition.CenterParent;
-		Text = "FASTGH3 BACKGROUND PREVIEW™©®";
+		Text = Launcher.TT[0];
 		game.BackgroundImage = i;
 	}
 }

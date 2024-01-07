@@ -100,7 +100,7 @@ public partial class settings : Form
 	static string
 		xmlpath = Environment.GetEnvironmentVariable("USERPROFILE") +
 			"\\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml",
-		xmlDefault = Resources.ResourceManager.GetString("xmlDefault");
+		xmlDefault = Launcher.xmlDefault;
 	XmlDocument xml = new XmlDocument();
 	XmlNode xmlCfg;
 	XmlNode xmlW, xmlH, xmlK;
@@ -122,7 +122,7 @@ public partial class settings : Form
 	static bool foundqconf = false;
 	static bool userpak = false; // compatibility l:\
 
-	private static string folder = Program.folder;//Path.GetDirectoryName(Application.ExecutablePath) + '\\';
+	private static string folder = Launcher.folder;//Path.GetDirectoryName(Application.ExecutablePath) + '\\';
 
 	void cRes(string width, string height)
 	{
@@ -139,9 +139,9 @@ public partial class settings : Form
 
 	private static void svQB()
 	{
-		if (!foundqconf) { Program.print("No QB config found, cannot save changes."); return; }
+		if (!foundqconf) { Launcher.print(T[149]); return; }
 		userqb.AlignPointers();
-		if (!userpak) userqb.Write(Program.dataf + "config.qb.xen");
+		if (!userpak) userqb.Write(Launcher.dataf + "config.qb.xen");
 		else qbedit.ReplaceFile("config.qb", userqb);
 	}
 
@@ -188,10 +188,10 @@ public partial class settings : Form
 		//if (globalPE == null)
 		//return null;
 		//byte[] tmp = bkgdPE.ExtractFileToBytes("24535078");
-		if (!File.Exists("DATA\\gameplay_BG.img.xen"))
+		if (!File.Exists(T[150]))
 			return null;
 			//return new Bitmap(4, 4);
-		byte[] tmp = File.ReadAllBytes("DATA\\gameplay_BG.img.xen");
+		byte[] tmp = File.ReadAllBytes(T[150]);
 		//uint imgoff = 0x28;
 		//int imglen = tmp.Length - imgoff;
 		uint imgoff = Eswap(BitConverter.ToUInt32(tmp, 0x1C));
@@ -208,7 +208,7 @@ public partial class settings : Form
 		}
 		catch
 		{
-			Program.vl("Failed to get background image!");
+			Launcher.vl(T[151]);
 			return null;
 		}
 	}
@@ -251,7 +251,7 @@ public partial class settings : Form
 		ms.Position = lenptr;
 		ms.Write(BitConverter.GetBytes(Eswap((uint)strsize)),0,4);
 		//bkgdPE.ReplaceFile("24535078", ms.ToArray());
-		File.WriteAllBytes(folder + "DATA\\gameplay_BG.img.xen",ms.ToArray());
+		File.WriteAllBytes(folder + T[150], ms.ToArray());
 	}
 
 	ushort[] keyBinds = new ushort[] {
@@ -317,20 +317,21 @@ public partial class settings : Form
 		return ((mods)i).ToString();
 	}
 	const int mxn_d = 0x100000;
+	static string[] T = Launcher.T;
 
 	public settings()
 	{
 		Console.SetWindowSize(80, 32);
-		vl2 = Program.cfg(Program.l, t.VerboseLog.ToString(), 0) == 1;
-		Program.vl("Loading QBs...");
+		vl2 = Launcher.cfg(Launcher.l, t.VerboseLog.ToString(), 0) == 1;
+		Launcher.vl("Loading QBs...");
 		try {
-			userqb = new QbFile(Program.dataf + "config.qb.xen", new PakFormat("", "", "", PakFormatType.PC));
+			userqb = new QbFile(Launcher.dataf + "config.qb.xen", new PakFormat("", "", "", PakFormatType.PC));
 			foundqconf = true;
 		} catch { }
 		try {
 			if (!foundqconf)
 			{
-				pakformat = new PakFormat(Program.dataf + "user.pak.xen", Program.dataf + "user.pak.xen", "", PakFormatType.PC, false);
+				pakformat = new PakFormat(Launcher.dataf + "user.pak.xen", Launcher.dataf + "user.pak.xen", "", PakFormatType.PC, false);
 				qbedit = new PakEditor(pakformat, false);
 				userqb = qbedit.ReadQbFile("config.qb");
 				userpak = true;
@@ -349,29 +350,30 @@ public partial class settings : Form
 		//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
 		//DialogResult = DialogResult.OK;
 		InitializeComponent();
-		vlbl.Text = "Version      : "+Program.version+"\nBuild date  : "+Program.builddate.ToLocalTime();
+		vlbl.Text = "Version      : "+Launcher.version+"\nBuild date  : "+Launcher.builddate.ToLocalTime();
 		// kill me
-		tt.SetToolTip(maxFPS, Program.vstr[102]);
-		tt.SetToolTip(MaxN, Program.vstr[103]);
-		tt.SetToolTip(res, Program.vstr[104]);
-		tt.SetToolTip(ctmpb, Program.vstr[105]);
-		tt.SetToolTip(aqlvl, Program.vstr[106]);
-		tt.SetToolTip(dCtrl, Program.vstr[107]);
-		tt.SetToolTip(hypers, Program.vstr[108]);
-		tt.SetToolTip(diff, Program.vstr[109]);
-		tt.SetToolTip(crLink, Program.vstr[110]);
-		tt.SetToolTip(speed, Program.vstr[111]);
-		tt.SetToolTip(part, Program.vstr[112]);
-		tt.SetToolTip(replay, Program.vstr[113]);
-		tt.SetToolTip(gh3pm, Program.vstr[114]);
-		tt.SetToolTip(sCa, Program.vstr[115]);
-		tt.SetToolTip(sFmT, Program.vstr[116]);
-		tt.SetToolTip(RTnoi, Program.vstr[117]);
-		tt.SetToolTip(kBnds, Program.vstr[118]);
-		tt.SetToolTip(p2partt, Program.vstr[119]);
-		tt.SetToolTip(setbgimg, Program.vstr[120]);
-		tt.SetToolTip(bImg, Program.vstr[121]);
-		this.spL.Text = Program.vstr[122];
+		tt.SetToolTip(maxFPS, T[102]);
+		tt.SetToolTip(MaxN, T[103]);
+		tt.SetToolTip(res, T[104]);
+		tt.SetToolTip(ctmpb, T[105]);
+		tt.SetToolTip(aqlvl, T[106]);
+		tt.SetToolTip(dCtrl, T[107]);
+		tt.SetToolTip(hypers, T[108]);
+		tt.SetToolTip(diff, T[109]);
+		tt.SetToolTip(crLink, T[110]);
+		tt.SetToolTip(speed, T[111]);
+		tt.SetToolTip(part, T[112]);
+		tt.SetToolTip(replay, T[113]);
+		tt.SetToolTip(gh3pm, T[114]);
+		tt.SetToolTip(sCa, T[115]);
+		tt.SetToolTip(sFmT, T[116]);
+		tt.SetToolTip(RTnoi, T[117]);
+		tt.SetToolTip(kBnds, T[118]);
+		tt.SetToolTip(p2partt, T[119]);
+		tt.SetToolTip(setbgimg, T[120]);
+		tt.SetToolTip(bImg, T[121]);
+		spL.Text = T[122];
+		selImg.Filter = T[187];
 		//bkgdPF = new PakFormat(
 		//	Program.dataf + "bkgd.pak.xen",
 		//	Program.dataf + "bkgd.pab.xen", "",
@@ -381,17 +383,17 @@ public partial class settings : Form
 		//setBGIMG(pbxBg.Image, false);
 
 		SFW(Handle);
-		Program.vl("Reading settings...");
-		dCtrl.Value = Program.cfg("Player1", "Device", 0);
-		RTnoi.Value = Program.cfg("Player", "NoIntroReadyTime", 400); // nointro_ready_time
+		Launcher.vl(T[152]);
+		dCtrl.Value = Launcher.cfg("Player1", "Device", 0);
+		RTnoi.Value = Launcher.cfg("Player", "NoIntroReadyTime", 400); // nointro_ready_time
 #pragma warning disable CS0162
 		// people wanted unlimited FPS, but
 		// then autoplay will hit too early sometimes
-		maxFPS.Value = Program.cfg("GFX", "MaxFPS", 1000);
+		maxFPS.Value = Launcher.cfg("GFX", "MaxFPS", 1000);
 #pragma warning restore CS0162
-		hypers.Value = Program.cfg("Player", "Hyperspeed", 3); // Cheat_Hyperspeed
+		hypers.Value = Launcher.cfg("Player", "Hyperspeed", 3); // Cheat_Hyperspeed
 		{
-			int disable_particles = Program.cfg("GFX", "NoParticles", 0); // disable_particles
+			int disable_particles = Launcher.cfg("GFX", "NoParticles", 0); // disable_particles
 			CheckState state = CheckState.Unchecked;
 			switch (disable_particles)
 			{
@@ -407,43 +409,43 @@ public partial class settings : Form
 			}
 			tLb.SetItemCheckState((int)t.NoParticles, state);
 		}
-		tLb.SetItemChecked((int)t.KeyboardMode, Program.cfg("Player", "Autostart", 1) == 0); // autolaunch_startnow
-		tLb.SetItemChecked((int)t.Performance, Program.cfg("Player", t.Performance.ToString(), 0) == 1); // Cheat_PerformanceMode
-		tLb.SetItemChecked((int)t.NoIntro, Program.cfg("Player", t.NoIntro.ToString(), 0) == 1); // disable_intro
-		tLb.SetItemChecked((int)t.NoFail, Program.cfg("Player", t.NoFail.ToString(), 0) == 1); // Cheat_NoFail
-		tLb.SetItemChecked((int)t.NoHUD, Program.cfg("Player", t.NoHUD.ToString(), 0) == 1); // hudless
-		tLb.SetItemChecked((int)t.FCMode, Program.cfg("Player", t.FCMode.ToString(), 0) == 1); // FC_MODE
-		tLb.SetItemChecked((int)t.EasyExpert, Program.cfg("Player", t.EasyExpert.ToString(), 0) == 1);
-		tLb.SetItemChecked((int)t.Precision, Program.cfg("Player", t.Precision.ToString(), 0) == 1);
-		tLb.SetItemChecked((int)t.DebugMenu, Program.cfg("Misc", "Debug", 0) == 1);
-		tLb.SetItemChecked((int)t.ExitOnSongEnd, Program.cfg("Player", t.ExitOnSongEnd.ToString(), 0) == 1); // exit_on_song_end
-		tLb.SetItemChecked((int)t.BkgdVideo, Program.cfg("Player", "BGVideo", 0) == 1); // enable_video
-		tLb.SetItemChecked((int)t.KillHitGems, Program.cfg("GFX", "KillHitGems", 0) == 1); // kill_gems_on_hit
-		tLb.SetItemChecked((int)t.EarlySustains, Program.cfg("Player", t.EarlySustains.ToString(), 0) == 1); // anytime_sustain_activation
-		tLb.SetItemChecked((int)t.DisableVsync, Program.cfg("GFX", "VSync", 1) == 0);
-		tLb.SetItemChecked((int)t.SongCaching, Program.cfg(Program.l, t.SongCaching.ToString(), 1) == 1);
-		tLb.SetItemChecked((int)t.NoStartupMsg, Program.cfg(Program.l, t.NoStartupMsg.ToString(), 0) == 1);
-		tLb.SetItemChecked((int)t.PreserveLog, Program.cfg(Program.l, t.PreserveLog.ToString(), 0) == 1);
-		tLb.SetItemChecked((int)t.Windowed, Program.cfg("GFX", t.Windowed.ToString(), 1) == 1);
-		tLb.SetItemChecked((int)t.Borderless, Program.cfg("GFX", t.Borderless.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.KeyboardMode, Launcher.cfg("Player", "Autostart", 1) == 0); // autolaunch_startnow
+		tLb.SetItemChecked((int)t.Performance, Launcher.cfg("Player", t.Performance.ToString(), 0) == 1); // Cheat_PerformanceMode
+		tLb.SetItemChecked((int)t.NoIntro, Launcher.cfg("Player", t.NoIntro.ToString(), 0) == 1); // disable_intro
+		tLb.SetItemChecked((int)t.NoFail, Launcher.cfg("Player", t.NoFail.ToString(), 0) == 1); // Cheat_NoFail
+		tLb.SetItemChecked((int)t.NoHUD, Launcher.cfg("Player", t.NoHUD.ToString(), 0) == 1); // hudless
+		tLb.SetItemChecked((int)t.FCMode, Launcher.cfg("Player", t.FCMode.ToString(), 0) == 1); // FC_MODE
+		tLb.SetItemChecked((int)t.EasyExpert, Launcher.cfg("Player", t.EasyExpert.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.Precision, Launcher.cfg("Player", t.Precision.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.DebugMenu, Launcher.cfg("Misc", "Debug", 0) == 1);
+		tLb.SetItemChecked((int)t.ExitOnSongEnd, Launcher.cfg("Player", t.ExitOnSongEnd.ToString(), 0) == 1); // exit_on_song_end
+		tLb.SetItemChecked((int)t.BkgdVideo, Launcher.cfg("Player", "BGVideo", 0) == 1); // enable_video
+		tLb.SetItemChecked((int)t.KillHitGems, Launcher.cfg("GFX", "KillHitGems", 0) == 1); // kill_gems_on_hit
+		tLb.SetItemChecked((int)t.EarlySustains, Launcher.cfg("Player", t.EarlySustains.ToString(), 0) == 1); // anytime_sustain_activation
+		tLb.SetItemChecked((int)t.DisableVsync, Launcher.cfg("GFX", "VSync", 1) == 0);
+		tLb.SetItemChecked((int)t.SongCaching, Launcher.cfg(Launcher.l, t.SongCaching.ToString(), 1) == 1);
+		tLb.SetItemChecked((int)t.NoStartupMsg, Launcher.cfg(Launcher.l, t.NoStartupMsg.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.PreserveLog, Launcher.cfg(Launcher.l, t.PreserveLog.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.Windowed, Launcher.cfg("GFX", t.Windowed.ToString(), 1) == 1);
+		tLb.SetItemChecked((int)t.Borderless, Launcher.cfg("GFX", t.Borderless.ToString(), 0) == 1);
 		if (tLb.GetItemChecked((int)t.NoIntro))
 		{
 			RTnoi.Enabled = true;
 			RTlbl.Enabled = true;
 			RTms.Enabled = true;
 		}
-		float _ = Convert.ToSingle(Program.cfg("Player", "Speed", "1.0"), System.Globalization.CultureInfo.InvariantCulture) * 100;
-		if (_ <= 0) { Console.WriteLine("Speed percentage cannot be zero or less!!!"); _ = 100; }
+		float _ = Convert.ToSingle(Launcher.cfg("Player", "Speed", "1.0"), System.Globalization.CultureInfo.InvariantCulture) * 100;
+		if (_ <= 0) { Console.WriteLine(T[153]); _ = 100; }
 		speed.Value = (decimal/*wtf*/)_; // current_speedfactor
 		tLb.SetItemChecked((int)t.VerboseLog, vl2);
-		tLb.SetItemChecked((int)t.NoShake, Program.cfg("GFX", t.NoShake.ToString(), 0) == 1);
+		tLb.SetItemChecked((int)t.NoShake, Launcher.cfg("GFX", t.NoShake.ToString(), 0) == 1);
 		for (int i = 0; i < modc; i++)
 		{
-			modList.SetItemChecked(i, Program.cfg("Modifiers", modN(i), 0) == 1);
+			modList.SetItemChecked(i, Launcher.cfg("Modifiers", modN(i), 0) == 1);
 		}
 		//<s id="6f1d2b61d5a011cfbfc7444553540000">201 202 203 204 205 311 999 219 235 400 401 999 307 </s>
 		xmlCfg = xml.GetElementsByTagName("r")[0];
-		string keyboardID = Program.vstr[123];
+		string keyboardID = T[123];
 		foreach (XmlNode s in xmlCfg.ChildNodes)
 		{
 			switch (s.Attributes["id"].Value)
@@ -491,7 +493,7 @@ public partial class settings : Form
 		if (xmlK == null)
 		{
 			xmlK = xml.CreateElement("s");
-			xmlK.InnerText = Program.vstr[124];
+			xmlK.InnerText = T[124];
 			XmlAttribute stupid2 = xml.CreateAttribute("id");
 			stupid2.Value = keyboardID;
 			xmlK.Attributes.Append(stupid2);
@@ -542,33 +544,33 @@ public partial class settings : Form
 		res.Text = oldres.Width.ToString() + "x" + oldres.Height.ToString();
 		//if (ini.GetSection("Player") == null)
 		{
-			if (Program.cfg("Player", "MaxNotesAuto", "0") == "0")
-				MaxN.Value = int.Parse(Program.cfg("Player", "MaxNotes", mxn_d.ToString()));
+			if (Launcher.cfg("Player", "MaxNotesAuto", "0") == "0")
+				MaxN.Value = int.Parse(Launcher.cfg("Player", "MaxNotes", mxn_d.ToString()));
 			else
 				MaxN.Value = -1;
 		}
-		diff.Text = diffStr[Program.cfg("Player1", "Diff", 3)];
-		part.SelectedIndex = Program.cfg("Player1", "Part", 0);
-		if (Program.cfg("Player2", "Part", 1) == 1)
+		diff.Text = diffStr[Launcher.cfg("Player1", "Diff", 3)];
+		part.SelectedIndex = Launcher.cfg("Player1", "Part", 0);
+		if (Launcher.cfg("Player2", "Part", 1) == 1)
 			p2partt.Checked = false;
 		else
 			p2partt.Checked = true;
-		aqlvl.Text = Math.Max(48, Convert.ToInt32(Program.cfg("Audio", "AB", "128"))).ToString();
+		aqlvl.Text = Math.Max(48, Convert.ToInt32(Launcher.cfg("Audio", "AB", "128"))).ToString();
 
 		{
-			int fch = Program.cfg("Audio", "ForceChannels", 0);
+			int fch = Launcher.cfg("Audio", "ForceChannels", 0);
 			fChCbx.Checked = fCSCbx.Enabled = fCSLbl.Enabled = fch > 0;
 			fCSCbx.Checked = (fch > 0) ? (fch > 1) : true;
 		}
 
 		{
-			Program.vl("Loading scripts for override checks...");
+			Launcher.vl(T[156]);
 			moddiag.built_in_items = new List<moddiag.OverrideItem>();
-			string dbgf = Program.pakf + "dbg.pak.xen";
+			string dbgf = Launcher.pakf + "dbg.pak.xen";
 			if (!File.Exists(dbgf))
 				dbgf = "";
 			PakFormat O_PF = new PakFormat(
-				Program.pakf + "qb.pak.xen", Program.pakf + "qb.pab.xen", dbgf, PakFormatType.PC, false);
+				Launcher.pakf + "qb.pak.xen", Launcher.pakf + "qb.pab.xen", dbgf, PakFormatType.PC, false);
 			if (dbgf != "")
 			{
 				PakFormat D_PF = new PakFormat(dbgf, dbgf, "", PakFormatType.PC, false);
@@ -604,8 +606,8 @@ public partial class settings : Form
 							}
 							catch (Exception ex)
 							{
-								Program.vl("Failed to load " + f.Filename);
-								Program.vl(ex);
+								Launcher.vl("Failed to load " + f.Filename);
+								Launcher.vl(ex);
 								continue;
 							}
 						default:
@@ -616,7 +618,7 @@ public partial class settings : Form
 			else
 			{
 				PakFormat nullPF = new PakFormat("", "", "", PakFormatType.PC);
-				foreach (string fn in Directory.GetFiles(Program.dataf + "SCRIPTS\\", "*.qb.xen", SearchOption.AllDirectories))
+				foreach (string fn in Directory.GetFiles(Launcher.dataf + "SCRIPTS\\", "*.qb.xen", SearchOption.AllDirectories))
 				{
 					//Program.vl(fn);
 					try
@@ -626,13 +628,13 @@ public partial class settings : Form
 					}
 					catch (Exception ex)
 					{
-						string test = Program.NP(fn);
-						Program.vl("Failed to load " + test.Substring(test.IndexOf(Program.NP(Program.dataf))));
-						Program.vl(ex);
+						string test = Launcher.NP(fn);
+						Launcher.vl("Failed to load " + test.Substring(test.IndexOf(Launcher.NP(Launcher.dataf))));
+						Launcher.vl(ex);
 					}
 				}
 			}
-			Program.vl("done");
+			Launcher.vl("done");
 		}
 
 		disableEvents = false;
@@ -642,7 +644,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("Player1","Diff",d);
+		Launcher.cfgW("Player1","Diff",d);
 	}
 		
 	void resC(object sender, EventArgs e)
@@ -658,14 +660,14 @@ public partial class settings : Form
 	void crlink(object sender, LinkLabelLinkClickedEventArgs e)
 	{
 		Console.Clear();
-		Console.WriteLine(Resources.ResourceManager.GetString("credits"));
+		Console.WriteLine(Launcher.cr);
 	}
 
 	void hyVC(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("Player", "Hyperspeed", Convert.ToInt32(hypers.Value));
+		Launcher.cfgW("Player", "Hyperspeed", Convert.ToInt32(hypers.Value));
 	}
 
 	void ctmp(object sender, EventArgs e)
@@ -681,10 +683,10 @@ public partial class settings : Form
 		tmpfs = Directory.GetFiles(Path.GetTempPath(), "libSoX.tmp.*", SearchOption.TopDirectoryOnly);
 		foreach (string file in tmpfs)
 			File.Delete(file);
-		if (File.Exists(Program.cf + ".db.ini"))
+		if (File.Exists(Launcher.cf + ".db.ini"))
 		{
 			int sectCount = 0;
-			string[] k = Program.sn(Program.cachf);
+			string[] k = Launcher.sn(Launcher.cachf);
 			foreach (string s in k)
 			{
 				if (s.StartsWith("URL") || s.StartsWith("ZIP"))
@@ -695,7 +697,7 @@ public partial class settings : Form
 			}
 			for (int i = 0; i < sectCount; i++)
 			{
-				Program.WSec(k[i], null, Program.cachf);
+				Launcher.WSec(k[i], null, Launcher.cachf);
 			}
 		}
 	}
@@ -718,23 +720,23 @@ public partial class settings : Form
 
 	void vscc(object sender, EventArgs e)
 	{
-		Directory.CreateDirectory(Program.cf);
+		Directory.CreateDirectory(Launcher.cf);
 		new songcache().ShowDialog();
 	}
 
 	void TI(string sect, string key, bool toggle)
 	{
-		Program.cfgW(sect, key, (toggle ? 1 : 0));
+		Launcher.cfgW(sect, key, (toggle ? 1 : 0));
 	}
 
 	void stfO(object sender, EventArgs e)
 	{
 		// formatInterface
-		songtxtfmt FI = new songtxtfmt(Regex.Unescape(Program.cfg(Program.l, Program.stf, "%a - %t")).Replace("\n","\r\n"));
+		songtxtfmt FI = new songtxtfmt(Regex.Unescape(Launcher.cfg(Launcher.l, Launcher.stf, "%a - %t")).Replace("\n","\r\n"));
 		FI.ShowDialog();
 		if (FI.DialogResult == DialogResult.OK)
 		{
-			Program.cfgW(Program.l, Program.stf, Regex.Escape(FI.f.Replace("\r", "")));
+			Launcher.cfgW(Launcher.l, Launcher.stf, Regex.Escape(FI.f.Replace("\r", "")));
 		}
 	}
 
@@ -742,14 +744,14 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("GFX", "NoIntroReadyTime", (int)RTnoi.Value);
+		Launcher.cfgW("GFX", "NoIntroReadyTime", (int)RTnoi.Value);
 	}
 
 	void mxFPSc(object sender, EventArgs e)
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("GFX", "MaxFPS", maxFPS.Value.ToString());
+		Launcher.cfgW("GFX", "MaxFPS", maxFPS.Value.ToString());
 	}
 
 	void sBGi(object sender, EventArgs e)
@@ -803,7 +805,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("Audio", "AB", aqlvl.Text);
+		Launcher.cfgW("Audio", "AB", aqlvl.Text);
 	}
 
 	void mU(object sender, ItemCheckEventArgs e)
@@ -841,7 +843,7 @@ public partial class settings : Form
 			case t.VerboseLog:
 			case t.PreserveLog:
 			case t.NoStartupMsg:
-				TI(Program.l, tStr(e.Index), e.NewValue == CheckState.Checked);
+				TI(Launcher.l, tStr(e.Index), e.NewValue == CheckState.Checked);
 				break;
 			case t.Windowed:
 			case t.Borderless:
@@ -904,7 +906,7 @@ public partial class settings : Form
 						break;
 						// HEY LOOK IT'S MINECRAFT!!11!!!1!
 				}
-				Program.cfgW("GFX", "NoParticles", disable_particles);
+				Launcher.cfgW("GFX", "NoParticles", disable_particles);
 				break;
 		}
 	}
@@ -912,7 +914,7 @@ public partial class settings : Form
 	// still using these for qb mod configs
 	public static object gQC(QbKey key, object def)
 	{
-		if (!foundqconf) { Program.print("No QB config file found, cannot set value."); return def; }
+		if (!foundqconf) { Launcher.print(T[160]); return def; }
 		// find matching item's value or use a default
 		// we're only accessing global/root items with this
 		object _item = (userqb.FindItem(key, false));
@@ -949,7 +951,7 @@ public partial class settings : Form
 	}
 	public static void sQC(QbKey key, object value)
 	{
-		if (!foundqconf) { Program.print("No QB config file found, cannot set value."); return; }
+		if (!foundqconf) { Launcher.print(T[160]); return; }
 		// find or create value
 		object _item = (userqb.FindItem(key, false));
 		if (value == null) return;
@@ -1080,7 +1082,7 @@ public partial class settings : Form
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine("Failed to set user QB value.");
+			Console.WriteLine(T[157]);
 			Console.WriteLine(ex);
 		}
 	}
@@ -1092,14 +1094,14 @@ public partial class settings : Form
 			if (MaxN.Value == 0)
 			{
 				MaxN.Value = mxn_d;
-				Program.cfgW("Player", "MaxNotes", MaxN.Value.ToString());
+				Launcher.cfgW("Player", "MaxNotes", MaxN.Value.ToString());
 			}
 			if (MaxN.Value == -1)
-				Program.cfgW("Player", "MaxNotesAuto", "1");
+				Launcher.cfgW("Player", "MaxNotesAuto", "1");
 			else
 			{
-				Program.cfgW("Player", "MaxNotesAuto", "0");
-				Program.cfgW("Player", "MaxNotes", MaxN.Value.ToString());
+				Launcher.cfgW("Player", "MaxNotesAuto", "0");
+				Launcher.cfgW("Player", "MaxNotes", MaxN.Value.ToString());
 			}
 		}
 	}
@@ -1108,7 +1110,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("Player1", "Device", (int)dCtrl.Value);
+		Launcher.cfgW("Player1", "Device", (int)dCtrl.Value);
 	}
 
 	void showmods(object sender, EventArgs e)
@@ -1143,12 +1145,12 @@ public partial class settings : Form
 
 	void setForceChannels()
 	{
-		Program.cfgW("Audio", "ForceChannels", (fChCbx.Checked ? (fCSCbx.Checked ? 2 : 1) : 0).ToString());
+		Launcher.cfgW("Audio", "ForceChannels", (fChCbx.Checked ? (fCSCbx.Checked ? 2 : 1) : 0).ToString());
 	}
 
 	void spVC(object sender, EventArgs e)
 	{
-		Program.cfgW("Player", "Speed", speed.Value / 100);
+		Launcher.cfgW("Player", "Speed", speed.Value / 100);
 	}
 
 	void rGc(object sender, EventArgs e)
@@ -1163,7 +1165,7 @@ public partial class settings : Form
 	{
 		if (disableEvents)
 			return;
-		Program.cfgW("Player1", "Part", part.SelectedIndex);
+		Launcher.cfgW("Player1", "Part", part.SelectedIndex);
 	}
 
 	void p2pT(object sender, EventArgs e)
@@ -1171,6 +1173,6 @@ public partial class settings : Form
 		if (disableEvents)
 			return;
 		int part = p2partt.Checked ? 1 : 0;
-		Program.cfgW("Player1", "Part", part);
+		Launcher.cfgW("Player1", "Part", part);
 	}
 }

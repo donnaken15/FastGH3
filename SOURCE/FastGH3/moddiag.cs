@@ -11,8 +11,8 @@ public partial class moddiag : Form
 	// ill put as many backslashes as i want
 	// not gonna get path errors lol
 	static string modf = "\\DATA\\MODS\\";
-	static string disabled = "\\disabled\\";
-	static string disabled_ = folder + modf + disabled;
+	static string d = Launcher.T[140];
+	static string df = folder + modf + d;
 	public static PakFormat nullPF = new PakFormat("", "", "", PakFormatType.PC);
 
 	public struct OverrideItem {
@@ -92,7 +92,7 @@ public partial class moddiag : Form
 					case QbItemType.ArrayArray:
 						return (array as QbItemArray).Items;
 				}
-				throw new InvalidDataException("Unknown object type in array: " + (_item as QbItemBase).ItemQbKey);
+				throw new InvalidDataException(Launcher.T[180] + (_item as QbItemBase).ItemQbKey);
 			//return (_item as QbItemArray);
 			default:
 				return _item;
@@ -125,7 +125,7 @@ public partial class moddiag : Form
 				{
 					if (def == null)
 					{
-						warnings.Add("Mod info item is missing. (" + key.ToString() + ")");
+						warnings.Add(Launcher.T[181] + key.ToString() + ')');
 						return "";
 					}
 					else
@@ -229,7 +229,7 @@ public partial class moddiag : Form
 				unique = true;
 			if (modinfo == null) // bruh
 			{
-				warnings.Add("Can't find the mod info struct (" + filename + "_info) with a matching mod name or an ambiguously named mod info struct (mod_info). Is the file not properly named?");
+				warnings.Add(string.Format(Launcher.T[182], filename));
 				return;
 			}
 			else
@@ -311,9 +311,10 @@ public partial class moddiag : Form
 	public moddiag()
 	{
 		InitializeComponent();
+		OFD.Filter = Launcher.T[185];
 		//Height += new DirectoryInfo(folder + modf).GetFiles("*.qb.xen", SearchOption.AllDirectories).Length * 9;
-		if (!Directory.Exists(disabled_))
-			Directory.CreateDirectory(disabled_);
+		if (!Directory.Exists(df))
+			Directory.CreateDirectory(df);
 		modrefresh(null, null);
 	}
 
@@ -323,18 +324,18 @@ public partial class moddiag : Form
 		if (disableEvents) return;
 		foreach (object mod in modslist.SelectedItems)
 		{
-			string modS = mod.ToString().Replace("(*)", "");
+			string modS = mod.ToString().Replace(Launcher.T[143], "");
 			string addpath, addpath2;
-			if (mod.ToString().StartsWith("(*)"))
+			if (mod.ToString().StartsWith(Launcher.T[143]))
 			{
-				File.Move(disabled_ + modS, folder + modf + modS);
+				File.Move(df + modS, folder + modf + modS);
 				addpath = "";
-				addpath2 = "\\disabled\\";
+				addpath2 = d;
 			}
 			else
 			{
-				File.Move(folder + modf + modS, disabled_ + modS);
-				addpath = "\\disabled\\";
+				File.Move(folder + modf + modS, df + modS);
+				addpath = d;
 				addpath2 = "";
 			}
 			foreach (string a in selectedmod.requiredFiles)
@@ -361,8 +362,8 @@ public partial class moddiag : Form
 			modslist.Items.Add(file);
 		try
 		{
-			foreach (FileInfo file in new DirectoryInfo(disabled_).GetFiles("*.qb.xen"))
-				modslist.Items.Add("(*)" + file);
+			foreach (FileInfo file in new DirectoryInfo(df).GetFiles("*.qb.xen"))
+				modslist.Items.Add(Launcher.T[143] + file);
 		}
 		catch (Exception ex) { Console.WriteLine(ex); }
 	}
@@ -373,11 +374,11 @@ public partial class moddiag : Form
 		{
 			string path = folder + modf + modslist.SelectedItem.ToString();
 			disableEvents = true;
-			if (path.Contains("(*)"))
+			if (path.Contains(Launcher.T[143]))
 				togglecbx.Checked = true;
 			else
 				togglecbx.Checked = false;
-			path = path.Replace("(*)", "\\disabled\\");
+			path = path.Replace(Launcher.T[143], d);
 			disableEvents = false;
 			rembtn.Enabled = true;
 			togglecbx.Enabled = true;
@@ -392,8 +393,8 @@ public partial class moddiag : Form
 				warnings.Text += a + "\r\n";
 			foreach (string a in selectedmod.requiredFiles)
 				if (!File.Exists(Path.GetDirectoryName(path) + '\\' + a))
-					warnings.Text += a + " is a required file but does not exist.\r\n";
-			modovers.Text = "Overrides...(" + selectedmod.overrides.Count + ")";
+					warnings.Text += a + Launcher.T[183];
+			modovers.Text = "Overrides...(" + selectedmod.overrides.Count + ')';
 			modovers.Enabled = selectedmod.overrides.Count > 0;
 			modcfgbtn.Enabled = selectedmod.config_defaults != null;
 		}
@@ -404,11 +405,11 @@ public partial class moddiag : Form
 	{
 		foreach (object mod in modslist.SelectedItems)
 		{
-			string path = folder + modf + mod.ToString().Replace("(*)", disabled);
+			string path = folder + modf + mod.ToString().Replace(Launcher.T[143], d);
 			QbMod test = new QbMod(path);
 			string addpath, addpath2;
-			if (mod.ToString().StartsWith("(*)"))
-				addpath2 = "\\disabled\\";
+			if (mod.ToString().StartsWith(Launcher.T[143]))
+				addpath2 = d;
 			else
 				addpath2 = "";
 			foreach (string a in test.requiredFiles)
@@ -449,7 +450,7 @@ public partial class moddiag : Form
 	private void openedQB(object sender, System.ComponentModel.CancelEventArgs e)
 	{
 		foreach (string file in OFD.FileNames)
-			if (Program.NP(Path.GetPathRoot(file)) != Program.NP(folder + modf))
+			if (Launcher.NP(Path.GetPathRoot(file)) != Launcher.NP(folder + modf))
 			{
 				QbMod mod = null;
 				if (file.EndsWith(".qb.xen") ||
@@ -501,7 +502,7 @@ public partial class moddiag : Form
 					//if (qb_in_mem == null)
 					if (!gotqb)
 					{
-						MessageBox.Show("Cannot find a file indicating of a QB.", "Error",
+						MessageBox.Show(Launcher.T[184], "Error",
 							MessageBoxButtons.OK, MessageBoxIcon.Error);
 						//continue;
 					}

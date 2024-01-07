@@ -8,6 +8,7 @@ public partial class fspmultichart : Form
 	public fspmultichart(string[] fnames)
 	{
 		InitializeComponent();
+		lblmain.Text = Launcher.T[161];
 		listfiles.Items.AddRange(fnames);
 	}
 

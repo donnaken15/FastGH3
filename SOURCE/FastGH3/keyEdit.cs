@@ -1470,6 +1470,10 @@ public partial class keyEdit : Form
 
 	public keyEdit(ushort[] binds)
 	{
+		selBtnL.Text = Launcher.T[155];
+		Text = Launcher.T[154];
+		guitarPic.ImageLocation = Launcher.T[162];
+		hintTxt.Text = Launcher.T[163];
 #pragma warning disable CS0162 // Unreachable code detected
 		if (false) // dump key list for optimization
 		{
@@ -1478,7 +1482,7 @@ public partial class keyEdit : Form
 			for (int i = 0; i < kt.Length; i++)
 			{
 				kl.Write(BitConverter.GetBytes((byte)kt[i].k), 0, 1);
-				kl.Write(BitConverter.GetBytes((ushort)kt[i].c), 0, 2);
+				kl.Write(BitConverter.GetBytes(kt[i].c), 0, 2);
 				kl.Write(BitConverter.GetBytes((ushort)kt[i].p.X), 0, 2);
 				kl.Write(BitConverter.GetBytes((ushort)kt[i].p.Y), 0, 2);
 				kl.Write(BitConverter.GetBytes((ushort)kt[i].s.Width), 0, 2);
@@ -1492,7 +1496,7 @@ public partial class keyEdit : Form
 		//if (true)
 		if (kt == null)
 		{
-			MemoryStream ks = new MemoryStream((byte[])Resources.ResourceManager.GetObject("kl"));
+			MemoryStream ks = new MemoryStream(Launcher.kl);
 			BinaryReader kr = new BinaryReader(ks);
 			byte kc = kr.ReadByte();
 			kt = new Key[kc];

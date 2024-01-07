@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <StartupObject>Program</StartupObject>
+    <StartupObject>Launcher</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -137,6 +137,7 @@
     <Compile Include="keyEdit.Designer.cs">
       <DependentUpon>keyEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="LD.cs" />
     <Compile Include="modcfg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,11 +156,6 @@
     <Compile Include="modovrddiag.Designer.cs">
       <DependentUpon>modovrddiag.cs</DependentUpon>
     </Compile>
-    <Compile Include="P\res.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>res.resx</DependentUpon>
-    </Compile>
     <Compile Include="Queenbee\BinaryEndianReader.cs" />
     <Compile Include="Queenbee\BinaryEndianWriter.cs" />
     <Compile Include="Queenbee\Pak\PakDbgQbKey.cs" />
@@ -169,7 +165,7 @@
     <Compile Include="Queenbee\Pak\PakHeaderFlags.cs" />
     <Compile Include="Queenbee\Pak\PakHeaderItem.cs" />
     <Compile Include="Queenbee\Pak\PakItemType.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Launcher.cs" />
     <Compile Include="P\AssemblyInfo.cs" />
     <Compile Include="Queenbee\Qb\base\EditableAttribute.cs" />
     <Compile Include="Queenbee\Qb\base\GenericQbItem.cs" />
@@ -209,14 +205,15 @@
     <Compile Include="WZK64.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GenerateLD.js" />
     <Content Include="note.ico" />
-    <None Include="Resources\ikeys.txt" />
+    <None Include="app.config" />
     <None Include="Resources\credits.txt" />
+    <None Include="Resources\ikeys.txt" />
     <None Include="Resources\kl.bin" />
+    <None Include="Resources\lt.txt" />
     <None Include="Resources\pn.bin" />
     <None Include="Resources\qn.bin" />
-    <None Include="Resources\lt.txt" />
-    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -226,16 +223,20 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="P\res.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>res.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Queenbee\Qb\Script\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>move "$(TargetPath)" "$(TargetDir)tmp.exe"
+"C:\Program Files\PackageManagement\NuGet\Packages\ilmerge.3.0.41\tools\net452\ILMerge.exe" "$(TargetDir)tmp.exe" "$(TargetDir)Ionic.Zip.dll" /out:"$(TargetPath)"
+del "$(TargetDir)tmp.exe"
+mpress -m -s "$(TargetPath)"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>pushd "$(ProjectDir)"
+node GenerateLD.js
+popd</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

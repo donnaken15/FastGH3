@@ -14,8 +14,9 @@ using System.Windows.Forms;
 
 #pragma warning disable CS0162 // Unreachable code detected NO ONE CARES
 
-class Program
+static partial class Launcher
 {
+	#region INI stuff
 	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileInt", CharSet = CharSet.Unicode)]
 	public static extern int GI(
 		string a, string k, int d, string f);
@@ -38,6 +39,7 @@ class Program
 	{
 		char[] buf = new char[0x20000];
 		// being generous for people playing 6500 songs
+		// deusdeceptor's brain damage will not take kindly to this
 		// (16+3+1)*(6553*1)
 		//hash+
 		//  prefix+
@@ -50,6 +52,21 @@ class Program
 		string ret = new string(buf).Substring(0, retn);
 		return ret.Substring(0, ret.Length - 1).Split('\0');
 	}
+	public static string ini(string a, string k, string d, int i, string f)
+	{
+		byte[] _ = new byte[i];
+		int len = GStr(a, k, d, _, i, IF(f));
+		Array.Resize(ref _, len * 2);
+		return Encoding.Unicode.GetString(_);
+	}
+	public static int ini(string a, string k, int d, string f) { return GI(a, k, d, IF(f)); }
+	public static int cfg(string a, string k, int d) { return GI(a, k, d, inif); }
+	public static string ini(string s, string k, string d, string f){ return ini(s, k, d, 0x200, f); } // for being lazy
+	public static string cfg(string s, string k, string d, int i)	{ return ini(s, k, d, i, inif); }
+	public static string cfg(string s, string k, string d)			{ return ini(s, k, d, 0x200, inif); } // for being lazy
+	public static void iniw(string s, string k, object d, string f)	{ WStr(s, k, d.ToString(), f); }
+	public static void cfgW(string s, string k, object d)			{ iniw(s, k, d, inif); }
+	#endregion
 
 	public static string folder, dataf = "DATA\\", pakf,
 		music, vid, mt, cf, title = "FastGH3";
@@ -67,7 +84,7 @@ class Program
 					.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
 					.ToUpperInvariant();
 	}
-
+	 
 	public static string m = "Misc";
 	public static string l = "Launcher";
 	public static string ks = "Killswitch";
@@ -79,49 +96,8 @@ class Program
 	{
 		return Path.IsPathRooted(f) ? f : Directory.GetCurrentDirectory() + '\\' + f;
 	}
-	public static string ini(string a, string k, string d, int i, string f)
-	{
-		byte[] _ = new byte[i];
-		int len = GStr(a, k, d, _, i, IF(f));
-		Array.Resize(ref _, len*2);
-		return Encoding.Unicode.GetString(_);
-	}
-	public static int ini(string a, string k, int d, string f)
-	{
-		return GI(a, k, d, IF(f));
-	}
-	public static int cfg(string a, string k, int d)
-	{
-		return GI(a, k, d, inif);
-	}
-	public static string ini(string s, string k, string d, string f) // for being lazy
-	{
-		return ini(s, k, d, 0x200, f);
-	}
-	public static string cfg(string s, string k, string d, int i)
-	{
-		return ini(s, k, d, i, inif);
-	}
-	public static string cfg(string s, string k, string d) // for being lazy
-	{
-		return ini(s, k, d, 0x200, inif);
-	}
-	public static void iniw(string s, string k, object d, string f)
-	{
-		WStr(s, k, d.ToString(), f);
-	}
-	public static void cfgW(string s, string k, object d)
-	{
-		iniw(s, k, d, inif);
-	}
-	public static void killgame()
-	{
-		cfgW(m, ks, 1);
-	}
-	public static void unkillgame()
-	{
-		cfgW(m, ks, 0);
-	}
+	public static void killgame()	{ cfgW(m, ks, 1); }
+	public static void unkillgame()	{ cfgW(m, ks, 0); }
 	static void cSV(string bik)
 	{
 		#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART
@@ -138,38 +114,34 @@ class Program
 			{
 				if (File.Exists(bik))
 				{
-					vl(vstr[99]);
+					vl(T[99]);
 					//vl("Found (Bink) background video");
 					if (cfg(m, lshv, 0) == 0)
 					{
-						vl(vstr[132]);
+						vl(T[132]);
 						// save last background video
-						File.Copy(
-							vid + "backgrnd_video.bik.xen",
-							vid + "lastvid", true);
+						File.Copy(vid + T[164], vid + "lastvid", true);
 						cfgW(m, lshv, 1);
 					}
 					File.Copy(bik,
-						vid + "backgrnd_video.bik.xen", true);
+						vid + T[164], true);
 				}
 				else
 				{
-					vl(vstr[100]);
+					vl(T[100]);
 					//vl("No (Bink) background video found");
 					if (cfg(m, lshv, 0) == 1)
 					{
-						vl(vstr[133]);
+						vl(T[133]);
 						// restore user video after playing a song a background video
 						// and now playing a song without one
 						if (File.Exists(vid + "lastvid"))
 						{
-							File.Copy(
-								vid + "lastvid",
-								vid + "backgrnd_video.bik.xen", true);
+							File.Copy(vid + "lastvid", vid + T[164], true);
 							File.Delete(vid + "lastvid");
 						}
 						else
-							File.Delete(vid + "backgrnd_video.bik.xen");
+							File.Delete(vid + T[164]);
 						// if there's no previous video, just delete the current one
 						cfgW(m, lshv, 0);
 					}
@@ -177,7 +149,7 @@ class Program
 			}
 			catch (Exception e)
 			{
-				print("Failed to copy song video.");
+				print(T[165]);
 				vl(e);
 			}
 		}
@@ -186,7 +158,7 @@ class Program
 	// todo: send ctrl-c to fsbbuild scripts
 	static void killEncoders()
 	{
-		try
+		/*try
 		{
 			foreach (Process proc in Process.GetProcessesByName("helix"))
 			{
@@ -202,7 +174,7 @@ class Program
 		catch
 		{
 			print(vstr[134]);
-		}
+		}*/
 	}
 
 	static void die()
@@ -371,15 +343,13 @@ class Program
 		e = Environment.ExpandEnvironmentVariables(e);
 		if (!File.Exists(e))
 		{
-			if (Path.GetDirectoryName(e) == String.Empty)
-			{
+			if (Path.GetDirectoryName(e) == string.Empty)
 				foreach (string v in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';'))
 				{
 					string p = v.Trim();
-					if (!String.IsNullOrEmpty(p) && File.Exists(p = Path.Combine(p, e)))
+					if (!string.IsNullOrEmpty(p) && File.Exists(p = Path.Combine(p, e)))
 						return Path.GetFullPath(p);
 				}
-			}
 			return "";
 			//throw new FileNotFoundException(new FileNotFoundException().Message, exe);
 		}
@@ -485,7 +455,7 @@ class Program
 			Console.SetCursorPosition(lx, ly);
 		}
 		catch {
-			vl("Progress bar fail");
+			//vl("Progress bar fail");
 		}
 	}
 	static void ___(object p, DataReceivedEventArgs a)
@@ -537,18 +507,19 @@ class Program
 
 	public static void ec(ref Process p, ushort ab, bool fr, ushort ar, bool fc, bool s, bool var)
 	{
-		p.StartInfo.Arguments += " -b " + (ab << 1 /*ugh*/).ToString();
+		// STUPID COMPILATION MAKES IT ACCESS STARTINFO EVERYTIME
+		ProcessStartInfo pi = p.StartInfo;
+		pi.Arguments += " -b " + (ab << 1 /*ugh*/).ToString();
 		if (fr)
-			p.StartInfo.Arguments += " -r " + ar.ToString();
+			pi.Arguments += " -r " + ar.ToString();
 		if (fc)
-			p.StartInfo.Arguments += " -c " + (s ? '2' : '1');
-		if (var)
-			p.StartInfo.Arguments += " -v ";
+			pi.Arguments += " -c " + (s ? '2' : '1');
+		if (var) // wait i just realized, keyword, lol, but it works just fine :p
+			pi.Arguments += " -v ";
 	}
 	//public static string ffmpeg = "";
 
-	public static string[] vstr;
-
+	static bool initlog = false;
 	public static string version = "1.0-999010889";
 	public static DateTime builddate;
 	[STAThread]
@@ -610,17 +581,12 @@ class Program
 			//if (File.Exists(folder + "settings.ini"))
 				//ini.Load(folder + "settings.ini");
 			vb = cfg(l, settings.t.VerboseLog.ToString(), 0) == 1;
-			vstr = Resources.ResourceManager.GetString("vstr").Split('\n');
 			dataf = folder + dataf;
 			pakf = dataf + "PAK\\";
 			music = dataf + "MUSIC\\";
 			vid = dataf + "MOVIES\\BIK\\";
 			mt = music + "TOOLS\\";
 			cf = dataf + "CACHE\\";
-			for (int i = 0; i < vstr.Length; i++)
-			{
-				vstr[i] = Regex.Unescape(vstr[i]);
-			}
 
 			// too many items in [Misc]
 			// hate me
@@ -644,7 +610,7 @@ class Program
 				cfgW("Temp", "MigratedConfig2", 1);
 			}*/
 
-			vl(vstr[0]);// "Initializing..."
+			vl(T[0]);// "Initializing..."
 			caching = cfg(l, settings.t.SongCaching.ToString(), 1) == 1;
 			if (caching)
 			{
@@ -657,7 +623,7 @@ class Program
 				if (cfg(l, settings.t.NoStartupMsg.ToString(), 0) == 0)
 				{
 					Console.Clear();
-					Console.WriteLine(Resources.ResourceManager.GetString("splashText"));
+					Console.WriteLine(splashText);
 					Console.ReadKey();
 				}
 				OpenFileDialog openchart = new OpenFileDialog()
@@ -665,7 +631,7 @@ class Program
 					AddExtension = true,
 					CheckFileExists = true,
 					CheckPathExists = true,
-					Filter = vstr[130],
+					Filter = T[130],
 					RestoreDirectory = true,
 					Title = "Select chart"
 				};
@@ -693,9 +659,10 @@ class Program
 							File.Delete(folder + "launcher.txt");
 						}
 						log = new StreamWriter(folder + "launcher.txt", !newfile);
+						initlog = true;
 						if (newfile)
 						{
-							log.WriteLine(vstr[1]);
+							log.WriteLine(T[1]);
 							try {
 								builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
 								// a person legitimately had this file missing, how is that even possible >:(
@@ -733,7 +700,7 @@ class Program
 				else if (args[0].ToLower() == "-shuffle")
 				{
 					// 0.5-1 kb
-					Console.WriteLine(vstr[101]);
+					Console.WriteLine(T[101]);
 					List<string> paths, files;
 					/*IniFile.IniSection shuffleCfg;
 					if (ini.GetSection("Shuffle") == null)
@@ -754,15 +721,15 @@ class Program
 						if (Directory.Exists(curpath) && paths.IndexOf(curpath) == -1)
 							paths.Add(curpath);
 						else if (!Directory.Exists(curpath))
-							vl("got invalid directory, skipping: "+p);
+							vl(T[166]+p);
 					}
 					if (paths.Count == 0)
 					{
-						MessageBox.Show(vstr[2], "Error",
+						MessageBox.Show(T[2], "Error",
 							MessageBoxButtons.OK, MessageBoxIcon.Error);
 						Environment.Exit(1);
 					}
-					vl("added paths ("+paths.Count+")");
+					vl("added paths (" + paths.Count + ')');
 					Random rand = new Random((int)DateTime.Now.Ticks);
 					string randpath = paths[rand.Next(paths.Count-1)];
 					files = new List<string>();
@@ -772,7 +739,7 @@ class Program
 					vl("added files");
 					if (files.Count == 0)
 					{
-						MessageBox.Show(vstr[3], "Error", // "Can't find any charts!"
+						MessageBox.Show(T[3], "Error", // "Can't find any charts!"
 							MessageBoxButtons.OK, MessageBoxIcon.Error);
 						Environment.Exit(1);
 					}
@@ -826,7 +793,7 @@ class Program
 									if (gfx == null)
 									{
 										// "Cannot find a file indicating of containing highway GFX."
-										MessageBox.Show(vstr[4], "Error",
+										MessageBox.Show(T[4], "Error",
 											MessageBoxButtons.OK, MessageBoxIcon.Error);
 										Environment.Exit(1);
 									}
@@ -854,7 +821,7 @@ class Program
 							else
 							{
 								// "global.pak isn't named correctly."
-								Console.WriteLine(vstr[5]);
+								Console.WriteLine(T[5]);
 								Console.ReadKey();
 								Environment.Exit(1);
 							}
@@ -862,7 +829,7 @@ class Program
 						else
 						{
 							// "One of the entered files don't exist."
-							Console.WriteLine(vstr[6]);
+							Console.WriteLine(T[6]);
 							Console.ReadKey();
 							Environment.Exit(1);
 						}
@@ -881,15 +848,15 @@ class Program
 					cfgW("Temp", "ConvPID", Process.GetCurrentProcess().Id);
 					// 2kb
 					Console.WriteLine(title + " by donnaken15");
-					log.WriteLine(vstr[7]); // "\n######### DOWNLOAD SONG PHASE #########\n"
-					print(vstr[8], FSPcolor); // "Downloading song package..."
+					log.WriteLine(T[7]); // "\n######### DOWNLOAD SONG PHASE #########\n"
+					print(T[8], FSPcolor); // "Downloading song package..."
 					vl("URL: " + args[1], FSPcolor);
 					bool datecheck = true;
 					Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
 					string cs = ""; // ...
 					string uC = "";
 					string tF = "null";
-					string adf = vstr[9]; // "already downloaded file." // desperate
+					string adf = T[9]; // "already downloaded file." // desperate
 					string fdp = " file date. ";
 					vl(fsplink.AbsoluteUri, FSPcolor);
 					if (caching)
@@ -906,7 +873,7 @@ class Program
 								goto skipToGame;
 						}
 						if (datecheck)
-							print(vstr[10], FSPcolor);
+							print(T[10], FSPcolor);
 						// "Unique file date checking enabled."
 					}
 					WebClient fsp = new WebClient();
@@ -923,7 +890,7 @@ class Program
 						else
 							lastmod_cached = new DateTime(0);
 						if (lastmod_cached.Ticks == 0)
-							vl(vstr[11], cacheColor); // "Date not cached"
+							vl(T[11], cacheColor); // "Date not cached"
 						else
 							vl("Cached date: " + lastmod_cached.ToUniversalTime(), cacheColor);
 						if (fsp.ResponseHeaders["Last-Modified"] != null)
@@ -956,7 +923,7 @@ class Program
 					if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > 1024*1024 * 24)
 					{
 						// i dare use Format once for optimized strings "This song package is a larger file than usual. ({0} MB) Do you want to continue?"
-						if (MessageBox.Show(string.Format(vstr[12],
+						if (MessageBox.Show(string.Format(T[12],
 							Math.Round((Convert.ToSingle(Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]))) / 1024 / 1024), 2),
 							"Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
 						{
@@ -976,11 +943,11 @@ class Program
 					tF += ".fsp";
 					if (caching)
 					{
-						print(vstr[13], cacheColor); // "Writing link to cache..."
+						print(T[13], cacheColor); // "Writing link to cache..."
 						iniw(cs, "File", tF.ToString(), cachf);
 						if (datecheck)
 						{
-							print(vstr[14], cacheColor); // "Writing date to cache..."
+							print(T[14], cacheColor); // "Writing date to cache..."
 							iniw(cs, "Date", lastmod.Ticks.ToString(), cachf);
 						}
 					}
@@ -1004,27 +971,27 @@ class Program
 					if (Path.GetFileName(args[0]).EndsWith(chartext) || Path.GetFileName(args[0]).EndsWith(midext))
 					{
 						bool ischart = false;
-						log.WriteLine(vstr[15]); // "\n######### MAIN LAUNCHER PHASE #########\n"
+						log.WriteLine(T[15]); // "\n######### MAIN LAUNCHER PHASE #########\n"
 						vl("File is: " + args[0]);
 						Process mid2chart = cmd(folder + "mid2chart.exe",
 							paksongmid.Quotes() + " -k -u -p -m");
-						print(vstr[16], chartConvColor); // "Reading file."
+						print(T[16], chartConvColor); // "Reading file."
 						if (Path.GetFileName(args[0]).ToLower().EndsWith(chartext))
 						{
-							vl(vstr[17], chartConvColor); // "Detected chart file."
+							vl(T[17], chartConvColor); // "Detected chart file."
 							ischart = true;
 						}
 						else if (Path.GetFileName(args[0]).ToLower().EndsWith(midext) ||
 							Path.GetFileName(args[0]).ToLower().EndsWith(midext + 'i'))
 						{
-							vl(vstr[18], chartConvColor); // "Detected midi file."
-							vl(vstr[19], chartConvColor); // "Converting to chart..."
+							vl(T[18], chartConvColor); // "Detected midi file."
+							vl(T[19], chartConvColor); // "Converting to chart..."
 														  // why isnt this working
 														  //mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
 														  //Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
 														  //Console.ReadKey();
 							File.Copy(args[0], paksongmid, true);
-							vl(vstr[135]);
+							vl(T[135]);
 							mid2chart.Start();
 							if (vb || wl)
 							{
@@ -1035,13 +1002,13 @@ class Program
 							// im suffering so hard
 							if (!File.Exists(paksongchart))
 							{
-								throw new Exception(vstr[20]);
+								throw new Exception(T[20]);
 								//throw new Exception("Cannot find chart after converting from MIDI. Something must've went wrong with mid2chart. Aborting.");
 							}
 						}
 						if (caching)
 						{
-							vl(vstr[21], cacheColor);
+							vl(T[21], cacheColor);
 							//vl("Indexing cache...", cacheColor);
 							cacheList = Directory.GetFiles(cf);
 							for (int i = 0; i < cacheList.Length; i++)
@@ -1088,9 +1055,9 @@ class Program
 							//Console.WriteLine(Path.GetPathRoot(args[0]));
 						}
 						#region ENCODE SONGS
-						print(vstr[22], FSBcolor);
+						print(T[22], FSBcolor);
 						//print("Encoding song.", FSBcolor);
-						vl(vstr[23], FSBcolor);
+						vl(T[23], FSBcolor);
 						//vl("Getting audio files...", FSBcolor);
 						string[] audiostreams = { "", "", "" };
 						string audtmpstr = "", chf = Directory.GetCurrentDirectory() + '\\';
@@ -1168,7 +1135,7 @@ class Program
 								audtmpstr = chf + Path.GetFileNameWithoutExtension(args[0]) + '.' + audextnames[i];
 								if (File.Exists(audtmpstr))
 								{
-									vl(vstr[24], FSBcolor); //vl("Found audio with the chart name", FSBcolor);
+									vl(T[24], FSBcolor); //vl("Found audio with the chart name", FSBcolor);
 									audiostreams[0] = audtmpstr;
 									break;
 								}
@@ -1186,7 +1153,7 @@ class Program
 									audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 									if (File.Exists(audtmpstr))
 									{
-										vl(vstr[25] + audstnames[i], FSBcolor); //vl("Found FOF structure files / " + audstnames[i], FSBcolor);
+										vl(T[25] + audstnames[i], FSBcolor); //vl("Found FOF structure files / " + audstnames[i], FSBcolor);
 										audiostreams[i] = audtmpstr;
 										break;
 									}
@@ -1202,7 +1169,7 @@ class Program
 									audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 									if (File.Exists(audtmpstr))
 									{
-										vl(vstr[25] + audstnames[i], FSBcolor); //vl("Found FOF structure files / " + audstnames[i], FSBcolor);
+										vl(T[25] + audstnames[i], FSBcolor); //vl("Found FOF structure files / " + audstnames[i], FSBcolor);
 										audiostreams[i + 1] = audtmpstr;
 										break;
 									}
@@ -1211,7 +1178,7 @@ class Program
 						// TODO: allow NJ3T routine even when song.ogg exists
 						bool nj3t = false; // nj3ts.Count smh // "3 Count!"
 						List<string> nj3ts = new List<string>();
-						vl(vstr[26], FSBcolor); //vl("Checking if extra audio exists", FSBcolor);
+						vl(T[26], FSBcolor); //vl("Checking if extra audio exists", FSBcolor);
 												// numbered drum streams
 						for (int j = 0; j < 4; j++)
 						{
@@ -1220,7 +1187,7 @@ class Program
 								audtmpstr = chf + "drums_" + i + '.' + audextnames[j];
 								if (File.Exists(audtmpstr))
 								{
-									vl(vstr[27] + i + ')', FSBcolor); //vl("Found isolated drums audio (" + i + ')', FSBcolor);
+									vl(T[27] + i + ')', FSBcolor); //vl("Found isolated drums audio (" + i + ')', FSBcolor);
 									nj3t = true;
 									nj3ts.Add(audtmpstr);
 								}
@@ -1233,7 +1200,7 @@ class Program
 							audtmpstr = chf + "vocals." + audextnames[j];
 							if (File.Exists(audtmpstr))
 							{
-								vl(vstr[28], FSBcolor); //vl("Found isolated vocals audio", FSBcolor);
+								vl(T[28], FSBcolor); //vl("Found isolated vocals audio", FSBcolor);
 								nj3t = true;
 								nj3ts.Add(audtmpstr);
 								break;
@@ -1247,7 +1214,7 @@ class Program
 								audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 								if (File.Exists(audtmpstr))
 								{
-									vl(vstr[25] + audstnames[i], FSBcolor);
+									vl(T[25] + audstnames[i], FSBcolor);
 									if (i != 3 && audstnames[i] != "song")
 									{
 										nj3t = true;
@@ -1282,7 +1249,7 @@ class Program
 								}
 							}
 						}
-						vl(vstr[29], FSBcolor); //vl("Current selected audio streams are:", FSBcolor);
+						vl(T[29], FSBcolor); //vl("Current selected audio streams are:", FSBcolor);
 						foreach (string a in audiostreams)
 							vl(a, FSBcolor);
 						if (!File.Exists(audiostreams[0]) && !nj3t)
@@ -1295,11 +1262,11 @@ class Program
 								CheckFileExists = true,
 								CheckPathExists = true,
 								InitialDirectory = Path.GetDirectoryName(args[0]),
-								Filter = "Audio files|*.mp3;*.wav;*.ogg;*.opus|Any type|*.*"
+								Filter = T[167]
 							};
 							do
 							{
-								audiolost = MessageBox.Show(vstr[30], "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+								audiolost = MessageBox.Show(T[30], "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
 								//audiolost = MessageBox.Show("No song audio can be found.\nDo you want to search for it?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
 								if (audiolost == DialogResult.Cancel)
 								{
@@ -1317,7 +1284,7 @@ class Program
 										playsilent = DialogResult.OK;
 										if (!File.Exists(audiostreams[1]))
 										{
-											DialogResult audiolosthasguitartrack = MessageBox.Show("Is there a guitar track too?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+											DialogResult audiolosthasguitartrack = MessageBox.Show(T[168], "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
 										retryguitaraud:
 											if (audiolosthasguitartrack == DialogResult.Yes)
 											{
@@ -1336,7 +1303,7 @@ class Program
 										if (!File.Exists(audiostreams[2]))
 										{
 											retrybassaud:
-											if (MessageBox.Show("Is there a rhythm track too?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+											if (MessageBox.Show(T[169], "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
 											{
 												searchaudio.FileName = "";
 												searchaudio.ShowDialog();
@@ -1354,11 +1321,11 @@ class Program
 								}
 								if (audiolost == DialogResult.No || searchaudioresult == DialogResult.Cancel || !File.Exists(searchaudio.FileName))
 								{
-									playsilent = MessageBox.Show(vstr[31], "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+									playsilent = MessageBox.Show(T[31], "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 									//playsilent = MessageBox.Show("Want to play without audio?\nThis is not compatible with practice mode.", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 									if (playsilent == DialogResult.Yes)
 									{
-										vl("Using blank music file", FSBcolor);
+										vl(T[170], FSBcolor);
 										audiostreams[0] = blankmp3;
 									}
 								}
@@ -1428,7 +1395,7 @@ class Program
 						}
 						catch (Exception e)
 						{
-							vl(vstr[32]);
+							vl(T[32]);
 							//print("Failed to delete the temp FSB folder!");
 							vl(e);
 						}
@@ -1461,10 +1428,10 @@ class Program
 							string VBR_param = VBR ? "V" : "B";
 							audioConv_start = time;
 							if (caching)
-								print(vstr[136], cacheColor);
+								print(T[136], cacheColor);
 							if (nj3t)
 							{
-								print(vstr[33], FSBcolor);
+								print(T[33], FSBcolor);
 								//print("Found more than three audio tracks, merging.", FSBcolor);
 								addaud = cmd(CMDpath, (mt + "nj3t.bat").Quotes());
 								float maxl = 0;
@@ -1488,7 +1455,7 @@ class Program
 									addaud.BeginOutputReadLine();
 								}
 								vl("merge args: sox " + addaud.StartInfo.Arguments, FSBcolor);
-								audiostreams[0] = mt + "fsbtmp\\fastgh3_song.mp3";
+								audiostreams[0] = mt + string.Format(T[171], "song");
 								//fsbbuild.StartInfo.FileName += '2';
 								if (!MTFSB)
 								{
@@ -1496,7 +1463,7 @@ class Program
 										addaud.WaitForExit();
 								}
 							}
-							vl(vstr[34], FSBcolor);
+							vl(T[34], FSBcolor);
 							//vl("Creating encoder process...", FSBcolor);
 							if (!MTFSB)
 							{
@@ -1506,7 +1473,7 @@ class Program
 							else
 							{
 								Directory.CreateDirectory(mt + "fsbtmp");
-								File.Copy(blankmp3, mt + "fsbtmp\\fastgh3_preview.mp3", true);
+								File.Copy(blankmp3, mt + string.Format(T[171], "preview"), true);
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								for (int i = 0; i < fsbbuild2.Length; i++)
 								{
@@ -1517,7 +1484,7 @@ class Program
 										is_stereo[i] = ach(a_s) > 1;
 									}
 									fsbbuild2[i] = cmd((mt + "c128ks.exe"), a_s.Quotes() +
-											' ' + (mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3").Quotes() + " -p");
+											' ' + (mt + string.Format(T[171], fsbnames[i])).Quotes() + " -p");
 									fsbbuild2[i].StartInfo.WorkingDirectory = mt;
 									if (forcestereoopt)
 										is_stereo[i] = stereo;
@@ -1527,8 +1494,8 @@ class Program
 								fsbbuild3 = cmd(CMDpath, "/c " + ((mt + "fsbbuild.bat").Quotes()));
 								fsbbuild3.StartInfo.WorkingDirectory = mt;
 							}
-							vl((MTFSB ? "As" : "S") + vstr[35], FSBcolor);
-							vl(vstr[36], FSBcolor);
+							vl((MTFSB ? "As" : "S") + T[35], FSBcolor);
+							vl(T[36], FSBcolor);
 							//v("ynchronous mode set\n", FSBcolor);
 							//vl("Starting FSB building...", FSBcolor);
 							if (!nj3t)
@@ -1544,6 +1511,9 @@ class Program
 									audiostreams[2].Quotes() + ' ' +
 									(blankmp3).Quotes() + ' ' + fsb.Quotes()).Quotes();
 								vl("MP3 args: c128ks " + fsbbuild.StartInfo.Arguments, FSBcolor);
+								// random TODO i just thought: create a function
+								// based on string[] that converts it to a
+								// singular string for arguments and check spaces
 								fsbbuild.Start();
 								if (vb || wl)
 								{
@@ -1571,7 +1541,7 @@ class Program
 						}
 						else
 						{
-							print(vstr[37], FSBcolor);
+							print(T[37], FSBcolor);
 							//print("Cached audio found.", FSBcolor);
 							try
 							{
@@ -1581,17 +1551,17 @@ class Program
 							}
 							catch (IOException e)
 							{
-								print(vstr[38]);
+								print(T[38]);
 								//print("Failed to copy cached FSB. WHY?!!!");
 								print(e);
-								vl("DO YOU HAVE THE GAME OPEN????");
+								vl(T[172]);
 								foreach (Process p in Process.GetProcessesByName("fastgh3"))
 								{
 									vl(NP(Application.ExecutablePath) + " == " + NP(p.MainModule.FileName));
 								}
 								//print("Attempting to kill game if \"it is used by another process\" somehow.");
 								//disallowGameStartup();
-								print(vstr[39]);
+								print(T[39]);
 								//print("Deleting the currently loaded FSB in case.");
 								File.Delete(fsb);
 								File.Copy(cf + audhash.ToString("X16"), fsb, true);
@@ -1605,19 +1575,19 @@ class Program
 							// *nullNoteArray
 							// = {0,0,0}
 							if (caching)
-								print(vstr[40], cacheColor);
+								print(T[40], cacheColor);
 								//print("Chart is not cached.", cacheColor);
 							//print("Generating QB template.", chartConvColor);
 							//vl("Creating new QB files...", chartConvColor);
 							killgame();
 							byte[] __ = new byte[0xB0],
-								pn = (byte[])Resources.ResourceManager.GetObject("paknew"),
-								qn = (byte[])Resources.ResourceManager.GetObject("qbnew");
+								pn = (byte[])Launcher.pn,
+								qn = (byte[])Launcher.qn;
 							Array.Copy(pn, 0, __, 0, pn.Length);
 							Array.Copy(qn, 0, __, 0x80, qn.Length);
 							File.WriteAllBytes(songpak, __);
 							//vl("Creating pak editor...", chartConvColor);
-							print(vstr[41], chartConvColor);
+							print(T[41], chartConvColor);
 							//print("Opening song pak.", chartConvColor);
 							PakFormat PF = new PakFormat(songpak, "", "", PakFormatType.PC);
 							PakEditor build;
@@ -1631,18 +1601,18 @@ class Program
 								vl(e);
 								try
 								{
-									vl(vstr[42], ConsoleColor.Red);
+									vl(T[42], ConsoleColor.Red);
 									build = new PakEditor(PF, false);
 								}
 								catch
 								{
-									vl(vstr[43], ConsoleColor.Red);
+									vl(T[43], ConsoleColor.Red);
 									File.Move(pakf + "dbg.pak.xen", pakf + "dbg.pak.xen.bak");
 									build = new PakEditor(PF, false);
 									// if even after this it fails, look for god
 								}
 							}
-							print(vstr[44], chartConvColor);
+							print(T[44], chartConvColor);
 							//print("Compiling chart.", chartConvColor);
 							//vl("Creating QbFile using PakFormat", chartConvColor);
 							Stream newqb = new MemoryStream(qn);
@@ -1656,7 +1626,7 @@ class Program
 							// doublebass would exist both on rhythm and rhythmcoop? lol?
 							// depend on enhanced bass for singleplayer rhythm kek
 
-							vl(vstr[45], chartConvColor);
+							vl(T[45], chartConvColor);
 							//vl("Creating note arrays...", chartConvColor);
 							string[] diffs = { "easy", "medium", "hard", "expert" };
 							string[] insts = { "", "_rhythm", "_guitarcoop", "_rhythmcoop" };
@@ -1744,7 +1714,7 @@ class Program
 										}
 										catch (Exception ex)
 										{
-											vl(vstr[46] + d + i, ConsoleColor.Yellow);
+											vl(T[46] + d + i, ConsoleColor.Yellow);
 											//vl("Error in parsing notes for " + d + i, ConsoleColor.Yellow);
 											vl(ex, ConsoleColor.Yellow);
 											notes[ii][dd].Create(QbItemType.ArrayInteger);
@@ -1818,7 +1788,7 @@ class Program
 										}
 										catch (Exception ex)
 										{
-											vl(vstr[47] + d + i, ConsoleColor.Yellow);
+											vl(T[47] + d + i, ConsoleColor.Yellow);
 											//vl("Error in parsing solos for " + d + i, ConsoleColor.Yellow);
 											vl(ex, ConsoleColor.Yellow);
 										}
@@ -1867,7 +1837,7 @@ class Program
 									notes_arr[i][d].AddItem(notes[i][d]);
 								}
 							}
-							vl(vstr[48], chartConvColor);
+							vl(T[48], chartConvColor);
 							//vl("Creating and adding starpower arrays...", chartConvColor);
 							QbItemBase[][] spp_arr = new QbItemBase[insts.Length][];//[diffs.Length];
 							QbItemBase[][] spp = new QbItemBase[insts.Length][];//[diffs.Length];
@@ -1926,7 +1896,7 @@ class Program
 												}
 												catch /*(Exception e)*/
 												{
-													print(vstr[129], ConsoleColor.Yellow);
+													print(T[129], ConsoleColor.Yellow);
 													//Console.WriteLine(e);
 												}
 											}
@@ -1949,7 +1919,7 @@ class Program
 
 
 							#region END TIME
-							vl(vstr[49], chartConvColor);
+							vl(T[49], chartConvColor);
 							//vl("Getting end time...", chartConvColor);
 							int et = 0;
 							//           blehe  v
@@ -1966,20 +1936,20 @@ class Program
 									}
 									catch
 									{
-										vl(vstr[50] + i+"]["+d+"]");
+										vl(T[50] + i+"]["+d+"]");
 										//vl("Unable to get the end time for a note track ["+i+"]["+d+"]");
 									}
-									vl(vstr[51] + et, chartConvColor);
+									vl(T[51] + et, chartConvColor);
 									//vl("Calculating: end time so far: " + et, chartConvColor);
 								}
 							}
-							vl(vstr[52] + et, chartConvColor);
+							vl(T[52] + et, chartConvColor);
 							//vl("End time is " + et, chartConvColor);
 							#endregion
 
 
 							#region BOSS PROPS
-							vl(vstr[53], bossColor);
+							vl(T[53], bossColor);
 							//vl("Reading boss props...");
 
 							bool isBoss = false,
@@ -2027,7 +1997,7 @@ class Program
 
 							if (isBoss)
 							{
-								vl(vstr[54], bossColor);
+								vl(T[54], bossColor);
 								//vl("Song detected as boss", bossColor);
 								boss_name = ini("boss", "name", boss_name, bini);
 								vl("Boss name: " + boss_name, bossColor);
@@ -2051,8 +2021,8 @@ class Program
 
 							foreach (EventsSectionEntry e in chart.Events)
 							{
-								if (e == null) { vl("Got null event!!!!!!!!!"); continue; } // wtf
-								if (e.TextValue == null) { vl("Got null event text!!!!!!!!!"); continue; } // wtf
+								if (e == null) { vl(T[173]); continue; } // wtf
+								if (e.TextValue == null) { vl(T[174]); continue; } // wtf
 								QbKey eventKey = QbKey.Create(e.TextValue);
 								if (e.TextValue.ToLower().StartsWith("section "))
 									continue;
@@ -2076,7 +2046,7 @@ class Program
 								{
 									if (!isBoss)
 									{
-										vl(vstr[55]);
+										vl(T[55]);
 										//vl("ignoring death lick script");
 										continue; // if not boss, dont add this
 									}
@@ -2188,7 +2158,7 @@ class Program
 								if (!boss_defProps)
 								{
 
-									string[] selectedPowers = ini("boss", "items", vstr[131], bini).Split(',');
+									string[] selectedPowers = ini("boss", "items", T[131], bini).Split(',');
 									// HOW DO I USE THIS https://stackoverflow.com/questions/4916838/is-there-a-string-type-with-8-bit-chars
 
 									List<QbKey> allowedPowers = new List<QbKey>();
@@ -2206,7 +2176,7 @@ class Program
 										}
 										if (pDE)
 										{
-											print(vstr[56] + selectedPowers[i] + "!! Not using.", ConsoleColor.Red);
+											print(T[56] + selectedPowers[i] + "!! Not using.", ConsoleColor.Red);
 											//print("Got non-existent powerup in boss.ini: " +
 											continue;
 										}
@@ -2312,7 +2282,7 @@ class Program
 							}
 							#endregion
 
-							vl(vstr[57], chartConvColor);
+							vl(T[57], chartConvColor);
 							//vl("Creating powerup arrays...", chartConvColor);
 							QbItemBase[][] bp = new QbItemBase[insts.Length][];//[diffs.Length];
 							QbItemBase[][] bp_arr = new QbItemBase[insts.Length][];//[diffs.Length];
@@ -2373,7 +2343,7 @@ class Program
 												}
 												catch /*(Exception e)*/
 												{
-													print(vstr[129], ConsoleColor.Yellow);
+													print(T[129], ConsoleColor.Yellow);
 													//Console.WriteLine(e);
 												}
 											}
@@ -2395,7 +2365,7 @@ class Program
 							}
 							#endregion
 
-							vl(vstr[58], chartConvColor);
+							vl(T[58], chartConvColor);
 							//vl("Sorting scripts by time.", chartConvColor);
 							scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2) {
 								//     autismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautism
@@ -2403,7 +2373,7 @@ class Program
 							});
 
 							#region FACE-OFF/BATTLE VALUES
-							vl(vstr[59], chartConvColor);
+							vl(T[59], chartConvColor);
 							//vl("Creating face-off sections...", chartConvColor);
 							QbItemBase fop1 = new QbItemArray(mid);
 							QbItemBase fop2 = new QbItemArray(mid);
@@ -2504,7 +2474,7 @@ class Program
 							abp2.AddItem(abp2a);
 							#endregion
 							#region MEASURE VALUES
-							vl(vstr[60], chartConvColor);
+							vl(T[60], chartConvColor);
 							//vl("Creating time signature arrays...", chartConvColor);
 							QbItemBase tsig = new QbItemArray(mid);
 							tsig.Create(QbItemType.SectionArray);
@@ -2525,7 +2495,7 @@ class Program
 								// legitimately happens on some charts for some reason
 								// causes infinite starpower
 							{
-								vl(vstr[61], ConsoleColor.Yellow); // megamind
+								vl(T[61], ConsoleColor.Yellow); // megamind
 								SyncTrackEntry tsfault = new SyncTrackEntry();
 								if (chart.SyncTrack.Count != 0)
 									foreach (SyncTrackEntry st in chart.SyncTrack)
@@ -2564,7 +2534,7 @@ class Program
 							tsig.AddItem(tsig_arr);
 							for (int i = 0; i < timesigcount; i++)
 								tsig_arr.AddItem(ts_q[i]);
-							vl(vstr[62], chartConvColor);
+							vl(T[62], chartConvColor);
 							//vl("Creating fretbar arrays...", chartConvColor);
 							QbItemBase bars_arr = new QbItemArray(mid);
 							bars_arr.Create(QbItemType.SectionArray);
@@ -2585,11 +2555,11 @@ class Program
 							mid.AddItem(bars_arr);
 							bars_arr.AddItem(bars);
 							#endregion
-							vl(vstr[63]);
+							vl(T[63]);
 							//vl("Collecting garbage...");
 							GC.Collect();
 							#region MARKER VALUES
-							vl(vstr[64], chartConvColor);
+							vl(T[64], chartConvColor);
 							//vl("Creating marker arrays...", chartConvColor);
 							QbItemArray sects = new QbItemArray(mid);
 							sects.Create(QbItemType.SectionArray);
@@ -2698,7 +2668,7 @@ class Program
 								genre
 							};
 							File.WriteAllText(folder + "currentsong.txt",
-								FormatText(Regex.Unescape(cfg(l, stf, "%a - %t")),
+								FormatText(cfg(l, stf, "%a - %t"),
 								songParams));
 							#endregion
 							#endregion
@@ -2748,12 +2718,12 @@ class Program
 								//QB_bossRKgain_s.Create(StructItemStruct);
 								//QB_bossRKgain_s.ItemQbKey = QbKey.Create("GainPerNote");
 							}
-							vl(vstr[65], chartConvColor);
+							vl(T[65], chartConvColor);
 							//vl("Aligning pointers...", chartConvColor);
 							mid.AlignPointers();
 							//vl("Writing song.qb...", chartConvColor);
 							//songdata.Write(folder + pak + "song.qb");
-							print(vstr[66], chartConvColor);
+							print(T[66], chartConvColor);
 							//print("Compiling PAK.", chartConvColor);
 							// somehow songs\fastgh3.mid.qb =/= E15310CD here
 							// wtf is the name of 993B9724
@@ -2774,20 +2744,20 @@ class Program
 							File.Delete(pakf + "song.qb");
 							if (caching)
 							{
-								print(vstr[67], cacheColor);
+								print(T[67], cacheColor);
 								//print("Writing PAK to cache.", cacheColor);
 								File.Copy(songpak, cf + charthash.ToString("X16"), true);
 								iniw(charthash.ToString("X16"), "Title", songtitle.Strings[0], cachf);
 								iniw(charthash.ToString("X16"), "Author", songauthr.Strings[0], cachf);
 								iniw(charthash.ToString("X16"), "Length", timeString, cachf);
 							}
-							vl(vstr[68]);
+							vl(T[68]);
 							//vl("DID EVERYTHING WORK?!");
 						}
 						else
 						{
 							string cacheidStr = charthash.ToString("X16");
-							print(vstr[69], cacheColor);
+							print(T[69], cacheColor);
 							//print("Cached chart found.", cacheColor);
 							File.Copy(cf + cacheidStr,
 								songpak, true);
@@ -2851,13 +2821,13 @@ class Program
 								genre
 							};
 							File.WriteAllText(folder + "currentsong.txt",
-								FormatText(Regex.Unescape(cfg(l, stf, "%a - %t")),
+								FormatText(cfg(l, stf, "%a - %t"),
 								songParams));
 							File.Delete(paksongmid);
 							File.Delete(paksongchart);
 						}
 						#region COMPILE AUDIO TO FSB
-						vl(vstr[74]);
+						vl(T[74]);
 						//vl("Creating GH3 process...");
 						Process gh3 = new Process();
 						gh3.StartInfo.WorkingDirectory = folder;
@@ -2871,13 +2841,13 @@ class Program
 								if (!fsbbuild.HasExited)
 								{
 									vl("Launching game early");
-									print(vstr[70], FSBcolor);
+									print(T[70], FSBcolor);
 									//print("Waiting for song encoding to finish.", FSBcolor);
 									fsbbuild.WaitForExit();
 									audioConv_end = time;
 									if (caching)
 									{
-										print(vstr[71], cacheColor);
+										print(T[71], cacheColor);
 										//print("Writing audio to cache.", FSBcolor);
 										File.Copy(fsb, cf + audhash.ToString("X16"), true);
 										iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
@@ -2887,7 +2857,7 @@ class Program
 							else
 							{
 								vl("Launching game early");
-								print(vstr[70], FSBcolor);
+								print(T[70], FSBcolor);
 								string[] fsbnames = { "song", "guitar", "rhythm" };
 								try
 								{
@@ -2901,7 +2871,7 @@ class Program
 									}
 									if (nj3t)
 										if (!addaud.HasExited)
-											print(vstr[72], FSBcolor);
+											print(T[72], FSBcolor);
 									// we're using CBR (for now) so don't have to worry about
 									// more inconsistent file sizes
 								}
@@ -2960,7 +2930,7 @@ class Program
 								{
 									if (caching)
 									{
-										print(vstr[71], cacheColor);
+										print(T[71], cacheColor);
 										//print("Writing audio to cache.", cacheColor);
 										File.Copy(fsb, cf + audhash.ToString("X16"), true);
 										iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
@@ -2975,7 +2945,7 @@ class Program
 						if (!audCache)
 						{
 							double audioConv_time = audioConv_end.TotalMilliseconds - audioConv_start.TotalMilliseconds;
-							print(vstr[73] + (audioConv_time/1000).ToString("0.00")+" seconds", FSBcolor);
+							print(T[73] + (audioConv_time/1000).ToString("0.00")+" seconds", FSBcolor);
 							//print("Elapsed audio encoding time: "+(audioConv_time/1000).ToString()+" seconds", FSBcolor);
 						}
 						Console.ResetColor();
@@ -2998,14 +2968,14 @@ class Program
 							vl("Got " + maxnotes + " max notes");
 							cfgW("Player", "MaxNotes", maxnotes.ToString());
 						}
-						print(vstr[75]);
+						print(T[75]);
 						//print("Ready, go!");
 						cfgW("Temp", fl, 1);
 						try
 						{
 							// why is program sending this log when it's successful
 							// and this is in its own try catch block
-							vl(vstr[76]);
+							vl(T[76]);
 							//vl("Cleaning up SoX temp files FOR SOME REASON!!!");
 							// stupid SoX
 							// didn't happen on the previous version from 2010
@@ -3032,7 +3002,7 @@ class Program
 						exit();
 						if (cfg(l, settings.t.PreserveLog.ToString(), "0") == "1")
 						{
-							print(vstr[98]);
+							print(T[98]);
 							//print("Press any key to exit");
 							Console.ReadKey();
 						}
@@ -3044,19 +3014,19 @@ class Program
 						args[0].ToLower().EndsWith(".7z") || args[0].ToLower().EndsWith(".rar")))
 					{
 						// 7kb
-						log.WriteLine(vstr[77]);
+						log.WriteLine(T[77]);
 						//log.WriteLine("\n######### FSP EXTRACT PHASE #########\n");
-						print(vstr[78], cacheColor);
+						print(T[78], cacheColor);
 						//print("Detected song package.", cacheColor);
 						ulong fsphash = WZK64.Create(File.ReadAllBytes(args[0]));
 						string fsphashStr = fsphash.ToString("X16");
 						bool fspcache = false;
 						if (caching)
 						{
-							print(vstr[21], cacheColor);
+							print(T[21], cacheColor);
 							if (Array.IndexOf(sn(cachf), "ZIP" + fsphashStr) != -1)
 							{
-								vl(vstr[79], cacheColor);
+								vl(T[79], cacheColor);
 								fspcache = true;
 							}
 						}
@@ -3088,13 +3058,13 @@ class Program
 								Directory.CreateDirectory(tmpf);
 						}
 						if (!fspcache && caching)
-							print(vstr[80], cacheColor);
+							print(T[80], cacheColor);
 						else
 						{
 							if (fspcache && Directory.Exists(tmpf) && caching)
-								print(vstr[81], cacheColor);
+								print(T[81], cacheColor);
 							else if (!Directory.Exists(tmpf))
-								print(vstr[82], cacheColor);
+								print(T[82], cacheColor);
 						}
 						if (fspcache && Directory.Exists(tmpf) && caching)
 						{
@@ -3234,7 +3204,7 @@ class Program
 										}
 										catch (Exception e)
 										{
-											vl(vstr[83] + data.FileName + '\n' + e, ConsoleColor.Yellow);
+											vl(T[83] + data.FileName + '\n' + e, ConsoleColor.Yellow);
 											//vl("Error extracting a file: " + data.FileName + '\n' + e, ConsoleColor.Yellow);
 										}
 									}
@@ -3245,7 +3215,7 @@ class Program
 							{
 								//vl("OH NO, THE SEVENS AND THE ROARS!", FSPcolor); // lol
 								bool got7Z = false, gotWRAR = false;
-								vl(vstr[84], FSPcolor);
+								vl(T[84], FSPcolor);
 								//vl("Looking for command line accessible 7Zip.", FSPcolor);
 								string p = where("7z.exe"); // do i have to specify .exe
 								got7Z = p != "";
@@ -3262,7 +3232,7 @@ class Program
 								if (!got7Z)
 								{
 									// or look in registry
-									vl(vstr[85], FSPcolor);
+									vl(T[85], FSPcolor);
 									//vl("Looking for 7Zip in registry.", FSPcolor);
 									RegistryKey k;
 									// also check HKLM hive?
@@ -3284,20 +3254,20 @@ class Program
 												p += "\\7z.exe";
 											if (!File.Exists(p) && got7Z)
 											{
-												vl(vstr[86], FSPcolor);
+												vl(T[86], FSPcolor);
 												//vl("Wait WTF, THE PROGRAM ISN'T THERE!! HOW!", FSPcolor);
 												got7Z = false;
 											}
 											k.Close();
 										}
 										else
-											print(vstr[87]);
+											print(T[87]);
 											//print("Could not find 7-Zip path in registry. Is it installed?");
 									}
 									catch
 									{
 										got7Z = false;
-										vl(vstr[88]);
+										vl(T[88]);
 										//vl("Somehow looking for 7-Zip failed. Is it installed?");
 									}
 								}
@@ -3305,15 +3275,15 @@ class Program
 									vl("Found 7Zip", FSPcolor);
 								if (got7Z)
 								{
-									vl(vstr[89], FSPcolor);
+									vl(T[89], FSPcolor);
 									//vl("7Zip is installed. Using that...", FSPcolor);
 									//verboseline(z7path);
 								}
 								else
 								{
-									vl(vstr[90], FSPcolor);
+									vl(T[90], FSPcolor);
 									//vl("7Zip could not be found.", FSPcolor);
-									vl(vstr[91], FSPcolor);
+									vl(T[91], FSPcolor);
 									//vl("Looking for command line accessible WinRAR or UnRar.exe", FSPcolor);
 									rarpath = where("UnRar.exe");
 									gotWRAR = rarpath != "";
@@ -3322,14 +3292,14 @@ class Program
 										if (!args[0].EndsWith(".rar"))
 										{
 											exit();
-											MessageBox.Show(vstr[125], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+											MessageBox.Show(T[125], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 											Environment.Exit(1);
 										}
-										vl(vstr[92], FSPcolor);
+										vl(T[92], FSPcolor);
 										//vl("Found UnRAR. Using that...", FSPcolor);
 									}
 									else
-										vl(vstr[93], FSPcolor);
+										vl(T[93], FSPcolor);
 										//vl("UnRAR could not be found.", FSPcolor);
 								}
 								string xf, xa;
@@ -3347,9 +3317,9 @@ class Program
 								else
 								{
 									exit();
-									vl(vstr[94], FSPcolor);
+									vl(T[94], FSPcolor);
 									//vl("Unsupported archive type", FSPcolor);
-									MessageBox.Show(vstr[126], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+									MessageBox.Show(T[126], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 									Environment.Exit(1);
 									return;
 								}
@@ -3369,7 +3339,7 @@ class Program
 									if (x.ExitCode != 0)
 									{
 										exit();
-										MessageBox.Show(vstr[127], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										MessageBox.Show(T[127], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 										Environment.Exit(1);
 									}
 									foreach (string ff in Directory.GetFiles(tmpf, "*.*", SearchOption.AllDirectories))
@@ -3429,7 +3399,7 @@ class Program
 						}
 						if (caching && !fspcache)
 						{
-							print(vstr[95], cacheColor);
+							print(T[95], cacheColor);
 							//print("Writing path to cache...", cacheColor);
 							iniw("ZIP" + fsphashStr, "Path", tmpf, cachf);
 						}
@@ -3460,14 +3430,14 @@ class Program
 								unkillgame();
 								Console.ResetColor();
 								//print("Speeding up.");
-								vl(vstr[74]);
+								vl(T[74]);
 								Process gh3 = new Process();
 								gh3.StartInfo.WorkingDirectory = folder;
 								gh3.StartInfo.FileName = GH3EXEPath;
 								// dont do this lol
 								if (cfg("Player", "MaxNotesAuto", "0") == "1")
 									cfgW("Player", "MaxNotes", 0x100000.ToString());
-								print(vstr[75]);
+								print(T[75]);
 								gh3.Start();
 								cfgW("Temp", fl, 1);
 							}
@@ -3562,9 +3532,9 @@ class Program
 				else
 				{
 					cfgW("Temp", fl, 1);
-					print(vstr[96], ConsoleColor.Red);
+					print(T[96], ConsoleColor.Red);
 					exit();
-					MessageBox.Show("File cannot be found.\nPath: "+args[0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					MessageBox.Show(T[175] + args[0], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 			}
 		}
@@ -3590,14 +3560,14 @@ class Program
 
 			// upload log for diagnostics
 			exit();
-			Program.log = null;
+			Launcher.log = null;
 			if (!File.Exists(folder + "launcher.txt"))
 			{
-				print("Failed to load own launcher log.");
+				print(T[176]);
 				return;
 			}
 			string log = File.ReadAllText(folder + "launcher.txt");
-			if (cfg("Launcher","ErrorReporting",1)==1 && log.Length < 0x20000) // max 128 KB to upload
+			if (initlog && cfg("Launcher","ErrorReporting",1)==1 && log.Length < 0x20000) // max 128 KB to upload
 			{
 				try {
 					print("Uploading log.");
@@ -3608,18 +3578,15 @@ class Program
 
 					string host = "https://0x0.st/";
 					var request = (HttpWebRequest)WebRequest.Create(host);
-					string boundary = "------------------------" + DateTime.Now.Ticks.ToString("x");
-					request.ContentType = "multipart/form-data; boundary=" + boundary;
+					string boundary = new string('-', 24) + DateTime.Now.Ticks.ToString("x");
+					request.ContentType = T[179] + boundary;
 					request.Method = "POST";
 					request.ServicePoint.Expect100Continue = true;
 
 					// brain drain
 					// TODO?: put these strings in lt.txt
 					byte[] tempBuffer = Encoding.ASCII.GetBytes(
-						"\r\n--" + boundary + "\r\n" +
-						"Content-Disposition: form-data; name=\"file\"; filename=\"launcher.txt\"\r\n" +
-						"Content-Type: text/plain\r\n\r\n" +
-						log + "\r\n--" + boundary + "--");
+						string.Format(T[177], boundary, log));
 					request.ContentLength = tempBuffer.Length;
 
 					using (Stream requestStream = request.GetRequestStream())
@@ -3635,10 +3602,10 @@ class Program
 					char[] id = outlink.Between(host, ".txt").ToCharArray();
 
 					// report to me
-					char[] URLalphabet = vstr[97].ToCharArray();
+					char[] URLalphabet = T[97].ToCharArray();
 
 					var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.cf/fastgh3/diagno.php");
-					report.ContentType = "application/octet-stream";
+					report.ContentType = T[178];
 					report.Method = "POST";
 
 					byte[] reportbytes = new byte[id.Length];
@@ -3658,10 +3625,10 @@ class Program
 					// im not returning any data, so
 
 					print("Log saved to " + outlink);
-				} catch { print(vstr[137]); }
+				} catch { print(T[137]); }
 			}
 
-			print(vstr[98]);
+			print(T[98]);
 			Console.ReadKey();
 			Environment.Exit(1);
 		}

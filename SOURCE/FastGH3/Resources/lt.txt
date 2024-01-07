@@ -115,11 +115,11 @@ Relaunch the game with the previous song in place.
 Select what plugins should be loaded or disabled.\nRequires GH3+ compatible plugins.
 View cached chart files. Songs will appear\nhere only when song caching is turned on.
 Change the format of currentsong.txt. Can be useful for streaming.
-Change the amount of time to wait before the\nsong starts. Requires \"No intro\" to be turned on.
+Change the amount of time to wait before the\nsong starts. Requires "No intro" to be turned on.
 Change controls for playing on keyboard.
 Required for playing face-off and battle.
 Set current background image when playing a song.\nNote: Background color is going to be deprecated in favor of background images.
-Background image that\'s going to be shown in the game.\nDouble click to see a larger preview of how it will look.
+Background image that's going to be shown in the game.\nDouble click to see a larger preview of how it will look.
 Speed:                            %
 6f1d2b61d5a011cfbfc7444553540000
 201 202 203 204 205 311 999 219 235 400 401 999 307
@@ -136,3 +136,54 @@ Failed to kill helix or SoX executables.
 Running mid2chart, log:
 Audio is not cached.
 Failed to upload log. It is saved to launcher.txt.
+https://donnaken15.cf/fastgh3/gameBlank.png
+\\PLUGINS\\
+\\disabled\\
+*.dll
+core.dll
+(*)
+_log.txt
+Loaded: plugins\\
+USERPROFILE
+\\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml
+Easy%Medium%Hard%Expert
+No QB config found, cannot save changes.
+DATA\\gameplay_BG.img.xen
+Failed to get background image!
+Reading settings...
+Speed percentage cannot be zero or less!!!
+FastGH3: Keybinds
+Selected button:
+Loading scripts for override checks...
+Failed to set user QB value.
+GH3+ Plugin / Dynamic Link Library (*.dll)|*.dll
+Guitar Hero III+ Log: (last session)
+No QB config file found, cannot set value.
+There is more than one file in this Song Package.\nWhich one do you choose?
+https://donnaken15.cf/fastgh3/assets/control/xplorer.jpg
+Select a controller button and\nthen click a key to assign to it.
+backgrnd_video.bik.xen
+Failed to copy song video.
+got invalid directory, skipping: 
+Audio files|*.mp3;*.wav;*.ogg;*.opus|Any type|*.*
+Is there a guitar track too?
+Is there a rhythm track too?
+Using blank music file
+fsbtmp\\fastgh3_{0}.mp3
+DO YOU HAVE THE GAME OPEN????
+Got null event!!!!!!!!!
+Got null event text!!!!!!!!!
+File cannot be found.\nPath: 
+Failed to load own launcher log.
+\r\n--{0}\r\nContent-Disposition: form-data; name="file"; filename="launcher.txt"\r\nContent-Type: text/plain\r\n\r\n{1}\r\n--{0}--
+application/octet-stream
+multipart/form-data; boundary=
+Unknown object type in array: 
+Mod info item is missing. (
+Can't find the mod info struct ({0}) with a matching mod name or an ambiguously named mod info struct (mod_info). Is the file not properly named?
+ is a required file but does not exist.\n
+Cannot find a file indicating of a QB.
+QB file|*.qb.xen;*.qb|Zipped QB|*.zip
+These items replace the game's data:
+Supported image formats|*.png;*.jpg;*.bmp;*.dds|Portable Network Graphics|*.png|JPEG|*.jpeg|Bitmap|*.bmp|DirectDraw Surface|*.dds|Any type|*.*
+Hiroaki Sano%Circus Game%8BIT MUSIC POWER%donnaken15%2016%2:22%Chiptune

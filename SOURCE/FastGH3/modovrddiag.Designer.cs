@@ -41,7 +41,7 @@
             this.ovrlbl.Name = "ovrlbl";
             this.ovrlbl.Size = new System.Drawing.Size(312, 24);
             this.ovrlbl.TabIndex = 0;
-            this.ovrlbl.Text = "These items replace the game\'s data:";
+            this.ovrlbl.Text = Launcher.T[186];
             // 
             // ovlist
             // 

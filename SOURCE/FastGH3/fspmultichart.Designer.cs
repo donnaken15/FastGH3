@@ -42,7 +42,7 @@
 		this.lblmain.Name = "lblmain";
 		this.lblmain.Size = new System.Drawing.Size(239, 26);
 		this.lblmain.TabIndex = 0;
-		this.lblmain.Text = "There is more than one file in this Song Package.\r\nWhich one do you choose?";
+		this.lblmain.Text = "";
 		// 
 		// listfiles
 		// 

@@ -50,7 +50,7 @@
 			// 
 			// guitarPic
 			// 
-			this.guitarPic.ImageLocation = "https://donnaken15.tk/fastgh3/assets/control/xplorer.jpg";
+			this.guitarPic.ImageLocation = "";
 			this.guitarPic.Location = new System.Drawing.Point(3, 2);
 			this.guitarPic.Name = "guitarPic";
 			this.guitarPic.Size = new System.Drawing.Size(544, 179);
@@ -88,7 +88,7 @@
 			this.hintTxt.Name = "hintTxt";
 			this.hintTxt.Size = new System.Drawing.Size(218, 40);
 			this.hintTxt.TabIndex = 5;
-			this.hintTxt.Text = "Select a controller button and\r\nthen click a key to assign to it.";
+			this.hintTxt.Text = "";
 			// 
 			// ctrlY
 			// 
@@ -217,7 +217,7 @@
 			this.selBtnL.Name = "selBtnL";
 			this.selBtnL.Size = new System.Drawing.Size(85, 13);
 			this.selBtnL.TabIndex = 13;
-			this.selBtnL.Text = "Selected button:";
+			this.selBtnL.Text = "";
 			// 
 			// keylayout
 			// 
@@ -294,7 +294,7 @@
 			this.Name = "keyEdit";
 			this.ShowIcon = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "FastGH3: Keybinds";
+			this.Text = "";
 			((System.ComponentModel.ISupportInitialize)(this.guitarPic)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();

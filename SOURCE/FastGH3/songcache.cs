@@ -7,7 +7,7 @@ public partial class songcache : Form
 {
 	// should I specify file path/name in the INI when caching a song?
 
-	string folder = Program.cf;
+	string folder = Launcher.cf;
 	string i;
 
 	public songcache()
@@ -16,21 +16,21 @@ public partial class songcache : Form
 		{
 			i = folder + ".db.ini";
 			DataGridViewRow newRow;
-			foreach (string s in Program.sn(i))
+			foreach (string s in Launcher.sn(i))
 			{
 				if (File.Exists(folder + s) &&
-					File.Exists(folder + Program.ini(s, "Audio", 0.ToString("X16"), 32, i).Substring(0, 16)))
+					File.Exists(folder + Launcher.ini(s, "Audio", 0.ToString("X16"), 32, i).Substring(0, 16)))
 				{
 					newRow = new DataGridViewRow();
 					newRow.CreateCells(c,
 						s, // icon
-						Program.ini(s, "Author", "Unknown", 64, i),
-						Program.ini(s, "Title", "Untitled", 64, i),
+						Launcher.ini(s, "Author", "Unknown", 64, i),
+						Launcher.ini(s, "Title", "Untitled", 64, i),
 						fs(new FileInfo(folder + s).Length +
 							new FileInfo(folder +
 							//                                         why
-							Program.ini(s, "Audio", 0.ToString("X16"), 32, i)).Length),
-						Program.ini(s, "Length", "00:00", 10, i),
+							Launcher.ini(s, "Audio", 0.ToString("X16"), 32, i)).Length),
+						Launcher.ini(s, "Length", "00:00", 10, i),
 						"Play"
 						);
 					c.Rows.Add(newRow);
@@ -61,12 +61,12 @@ public partial class songcache : Form
 
 	private void r(DataGridViewCellEventArgs e)
 	{
-		Program.killgame();
+		Launcher.killgame();
 		string cs = (string)c.Rows[e.RowIndex].Cells[0].Value.ToString().Substring(0, 16);
-		string au = Program.ini(cs, "Audio", null, 32, i).Substring(0, 16);
-		string t = Program.ini(cs, "Title", null, 64, i);
-		string a = Program.ini(cs, "Author", null, 64, i);
-		string l = Program.ini(cs, "Length", "00:00", 8, i);
+		string au = Launcher.ini(cs, "Audio", null, 32, i).Substring(0, 16);
+		string t = Launcher.ini(cs, "Title", null, 64, i);
+		string a = Launcher.ini(cs, "Author", null, 64, i);
+		string l = Launcher.ini(cs, "Length", "00:00", 8, i);
 		File.Copy(folder + cs, folder + "..\\PAK\\song.pak.xen", true);
 		File.Copy(folder + au, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
 		string[] songParams = new string[] {
@@ -79,13 +79,13 @@ public partial class songcache : Form
 			"Unknown"
 		};
 		File.WriteAllText(folder + "..\\..\\currentsong.txt",
-			Program.FormatText(
-				System.Text.RegularExpressions.Regex.Unescape(Program.cfg(Program.m, Program.stf, "%a - %t")),
+			Launcher.FormatText(
+				System.Text.RegularExpressions.Regex.Unescape(Launcher.cfg(Launcher.m, Launcher.stf, "%a - %t")),
 			songParams));
-		Program.unkillgame();
+		Launcher.unkillgame();
 		Directory.SetCurrentDirectory(folder + "..\\..\\");
 		Process.Start(folder + "..\\..\\game.exe");
-		Directory.SetCurrentDirectory(Program.cf);
+		Directory.SetCurrentDirectory(Launcher.cf);
 	}
 
 	private void cc(object sender, DataGridViewCellEventArgs e)
@@ -111,8 +111,8 @@ public partial class songcache : Form
 		{
 			string s = (string)d.Cells[0].Value;
 			File.Delete(folder + s);
-			File.Delete(folder + Program.ini(s, "Audio", null, 32, i));
-			Program.WSec(s, null, i);
+			File.Delete(folder + Launcher.ini(s, "Audio", null, 32, i));
+			Launcher.WSec(s, null, i);
 			c.Rows.Remove(d);
 		}
 	}

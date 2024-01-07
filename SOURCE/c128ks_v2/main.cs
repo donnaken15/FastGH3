@@ -22,7 +22,7 @@ class Encoder
 			return (32 + ((--i & 3) << 3) << (i >> 2)); // version 1 layer 3
 		return -1; // bad
 	}
-	
+
 	void DecoderThread()
 	{
 		if (cancel)
@@ -115,11 +115,11 @@ class Encoder
 	public int[] exit_codes = { 0, 0 };
 	bool[] done = { false, false };
 	bool cancel = false;
-	
+
 	bool ffmpeg;
 	static string bin_path = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + '\\';
 	static string ffmpeg_path = Program.where(Program.RawString("晦灭来攮數"));
-	
+
 	public bool forcechannels = false, stereo = false;
 	public Mode mode = Mode.Joint;
 	private ushort _bitrate = 96;
@@ -215,7 +215,7 @@ class Encoder
 		}
 		Stop(false);
 	}
-	
+
 	public void Stop()
 	{
 		Stop(true);
@@ -304,7 +304,7 @@ static class Program
 		}
 		return Path.GetFullPath(e);
 	}
-	
+
 	// desperate
 	public static string RawString(string UTF16LE)
 	{
@@ -341,7 +341,7 @@ press Ctrl-C to cancel conversion
 					" †††††††††用敳眠瑩⁨慣瑵潩⁮獡椠⁴楷汬戠敲歡猠敥楫杮椠⁮慧敭਩睳瑩档獥਺†挭嬠档湡敮獬⁝ⴠ"+
 					"映牯散挠湯敶獲潩⁮潴猠整敲⁯牯洠湯੯†戭嬠楢牴瑡嵥†ⴠ猠瑥琠牡敧⁴楢牴瑡੥†爭嬠慳灭慲整⁝"+
 					"ⴠ猠瑥琠牡敧⁴慳灭敬爠瑡੥椊⁦⁡睳瑩档愠潢敶椠湳琧攠瑮牥摥‬桴⁥畯灴瑵愠摵潩眊汩⁬"+
-					"敲慴湩琠敨瀠牡浡瑥牥映潲⁭桴⁥潳牵散愠摵潩ਊ牰獥⁳瑃汲䌭琠⁯慣据汥挠湯敶獲潩╮")
+					"敲慴湩琠敨瀠牡浡瑥牥映潲⁭桴⁥潳牵散愠摵潩ਊ牰獥⁳瑃汲䌭琠⁯慣据汥挠湯敶獲潩n")
 			);
 			return;
 		}

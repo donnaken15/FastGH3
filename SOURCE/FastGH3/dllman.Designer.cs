@@ -108,7 +108,7 @@
 		// 
 		// dllopen
 		// 
-		this.dllopen.Filter = "GH3+ Plugin / Dynamic Link Library (*.dll)|*.dll";
+		this.dllopen.Filter = Launcher.T[158];
 		this.dllopen.Multiselect = true;
 		this.dllopen.RestoreDirectory = true;
 		this.dllopen.FileOk += new System.ComponentModel.CancelEventHandler(this.dllselected);
@@ -136,7 +136,7 @@
 		this.gh3ploglabel.Name = "gh3ploglabel";
 		this.gh3ploglabel.Size = new System.Drawing.Size(166, 13);
 		this.gh3ploglabel.TabIndex = 6;
-		this.gh3ploglabel.Text = "Guitar Hero III+ Log: (last session)";
+		this.gh3ploglabel.Text = Launcher.T[159];
 		// 
 		// dllman
 		// 

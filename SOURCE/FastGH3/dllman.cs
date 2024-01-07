@@ -7,29 +7,33 @@ public partial class dllman : Form
 	static string folder = Environment.CurrentDirectory;
 	// ill put as many backslashes as i want
 	// not gonna get path errors lol
-	static string plugins = "\\PLUGINS\\";
-	static string disabled = "\\disabled\\";
-	static string disabled_ = folder + plugins + disabled;
+	static string[] T = Launcher.T;
+	static string pl = T[139];
+	static string d = T[140];
+	static string df = folder + pl + d;
+	static string f = T[141];
+	static string c = T[142];
+	static string di = T[143];
 
 	public dllman()
 	{
 		InitializeComponent();
-		Height += new DirectoryInfo(folder + plugins).GetFiles("*.dll", SearchOption.AllDirectories).Length * 9;
-		if (!Directory.Exists(disabled_))
-			Directory.CreateDirectory(disabled_);
+		Height += new DirectoryInfo(folder + pl).GetFiles(T[141], SearchOption.AllDirectories).Length * 9;
+		if (!Directory.Exists(df))
+			Directory.CreateDirectory(df);
 		dllrefresh();
 	}
 
-	private void dllfile(object sender, EventArgs e)
+	void dllfile(object sender, EventArgs e)
 	{
 		dllopen.ShowDialog();
 	}
 
-	private void dlldel(object sender, EventArgs e)
+	void dlldel(object sender, EventArgs e)
 	{
 		foreach (object dll in dlllist.SelectedItems)
-			if (dll.ToString().ToLower() != "core.dll")
-				File.Delete(folder + plugins + dll.ToString().Replace("(*)",disabled));
+			if (dll.ToString().ToLower() != c)
+				File.Delete(folder + pl + dll.ToString().Replace(di, d));
 		dllrefresh();
 		if (dlllist.SelectedIndex == -1)
 		{
@@ -38,15 +42,15 @@ public partial class dllman : Form
 		}
 	}
 
-	private void dllselected(object sender, System.ComponentModel.CancelEventArgs e)
+	void dllselected(object sender, System.ComponentModel.CancelEventArgs e)
 	{
 		foreach (string file in dllopen.FileNames)
-			if (Program.NP(Path.GetPathRoot(file)) != Program.NP(folder + plugins))
-				File.Copy(file, folder + plugins + Path.GetFileName(file), true);
+			if (Launcher.NP(Path.GetPathRoot(file)) != Launcher.NP(folder + pl))
+				File.Copy(file, folder + pl + Path.GetFileName(file), true);
 		dllrefresh();
 	}
 
-	private void dllredolist(object sender, EventArgs e)
+	void dllredolist(object sender, EventArgs e)
 	{
 		dllrefresh();
 	}
@@ -55,27 +59,27 @@ public partial class dllman : Form
 	{
 		dlloff.Enabled = false;
 		dlllist.Items.Clear();
-		foreach (FileInfo file in new DirectoryInfo(folder + plugins).GetFiles("*.dll", SearchOption.TopDirectoryOnly))
+		foreach (FileInfo file in new DirectoryInfo(folder + pl).GetFiles(T[141], SearchOption.TopDirectoryOnly))
 			dlllist.Items.Add(file);
 		try
 		{
-			foreach (FileInfo file in new DirectoryInfo(disabled_).GetFiles("*.dll"))
-				dlllist.Items.Add("(*)"+file);
+			foreach (FileInfo file in new DirectoryInfo(df).GetFiles(T[141]))
+				dlllist.Items.Add(di+file);
 		}
 		catch { }
-		if (File.Exists(folder + plugins + "_log.txt"))
-			gh3plog.Text = File.ReadAllText(folder + plugins + "_log.txt").Replace("Loaded: plugins\\","");
+		if (File.Exists(folder + pl + T[144]))
+			gh3plog.Text = File.ReadAllText(folder + pl + T[144]).Replace(T[145], "");
 	}
 
-	private void dllselectlist(object sender, EventArgs e)
+	void dllselectlist(object sender, EventArgs e)
 	{
 		try
 		{
-			if (dlllist.SelectedItem.ToString().Contains("(*)"))
+			if (dlllist.SelectedItem.ToString().Contains(di))
 				dlloff.Checked = true;
 			else
 				dlloff.Checked = false;
-			if (dlllist.SelectedItem.ToString() != "core.dll")
+			if (dlllist.SelectedItem.ToString() != c)
 			{
 				dllrem.Enabled = true;
 				dlloff.Enabled = true;
@@ -93,13 +97,13 @@ public partial class dllman : Form
 	{
 		foreach (object dll in dlllist.SelectedItems)
 		{
-			if (dll.ToString() != "core.dll")
+			if (dll.ToString() != c)
 			{
 				string dllS = dll.ToString();
-				if (dllS.StartsWith("(*)"))
-					File.Move(disabled_ + dllS.Replace("(*)", ""), folder + plugins + dllS.Replace("(*)", ""));
+				if (dllS.StartsWith(di))
+					File.Move(df + dllS.Replace(di, ""), folder + pl + dllS.Replace(di, ""));
 				else
-					File.Move(folder + plugins + dllS, disabled_ + dllS);
+					File.Move(folder + pl + dllS, df + dllS);
 			}
 		}
 		dllrefresh();
