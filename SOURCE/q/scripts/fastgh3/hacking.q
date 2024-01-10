@@ -293,7 +293,8 @@ script mbt_test
 		change \{mbt_b = 0}
 	endif
 	change mbt_b = ($mbt_b + 1)
-	pad (<measure> + 1) count = 4
+	Increment \{measure}
+	pad <measure> count = 4
 	m = <pad>
 	pad ($mbt_b) count = 2
 	FormatText textname = text 'M.B.T: %m:%b' m = <m> b = <pad>
@@ -311,7 +312,7 @@ script Ternary \{out = ternary}
 		//ProfilingEnd <...> 'ternary'
 		return ternary = <ternary>
 	endif
-	AddParams \{output = {}}
+	AddParams \{output = {}} // should i even do it like this
 	AddParam structure_name = output name = <out> value = <ternary>
 	if StructureContains structure=<output> <out>
 		return <output>

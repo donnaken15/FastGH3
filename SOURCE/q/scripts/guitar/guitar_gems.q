@@ -1324,10 +1324,6 @@ script kill_object_later
 			if ($anytime_sustain_activation = 0)
 				SetScreenElementProps id = <gem_id> alpha = 0
 			else
-				/*if ($gem_debug_text = 1)
-					ExtendCrc <gem_id> '_text' out = gem_text
-					DestroyScreenElement id = <gem_text>
-				endif*///
 				DestroyGem name = <gem_id>
 				return
 			endif

@@ -3,7 +3,6 @@ script solo\{part = guitar diff = expert}
 	if ($game_mode = p2_battle || $enable_solos = 0)
 		return
 	endif
-	printstruct <...>
 	// for performance sake since S5 has the event for all difficulties
 	// and executes part of main for 6ms >:(
 	coop_track = 0

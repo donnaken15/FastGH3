@@ -5,7 +5,7 @@
 	path = SOURCE/q/QBC
 	url = https://github.com/donnaken15/NodeQBC
 [submodule "SOURCE/q/GHSDK"]
-	path = SOURCE/q/GHSDK
+	path = ../../SOURCE/q/GHSDK
 	url = https://gitgud.io/fretworks/guitar-hero-sdk
 [submodule "SOURCE/Helix"]
 	path = SOURCE/Helix

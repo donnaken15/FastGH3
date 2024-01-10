@@ -492,7 +492,7 @@ script move_highway_2d
 		generate_move_table interval=<interval> pos_start_orig=<pos_start_orig>
 		GetArraySize \{moveTable}
 		start_time = (<time> - (400.0 * <movetime>)) // instantly appear animating into screen
-		// adjust offset to go with ^ highway or sidebar height
+		// TODO: adjust offset to go with ^ highway or sidebar height
 		last_time = -1
 		begin
 			//ProfilingStart

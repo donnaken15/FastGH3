@@ -182,6 +182,7 @@ script guitar_startup
 		endif
 		// just to get loading screen to display
 	repeat
+	//printf \{'[2J[0m####### [92mFA[91mST[93mG[94mH[38;2;255;127;0m3[0m INITIALIZING... #######'}
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
 	printf \{'Version %v' v=$fastgh3_build}
 	if ($bleeding_edge = 1)
@@ -628,7 +629,7 @@ script load_highway \{player_status = player1_status name = 'axel' filename = 'h
 	endif
 	FormatText textname = highway_name 'Guitarist_%n_Outfit%o_Style%s' n = <name> o = 1 s = 1
 	AddToMaterialLibrary scene = <highway_name>
-	FastFormatCrc sys_ a = <name> b = '_1_highway' c = '_' d = <name> e = '_1_highway' out = highway_material
+	FastFormatCrc sys_ a = <name> b = '_1_highway' c = '_sys_' d = <name> e = '_1_highway' out = highway_material
 	//FormatText checksumName = highway_material 'sys_%a_1_highway_sys_%a_1_highway' a = <name>
 	Change StructureName = <player_status> highway_material = <highway_material>
 endscript

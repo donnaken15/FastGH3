@@ -770,11 +770,10 @@ script evaltokenizer \{debug = $evalverbose}
 				number = 0
 				decimals = 0
 				matched = int
-				//StringToCharArray string = ("-." + $evaltokens_digits)
+				StringToCharArray string = ("-." + $evaltokens_digits)
 				literal = ""
 				begin
 					current_char = (<parser_text>[<parser_pos>])
-					//printf <current_char>
 					if ArrayContains contains = <current_char> array = <char_array>
 						literal = (<literal> + <current_char>)
 						switch <current_char>

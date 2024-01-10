@@ -370,8 +370,8 @@ script create_version_text
 	d = <pad>
 	pad ($build_timestamp[1])
 	e = <pad>
-	formattext textname=vertext2 'BLEEDING EDGE %f.%d.%e' d=<d> e=<e> f=($build_timestamp[2])
 	if IsTrue \{$bleeding_edge}
+		formattext textname=vertext2 'BLEEDING EDGE %f.%d.%e' d=<d> e=<e> f=($build_timestamp[2])
 		CreateScreenElement {
 			Type = TextElement
 			parent = pause_menu_frame_container
