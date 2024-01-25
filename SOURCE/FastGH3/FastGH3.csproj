@@ -79,10 +79,6 @@
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.1.9000, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\DotNetZip\Zip Reduced\bin\Release\Ionic.Zip.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net" />
@@ -225,12 +221,19 @@
   <ItemGroup>
     <Folder Include="Queenbee\Qb\Script\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetZip\Zip Reduced\Zip Reduced.csproj">
+      <Project>{49a128d3-c3f2-46b1-8f7a-eecd209ea860}</Project>
+      <Name>Zip Reduced</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>move "$(TargetPath)" "$(TargetDir)tmp.exe"
-"C:\Program Files\PackageManagement\NuGet\Packages\ilmerge.3.0.41\tools\net452\ILMerge.exe" "$(TargetDir)tmp.exe" "$(TargetDir)Ionic.Zip.dll" /out:"$(TargetPath)"
+"C:\Program Files\PackageManagement\NuGet\Packages\ilmerge.3.0.41\tools\net452\ILMerge.exe" "$(TargetDir)tmp.exe" "$(TargetDir)Ionic.Zip.Reduced.dll" /out:"$(TargetPath)"
 del "$(TargetDir)tmp.exe"
-mpress -m -s "$(TargetPath)"</PostBuildEvent>
+mpress -m -s "$(TargetPath)"
+sh "./!.__write_build_date.sh"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>pushd "$(ProjectDir)"

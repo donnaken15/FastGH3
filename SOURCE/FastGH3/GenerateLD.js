@@ -177,11 +177,11 @@ for (var R in reslist) {
 				}
 				output += '\n\t\t#region';
 			}
-			output += '\n\t\t"'+string+'"\n';
+			output += '\n\t\t"'+string.replaceAll('\\\\u0085','\\u0085')+'"\n';
 		}
 		else
 		{
-			output += '\n\t\t#region\n\t\t"'+string+'"';
+			output += '\n\t\t#region\n\t\t"'+string.replaceAll('\\\\u0085','\\u0085')+'"';
 		}
 		if (res.ascii !== true)
 			output += '\n';

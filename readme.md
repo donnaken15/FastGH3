@@ -11,7 +11,7 @@ The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer,
 ![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.exe)
 <br>![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
 ![commit activity](https://img.shields.io/github/commit-activity/m/donnaken15/FastGH3)
-![launcher code size](https://img.shields.io/github/size/donnaken15/FastGH3/SOURCE/FastGH3/Program.cs?label=launcher%20code%20size)
+![launcher code size](https://img.shields.io/github/size/donnaken15/FastGH3/SOURCE/FastGH3/Launcher.cs?label=launcher%20code%20size)
 <br>![qb.pak size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/PAK/qb.pab.xen?label=qb.pak)
 ![zone size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/ZONES/global.pab.xen?label=global.pak)
 ![update frequency](https://img.shields.io/badge/update%20frequency-2/year-blue)
@@ -31,7 +31,7 @@ PLAY NOW!
 
 [Features/Planned list](https://github.com/users/donnaken15/projects/3)
 
-![FastGH3 Gameplay](https://github.com/donnaken15/FastGH3/assets/20864393/507890a7-a593-4029-8e65-f61a45285d7c)
+https://github.com/donnaken15/FastGH3/assets/20864393/01756e3a-45da-49b8-9d02-49f7c08fd877
 
 ## Instructions
 

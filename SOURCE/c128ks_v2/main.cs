@@ -411,6 +411,7 @@ press Ctrl-C to cancel conversion
 		Console.CancelKeyPress += (s, d) => {
 			if (d.SpecialKey != ConsoleSpecialKey.ControlC)
 				return;
+			Console.WriteLine("Aborting...");
 			d.Cancel = true;
 			e.Stop();
 		};

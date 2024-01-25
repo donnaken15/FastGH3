@@ -20,7 +20,7 @@ which wslpath 2>$nul >$nul && crc32="crc32" || crc32="crc32.exe"
 		echo "[LineNumbers]" > $out
 		echo "" >> $out
 		echo "[Checksums]" >> $out
-		echo "0x$(./crc32 \"$fn\") $fn" >> $out
+		echo "0x$(./crc32 "$fn") $fn" >> $out
 		(
 			# i hate free software
 			sed -E -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba' "$indir/$f" |

@@ -1470,6 +1470,8 @@ public partial class keyEdit : Form
 
 	public keyEdit(ushort[] binds)
 	{
+		InitializeComponent();
+		SuspendLayout();
 		selBtnL.Text = Launcher.T[155];
 		Text = Launcher.T[154];
 		guitarPic.ImageLocation = Launcher.T[162];
@@ -1515,8 +1517,6 @@ public partial class keyEdit : Form
 		}
 		if (binds != null)
 			kBinds = binds;
-		InitializeComponent();
-		SuspendLayout();
 		Font fnt = new Font("Arial", 6.75f);
 		kBt = new Button[kt.Length];
 		for (int i = 0; i < kt.Length; i++)

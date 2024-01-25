@@ -10,3 +10,6 @@
 [submodule "SOURCE/Helix"]
 	path = SOURCE/Helix
 	url = https://github.com/donnaken15/hmp3
+[submodule "SOURCE/DotNetZip"]
+	path = SOURCE/DotNetZip
+	url = https://github.com/DinoChiesa/DotNetZip

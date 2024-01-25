@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32014.148
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GH3+", "GH3+", "{F3FC9BC7-6E8D-4520-8A7D-DDDC391453EE}"
 EndProject
@@ -57,7 +57,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QDB", "GH3Plus\src\plugins\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "c128ks_v2", "c128ks_v2\c128ks_v2.csproj", "{822E3318-036A-42E1-A2ED-7C2382DF5557}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zip Reduced", "E:\DotNetZip\Zip Reduced\Zip Reduced.csproj", "{49A128D3-C3F2-46B1-8F7A-EECD209EA860}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc", "Misc", "{B2F0A10C-BD1A-49D1-B978-4E1E85E38E3A}"
+	ProjectSection(SolutionItems) = preProject
+		FastGH3\makefsb.c = FastGH3\makefsb.c
+		..\readme.md = ..\readme.md
+		..\settings.ini = ..\settings.ini
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zip Reduced", "DotNetZip\Zip Reduced\Zip Reduced.csproj", "{49A128D3-C3F2-46B1-8F7A-EECD209EA860}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

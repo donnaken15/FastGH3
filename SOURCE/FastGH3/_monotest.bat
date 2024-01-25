@@ -23,6 +23,9 @@ set "ILSTR=E:\WZKRice\tools\src\MiniSCT\bin\Release\BrokenEvent.ILStrip.CLI.exe"
 "%ILSTR%" -u "%OUT%" "%OUT%"
 mpress -s -m "%OUT%"
 du -h "%OUT%"
+pushd ..\..
+sh "./!.__write_build_date.sh"
+popd
 :: 264kb
 :: LARGER THAN CSC MAKES IT >:(
 :: original: 250kb
