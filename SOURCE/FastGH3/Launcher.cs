@@ -98,6 +98,7 @@ static partial class Launcher
 	}
 	public static void killgame()	{ cfgW(m, ks, 1); }
 	public static void unkillgame()	{ cfgW(m, ks, 0); }
+	// copy song video
 	static void cSV(string bik)
 	{
 		#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART

@@ -23,16 +23,15 @@ bin=$(dirname "$bin"); wbin=$(cygpath -w "$bin" 2>$nul || wslpath -m "$bin")
 
 echo "${y}*****  Q COMPILATION   *****${rc}"
 
-# for whatever reason
-node="node"
+# for whatever reason # stop wasting my (mine and others') space
+node="$wbin/QBC/node"
+[ -f "$node" ] || node="node"
 # from WSL to node, an error comes up about failing to open stderr
 #which bun && { node="$(command -v bun)" && wbin="$bin"; } || node="node.exe"
 # messes with cygwin though
 
 # TODO soon: run QBC on each individual directory instead of every file one by one
-declare -a qbc_baseargs
-# dash doesn't like this
-qbc_baseargs=("${node}" "$wbin/QBC/QBC.js" c -g gh3 -v)
+# though retrieving an error from compiling something might be harder to do
 got_error=0
 no_update=1
 # HOW DO I SUPPRESS NO MATCHES FOUND!!!!!!!!
@@ -48,16 +47,16 @@ no_update=1
 		echo "${w}Compiling $f...${rc}"
 		# dash doesn't capture newlines in variables (neither does bash lol)
 		# todo?: somehow pipe errors to sed while getting the error code
-		log=$("${qbc_baseargs[@]}" "$indir/$f" -o "$out" 2>&1 >$nul) || {
+		log=$("${node}" "$wbin/QBC/QBC.js" c -g gh3 -v "$indir/$f" -o "$out" 2>&1 >$nul) || {
 			echo "${r}Error compiling ${f}. Last lines:${rc}"
-			echo "${r}$(echo $log | tail -20)${rc}"
+			echo "${r}$(echo $log | tail -50)${rc}"
 		}
 		# maybe output a log file for each script instead?
 		echo $log>>qcomp.log
 	}
 done
 
-[ -e qcomp.log ] && xz -9 -e -T 0 qcomp.log 2>$nul >$nul &
+[ -e qcomp.log ] && { echo Compressing log...; xz -9 -e -T 0 qcomp.log 2>$nul >$nul; } &
 
 echo done...
 

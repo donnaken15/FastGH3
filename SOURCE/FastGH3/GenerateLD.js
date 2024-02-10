@@ -9,6 +9,8 @@ const fs = require('fs');
 const classname = "Launcher";
 const reslist = {
 	T: {	// launcher strings
+		// next step in autism, compress with LZSS and huffman
+		// maybe pointless if i'm already using mpress
 		binary: false,
 		ascii: true,
 		escaped: true,

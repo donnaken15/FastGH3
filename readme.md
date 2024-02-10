@@ -49,27 +49,32 @@ https://github.com/donnaken15/FastGH3/assets/20864393/01756e3a-45da-49b8-9d02-49
 ### Extra steps
 * To enable file association (that is when you click on a file, it opens the program that supports it),
 you must use the installer or run register.bat, or click "Open with" on a chart or MIDI and select this program.
+<!--
+now asking user if game should boot song automatically or manually due to controller stuff
 * To play with keyboard, or if you have a controller that's not the first player,
 open settings.bat, and in tweaks, enable Keyboard mode, launch the game,
-and then press any button on your keyboard or device to play.
+and then press any button on your keyboard or controller to play.
+-->
 
 ## Additions
 
-* Windowed mode (and borderless)
-* Turn off VSync
-* GH3+ plugin system (by ExileLord)
-* Overlapping starpower
-* Dynamic note limit
-* Open notes, taps (by ExileLord)
+* Breakneck audio conversion speed (Even faster if [ffmpeg](https://www.ffmpeg.org/download.html) is installed)
 * Open sustains
-* Easy highway and zone swapping for ultimate personalization
-* Custom zones at https://donnaken15.cf/fastgh3/zones.html
-* Background images and videos
+* Open notes, taps (by ExileLord)
+* Overlapping starpower
 * Load charts stored in archive files (ZIP, RAR, 7Z)
+* Dynamically loadable QbScript mods (https://donnaken15.cf/fastgh3/mods.html)
+* Custom zones at https://donnaken15.cf/fastgh3/zones.html
+* GH3+ plugin system (by ExileLord)
+* Windowed mode (and borderless)
+* Toggleable VSync
+* Dynamic note limit
+* Easy highway and zone swapping for ultimate personalization
+* Background images and videos
 * Easy chart downloads and instant play through fastgh3:// links
 * Play charts straight from chorus and Google Drive: https://donnaken15.cf/fastgh3/gdrive.html
 * Song caching (songs converted at least once are saved for later play)
-* Autoplay with automatic starpower activation
+* Autoplay with automatic starpower activation, and automated battle attacks
 * A multitude of fixes, such as for:
   * Audio calibration slow down
   * Particle velocity/friction tied to frame rate

@@ -7,8 +7,8 @@
     <ProjectGuid>{822E3318-036A-42E1-A2ED-7C2382DF5557}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>c128ks_v2</RootNamespace>
-    <AssemblyName>c128ks_v2</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyName>c128ks</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -17,7 +17,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\DATA\MUSIC\TOOLS\</OutputPath>
     <DefineConstants>
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -40,4 +40,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"C:\Program Files (x86)\Resource Hacker\resourcehacker.exe" -open "$(TargetFileName)" -save "$(TargetFileName)" -action delete VERSIONINFO,,
+stripreloc /b "$(TargetFileName)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
