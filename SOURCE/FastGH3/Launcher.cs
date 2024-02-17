@@ -66,6 +66,19 @@ static partial class Launcher
 	public static string cfg(string s, string k, string d)			{ return ini(s, k, d, 0x200, inif); } // for being lazy
 	public static void iniw(string s, string k, object d, string f)	{ WStr(s, k, d.ToString(), f); }
 	public static void cfgW(string s, string k, object d)			{ iniw(s, k, d, inif); }
+
+	public static string[] ikeys = T[194].Split('%');
+	public static string m = ikeys[0];
+	public static string l = ikeys[2];
+	public static string ks = ikeys[5];
+	public static string fl = ikeys[4];
+	public static string sv = ikeys[6];
+	public static string lshv = ikeys[7];
+	public static string stf = ikeys[3];
+	public static string IF(string f) // ini path fix
+	{
+		return Path.IsPathRooted(f) ? f : Directory.GetCurrentDirectory() + '\\' + f;
+	}
 	#endregion
 
 	public static string folder, dataf = "DATA\\", pakf,
@@ -84,18 +97,7 @@ static partial class Launcher
 					.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
 					.ToUpperInvariant();
 	}
-	 
-	public static string m = "Misc";
-	public static string l = "Launcher";
-	public static string ks = "Killswitch";
-	public static string fl = "FinishedLog";
-	public static string sv = "SongVideos";
-	public static string lshv = "LastSongHadVideo";
-	public static string stf = "SongtextFormat";
-	public static string IF(string f) // ini path fix
-	{
-		return Path.IsPathRooted(f) ? f : Directory.GetCurrentDirectory() + '\\' + f;
-	}
+
 	public static void killgame()	{ cfgW(m, ks, 1); }
 	public static void unkillgame()	{ cfgW(m, ks, 0); }
 	// copy song video
@@ -111,6 +113,8 @@ static partial class Launcher
 			// to Bink, and wait like 10 minutes for it
 			// to finish encoding
 			//vl("Song videos enabled");
+			string lv = vid + "lastvid";
+			string target = vid + T[164];
 			try
 			{
 				if (File.Exists(bik))
@@ -120,12 +124,12 @@ static partial class Launcher
 					if (cfg(m, lshv, 0) == 0)
 					{
 						vl(T[132]);
-						// save last background video
-						File.Copy(vid + T[164], vid + "lastvid", true);
+							// save last background video
+						if (File.Exists(target))
+							File.Copy(target, lv, true);
 						cfgW(m, lshv, 1);
 					}
-					File.Copy(bik,
-						vid + T[164], true);
+					File.Copy(bik, target, true);
 				}
 				else
 				{
@@ -134,15 +138,15 @@ static partial class Launcher
 					if (cfg(m, lshv, 0) == 1)
 					{
 						vl(T[133]);
-						// restore user video after playing a song a background video
+						// restore user video after playing a song with a background video
 						// and now playing a song without one
-						if (File.Exists(vid + "lastvid"))
+						if (File.Exists(lv))
 						{
-							File.Copy(vid + "lastvid", vid + T[164], true);
-							File.Delete(vid + "lastvid");
+							File.Copy(lv, target, true);
+							File.Delete(lv);
 						}
 						else
-							File.Delete(vid + T[164]);
+							File.Delete(target);
 						// if there's no previous video, just delete the current one
 						cfgW(m, lshv, 0);
 					}
@@ -159,29 +163,11 @@ static partial class Launcher
 	// todo: send ctrl-c to fsbbuild scripts
 	static void killEncoders()
 	{
-		/*try
-		{
-			foreach (Process proc in Process.GetProcessesByName("helix"))
-			{
-				if (NP(proc.MainModule.FileName) == NP(mt + "helix.exe"))
-					proc.Kill();
-			}
-			foreach (Process proc in Process.GetProcessesByName("sox"))
-			{
-				if (NP(proc.MainModule.FileName) == NP(mt + "sox.exe"))
-					proc.Kill();
-			}
-		}
-		catch
-		{
-			print(vstr[134]);
-		}*/
+		// TODO: send Ctrl-C to c128ks process
 	}
 
 	static void die()
 	{
-		// program dies too slow for it to not interfere with later process spawns
-		// "THEN RESTART YOUR COMPUTER DARK HUMOR DEPRESSINGLY EDGY KID STUPI-"
 		Process.GetCurrentProcess().Kill();
 	}
 	static uint Eswap(uint v)
@@ -191,27 +177,14 @@ static partial class Launcher
 				((v & 0xFF0000) >> 8) |
 				((v & 0xFF000000) >> 24);
 	}
-	/*static uint Eswap(int v)
-	{
-		return Eswap((uint)v);
-	}
-	static ushort Eswap(ushort v)
-	{
-		return (ushort)((v << 8) | (v >> 8));
-	}*/
 
-	static TimeSpan time
-	{
-		get
-		{
+	static TimeSpan time {
+		get { // =>
 			return DateTime.UtcNow - Process.GetCurrentProcess().StartTime.ToUniversalTime();
 		}
 	}
-
-	static string ms
-	{
-		get
-		{
+	static string ms {
+		get { // =>
 			return "<" + (time.TotalMilliseconds / 1000).ToString("0.000") + ">";
 		}
 	}
@@ -227,21 +200,6 @@ static partial class Launcher
 			log.Close();
 			wl = false; // actually die i'm not kidding you deserve it life would be so much better if you did not exist take a bow
 		}
-	}
-	public static void stupid(Process p)
-	{
-		if (!p.HasExited)
-			p.Kill();
-		/*try
-		{
-			foreach (Process proc in Process.GetProcessesByName("game"))
-				if (NP(proc.MainModule.FileName) == NP(folder + "game.exe"))
-					proc.Kill();
-			foreach (Process proc in Process.GetProcessesByName("game!"))
-				if (NP(proc.MainModule.FileName) == NP(folder + "game!.exe"))
-					proc.Kill();
-		}
-		catch { }*/
 	}
 
 	// print base
@@ -308,17 +266,6 @@ static partial class Launcher
 
 	static bool caching = true;
 	static string[] cacheList;
-
-	// Ask for filename just because external data is being handled.
-	/*static bool isCached(string f) // not using this apparently
-	{
-		if (caching)
-		{
-			ulong h = WZK64.Create(File.ReadAllBytes(f));
-			return isCached(h);
-		}
-		return false;
-	}*/
 	static bool isCached(ulong h)
 	{
 		if (caching)
@@ -377,17 +324,14 @@ static partial class Launcher
 				i++;
 			}
 		}
-		return f;
+		return Regex.Unescape(f);
 	}
 
 	static bool coll = true; // color log
 
-	enum SF
-	{
-		FO1,
-		FO2,
-		SP,
-		Pow
+	enum SF {
+		FO1, FO2,
+		SP,  Pow
 	}
 
 	static Tuple<List<Note>,List<int>> S2P(NoteTrack t, SF s)
@@ -468,8 +412,7 @@ static partial class Launcher
 		Process n = new Process();
 		n.StartInfo = new ProcessStartInfo()
 		{
-			FileName = fn,
-			Arguments = a,
+			FileName = fn, Arguments = a,
 			UseShellExecute = false,
 			RedirectStandardError = true,
 			RedirectStandardOutput = true,
@@ -520,18 +463,84 @@ static partial class Launcher
 	}
 	//public static string ffmpeg = "";
 
+	static void killtmpf(string path)
+	{
+		string tmpf = Path.GetTempPath() + "Z.FGH3.TMP\\";
+		vl(path);
+		if (NP(Path.GetDirectoryName(IF(path))) == NP(tmpf))
+		{
+			Directory.SetCurrentDirectory(folder);
+			if (Directory.Exists(tmpf))
+				Directory.Delete(tmpf, true);
+		}
+	}
+	static void killtmpfsp(string path)
+	{
+		Match m = Regex.Match(Path.GetFileName(path), "^tmp[0-9A-F]{4}\\.tmp\\.fsp$", RegexOptions.IgnoreCase);
+		if (m.Success)
+		{
+			if (File.Exists(path))
+				File.Delete(path);
+		}
+	}
+	// subprocess, because I'm lazy and my code is super hacky
+	// and I refuse to move Main elsewhere or split the code up
+	// into their own functions
+	static void sub(string args)
+	{
+		Process.Start(
+			new ProcessStartInfo(Application.ExecutablePath, args)
+			{
+				UseShellExecute = false
+			}
+		).WaitForExit();
+	}
+
+	[DllImport("kernel32.dll", SetLastError = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	static extern bool FreeConsole();
+
+	static bool newinstance = false;
 	static bool initlog = false;
 	public static string version = "1.0-999010889";
 	public static DateTime builddate;
 	[STAThread]
-	static void Main(string[] args)
+	static int Main(string[] args)
 	{
 		// 36 KB
 		try
 		{
-			Console.Title = title;
 			folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
 			inif = folder + "settings.ini";
+			#region NO ARGS ROUTINE
+			if (args.Length == 0)
+			{
+				if (cfg(l, settings.t.NoStartupMsg.ToString(), 0) == 0)
+				{
+					Console.Clear();
+					Console.WriteLine(splashText);
+					Console.ReadKey();
+				}
+				FreeConsole();
+				OpenFileDialog openchart = new OpenFileDialog()
+				{
+					AddExtension = true,
+					CheckFileExists = true,
+					CheckPathExists = true,
+					Filter = T[130],
+					RestoreDirectory = true,
+					Title = T[196]
+				};
+				if (openchart.ShowDialog() == DialogResult.OK)
+				{
+					// TODO?: process start and redirect output to this EXE
+					// when MMF is figured out for multi instances
+					sub(SubstringExtensions.Quotes(openchart.FileName));
+				}
+				return unchecked(0x11111111);
+			}
+			#endregion
+			Console.Title = title;
 			// System.Reflection.Emit wat dis
 			bool mic_ = cfg(l, "DisableMultiInstCheck", 0) == 0;
 			// multi instance check
@@ -564,8 +573,8 @@ static partial class Launcher
 									{
 										if (NP(Process.GetProcessById(pid).MainModule.FileName) == NP(Application.ExecutablePath))
 										{
-											MessageBox.Show("FastGH3 Launcher is already running!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-											Environment.Exit(0x4DF); // ERROR_ALREADY_INITIALIZED
+											MessageBox.Show(T[189], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+											return 0x4DF; // ERROR_ALREADY_INITIALIZED
 										}
 									}
 									catch { }
@@ -577,10 +586,8 @@ static partial class Launcher
 					cfgW("Temp", "ConvPID", -1);
 			}
 			else
-				print("Multi instance checking is off. Be careful!");
+				print(T[190]);
 			GH3EXEPath = NP(folder + "game.exe");
-			//if (File.Exists(folder + "settings.ini"))
-				//ini.Load(folder + "settings.ini");
 			vb = cfg(l, settings.t.VerboseLog.ToString(), 0) == 1;
 			dataf = folder + dataf;
 			pakf = dataf + "PAK\\";
@@ -589,62 +596,16 @@ static partial class Launcher
 			mt = music + "TOOLS\\";
 			cf = dataf + "CACHE\\";
 
-			// too many items in [Misc]
-			// hate me
-			// also finally INI CFunc
-			/*if (cfg("Temp", "MigratedConfig2", 0) == 0)
-			{
-				cfgW(l, settings.t.SongCaching.ToString(), cfg(m, settings.t.Windowed.ToString(), 1));
-				cfgW(l, settings.t.PreserveLog.ToString(), cfg(m, settings.t.PreserveLog.ToString(), 0));
-				cfgW(l, settings.t.VerboseLog.ToString(), cfg(m, settings.t.VerboseLog.ToString(), 0));
-				cfgW(l, settings.t.NoStartupMsg.ToString(), cfg(m, settings.t.NoStartupMsg.ToString(), 0));
-				cfgW(l, settings.t.VerboseLog.ToString(), cfg(m, settings.t.VerboseLog.ToString(), 0));
-				cfgW(l, "DisableMultiInstCheck", cfg(m, "DisableMultiInstCheck", 0));
-				cfgW("Audio", "AB", cfg(m, "AB", 96));
-				cfgW("Audio", "VBR", cfg(m, "VBR", 0));
-				cfgW("Audio", "FixSeeking", cfg(m, "FixSeeking", 0));
-				cfgW(l, stf, cfg(m, stf, ""));
-				cfgW(l, sv, cfg(m, sv, 0));
-				cfgW("GFX", "VSync", cfg(m, "VSync", 0));
-				cfgW("GFX", settings.t.Borderless.ToString(), cfg(m, settings.t.Borderless.ToString(), 0));
-				cfgW("GFX", settings.t.Windowed.ToString(), cfg(m, settings.t.Windowed.ToString(), 0));
-				cfgW("Temp", "MigratedConfig2", 1);
-			}*/
+			// guessing people just don't migrate their
+			// config/user files when updating to a later version?
 
-			vl(T[0]);// "Initializing..."
+			vl(T[0]);
 			caching = cfg(l, settings.t.SongCaching.ToString(), 1) == 1;
 			if (caching)
 			{
 				Directory.CreateDirectory(cf);
 				cachf = cf + ".db.ini";
 			}
-			#region NO ARGS ROUTINE
-			if (args.Length == 0)
-			{
-				if (cfg(l, settings.t.NoStartupMsg.ToString(), 0) == 0)
-				{
-					Console.Clear();
-					Console.WriteLine(splashText);
-					Console.ReadKey();
-				}
-				OpenFileDialog openchart = new OpenFileDialog()
-				{
-					AddExtension = true,
-					CheckFileExists = true,
-					CheckPathExists = true,
-					Filter = T[130],
-					RestoreDirectory = true,
-					Title = "Select chart"
-				};
-				if (openchart.ShowDialog() == DialogResult.OK)
-				{
-					// TODO?: process start and redirect output to this EXE
-					// when MMF is figured out for multi instances
-					Process.Start(Application.ExecutablePath, SubstringExtensions.Quotes(openchart.FileName));
-				}
-				Environment.Exit(unchecked(0x11111111));
-			}
-			#endregion
 			if (args.Length > 0)
 			{
 				// combine logs from any of 3 processes to easily look for errors from all of them
@@ -660,6 +621,7 @@ static partial class Launcher
 							File.Delete(folder + "launcher.txt");
 						}
 						log = new StreamWriter(folder + "launcher.txt", !newfile);
+						log.NewLine = "\n"; // \r causing inconsistencies with multiline strings
 						initlog = true;
 						if (newfile)
 						{
@@ -703,36 +665,27 @@ static partial class Launcher
 					// 0.5-1 kb
 					Console.WriteLine(T[101]);
 					List<string> paths, files;
-					/*IniFile.IniSection shuffleCfg;
-					if (ini.GetSection("Shuffle") == null)
-					{
-						MessageBox.Show(vstr[2], "Error", // "Shuffle settings section cannot be found"
-							MessageBoxButtons.OK, MessageBoxIcon.Error);
-						Environment.Exit(1);
-					}
-					shuffleCfg = ini.GetSection("Shuffle");*/
-					//vl("got shuffle section");
 					paths = new List<string>();
 					string curpath;
 					int j = 0;
 					string p;
-					while ((p = cfg("Shuffle","path"+(++j).ToString(),"")) != "")
+					while ((p = cfg("Shuffle", "path" + (++j).ToString(), "")) != "")
 					{
 						curpath = NP(p);
 						if (Directory.Exists(curpath) && paths.IndexOf(curpath) == -1)
 							paths.Add(curpath);
 						else if (!Directory.Exists(curpath))
-							vl(T[166]+p);
+							vl(T[166] + p);
 					}
 					if (paths.Count == 0)
 					{
-						MessageBox.Show(T[2], "Error",
-							MessageBoxButtons.OK, MessageBoxIcon.Error);
-						Environment.Exit(1);
+						MessageBox.Show(T[2], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						exit();
+						return 1;
 					}
 					vl("added paths (" + paths.Count + ')');
 					Random rand = new Random((int)DateTime.Now.Ticks);
-					string randpath = paths[rand.Next(paths.Count-1)];
+					string randpath = paths[rand.Next(paths.Count - 1)];
 					files = new List<string>();
 					files.AddRange(Directory.GetFiles(randpath, "*.chart", SearchOption.AllDirectories));
 					files.AddRange(Directory.GetFiles(randpath, "*.mid", SearchOption.AllDirectories));
@@ -740,14 +693,14 @@ static partial class Launcher
 					vl("added files");
 					if (files.Count == 0)
 					{
-						MessageBox.Show(T[3], "Error", // "Can't find any charts!"
-							MessageBoxButtons.OK, MessageBoxIcon.Error);
-						Environment.Exit(1);
+						MessageBox.Show(T[3], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						exit();
+						return 1;
 					}
 					int choose = rand.Next(files.Count);
 					print("Choosing: " + files[choose]);
-					Process.Start(folder + "FastGH3.exe", "\"" + files[choose] + "\"");
-					die();
+					sub("\"" + files[choose] + "\"");
+					//die();
 				}
 				#endregion
 				#region GFXSWAP
@@ -796,17 +749,17 @@ static partial class Launcher
 										// "Cannot find a file indicating of containing highway GFX."
 										MessageBox.Show(T[4], "Error",
 											MessageBoxButtons.OK, MessageBoxIcon.Error);
-										Environment.Exit(1);
+										return 1;
 									}
 									// someone actually tried dragging default.scn into this
 									// maybe should prevent that here, idk
-									pe.ReplaceFile("zones\\global\\global_gfx"+".tex", gfx.ToArray());
+									pe.ReplaceFile("zones\\global\\global_gfx" + ".tex", gfx.ToArray());
 									if (scn != null)
 									{
-										pe.ReplaceFile("zones\\global\\global_gfx"+".scn", scn.ToArray());
+										pe.ReplaceFile("zones\\global\\global_gfx" + ".scn", scn.ToArray());
 									}
 									else
-										pe.ReplaceFile("zones\\global\\global_gfx"+".scn", defaultscn);
+										pe.ReplaceFile("zones\\global\\global_gfx" + ".scn", defaultscn);
 								}
 								else
 								{
@@ -824,7 +777,7 @@ static partial class Launcher
 								// "global.pak isn't named correctly."
 								Console.WriteLine(T[5]);
 								Console.ReadKey();
-								Environment.Exit(1);
+								return 1;
 							}
 						}
 						else
@@ -832,14 +785,14 @@ static partial class Launcher
 							// "One of the entered files don't exist."
 							Console.WriteLine(T[6]);
 							Console.ReadKey();
-							Environment.Exit(1);
+							return 1;
 						}
 					}
 					else
 					{
 						Console.WriteLine("Insufficient arguments.");
 						Console.ReadKey();
-						Environment.Exit(1);
+						return 1;
 					}
 				}
 				#endregion
@@ -866,7 +819,7 @@ static partial class Launcher
 						uC = ini(cs, "File", "", 65, cachf);
 						if (uC != "")
 						{
-							print("Found "+adf, FSPcolor);
+							print("Found " + adf, FSPcolor);
 							vl(cs);
 							vl(uC);
 							tF = uC;
@@ -901,14 +854,14 @@ static partial class Launcher
 							vl("Got file date: " + lastmod.ToUniversalTime(), cacheColor);
 							if (lastmod.Ticks == lastmod_cached.Ticks && lastmod_cached.Ticks != 0)
 							{
-								vl("Unchanged"+fdp+"Using "+adf, cacheColor);
+								vl("Unchanged" + fdp + "Using " + adf, cacheColor);
 								tF = ini(cs, "File", "null", cachf);
 								goto skipToGame;
 							}
 							else
 							{
 								if (lastmod.Ticks == 0)
-									print("Different"+fdp+"Redownloading...", cacheColor);
+									print("Different" + fdp + "Redownloading...", cacheColor);
 							}
 						}
 						else
@@ -916,12 +869,12 @@ static partial class Launcher
 							print("No file date found.", cacheColor);
 							if (uC != "")
 							{
-								print("Using "+adf, cacheColor);
+								print("Using " + adf, cacheColor);
 								goto skipToGame;
 							}
 						}
 					}
-					if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > 1024*1024 * 24)
+					if (Convert.ToUInt64(fsp.ResponseHeaders["Content-Length"]) > 1024 * 1024 * 24)
 					{
 						// i dare use Format once for optimized strings "This song package is a larger file than usual. ({0} MB) Do you want to continue?"
 						if (MessageBox.Show(string.Format(T[12],
@@ -929,7 +882,7 @@ static partial class Launcher
 							"Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
 						{
 							exit();
-							Environment.Exit(2);
+							return 2;
 						}
 					}
 					//if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
@@ -939,9 +892,15 @@ static partial class Launcher
 					tF = Path.GetTempFileName();
 					string tmpFl = Path.GetTempPath();
 					fsp.DownloadFile(fsplink, tF);
-					File.Move(tF, tF + ".fsp");
+					{
+						Stream testmagic = File.OpenRead(tF);
+						BinaryReader br = new BinaryReader(testmagic, Encoding.ASCII);
+						string magic = new string(br.ReadChars(6));
+						testmagic.Close();
+						br.Dispose();
+						File.Move(tF, tF += (magic == "SNGPKG" ? ".sng" : ".fsp"));
+					}
 					//Directory.CreateDirectory(tmpFl + "\\Z.TMP.FGH3$WEB");
-					tF += ".fsp";
 					if (caching)
 					{
 						print(T[13], cacheColor); // "Writing link to cache..."
@@ -952,7 +911,7 @@ static partial class Launcher
 							iniw(cs, "Date", lastmod.Ticks.ToString(), cachf);
 						}
 					}
-				skipToGame:
+					skipToGame:
 					// download FSP --> open and extract FSP --> convert song --> game
 					// FastGH3.exe  --> FastGH3.exe          --> FastGH3.exe  --> game.exe
 					// :P
@@ -960,16 +919,23 @@ static partial class Launcher
 					exit();
 					cfgW("Temp", fl, 0);
 					// "already running" >:(
-					Process.Start(Application.ExecutablePath, tF.Quotes());
-					die();
+					sub(tF.Quotes());
+					killtmpfsp(tF);
+					//die();
 				}
 				#endregion
 				else if (File.Exists(args[0]))
 				{
 					cfgW("Temp", "ConvPID", Process.GetCurrentProcess().Id);
 					#region STANDARD ROUTINE
-					Console.WriteLine(title + " by donnaken15");
-					if (Path.GetFileName(args[0]).EndsWith(chartext) || Path.GetFileName(args[0]).EndsWith(midext))
+					string ext = Path.GetExtension(args[0]).ToLower();
+					if (Environment.GetEnvironmentVariable("FASTGH3_BANNER") != "1")
+					{
+						Console.WriteLine(title + " by donnaken15");
+						newinstance = true;
+					}
+					Environment.SetEnvironmentVariable("FASTGH3_BANNER", "1");
+					if (ext == chartext || ext == midext)
 					{
 						bool ischart = false;
 						log.WriteLine(T[15]); // "\n######### MAIN LAUNCHER PHASE #########\n"
@@ -977,20 +943,20 @@ static partial class Launcher
 						Process mid2chart = cmd(folder + "mid2chart.exe",
 							paksongmid.Quotes() + " -k -u -p -m");
 						print(T[16], chartConvColor); // "Reading file."
-						if (Path.GetFileName(args[0]).ToLower().EndsWith(chartext))
+						if (ext == chartext)
 						{
 							vl(T[17], chartConvColor); // "Detected chart file."
 							ischart = true;
 						}
-						else if (Path.GetFileName(args[0]).ToLower().EndsWith(midext) ||
-							Path.GetFileName(args[0]).ToLower().EndsWith(midext + 'i'))
+						else if (ext == midext ||
+							ext == (midext + 'i'))
 						{
 							vl(T[18], chartConvColor); // "Detected midi file."
 							vl(T[19], chartConvColor); // "Converting to chart..."
-														  // why isnt this working
-														  //mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
-														  //Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
-														  //Console.ReadKey();
+													   // why isnt this working
+													   //mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
+													   //Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
+													   //Console.ReadKey();
 							File.Copy(args[0], paksongmid, true);
 							vl(T[135]);
 							mid2chart.Start();
@@ -1052,7 +1018,14 @@ static partial class Launcher
 						catch
 						{
 							//relfile = true;
-							Directory.SetCurrentDirectory(Path.GetPathRoot(args[0]));
+							try
+							{
+								Directory.SetCurrentDirectory(Path.GetPathRoot(args[0]));
+							}
+							catch
+							{
+
+							}
 							//Console.WriteLine(Path.GetPathRoot(args[0]));
 						}
 						#region ENCODE SONGS
@@ -1180,7 +1153,7 @@ static partial class Launcher
 						bool nj3t = false; // nj3ts.Count smh // "3 Count!"
 						List<string> nj3ts = new List<string>();
 						vl(T[26], FSBcolor); //vl("Checking if extra audio exists", FSBcolor);
-												// numbered drum streams
+											 // numbered drum streams
 						for (int j = 0; j < 4; j++)
 						{
 							for (int i = 1; i < 9; i++)
@@ -1272,7 +1245,7 @@ static partial class Launcher
 								if (audiolost == DialogResult.Cancel)
 								{
 									exit();
-									Environment.Exit(0);
+									return 0;
 								}
 								if (audiolost == DialogResult.Yes)
 								{
@@ -1285,8 +1258,8 @@ static partial class Launcher
 										playsilent = DialogResult.OK;
 										if (!File.Exists(audiostreams[1]))
 										{
+											retryguitaraud:
 											DialogResult audiolosthasguitartrack = MessageBox.Show(T[168], "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
-										retryguitaraud:
 											if (audiolosthasguitartrack == DialogResult.Yes)
 											{
 												searchaudio.FileName = "";
@@ -1577,7 +1550,7 @@ static partial class Launcher
 							// = {0,0,0}
 							if (caching)
 								print(T[40], cacheColor);
-								//print("Chart is not cached.", cacheColor);
+							//print("Chart is not cached.", cacheColor);
 							//print("Generating QB template.", chartConvColor);
 							//vl("Creating new QB files...", chartConvColor);
 							killgame();
@@ -1823,7 +1796,7 @@ static partial class Launcher
 									killEncoders();
 									exit();
 									MessageBox.Show("No guitar/rhythm tracks can be found. Exiting...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									Environment.Exit(1);
+									return 1;
 								}
 							}
 							////vl("Adding note arrays to QB.", chartConvColor);
@@ -1937,7 +1910,7 @@ static partial class Launcher
 									}
 									catch
 									{
-										vl(T[50] + i+"]["+d+"]");
+										vl(T[50] + i + "][" + d + "]");
 										//vl("Unable to get the end time for a note track ["+i+"]["+d+"]");
 									}
 									vl(T[51] + et, chartConvColor);
@@ -2368,7 +2341,8 @@ static partial class Launcher
 
 							vl(T[58], chartConvColor);
 							//vl("Sorting scripts by time.", chartConvColor);
-							scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2) {
+							scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2)
+							{
 								//     autismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautism
 								return (c1.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0].CompareTo((c2.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0]);
 							});
@@ -2492,9 +2466,9 @@ static partial class Launcher
 								}
 							}
 							if (ts.Count == 0)
-								// bruh
-								// legitimately happens on some charts for some reason
-								// causes infinite starpower
+							// bruh
+							// legitimately happens on some charts for some reason
+							// causes infinite starpower
 							{
 								vl(T[61], ConsoleColor.Yellow); // megamind
 								SyncTrackEntry tsfault = new SyncTrackEntry();
@@ -2528,7 +2502,7 @@ static partial class Launcher
 								ts_q[i].Values[1] = Convert.ToInt32(ts[i].TimeSignature);
 								//verboseline("Setting TS #" + (i).ToString() + " values (3/3) (" + 4 + ")...", chartConvColor);
 								ts_q[i].Values[2] = Convert.ToInt32(ts[i].TimeSignature2 == -1 ? 4 : ts[i].TimeSignature2); // what this part for
-								// what does changing # in */# even do in general
+																															// what does changing # in */# even do in general
 							}
 							//vl("Adding time signature arrays to QB...", chartConvColor);
 							mid.AddItem(tsig);
@@ -2570,7 +2544,7 @@ static partial class Launcher
 							List<EventsSectionEntry> mrkrs = new List<EventsSectionEntry>();
 							foreach (EventsSectionEntry e in chart.Events)
 							{
-								if (e == null) { vl("Got null event!!!!!!!!!");  continue; } // wtf
+								if (e == null) { vl("Got null event!!!!!!!!!"); continue; } // wtf
 								if (e.TextValue == null) { vl("Got null event text!!!!!!!!!"); continue; } // wtf
 								if (e.TextValue.StartsWith("section "))
 								{
@@ -2941,12 +2915,16 @@ static partial class Launcher
 						}
 						cfgW("Temp", "LoadingLock", 0);
 						#endregion
-						cSV("background.bik");
+						string test = Path.GetFileNameWithoutExtension(args[0])+".bik";
+						if (File.Exists(test))
+							cSV(test);
+						else
+							cSV("background.bik");
 						unkillgame();
 						if (!audCache)
 						{
 							double audioConv_time = audioConv_end.TotalMilliseconds - audioConv_start.TotalMilliseconds;
-							print(T[73] + (audioConv_time/1000).ToString("0.00")+" seconds", FSBcolor);
+							print(T[73] + (audioConv_time / 1000).ToString("0.00") + " seconds", FSBcolor);
 							//print("Elapsed audio encoding time: "+(audioConv_time/1000).ToString()+" seconds", FSBcolor);
 						}
 						Console.ResetColor();
@@ -2972,7 +2950,7 @@ static partial class Launcher
 						print(T[75]);
 						//print("Ready, go!");
 						cfgW("Temp", fl, 1);
-						try
+						if (nj3t)
 						{
 							// why is program sending this log when it's successful
 							// and this is in its own try catch block
@@ -2982,24 +2960,14 @@ static partial class Launcher
 							// didn't happen on the previous version from 2010
 							// so WHY DOES IT CREATE THESE
 							// happens with the NJ3T encoding
-							string tmpf = Path.GetTempPath() + "Z.FGH3.TMP\\";
-							if (nj3t)
-							{
-								foreach (var f in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
-									try { f.Delete(); } catch { }
-								//foreach (var f in new DirectoryInfo(tmpf).EnumerateFiles())
-								//	try { f.Delete(); } catch { }
-								//foreach (var f in new DirectoryInfo(tmpf).EnumerateDirectories())
-								//	try { f.Delete(true); } catch { }
-							}
-							if (NP(Directory.GetCurrentDirectory()) == NP(tmpf))
-								if (Directory.Exists(tmpf))
-									Directory.Delete(tmpf, true);
+							foreach (var f in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
+								try { f.Delete(); } catch { }
+							//foreach (var f in new DirectoryInfo(tmpf).EnumerateFiles())
+							//	try { f.Delete(); } catch { }
+							//foreach (var f in new DirectoryInfo(tmpf).EnumerateDirectories())
+							//	try { f.Delete(true); } catch { }
 						}
-						catch
-						{
-							vl("fail");
-						}
+						killtmpf(args[0]);
 						exit();
 						if (cfg(l, settings.t.PreserveLog.ToString(), "0") == "1")
 						{
@@ -3010,10 +2978,10 @@ static partial class Launcher
 					}
 					#endregion
 					#region FSP EXTRACT
-					else if (File.Exists(args[0]) &&
-						(args[0].ToLower().EndsWith(".fsp") || args[0].ToLower().EndsWith(".zip") ||
-						args[0].ToLower().EndsWith(".7z") || args[0].ToLower().EndsWith(".rar")))
+					else if ((ext == ".fsp" || ext == ".zip" ||
+						ext == ".7z" || ext == ".rar") || ext == ".sng")
 					{
+						// TODO: DON'T KEEP EXTRACTED FILES
 						// 7kb
 						log.WriteLine(T[77]);
 						//log.WriteLine("\n######### FSP EXTRACT PHASE #########\n");
@@ -3031,7 +2999,7 @@ static partial class Launcher
 								fspcache = true;
 							}
 						}
-						bool compiled = false;
+						//bool compiled = false;
 						List<string> multichartcheck = new List<string>();
 						string tmpf = cf + fsphashStr + '\\', selectedtorun = "";
 						if (!caching)
@@ -3073,326 +3041,323 @@ static partial class Launcher
 							foreach (string ff in Directory.GetFiles(tmpf, "*.*", SearchOption.AllDirectories))
 							{
 								string f = ff.ToLower();
+								string foundtext = string.Format(T[195], f);
 								if (f.EndsWith(".pak") ||
-									f.EndsWith(".pak.xen"))
+									f.EndsWith(".pak.xen") ||
+									f.EndsWith(".pak.ps3") ||
+									f.EndsWith(chartext) ||
+									f.EndsWith(midext))
 								{
-									vl("Found .pak", FSPcolor);
+									vl(foundtext, FSPcolor);
 									killgame();
-									File.Delete(songpak);
-									File.Copy(f, songpak, true);
-									multichartcheck.Add(f);
-									compiled = true;
-								}
-								if (f.EndsWith(".fsb") ||
-									f.EndsWith(".fsb.xen"))
-								{
-									vl("Found .fsb", FSPcolor);
-									killgame();
-									File.Delete(fsb);
-									File.Copy(f, fsb, true);
-								}
-								if (f.EndsWith(".chart") ||
-									f.EndsWith(".mid"))
-								{
-									vl("Found .chart/.mid", FSPcolor);
-									// replace this
 									multichartcheck.Add(f);
 									selectedtorun = f;
 								} // should this be run after detecting a PAK
 								  // though then the multichart routine will run regardless
-								if (f == "song.ini")
+								if (f.EndsWith(".fsb") ||
+									f.EndsWith(".fsb.xen") ||
+									f.EndsWith(".fsb.ps3"))
 								{
-									vl("Found song.ini", FSPcolor);
+									vl(foundtext, FSPcolor);
+									killgame();
 								}
-								if (f == "boss.ini")
+								if (f == "song.ini" ||
+									f == "boss.ini" ||
+									f == "background.bik")
 								{
-									vl("Found boss.ini", FSPcolor);
-								}
-								if (f == "background.bik")
-								{
-									vl("Found background.bik", FSPcolor);
+									vl(foundtext, FSPcolor);
 								}
 								if (f.EndsWith(".ogg") ||
 									f.EndsWith(".mp3") ||
 									f.EndsWith(".wav") ||
 									f.EndsWith(".opus"))
 								{
-									vl("Found audio", FSPcolor);
+									vl(string.Format(T[195], "audio"), FSPcolor);
 								}
 							}
 						}
 						else
 						{
 							Directory.CreateDirectory(tmpf);
-							bool zipReadBlatantfail = false; // cheap just to get around
-															 // ambiguous zip type when downloading (a 7Z) from drive
-							try
+							if (ext == ".sng")
 							{
-								ZipFile.Read(args[0]);
-							}
-							catch
-							{
-								zipReadBlatantfail = true;
-							}
-							if ((args[0].ToLower().EndsWith(".zip") || args[0].ToLower().EndsWith(".fsp" /* :( */)) && !zipReadBlatantfail)
-							{
-								using (ZipFile file = ZipFile.Read(args[0]))
+								Sng test = Sng.Load(args[0]);
+								Stream sini = File.OpenWrite(tmpf + "\\song.ini");
+								StreamWriter tw = new StreamWriter(sini);
+								tw.WriteLine("[song]");
+								foreach (string key in test.meta.Keys)
 								{
-									file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
-									foreach (ZipEntry data in file)
+									tw.WriteLine(key + '=' + test.meta[key]);
+								}
+								//sini.Close();
+								tw.Dispose();
+								foreach (Sng.File ff in test.files)
+								{
+									string f = ff.name.ToLower();
+									string foundtext = string.Format(T[195], f);
+									if (f.EndsWith(chartext) ||
+										f.EndsWith(midext))
 									{
+										vl(foundtext, FSPcolor);
+										killgame();
+										multichartcheck.Add(f);
+										selectedtorun = tmpf + f;
+										File.WriteAllBytes(tmpf + ff.name, ff.data);
+									}
+									if (//f == "song.ini" || // haven't found, and it's stored in meta
+										//f == "background.bik" ||
+										f == "boss.ini")
+									{
+										vl(foundtext, FSPcolor);
+										File.WriteAllBytes(tmpf + ff.name, ff.data);
+									}
+									if (f.EndsWith(".ogg") ||
+										f.EndsWith(".mp3") ||
+										f.EndsWith(".wav") ||
+										f.EndsWith(".opus"))
+									{
+										vl(string.Format(T[195], "audio"), FSPcolor);
+										File.WriteAllBytes(tmpf + ff.name, ff.data);
+									}
+								}
+							}
+							else
+							{
+								bool zipReadBlatantfail = false;
+								// cheap just to get around
+								// ambiguous zip type when downloading (a 7Z) from drive
+								try
+								{
+									ZipFile.Read(args[0]);
+								}
+								catch
+								{
+									zipReadBlatantfail = true;
+								}
+								if ((ext == ".zip" || ext == ".fsp" /* :( */) && !zipReadBlatantfail)
+								{
+									using (ZipFile file = ZipFile.Read(args[0]))
+									{
+										file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+										foreach (ZipEntry data in file)
+										{
+											try
+											{
+												string f = data.FileName.ToLower();
+												string foundtext = string.Format(T[195], f);
+												data.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+												if (f.EndsWith(".pak") ||
+													f.EndsWith(".pak.xen") ||
+													f.EndsWith(".pak.ps3") ||
+													f.EndsWith(chartext) ||
+													f.EndsWith(midext))
+												{
+													killgame();
+													vl(foundtext, FSPcolor);
+													data.Extract(tmpf);
+													multichartcheck.Add(f);
+													selectedtorun = tmpf + f;
+												}
+												if (f.EndsWith(".fsb") ||
+													f.EndsWith(".fsb.xen") ||
+													f.EndsWith(".fsb.ps3"))
+												{
+													killgame();
+													vl(foundtext, FSPcolor);
+													data.Extract(tmpf);
+												}
+												if (f == "song.ini" ||
+													f == "boss.ini" ||
+													f == "background.bik")
+												{
+													vl(foundtext, FSPcolor);
+													data.Extract(tmpf);
+												}
+												if (f.EndsWith(".ogg") ||
+													f.EndsWith(".mp3") ||
+													f.EndsWith(".wav") ||
+													f.EndsWith(".opus"))
+												// TODO: filter to files that would
+												// actually be used by the chart
+												{
+													vl(string.Format(T[195], "audio"), FSPcolor);
+													data.Extract(tmpf);
+												}
+											}
+											catch (Exception e)
+											{
+												vl(T[83] + data.FileName + '\n' + e, ConsoleColor.Yellow);
+												//vl("Error extracting a file: " + data.FileName + '\n' + e, ConsoleColor.Yellow);
+											}
+										}
+									}
+								}
+								else
+								// extract using 7-zip or WinRAR if installed
+								{
+									//vl("OH NO, THE SEVENS AND THE ROARS!", FSPcolor); // lol
+									bool got7Z = false, gotWRAR = false;
+									vl(T[84], FSPcolor);
+									//vl("Looking for command line accessible 7Zip.", FSPcolor);
+									string p = where("7z.exe"); // do i have to specify .exe
+									got7Z = p != "";
+									if (!got7Z)
+									{
+										p = where("7za.exe");
+										got7Z = p != "";
+									}
+									// todo?: check associated program for 7z/rar??
+									// but then that will lead to getting the EXE for the GUI
+									// of the program, if not the CLI unless it's a specific
+									// program where the CLI is the main EXE
+									string rarpath = "";
+									if (!got7Z)
+									{
+										// or look in registry
+										vl(T[85], FSPcolor);
+										//vl("Looking for 7Zip in registry.", FSPcolor);
+										RegistryKey k;
+										// also check HKLM hive?
 										try
 										{
-											string f = data.FileName.ToLower();
-											data.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
-											if (f.EndsWith(".pak") ||
-												f.EndsWith(".pak.xen"))
+											k = Registry.CurrentUser.OpenSubKey("SOFTWARE\\7-Zip");
+											if (k != null)
 											{
+												p = (string)k.GetValue("Path");
+												if (p == null)
+												{
+													p = (string)k.GetValue("Path64");
+													if (p != null)
+														got7Z = true;
+												}
+												else
+													got7Z = true;
+												if (got7Z)
+													p += "\\7z.exe";
+												if (!File.Exists(p) && got7Z)
+												{
+													vl(T[86], FSPcolor);
+													//vl("Wait WTF, THE PROGRAM ISN'T THERE!! HOW!", FSPcolor);
+													got7Z = false;
+												}
+												k.Close();
+											}
+											else
+												print(T[87]);
+											//print("Could not find 7-Zip path in registry. Is it installed?");
+										}
+										catch
+										{
+											got7Z = false;
+											vl(T[88]);
+											//vl("Somehow looking for 7-Zip failed. Is it installed?");
+										}
+									}
+									else
+										vl("Found 7Zip", FSPcolor);
+									if (got7Z)
+									{
+										vl(T[89], FSPcolor);
+										//vl("7Zip is installed. Using that...", FSPcolor);
+										//verboseline(z7path);
+									}
+									else
+									{
+										vl(T[90], FSPcolor);
+										//vl("7Zip could not be found.", FSPcolor);
+										vl(T[91], FSPcolor);
+										//vl("Looking for command line accessible WinRAR or UnRar.exe", FSPcolor);
+										rarpath = where("UnRar.exe");
+										gotWRAR = rarpath != "";
+										if (gotWRAR)
+										{
+											if (!args[0].EndsWith(".rar"))
+											{
+												exit();
+												MessageBox.Show(T[125], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+												return 1;
+											}
+											vl(T[92], FSPcolor);
+											//vl("Found UnRAR. Using that...", FSPcolor);
+										}
+										else
+											vl(T[93], FSPcolor);
+										//vl("UnRAR could not be found.", FSPcolor);
+									}
+									string xf, xa;
+
+									if (got7Z)
+									{
+										xf = p;
+										xa = "x " + args[0].Quotes() + " -aoa -o" + tmpf.Quotes();
+									}
+									else if (gotWRAR)
+									{
+										xf = rarpath;
+										xa = "x -o+ " + Path.GetFullPath(args[0]).Quotes() + " " + tmpf.Quotes();
+									}
+									else
+									{
+										exit();
+										vl(T[94], FSPcolor);
+										//vl("Unsupported archive type", FSPcolor);
+										MessageBox.Show(T[126], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+										return 1;
+									}
+									Process x = cmd(xf, xa);
+									if (got7Z || gotWRAR)
+									{
+										vl("Executing " + x.StartInfo.FileName.Quotes() + " " + x.StartInfo.Arguments, FSPcolor);
+										vl("log:");
+										x.Start();
+										if (vb || wl)
+										{
+											x.BeginErrorReadLine();
+											x.BeginOutputReadLine();
+										}
+										x.WaitForExit();
+										vl("Exit code: " + x.ExitCode, FSPcolor);
+										if (x.ExitCode != 0)
+										{
+											exit();
+											MessageBox.Show(T[127], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+											return 1;
+										}
+										foreach (string ff in Directory.GetFiles(tmpf, "*.*", SearchOption.AllDirectories))
+										{
+											string f = ff.ToLower();
+											string foundtext = string.Format(T[195], f);
+											if (f.EndsWith(".pak") ||
+												f.EndsWith(".pak.xen") ||
+												f.EndsWith(".pak.ps3") ||
+												f.EndsWith(chartext) ||
+												f.EndsWith(midext))
+											{
+												vl(foundtext, FSPcolor);
 												killgame();
-												vl("Found .pak, extracting...", FSPcolor);
-												data.Extract(tmpf);
-												// do something with this moving when multiple files exist or whatever
-												File.Delete(songpak);
-												File.Copy(tmpf + f, songpak, true);
 												multichartcheck.Add(f);
-												compiled = true;
+												selectedtorun = f;
 											}
 											if (f.EndsWith(".fsb") ||
-												f.EndsWith(".fsb.xen"))
+												f.EndsWith(".fsb.xen") ||
+												f.EndsWith(".fsb.ps3"))
 											{
+												vl(foundtext, FSPcolor);
 												killgame();
-												vl("Found .fsb, extracting...", FSPcolor);
-												data.Extract(tmpf);
-												File.Delete(fsb);
-												File.Copy(tmpf + f, fsb, true);
 											}
-											if (f.EndsWith(".chart") ||
-												f.EndsWith(".mid"))
+											if (f == "song.ini" ||
+												f == "boss.ini" ||
+												f == "background.bik")
 											{
-												vl("Found .chart/.mid, extracting...", FSPcolor);
-												data.Extract(tmpf);
-												// replace this
-												multichartcheck.Add(f);
-												selectedtorun = tmpf + f;
-											} // should this be run after detecting a PAK
-											  // though then the multichart routine will run regardless
-											if (f == "song.ini")
-											{
-												vl("Found song.ini, extracting...", FSPcolor);
-												data.Extract(tmpf);
-											}
-											if (f == "boss.ini")
-											{
-												vl("Found boss.ini, extracting...", FSPcolor);
-												data.Extract(tmpf);
-											}
-											if (f == "background.bik")
-											{
-												vl("Found background.bik", FSPcolor);
-												data.Extract(tmpf);
-												//copySongVideo(tmpf + "\\background.bik");
+												vl(foundtext, FSPcolor);
 											}
 											if (f.EndsWith(".ogg") ||
 												f.EndsWith(".mp3") ||
 												f.EndsWith(".wav") ||
 												f.EndsWith(".opus"))
-												// TODO: filter to files that would
-												// actually be used by the chart
 											{
-												vl("Found audio, extracting...", FSPcolor);
-												data.Extract(tmpf);
+												vl(string.Format(T[195], "audio"), FSPcolor);
 											}
-										}
-										catch (Exception e)
-										{
-											vl(T[83] + data.FileName + '\n' + e, ConsoleColor.Yellow);
-											//vl("Error extracting a file: " + data.FileName + '\n' + e, ConsoleColor.Yellow);
-										}
-									}
-								}
-							}
-							else
-							// extract using 7-zip or WinRAR if installed
-							{
-								//vl("OH NO, THE SEVENS AND THE ROARS!", FSPcolor); // lol
-								bool got7Z = false, gotWRAR = false;
-								vl(T[84], FSPcolor);
-								//vl("Looking for command line accessible 7Zip.", FSPcolor);
-								string p = where("7z.exe"); // do i have to specify .exe
-								got7Z = p != "";
-								if (!got7Z)
-								{
-									p = where("7za.exe");
-									got7Z = p != "";
-								}
-								// todo?: check associated program for 7z/rar??
-								// but then that will lead to getting the EXE for the GUI
-								// of the program, if not the CLI unless it's a specific
-								// program where the CLI is the main EXE
-								string rarpath = "";
-								if (!got7Z)
-								{
-									// or look in registry
-									vl(T[85], FSPcolor);
-									//vl("Looking for 7Zip in registry.", FSPcolor);
-									RegistryKey k;
-									// also check HKLM hive?
-									try
-									{
-										k = Registry.CurrentUser.OpenSubKey("SOFTWARE\\7-Zip");
-										if (k != null)
-										{
-											p = (string)k.GetValue("Path");
-											if (p == null)
-											{
-												p = (string)k.GetValue("Path64");
-												if (p != null)
-													got7Z = true;
-											}
-											else
-												got7Z = true;
-											if (got7Z)
-												p += "\\7z.exe";
-											if (!File.Exists(p) && got7Z)
-											{
-												vl(T[86], FSPcolor);
-												//vl("Wait WTF, THE PROGRAM ISN'T THERE!! HOW!", FSPcolor);
-												got7Z = false;
-											}
-											k.Close();
-										}
-										else
-											print(T[87]);
-											//print("Could not find 7-Zip path in registry. Is it installed?");
-									}
-									catch
-									{
-										got7Z = false;
-										vl(T[88]);
-										//vl("Somehow looking for 7-Zip failed. Is it installed?");
-									}
-								}
-								else
-									vl("Found 7Zip", FSPcolor);
-								if (got7Z)
-								{
-									vl(T[89], FSPcolor);
-									//vl("7Zip is installed. Using that...", FSPcolor);
-									//verboseline(z7path);
-								}
-								else
-								{
-									vl(T[90], FSPcolor);
-									//vl("7Zip could not be found.", FSPcolor);
-									vl(T[91], FSPcolor);
-									//vl("Looking for command line accessible WinRAR or UnRar.exe", FSPcolor);
-									rarpath = where("UnRar.exe");
-									gotWRAR = rarpath != "";
-									if (gotWRAR)
-									{
-										if (!args[0].EndsWith(".rar"))
-										{
-											exit();
-											MessageBox.Show(T[125], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-											Environment.Exit(1);
-										}
-										vl(T[92], FSPcolor);
-										//vl("Found UnRAR. Using that...", FSPcolor);
-									}
-									else
-										vl(T[93], FSPcolor);
-										//vl("UnRAR could not be found.", FSPcolor);
-								}
-								string xf, xa;
-
-								if (got7Z)
-								{
-									xf = p;
-									xa = "x " + args[0].Quotes() + " -aoa -o" + tmpf.Quotes();
-								}
-								else if (gotWRAR)
-								{
-									xf = rarpath;
-									xa = "x -o+ " + Path.GetFullPath(args[0]).Quotes() + " " + tmpf.Quotes();
-								}
-								else
-								{
-									exit();
-									vl(T[94], FSPcolor);
-									//vl("Unsupported archive type", FSPcolor);
-									MessageBox.Show(T[126], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									Environment.Exit(1);
-									return;
-								}
-								Process x = cmd(xf,xa);
-								if (got7Z || gotWRAR)
-								{
-									vl("Executing " + x.StartInfo.FileName.Quotes() + " " + x.StartInfo.Arguments, FSPcolor);
-									vl("log:");
-									x.Start();
-									if (vb || wl)
-									{
-										x.BeginErrorReadLine();
-										x.BeginOutputReadLine();
-									}
-									x.WaitForExit();
-									vl("Exit code: " + x.ExitCode, FSPcolor);
-									if (x.ExitCode != 0)
-									{
-										exit();
-										MessageBox.Show(T[127], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-										Environment.Exit(1);
-									}
-									foreach (string ff in Directory.GetFiles(tmpf, "*.*", SearchOption.AllDirectories))
-									{
-										string f = ff.ToLower();
-										if (f.EndsWith(".pak") ||
-											f.EndsWith(".pak.xen"))
-										{
-											killgame();
-											vl("Found .pak", FSPcolor);
-											// do something with this moving when multiple files exist or whatever
-											File.Delete(songpak);
-											File.Move(f, songpak);
-											multichartcheck.Add(f);
-											compiled = true;
-										}
-										if (f.EndsWith(".fsb") ||
-											f.EndsWith(".fsb.xen"))
-										{
-											killgame();
-											vl("Found .fsb", FSPcolor);
-											File.Delete(fsb);
-											File.Move(f, fsb);
-										}
-										if (f.EndsWith(".chart") ||
-											f.EndsWith(".mid"))
-										{
-											vl("Found .chart/.mid", FSPcolor);
-											// replace this
-											multichartcheck.Add(f);
-											selectedtorun = f;
-										} // should this be run after detecting a PAK
-										  // though then the multichart routine will run regardless
-										if (f == "song.ini")
-										{
-											vl("Found song.ini", FSPcolor);
-										}
-										if (f == "boss.ini")
-										{
-											vl("Found boss.ini", FSPcolor);
-										}
-										if (f == "background.bik")
-										{
-											vl("Found background.bik", FSPcolor);
-											//copySongVideo(tmpf + "\\background.bik");
-										}
-										if (f.EndsWith(".ogg") ||
-											f.EndsWith(".mp3") ||
-											f.EndsWith(".wav") ||
-											f.EndsWith(".opus"))
-										{
-											vl("Found audio", FSPcolor);
 										}
 									}
 								}
@@ -3409,8 +3374,8 @@ static partial class Launcher
 							exit();
 							//vl("There's nothing in here!", ConsoleColor.Red);
 							// ♫ There's nothing for me here ♫
-							MessageBox.Show("No chart found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-							Environment.Exit(1);
+							MessageBox.Show("No chart found in this archive file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+							return 1;
 						}
 						bool cancel = false;
 						if (multichartcheck.Count > 1)
@@ -3420,12 +3385,13 @@ static partial class Launcher
 							if (File.Exists(askchoose.chosen) && askchoose.DialogResult == DialogResult.OK)
 							{
 								selectedtorun = askchoose.chosen;
-								compiled = !Path.GetFileName(askchoose.chosen).EndsWith(".chart") &&
-											!Path.GetFileName(askchoose.chosen).EndsWith(".mid");
+								//compiled = !Path.GetFileName(askchoose.chosen).EndsWith(".chart") &&
+								//			!Path.GetFileName(askchoose.chosen).EndsWith(".mid");
 							}
 							cancel = askchoose.DialogResult == DialogResult.Cancel;
 						}
 						if (!cancel)
+#if false
 							if (compiled)
 							{
 								unkillgame();
@@ -3443,44 +3409,231 @@ static partial class Launcher
 								cfgW("Temp", fl, 1);
 							}
 							else
-							{
-								exit();
-								cfgW("Temp", fl, 0);
-								Process.Start(Application.ExecutablePath, selectedtorun.Quotes());
-								die();
-							}
-					}
-					/*else if ((args[0].EndsWith(".pak") || args[0].EndsWith(".pak.xen")))
-					{
-						Console.WriteLine("FastGH3 by donnaken15");
-						print("Detected song PAK.", FSPcolor);
-						PakFormat fmt = new PakFormat(args[0], "", "", PakFormatType.PC);
-						PakEditor pak = new PakEditor(fmt);
-						QbFile qb = pak.ReadQbFile(pak.QbFilenames[0]); //auto guess song paks have 1 qb file, except official ones.....
-
-						if (qb.Items[1].QbItemType == QbItemType.SectionArray)
+#endif
 						{
-							if (qb.Items[1].Items[0].QbItemType == QbItemType.ArrayInteger)
+							exit();
+							cfgW("Temp", fl, 0);
+							sub(selectedtorun.Quotes());
+							//die();
+						}
+						killtmpf(selectedtorun);
+					}
+					#endregion
+					#region PRECOMPILED PAK
+					else if ((ext == (".pak") ||
+						args[0].ToLower().EndsWith(".pak.xen") ||
+						//ext == (".pak.ngc") ||
+						args[0].ToLower().EndsWith(".pak.ps3")))
+					{
+						print("Detected song PAK.", FSPcolor);
+						PakEditor pak = new PakEditor(new PakFormat(args[0], "", "", PakFormatType.PC));
+						vl("loaded");
+						bool gotname = false;
+						string id = "";
+						// Raining Blood has the note tracks as the first file on all platforms
+						QbKey EXT_QB = QbKey.Create(0xA7F505C4), EXT_MQB = QbKey.Create(0x4BC1E85E);
+						vl("Start reading headers");
+						QbFile songdata = null;
+						string[] test_keys = gsn;
+						bool manual_test = false;
+						bool cancel = false;
+						unkname setp = new unkname();
+						{
+							Match m = Regex.Match(Path.GetFileName(args[0]),
+								"^(?<name>[A-Z0-9_]+)_song\\.(pak|qb)(\\.(ngc|ps2|ps3|xen))?$",
+								RegexOptions.IgnoreCase);
+							if (m.Success)
 							{
-								string[] sectdiffs = {
-									"_easy",
-									"_medium",
-									"_hard",
-									"_expert",
+								Group name = m.Groups["name"];
+								if (name.Success)
+								{
+									id = name.Value;
+									test_keys[2] = id;
+									vl(id);
+								}
+							}
+						}
+						retry:
+						if (!gotname)
+							foreach (PakHeaderItem f in pak.Headers.Values)
+							{
+								if (f.FileType.Crc == EXT_QB.Crc || f.FileType == EXT_MQB.Crc)
+								{
+									if (f.Flags.HasFlag(PakHeaderFlags.Filename))
+									{
+										print("Got raw filename: " + f.Filename, chartConvColor);
+										// extract song name from raw filename if possible
+										Match m = Regex.Match(f.Filename,
+											"^(data[\\/\\\\])?songs[\\/\\\\](?<name>[A-Z0-9_]+)(_song_scripts)?\\.mid\\.qb(\\.(ngc|ps2|ps3|xen))?$",
+											RegexOptions.IgnoreCase);
+										// (VV) Wii/PS2 format, raw : data/songs/***.mid.qb.(platform) // magically doesn't cut off first char unlike 'cripts'
+										// PC/360/PS3 format, hashed: songs\***.mid.qb
+										if (m.Success)
+										{
+											Group name = m.Groups["name"];
+											if (name.Success)
+											{
+												songdata = pak.ReadQbFile(f.Filename);
+												vl("done");
+												gotname = true;
+												break;
+											}
+										}
+									}
+									else
+									{
+										//Console.WriteLine(f.FullFilenameQbKey);
+										//f.FullFilenameQbKey
+										foreach (string s in test_keys)
+										{
+											string fmt = string.Format("songs/{0}.mid.qb", s);
+											if (manual_test)
+												vl("testing " + fmt);
+											if (QbKey.Create(fmt).Crc == f.FullFilenameQbKey)
+											{
+												songdata = pak.ReadQbFile(f.Filename);
+												print("Matched song ID: " + s, chartConvColor);
+												id = s;
+												vl("done");
+												gotname = true;
+												break;
+											}
+										}
+										if (!gotname)
+										{
+											vl("read QB " + f.Filename);
+											QbFile qb = pak.ReadQbFile(f.Filename);
+											foreach (string s in test_keys)
+											{
+												if (manual_test)
+													vl("testing " + s);
+												QbItemBase test = qb.FindItem(QbKey.Create(s + "_song_expert"), false);
+												if (test != null)
+												{
+													songdata = qb;
+													print("Matched song ID: " + s, chartConvColor);
+													id = s;
+													vl("done");
+													gotname = true;
+													break;
+												}
+											}
+										}
+									}
+								}
+								if (gotname)
+									break;
+							}
+						if (manual_test)
+						{
+							if (!gotname)
+								cancel = MessageBox.Show("Could not match song PAK's data with the input ID.",
+									"Error", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error)
+										== DialogResult.Cancel;
+						}
+						if (!cancel)
+						{
+							//songdata.Items[0].Clone();
+							if (!gotname)
+							{
+								setp.ShowDialog();
+								if (setp.DialogResult == DialogResult.OK)
+								{
+									manual_test = true;
+									test_keys = new string[] { setp.inp };
+									goto retry;
+								}
+							}
+							if (gotname)
+							{
+								string source_fsb = args[0].Replace(".pak", ".fsb");
+								if (!File.Exists(source_fsb))
+								{
+									source_fsb = Path.GetDirectoryName(args[0]) + '\\' + id + ".fsb";
+									if (File.Exists(source_fsb + ".xen"))
+										source_fsb += ".xen";
+									else if (File.Exists(source_fsb + ".ps3"))
+										source_fsb += ".ps3";
+								}
+								if (!File.Exists(source_fsb))
+								{
+									source_fsb = Path.GetDirectoryName(args[0]) + "\\..\\MUSIC\\" + id + ".fsb";
+									if (File.Exists(source_fsb + ".xen"))
+										source_fsb += ".xen";
+									else if (File.Exists(source_fsb + ".ps3"))
+										source_fsb += ".ps3";
+								}
+								if (!File.Exists(source_fsb))
+								{
+									DialogResult audiolost, playsilent = DialogResult.No, searchaudioresult = DialogResult.Cancel;
+									OpenFileDialog searchaudio = new OpenFileDialog()
+									{
+										// support online URLs in input text box?
+										CheckFileExists = true,
+										CheckPathExists = true,
+										InitialDirectory = Path.GetDirectoryName(args[0]),
+										Filter = T[167]
+									};
+									do
+									{
+										audiolost = MessageBox.Show(T[30], "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+										//audiolost = MessageBox.Show("No song audio can be found.\nDo you want to search for it?", "Warning", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
+										if (audiolost == DialogResult.Cancel)
+										{
+											exit();
+											killtmpf(args[0]);
+											return 0;
+										}
+										if (audiolost == DialogResult.Yes)
+										{
+
+											searchaudioresult = searchaudio.ShowDialog();
+											if (searchaudioresult == DialogResult.OK)
+											{
+												source_fsb = searchaudio.FileName;
+												playsilent = DialogResult.OK;
+											}
+										}
+										if (audiolost == DialogResult.No || searchaudioresult == DialogResult.Cancel || !File.Exists(searchaudio.FileName))
+										{
+											playsilent = MessageBox.Show(T[31], "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+											//playsilent = MessageBox.Show("Want to play without audio?\nThis is not compatible with practice mode.", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+											if (playsilent == DialogResult.Yes)
+											{
+												vl(T[170], FSBcolor);
+												source_fsb = "";
+												File.Delete(fsb);
+												// apparently now game can run without the FSB just fine
+											}
+										}
+									}
+									while (playsilent == DialogResult.No);
+								}
+								if (File.Exists(source_fsb))
+									File.Copy(source_fsb, fsb, true);
+								// TODO: overwrite MP3 filenames to match fastgh3
+
+								// gem arrays are always first
+								string[][] ts = // track_suffixes
+								{
+									new string[] {
+										"_easy",
+										"_medium",
+										"_hard",
+										"_expert",
+									},
+									new string[] {
+										"",
+										"_rhythm",
+										"_guitarcoop",
+										"_rhythmcoop",
+									},
 								};
-									string[] sectlines = {
+								string[] phrase_suffixes = {
 									"_star",
 									"_starbattlemode",
-									"_hard",
-									"_expert",
 								};
-									string[] sectparts = {
-									"",
-									"_rhythm",
-									"_guitarcoop",
-									"_rhythmcoop",
-								};
-									string[] sectmisc = {
+								string[] sectmisc = {
 									"_faceoffp1",
 									"_faceoffp2",
 									"_bossbattlep1",
@@ -3488,46 +3641,129 @@ static partial class Launcher
 									"_timesig",
 									"_fretbars",
 									"_markers",
-								};
-									string[] sectmisc2 = {
 									"_scripts",
-									"_anim",
-									"_triggers",
-									"_cameras",
-									"_lightshow",
-									"_crowd",
-									"_drums",
-									"_performance",
+									//"_anim",
+									//"_triggers",
+									//"_cameras",
+									//"_lightshow",
+									//"_crowd",
+									//"_drums",
+									//"_performance",
 								};
 								string songprefix = "_song";
-								string notesuffix = "_notes";
+								//string notesuffix = "_notes";
 								int currentItem = 0;
-								qb.Items[1].ItemQbKey = QbKey.Create("fastgh3_easy");
-								qb.Items[2].ItemQbKey = QbKey.Create("fastgh3_medium");
-								qb.Items[3].ItemQbKey = QbKey.Create("fastgh3_hard");
-								qb.Items[4].ItemQbKey = QbKey.Create("fastgh3_easy");
-								Console.ResetColor();
-								print("Speeding up.");
-								verboseline("Creating GH3 process...");
-								Process gh3 = new Process();
-								gh3.StartInfo.WorkingDirectory = folder;
-								gh3.StartInfo.FileName = folder + GH3EXEPath;
-								// dont do this lol
-								if (settings.GetKeyValue("Player", "MaxNotesAuto", "0") == "1")
-									settings.SetKeyValue("Player", "MaxNotes", 0x100000.ToString());
-								settings.Save(folder + "settings.ini");
-								print("Ready, go!");
-								//gh3.Start();
-								if (settings.GetKeyValue(m, "PreserveLog", "0") == "1")
+
+								byte[] __ = new byte[0xB0];
+								Array.Copy(pn, 0, __, 0, pn.Length);
+								Array.Copy(qn, 0, __, 0x80, qn.Length);
+								string output = pakf + "song.pak.xen";
+								File.WriteAllBytes(output, __);
+								PakFormat PF = new PakFormat(output, "", "", PakFormatType.PC);
+								PakEditor PE = new PakEditor(PF);
+								QbFile renamed_qb = new QbFile(new MemoryStream(qn), PF);
+
+								int maxnotes = 0;
+								
+								string ii;
+								QbKey k;
+								QbItemArray item;
+								bool incompat = false;
+								for (int i = 0; i < ts[0].Length; i++)
 								{
-									print("Press any key to exit");
-									Console.ReadKey();
+									for (int j = 0; j < ts[1].Length; j++)
+									{
+										ii = songprefix + ts[1][j] + ts[0][i];
+										k = QbKey.Create(id + ii);
+										item = (QbItemArray)songdata.FindItem(k, false);
+										if (item != null)
+										{
+											// if you have less than two integers in a note track array,
+											// even in a song PAK made for WT--, you might have serious life problems
+											if (item.Items[0].QbItemType == QbItemType.ArrayInteger)
+											{
+												QbItemInteger array = ((QbItemInteger)item.Items[0]);
+												maxnotes = Math.Max(maxnotes, array.Values.Length / 3);
+												int test = array.Values[1];
+												if ((test & 0x0F800000) != 0)
+												{
+													incompat = true;
+													vl(T[192] + test.ToString("X8"));
+													vl(T[191]);
+													break;
+												}
+												item.ItemQbKey = QbKey.Create("fastgh3" + ii);
+												renamed_qb.AddItem(item.Clone());
+											}
+										}
+										for (int l = 0; l < phrase_suffixes.Length; l++)
+										{
+											ii = ts[1][j] + ts[0][i] + phrase_suffixes[l];
+											k = QbKey.Create(id + ii);
+											item = (QbItemArray)songdata.FindItem(k, false);
+											if (item != null)
+											{
+												item.ItemQbKey = QbKey.Create("fastgh3" + ii);
+												renamed_qb.AddItem(item.Clone());
+											}
+										}
+									}
+									if (incompat)
+										break;
 								}
-								settings.SetKeyValue(m, "FinishedLog", "1");
-								settings.Save(folder + "settings.ini");
+								if (!incompat)
+								{
+									for (int i = 0; i < sectmisc.Length; i++)
+									{
+										k = QbKey.Create(id + sectmisc[i]);
+										item = (QbItemArray)songdata.FindItem(k, false);
+										if (item != null)
+										{
+											item.ItemQbKey = QbKey.Create("fastgh3" + sectmisc[i]);
+											renamed_qb.AddItem(item.Clone());
+										}
+									}
+
+									renamed_qb.AlignPointers();
+									string qb_name = "songs\\fastgh3.mid.qb";
+									try
+									{
+										PE.ReplaceFile(qb_name, renamed_qb);// folder + pak + "song.qb"); // songs\fastgh3.mid.qb
+									}
+									catch
+									{
+										PE.AddFile(renamed_qb, qb_name, QbKey.Create(".qb"), false);
+									}
+
+									killtmpf(args[0]);
+									Console.ResetColor();
+									print("Speeding up.");
+									vl("Creating GH3 process...");
+									Process gh3 = new Process();
+									gh3.StartInfo.WorkingDirectory = folder;
+									gh3.StartInfo.FileName = GH3EXEPath;
+
+									if (cfg("Player", "MaxNotesAuto", "0") == "1")
+									{
+										vl("Got " + maxnotes + " max notes");
+										cfgW("Player", "MaxNotes", maxnotes.ToString());
+									}
+									print("Ready, go!");
+									gh3.Start();
+									if (cfg(m, "PreserveLog", 0) == 1)
+									{
+										print("Press any key to exit");
+										Console.ReadKey();
+									}
+									cfgW(m, "FinishedLog", 1);
+								}
+								else
+								{
+									MessageBox.Show(T[193], "Error (" + args[0] + ')', MessageBoxButtons.OK, MessageBoxIcon.Error);
+								}
 							}
 						}
-					}*/
+					}
 					#endregion
 				}
 				else
@@ -3565,7 +3801,7 @@ static partial class Launcher
 			if (!File.Exists(folder + "launcher.txt"))
 			{
 				print(T[176]);
-				return;
+				return 1;
 			}
 			string log = File.ReadAllText(folder + "launcher.txt");
 			if (initlog && cfg("Launcher","ErrorReporting",1)==1 && log.Length < 0x20000) // max 128 KB to upload
@@ -3629,11 +3865,15 @@ static partial class Launcher
 				} catch { print(T[137]); }
 			}
 
-			print(T[98]);
-			Console.ReadKey();
-			Environment.Exit(1);
+			if (newinstance)
+			{
+				print(T[98]);
+				Console.ReadKey();
+			}
+			return 1;
 		}
 		//GC.Collect();
 		exit();
+		return 0;
 	}
 }

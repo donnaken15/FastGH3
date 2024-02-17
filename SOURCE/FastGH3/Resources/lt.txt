@@ -104,31 +104,31 @@ Set max FPS, if not capped by Vsync.\nIf set to 0, the frame rate limit will not
 Override the note limit. Set to -1 to make\nthe program determine how many notes\nthere are in the chart opened.\nRAM usage may vary.
 This allows you to change the window size of the game according to your monitor settings.
 Clean files from downloading and extracting Song Packages.\nWarning: Reuse of these files will require downloading and\nextracting them again, some of which can take a bit of time.
-Change the bitrate used for converting songs.\nThis will only take effect for the next songs converted.\nThe default is 128kbps, as decided by the game.\nIf song caching is turned on, the cached songs will\nkeep the bitrate setting they were converted with.\nNote: This will also result in larger compiled\naudio files, which effects your song cache as well.
+Change the bitrate used for converting songs.\nThis will only take effect for the next songs converted.\nThe default is 128kbps, as decided by the game.\nIf song caching is turned on, the cached songs will\nkeep the bitrate setting they were converted with.\nNote: This will also result in larger or smaller\ncompiled audio files, which effects your song cache as well.
 Change the controller that is selected to play when Keyboard mode is off.\nWARNING: Unplugging or plugging in controllers can affect this setting.
 This applies for both player hyperspeeds.
 This applies for both player difficulties.
 Credits will be displayed in console.
-Enter percentage of song speed. This also effects the pitch of the song.
+Enter percentage of song speed when playing. This also effects the pitch of the song.
 Change instrument or track to be played in game.
 Relaunch the game with the previous song in place.
 Select what plugins should be loaded or disabled.\nRequires GH3+ compatible plugins.
-View cached chart files. Songs will appear\nhere only when song caching is turned on.
+View cached chart files. Songs will appear here only\nfor those that were converted when song caching was turned on.
 Change the format of currentsong.txt. Can be useful for streaming.
 Change the amount of time to wait before the\nsong starts. Requires "No intro" to be turned on.
 Change controls for playing on keyboard.
 Required for playing face-off and battle.
-Set current background image when playing a song.\nNote: Background color is going to be deprecated in favor of background images.
+Set current background image when playing a song.
 Background image that's going to be shown in the game.\nDouble click to see a larger preview of how it will look.
 Speed:                            %
 6f1d2b61d5a011cfbfc7444553540000
 201 202 203 204 205 311 999 219 235 400 401 999 307
 The extractor returned a non-zero error code. This could mean that the extraction has failed.
 7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.
-Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed.
+Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed, or the target URL returned an invalid response.
 %a - Author, %t - Title, %b - Album, %% - Percent,\n%c - Charter, %y - Year, %l - Length, %g - Genre
 /!\\ Error adding a starpower phrase. If this message appears more than once, there may be a problem
-Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|Any type|*.*
+Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen;*.pak.ps3|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|Guitar Hero 3 PAK|*.pak;*.pak.xen;*.pak.ps3|Any type|*.*
 Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal
 Saving user background video
 Restoring user background video
@@ -187,3 +187,11 @@ QB file|*.qb.xen;*.qb|Zipped QB|*.zip
 These items replace the game's data:
 Supported image formats|*.png;*.jpg;*.bmp;*.dds|Portable Network Graphics|*.png|JPEG|*.jpeg|Bitmap|*.bmp|DirectDraw Surface|*.dds|Any type|*.*
 Hiroaki Sano%Circus Game%8BIT MUSIC POWER%donnaken15%2016%2:22%Chiptune
+FastGH3 Launcher is already running!
+Multi instance checking is off. Be careful!
+World Tour-- song files are not compatible with GH3. Exiting...
+Detected WT note upper bitmask: 
+This song appears to be compiled for World Tour or later games, which is not compatible with Guitar Hero III since its note track format has changed.
+Misc%Player%Launcher%SongtextFormat%FinishedLog%Killswitch%SongVideos%LastSongHadVideo
+Found {0}, extracting...
+Welcome to FastGH3: Select a chart to play

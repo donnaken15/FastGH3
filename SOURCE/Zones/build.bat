@@ -1,7 +1,7 @@
 :: REQUIRES (AND USES CYGWIN) SH, Node, and Guitar Hero SDK
 @echo off
 set "OKNOTOK=|| goto :fail"
-cd /d "%~dp0"
+pushd "%~dp0"
 echo [97m^<^<^<^<^<^<         GLOBAL.PAK          ^>^>^>^>^>^>[0m
 ::echo [97m######   emptying output folder    ######[0m
 del "!cache\*" /S/Q > nul
@@ -71,9 +71,11 @@ copy "global_sfx.pak.xen" "!global_sfx.pak.xen" /y >nul
 popd
 
 if not "%1"=="notimeout" "%WINDIR%\system32\timeout" /t 2
+popd
 exit /b
 
 :fail
 echo [91mOne of the commands errored. Aborting.[0m
 pause
+popd
 exit /b

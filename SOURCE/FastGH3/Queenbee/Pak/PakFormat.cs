@@ -225,7 +225,8 @@ namespace Nanook.QueenBee.Parser
 			}
 
 			//allow debug file as pak when has real extension and not .decompressed
-			/*if ((!debugFile || (debugFile && PakFilename.EndsWith(FileExtension))) && PakFormatType == PakFormatType.XBox)
+#if false
+			if ((!debugFile || (debugFile && PakFilename.EndsWith(FileExtension))) && PakFormatType == PakFormatType.XBox)
 			{
 				if (PakFileExists)
 				{
@@ -260,13 +261,14 @@ namespace Nanook.QueenBee.Parser
 				CompressedDebugFilename = string.Empty;
 				FullCompressedDebugFilename = string.Empty;
 
-			}*/
+			}
+#endif
 
 
 
 		}
 
-		#region Properties
+#region Properties
 
 		public StructItemChildrenType StructItemChildrenType
 		{
@@ -321,7 +323,7 @@ namespace Nanook.QueenBee.Parser
 				return false;
 			}
 		}
-		#endregion
+#endregion
 
 		public QbItemType GetInternalType(QbItemType type, QbFile qbFile)
 		{
@@ -374,7 +376,7 @@ namespace Nanook.QueenBee.Parser
 		}
 
 
-		#region NonDebugQbKey items
+#region NonDebugQbKey items
 
 		private void loadNonDebugQbKey()
 		{
@@ -464,7 +466,7 @@ namespace Nanook.QueenBee.Parser
 			return null;
 		}
 
-		#endregion
+#endregion
 
 		private void copyStream(System.IO.Stream input, System.IO.Stream output)
 		{

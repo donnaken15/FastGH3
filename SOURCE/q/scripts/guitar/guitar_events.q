@@ -180,11 +180,11 @@ script GuitarEvent_MissedNote
 endscript
 
 script highway_pulse_black
-	<half_time> = ($highway_pulse_time / 2.0)
+	<half_time> = (($highway_pulse_time / 2.0) / $current_speedfactor)
 	ExtendCrc Highway_2D <player_text> out = highway
-	DoScreenElementMorph id = <highway> rgba = ($highway_pulse)time = <half_time>
+	DoScreenElementMorph id = <highway> rgba = ($highway_pulse) time = <half_time>
 	wait <half_time> seconds
-	DoScreenElementMorph id = <highway> rgba = ($highway_normal)time = <half_time>
+	DoScreenElementMorph id = <highway> rgba = ($highway_normal) time = <half_time>
 endscript
 
 script Guitar_Wrong_Note_Sound_Logic
