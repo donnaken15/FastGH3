@@ -22,7 +22,18 @@
     </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>3</LangVersion>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
@@ -30,7 +41,6 @@
     <Compile Include="main.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="build.bat" />
   </ItemGroup>
   <ItemGroup>
@@ -41,7 +51,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"C:\Program Files (x86)\Resource Hacker\resourcehacker.exe" -open "$(TargetFileName)" -save "$(TargetFileName)" -action delete VERSIONINFO,,
-stripreloc /b "$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>rem "C:\Program Files\PackageManagement\NuGet\Packages\ilmerge.3.0.41\tools\net452\ILMerge.exe" "$(TargetPath)" /out:"tmp.exe"
+rem copy "tmp.exe" "$(TargetPath)" /y
+rem del "tmp.exe" "tmp.pdb"
+"C:\Program Files (x86)\Resource Hacker\resourcehacker.exe" -open "$(TargetFileName)" -save "$(TargetFileName)" -action delete VERSIONINFO,,
+rem stripreloc /b "$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

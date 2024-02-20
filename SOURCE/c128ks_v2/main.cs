@@ -8,14 +8,7 @@ using System.Text;
 
 class Encoder
 {
-	public enum Mode
-	{
-		Stereo,
-		Joint,
-		Dual,
-		Mono
-	}
-	static int bitrates(int i)
+	static int brs(int i)
 	{
 		if (i < 1) return 0;
 		if (i < 15)
@@ -23,32 +16,33 @@ class Encoder
 		return -1; // bad
 	}
 
-	void DecoderThread()
+	void DT()
 	{
-		if (cancel)
+		if (C)
 			return;
-		byte[] buf = new byte[BlockSize];
+		byte[] buf = new byte[BS];
 		int c = 0;
 		int i = 0;
 		int ret = 0;
+		Stream OUT = dec.StandardOutput.BaseStream;
 		while (true)
 		{
-			if (cancel)
+			if (C)
 				return;
-			ret = STDOUT.BaseStream.Read(buf, c, BlockSize - c);
+			ret = OUT.Read(buf, c, BS - c);
 			c += ret;
 			if (ret > 0) {
-				if (c == BlockSize)
+				if (c == BS)
 				{
-					QueuedBlocks.Add((byte[])buf.Clone());
-					current_blocks[0] = i++;
+					QB.Add((byte[])buf.Clone());
+					cb[0] = i++;
 					c = 0;
 				}
 			} else {
 				byte[] remaining = new byte[c];
 				Array.Copy(buf, remaining, c);
-				QueuedBlocks.Add(remaining);
-				current_blocks[0] = i++;
+				QB.Add(remaining);
+				cb[0] = i++;
 				break;
 			}
 		}
@@ -56,22 +50,23 @@ class Encoder
 			done_text(false);
 		done[0] = true;
 		if (dec.HasExited)
-			exit_codes[0] = dec.ExitCode;
+			xc[0] = dec.ExitCode;
 	}
-	void EncoderThread()
+	void ET()
 	{
-		while (QueuedBlocks.Count == 0)
+		while (QB.Count == 0)
 		{
 			if (done[0])
 				return;
 			Thread.Sleep(1);
 		}
 		int i = 0;
+		Stream IN = enc.StandardInput.BaseStream;
 		while (true)
 		{
-			while (i >= QueuedBlocks.Count)
+			while (i >= QB.Count)
 			{
-				if (cancel)
+				if (C)
 					return;
 				if (done[0])
 				{
@@ -82,21 +77,21 @@ class Encoder
 				}
 				Thread.Sleep(1);
 			}
-			if (cancel)
+			if (C)
 				return;
 			if (enc.HasExited)
 			{
-				exit_codes[1] = enc.ExitCode;
+				xc[1] = enc.ExitCode;
 				return;
 			}
 			// TODO: remove block(s) from list once written
 			// don't know how to do it right now
 			// where it doesn't interfere with the
 			// async adding by the decoder thread
-			byte[] block = QueuedBlocks[i];
-			STDIN.BaseStream.Write(block, 0, block.Length);
-			QueuedBlocks[i] = null;
-			current_blocks[1] = ++i;
+			byte[] block = QB[i];
+			IN.Write(block, 0, block.Length);
+			QB[i] = null;
+			cb[1] = ++i;
 			// because pre-increment looks cool right?
 		}
 	}
@@ -107,44 +102,34 @@ class Encoder
 	}
 	Process dec, enc;
 	Thread dt, et;
-	StreamReader STDOUT => dec.StandardOutput;
-	StreamWriter STDIN => enc.StandardInput;
-	List<byte[]> QueuedBlocks;
-	const int BlockSize = 1 << 17; // decoder reading doesn't surpass this (128k) in a singular call, typically reads ~1800 bytes
-	public int[] current_blocks = { 0, 0 };
-	public int[] exit_codes = { 0, 0 };
+	List<byte[]> QB;
+	const int BS = 1 << 17; // decoder reading doesn't surpass this (128k) in a singular call, typically reads ~1800 bytes
+	public int[] cb = { 0, 0 };
+	public int[] xc = { 0, 0 };
 	bool[] done = { false, false };
-	bool cancel = false;
+	bool C = false;
 
-	bool ffmpeg;
-	static string bin_path = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + '\\';
-	static string ffmpeg_path = Program.where(Program.RawString("晦灭来攮數"));
+	bool ff;
 
-	public bool forcechannels = false, stereo = false;
-	public Mode mode = Mode.Joint;
-	private ushort _bitrate = 96;
-	public ushort bitrate {
-		get { return _bitrate; }
-		set {
-			_bitrate = Math.Min(Math.Max(value, (ushort)48), (ushort)320);
-		}
-	}
-	public ushort samplerate = 32000;
-	public bool variable = false, forcerate = false;
+	public bool FC = false, S = false;
+	public byte mode = 1;
+	private ushort br = 96;
+	public ushort sr = 32000;
+	public bool var = false, forcerate = false;
 	public bool logging = true, info = false;
-	public string input, output;
+	public string I, O;
 
-	public Encoder(string input) : this(input, null) { }
-	public Encoder(string input, string output)
+	public Encoder(string i) : this(i, null) { }
+	public Encoder(string i, string o)
 	{
-		if (output == null)
-			output = input + T[0];
-		ffmpeg = ffmpeg_path != null;
-		this.input = input;
-		this.output = output;
+		if (o == null)
+			o = i + T[0];
+		ff = ffpath != null;
+		this.I = i;
+		this.O = o;
 		dec = new Process() {
 			StartInfo = new ProcessStartInfo() {
-				FileName = !ffmpeg ? bin_path + T[1] : ffmpeg_path,
+				FileName = !ff ? bin + T[1] : ffpath,
 				// the only instance I can see string.Format being useful here
 				RedirectStandardOutput = true,
 				//RedirectStandardError = true,
@@ -154,15 +139,15 @@ class Encoder
 		};
 		enc = new Process() {
 			StartInfo = new ProcessStartInfo() {
-				FileName = bin_path + T[2],
+				FileName = bin + T[2],
 				RedirectStandardInput = true,
 				//RedirectStandardError = true,
 				CreateNoWindow = false,
 				UseShellExecute = false
 			}
 		};
-		dt = new Thread(DecoderThread);
-		et = new Thread(EncoderThread);
+		dt = new Thread(DT);
+		et = new Thread(ET);
 	}
 
 	DateTime start_time;
@@ -170,20 +155,20 @@ class Encoder
 
 	public void Start()
 	{
-		if (!File.Exists(input))
+		if (!File.Exists(I))
 			throw new FileNotFoundException(T[7]);
-		dec.StartInfo.Arguments = string.Format("{2} \"{0}\""+
-			(forcechannels ? " -{1}c {4} " : " ")+
-			(forcerate ? "-{1}r {3}" : ""),
-			/* 0 */ input,
-			/* 1 */ ffmpeg ? "a" : "" /* audio switch labels */,
-			/* 2 */ T[ffmpeg ? 8 : 9] /* program specific switches */,
-			/* 3 */ samplerate,
-			/* 4 */ stereo ? 2 : 1) + " -" + (ffmpeg ? 'f' : 't') + T[10];
-		enc.StartInfo.Arguments = "- \"" + output + T[11] + ((int)mode)+" -B"+bitrate.ToString();
+		dec.StartInfo.Arguments = string.Format(T[19]+
+			(FC ? T[20] : " ")+
+			(forcerate ? T[21] : ""),
+			/* 0 */ I,
+			/* 1 */ ff ? "a" : "" /* audio switch labels */,
+			/* 2 */ T[ff ? 8 : 9] /* program specific switches */,
+			/* 3 */ sr,
+			/* 4 */ S ? 2 : 1) + T[27] + (ff ? 'f' : 't') + T[10];
+		enc.StartInfo.Arguments = T[23] + O + T[11] + ((int)mode)+T[24]+br.ToString();
 		dec.StartInfo.RedirectStandardError =
 			enc.StartInfo.RedirectStandardError = !logging;
-		QueuedBlocks = new List<byte[]>();
+		QB = new List<byte[]>();
 		if (info)
 		{
 			// print process args
@@ -192,7 +177,7 @@ class Encoder
 				dec.StartInfo.FileName, dec.StartInfo.Arguments,
 				enc.StartInfo.FileName, enc.StartInfo.Arguments);
 			// Reading/writing %dkb per block, blocks processed:
-			Console.WriteLine(T[15] + (BlockSize >> 10).ToString() + T[16]);
+			Console.WriteLine(T[15] + (BS >> 10).ToString() + T[16]);
 		}
 		start_time = DateTime.Now;
 		dec.Start();
@@ -207,8 +192,9 @@ class Encoder
 			while (!done[0] || !done[1])
 			{
 				Console.Write(
-					"dec: "+(current_blocks[0]).ToString().PadLeft(6)+" / "+
-					"enc: "+(current_blocks[1]).ToString().PadLeft(6)+'\r');
+					T[22]
+						+(cb[0]).ToString().PadLeft(6)+'/'
+						+(cb[1]).ToString().PadLeft(6)+'\r');
 				Thread.Sleep(4);
 			}
 			Console.WriteLine();
@@ -220,29 +206,29 @@ class Encoder
 	{
 		Stop(true);
 	}
-	public void Stop(bool cancel)
+	public void Stop(bool C)
 	{
-		if (cancel)
+		if (C)
 			if (dt.ThreadState != System.Threading.ThreadState.Running &&
 				et.ThreadState != System.Threading.ThreadState.Running)
 				return;
-		this.cancel = cancel;
+		this.C = C;
 		dt.Join();
 		et.Join();
 		for (int i = 0; i < 1; i++)
-			if (exit_codes[i] != 0)
+			if (xc[i] != 0)
 				throw new Exception(T[i==1?5:6] + T[3] +
-					T[17] + exit_codes[i].ToString());
-		if (cancel)
+					T[17] + xc[i].ToString());
+		if (C)
 		{
 			if (!dec.HasExited)
 				dec.Kill();
 			if (!enc.HasExited)
 				enc.Kill();
-			this.cancel = false;
+			this.C = false;
 		}
 		encoding_time = DateTime.Now - start_time;
-		QueuedBlocks = null;
+		QB = null;
 		GC.Collect();
 	}
 	/*
@@ -266,17 +252,31 @@ class Encoder
 14: arguments %
 15: Reading/writing %
 16: kb per block, blocks processed:%
-17:  process returned with a non-zero error code: */
-	string[] T = Encoding.ASCII.GetString(Encoding.Unicode.GetBytes(
-		"挮㈱欸⹳灭┳潳⹸硥╥敨楬⹸硥╥潣敤╲搠湯╥湅䐥╥湉異⁴畡楤⁯慣湮瑯戠⁥潦湵⹤ⴥ楨敤扟湡"+
-		"敮⁲椭ⴥ㍖ⴠ洭汵楴琭牨慥敤╤眠癡ⴠ∥ⴠじⴠ㉕ⴠ煑極正ⴠㅁⴠ⁄䴭笥細㉻筽紳›㕻੽"+
-		"ほ筽紲㑻㩽笠紶笊紱㉻筽紳›㝻੽ㅻ筽紲㑻㩽笠紸攥數畣慴汢╥牡畧敭瑮⁳別慥楤杮"+
-		"眯楲楴杮┠扫瀠牥戠潬正‬汢捯獫瀠潲散獳摥┺瀠潲散獳爠瑥牵敮⁤楷桴愠渠湯稭牥⁯牥潲⁲潣敤›"
+17:  process returned with a non-zero error code: 
+18: Invalid argument: 
+19: {2} "{0}"
+20:  -{1}c {4} 
+21: -{1}r {3}
+22: d/e: 
+23: - "
+24:  -B
+25: ffmpeg.exe
+26: Aborting...
+27:  -
+28: PATH
+*/
+	static string[] T = Encoding.ASCII.GetString(Encoding.Unicode.GetBytes(
+		"挮㈱欸⹳灭┳潳⹸硥╥敨楬⹸硥╥潣敤╲搠湯╥湅䐥╥湉異⁴畡楤⁯慣湮瑯戠⁥潦湵⹤ⴥ楨敤扟湡" +
+		"敮⁲椭ⴥ㍖ⴠ洭汵楴琭牨慥敤╤眠癡ⴠ∥ⴠじⴠ㉕ⴠ煑極正ⴠㅁⴠ⁄䴭笥細㉻筽紳›㕻੽" +
+		"ほ筽紲㑻㩽笠紶笊紱㉻筽紳›㝻੽ㅻ筽紲㑻㩽笠紸攥數畣慴汢╥牡畧敭瑮⁳別慥楤杮" +
+		"眯楲楴杮┠扫瀠牥戠潬正‬汢捯獫瀠潲散獳摥┺瀠潲散獳爠瑥牵敮⁤楷桴愠渠湯稭牥⁯牥潲⁲潣敤" +
+		"›䤥癮污摩愠杲浵湥㩴┠㉻⁽笢細┢ⴠㅻ捽笠紴┠笭紱⁲㍻╽⽤㩥┠‭┢ⴠ╂晦灭来攮數䄥潢瑲湩⹧⸮‥┭䅐䡔"
 	)).Split('%');
-}
+	static string bin = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + '\\';
+	static string ffpath = where(T[25]);
 
-static class Program
-{
+	// PROGRAM
+
 	//http://csharptest.net/526/how-to-search-the-environments-path-for-an-exe-or-dll/index.html
 	/// <summary>
 	/// Expands environment variables and, if unqualified, locates the exe in the working directory
@@ -292,7 +292,7 @@ static class Program
 		{
 			if (Path.GetDirectoryName(e) == string.Empty)
 			{
-				foreach (string v in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';'))
+				foreach (string v in (Environment.GetEnvironmentVariable(T[28]) ?? "").Split(';'))
 				{
 					string p = v.Trim();
 					if (!string.IsNullOrEmpty(p) && File.Exists(p = Path.Combine(p, e)))
@@ -306,15 +306,15 @@ static class Program
 	}
 
 	// desperate
-	public static string RawString(string UTF16LE)
+	public static string RS(string _)
 	{
-		return Encoding.ASCII.GetString(Encoding.Unicode.GetBytes(UTF16LE));
+		return Encoding.ASCII.GetString(Encoding.Unicode.GetBytes(_));
 	}
 
-	public static void Main(string[] args)
+	public static int Main(string[] args)
 	{
 		//c128ks - Encode constant rate audio files from custom songs
-		Console.WriteLine(RawString("ㅣ㠲獫ⴠ䔠据摯⁥潣獮慴瑮爠瑡⁥畡楤⁯楦敬⁳牦浯挠獵潴⁭潳杮s"));
+		Console.WriteLine(RS("ㅣ㠲獫ⴠ䔠据摯⁥潣獮慴瑮爠瑡⁥畡楤⁯楦敬⁳牦浯挠獵潴⁭潳杮s"));
 		if (args.Length < 1)
 		{
 			Console.WriteLine(
@@ -335,7 +335,7 @@ will retain the parameter from the source audio
 
 press Ctrl-C to cancel conversion
 */
-				RawString(
+				RS(
 					"獵条㩥挠㈱欸⁳楛灮瑵⁝潛瑵異嵴嬠灯楴湯嵳ਫ汦条㩳 ⴠⁱ††††††‭楳敬据⁥牰捯獥敳ੳ†瀭††††††ⴠ瀠楲瑮"+
 					"洠牯⁥湩潦浲瑡潩⁮渨瑯挠浯慰楴汢⁥楷桴ⴠ⥱ ⴠ⁶††††††‭潣癮牥⁴獵湩⁧慶楲扡敬戠瑩慲整"+
 					" †††††††††用敳眠瑩⁨慣瑵潩⁮獡椠⁴楷汬戠敲歡猠敥楫杮椠⁮慧敭਩睳瑩档獥਺†挭嬠档湡敮獬⁝ⴠ"+
@@ -343,7 +343,7 @@ press Ctrl-C to cancel conversion
 					"ⴠ猠瑥琠牡敧⁴慳灭敬爠瑡੥椊⁦⁡睳瑩档愠潢敶椠湳琧攠瑮牥摥‬桴⁥畯灴瑵愠摵潩眊汩⁬"+
 					"敲慴湩琠敨瀠牡浡瑥牥映潲⁭桴⁥潳牵散愠摵潩ਊ牰獥⁳瑃汲䌭琠⁯慣据汥挠湯敶獲潩n")
 			);
-			return;
+			return 1;
 		}
 		Encoder e = new Encoder(args[0], args.Length >= 2 ? args[1] : null);
 		if (args.Length > 2)
@@ -357,7 +357,7 @@ press Ctrl-C to cancel conversion
 					if (args[i].Length != 2 ||
 						args[i][0] != '-')
 					{
-						throw new ArgumentException("Invalid argument: "+args[i]);
+						throw new ArgumentException(T[18] + args[i]);
 						//return;
 					}
 					char arg_name = args[i][1];
@@ -370,7 +370,7 @@ press Ctrl-C to cancel conversion
 							e.info = true;
 							break;
 						case 'v':
-							e.variable = true;
+							e.var = true;
 							break;
 						case 'c':
 						case 'b':
@@ -381,7 +381,7 @@ press Ctrl-C to cancel conversion
 							switch_name = arg_name;
 							break;
 						default:
-							throw new ArgumentException("Invalid argument: "+args[i]);
+							throw new ArgumentException(T[18] + args[i]);
 					}
 				}
 				else
@@ -391,18 +391,18 @@ press Ctrl-C to cancel conversion
 					switch (switch_name)
 					{
 						case 'c':
-							e.forcechannels = true;
-							e.mode = (e.stereo = (value != 1)) ? Encoder.Mode.Joint : Encoder.Mode.Mono;
+							e.FC = true;
+							e.mode = (byte)((e.S = (value != 1)) ? 1 : 3);
 							break;
 						case 'b':
-							e.bitrate = value;
+							e.br = Math.Min(Math.Max(value, (ushort)48), (ushort)320);
 							break;
 						case 'r':
 							e.forcerate = true;
-							e.samplerate = value;
+							e.sr = value;
 							break;
 						default:
-							throw new ArgumentException("Invalid argument: "+args[i]);
+							throw new ArgumentException(T[18]+args[i]);
 					}
 					flag = true;
 				}
@@ -411,12 +411,13 @@ press Ctrl-C to cancel conversion
 		Console.CancelKeyPress += (s, d) => {
 			if (d.SpecialKey != ConsoleSpecialKey.ControlC)
 				return;
-			Console.WriteLine("Aborting...");
+			Console.WriteLine(T[26]);
 			d.Cancel = true;
 			e.Stop();
 		};
 		e.Start();
 		Console.WriteLine(e.encoding_time);
+		return 0;
 	}
 }
 

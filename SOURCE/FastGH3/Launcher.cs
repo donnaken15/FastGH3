@@ -1351,11 +1351,14 @@ static partial class Launcher
 							}
 						}
 						Process addaud = new Process();
+#if STFSB
 						Process fsbbuild = new Process();
+#else
 						Process[] fsbbuild2 = new Process[3]; // 3 async encoders
 						Process fsbbuild3 = new Process(); // makefsb part
-						const bool MTFSB = true; // enable asynchronous audio track encoding
-												 //if (cacheEnabled)
+#endif
+						//const bool MTFSB = true; // enable asynchronous audio track encoding
+						//						 //if (cacheEnabled)
 						pbl = new short[3] { -1, -1, -1 };
 						float[] al = new float[3] { -1, -1, -1 };
 						killgame();
@@ -1431,87 +1434,80 @@ static partial class Launcher
 								vl("merge args: sox " + addaud.StartInfo.Arguments, FSBcolor);
 								audiostreams[0] = mt + string.Format(T[171], "song");
 								//fsbbuild.StartInfo.FileName += '2';
-								if (!MTFSB)
-								{
-									if (!addaud.HasExited)
-										addaud.WaitForExit();
-								}
+#if STFSB
+								if (!addaud.HasExited)
+									addaud.WaitForExit();
+#endif
 							}
 							vl(T[34], FSBcolor);
 							//vl("Creating encoder process...", FSBcolor);
-							if (!MTFSB)
+#if STFSB
+							fsbbuild = cmd(CMDpath, null);
+							fsbbuild.StartInfo.WorkingDirectory = mt;
+#else
+							Directory.CreateDirectory(mt + "fsbtmp");
+							File.Copy(blankmp3, mt + string.Format(T[171], "preview"), true);
+							string[] fsbnames = { "song", "guitar", "rhythm" };
+							for (int i = 0; i < fsbbuild2.Length; i++)
 							{
-								fsbbuild = cmd(CMDpath, null);
-								fsbbuild.StartInfo.WorkingDirectory = mt;
-							}
-							else
-							{
-								Directory.CreateDirectory(mt + "fsbtmp");
-								File.Copy(blankmp3, mt + string.Format(T[171], "preview"), true);
-								string[] fsbnames = { "song", "guitar", "rhythm" };
-								for (int i = 0; i < fsbbuild2.Length; i++)
+								string a_s = audiostreams[i];
+								if ((i != 0 && nj3t) || i > 0 || (i == 0 && !nj3t)) // wtf
 								{
-									string a_s = audiostreams[i];
-									if ((i != 0 && nj3t) || i > 0 || (i == 0 && !nj3t)) // wtf
-									{
-										al[i] = alen(a_s);
-										is_stereo[i] = ach(a_s) > 1;
-									}
-									fsbbuild2[i] = cmd((mt + "c128ks.exe"), a_s.Quotes() +
-											' ' + (mt + string.Format(T[171], fsbnames[i])).Quotes() + " -p");
-									fsbbuild2[i].StartInfo.WorkingDirectory = mt;
-									if (forcestereoopt)
-										is_stereo[i] = stereo;
-									ec(ref fsbbuild2[i], AB_param, true, AR_param, forcestereoopt, is_stereo[i], VBR);
-									vl("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments, FSBcolor);
+									al[i] = alen(a_s);
+									is_stereo[i] = ach(a_s) > 1;
 								}
-								fsbbuild3 = cmd(CMDpath, "/c " + ((mt + "fsbbuild.bat").Quotes()));
-								fsbbuild3.StartInfo.WorkingDirectory = mt;
+								fsbbuild2[i] = cmd((mt + "c128ks.exe"), a_s.Quotes() +
+										' ' + (mt + string.Format(T[171], fsbnames[i])).Quotes() + " -p");
+								fsbbuild2[i].StartInfo.WorkingDirectory = mt;
+								if (forcestereoopt)
+									is_stereo[i] = stereo;
+								ec(ref fsbbuild2[i], AB_param, true, AR_param, forcestereoopt, is_stereo[i], VBR);
+								vl("MP3 args: c128ks " + fsbbuild2[i].StartInfo.Arguments, FSBcolor);
 							}
-							vl((MTFSB ? "As" : "S") + T[35], FSBcolor);
+							fsbbuild3 = cmd(CMDpath, "/c " + ((mt + "fsbbuild.bat").Quotes()));
+							fsbbuild3.StartInfo.WorkingDirectory = mt;
+#endif
+							//vl((MTFSB ? "As" : "S") + T[35], FSBcolor);
 							vl(T[36], FSBcolor);
 							//v("ynchronous mode set\n", FSBcolor);
 							//vl("Starting FSB building...", FSBcolor);
 							if (!nj3t)
 								audioConv_start = time;
-							if (!MTFSB)
+#if STFSB
+							fsbbuild.StartInfo.WorkingDirectory = mt;
+							ec(ref fsbbuild, AB_param, true, AR_param, true, true, VBR);
+							fsbbuild.StartInfo.Arguments =
+								"/c " + ((mt + "fsbbuild.bat").Quotes() + ' ' +
+								audiostreams[0].Quotes() + ' ' +
+								audiostreams[1].Quotes() + ' ' +
+								audiostreams[2].Quotes() + ' ' +
+								(blankmp3).Quotes() + ' ' + fsb.Quotes()).Quotes();
+							vl("MP3 args: c128ks " + fsbbuild.StartInfo.Arguments, FSBcolor);
+							// random TODO i just thought: create a function
+							// based on string[] that converts it to a
+							// singular string for arguments and check spaces
+							fsbbuild.Start();
+							if (vb || wl)
 							{
-								fsbbuild.StartInfo.WorkingDirectory = mt;
-								ec(ref fsbbuild, AB_param, true, AR_param, true, true, VBR);
-								fsbbuild.StartInfo.Arguments =
-									"/c " + ((mt + "fsbbuild.bat").Quotes() + ' ' +
-									audiostreams[0].Quotes() + ' ' +
-									audiostreams[1].Quotes() + ' ' +
-									audiostreams[2].Quotes() + ' ' +
-									(blankmp3).Quotes() + ' ' + fsb.Quotes()).Quotes();
-								vl("MP3 args: c128ks " + fsbbuild.StartInfo.Arguments, FSBcolor);
-								// random TODO i just thought: create a function
-								// based on string[] that converts it to a
-								// singular string for arguments and check spaces
-								fsbbuild.Start();
-								if (vb || wl)
-								{
-									fsbbuild.BeginErrorReadLine();
-									fsbbuild.BeginOutputReadLine();
-								}
+								fsbbuild.BeginErrorReadLine();
+								fsbbuild.BeginOutputReadLine();
 							}
-							else
+#else
+							for (int i = 0; i < fsbbuild2.Length; i++)
 							{
-								for (int i = 0; i < fsbbuild2.Length; i++)
+								if (!nj3t || (nj3t && i != 0)) // weird
 								{
-									if (!nj3t || (nj3t && i != 0)) // weird
+									fsbbuild2[i].Start();
+									if (vb || wl)
 									{
-										fsbbuild2[i].Start();
-										if (vb || wl)
-										{
-											fsbbuild2[i].BeginErrorReadLine();
-											fsbbuild2[i].BeginOutputReadLine();
-										}
+										fsbbuild2[i].BeginErrorReadLine();
+										fsbbuild2[i].BeginOutputReadLine();
 									}
 								}
-								fsbbuild3.StartInfo.Arguments = "/c " + ((mt + "fsbbuildnoenc.bat").Quotes() + ' ' +
-									fsb.Quotes()).Quotes();
 							}
+							fsbbuild3.StartInfo.Arguments = "/c " + ((mt + "fsbbuildnoenc.bat").Quotes() + ' ' +
+								fsb.Quotes()).Quotes();
+#endif
 						}
 						else
 						{
@@ -1541,7 +1537,7 @@ static partial class Launcher
 								File.Copy(cf + audhash.ToString("X16"), fsb, true);
 							}
 						}
-						#endregion
+#endregion
 						killgame();
 						if (!chartCache)
 						{
@@ -1591,8 +1587,8 @@ static partial class Launcher
 							//vl("Creating QbFile using PakFormat", chartConvColor);
 							Stream newqb = new MemoryStream(qn);
 							QbFile mid = new QbFile(newqb, PF);
-							#region BUILD ENTIRE QB FILE
-							#region GUITAR VALUES
+#region BUILD ENTIRE QB FILE
+#region GUITAR VALUES
 
 							OffsetTransformer OT = new OffsetTransformer(chart);
 							string[] td = { "Easy", "Medium", "Hard", "Expert" };
@@ -1778,26 +1774,23 @@ static partial class Launcher
 							}
 							if (!atleast1track)
 							{
-								if (!MTFSB)
-								{
-									if (!fsbbuild.HasExited)
-										fsbbuild.Kill();
-								}
-								else
-								{
-									for (int i = 0; i < fsbbuild2.Length; i++)
-										try
-										{
-											if (!fsbbuild2[i].HasExited)
-												fsbbuild2[i].Kill();
-										}
-										catch { }
-									// doesn't work because killing this only kills the parent EXE and doesn't stop the script >:(
-									killEncoders();
-									exit();
-									MessageBox.Show("No guitar/rhythm tracks can be found. Exiting...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-									return 1;
-								}
+#if STFSB
+								if (!fsbbuild.HasExited)
+									fsbbuild.Kill();
+#else
+								for (int i = 0; i < fsbbuild2.Length; i++)
+									try
+									{
+										if (!fsbbuild2[i].HasExited)
+											fsbbuild2[i].Kill();
+									}
+									catch { }
+								// doesn't work because killing this only kills the parent EXE and doesn't stop the script >:(
+								killEncoders();
+								exit();
+								MessageBox.Show("No guitar/rhythm tracks can be found. Exiting...", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+								return 1;
+#endif
 							}
 							////vl("Adding note arrays to QB.", chartConvColor);
 							// use this for organized QBs ^
@@ -1892,7 +1885,7 @@ static partial class Launcher
 							}
 
 
-							#region END TIME
+#region END TIME
 							vl(T[49], chartConvColor);
 							//vl("Getting end time...", chartConvColor);
 							int et = 0;
@@ -1919,10 +1912,10 @@ static partial class Launcher
 							}
 							vl(T[52] + et, chartConvColor);
 							//vl("End time is " + et, chartConvColor);
-							#endregion
+#endregion
 
 
-							#region BOSS PROPS
+#region BOSS PROPS
 							vl(T[53], bossColor);
 							//vl("Reading boss props...");
 
@@ -2254,7 +2247,7 @@ static partial class Launcher
 									}
 								}
 							}
-							#endregion
+#endregion
 
 							vl(T[57], chartConvColor);
 							//vl("Creating powerup arrays...", chartConvColor);
@@ -2337,7 +2330,7 @@ static partial class Launcher
 								}
 								ii++;
 							}
-							#endregion
+#endregion
 
 							vl(T[58], chartConvColor);
 							//vl("Sorting scripts by time.", chartConvColor);
@@ -2347,7 +2340,7 @@ static partial class Launcher
 								return (c1.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0].CompareTo((c2.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0]);
 							});
 
-							#region FACE-OFF/BATTLE VALUES
+#region FACE-OFF/BATTLE VALUES
 							vl(T[59], chartConvColor);
 							//vl("Creating face-off sections...", chartConvColor);
 							QbItemBase fop1 = new QbItemArray(mid);
@@ -2447,8 +2440,8 @@ static partial class Launcher
 							mid.AddItem(abp2);
 							abp1.AddItem(abp1a);
 							abp2.AddItem(abp2a);
-							#endregion
-							#region MEASURE VALUES
+#endregion
+#region MEASURE VALUES
 							vl(T[60], chartConvColor);
 							//vl("Creating time signature arrays...", chartConvColor);
 							QbItemBase tsig = new QbItemArray(mid);
@@ -2529,11 +2522,11 @@ static partial class Launcher
 							//vl("Adding time signature arrays to QB...", chartConvColor);
 							mid.AddItem(bars_arr);
 							bars_arr.AddItem(bars);
-							#endregion
+#endregion
 							vl(T[63]);
 							//vl("Collecting garbage...");
 							GC.Collect();
-							#region MARKER VALUES
+#region MARKER VALUES
 							vl(T[64], chartConvColor);
 							//vl("Creating marker arrays...", chartConvColor);
 							QbItemArray sects = new QbItemArray(mid);
@@ -2582,8 +2575,8 @@ static partial class Launcher
 								mrk_str[i].AddItem(mrk_t[i]);
 								mrk_str[i].AddItem(mrk_n[i]);
 							}
-							#endregion
-							#region MISC VALUES
+#endregion
+#region MISC VALUES
 							//vl("Creating and adding other things...", chartConvColor);
 							//vl("Adding scripts array to QB.", chartConvColor);
 							mid.AddItem(scrs);
@@ -2645,8 +2638,8 @@ static partial class Launcher
 							File.WriteAllText(folder + "currentsong.txt",
 								FormatText(cfg(l, stf, "%a - %t"),
 								songParams));
-							#endregion
-							#endregion
+#endregion
+#endregion
 
 							if (isBoss || (hasCoopTracks[0] && hasCoopTracks[1]))
 								mid.AddItem(fastgh3_extra);
@@ -2801,7 +2794,7 @@ static partial class Launcher
 							File.Delete(paksongmid);
 							File.Delete(paksongchart);
 						}
-						#region COMPILE AUDIO TO FSB
+#region COMPILE AUDIO TO FSB
 						vl(T[74]);
 						//vl("Creating GH3 process...");
 						Process gh3 = new Process();
@@ -2811,110 +2804,107 @@ static partial class Launcher
 						unkillgame();
 						if (!audCache)
 						{
-							if (!MTFSB)
-							{
-								if (!fsbbuild.HasExited)
-								{
-									vl("Launching game early");
-									print(T[70], FSBcolor);
-									//print("Waiting for song encoding to finish.", FSBcolor);
-									fsbbuild.WaitForExit();
-									audioConv_end = time;
-									if (caching)
-									{
-										print(T[71], cacheColor);
-										//print("Writing audio to cache.", FSBcolor);
-										File.Copy(fsb, cf + audhash.ToString("X16"), true);
-										iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
-									}
-								}
-							}
-							else
+#if STFSB
+							if (!fsbbuild.HasExited)
 							{
 								vl("Launching game early");
 								print(T[70], FSBcolor);
-								string[] fsbnames = { "song", "guitar", "rhythm" };
-								try
-								{
-									Console.WriteLine("Encoding progress:");
-									for (int i = 0; i < 3; i++)
-									{
-										if (audiostreams[i].ToLower() == (blankmp3).ToLower())
-											continue;
-										pbl[i] = (short)(Console.CursorTop);
-										Console.WriteLine(fsbnames[i].PadRight(6) + ":   0% (" + ")".PadLeft(33)); // leet optimization
-									}
-									if (nj3t)
-										if (!addaud.HasExited)
-											print(T[72], FSBcolor);
-									// we're using CBR (for now) so don't have to worry about
-									// more inconsistent file sizes
-								}
-								catch
-								{
-									/*
-									<8.359>Waiting for song encoding to finish.
-									<8.359>ERROR! :(
-									<8.362>System.IO.IOException: The handle is invalid.
-										at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
-										at System.Console.GetBufferInfo(Boolean throwOnNoConsole, Boolean& succeeded)
-										at System.Console.get_CursorTop()
-										at Program.Main(String[] args)
-									*/
-									// how does this happen
-									// besides for maybe small buffer
-									// or something launching this
-									// without a console window
-									// in which case, how do i know
-									// if there is
-									print("Failed to create encoding progress bars.");
-									pbl[0] = -1;
-									pbl[1] = -1;
-									pbl[2] = -1;
-								}
-								bool[] locks = { false, false, false };
-								while (!locks[0] || !locks[1] || !locks[2])
-								{
-									// this whole part made out of
-									// sox not immediately flushing text
-									// as it's printing it
-									System.Threading.Thread.Sleep(50);
-									for (int i = 0; i < 3; i++)
-										if (!locks[i])
-											if (File.Exists(mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3"))
-												pb(new FileInfo(mt + "fsbtmp\\fastgh3_" +
-													fsbnames[i] + ".mp3").Length / 1000 / (al[i] * (AB_param >> (is_stereo[i] ? 1 : 2))), i);
-									for (int i = 0; i < fsbbuild2.Length; i++)
-										if (!nj3t || (nj3t && i != 0))
-											if (!locks[i])
-												if (fsbbuild2[i].HasExited)
-													locks[i] = true;
-									if (nj3t && !locks[0])
-										if (addaud.HasExited)
-											locks[0] = true;
-								}
+								//print("Waiting for song encoding to finish.", FSBcolor);
+								fsbbuild.WaitForExit();
 								audioConv_end = time;
-								fsbbuild3.Start();
-								if (vb | wl)
+								if (caching)
 								{
-									fsbbuild3.BeginErrorReadLine();
-									fsbbuild3.BeginOutputReadLine();
-								}
-								if (!fsbbuild3.HasExited)
-									fsbbuild3.WaitForExit();
-								{
-									if (caching)
-									{
-										print(T[71], cacheColor);
-										//print("Writing audio to cache.", cacheColor);
-										File.Copy(fsb, cf + audhash.ToString("X16"), true);
-										iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
-									}
+									print(T[71], cacheColor);
+									//print("Writing audio to cache.", FSBcolor);
+									File.Copy(fsb, cf + audhash.ToString("X16"), true);
+									iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
 								}
 							}
+#else
+							vl("Launching game early");
+							print(T[70], FSBcolor);
+							string[] fsbnames = { "song", "guitar", "rhythm" };
+							try
+							{
+								Console.WriteLine("Encoding progress:");
+								for (int i = 0; i < 3; i++)
+								{
+									if (audiostreams[i].ToLower() == (blankmp3).ToLower())
+										continue;
+									pbl[i] = (short)(Console.CursorTop);
+									Console.WriteLine(fsbnames[i].PadRight(6) + ":   0% (" + ")".PadLeft(33)); // leet optimization
+								}
+								if (nj3t)
+									if (!addaud.HasExited)
+										print(T[72], FSBcolor);
+								// we're using CBR (for now) so don't have to worry about
+								// more inconsistent file sizes
+							}
+							catch
+							{
+								/*
+								<8.359>Waiting for song encoding to finish.
+								<8.359>ERROR! :(
+								<8.362>System.IO.IOException: The handle is invalid.
+									at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+									at System.Console.GetBufferInfo(Boolean throwOnNoConsole, Boolean& succeeded)
+									at System.Console.get_CursorTop()
+									at Program.Main(String[] args)
+								*/
+								// how does this happen
+								// besides for maybe small buffer
+								// or something launching this
+								// without a console window
+								// in which case, how do i know
+								// if there is
+								print("Failed to create encoding progress bars.");
+								pbl[0] = -1;
+								pbl[1] = -1;
+								pbl[2] = -1;
+							}
+							bool[] locks = { false, false, false };
+							while (!locks[0] || !locks[1] || !locks[2])
+							{
+								// this whole part made out of
+								// sox not immediately flushing text
+								// as it's printing it
+								System.Threading.Thread.Sleep(50);
+								for (int i = 0; i < 3; i++)
+									if (!locks[i])
+										if (File.Exists(mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3"))
+											pb(new FileInfo(mt + "fsbtmp\\fastgh3_" +
+												fsbnames[i] + ".mp3").Length / 1000 / (al[i] * (AB_param >> (is_stereo[i] ? 1 : 2))), i);
+								for (int i = 0; i < fsbbuild2.Length; i++)
+									if (!nj3t || (nj3t && i != 0))
+										if (!locks[i])
+											if (fsbbuild2[i].HasExited)
+												locks[i] = true;
+								if (nj3t && !locks[0])
+									if (addaud.HasExited)
+										locks[0] = true;
+							}
+							audioConv_end = time;
+							fsbbuild3.Start();
+							if (vb | wl)
+							{
+								fsbbuild3.BeginErrorReadLine();
+								fsbbuild3.BeginOutputReadLine();
+							}
+							if (!fsbbuild3.HasExited)
+								fsbbuild3.WaitForExit();
+							{
+								if (caching)
+								{
+									print(T[71], cacheColor);
+									//print("Writing audio to cache.", cacheColor);
+									File.Copy(fsb, cf + audhash.ToString("X16"), true);
+									iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
+								}
+							}
+#endif
 						}
 						cfgW("Temp", "LoadingLock", 0);
-						#endregion
+#endregion
 						string test = Path.GetFileNameWithoutExtension(args[0])+".bik";
 						if (File.Exists(test))
 							cSV(test);
@@ -2976,8 +2966,8 @@ static partial class Launcher
 							Console.ReadKey();
 						}
 					}
-					#endregion
-					#region FSP EXTRACT
+#endregion
+#region FSP EXTRACT
 					else if ((ext == ".fsp" || ext == ".zip" ||
 						ext == ".7z" || ext == ".rar") || ext == ".sng")
 					{
@@ -3052,8 +3042,7 @@ static partial class Launcher
 									killgame();
 									multichartcheck.Add(f);
 									selectedtorun = f;
-								} // should this be run after detecting a PAK
-								  // though then the multichart routine will run regardless
+								}
 								if (f.EndsWith(".fsb") ||
 									f.EndsWith(".fsb.xen") ||
 									f.EndsWith(".fsb.ps3"))
@@ -3418,8 +3407,8 @@ static partial class Launcher
 						}
 						killtmpf(selectedtorun);
 					}
-					#endregion
-					#region PRECOMPILED PAK
+#endregion
+#region PRECOMPILED PAK
 					else if ((ext == (".pak") ||
 						args[0].ToLower().EndsWith(".pak.xen") ||
 						//ext == (".pak.ngc") ||
@@ -3563,6 +3552,7 @@ static partial class Launcher
 									else if (File.Exists(source_fsb + ".ps3"))
 										source_fsb += ".ps3";
 								}
+								// uhhhh, forgot the code for encoding non-FSB isn't here
 								if (!File.Exists(source_fsb))
 								{
 									DialogResult audiolost, playsilent = DialogResult.No, searchaudioresult = DialogResult.Cancel;
@@ -3572,7 +3562,7 @@ static partial class Launcher
 										CheckFileExists = true,
 										CheckPathExists = true,
 										InitialDirectory = Path.GetDirectoryName(args[0]),
-										Filter = T[167]
+										Filter = "FMOD Sound Bank|*.fsb;*.fsb.xen;*.fsb.ps3"
 									};
 									do
 									{
@@ -3764,7 +3754,7 @@ static partial class Launcher
 							}
 						}
 					}
-					#endregion
+#endregion
 				}
 				else
 				{
