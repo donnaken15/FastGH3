@@ -59,7 +59,7 @@ script script_postcallback_script
 			getsongtime
 			FormatText textname = text "GPU Time; %s; %m" s = <songtime> m = <milliseconds> DontAssertForChecksums
 			TextOutput text = <text>
-		endif*/
+		endif*///
 	endif
 endscript
 

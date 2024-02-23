@@ -291,7 +291,7 @@ script create_options_menu
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> dims = (170.0, 35.0) Pos = (480.0, 560.0)
 	endif
-	displaySprite \{parent = om_container tex = tape_h_03 Pos = (420.0, 590.0) Scale = 0.5 z = 20}
+	/*displaySprite \{parent = om_container tex = tape_h_03 Pos = (420.0, 590.0) Scale = 0.5 z = 20}
 	displaySprite {
 		parent = <id>
 		tex = tape_h_03
@@ -314,8 +314,8 @@ script create_options_menu
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 19
-	}
-	displaySprite \{parent = om_container tex = Venue_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
+	}*///
+	//displaySprite \{parent = om_container tex = Venue_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
 	Change \{menu_options_current_index = 1}
 	LaunchEvent \{Type = focus target = om_text_1}
 	Change \{user_control_pill_text_color = [0 0 0 255]}

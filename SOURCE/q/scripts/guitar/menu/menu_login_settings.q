@@ -83,7 +83,7 @@ script create_login_settings_menu
 	}
 	GetScreenElementDims id = <id>
 	fit_text_in_rectangle id = <id> dims = ((240.0, 0.0) + (0.0, 1.0) * <height>)Pos = (650.0, 600.0) only_if_larger_x = 1
-	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = tape_h_02 Pos = (480.0, 90.0) z_priority = 20 dims = (128.0, 64.0) flip_h flip_v}
+	/*CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = tape_h_02 Pos = (480.0, 90.0) z_priority = 20 dims = (128.0, 64.0) flip_h flip_v}
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <id>
@@ -112,8 +112,8 @@ script create_login_settings_menu
 		rgba = [0 0 0 128]
 		just = [left top]
 		z_priority = 19
-	}
-	CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = Venue_Overlay Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0) z_priority = 99 rgba = [255 255 255 255]}
+	}*///
+	//CreateScreenElement \{Type = SpriteElement parent = login_settings_container texture = Venue_Overlay Pos = (640.0, 360.0) just = [center center] dims = (1280.0, 720.0) z_priority = 99 rgba = [255 255 255 255]}
 	Change \{user_control_pill_text_color = [0 0 0 255]}
 	Change \{user_control_pill_color = [180 180 180 255]}
 	common_control_helpers \{select back nav}

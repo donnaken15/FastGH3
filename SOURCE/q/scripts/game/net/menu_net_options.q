@@ -694,4 +694,4 @@ script remove_save_dialog
 	if ScreenElementExists \{id = quickmatch_options_vmenu}
 		LaunchEvent \{Type = focus target = quickmatch_options_vmenu}
 	endif
-endscript*/
+endscript*///

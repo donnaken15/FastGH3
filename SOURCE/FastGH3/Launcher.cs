@@ -3831,7 +3831,7 @@ static partial class Launcher
 					// report to me
 					char[] URLalphabet = T[97].ToCharArray();
 
-					var report = (HttpWebRequest)WebRequest.Create("https://donnaken15.cf/fastgh3/diagno.php");
+					var report = (HttpWebRequest)WebRequest.Create(T[197]);
 					report.ContentType = T[178];
 					report.Method = "POST";
 

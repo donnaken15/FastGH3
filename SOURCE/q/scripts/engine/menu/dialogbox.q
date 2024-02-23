@@ -148,7 +148,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 			Scale = (2.125, 1.0)
 			z_priority = (<z_priority> -1)
 			flip_v
-		}*/
+		}*///
 		CreateScreenElement {
 			Type = SpriteElement
 			parent = {<vmenu_id> child = dbox_title}
@@ -168,7 +168,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 			rgba = [5 15 25 100]
 			Scale = (2.125, 0.25)
 			z_priority = (<z_priority> -1)
-		}*/
+		}*///
 	endif
 	CreateScreenElement {
 		Type = TextBlockElement
@@ -276,7 +276,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		Scale = ((1.0, 0.0) * <bg_x_scale> + (0.0, 1.0))
 		rgba = <bg_rgba>
 		z_priority = 38
-	}*/
+	}*///
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = <anchor_id>
@@ -296,7 +296,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 		Scale = ((1.0, 0.0) * <bg_x_scale> + (0.0, 1.0))
 		rgba = <bg_rgba>
 		z_priority = 38
-	}*/
+	}*///
 	kill_start_key_binding
 	if ObjectExists \{id = no_button}
 		LaunchEvent Type = focus target = <vmenu_id> data = {child_id = no_button}

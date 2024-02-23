@@ -220,7 +220,7 @@ script practice_start_song\{device_num = 0}
 		menu_audio_settings_update_band_volume \{vol = 7}
 	else
 		menu_audio_settings_update_band_volume \{vol = 0}
-	endif*/
+	endif*///
 	//SetSoundBussParams \{Crowd = {vol = -100.0}}
 	spawnscriptnow \{practice_update}
 	practice_restore_select_key_binding
@@ -240,7 +240,7 @@ script practice_restart_song
 		menu_audio_settings_update_band_volume \{vol = 7}
 	else
 		menu_audio_settings_update_band_volume \{vol = 0}
-	endif*/
+	endif*///
 	//SetSoundBussParams \{Crowd = {vol = -100.0}}
 	spawnscriptnow \{practice_select_wait}
 	spawnscriptnow \{practice_update}
@@ -309,7 +309,7 @@ script practice_instarestart
 		device_num = <device_num>
 		uselaststarttime
 		//nointro
-	}*/
+	}*///
 	practice_restart_song
 endscript
 

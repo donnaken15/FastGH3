@@ -10,10 +10,10 @@ script create_alert_popup
 	CreateScreenElement \{Type = SpriteElement parent = ap_popup_container texture = venue_bg Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 1000}
 	displaySprite \{parent = ap_popup_container tex = autosave_poster Pos = (0.0, 50.0) dims = (1240.0, 620.0) z = 1004}
 	CreateScreenElement \{Type = SpriteElement parent = ap_popup_container id = autosave_light_overlay texture = menu_venue_overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 1099}
-	displaySprite \{parent = ap_popup_container tex = tape_h_03 Pos = (210.0, 74.0) dims = (180.0, 80.0) z = 1005}
-	displaySprite \{parent = ap_popup_container tex = tape_h_03 rgba = [0 0 0 128] Pos = (208.0, 77.0) dims = (180.0, 80.0) z = 1005}
-	displaySprite \{parent = ap_popup_container tex = tape_h_04 Pos = (760.0, 44.0) dims = (180.0, 80.0) z = 1005}
-	displaySprite \{parent = ap_popup_container tex = tape_h_04 rgba = [0 0 0 128] Pos = (762.0, 47.0) dims = (180.0, 80.0) z = 1005}
+	//displaySprite \{parent = ap_popup_container tex = tape_h_03 Pos = (210.0, 74.0) dims = (180.0, 80.0) z = 1005}
+	//displaySprite \{parent = ap_popup_container tex = tape_h_03 rgba = [0 0 0 128] Pos = (208.0, 77.0) dims = (180.0, 80.0) z = 1005}
+	//displaySprite \{parent = ap_popup_container tex = tape_h_04 Pos = (760.0, 44.0) dims = (180.0, 80.0) z = 1005}
+	//displaySprite \{parent = ap_popup_container tex = tape_h_04 rgba = [0 0 0 128] Pos = (762.0, 47.0) dims = (180.0, 80.0) z = 1005}
 	if GotParam \{alert}
 		<alert_text> = <alert>
 	else

@@ -54,7 +54,7 @@ endscript
 
 script change_level
 	script_assert \{"This is now gone..."}
-endscript*/
+endscript*///
 
 script KillElement3d
 	wait \{1 gameframe}
@@ -228,4 +228,4 @@ script Zones_PakMan_DeInit
 	DestroyZoneEntities zone_name = <zone_name> zone_string_name = <zone_string_name>
 	UpdatePakManVisibility \{map = zones}
 	printf \{"Zones_PakMan_DeInit end"}
-endscript*/
+endscript*///

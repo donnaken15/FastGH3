@@ -176,10 +176,10 @@ script winport_create_gfx_settings_menu
 	displaySprite \{parent = screen_container tex = graphics_options_poster_part2 Pos = (640.0, 360.0) Scale = (1.600000023841858, 1.7000000476837158) just = [center center] z = 2 rot_angle = 2}
 	displaySprite \{parent = screen_container tex = graphics_options_poster_part3 Pos = (640.0, 360.0) Scale = (1.600000023841858, 1.7000000476837158) just = [center center] z = 3 rot_angle = 2}
 	CreateScreenElement \{Type = TextElement parent = screen_container text = "GRAPHICS" Pos = (837.0, 180.0) Scale = (1.7999999523162842, 1.6800000667572021) just = [center center] rgba = [50 0 0 255] font = #"0x42c721dd" z_priority = 10 rot_angle = 6 Shadow shadow_rgba = [160 130 105 255] shadow_offs = (-3.0, 3.0)}
-	displaySprite \{parent = screen_container tex = Tape_V_01 Pos = (1070.0, 330.0) dims = (96.0, 192.0) z = 5 rot_angle = 190}
-	displaySprite \{parent = screen_container tex = Tape_V_01 rgba = [0 0 0 128] Pos = (1067.0, 333.0) dims = (96.0, 192.0) z = 5 rot_angle = 190}
-	displaySprite \{parent = screen_container tex = tape_H_02 Pos = (190.0, 475.0) dims = (127.0, 64.0) z = 5 rot_angle = -4}
-	displaySprite \{parent = screen_container tex = tape_H_02 rgba = [0 0 0 128] Pos = (187.0, 478.0) dims = (127.0, 64.0) z = 5 rot_angle = -4}
+	//displaySprite \{parent = screen_container tex = Tape_V_01 Pos = (1070.0, 330.0) dims = (96.0, 192.0) z = 5 rot_angle = 190}
+	//displaySprite \{parent = screen_container tex = Tape_V_01 rgba = [0 0 0 128] Pos = (1067.0, 333.0) dims = (96.0, 192.0) z = 5 rot_angle = 190}
+	//displaySprite \{parent = screen_container tex = tape_H_02 Pos = (190.0, 475.0) dims = (127.0, 64.0) z = 5 rot_angle = -4}
+	//displaySprite \{parent = screen_container tex = tape_H_02 rgba = [0 0 0 128] Pos = (187.0, 478.0) dims = (127.0, 64.0) z = 5 rot_angle = -4}
 	CreateScreenElement {
 		Type = VMenu
 		id = menu

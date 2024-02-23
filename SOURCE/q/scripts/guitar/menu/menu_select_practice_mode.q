@@ -15,7 +15,7 @@ script create_select_practice_mode_menu
 	//displaySprite \{texture = practice_poster_2 id = spm_poster parent = spm_container Pos = (640.0, 340.0) dims = (600.0, 600.0) rot_angle = -5 just = [center center]}
 	displaySprite \{tex = practice_typebar_1 parent = spm_container Pos = (710.0, 240.0) dims = (192.0, 75.0) rot_angle = -5 just = [center center] rgba = [0 0 0 255] z = 5}
 	displaySprite \{tex = practice_typebar_2 parent = spm_container Pos = (555.0, 320.0) dims = (220.0, 75.0) rot_angle = -5 just = [center center] rgba = [0 0 0 255] z = 5}
-	displaySprite \{tex = tape_h_02 parent = spm_container Pos = (775.0, 60.0) dims = (160.0, 64.0) rot_angle = -20 just = [center center] z = 7}
+	/*displaySprite \{tex = tape_h_02 parent = spm_container Pos = (775.0, 60.0) dims = (160.0, 64.0) rot_angle = -20 just = [center center] z = 7}
 	displaySprite {
 		tex = tape_h_02
 		parent = <id>
@@ -38,7 +38,7 @@ script create_select_practice_mode_menu
 		Pos = (-5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 6
-	}
+	}*///
 	if ($is_demo_mode = 1)
 		demo_mode_disable = {rgba = [80 80 80 255] not_focusable}
 	else

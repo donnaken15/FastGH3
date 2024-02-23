@@ -20,8 +20,9 @@ call mcs -target:exe -g -nostdlib- -optimize+ ^
 :: 275kb
 ::del "P\%RES%"
 
-set "ILMRG=C:\Program Files\PackageManagement\NuGet\Packages\ilmerge.3.0.41\tools\net452\ILMerge.exe"
-"%ILMRG%" "%OUT%" "..\DotNetZip\Zip Reduced\bin\Release\Ionic.Zip.Reduced.dll" /out:"tmp.exe" && del "%OUT%" && move "tmp.exe" "%OUT%"
+::set "ILMRG=C:\Program Files\PackageManagement\NuGet\Packages\ilmerge.3.0.41\tools\net452\ILMerge.exe"
+::"%ILMRG%" "%OUT%" "..\DotNetZip\Zip Reduced\bin\Release\Ionic.Zip.Reduced.dll" /out:"tmp.exe" && del "%OUT%" && move "tmp.exe" "%OUT%"
+copy "..\DotNetZip\Zip Reduced\bin\Release\Ionic.Zip.Reduced.dll" ..\..\ /y
 
 ::set "ILSTR=E:\WZKRice\tools\src\MiniSCT\bin\Release\BrokenEvent.ILStrip.CLI.exe"
 ::"%ILSTR%" -u "%OUT%" "%OUT%"
@@ -36,4 +37,3 @@ popd
 :: unreachable code or compilation based on const values or something
 ::Queenbee\Qb\Script\*.cs
 ::-resource:"P\%RES%" -re "%RES%"
-popd

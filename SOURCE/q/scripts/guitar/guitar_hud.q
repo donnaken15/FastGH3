@@ -168,7 +168,7 @@ script setup_hud
 			]
 			rgba = $BGCol
 			zoff = -2147483648
-		}*/
+		}*///
 		ExtendCrc HUD_2D_Container <player_text> out = new_2d_container
 		CreateScreenElement {
 			type = spriteelement

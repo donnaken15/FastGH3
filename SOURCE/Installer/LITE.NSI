@@ -33,7 +33,7 @@ Function .onInit
 			Sleep 2000
 			${FindProcess} "game.exe" $0
 		${LoopWhile} $0 <> 0
-		MessageBox MB_OK "Thanks for playing! Unlock more potential by simply installing this (from https://donnaken15.cf/FastGH3), which will make replaying songs way faster, allow you to save your settings, directly download and instantly play songs from URLs, and gain easy access to more features!"
+		MessageBox MB_OK "Thanks for playing! Unlock more potential by simply installing this (from https://donnaken15.com/FastGH3), which will make replaying songs way faster, allow you to save your settings, directly download and instantly play songs from URLs, and gain easy access to more features!"
 		IfFileExists $EXEDIR\settings.ini 0 +2
 		CopyFiles $OUTDIR\settings.ini $EXEDIR
 	${EndIf}

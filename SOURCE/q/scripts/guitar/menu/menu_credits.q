@@ -307,7 +307,7 @@ script decompress_credits
 		{ emptyspace }
 		{ item = 'Project pages' heading }
 		{ item = 'Homepage' title }
-		{ item = 'https://donnaken15.cf/FastGH3' }
+		{ item = 'https://donnaken15.com/FastGH3' }
 		{ item = 'Repository' title }
 		{ item = 'https://github.com/donnaken15/FastGH3' }
 		{ item = 'Twitter' title }
@@ -315,7 +315,7 @@ script decompress_credits
 		{ emptyspace }
 		{ item = 'Developer links' heading }
 		{ item = 'Wesley' title }
-		{ item = 'https://donnaken15.cf/' }
+		{ item = 'https://donnaken15.com/' }
 		{ item = 'https://twitter.com/ptr__WESLEY' }
 		{ item = 'https://youtube.com/donnaken15' }
 		{ item = 'https://github.com/donnaken15' }
@@ -349,10 +349,10 @@ script decompress_credits
 		{ item = 'Released July 4, 2023' }
 		{ item = '13.0 MB / 9.0 MB' }
 		{ item = 'Check for more information at' }
-		{ item = 'https://donnaken15.cf/dev.html' }
+		{ item = 'https://donnaken15.com/FastGH3/dev.html' }
 		{ emptyspace }
 		{ item = 'Thank you for playing!!' heading }
-		{ item = 'Created 2017--2023' title }
+		{ item = 'Created 2017--2024' title }
 	]
 endscript
 Credits = []

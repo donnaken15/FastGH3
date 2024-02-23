@@ -94,7 +94,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 		z_priority = (<z> - 1)
 	}
 	<tape_offset> = (90.0, 325.0)
-	displaySprite {
+	/*displaySprite {
 		parent = winport_cl_container
 		tex = tape_v_01
 		Pos = ((755.0, 50.0) + <tape_offset>)
@@ -129,8 +129,8 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 		dims = (132.0, 64.0)
 		z = (<z> + 2)
 		rot_angle = 100
-	}
-	upper_helper = "Some computer hardware may cause audio and gameplay to fall out of sync.	If you have to play notes ahead of the music, try adding 20 ms to the value.  Subtract 20 ms if you have to play behind the music.\nFine tune the number from there based on your personal preferences."
+	}*///
+	upper_helper = "Some computer hardware may cause audio and gameplay to fall out of sync. If you have to play notes ahead of the music, try adding 20 ms to the value.  Subtract 20 ms if you have to play behind the music.\nFine tune the number from there based on your personal preferences."
 	CreateScreenElement {
 		Type = TextBlockElement
 		parent = winport_cl_container

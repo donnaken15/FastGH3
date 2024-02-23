@@ -115,10 +115,10 @@ script create_audio_settings_menu\{popup = 0}
 		set_focus_color \{rgba = [230 190 70 255]}
 		set_unfocus_color \{rgba = [150 150 150 255]}
 		displaySprite \{parent = aom_container tex = options_audio_poster Pos = (340.0, 40.0) dims = (672.0, 672.0)}
-		displaySprite \{parent = aom_container tex = tape_h_01 Pos = (360.0, 40.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
-		displaySprite \{parent = aom_container tex = tape_h_01 rgba = [0 0 0 128] Pos = (360.0, 48.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
-		displaySprite \{parent = aom_container tex = tape_v_01 Pos = (870.0, 550.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
-		displaySprite \{parent = aom_container tex = tape_v_01 rgba = [0 0 0 128] Pos = (875.0, 551.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
+		//displaySprite \{parent = aom_container tex = tape_h_01 Pos = (360.0, 40.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
+		//displaySprite \{parent = aom_container tex = tape_h_01 rgba = [0 0 0 128] Pos = (360.0, 48.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
+		//displaySprite \{parent = aom_container tex = tape_v_01 Pos = (870.0, 550.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
+		//displaySprite \{parent = aom_container tex = tape_v_01 rgba = [0 0 0 128] Pos = (875.0, 551.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
 		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 50.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
 		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 219.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
 		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 386.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9

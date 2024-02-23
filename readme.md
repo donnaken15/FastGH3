@@ -1,5 +1,5 @@
 
-# ![FastGH3](https://donnaken15.cf/fastgh3/assets/logo.svg)
+# ![FastGH3](https://donnaken15.com/fastgh3/assets/logo.svg)
 (or lesser known as FastGH3 Ain't Smaller Than Guitar Hero 3, for longer)
 
 <p>Play Guitar Hero better than ever before!<br>
@@ -7,12 +7,16 @@ Optimized and reworked for speed, portability, accessibility, and QOL.<br>
 The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer, so we bring you THIS!</p>
 
 ![version](https://img.shields.io/github/v/release/donnaken15/FastGH3)
-![mod size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.cf%2Ffastgh3%2F__final_size.php)
+![mod size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.com%2Ffastgh3%2F__final_size.php)
+<br>
 ![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.exe)
-<br>![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
+![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.zip)
+<br>
+![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
 ![commit activity](https://img.shields.io/github/commit-activity/m/donnaken15/FastGH3)
 ![launcher code size](https://img.shields.io/github/size/donnaken15/FastGH3/SOURCE/FastGH3/Launcher.cs?label=launcher%20code%20size)
-<br>![qb.pak size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/PAK/qb.pab.xen?label=qb.pak)
+<br>
+![qb.pak size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/PAK/qb.pab.xen?label=qb.pak)
 ![zone size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/ZONES/global.pab.xen?label=global.pak)
 ![update frequency](https://img.shields.io/badge/update%20frequency-2/year-blue)
 
@@ -25,9 +29,9 @@ PLAY NOW!
 * [Q Unpack (Experimental)](https://github.com/donnaken15/FastGH3/tree/unpak)
   * [Download](https://github.com/donnaken15/FastGH3/archive/refs/heads/unpak.zip)
 <br>![last commit](https://img.shields.io/github/last-commit/donnaken15/FastGH3/unpak)
-<br>![unpak size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.cf%2Ffastgh3%2F__final_size.php?unpak)
-* [Previous Releases + Changelog](https://donnaken15.cf/fastgh3/dev.html)
-* [Previous Dev Builds](https://donnaken15.cf/fastgh3/unstab.html)
+<br>![unpak size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.com%2Ffastgh3%2F__final_size.php?unpak)
+* [Previous Releases + Changelog](https://donnaken15.com/fastgh3/dev.html)
+* [Previous Dev Builds](https://donnaken15.com/fastgh3/unstab.html)
 
 [Features/Planned list](https://github.com/users/donnaken15/projects/3)
 
@@ -63,8 +67,8 @@ and then press any button on your keyboard or controller to play.
 * Open notes, taps (by ExileLord)
 * Overlapping starpower
 * Load charts stored in archive files (ZIP, RAR, 7Z)
-* Dynamically loadable QbScript mods (https://donnaken15.cf/fastgh3/mods.html)
-* Custom zones at https://donnaken15.cf/fastgh3/zones.html
+* Dynamically loadable QbScript mods (https://donnaken15.com/fastgh3/mods.html)
+* Custom zones at https://donnaken15.com/fastgh3/zones.html
 * GH3+ plugin system (by ExileLord)
 * Windowed mode (and borderless)
 * Toggleable VSync
@@ -72,7 +76,7 @@ and then press any button on your keyboard or controller to play.
 * Easy highway and zone swapping for ultimate personalization
 * Background images and videos
 * Easy chart downloads and instant play through fastgh3:// links
-* Play charts straight from chorus and Google Drive: https://donnaken15.cf/fastgh3/gdrive.html
+* Play charts straight from chorus and Google Drive: https://donnaken15.com/fastgh3/gdrive.html
 * Song caching (songs converted at least once are saved for later play)
 * Autoplay with automatic starpower activation, and automated battle attacks
 * A multitude of fixes, such as for:

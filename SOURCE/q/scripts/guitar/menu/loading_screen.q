@@ -10,11 +10,11 @@ script create_loading_strings
 		'\c4Fa\c2st\c5G\c3H\c63' 'FASTER!' 'BEATS POLYBIUS!' 'DANNY DID IT FIRST' 'TOBE DID IT FIRST'
 		'WHY IS IT STILL LOADING?!' '\c2A\c6m\c5a\c4z\c8i\c3n\c7g\c1!' 'harder, better, FASTER, stronger'
 		'NOT FAST ENOUGH!' 'GO!' 'SPEED' 'Follow @FastGH3 on Twitter for more updates.' '1.0 HOYP!!!'
-		'%VER%' 'NOW WITH CACHING!' 'donnaken15.cf/fastgh3' 'JURGEN IS HERE'
+		'%VER%' 'NOW WITH CACHING!' 'donnaken15.com/fastgh3' 'JURGEN IS HERE'
 		'IMPOSSIBLE!' 'fastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfast' 'fast'
 		'NO LONGER WREAKING HAVOK' 'PROGRAMMER SOX ARE LAME' 'PRAISE THE FOSSIL THAT IS HELIX' 'DIRECTLY CALLING OUT MY EX' 'ONE CLICK MAGIC!'
 		'you need more than debug\n- revup90' '\bf\bf\bc\bc\be\bd\be\bd\b2\b3\ba' 'subscribe for daily \b2ideos'
-		'Switch up the style and get yourself some c00l zonez by going to donnaken15.cf/fastgh3/zones.html'
+		'Switch up the style and get yourself some c00l zonez by going to donnaken15.com/fastgh3/zones.html'
 		'6 MEGABYTE ZONES' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:/windows/fastgh3' '\'\'the clone hero version of gh3\'\''
 		'RUNNING ON APOCALYPSE' 'start_gem_scroller()' 'SALUTE TO THE SUN!!' 'UNIVERSES FC, YES! @#!^ YEAH!!'
 		'Now you can DOWNLOAD CHARTS THROUGH THIS MOD?! WHY DIDN\'T ANYONE THINK OF THIS!?!'
@@ -34,7 +34,7 @@ script create_loading_strings
 		'these texts are my version of minecraft splash text at this point' // was going to just make this a comment but this also works :P
 		//
 		// lord squill quotes, just because
-		// https://donnaken15.cf/sunfish/wiki/index.php/Level:Lord_Squill
+		// https://donnaken15.com/sunfish/wiki/index.php/Level:Lord_Squill
 		'Do you think this game is funny?'
 		'This used to contain text from a game i decided i would never release.'
 		'i stayed up all night working on this mod'

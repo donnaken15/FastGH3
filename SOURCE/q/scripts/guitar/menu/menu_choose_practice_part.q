@@ -12,10 +12,10 @@ script create_choose_practice_part_menu
 	create_menu_backdrop \{texture = Venue_BG}
 	CreateScreenElement \{Type = SpriteElement parent = cpp_container texture = Venue_Overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
 	//displaySprite \{parent = cpp_container tex = #"0x148a9ced" Pos = (186.0, 15.0) dims = (672.0, 672.0) rot_angle = -2 z = 1}
-	displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (500.0, 650.0) z = 3 rot_angle = -12 flip_v}
-	displaySprite \{parent = cpp_container tex = Toprockers_Tape_1 Pos = (565.0, -95.0) z = 3 rot_angle = 80}
-	displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (500.0, -85.0) z = 3 rot_angle = 80}
-	displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (435.0, -75.0) z = 3 rot_angle = 78}
+	//displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (500.0, 650.0) z = 3 rot_angle = -12 flip_v}
+	//displaySprite \{parent = cpp_container tex = Toprockers_Tape_1 Pos = (565.0, -95.0) z = 3 rot_angle = 80}
+	//displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (500.0, -85.0) z = 3 rot_angle = 80}
+	//displaySprite \{parent = cpp_container tex = Toprockers_Tape_2 Pos = (435.0, -75.0) z = 3 rot_angle = 78}
 	CreateScreenElement {
 		Type = TextBlockElement
 		parent = cpp_container

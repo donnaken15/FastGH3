@@ -441,7 +441,7 @@ script disable_highway_prepass
 				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = FALSE}
 			endif
 		endif
-	endif*/
+	endif*///
 endscript
 
 script enable_highway_prepass
@@ -455,7 +455,7 @@ script enable_highway_prepass
 				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = true}
 			endif
 		endif
-	endif*/
+	endif*///
 endscript
 start_2d_move = 0
 
@@ -552,7 +552,7 @@ script disable_bg_viewport_properties
 	if PrepassViewportExists \{viewport = bg_viewport}
 		SetViewportProperties \{viewport = bg_viewport prepass = 0 Active = FALSE}
 		SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = FALSE}
-	endif*/
+	endif*///
 endscript
 
 script disable_highway
@@ -597,7 +597,7 @@ script enable_bg_viewport_properties
 		SetViewportProperties \{viewport = bg_viewport clear_depthstencilbuffer = true}
 		SetViewportProperties \{viewport = bg_viewport no_resolve_depthstencilbuffer = true}
 		SetViewportProperties \{viewport = bg_viewport no_resolve_colorbuffer = true}
-	endif*/
+	endif*///
 	TOD_Proxim_Update_LightFX_Viewport \{fxParam = $Default_TOD_Manager viewport = bg_viewport time = 0}
 endscript
 

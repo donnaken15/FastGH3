@@ -124,7 +124,7 @@ script net_np_ready_for_next_song\{Player = 1}
 		update_np_timer
 		drop_in_ready_sign Player = <Player>
 	endif
-endscript*/
+endscript*///
 
 script net_np_create_timer\{Player = 1}
 	timer_z = 3.0999999

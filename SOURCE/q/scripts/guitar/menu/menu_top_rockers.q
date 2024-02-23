@@ -98,8 +98,8 @@ script menu_top_rockers_create_paper
 		text = <song_diff_text>
 	}
 	fit_text_in_rectangle id = <id> dims = (380.0, 100.0) keep_ar = 1
-	displaySprite \{parent = tr_container tex = Toprockers_Tape_1 Pos = (500.0, -10.0) dims = (140.0, 70.0) z = 50}
-	displaySprite \{parent = tr_container tex = Toprockers_Tape_2 Pos = (280.0, 240.0) z = 50 rot_angle = 90 dims = (140.0, 70.0)}
+	//displaySprite \{parent = tr_container tex = Toprockers_Tape_1 Pos = (500.0, -10.0) dims = (140.0, 70.0) z = 50}
+	//displaySprite \{parent = tr_container tex = Toprockers_Tape_2 Pos = (280.0, 240.0) z = 50 rot_angle = 90 dims = (140.0, 70.0)}
 	column_x = 65
 	number_offset = (-55.0, 0.0)
 	current_y_position = (20.0, 80.0)

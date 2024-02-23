@@ -30,7 +30,7 @@ endscript
 script create_match_dialog_unfocus
 	LaunchEvent \{Type = unfocus target = server_list_create_match_dialog_vmenu}
 	LaunchEvent \{Type = focus target = search_results_vmenu}
-endscript*/
+endscript*///
 dots_array = [
 	" "
 	"."

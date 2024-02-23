@@ -77,7 +77,7 @@ script difficulty_setup
 					<hyperspeed_scale> = 0.73
 				case 5
 					<hyperspeed_scale> = 0.68
-			endswitch*/
+			endswitch*///
 			<hyperspeed_scale> = ($hyperspeed_scales[($Cheat_Hyperspeed + 12)])
 			//printf 'current hyperspeed index: %h, real value: %g' h = $Cheat_Hyperspeed g = <hyperspeed_scale>
 			if (<hyperspeed_scale> > 0)

@@ -69,7 +69,7 @@
 			event = Practice_Mode_Crash2
 		}
 	}
-]*/
+]*///
 
 script Practice_DummyFunction
 	printf \{"Practice_DummyFunction"}

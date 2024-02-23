@@ -42,27 +42,6 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 		rot_angle = -2
 		z = (<z> - 1)
 	}
-	if NOT (<popup>)
-		displaySprite {
-			parent = wbc_container
-			tex = Toprockers_Tape_1
-			Pos = (1010.0, 450.0)
-			dims = (192.0, 92.0)
-			z = (<z> + 1)
-			flip_v
-			rot_angle = 90
-		}
-		displaySprite {
-			parent = wbc_container
-			tex = Toprockers_Tape_2
-			Pos = (350.0, 200.0)
-			z = (<z> + 1)
-			rot_angle = 90
-			dims = (192.0, 92.0)
-			flip_v
-			flip_h
-		}
-	endif
 	text_block_scale = 0.65
 	text_block_type_scale = 0.8
 	text_block_1_pos = (630.0, 70.0)
@@ -71,14 +50,14 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	text_block_2_dims = (840.0, 100.0)
 	text_block_3_pos = (750.0, 195.0)
 	text_block_3_dims = (525.0, 300.0)
-	<text_1> = "Press  the	whammy	bar	 completely	 down, and	gently	allow  it  to  return  to  its	resting	 position."
+	<text_1> = "Press  the  whammy  bar   completely   down, and  gently  allow  it  to  return  to  its  resting   position."
 	button_color = "Green"
 	GetEnterButtonAssignment
 	if (<assignment> = Circle)
 		button_color = "Red"
 	endif
-	FormatText textname = text_2 "Press	 the  %a  Button  to  calibrate	 using	this  position." a = <button_color>
-	<text_3> = "Repeat	the	 process  until	 you  see  the	\c1''Resting  position	calibrated'' \c0message	 every	time  you  return  the	whammy	bar	 to	 its  resting  position."
+	FormatText textname = text_2 "Press  the  %a  Button  to  calibrate  using  this  position." a = <button_color>
+	<text_3> = "Repeat  the  process  until  you  see  the  \c1''Resting  position  calibrated'' \c0message  every  time  you  return  the  whammy  bar  to  its  resting  position."
 	CreateScreenElement {
 		Type = TextBlockElement
 		font = text_a3
@@ -208,22 +187,8 @@ script menu_whammy_bar_calibration_enter_sample
 		elseif (<rightx> = 1)
 			<rightx> = 0.9998999
 		endif
-		switch (<device_num>)
-			case 0
-				SetGlobalTags user_options params = {resting_whammy_position_device_0 = <rightx>}
-			case 1
-				SetGlobalTags user_options params = {resting_whammy_position_device_1 = <rightx>}
-			case 2
-				SetGlobalTags user_options params = {resting_whammy_position_device_2 = <rightx>}
-			case 3
-				SetGlobalTags user_options params = {resting_whammy_position_device_3 = <rightx>}
-			case 4
-				SetGlobalTags user_options params = {resting_whammy_position_device_4 = <rightx>}
-			case 5
-				SetGlobalTags user_options params = {resting_whammy_position_device_5 = <rightx>}
-			case 6
-				SetGlobalTags user_options params = {resting_whammy_position_device_6 = <rightx>}
-		endswitch
+		FormatText textname=key 'WhammyRest%d' d=<device_num>
+		FGH3Config sect='Misc' <key> set=<rightx>
 		if (<device_num> = $player1_status.controller)
 			get_resting_whammy_position controller = <device_num>
 			Change StructureName = player1_status resting_whammy_position = <resting_whammy_position>
@@ -413,20 +378,9 @@ script menu_star_power_trigger_enter_position
 		if (<righty> > 0)
 			<righty> = 0
 		endif
-		switch (<device_num>)
-			case 0
-				SetGlobalTags user_options params = {star_power_position_device_0 = <righty>}
-				SoundEvent \{event = POW_SFX}
-			case 1
-				SetGlobalTags user_options params = {star_power_position_device_1 = <righty>}
-				SoundEvent \{event = POW_SFX}
-			case 2
-				SetGlobalTags user_options params = {star_power_position_device_2 = <righty>}
-				SoundEvent \{event = POW_SFX}
-			case 3
-				SetGlobalTags user_options params = {star_power_position_device_3 = <righty>}
-				SoundEvent \{event = POW_SFX}
-		endswitch
+		FormatText textname=key 'TiltPos%d' d=<device_num>
+		FGH3Config sect='Misc' <key> set=<righty>
+		SoundEvent \{event = POW_SFX}
 		if (<device_num> = $player1_status.controller)
 			get_star_power_position controller = <device_num>
 			Change StructureName = player1_status star_tilt_threshold = <star_power_position>

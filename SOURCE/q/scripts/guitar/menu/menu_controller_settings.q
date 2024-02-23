@@ -163,14 +163,14 @@ script create_controller_settings_menu\{popup = 0}
 		CreateScreenElement \{Type = SpriteElement parent = cs_container id = cs_light_overlay texture = Venue_Overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
 		displaySprite \{parent = cs_container tex = Options_Controller_Poster Pos = (135.0, 30.0) dims = (640.0, 620.0) rot_angle = -1.5 z = 5}
 		displaySprite \{parent = cs_container tex = Options_Controller_Poster2 Pos = (525.0, 130.0) dims = (552.0, 266.0)}
-		displaySprite \{parent = cs_container tex = tape_H_03 Pos = (610.0, 0.0) dims = (120.0, 60.0) z = 6 rot_angle = 60}
-		displaySprite \{parent = cs_container tex = tape_H_03 rgba = [0 0 0 128] Pos = (608.0, 5.0) dims = (120.0, 60.0) z = 6 rot_angle = 60}
-		displaySprite \{parent = cs_container tex = tape_H_04 Pos = (760.0, 106.0) dims = (140.0, 65.0) z = 4}
-		displaySprite \{parent = cs_container tex = tape_H_04 rgba = [0 0 0 128] Pos = (763.0, 111.0) dims = (140.0, 65.0) z = 4}
-		displaySprite \{parent = cs_container tex = Tape_V_01 Pos = (250.0, 360.0) dims = (80.0, 142.0) z = 6 flip_v rot_angle = -10}
-		displaySprite \{parent = cs_container tex = Tape_V_01 rgba = [0 0 0 128] Pos = (255.0, 363.0) dims = (80.0, 142.0) z = 6 flip_v rot_angle = -10}
-		displaySprite \{parent = cs_container tex = tape_H_02 Pos = (1090.0, 300.0) dims = (112.0, 54.0) z = 4 rot_angle = -80}
-		displaySprite \{parent = cs_container tex = tape_H_02 rgba = [0 0 0 128] Pos = (1095.0, 305.0) dims = (112.0, 54.0) z = 4 rot_angle = -80}
+		//displaySprite \{parent = cs_container tex = tape_H_03 Pos = (610.0, 0.0) dims = (120.0, 60.0) z = 6 rot_angle = 60}
+		//displaySprite \{parent = cs_container tex = tape_H_03 rgba = [0 0 0 128] Pos = (608.0, 5.0) dims = (120.0, 60.0) z = 6 rot_angle = 60}
+		//displaySprite \{parent = cs_container tex = tape_H_04 Pos = (760.0, 106.0) dims = (140.0, 65.0) z = 4}
+		//displaySprite \{parent = cs_container tex = tape_H_04 rgba = [0 0 0 128] Pos = (763.0, 111.0) dims = (140.0, 65.0) z = 4}
+		//displaySprite \{parent = cs_container tex = Tape_V_01 Pos = (250.0, 360.0) dims = (80.0, 142.0) z = 6 flip_v rot_angle = -10}
+		//displaySprite \{parent = cs_container tex = Tape_V_01 rgba = [0 0 0 128] Pos = (255.0, 363.0) dims = (80.0, 142.0) z = 6 flip_v rot_angle = -10}
+		//displaySprite \{parent = cs_container tex = tape_H_02 Pos = (1090.0, 300.0) dims = (112.0, 54.0) z = 4 rot_angle = -80}
+		//displaySprite \{parent = cs_container tex = tape_H_02 rgba = [0 0 0 128] Pos = (1095.0, 305.0) dims = (112.0, 54.0) z = 4 rot_angle = -80}
 		CreateScreenElement {
 			Type = TextElement
 			id = cs_controller_text

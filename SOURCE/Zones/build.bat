@@ -1,4 +1,4 @@
-:: REQUIRES (AND USES CYGWIN) SH, Node, and Guitar Hero SDK
+:: REQUIRES (AND USES CYGWIN) SH, Node
 @echo off
 set "OKNOTOK=|| goto :fail"
 pushd "%~dp0"
@@ -26,7 +26,7 @@ mkdir scripts 2>nul
 zsh ../q/qcomp ./scripts ./!cache/scripts
 echo [95m######        compiling PAK        ######[0m
 del ..\..\data\zones\global.pak.xen 2>nul
-cmd /c ..\q\sdk createpak -zone global -out ..\..\data\zones\global.pak.xen -pab "!cache" >nul
+..\q\pakdir !cache ..\..\data\zones\global -z >nul
 echo [92mDone![0m
 if not exist "..\..\data\zones\global.pak.xen" ( echo [91mthe built global.pak cannot be found[0m & goto :fail )
 
@@ -39,7 +39,7 @@ pushd sounds
 mkdir zones zones\global_sfx 2>nul
 rename *.mp3 *.wav.xen
 echo [97m######        compiling PAK        ######[0m
-cmd /c ..\..\q\sdk createpak -zone global_sfx -out ..\..\..\DATA\ZONES\global_sfx.pak.xen . >nul
+..\q\pakdir . ..\..\..\DATA\ZONES\global_sfx >nul
 :: actual cringe
 rename *.wav.xen *.
 rename *.wav *.mp3
@@ -60,7 +60,7 @@ move default\*.img.xen "default\!cache" > nul
 echo [96m######     copying fonts (raw)     ######[0m
 copy default\*.fnt.xen "default\!cache" > nul
 echo [96m######        compiling PAK        ######[0m
-cmd /c ..\q\sdk createpak -out ..\..\DATA\ZONES\default.pak.xen "default\!cache" >nul
+..\q\pakdir "default\!cache" ..\..\DATA\ZONES\default >nul
 echo [92mDone![0m
 if not exist "..\..\data\zones\default.pak.xen" ( echo [91mthe built default.pak cannot be found[0m & goto :fail )
 

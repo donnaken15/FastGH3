@@ -398,43 +398,15 @@ script is_whammy_resting
 endscript
 
 script get_resting_whammy_position
-	GetGlobalTags \{user_options}
-	switch (<controller>)
-		case 0
-			return resting_whammy_position = <resting_whammy_position_device_0>
-		case 1
-			return resting_whammy_position = <resting_whammy_position_device_1>
-		case 2
-			return resting_whammy_position = <resting_whammy_position_device_2>
-		case 3
-			return resting_whammy_position = <resting_whammy_position_device_3>
-		case 4
-			return resting_whammy_position = <resting_whammy_position_device_4>
-		case 5
-			return resting_whammy_position = <resting_whammy_position_device_5>
-		case 6
-			return resting_whammy_position = <resting_whammy_position_device_6>
-	endswitch
+	FormatText textname=key 'WhammyRest%d' d=<controller>
+	FGH3Config sect='Misc' <key> #"0x1ca1ff20"=-0.76
+	return resting_whammy_position = <value>
 endscript
 
 script get_star_power_position
-	GetGlobalTags \{user_options}
-	switch (<controller>)
-		case 0
-			return star_power_position = <star_power_position_device_0>
-		case 1
-			return star_power_position = <star_power_position_device_1>
-		case 2
-			return star_power_position = <star_power_position_device_2>
-		case 3
-			return star_power_position = <star_power_position_device_3>
-		case 4
-			return star_power_position = <star_power_position_device_4>
-		case 5
-			return star_power_position = <star_power_position_device_5>
-		case 6
-			return star_power_position = <star_power_position_device_6>
-	endswitch
+	FormatText textname=key 'TiltPos%d' d=<controller>
+	FGH3Config sect='Misc' <key> #"0x1ca1ff20"=-0.76
+	return star_power_position = <value>
 endscript
 
 script dragonforce_hack_on

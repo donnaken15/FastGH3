@@ -272,9 +272,9 @@ class Program
 			latesttime = latesttime.AddSeconds(latestTimestamp).ToLocalTime();
 			Console.WriteLine("Build timestamp: " + buildtime.ToString());
 			Console.WriteLine("Got latest timestamp: " + latesttime.ToString());
-			devVers = JSON.Parse(fetcher.DownloadString("https://donnaken15.cf/fastgh3/devvers.json"));
-			buildList = JSON.Parse(fetcher.DownloadString("https://donnaken15.cf/fastgh3/vl.json"));
-			latestname = Encoding.UTF8.GetString(Convert.FromBase64String(fetcher.DownloadString("https://donnaken15.cf/fastgh3/v")));
+			devVers = JSON.Parse(fetcher.DownloadString("https://donnaken15.com/fastgh3/devvers.json"));
+			buildList = JSON.Parse(fetcher.DownloadString("https://donnaken15.com/fastgh3/vl.json"));
+			latestname = Encoding.UTF8.GetString(Convert.FromBase64String(fetcher.DownloadString("https://donnaken15.com/fastgh3/v")));
 			//latestVerTime = Convert.ToUInt32(Convert.FromBase64String(fetcher.DownloadString("https://raw.githubusercontent.com/donnaken15/FastGH3/main/DATA/MUSIC/TOOLS/v.bin")));
 		}
 		catch (Exception ex)

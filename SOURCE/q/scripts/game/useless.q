@@ -52,7 +52,7 @@ Default_Fast_Particle_LOD_Dist_Pair = (0.0, 0.0)/**///
 //lightshow_defaultblendtime = 0.15
 //lightshow_coloroverrideblend = 0.4
 //lightshow_offset_ms = 100
-/**/
+/**///
 script LS_AllOff
 	killspawnedscript \{id = LightShow}
 	WhyAmIBeingCalled

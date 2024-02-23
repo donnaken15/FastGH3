@@ -18,7 +18,7 @@ script create_tutorial_select_menu
 	displayText \{parent = ts_container Pos = (800.0, 560.0) just = [center center] text = "TUTORIALS" Scale = 1.5 rgba = [180 180 180 255] font = $video_settings_menu_font noshadow}
 	create_menu_backdrop \{texture = venue_bg}
 	displaySprite \{parent = ts_container tex = options_video_poster Pos = (640.0, 365.0) dims = (1024.0, 512.0) just = [center center] z = 1 font = $video_settings_menu_font}
-	displaySprite \{tex = tape_h_02 parent = ts_container Pos = (275.0, 120.0) dims = (160.0, 64.0) rot_angle = -40 just = [center center] z = 7}
+	/*displaySprite \{tex = tape_h_02 parent = ts_container Pos = (275.0, 120.0) dims = (160.0, 64.0) rot_angle = -40 just = [center center] z = 7}
 	displaySprite {
 		tex = tape_h_02
 		parent = <id>
@@ -33,7 +33,7 @@ script create_tutorial_select_menu
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 6
-	}
+	}*///
 	displaySprite \{parent = ts_container id = ts_hilite tex = white Pos = (285.0, 415.0) rgba = [185 190 200 255] dims = (305.0, 35.0) z = 2}
 	text_params = {parent = ts_vmenu Type = TextElement font = $video_settings_menu_font rgba = ($menu_unfocus_color)Scale = 0.75 z_priority = 3}
 	CreateScreenElement {

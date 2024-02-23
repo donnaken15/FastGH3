@@ -161,7 +161,7 @@ script net_battle_steal
 		battlemode_ready player_status = <player_status> battle_gem = <select> steal = 1
 	endif
 	Change StructureName = <other_player_status> stealing_powerup = ($<other_player_status>.stealing_powerup - 1)
-endscript*/
+endscript*///
 
 script animate_open_hand
 	FormatText checksumName = steal_hand_open_checksum 'steal_hand_open_%i_%p' i = ($<other_player_status>.stealing_powerup)p = ($<other_player_status>.Player)
@@ -511,4 +511,4 @@ script net_whammy_shake
 		endif
 		wait \{1 gameframe}
 	repeat
-endscript*/
+endscript*///

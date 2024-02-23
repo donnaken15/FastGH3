@@ -1,2 +1,3 @@
 Encode videos to Bink using:
 https://web.archive.org/web/20190108082810/http://www.radgametools.com/bnkdown.htm
+Leave "Compress audio" off when converting, unless the video's audio does not contain the song and has additional sounds instead
