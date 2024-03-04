@@ -309,26 +309,10 @@ namespace ChartEdit
 			}
 			chartData.Append("}\r\n");
 		}*/
-		
-		public int EighthResolution
-		{
-			get
-			{
-				return this.eRes;
-			}
-		}
 
 		public int[][] StarPowerTracks;
 		
 		public EventsSection Events { get; set; }
-		
-		public int HalfResolution
-		{
-			get
-			{
-				return this.hRes;
-			}
-		}
 		
 		public int LastIndex { get; set; }
 		
@@ -337,14 +321,6 @@ namespace ChartEdit
 		public string Name { get; set; }
 		
 		public NoteTracks NoteTracks { get; set; }
-		
-		public int QuarterResolution
-		{
-			get
-			{
-				return this.qRes;
-			}
-		}
 
 		public int Resolution
 		{
@@ -355,11 +331,35 @@ namespace ChartEdit
 			set
 			{
 				this.res = value;
-				this.hRes = value / 2;
+				/*this.hRes = value / 2;
 				this.qRes = value / 4;
 				this.eRes = value / 8;
 				this.sRes = value / 16;
-				this.tRes = value / 32;
+				this.tRes = value / 32;*/
+			}
+		}
+
+		/*public int EighthResolution
+		{
+			get
+			{
+				return this.eRes;
+			}
+		}
+
+		public int HalfResolution
+		{
+			get
+			{
+				return this.hRes;
+			}
+		}
+
+		public int QuarterResolution
+		{
+			get
+			{
+				return this.qRes;
 			}
 		}
 
@@ -371,12 +371,6 @@ namespace ChartEdit
 			}
 		}
 
-		public SongSection Song { get; set; }
-
-		public float SongLength { get; set; }
-
-		public SyncTrackSection SyncTrack { get; set; }
-
 		public int ThirtysecondResolution
 		{
 			get
@@ -385,7 +379,8 @@ namespace ChartEdit
 			}
 		}
 
-		private OffsetTransformer _ot;
+		// Token: 0x0400008F RID: 143
+		private int tRes;
 
 		private int eRes;
 
@@ -393,14 +388,19 @@ namespace ChartEdit
 
 		private int qRes;
 
+		private int sRes;*/
+
 		private int res;
 
-		private int sRes;
+		public SongSection Song { get; set; }
+
+		public float SongLength { get; set; }
+
+		public SyncTrackSection SyncTrack { get; set; }
+
+		private OffsetTransformer _ot;
 
 		// Token: 0x0400008E RID: 142
 		private static readonly Regex TrackRegex = new Regex("\\[(?<title>[a-zA-Z]+)\\]\\r?\\n\\{\\r?\\n(\\s+(?<entry>.+?)\\r?\\n)+\\}", RegexOptions.Multiline | RegexOptions.ExplicitCapture | RegexOptions.Compiled | RegexOptions.IgnorePatternWhitespace);
-
-		// Token: 0x0400008F RID: 143
-		private int tRes;
 	}
 }

@@ -12,8 +12,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-#pragma warning disable CS0162 // Unreachable code detected NO ONE CARES
-
 static partial class Launcher
 {
 	#region INI stuff
@@ -712,7 +710,7 @@ static partial class Launcher
 					{
 						if (File.Exists(args[1]) && File.Exists(args[2]))
 						{
-							string defaultscn = dataf + "zones\\__themes\\default.scn.xen";
+							string defaultscn = dataf + "zones\\default.scn.xen";
 							if (args[2].EndsWith(".pak.xen"))
 							{
 								PakFormat pf = new PakFormat(args[2], args[2].Replace(".pak.xen", ".pab.xen"), "", PakFormatType.PC);
@@ -3525,8 +3523,7 @@ static partial class Launcher
 							//songdata.Items[0].Clone();
 							if (!gotname)
 							{
-								setp.ShowDialog();
-								if (setp.DialogResult == DialogResult.OK)
+								if (setp.ShowDialog() == DialogResult.OK)
 								{
 									manual_test = true;
 									test_keys = new string[] { setp.inp };
@@ -3642,7 +3639,7 @@ static partial class Launcher
 								};
 								string songprefix = "_song";
 								//string notesuffix = "_notes";
-								int currentItem = 0;
+								//int currentItem = 0;
 
 								byte[] __ = new byte[0xB0];
 								Array.Copy(pn, 0, __, 0, pn.Length);

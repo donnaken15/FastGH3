@@ -96,3 +96,4 @@ PLUGINS/Logger.dll
 SOURCE/Zones/highway/__output.scn
 SOURCE/Zones/highway/__output.tex
 *.log.xz
+/THEMES/*/

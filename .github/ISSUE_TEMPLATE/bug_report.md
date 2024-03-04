@@ -25,8 +25,9 @@ Write what should happen.
 
 
 **Debugger information (Optional)**
+<details><summary>How to get debug info</summary>
 For crashing bugs in the game, this will be most useful. If you can, grab a debugger, like x64dbg or IDA, then run the game with it to find the error again, and write down the crashing address that can be found in the status bar of the debugger.
-For a more step by step tutorial on how to catch crashes, follow [this tutorial](https://ghwt.de/wiki/#/sdk/debuggingcrashes?id=debugging-crashes).
+For a more step by step tutorial on how to catch crashes, follow [this tutorial](https://ghwt.de/wiki/#/sdk/debuggingcrashes?id=debugging-crashes).</details>
 
 
 **Screenshots**
@@ -34,10 +35,17 @@ If applicable, add screenshots to help explain your problem.
 
 
 **When I downloaded this mod/what version I'm using (most likely required)**
+<details><summary>Things to note about old versions</summary>
 Old stuff you could be using with the mod like custom themes might break on newer versions and could be the result of the error.<br>
 Specify version number for downloaded release build, or date of downloaded development build (bleeding edge).<br>
-You can check settings dialog or date of files for this, particularly FastGH3.exe.<br>
+You can check settings dialog or date of files for this, particularly FastGH3.exe, or check the pause menu if this is not on a release build.<br></details>
 (i.e. 1.0-999010889 / July 4, 2023)
+
+
+**What branch of development does this happen on?**
+This can be checked from the pause menu. The branch name is read in blue text.<br>
+This is only viewable on most recent builds.
+(i.e. main, unpak)
 
 
 **Desktop (Optional, but could help figure out system specific problems):**

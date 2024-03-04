@@ -343,7 +343,7 @@ endscript
 	// I DON'T USE THE // FIX FOR IT
 
 // enabled on unpak for testing performance
-/*///
+/**///
 script ProfilingStart
 	//return
 	AddParams \{time = 0.0} // fallback if ProfileTime is not patched by FastGH3 plugin

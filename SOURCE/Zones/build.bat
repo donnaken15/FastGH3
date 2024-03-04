@@ -4,7 +4,7 @@ set "OKNOTOK=|| goto :fail"
 pushd "%~dp0"
 echo [97m^<^<^<^<^<^<         GLOBAL.PAK          ^>^>^>^>^>^>[0m
 ::echo [97m######   emptying output folder    ######[0m
-del "!cache\*" /S/Q > nul
+del "!cache\*" /S/Q >nul 2>nul
 rmdir !cache\zones\global !cache\zones !cache 2>nul
 echo [92m######   compile highway sprites   ######[0m
 pushd highway
@@ -26,7 +26,7 @@ mkdir scripts 2>nul
 zsh ../q/qcomp ./scripts ./!cache/scripts
 echo [95m######        compiling PAK        ######[0m
 del ..\..\data\zones\global.pak.xen 2>nul
-..\q\pakdir !cache ..\..\data\zones\global -z >nul
+..\q\pakdir !cache ..\..\data\zones\global -z
 echo [92mDone![0m
 if not exist "..\..\data\zones\global.pak.xen" ( echo [91mthe built global.pak cannot be found[0m & goto :fail )
 
@@ -39,7 +39,7 @@ pushd sounds
 mkdir zones zones\global_sfx 2>nul
 rename *.mp3 *.wav.xen
 echo [97m######        compiling PAK        ######[0m
-..\q\pakdir . ..\..\..\DATA\ZONES\global_sfx >nul
+..\..\q\pakdir . ..\..\..\DATA\ZONES\global_sfx
 :: actual cringe
 rename *.wav.xen *.
 rename *.wav *.mp3

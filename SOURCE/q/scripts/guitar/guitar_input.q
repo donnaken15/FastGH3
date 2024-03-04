@@ -114,7 +114,7 @@ script check_note_hold
 		wait \{1 gameframe}
 	repeat
 	if ($FC_MODE = 1)
-		Change StructureName = <player_status> current_health = 0.0000000000000000001
+		Change StructureName = <player_status> current_health = 0.000000000000001
 	endif
 	CheckNoteHoldEnd Player = <Player>
 	SetArrayElement ArrayName = currently_holding GlobalArray index = <index> NewValue = 0

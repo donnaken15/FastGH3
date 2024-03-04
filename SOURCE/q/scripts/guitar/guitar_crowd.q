@@ -54,8 +54,8 @@ script crowd_reset
 		if ($last_hscale = -1.0)
 			Change last_hscale = ($health_scale)
 		endif
-		Change \{health_scale = 0.00000000000000001}
-		Change StructureName = <player_status> current_health = 0.0000000000000000001
+		Change \{health_scale = 0.0000000001}
+		Change StructureName = <player_status> current_health = 0.000000000000001
 	else
 		if NOT ($last_hscale = -1.0)
 			Change health_scale = ($last_hscale)

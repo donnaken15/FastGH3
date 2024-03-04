@@ -304,7 +304,7 @@ script GuitarEvent_HitNotes
 		UpdateGuitarVolume
 	endif
 	if ($FC_MODE = 1)
-		Change StructureName = <player_status> current_health = 0.0000000000000000001
+		Change StructureName = <player_status> current_health = 0.000000000000001
 	endif
 	if (GotParam open)
 		Open_NoteFX Player = <Player> player_status = <player_status>

@@ -31,6 +31,8 @@ script create_loading_strings
 		'I\'M RUNNING OUT OF THINGS TO SAY!' 'YOU RESTARTED JUST TO SEE THIS MESSAGE!'
 		'HAX!' 'BOT!' 'FAAAKE!!' 'EPIC FAIL' 'WHAT ARE YOU DOING' 'WARNING: Requires x0.5 \b3 Presses'
 		'unCHARTed' '\c9INVISIBLE INK' 'are you actually reading these?' 'CHARTS ON DEMAND' 'FITS 5275 TIMES ON A FLASH DRIVE!'
+		'EVERY COPY OF FASTGH3 IS PERSONALIZED'
+		//'Dj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones'
 		'these texts are my version of minecraft splash text at this point' // was going to just make this a comment but this also works :P
 		//
 		// lord squill quotes, just because

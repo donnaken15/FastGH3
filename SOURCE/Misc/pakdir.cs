@@ -16,17 +16,6 @@ class _
 		return test;
 	}
 	public static uint[] ct = new uint[256];
-	public static void it()
-	{
-		uint crc, poly = 0xEDB88320;
-		for (ushort i = 0; i < 256; i++)
-		{
-			crc = i;
-			for (byte j = 0; j < 8; j++)
-				crc = (((crc&1)==1) ? (crc >> 1 ^ poly) : (crc >> 1));
-			ct[i] = crc;
-		}
-	}
 	public static uint k(string t)
     {
         t = t.Replace('/', '\\').ToLower();
@@ -63,15 +52,22 @@ class _
 	}
 	// main data boundary is 4096 = 1 << 12 (no problems encountered not aligning with this, so, not using it)
 	// file data aligns to 16 = 1 << 4
-	static void af(BinaryWriter w, uint b)
+	static void af(BinaryWriter w, uint b, byte f)
 	{
 		b = (uint)unchecked(1<<(int)b);
 		uint a = (uint)w.BaseStream.Position&(uint)(b-1);
 		if (a != 0)
 		{
 			byte[] pad = new byte[b-a];
+			if (f != 0)
+				for (int i = 0; i < b-a; i++)
+					pad[i] = f;
 			w.Write(pad);
 		}
+	}
+	static void af(BinaryWriter w, uint b)
+	{
+		af(w, b, 0);
 	}
 	static void w(BinaryWriter w, uint _) // big endian
 	{
@@ -137,10 +133,18 @@ class _
 		string output = Path.GetFullPath(args[args.Length == 1 ? 0 : 1]);
 		Directory.SetCurrentDirectory(args[0]);
 
-		it();
+		uint crc, poly = 0xEDB88320;
+		for (ushort i = 0; i < 256; i++)
+		{
+			crc = i;
+			for (byte j = 0; j < 8; j++)
+				crc = (((crc&1)==1) ? (crc >> 1 ^ poly) : (crc >> 1));
+			ct[i] = crc;
+		}
 		string[] dir = Directory.GetFiles(".", "*", SearchOption.AllDirectories);
 		uint filecount = (uint)dir.Length;
-		uint wadoff = ((filecount + 2) * 0x20);
+		uint wadoff = (filecount + 2) * 0x20;
+		wadoff += align(wadoff, 4);
 		exts = T[5].Split(';');
 		
 		int scn = -1, tex = -1;
@@ -188,7 +192,7 @@ class _
 			uint[] wr = new uint[]
 			{
 				/* 0x00-0x10 */ k(_ext), wadoff, (uint)f.Length, 0,
-				/* 0x10-0x14 */ k(realpath), k(fn),
+				/* 0x10-0x14 */ k(realpath), k(Path.GetFileNameWithoutExtension(fn)),
 				/* 0x18 */ (c_zone && i == tex) ? k(zstr + T[7]) : 0,
 				/* 0x1C */ (uint)((i == tex || i == scn) ? 4 : 0)
 			};
@@ -217,6 +221,7 @@ class _
 		//hed.Write(0);
 		for (byte i = 0; i < 8 + 2; i++)
 			hed.Write(0);
+		af(hed, 4);
 		for (uint i = 0; i < filecount; i++)
 		{
 			wad.Write(File.ReadAllBytes(dir[i]));
@@ -224,6 +229,7 @@ class _
 		}
 		wad.Write(0xABABABAB);
 		af(wad, 4);
+		//af(wad, 4, 0xAB);
 		return 0;
 	}
 }
