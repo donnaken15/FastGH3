@@ -1,6 +1,8 @@
 WhammyWibble0 = []
 WhammyWibble1 = []
 
+overlapping_starpower = 1
+
 script star_power_reset
 	Change StructureName = <player_status> star_power_amount = 0.0
 	Change StructureName = <player_status> star_power_sequence = 0
@@ -469,9 +471,9 @@ script is_star_note\{time = 0}
 	if (<array_Size> = 0)
 		return \{FALSE star_count = 0}
 	endif
-	star_start = ($<star_array> [($<player_status>.current_star_array_entry)] [0])
-	star_end = (($<star_array> [($<player_status>.current_star_array_entry)] [1])+ <star_start>)
-	star_count = ($<star_array> [($<player_status>.current_star_array_entry)] [2])
+	star_start =  ($<star_array>[($<player_status>.current_star_array_entry)][0])
+	star_end   = (($<star_array>[($<player_status>.current_star_array_entry)][1]) + <star_start>)
+	star_count =  ($<star_array>[($<player_status>.current_star_array_entry)][2])
 	if (<time> >= <star_start>)
 		if (<time> <= <star_end>)
 			return true star_count = <star_count>
@@ -489,5 +491,3 @@ script Do_StarPower_Camera
 	// called internally
 endscript
 using_starpower_camera = FALSE
-
-overlapping_starpower = 1

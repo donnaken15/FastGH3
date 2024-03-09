@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{822E3318-036A-42E1-A2ED-7C2382DF5557}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>c128ks_v2</RootNamespace>
-    <AssemblyName>c128ks</AssemblyName>
+    <RootNamespace>c</RootNamespace>
+    <AssemblyName>c</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -25,26 +25,14 @@
     <LangVersion>3</LangVersion>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
-  <PropertyGroup />
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="main.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="build.bat" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="stdopt.txt" />
+    <Compile Include="c128ks.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -56,6 +44,7 @@ rem copy "tmp.exe" "$(TargetPath)" /y
 rem del "tmp.exe" "tmp.pdb"
 rem "C:\Program Files (x86)\Resource Hacker\resourcehacker.exe" -open "$(TargetFileName)" -save "$(TargetFileName)" -action delete VERSIONINFO,,
 rem stripreloc /b "$(TargetFileName)"
-call "$(ProjectDir)stripversion.bat" "%25OUT%25"</PostBuildEvent>
+call "$(ProjectDir)stripversion.bat" "$(TargetPath)"
+move "$(TargetPath)" "$(TargetDir)c128ks.exe"</PostBuildEvent>
   </PropertyGroup>
 </Project>

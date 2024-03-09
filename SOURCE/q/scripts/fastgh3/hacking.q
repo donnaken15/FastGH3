@@ -108,10 +108,15 @@ script muh_arby_bot_star
 						current_powerup = ($<pows>[(<count> - 1)])
 						if (randomrange (0.0, 100.0) > 90.0 || <current_powerup> = 3 || <current_powerup> = 8)
 							formattext checksumname = other_player_status 'player%i_status' i = (<j> - <i>)
-							if NOT ((<current_powerup> = 3 & $<other_player_status>.current_num_powerups = 0) || (<current_powerup> = 8 & ($<player_status>.current_health > $health_medium_good | $<player_status>.star_power_used = 1)))
+							if NOT ((<current_powerup> = 3 & // steal immediately if other has powerups
+										$<other_player_status>.current_num_powerups = 0) |
+									(<current_powerup> = 8 & // use starpower if not green or not active
+										($<player_status>.current_health > $health_medium_good |
+											$<player_status>.star_power_used = 1)))
 								// can't use multiple NOTs within conditions, stupid
 								if (<current_powerup> = 8 & $<player_status>.star_power_used = 1)
-									wait \{2 gameframe} // causes display glitch if i don't wait when the bot has 2 star powers
+									wait \{2 gameframe}
+									// causes display glitch if i don't wait when the bot has 2 star powers
 								endif
 								battle_trigger_on player_status = <player_status>
 							endif
@@ -343,7 +348,7 @@ endscript
 	// I DON'T USE THE // FIX FOR IT
 
 // enabled on unpak for testing performance
-/**///
+/**
 script ProfilingStart
 	//return
 	AddParams \{time = 0.0} // fallback if ProfileTime is not patched by FastGH3 plugin

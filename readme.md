@@ -1,6 +1,6 @@
 
 # ![FastGH3](https://donnaken15.com/fastgh3/assets/logo.svg)
-(or lesser known as FastGH3 Ain't Smaller Than Guitar Hero 3, for longer)
+(or lesser known as FastGH3 ain't smaller than Guitar Hero 3, for longer)
 
 <p>Play Guitar Hero better than ever before!<br>
 Optimized and reworked for speed, portability, accessibility, and QOL.<br>
@@ -9,8 +9,8 @@ The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer,
 ![version](https://img.shields.io/github/v/release/donnaken15/FastGH3)
 ![mod size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.com%2Ffastgh3%2F__final_size.php)
 <br>
-![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.exe)
-![download count](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.zip)
+![download count (EXE)](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.exe)
+![download count (ZIP)](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.zip)
 <br>
 ![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
 ![commit activity](https://img.shields.io/github/commit-activity/m/donnaken15/FastGH3)
@@ -44,9 +44,9 @@ https://github.com/donnaken15/FastGH3/assets/20864393/01756e3a-45da-49b8-9d02-49
 * Install. (or extract, and run register.bat on portable)
 <br>![installer](https://i.ibb.co/0hW8jVT/image.png)
 * Open a chart.
-<br>![chart file](https://i.ibb.co/DPJq9tN/image.png)
+<br>![clicky](https://i.ibb.co/DPJq9tN/image.png)
 * ROCK OUT!
-<br>![chart file](https://i.ibb.co/W6ZL1Wc/s1.jpg)
+<br>![video game](https://i.ibb.co/W6ZL1Wc/s1.jpg)
 * For an extensive list of settings, open settings.bat, or in a command prompt in the game folder, run `fastgh3 -settings`.
 (Installer adds a shortcut for this)
 
@@ -67,16 +67,16 @@ and then press any button on your keyboard or controller to play.
 * Open notes, taps (by ExileLord)
 * Overlapping starpower
 * Load charts stored in archive files (ZIP, RAR, 7Z)
-* Dynamically loadable QbScript mods (https://donnaken15.com/fastgh3/mods.html)
-* Custom zones at https://donnaken15.com/fastgh3/zones.html
-* GH3+ plugin system (by ExileLord)
+* Dynamically loadable [QbScript mods](https://donnaken15.com/fastgh3/mods.html)
+* Custom themes [available here](https://donnaken15.com/fastgh3/zones.html) <!-- , createable and pre-existing ones -->
+* [GH3+ plugin system](https://github.com/donnaken15/GH3-Plus) (by ExileLord)
 * Windowed mode (and borderless)
 * Toggleable VSync
 * Dynamic note limit
 * Easy highway and zone swapping for ultimate personalization
 * Background images and videos
 * Easy chart downloads and instant play through fastgh3:// links
-* Play charts straight from chorus and Google Drive: https://donnaken15.com/fastgh3/gdrive.html
+* Play charts straight from [Google Drive](https://donnaken15.com/fastgh3/gdrive.html) <!-- TODO: TARGET ENCHORUS -->
 * Song caching (songs converted at least once are saved for later play)
 * Autoplay with automatic starpower activation, and automated battle attacks
 * A multitude of fixes, such as for:

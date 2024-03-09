@@ -132,7 +132,7 @@ for (var R in reslist) {
 		data_type = "string";
 		if (string_array)
 		{
-			string = string.replace(new RegExp(res.splitter, 'g'), '^');
+			string = string.replace(new RegExp(res.splitter, 'g'), '~');
 			data_type += "[]";
 		}
 		if (res.escaped)
@@ -212,7 +212,7 @@ for (var R in reslist) {
 		if (!dontConvert)
 			output += ')';
 		if (string_array)
-			output += '.Split(new char[] {\'^\'}, StringSplitOptions.RemoveEmptyEntries)';
+			output += '.Split(new char[] {\'~\'}, StringSplitOptions.RemoveEmptyEntries)';
 		output += ';\n';
 	}
 }

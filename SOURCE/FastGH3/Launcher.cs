@@ -290,11 +290,23 @@ static partial class Launcher
 		if (!File.Exists(e))
 		{
 			if (Path.GetDirectoryName(e) == string.Empty)
-				foreach (string v in (Environment.GetEnvironmentVariable("PATH") ?? "").Split(';'))
+				foreach (string v in (
+					Regex.Replace( // hate, nothing but hate, just hate, a lot of it, hate, hatred, many feelings, all unifying hate
+						Environment.GetEnvironmentVariable("PATH") ?? "",
+							'['+new string(Path.GetInvalidPathChars())+']', "")).Split(';'))
 				{
 					string p = v.Trim();
-					if (!string.IsNullOrEmpty(p) && File.Exists(p = Path.Combine(p, e)))
-						return Path.GetFullPath(p);
+					try
+					{
+						if (!string.IsNullOrEmpty(p) && File.Exists(p = Path.Combine(p, e)))
+						{
+							return Path.GetFullPath(p);
+						}
+					}
+					catch (ArgumentException ex)
+					{
+						vl(string.Format(T[198], p, e, ex));
+					}
 				}
 			return "";
 			//throw new FileNotFoundException(new FileNotFoundException().Message, exe);
@@ -474,12 +486,10 @@ static partial class Launcher
 	}
 	static void killtmpfsp(string path)
 	{
-		Match m = Regex.Match(Path.GetFileName(path), "^tmp[0-9A-F]{4}\\.tmp\\.fsp$", RegexOptions.IgnoreCase);
+		Match m = Regex.Match(Path.GetFileName(path), T[199], RegexOptions.IgnoreCase);
 		if (m.Success)
-		{
 			if (File.Exists(path))
 				File.Delete(path);
-		}
 	}
 	// subprocess, because I'm lazy and my code is super hacky
 	// and I refuse to move Main elsewhere or split the code up
@@ -2728,19 +2738,23 @@ static partial class Launcher
 							File.Copy(cf + cacheidStr,
 								songpak, true);
 							File.Copy(args[0], paksongmid, true);
-							mid2chart.Start();
-							try
+							if (ext == midext ||
+								ext == (midext + 'i'))
 							{
-								// ugh
-								if (vb || wl)
+								mid2chart.Start();
+								try
 								{
-									mid2chart.BeginErrorReadLine();
-									mid2chart.BeginOutputReadLine();
+									// ugh
+									if (vb || wl)
+									{
+										mid2chart.BeginErrorReadLine();
+										mid2chart.BeginOutputReadLine();
+									}
 								}
+								catch { }
+								if (!mid2chart.HasExited)
+									mid2chart.WaitForExit();
 							}
-							catch { }
-							if (!mid2chart.HasExited)
-								mid2chart.WaitForExit();
 							if (ischart)
 							{
 								chart.Load(args[0]);

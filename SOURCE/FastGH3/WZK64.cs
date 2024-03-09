@@ -5,7 +5,7 @@ using System.Text;
 // (not) try at implementing some
 // basic hash generation like CRC32
 
-class WZK64
+static class WZK64
 {
 	private static ulong baseval = 0x5745534C45593634; // "WESLEY64"
 

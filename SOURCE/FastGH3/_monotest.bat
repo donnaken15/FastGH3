@@ -5,31 +5,44 @@ set OUT=..\..\FastGH3.exe
 ::set RES=FastGH3.P.res.resources
 ::call resgen /useSourcePath /compile P\res.resx
 ::move P\res.resources "P\%RES%"
-call mcs -target:exe -g -nostdlib- -optimize+ ^
+call mcs -target:exe -debug- -nostdlib- -optimize+ ^
 	-lib:"..\DotNetZip\Zip Reduced\bin\Release" ^
 	-reference:System.dll ^
 	-reference:System.Net.dll ^
 	-reference:System.XML.dll ^
 	-reference:System.Drawing.dll ^
 	-reference:System.Windows.Forms.dll ^
-	-reference:Ionic.Zip.Reduced.dll ^
+	-reference:Ionic.Zip.Reduced.dll ^ 
 	--runtime:v4 -sdk:4 -langversion:3 -platform:anycpu ^
-	-out:"%OUT%" -main:Launcher -win32icon:note.ico ^
+	-out:"%OUT%" -main:Launcher ^
 	Queenbee\*.cs Queenbee\Pak\*.cs Queenbee\Qb\*.cs ^
 	Queenbee\Qb\base\*.cs *.cs ChartEdit\*.cs P\*.cs
-:: 275kb
-::del "P\%RES%"
+:: -win32icon:P\note.ico
 
-::set "ILMRG=C:\Program Files\PackageManagement\NuGet\Packages\ilmerge.3.0.41\tools\net452\ILMerge.exe"
-::"%ILMRG%" "%OUT%" "..\DotNetZip\Zip Reduced\bin\Release\Ionic.Zip.Reduced.dll" /out:"tmp.exe" && del "%OUT%" && move "tmp.exe" "%OUT%"
+echo.
+echo.
+echo ###################################                                     Raw file size:
+wc -c "%OUT%" 2>nul
+echo.
+echo.
+call "..\Misc\stripversion.bat" "%OUT%"
+echo ###################################                                     Removed resources and reloc:
+wc -c "%OUT%" 2>nul
+echo.
+echo.
+NetCompressor "%OUT%" "%OUT%" -gz -a "P\AssemblyInfo.cs" -i "P\note.ico"
+echo ###################################                                     Compressed:
+wc -c "%OUT%" 2>nul
+echo.
+echo.
+
+echo Copy DotNetZip DLL
 copy "..\DotNetZip\Zip Reduced\bin\Release\Ionic.Zip.Reduced.dll" ..\..\ /y
 
-::set "ILSTR=E:\WZKRice\tools\src\MiniSCT\bin\Release\BrokenEvent.ILStrip.CLI.exe"
-::"%ILSTR%" -u "%OUT%" "%OUT%"
-mpress -s -m "%OUT%"
-du -h "%OUT%"
 dash "../Misc/write_build_date.sh"
 popd
+
+:: (old)
 :: 264kb
 :: LARGER THAN CSC MAKES IT >:(
 :: original: 250kb

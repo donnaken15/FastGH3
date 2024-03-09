@@ -15,7 +15,7 @@ IF "%ff%"=="" (
 	set mix=
 	set count=0
 	for %%x in (%*) do ( set "mix=!mix! -i %%x" && set /a count+=1 )
-	"%ff%" -hide_banner !mix! -filter_complex amix=inputs=!count!:duration=longest,dynaudnorm -ac %ac% -ar %ar% -f wav pipe: %HELIX%
+	"%ff%" -hide_banner !mix! -filter_complex amix=inputs=!count!:duration=longest:normalize=0 -ac %ac% -ar %ar% -f wav pipe: %HELIX%
 	endlocal
 )
 goto :EOF

@@ -97,8 +97,8 @@ Writing path to cache...
 That file does not exist. Exiting.
 DEQhd2uFteibPwq0SWBInTpA_jcZL5GKz3YCR14Ulk87Jors9vNHgfaOmMXy6Vx-
 Press any key to exit
-Found (Bink) background video
-No (Bink) background video found
+Found Bink background video
+No Bink background video found
 \n___     ___\\\n   \\   /   /\n    \\ /\n     X\n    / \\\n___/   \\___\\\n           /\n
 Set max FPS, if not capped by Vsync.\nIf set to 0, the frame rate limit will not take effect.\nAs of now, it can only cap to 1ms / 1000 FPS.\nWarning: Some frame rates will make the game look\nchoppy depending on the refresh rate your monitor supports,\nor depending on your GPU.
 Override the note limit. Set to -1 to make\nthe program determine how many notes\nthere are in the chart opened.\nRAM usage may vary.
@@ -196,3 +196,5 @@ Misc%Player%Launcher%SongtextFormat%FinishedLog%Killswitch%SongVideos%LastSongHa
 Found {0}, extracting...
 Welcome to FastGH3: Select a chart to play
 https://donnaken15.com/fastgh3/diagno.php
+Failed to check path: (p: "{0}", e: "{1}")\n{2}
+^tmp[0-9A-F]{4}\.tmp\.fsp$

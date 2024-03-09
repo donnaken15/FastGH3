@@ -6,9 +6,9 @@ using F = System.IO.File;
 
 // this is absurd
 // deciding to write the class from documentation myself just because
-public class Sng
+public struct Sng
 {
-	public uint version = 1;
+	public uint version;
 	public byte[] xorMask;
 	public Dictionary<string, string> meta;
 	public List<File> files;

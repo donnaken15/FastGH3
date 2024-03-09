@@ -21,7 +21,7 @@ for %%I in (
 ) do copy %%I __FINAL /y
 mkdir __FINAL\DATA __FINAL\PLUGINS
 pushd __FINAL\DATA
-mkdir CACHE FXFILES HIGHWAYS MUSIC MUSIC\TOOLS MOVIES MOVIES\BIK PAK ZONES ZONES\__themes
+mkdir CACHE FXFILES HIGHWAYS MUSIC MUSIC\TOOLS MOVIES MOVIES\BIK PAK ZONES ..\THEMES
 popd
 ::copy settings_Def.ini __FINAL\settings.ini /y
 echo Copying files...
@@ -40,11 +40,11 @@ for %%I in (
 	MOVIES\BIK\__change.bat
 	MOVIES\BIK\__reset.bat
 	MOVIES\BIK\usage.txt
-	ZONES\__themes\__change_PAK.bat
-	ZONES\__themes\__changeGFX.bat
-	ZONES\__themes\default.scn.xen
-	ZONES\__themes\readme.txt
+	..\THEMES\__change_PAK.bat
+	..\THEMES\__changeGFX.bat
+	..\THEMES\readme.txt
 	ZONES\default.pak.xen
+	ZONES\default.scn.xen
 	ZONES\load_disc.img.xen
 	ZONES\load_scr.img.xen
 	ZONES\global.pak.xen
