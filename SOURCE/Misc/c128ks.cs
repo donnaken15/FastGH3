@@ -160,7 +160,7 @@ class _
 	{
 		if (!File.Exists(I))
 			throw new /*FileNotFound*/Exception(T[7]);
-		e.StartInfo.Arguments = T[23] + O + T[11] + ((int)m)+T[24]+br.ToString();
+		e.StartInfo.Arguments = T[23] + O + T[11] + ((int)m) + T[26] + (v ? 'V' : 'B') + br.ToString();
 		d.StartInfo.Arguments = string.Format(T[19]+
 			(FC ? T[20] : " ")+
 			(fr ? T[21] : ""),
@@ -168,7 +168,7 @@ class _
 			/* 1 */ ff ? "a" : "" /* audio switch labels */,
 			/* 2 */ T[ff ? 8 : 9] /* program specific switches */,
 			/* 3 */ r,
-			/* 4 */ S ? 2 : 1) + T[27] + (ff ? 'f' : 't') + T[10];
+			/* 4 */ S ? 2 : 1) + T[26] + (ff ? 'f' : 't') + T[10];
 		d.StartInfo.RedirectStandardError =
 			e.StartInfo.RedirectStandardError = !l;
 		Q = new List<byte[]>();
@@ -262,21 +262,20 @@ class _
 21: -{1}r {3}
 22: d/e: 
 23: - "
-24:  -B
-25: ffmpeg.exe
-26: Aborting...
-27:  -
-28: PATH
+24: ffmpeg.exe
+25: Aborting...
+26:  -
+27: PATH
 */
 	static string[] T = Encoding.ASCII.GetString(Encoding.Unicode.GetBytes(
-		"挮㈱欸⹳灭┳潳⹸硥╥敨楬⹸硥╥潣敤╲搠湯╥湅䐥╥湉異⁴畡楤⁯慣湮瑯戠⁥潦湵⹤ⴥ楨敤扟湡" +
-		"敮⁲椭ⴥ㍖ⴠ洭汵楴琭牨慥敤╤眠癡ⴠ∥ⴠじⴠ㉕ⴠ煑極正ⴠㅁⴠ⁄䴭笥細㉻筽紳›㕻੽" +
-		"ほ筽紲㑻㩽笠紶笊紱㉻筽紳›㝻੽ㅻ筽紲㑻㩽笠紸攥數畣慴汢╥牡畧敭瑮⁳別慥楤杮" +
-		"眯楲楴杮┠扫瀠牥戠潬正‬汢捯獫瀠潲散獳摥┺瀠潲散獳爠瑥牵敮⁤楷桴愠渠湯稭牥⁯牥潲⁲潣敤" +
-		"›䤥癮污摩愠杲浵湥㩴┠㉻⁽笢細┢ⴠㅻ捽笠紴┠笭紱⁲㍻╽⽤㩥┠‭┢ⴠ╂晦灭来攮數䄥潢瑲湩⹧⸮‥┭䅐䡔"
+		"挮㈱欸⹳灭┳潳⹸硥╥敨楬⹸硥╥潣敤╲搠湯╥湅䐥╥湉異⁴畡楤⁯慣湮瑯戠⁥潦湵⹤ⴥ楨敤扟湡敮⁲"+
+		"椭ⴥ㍖ⴠ洭汵楴琭牨慥敤╤眠癡ⴠ∥ⴠじⴠ㉕ⴠ煑極正ⴠㅁⴠ⁄䴭笥細㉻筽紳›㕻੽ほ筽紲㑻"+
+		"㩽笠紶笊紱㉻筽紳›㝻੽ㅻ筽紲㑻㩽笠紸攥數畣慴汢╥牡畧敭瑮⁳別慥楤杮眯楲楴杮┠扫瀠牥"+
+		"戠潬正‬汢捯獫瀠潲散獳摥┺瀠潲散獳爠瑥牵敮⁤楷桴愠渠湯稭牥⁯牥潲⁲潣敤›䤥癮污摩愠杲浵"+
+		"湥㩴┠㉻⁽笢細┢ⴠㅻ捽笠紴┠笭紱⁲㍻╽⽤㩥┠‭┢晦灭来攮數䄥潢瑲湩⹧⸮‥┭䅐䡔"
 	)).Split('%');
 	static string b = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + '\\';
-	static string ffp = w(T[25]);
+	static string ffp = w(T[24]);
 
 	// PROGRAM
 
@@ -295,13 +294,13 @@ class _
 		{
 			if (Path.GetDirectoryName(_) == string.Empty)
 			{
-				string PATH = Environment.GetEnvironmentVariable(T[28]);
+				string PATH = Environment.GetEnvironmentVariable(T[27]);
 				if (PATH != null)
 				{
 					foreach (char c in Path.GetInvalidPathChars())
 						PATH = PATH.Replace(c.ToString(), "");
 					//foreach (string v in (System.Text.RegularExpressions.Regex.Replace(
-					//	Environment.GetEnvironmentVariable(T[28]),
+					//	Environment.GetEnvironmentVariable(T[27]),
 					//		'[' + new string(Path.GetInvalidPathChars()) + ']', "") ?? "").Split(';'))
 					foreach (string v in PATH.Split(';'))
 					{
@@ -432,7 +431,7 @@ class _
 		Console.CancelKeyPress += (s, d) => {
 			if (d.SpecialKey != ConsoleSpecialKey.ControlC)
 				return;
-			Console.WriteLine(T[26]);
+			Console.WriteLine(T[25]);
 			d.Cancel = true;
 			e.CT(true);
 		};

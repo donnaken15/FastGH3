@@ -47,10 +47,6 @@ career_play_song_fs = {
 			flow_state = career_autosave_boss_confirmation_fs
 		}
 		{
-			action = preencore_win_song
-			flow_state = career_encore_confirmation_fs
-		}
-		{
 			action = unlocktier_win_song
 			flow_state = career_select_venue_fs
 		}
@@ -77,11 +73,11 @@ career_boss_wuss_out_fs = {
 			action = continue
 			flow_state = career_fail_song_fs
 		}
-		{
-			action = WUSS_OUT
-			func = wuss_out_transition
-			flow_state = career_encore_confirmation_fs
-		}
+		//{
+		//	action = WUSS_OUT
+		//	func = wuss_out_transition
+		//	flow_state = career_encore_confirmation_fs
+		//}
 	]
 }
 
@@ -584,22 +580,6 @@ career_detailed_stats_fs = {
 		{
 			action = continue
 			func = ExitGameConfirmed
-		}
-	]
-}
-career_encore_confirmation_fs = {
-	create = create_encore_confirmation_menu
-	Destroy = destroy_encore_confirmation_menu
-	actions = [
-		{
-			action = continue
-			func = start_encore
-			flow_state = career_play_song_fs
-		}
-		{
-			action = quit
-			func = kill_gem_scroller
-			flow_state = career_newspaper_fs
 		}
 	]
 }

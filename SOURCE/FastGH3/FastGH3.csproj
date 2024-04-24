@@ -44,8 +44,6 @@
     <LangVersion>3</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <DefineConstants>
-    </DefineConstants>
     <Optimize>true</Optimize>
     <Prefer32Bit>false</Prefer32Bit>
     <FileAlignment>512</FileAlignment>
@@ -54,13 +52,12 @@
     <ApplicationIcon>
     </ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup />
+  <PropertyGroup>
+    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
+  </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Launcher</StartupObject>
   </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup />
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <BaseAddress>4194304</BaseAddress>
     <RegisterForComInterop>False</RegisterForComInterop>
@@ -68,14 +65,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DefineConstants />
+    <DefineConstants>PC_ONLY;NO_ZLIB</DefineConstants>
     <Optimize>true</Optimize>
   </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
@@ -237,6 +229,90 @@
     <Compile Include="..\dotnetzip\zlib\ZlibStream.cs">
       <Link>DotNetZip\Zlib\ZlibStream.cs</Link>
     </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\BinaryEndianReader.cs">
+      <Link>QueenBee\BinaryEndianReader.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\BinaryEndianWriter.cs">
+      <Link>QueenBee\BinaryEndianWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Pak\PakDbgQbKey.cs">
+      <Link>QueenBee\Pak\PakDbgQbKey.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Pak\PakEditor.cs">
+      <Link>QueenBee\Pak\PakEditor.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Pak\PakFormat.cs">
+      <Link>QueenBee\Pak\PakFormat.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Pak\PakFormatType.cs">
+      <Link>QueenBee\Pak\PakFormatType.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Pak\PakHeaderFlags.cs">
+      <Link>QueenBee\Pak\PakHeaderFlags.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Pak\PakHeaderItem.cs">
+      <Link>QueenBee\Pak\PakHeaderItem.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Pak\PakItemType.cs">
+      <Link>QueenBee\Pak\PakItemType.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\base\EditableAttribute.cs">
+      <Link>QueenBee\Qb\Base\EditableAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\base\GenericQbItem.cs">
+      <Link>QueenBee\Qb\Base\GenericQbItem.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\base\QbItemBase.cs">
+      <Link>QueenBee\Qb\Base\QbItemBase.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\base\QbItemType.cs">
+      <Link>QueenBee\Qb\Base\QbItemType.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\Lzss.cs">
+      <Link>QueenBee\Qb\Lzss.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbFile.cs">
+      <Link>QueenBee\Qb\QbFile.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemArray.cs">
+      <Link>QueenBee\Qb\QbItemArray.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemFloat.cs">
+      <Link>QueenBee\Qb\QbItemFloat.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemFloats.cs">
+      <Link>QueenBee\Qb\QbItemFloats.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemFloatsArray.cs">
+      <Link>QueenBee\Qb\QbItemFloatsArray.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemInteger.cs">
+      <Link>QueenBee\Qb\QbItemInteger.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemQbKey.cs">
+      <Link>QueenBee\Qb\QbItemQbKey.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemScript.cs">
+      <Link>QueenBee\Qb\QbItemScript.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemString.cs">
+      <Link>QueenBee\Qb\QbItemString.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemStruct.cs">
+      <Link>QueenBee\Qb\QbItemStruct.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemStructArray.cs">
+      <Link>QueenBee\Qb\QbItemStructArray.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbItemUnknown.cs">
+      <Link>QueenBee\Qb\QbItemUnknown.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\QbKey.cs">
+      <Link>QueenBee\Qb\QbKey.cs</Link>
+    </Compile>
+    <Compile Include="..\QueenBee\QueenBeeParser\Qb\ScriptString.cs">
+      <Link>QueenBee\Qb\ScriptString.cs</Link>
+    </Compile>
     <Compile Include="bgprev.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -304,35 +380,7 @@
       <DependentUpon>modovrddiag.cs</DependentUpon>
     </Compile>
     <Compile Include="P\AssemblyInfo.cs" />
-    <Compile Include="Queenbee\BinaryEndianReader.cs" />
-    <Compile Include="Queenbee\BinaryEndianWriter.cs" />
-    <Compile Include="Queenbee\Pak\PakDbgQbKey.cs" />
-    <Compile Include="Queenbee\Pak\PakEditor.cs" />
-    <Compile Include="Queenbee\Pak\PakFormat.cs" />
-    <Compile Include="Queenbee\Pak\PakFormatType.cs" />
-    <Compile Include="Queenbee\Pak\PakHeaderFlags.cs" />
-    <Compile Include="Queenbee\Pak\PakHeaderItem.cs" />
-    <Compile Include="Queenbee\Pak\PakItemType.cs" />
     <Compile Include="Launcher.cs" />
-    <Compile Include="Queenbee\Qb\base\EditableAttribute.cs" />
-    <Compile Include="Queenbee\Qb\base\GenericQbItem.cs" />
-    <Compile Include="Queenbee\Qb\base\QbItemBase.cs" />
-    <Compile Include="Queenbee\Qb\base\QbItemType.cs" />
-    <Compile Include="Queenbee\Qb\Lzss.cs" />
-    <Compile Include="Queenbee\Qb\QbFile.cs" />
-    <Compile Include="Queenbee\Qb\QbItemArray.cs" />
-    <Compile Include="Queenbee\Qb\QbItemFloat.cs" />
-    <Compile Include="Queenbee\Qb\QbItemFloats.cs" />
-    <Compile Include="Queenbee\Qb\QbItemFloatsArray.cs" />
-    <Compile Include="Queenbee\Qb\QbItemInteger.cs" />
-    <Compile Include="Queenbee\Qb\QbItemQbKey.cs" />
-    <Compile Include="Queenbee\Qb\QbItemScript.cs" />
-    <Compile Include="Queenbee\Qb\QbItemString.cs" />
-    <Compile Include="Queenbee\Qb\QbItemStruct.cs" />
-    <Compile Include="Queenbee\Qb\QbItemStructArray.cs" />
-    <Compile Include="Queenbee\Qb\QbItemUnknown.cs" />
-    <Compile Include="Queenbee\Qb\QbKey.cs" />
-    <Compile Include="Queenbee\Qb\ScriptString.cs" />
     <Compile Include="settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -361,7 +409,7 @@
   <ItemGroup>
     <Content Include="Resources\gsn.txt" />
     <None Include="GenerateLD.js" />
-    <Content Include="P\note.ico" />
+    <None Include="P\note.ico" />
     <None Include="app.config" />
     <None Include="Resources\credits.txt" />
     <None Include="Resources\kl.bin" />
@@ -376,14 +424,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Queenbee\Qb\Script\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="unkname.resx">
-      <DependentUpon>unkname.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>rem POST BUILD / COMPRESS EXE
@@ -392,7 +433,6 @@ pushd "$(ProjectDir)"
 rem program breaks for some reason if -i has absolute path with spaces
 NetCompressor "$(TargetPath)" "$(TargetPath)" -gz -a "P\AssemblyInfo.cs" -i "P\note.ico"
 popd
-stripreloc /b "$(TargetPath)"
 dash "$(SolutionDir)Misc/write_build_date.sh"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>

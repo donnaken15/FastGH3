@@ -40,8 +40,9 @@ for %%I in (
 	MOVIES\BIK\__change.bat
 	MOVIES\BIK\__reset.bat
 	MOVIES\BIK\usage.txt
-	..\THEMES\__change_PAK.bat
-	..\THEMES\__changeGFX.bat
+	..\THEMES\__changePAK.bat
+	..\THEMES\__changeTEX.bat
+	"..\THEMES\FastGH3 Themes.url"
 	..\THEMES\readme.txt
 	ZONES\default.pak.xen
 	ZONES\default.scn.xen

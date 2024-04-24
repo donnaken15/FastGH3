@@ -74,29 +74,30 @@ script show_star_power_ready
 	if ($<player_status>.star_power_used = 1)
 		return
 	endif
-	ExtendCrc star_power_ready_text ($<player_status>.text)out = id
+	ExtendCrc star_power_ready_text ($<player_status>.text) out = id
 	if (($game_mode = p2_faceoff)|| ($game_mode = p2_pro_faceoff))
+		offset = ((1.0, 0.0) * $x_offset_p2)
 		if ($<player_status>.Player = 1)
-			original_pos = (($hud_screen_elements [0].Pos)- (225.0, 50.0))
+			original_pos = (($hud_screen_elements [0].Pos) - (0.0, 50.00) - <offset>)
 		else
-			original_pos = (($hud_screen_elements [0].Pos)+ (225.0, -50.0))
+			original_pos = (($hud_screen_elements [0].Pos) + (0.0, -50.0) + <offset>)
 		endif
 		base_scale = 0.8
 		scale_big_mult = 1.2
 	else
 		if ($game_mode = p2_career || $game_mode = p2_coop)
-			original_pos = (($hud_screen_elements [0].Pos)- (0.0, 60.0))
+			original_pos = (($hud_screen_elements [0].Pos) - (0.0, 60.0))
 		else
-			original_pos = (($hud_screen_elements [0].Pos)- (0.0, 20.0))
+			original_pos = (($hud_screen_elements [0].Pos) - (0.0, 20.0))
 		endif
 		base_scale = 1.2
 		scale_big_mult = 1.5
 	endif
 	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = <original_pos> Scale = 4 rgba = [190 225 255 250] alpha = 0 rot_angle = 3
+		<id> ::DoMorph Pos = <original_pos> Scale = 4 rgba = $hud_notif_starpower1 alpha = 0 rot_angle = 3
 	endif
 	ExtendCrc hud_destroygroup_window ($<player_status>.text)out = hud_destroygroup
-	spawnscriptnow hud_lightning_alert params = {Player = ($<player_status>.Player)alert_id = <id> player_container = <hud_destroygroup>}
+	spawnscriptnow hud_lightning_alert params = {Player = ($<player_status>.Player) alert_id = <id> player_container = <hud_destroygroup>}
 	if ScreenElementExists id = <id>
 		<id> ::DoMorph Pos = <original_pos> Scale = <base_scale> alpha = 1 time = 0.3 rot_angle = -3 motion = ease_in
 	endif
@@ -104,7 +105,7 @@ script show_star_power_ready
 		<id> ::DoMorph Pos = <original_pos> Scale = (<base_scale> * <scale_big_mult>)time = 0.3 rot_angle = 4 motion = ease_out
 	endif
 	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = <original_pos> Scale = <base_scale> time = 0.3 rot_angle = -5 rgba = [145 215 235 250] motion = ease_in
+		<id> ::DoMorph Pos = <original_pos> Scale = <base_scale> time = 0.3 rot_angle = -5 rgba = $hud_notif_starpower2 motion = ease_in
 	endif
 	rotation = 10
 	begin
@@ -151,12 +152,13 @@ script show_coop_raise_axe_for_starpower
 	Change \{showing_raise_axe = 1}
 	ExtendCrc coop_raise_axe ($<player_status>.text)out = id
 	ExtendCrc coop_raise_axe_cont ($<player_status>.text)out = id_cont
+	offset = ((1.0, 0.0) * $x_offset_p2)
 	if ($<player_status>.Player = 1)
-		original_pos = (($hud_screen_elements [3].Pos)- (225.0, 60.0))
-		original_pos_cont = (($hud_screen_elements [3].Pos)- (225.0, 30.0))
+		original_pos = (($hud_screen_elements [3].Pos) - (0.0, 60.0) - <offset>)
+		original_pos_cont = (($hud_screen_elements [3].Pos) - (0.0, 30.0) - <offset>)
 	else
-		original_pos = (($hud_screen_elements [3].Pos)+ (225.0, -60.0))
-		original_pos_cont = (($hud_screen_elements [3].Pos)+ (225.0, -30.0))
+		original_pos = (($hud_screen_elements [3].Pos) + (0.0, -60.0) + <offset>)
+		original_pos_cont = (($hud_screen_elements [3].Pos) + (0.0, -30.0) + <offset>)
 	endif
 	base_scale = 0.7
 	base_scale_cont = 1
@@ -258,6 +260,9 @@ script reset_star_sequence
 endscript
 
 script star_power_miss_note
+	// WHY ISN'T THIS GETTING CALLED!!!!!!!
+	// THERE'S A GLITCH WHERE YOU CAN STRUM
+	// MISS AND THE SEQUENCE WON'T GO AWAY!!!!!
 	Change StructureName = <player_status> star_power_sequence = 0
 	LaunchGemEvent event = star_miss_note Player = <Player>
 	ExtendCrc star_miss_note <player_text> out = id

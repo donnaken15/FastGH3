@@ -4,6 +4,10 @@
 	{
 		return '"' + value + '"';
 	}
+	public static string Parentheses(this string value)
+	{
+		return '(' + value + ')';
+	}
 
 	public static string Between(this string value, string a, string b)
 	{

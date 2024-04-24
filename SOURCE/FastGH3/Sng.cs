@@ -30,7 +30,7 @@ public struct Sng
 		string magic = new string(br.ReadChars(6));
 		if (magic != "SNGPKG")
 		{
-			throw new Exception("Invalid signature: "+magic);
+			throw new Exception(Launcher.T[202] + magic);
 		}
 		sng.version = br.ReadUInt32();
 		sng.xorMask = br.ReadBytes(16); // because why
@@ -41,7 +41,7 @@ public struct Sng
 		for (ulong i = 0; i < metacount; i++)
 			sng.meta.Add(readstr(br), readstr(br));
 		if ((ulong)(f.Position - test) != metasize)
-			Console.WriteLine("ZOMG?!!!? meta container size mismatch????! we do not care");
+			Console.WriteLine(Launcher.T[203]);
 		ulong idxsize = br.ReadUInt64();
 		test = f.Position;
 		ulong fcount = br.ReadUInt64();
@@ -64,10 +64,10 @@ public struct Sng
 			});
 		}
 		if ((ulong)(f.Position - test) != idxsize)
-			Console.WriteLine("ZOMG?!!!? index container size mismatch????! we do not care");
+			Console.WriteLine(Launcher.T[203]);
 		ulong concatsize = br.ReadUInt64();
 		if ((ulong)(f.Length - f.Position) != concatsize)
-			Console.WriteLine("total file size mismatch");
+			Console.WriteLine(Launcher.T[204]);
 		f.Close();
 		br.Dispose();
 		return sng;

@@ -30,8 +30,9 @@ For crashing bugs in the game, this will be most useful. If you can, grab a debu
 For a more step by step tutorial on how to catch crashes, follow [this tutorial](https://ghwt.de/wiki/#/sdk/debuggingcrashes?id=debugging-crashes).</details>
 
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+**Screenshots or attachments**
+If applicable, add screenshots to help explain your problem, or a log from the mod that contains more details.
+(launcher.txt is created by the main program, output.txt is created by the game)
 
 
 **When I downloaded this mod/what version I'm using (most likely required)**
@@ -42,28 +43,28 @@ You can check settings dialog or date of files for this, particularly FastGH3.ex
 Date of download/build date:
 
 Version number (write an X in the matching circle):
-- (   ) 1.0-999010889 - 07/2023
-- (   ) 1.0-999010723 - 10/2022
-- (   ) 1.0-999010611 - 07/2022
-- (   ) 1.0-999010574 - 05/2022
-- (   ) 1.0-999010389 - 11/2021
-- (   ) 1.0-999010247 - 07/2021
-- (   ) 1.0-999010010 - 07/2021
+ - ( ) 1.0-999010889 - 07/2023
+ - ( ) 1.0-999010723 - 10/2022
+ - ( ) 1.0-999010611 - 07/2022
+ - ( ) 1.0-999010574 - 05/2022
+ - ( ) 1.0-999010389 - 11/2021
+ - ( ) 1.0-999010247 - 07/2021
+ - ( ) 1.0-999010010 - 07/2021
 
 **What branch of development does this happen on?**
 This can be checked from the pause menu. The branch name is read in blue text.<br>
 This is only viewable on most recent builds.
-- (   ) [main](https://github.com/donnaken15/FastGH3/tree/main)
-- (   ) [unpak](https://github.com/donnaken15/FastGH3/tree/unpak)
+ - ( ) [main](https://github.com/donnaken15/FastGH3/tree/main)
+ - ( ) [unpak](https://github.com/donnaken15/FastGH3/tree/unpak)
 
 **Desktop (Optional, but could help figure out system specific problems):**
  - OS: [default: Windows 10]
 
 ***Do you have these installed: (write an X in the box if you have the following software)***
- - [  ] [DirectX 9](http://localhost/fastgh3/redist.php?f=1)
- - [  ] [Visual C++ 2005](http://localhost/fastgh3/redist.php?f=2)
- - [  ] [Visual C++ 2015](http://localhost/fastgh3/redist.php?f=4)
- - [  ] [.NET Framework 4](http://localhost/fastgh3/redist.php?f=3)
+ - [ ] [DirectX 9](http://donnaken15.com/fastgh3/redist.php?f=1)
+ - [ ] [Visual C++ 2005](http://donnaken15.com/fastgh3/redist.php?f=2)
+ - [ ] [Visual C++ 2015](http://donnaken15.com/fastgh3/redist.php?f=4)
+ - [ ] [.NET Framework 4](http://donnaken15.com/fastgh3/redist.php?f=3)
 
 (These are vital to using the mod!)
 

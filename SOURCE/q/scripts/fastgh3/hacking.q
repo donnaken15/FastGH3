@@ -81,6 +81,8 @@ script everyone_deploy // :P
 endscript
 
 fastgh3_path_triggers = []
+// hellidox
+;fastgh3_path_triggers = [35570 54000 83710 124570 141380 167580 186030 202350]
 // soulless 5
 ;fastgh3_path_triggers = [33230 120000 148610 187610 246610 307460 350760 431200 507690 585000 658960 716300 794530 831380 876460 900920 983070]
 // soulless 1 path from CHOpt
@@ -145,7 +147,7 @@ script muh_arby_bot_star
 		begin
 			begin
 				GetSongTimeMs
-				if ($fastgh3_path_triggers[<i>] < (<time> + ($check_time_early * 1000.0) + 10))
+				if ($fastgh3_path_triggers[<i>] < (<time> + ($check_time_early * 1000.0) + 10)) // ../guitar/guitar_gems.q:304
 					break
 				endif
 				Wait \{1 gameframe}

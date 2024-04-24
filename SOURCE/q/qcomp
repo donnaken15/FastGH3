@@ -1,4 +1,5 @@
 #!/bin/zsh
+#!/bin/dash
 
 #echo "${y}(not as fake) qcomp${rc}"
 # no args
@@ -24,8 +25,14 @@ bin=$(dirname "$bin"); wbin=$(cygpath -w "$bin" 2>$nul || wslpath -m "$bin")
 echo "${y}*****  Q COMPILATION   *****${rc}"
 
 # for whatever reason # stop wasting my (mine and others') space
-node="$wbin/QBC/node"
-[ -f "$node" ] || node="node"
+node="$wbin/node"
+[ -f "$node" ] || {
+	node="$wbin/GHSDK/node"
+	[ -f "$node" ] || {
+		node="node"
+	}
+}
+QBC="$wbin/QBC"
 # from WSL to node, an error comes up about failing to open stderr
 #which bun && { node="$(command -v bun)" && wbin="$bin"; } || node="node.exe"
 # messes with cygwin though
@@ -33,10 +40,19 @@ node="$wbin/QBC/node"
 # TODO soon: run QBC on each individual directory instead of every file one by one
 # though retrieving an error from compiling something might be harder to do
 got_error=0
+lasterrcode=0
 no_update=1
-# HOW DO I SUPPRESS NO MATCHES FOUND!!!!!!!!
+# ${SHELL}
+[ "$(basename ${0:-sh})" = "zsh" ] && setopt +o nomatch
+# delete compiled QBs that don't have a matching existing source file
+(cd "$outdir" && $find * -type f -name "*.qb" -or -name "*.qb.xen" 2>$nul) | while read -r f; do
+	[ -f "$outdir/$f" -a ! -e "$indir/${f%.q*}.q" ] && {
+		echo "${r}Deleting ${f} as its source cannot be found.${rc}"
+		rm "$outdir/$f"
+	}
+done
 (cd "$indir" && $find * -type f -name "*.q" 2>$nul) | while read -r f; do
-	out="$outdir${f%%.*}.qb.xen"
+	out="$outdir${f%.q*}.qb.xen"
 	# (re)compile files after being modified / or if they're new
 	[ ! -f "$out" -o "$out" -ot "$indir/$f" ] && {
 		[ $no_update -eq 1 ] && {
@@ -47,7 +63,9 @@ no_update=1
 		echo "${w}Compiling $f...${rc}"
 		# dash doesn't capture newlines in variables (neither does bash lol)
 		# todo?: somehow pipe errors to sed while getting the error code
-		log=$("${node}" "$wbin/QBC/QBC.js" c -g gh3 -v "$indir/$f" -o "$out" 2>&1 >$nul) || {
+		log=$("$node" "$QBC/QBC.js" c -g gh3 -v "$indir/$f" -o "$out" 2>&1 >$nul) || {
+			got_error=1
+			lasterrcode=$?
 			echo "${r}Error compiling ${f}. Last lines:${rc}"
 			echo "${r}$(echo $log | tail -50)${rc}"
 		}
@@ -59,4 +77,6 @@ done
 [ -e qcomp.log ] && { echo Compressing log...; xz -9 -e -T 0 qcomp.log 2>$nul >$nul; } &
 
 echo done...
+
+return $lasterrcode
 

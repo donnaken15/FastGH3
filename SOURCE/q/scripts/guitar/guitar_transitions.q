@@ -40,6 +40,9 @@ Transition_Types = {
 	songlost = {
 		textnl = 'songlost'
 	}
+	battleend = {
+		textnl = 'battleend'
+	}
 }
 nointro_ready_time = 400
 Default_Immediate_Transition = {
@@ -52,22 +55,6 @@ Common_Immediate_Transition = {
 		{
 			time = 0
 			Scr = nointro
-		}
-		{
-			time = 0
-			Scr = solo_reset
-			params = {
-				i = 1
-				reset_hud
-			}
-		}
-		{
-			time = 0
-			Scr = solo_reset
-			params = {
-				i = 2
-				reset_hud
-			}
 		}
 		{
 			time = 1
@@ -95,22 +82,6 @@ Common_Generic_Transition = {
 			Scr = play_intro
 		}
 		{
-			time = 0
-			Scr = solo_reset
-			params = {
-				i = 1
-				reset_hud
-			}
-		}
-		{
-			time = 0
-			Scr = solo_reset
-			params = {
-				i = 2
-				reset_hud
-			}
-		}
-		{
 			time = 1
 			Scr = Transition_StartRendering
 		}
@@ -123,8 +94,6 @@ Common_Generic_Transition = {
 			Scr = key_events
 		}
 	]
-	EndWithDefaultCamera
-	SyncWithNoteCameras
 }
 Default_FastIntro_Transition = $Default_Generic_Transition
 Common_FastIntro_Transition = $Common_Generic_Transition
@@ -150,32 +119,6 @@ Default_PreEncore_Transition = {
 }
 Common_PreEncore_Transition = {
 	ScriptTable = [
-		{
-			time = 0
-			Scr = play_win_anims
-			params = {
-			}
-		}
-		{
-			time = 0
-			Scr = play_outro
-			params = {
-			}
-		}
-		{
-			time = 0
-			Scr = Crowd_AllPlayAnim
-			params = {
-				anim = Idle
-			}
-		}
-		{
-			time = 0
-			Scr = Change_Crowd_Looping_SFX
-			params = {
-				crowd_looping_state = good
-			}
-		}
 	]
 	EndWithDefaultCamera
 }
@@ -188,20 +131,7 @@ Default_PreBoss_Transition = {
 }
 Common_PreBoss_Transition = {
 	ScriptTable = [
-		{
-			time = 0
-			Scr = play_win_anims
-			params = {
-			}
-		}
-		{
-			time = 0
-			Scr = play_outro
-			params = {
-			}
-		}
 	]
-	EndWithDefaultCamera
 }
 Default_Boss_Transition = {
 	time = 3000
@@ -223,8 +153,6 @@ Common_Boss_Transition = {
 			Scr = Transition_StartRendering
 		}
 	]
-	EndWithDefaultCamera
-	SyncWithNoteCameras
 }
 Default_SongWon_Transition = {
 	time = 0
@@ -234,7 +162,6 @@ Default_SongWon_Transition = {
 Common_SongWon_Transition = {
 	ScriptTable = [
 	]
-	EndWithDefaultCamera
 }
 Default_SongLost_Transition = {
 	time = 3400
@@ -243,29 +170,16 @@ Default_SongLost_Transition = {
 }
 Common_SongLost_Transition = {
 	ScriptTable = [
-		{
-			time = 0
-			Scr = play_lose_anims
-			params = {
-			}
-		}
-		{
-			time = 0
-			Scr = Change_Crowd_Looping_SFX
-			params = {
-				crowd_looping_state = bad
-			}
-		}
-		{
-			time = 0
-			Scr = play_outro
-			params = {
-				kill_cameracuts_iterator
-				song_failed_pitch_streams = 1
-			}
-		}
 	]
-	EndWithDefaultCamera
+}
+Default_BattleEnd_Transition = {
+	time = 3400
+	ScriptTable = [
+	]
+}
+Common_BattleEnd_Transition = {
+	ScriptTable = [
+	]
 }
 
 script Transition_SelectTransition\{practice_intro = 0}

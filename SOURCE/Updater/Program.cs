@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 using Ionic.Zip;
 using SimpleJSON;
+using System.Windows.Forms;
 
 // VS is a slow POS
 
@@ -207,7 +208,7 @@ class Program
 		Console.WriteLine("  UPDATER\n");
 		
 		bool testing = false;
-		string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+		string dir = Path.GetDirectoryName(Application.ExecutablePath);
 		Directory.SetCurrentDirectory(dir); // make path ensuring less redundant like in the launcher
 		inif = dir + "\\settings.ini";
 
@@ -218,7 +219,6 @@ class Program
 			"FastGH3.exe",
 			"fmodex.dll",
 			"game.exe",
-			"Ionic.Zip.dll",
 			"mid2chart.exe",
 		};
 		foreach (string i in requiredFiles)
@@ -303,6 +303,9 @@ class Program
 			"aspyrconfig.bat",
 			"data\\user.pak.xen",
 			"data\\bkgd.pak.xen",
+			"data\\bkgd.img.xen",
+			"data\\hway.pak.xen",
+			"data\\hway2.pak.xen",
 			"data\\movies\\bik\\backgrnd_video.bik.xen",
 			"data\\music\\fastgh3.fsb.xen",
 			"data\\pak\\dbg.pak.xen",
@@ -325,7 +328,7 @@ class Program
 		};
 		
 		ZipFile buildZip;
-		string zipPath = Path.GetTempPath()+"\\FGH3_UPD.ZIP";
+		//string zipPath = Path.GetTempPath()+"\\FGH3_UPD.ZIP";
 		string zipURL = "https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.zip";
 
 		// TODO: display changes since
@@ -361,8 +364,8 @@ class Program
 				return;
 			}
 		}
-		fetcher.DownloadFile(new Uri(zipURL),zipPath);
-		buildZip = ZipFile.Read(zipPath);
+		byte[] zip = fetcher.DownloadData(new Uri(zipURL));
+		buildZip = ZipFile.Read(new MemoryStream(zip));
 		foreach (ZipEntry f in buildZip)
 		{
 			try {
@@ -385,16 +388,17 @@ class Program
 					}
 				}
 				if (ugh) continue;
-				f.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
-				f.Extract();
-				if (bleeding)
+				MemoryStream ms = new MemoryStream();
+				f.Extract(ms);
+				File.WriteAllBytes(truename, ms.ToArray());
+				/*if (bleeding)
 				{
 					File.Copy("FastGH3-main\\"+truename,truename,true);
 					File.Delete("FastGH3-main\\"+truename);
 					// NET is the worst thing ever
 					// READ THESE REMARKS, THESE DEVS ARE INSANE!!!!
 					// https://learn.microsoft.com/en-us/dotnet/api/system.io.file.move?view=netframework-4.0#system-io-file-move(system-string-system-string-system-boolean)
-				}
+				}*/
 			}
 			catch (Exception ex)
 			{
@@ -402,12 +406,12 @@ class Program
 				Console.WriteLine(ex);
 			}
 		}
-		if (bleeding)
+		/*if (bleeding)
 		{
 			Directory.Delete("FastGH3-main\\",true);
-		}
+		}*/
 		buildZip.Dispose();
-		File.Delete(zipPath);
+		//File.Delete(zipPath);
 		Console.WriteLine("Done.");
 		Console.ReadKey();
 	}

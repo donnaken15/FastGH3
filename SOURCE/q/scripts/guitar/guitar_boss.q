@@ -258,10 +258,11 @@ script bossbattle_ready\{battle_gem = 0 player_status = player1_status}
 	else
 		begin_pos = (($button_up_models.<Color>.pos_2d)- (0.0, 90.0))
 	endif
+	offset = ((1.0, 0.0) * $x_offset_p2)
 	if ($<player_status>.Player = 1)
-		<begin_pos> = (<begin_pos> - (225.0, 0.0))
+		<begin_pos> = (<begin_pos> - <offset>)
 	else
-		<begin_pos> = (<begin_pos> + (225.0, 0.0))
+		<begin_pos> = (<begin_pos> + <offset>)
 	endif
 	card_alpha = 1
 	if NOT ($show_battle_text = 1)

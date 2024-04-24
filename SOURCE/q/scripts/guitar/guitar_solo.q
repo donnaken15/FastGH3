@@ -52,13 +52,11 @@ script solo\{part = guitar diff = expert}
 	GetArraySize \{scripts}
 	k = 0
 	found_self = 0
+	GetDeltaTime
 	begin
 		// find own script props just for the exact time it was due to spawn
 		scr = (<scripts>[<k>])
-		// 1003.50 >= 1000 because %$#@ you - neversoft
-		// execution time offset is within 0-10ms for me
-		// probably tied to framerate
-		if ((<Scr>.time + 40) >= <time> & (<Scr>.time) < <time> & (<Scr>.Scr) = solo)
+		if ((<Scr>.time + (<delta_time> * 1000)) >= <time> & (<Scr>.time) < <time> & (<Scr>.Scr) = solo)
 			// fallback for no param entered
 			part2 = guitar
 			diff2 = expert
@@ -312,6 +310,8 @@ script solo_net \{ player = 2 hits = 0 total = 0 index = 0 }
 	change GlobalName = <lsi_p> newValue  = <index>
 endscript
 
+solo_percentage_font = fontgrid_title_gh3
+solo_percentage_y = 280.0
 script solo_ui_create\{Player = 1}
 	FormatText checksumName = lsh_p 'last_solo_hits_p%d' d = <Player>
 	FormatText checksumName = lst_p 'last_solo_total_p%d' d = <Player>
@@ -327,13 +327,13 @@ script solo_ui_create\{Player = 1}
 		Type = TextElement
 		parent = <gemcont>
 		id = <solotxt>
-		font = fontgrid_title_gh3
+		font = ($solo_percentage_font)
 		Scale = 0.8
 		rgba = [255 255 255 255]
 		text = <text>
 		just = [center center]
 		z_priority = 20
-		Pos = (640.0, 280.0)
+		Pos = (((640.0, 0.0)) + (($solo_percentage_y) * (0.0, 1.0)))
 	}
 endscript
 

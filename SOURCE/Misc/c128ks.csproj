@@ -39,12 +39,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>rem "C:\Program Files\PackageManagement\NuGet\Packages\ilmerge.3.0.41\tools\net452\ILMerge.exe" "$(TargetPath)" /out:"tmp.exe"
-rem copy "tmp.exe" "$(TargetPath)" /y
-rem del "tmp.exe" "tmp.pdb"
-rem "C:\Program Files (x86)\Resource Hacker\resourcehacker.exe" -open "$(TargetFileName)" -save "$(TargetFileName)" -action delete VERSIONINFO,,
-rem stripreloc /b "$(TargetFileName)"
-call "$(ProjectDir)stripversion.bat" "$(TargetPath)"
+    <PostBuildEvent>call "$(ProjectDir)stripversion.bat" "$(TargetPath)"
 move "$(TargetPath)" "$(TargetDir)c128ks.exe"</PostBuildEvent>
   </PropertyGroup>
 </Project>

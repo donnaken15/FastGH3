@@ -146,7 +146,7 @@ script setup_hud
 					Scale = (($g_hud_2d_struct_used).Scale)
 				}
 			endif
-			create_2d_hud_elements parent = <new_2d_container> player_text = <player_text> elements_structure = $g_hud_2d_struct_used
+			create_2d_hud_elements parent = <new_2d_container> player_text = <player_text>
 		endif
 	else
 		//create_menu_backdrop \{texture = gameplay_BG}

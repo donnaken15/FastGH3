@@ -13,3 +13,7 @@
 [submodule "SOURCE/DotNetZip"]
 	path = SOURCE/DotNetZip
 	url = https://github.com/DinoChiesea/DotNetZip
+[submodule "SOURCE/QueenBee"]
+	path = SOURCE/QueenBee
+	url = https://github.com/donnaken15/Queen-Bee
+	branch = main

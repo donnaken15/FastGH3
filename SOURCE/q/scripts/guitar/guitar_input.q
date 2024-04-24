@@ -1,11 +1,4 @@
-button_values = [
-	65536
-	4096
-	256
-	16
-	1
-	0
-]
+button_values = [ 65536 4096 256 16 1 0 ]
 hammer_on_measure_scale = 0
 
 script check_buttons_fast
@@ -55,20 +48,8 @@ script strip_single_note_strum
 	endif
 	return stripped_strum = <stripped_strum>
 endscript
-button_up_pixel_arrayp1 = [
-	0.0
-	0.0
-	0.0
-	0.0
-	0.0
-]
-button_up_pixel_arrayp2 = [
-	0.0
-	0.0
-	0.0
-	0.0
-	0.0
-]
+button_up_pixel_arrayp1 = [ 0.0 0.0 0.0 0.0 0.0 ]
+button_up_pixel_arrayp2 = [ 0.0 0.0 0.0 0.0 0.0 ]
 
 script button_checker
 	ButtonCheckerInit <...>
@@ -81,10 +62,7 @@ script button_checker
 	repeat
 	ButtonCheckerCleanup
 endscript
-currently_holding = [
-	0
-	0
-]
+currently_holding = [ 0 0 ]
 
 script check_note_hold1
 	printstruct <...>
@@ -116,6 +94,8 @@ script check_note_hold
 	if ($FC_MODE = 1)
 		Change StructureName = <player_status> current_health = 0.000000000000001
 	endif
+	ExtendCrc open_sustain_fx ($<player_status>.text) out = scr_name
+	killspawnedscript id = <scr_name>
 	CheckNoteHoldEnd Player = <Player>
 	SetArrayElement ArrayName = currently_holding GlobalArray index = <index> NewValue = 0
 endscript
@@ -248,7 +228,7 @@ wibble_lagp2 = 0.0 //
 
 script control_whammy_pitchshift
 	if ($boss_battle = 1)
-		if (($<player_status>.Player)= 2)
+		if ($<player_status>.Player = 2)
 			return
 		endif
 	endif

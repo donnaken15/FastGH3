@@ -301,7 +301,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	endif
 	if (<do_bot> = 1)
 		SpawnScriptLater gem_iterator params = {iterator_text = 'bot' song_name = <song_name> difficulty = <difficulty> part = <part> use_input_array = 'input_array' one_event_per_frame
-			time_offset = <early_time> strum_function = check_buttons_bot skipleadin = <scroll_time>
+			time_offset = (<early_time> * 1.0) strum_function = check_buttons_bot skipleadin = <scroll_time>
 			Player = <Player> player_status = <player_status> player_text = <player_text>}
 		printf \{channel = log 'Spawned bot!'}
 	endif
@@ -825,6 +825,96 @@ script show_boss_helper_now
 	Change \{show_boss_helper_screen = 0}
 endscript
 
+gem_scroller_exit_scripts = [
+	lefty_toggle
+	move_2d_elements_to_default
+	wait_and_play_you_rock_movie
+	update_score_fast
+	check_for_star_power
+	wait_for_inactive
+	pulsate_all_star_power_bulbs
+	pulsate_star_power_bulb
+	rock_meter_star_power_on
+	rock_meter_star_power_off
+	star_power_activate_and_drain
+	hud_activated_star_power
+	hud_move_note_scorebar
+	hud_flash_red_bg_p1
+	hud_flash_red_bg_p2
+	hud_flash_red_bg_kill
+	hud_lightning_alert
+	hud_show_note_streak_combo
+	highway_pulse_multiplier_loss
+	GuitarEvent_MissedNote
+	GuitarEvent_UnnecessaryNote
+	GuitarEvent_HitNotes
+	GuitarEvent_HitNote
+	GuitarEvent_StarPowerOn
+	GuitarEvent_StarPowerOff
+	GuitarEvent_StarHitNote
+	GuitarEvent_StarSequenceBonus
+	GuitarEvent_StarMissNote
+	GuitarEvent_WhammyOn
+	GuitarEvent_WhammyOff
+	GuitarEvent_StarWhammyOn
+	GuitarEvent_StarWhammyOff
+	GuitarEvent_Note_Window_Open
+	GuitarEvent_Note_Window_Close
+	GuitarEvent_crowd_poor_medium
+	GuitarEvent_crowd_medium_good
+	GuitarEvent_crowd_medium_poor
+	GuitarEvent_crowd_good_medium
+	GuitarEvent_CreateFirstGem
+	highway_pulse_black
+	GuitarEvent_HitNote_Spawned
+	hit_note_fx
+	first_gem_fx
+	Open_NoteFX
+	gem_iterator
+	gem_array_stepper
+	gem_array_events
+	gem_step
+	gem_step_end
+	fretbar_iterator
+	Strum_iterator
+	FretPos_iterator
+	FretFingers_iterator
+	Drum_iterator
+	Drum_cymbal_iterator
+	WatchForStartPlaying_iterator
+	gem_scroller
+	button_checker
+	check_buttons
+	check_buttons_fast
+	net_check_buttons
+	fretbar_update_tempo
+	fretbar_update_hammer_on_tolerance
+	move_whammy
+	create_fretbar
+	move_highway_2d
+	move_highway_prepass
+	GuitarEvent_PreFretbar
+	GuitarEvent_Fretbar
+	check_note_hold
+	net_check_note_hold
+	star_power_whammy
+	show_star_power_ready
+	hud_glowburst_alert
+	event_iterator
+	win_song
+	hand_note_iterator
+	kill_object_later
+	waitandkillhighway
+	testlevel_debug
+	show_coop_raise_axe_for_starpower
+	net_whammy_pitch_shift
+	Crowd_AllPlayAnim
+	hud_activated_star_power_spawned
+	dispatch_player_state
+	network_events
+	online_win_song
+]
+
 script kill_gem_scroller\{no_render = 0}
 	ProfilingStart
 	stop_bgbink
@@ -863,25 +953,6 @@ script kill_gem_scroller\{no_render = 0}
 	LaunchGemEvent \{event = kill_objects}
 	destroy_credits_menu
 	destroy_battle_alert_frames
-	killspawnedscript \{name = lefty_toggle}
-	killspawnedscript \{name = move_2d_elements_to_default}
-	killspawnedscript \{name = wait_and_play_you_rock_movie}
-	killspawnedscript \{name = update_score_fast}
-	killspawnedscript \{name = check_for_star_power}
-	killspawnedscript \{name = wait_for_inactive}
-	killspawnedscript \{name = pulsate_all_star_power_bulbs}
-	killspawnedscript \{name = pulsate_star_power_bulb}
-	killspawnedscript \{name = rock_meter_star_power_on}
-	killspawnedscript \{name = rock_meter_star_power_off}
-	killspawnedscript \{name = star_power_activate_and_drain}
-	killspawnedscript \{name = hud_activated_star_power}
-	killspawnedscript \{name = hud_move_note_scorebar}
-	killspawnedscript \{name = hud_flash_red_bg_p1}
-	killspawnedscript \{name = hud_flash_red_bg_p2}
-	killspawnedscript \{name = hud_flash_red_bg_kill}
-	killspawnedscript \{name = hud_lightning_alert}
-	killspawnedscript \{name = hud_show_note_streak_combo}
-	killspawnedscript \{name = highway_pulse_multiplier_loss}
 	Player = 1
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player> AddToStringLookup
@@ -897,75 +968,15 @@ script kill_gem_scroller\{no_render = 0}
 		Player = (<Player> + 1)
 	repeat $max_num_players
 	kill_startup_script <...>
-	killspawnedscript \{name = GuitarEvent_MissedNote}
-	killspawnedscript \{name = GuitarEvent_UnnecessaryNote}
-	killspawnedscript \{name = GuitarEvent_HitNotes}
-	killspawnedscript \{name = GuitarEvent_HitNote}
-	killspawnedscript \{name = GuitarEvent_StarPowerOn}
-	killspawnedscript \{name = GuitarEvent_StarPowerOff}
-	killspawnedscript \{name = GuitarEvent_StarHitNote}
-	killspawnedscript \{name = GuitarEvent_StarSequenceBonus}
-	killspawnedscript \{name = GuitarEvent_StarMissNote}
-	killspawnedscript \{name = GuitarEvent_WhammyOn}
-	killspawnedscript \{name = GuitarEvent_WhammyOff}
-	killspawnedscript \{name = GuitarEvent_StarWhammyOn}
-	killspawnedscript \{name = GuitarEvent_StarWhammyOff}
-	killspawnedscript \{name = GuitarEvent_Note_Window_Open}
-	killspawnedscript \{name = GuitarEvent_Note_Window_Close}
-	killspawnedscript \{name = GuitarEvent_crowd_poor_medium}
-	killspawnedscript \{name = GuitarEvent_crowd_medium_good}
-	killspawnedscript \{name = GuitarEvent_crowd_medium_poor}
-	killspawnedscript \{name = GuitarEvent_crowd_good_medium}
-	killspawnedscript \{name = GuitarEvent_CreateFirstGem}
-	killspawnedscript \{name = highway_pulse_black}
-	killspawnedscript \{name = GuitarEvent_HitNote_Spawned}
-	killspawnedscript \{name = hit_note_fx}
-	killspawnedscript \{name = first_gem_fx}
-	killspawnedscript \{name = gem_iterator}
-	killspawnedscript \{name = gem_array_stepper}
-	killspawnedscript \{name = gem_array_events}
-	killspawnedscript \{name = gem_step}
-	killspawnedscript \{name = gem_step_end}
-	killspawnedscript \{name = fretbar_iterator}
-	killspawnedscript \{name = Strum_iterator}
-	killspawnedscript \{name = FretPos_iterator}
-	killspawnedscript \{name = FretFingers_iterator}
-	killspawnedscript \{name = Drum_iterator}
-	killspawnedscript \{name = Drum_cymbal_iterator}
-	killspawnedscript \{name = WatchForStartPlaying_iterator}
-	killspawnedscript \{name = gem_scroller}
-	killspawnedscript \{name = button_checker}
-	killspawnedscript \{name = check_buttons}
-	killspawnedscript \{name = check_buttons_fast}
-	killspawnedscript \{name = net_check_buttons}
-	killspawnedscript \{name = fretbar_update_tempo}
-	killspawnedscript \{name = fretbar_update_hammer_on_tolerance}
-	killspawnedscript \{name = move_whammy}
-	killspawnedscript \{name = create_fretbar}
-	killspawnedscript \{name = move_highway_2d}
-	killspawnedscript \{name = move_highway_prepass}
-	killspawnedscript \{name = GuitarEvent_PreFretbar}
-	killspawnedscript \{name = GuitarEvent_Fretbar}
-	killspawnedscript \{name = check_note_hold}
-	killspawnedscript \{name = net_check_note_hold}
-	killspawnedscript \{name = star_power_whammy}
-	killspawnedscript \{name = show_star_power_ready}
-	killspawnedscript \{name = hud_glowburst_alert}
+	array = ($gem_scroller_exit_scripts)
+	GetArraySize \{array}
+	i = 0
+	begin
+		killspawnedscript name = (<array>[<i>])
+		Increment \{i}
+	repeat <array_size>
 	Change \{star_power_ready_on_p1 = 0}
 	Change \{star_power_ready_on_p2 = 0}
-	killspawnedscript \{name = event_iterator}
-	killspawnedscript \{name = win_song}
-	killspawnedscript \{name = hand_note_iterator}
-	killspawnedscript \{name = kill_object_later}
-	killspawnedscript \{name = waitandkillhighway}
-	killspawnedscript \{name = testlevel_debug}
-	killspawnedscript \{name = show_coop_raise_axe_for_starpower}
-	killspawnedscript \{name = net_whammy_pitch_shift}
-	killspawnedscript \{name = Crowd_AllPlayAnim}
-	killspawnedscript \{name = hud_activated_star_power_spawned}
-	killspawnedscript \{name = dispatch_player_state}
-	killspawnedscript \{name = network_events}
-	killspawnedscript \{name = online_win_song}
 	new_net_logic_deinit
 	destroy_net_popup
 	destroy_gamertags

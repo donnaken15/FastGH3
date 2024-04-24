@@ -1,5 +1,6 @@
 ﻿using ChartEdit;
 using Ionic.Zip;
+using Ionic.Zlib;
 using Microsoft.Win32;
 using Nanook.QueenBee.Parser;
 using System;
@@ -96,6 +97,7 @@ static partial class Launcher
 					.ToUpperInvariant();
 	}
 
+	#region little functions
 	public static void killgame()	{ cfgW(m, ks, 1); }
 	public static void unkillgame()	{ cfgW(m, ks, 0); }
 	// copy song video
@@ -275,7 +277,9 @@ static partial class Launcher
 		}
 		return false;
 	}
+	#endregion
 
+	#region process functions, functions for part of conversion, misc
 	//http://csharptest.net/526/how-to-search-the-environments-path-for-an-exe-or-dll/index.html
 	/// <summary>
 	/// Expands environment variables and, if unqualified, locates the exe in the working directory
@@ -296,17 +300,8 @@ static partial class Launcher
 							'['+new string(Path.GetInvalidPathChars())+']', "")).Split(';'))
 				{
 					string p = v.Trim();
-					try
-					{
-						if (!string.IsNullOrEmpty(p) && File.Exists(p = Path.Combine(p, e)))
-						{
-							return Path.GetFullPath(p);
-						}
-					}
-					catch (ArgumentException ex)
-					{
-						vl(string.Format(T[198], p, e, ex));
-					}
+					if (!String.IsNullOrEmpty(p) && File.Exists(p = Path.Combine(p, e)))
+						return Path.GetFullPath(p);
 				}
 			return "";
 			//throw new FileNotFoundException(new FileNotFoundException().Message, exe);
@@ -461,7 +456,7 @@ static partial class Launcher
 
 	public static void ec(ref Process p, ushort ab, bool fr, ushort ar, bool fc, bool s, bool var)
 	{
-		// STUPID COMPILATION MAKES IT ACCESS STARTINFO EVERYTIME
+		// STUPID COMPILATION MAKES IT ACCESS STARTINFO EVERY TIME
 		ProcessStartInfo pi = p.StartInfo;
 		pi.Arguments += " -b " + (ab << 1 /*ugh*/).ToString();
 		if (fr)
@@ -494,14 +489,27 @@ static partial class Launcher
 	// subprocess, because I'm lazy and my code is super hacky
 	// and I refuse to move Main elsewhere or split the code up
 	// into their own functions
-	static void sub(string args)
+	static int sub(string args)
 	{
-		Process.Start(
+		Process p = Process.Start(
 			new ProcessStartInfo(Application.ExecutablePath, args)
 			{
 				UseShellExecute = false
 			}
-		).WaitForExit();
+		);
+		p.WaitForExit();
+		return p.ExitCode;
+	}
+	#endregion
+
+	static DateTime unixstart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+	static DateTime FromUnixTime(uint seconds)
+	{
+		return unixstart.AddSeconds(seconds);
+	}
+	static uint ToUnixTime(DateTime ts)
+	{
+		return (uint)(ts - unixstart).TotalSeconds;
 	}
 
 	[DllImport("kernel32.dll", SetLastError = true)]
@@ -510,7 +518,8 @@ static partial class Launcher
 
 	static bool newinstance = false;
 	static bool initlog = false;
-	public static string version = "1.0-999010889";
+	public static string version = "1.1-999011043";
+	public static string branch = "main";
 	public static DateTime builddate;
 	[STAThread]
 	static int Main(string[] args)
@@ -525,7 +534,7 @@ static partial class Launcher
 			{
 				if (cfg(l, settings.t.NoStartupMsg.ToString(), 0) == 0)
 				{
-					Console.Clear();
+					//Console.Clear();
 					Console.WriteLine(splashText);
 					Console.ReadKey();
 				}
@@ -545,7 +554,8 @@ static partial class Launcher
 					// when MMF is figured out for multi instances
 					sub(SubstringExtensions.Quotes(openchart.FileName));
 				}
-				return unchecked(0x11111111);
+				else
+					return unchecked(0x11111111);
 			}
 			#endregion
 			Console.Title = title;
@@ -606,7 +616,8 @@ static partial class Launcher
 
 			// guessing people just don't migrate their
 			// config/user files when updating to a later version?
-
+			// or don't use the updater at all???? (it kind of sucks anyway)
+			
 			vl(T[0]);
 			caching = cfg(l, settings.t.SongCaching.ToString(), 1) == 1;
 			if (caching)
@@ -617,6 +628,12 @@ static partial class Launcher
 			if (args.Length > 0)
 			{
 				// combine logs from any of 3 processes to easily look for errors from all of them
+				try
+				{
+					builddate = FromUnixTime(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
+					// a person legitimately had this file missing, how is that even possible >:(
+				}
+				catch { builddate = DateTime.MinValue; }
 				bool newfile = cfg("Temp", fl, 1) == 1;
 				if (args[0].ToLower() != "-settings" &&
 					args[0].ToLower() != "-gfxswap" &&
@@ -634,17 +651,12 @@ static partial class Launcher
 						if (newfile)
 						{
 							log.WriteLine(T[1]);
-							try {
-								builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
-								// a person legitimately had this file missing, how is that even possible >:(
-							} catch {
-								builddate = DateTime.MinValue;
-							}
-							log.WriteLine("version " + version + " / build time: " + builddate);
+							log.WriteLine("version " + version + " / build time: " + builddate + " / branch: " + branch);
 							newfile = false;
 							cfgW("Temp", fl, 0);
 						}
 					}
+				//throw new Exception("dummy");
 				string chartext = ".chart", midext = ".mid",
 					paksongmid = pakf + "song" + midext,
 					paksongchart = pakf + "song" + chartext,
@@ -655,12 +667,8 @@ static partial class Launcher
 					bossColor = ConsoleColor.Blue,
 					FSBcolor = ConsoleColor.Yellow,
 					FSPcolor = ConsoleColor.Magenta;
-				if (args[0] == "-settings")
+				if (args[0].ToLower() == "-settings")
 				{
-					try
-					{
-						builddate = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(Eswap(BitConverter.ToUInt32(File.ReadAllBytes(mt + "bt.bin"), 0)));
-					} catch { builddate = DateTime.MinValue; }
 					// muh classic theme
 					//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
 					Directory.SetCurrentDirectory(folder);
@@ -707,7 +715,7 @@ static partial class Launcher
 					}
 					int choose = rand.Next(files.Count);
 					print("Choosing: " + files[choose]);
-					sub("\"" + files[choose] + "\"");
+					return sub("\"" + files[choose] + "\"");
 					//die();
 				}
 				#endregion
@@ -761,23 +769,23 @@ static partial class Launcher
 									}
 									// someone actually tried dragging default.scn into this
 									// maybe should prevent that here, idk
-									pe.ReplaceFile("zones\\global\\global_gfx" + ".tex", gfx.ToArray());
+									pe.ReplaceFile(string.Format(T[205], ".tex"), gfx.ToArray());
 									if (scn != null)
 									{
-										pe.ReplaceFile("zones\\global\\global_gfx" + ".scn", scn.ToArray());
+										pe.ReplaceFile(string.Format(T[205], ".scn"), scn.ToArray());
 									}
 									else
-										pe.ReplaceFile("zones\\global\\global_gfx" + ".scn", defaultscn);
+										pe.ReplaceFile(string.Format(T[205], ".scn"), defaultscn);
 								}
 								else
 								{
-									pe.ReplaceFile("zones\\global\\global_gfx.tex", args[1]);
+									pe.ReplaceFile(string.Format(T[205], ".tex"), args[1]);
 									if (File.Exists(args[1].Replace(".tex", ".scn").Replace(".gfx", ".scn")))
 									{
-										pe.ReplaceFile("zones\\global\\global_gfx.scn", args[1].Replace(".tex", ".scn").Replace(".gfx", ".scn"));
+										pe.ReplaceFile(string.Format(T[205], ".scn"), args[1].Replace(".tex", ".scn").Replace(".gfx", ".scn"));
 									}
 									else
-										pe.ReplaceFile("zones\\global\\global_gfx.scn", defaultscn);
+										pe.ReplaceFile(string.Format(T[205], ".scn"), defaultscn);
 								}
 							}
 							else
@@ -927,7 +935,7 @@ static partial class Launcher
 					exit();
 					cfgW("Temp", fl, 0);
 					// "already running" >:(
-					sub(tF.Quotes());
+					return sub(tF.Quotes());
 					killtmpfsp(tF);
 					//die();
 				}
@@ -961,10 +969,10 @@ static partial class Launcher
 						{
 							vl(T[18], chartConvColor); // "Detected midi file."
 							vl(T[19], chartConvColor); // "Converting to chart..."
-													   // why isnt this working
-													   //mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
-													   //Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
-													   //Console.ReadKey();
+							// why isnt this working
+							//mid2chart.ChartWriter.writeChart(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])), folder + pak + "tmp.chart", false, false);
+							//Console.WriteLine(mid2chart.MidReader.ReadMidi(Path.GetFullPath(args[0])).sections[0].name);
+							//Console.ReadKey();
 							File.Copy(args[0], paksongmid, true);
 							vl(T[135]);
 							mid2chart.Start();
@@ -1161,7 +1169,7 @@ static partial class Launcher
 						bool nj3t = false; // nj3ts.Count smh // "3 Count!"
 						List<string> nj3ts = new List<string>();
 						vl(T[26], FSBcolor); //vl("Checking if extra audio exists", FSBcolor);
-											 // numbered drum streams
+						// numbered drum streams
 						for (int j = 0; j < 4; j++)
 						{
 							for (int i = 1; i < 9; i++)
@@ -1366,7 +1374,7 @@ static partial class Launcher
 						Process fsbbuild3 = new Process(); // makefsb part
 #endif
 						//const bool MTFSB = true; // enable asynchronous audio track encoding
-						//						 //if (cacheEnabled)
+						//if (cacheEnabled)
 						pbl = new short[3] { -1, -1, -1 };
 						float[] al = new float[3] { -1, -1, -1 };
 						killgame();
@@ -1424,12 +1432,10 @@ static partial class Launcher
 								{
 									addaud.StartInfo.Arguments += " \"" + a + '"';
 									maxl = Math.Max(maxl, alen(a));
+									if (ach(a) > 1)
+										is_stereo[0] = true;
 								}
-								addaud.StartInfo.EnvironmentVariables["ab"] = (AB_param /*????*/).ToString();
-								addaud.StartInfo.EnvironmentVariables["ar"] = AR_param.ToString();
-								addaud.StartInfo.EnvironmentVariables["ac"] = stereo ? "2" : "1";
-								addaud.StartInfo.EnvironmentVariables["bm"] = !VBR ? "B" : "V";
-								addaud.StartInfo.EnvironmentVariables["ff"] = where("ffmpeg.exe");
+								ec(ref addaud, AB_param, true, AR_param, true, is_stereo[0], VBR);
 								al[0] = maxl;
 								addaud.StartInfo.WorkingDirectory = mt;
 								addaud.StartInfo.Arguments = "/c " + addaud.StartInfo.Arguments.Quotes();
@@ -2644,7 +2650,7 @@ static partial class Launcher
 								genre
 							};
 							File.WriteAllText(folder + "currentsong.txt",
-								FormatText(cfg(l, stf, "%a - %t"),
+								FormatText(Regex.Unescape(cfg(l, stf, "%a - %t")),
 								songParams));
 #endregion
 #endregion
@@ -2801,7 +2807,7 @@ static partial class Launcher
 								genre
 							};
 							File.WriteAllText(folder + "currentsong.txt",
-								FormatText(cfg(l, stf, "%a - %t"),
+								FormatText(Regex.Unescape(cfg(l, stf, "%a - %t")),
 								songParams));
 							File.Delete(paksongmid);
 							File.Delete(paksongchart);
@@ -3414,7 +3420,7 @@ static partial class Launcher
 						{
 							exit();
 							cfgW("Temp", fl, 0);
-							sub(selectedtorun.Quotes());
+							return sub(selectedtorun.Quotes());
 							//die();
 						}
 						killtmpf(selectedtorun);
@@ -3440,9 +3446,7 @@ static partial class Launcher
 						bool cancel = false;
 						unkname setp = new unkname();
 						{
-							Match m = Regex.Match(Path.GetFileName(args[0]),
-								"^(?<name>[A-Z0-9_]+)_song\\.(pak|qb)(\\.(ngc|ps2|ps3|xen))?$",
-								RegexOptions.IgnoreCase);
+							Match m = Regex.Match(Path.GetFileName(args[0]), T[201], RegexOptions.IgnoreCase);
 							if (m.Success)
 							{
 								Group name = m.Groups["name"];
@@ -3464,9 +3468,7 @@ static partial class Launcher
 									{
 										print("Got raw filename: " + f.Filename, chartConvColor);
 										// extract song name from raw filename if possible
-										Match m = Regex.Match(f.Filename,
-											"^(data[\\/\\\\])?songs[\\/\\\\](?<name>[A-Z0-9_]+)(_song_scripts)?\\.mid\\.qb(\\.(ngc|ps2|ps3|xen))?$",
-											RegexOptions.IgnoreCase);
+										Match m = Regex.Match(f.Filename, T[200], RegexOptions.IgnoreCase);
 										// (VV) Wii/PS2 format, raw : data/songs/***.mid.qb.(platform) // magically doesn't cut off first char unlike 'cripts'
 										// PC/360/PS3 format, hashed: songs\***.mid.qb
 										if (m.Success)
@@ -3813,57 +3815,73 @@ static partial class Launcher
 					ServicePointManager.Expect100Continue = true;
 					ServicePointManager.SecurityProtocol = (SecurityProtocolType)(0xc0 | 0x300 | 0xc00);
 					ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-
-					string host = "https://0x0.st/";
-					var request = (HttpWebRequest)WebRequest.Create(host);
+					
+					var request = (HttpWebRequest)WebRequest.Create(
+						T[197]
+						// QUERY ISN'T APPEARING IN _POST BUT IT'S STILL IN REQUEST_URI
+						// PARAMS HAVE TO BE PUT IN MULTIFORM, CRINGE
+					);
 					string boundary = new string('-', 24) + DateTime.Now.Ticks.ToString("x");
 					request.ContentType = T[179] + boundary;
 					request.Method = "POST";
 					request.ServicePoint.Expect100Continue = true;
 
+					// if possible, upload chart in case of error with the file
+					// should check specifically when it's a chart problem so
+					// it's not uploaded every single time if it's not related to the issue
+					string chartgz = null;
+					try
+					{
+						if (initlog)
+						{
+							chartgz = Convert.ToBase64String(GZipStream.CompressBuffer(File.ReadAllBytes(args[0])));
+						}
+					}
+					catch (Exception e)
+					{
+						vl(e);
+					}
 					// brain drain
-					// TODO?: put these strings in lt.txt
 					byte[] tempBuffer = Encoding.ASCII.GetBytes(
-						string.Format(T[177], boundary, log));
+						string.Format(T[177], boundary, log, T[206]) +
+						(chartgz == null ? "" : string.Format(T[177], boundary, chartgz, T[207])) +
+						string.Format(T[177], boundary, version, "name=\"ver\"") +
+						string.Format(T[177], boundary, branch, "name=\"b\"") +
+						string.Format(T[177], boundary, ToUnixTime(builddate), "name=\"bt\"") +
+						string.Format(T[177], boundary, ex.GetType().FullName, "name=\"ex\"") +
+						string.Format(T[177], boundary, ex.Message, "name=\"msg\"") +
+						"\r\n--" + boundary + "--");
 					request.ContentLength = tempBuffer.Length;
 
 					using (Stream requestStream = request.GetRequestStream())
 					{
 						requestStream.Write(tempBuffer, 0, tempBuffer.Length);
 					}
-
-					var response = request.GetResponse();
-
-					Stream stream2 = response.GetResponseStream();
-					StreamReader reader2 = new StreamReader(stream2);
-					string outlink = reader2.ReadToEnd().Trim('\n', '\r');
-					char[] id = outlink.Between(host, ".txt").ToCharArray();
-
-					// report to me
-					char[] URLalphabet = T[97].ToCharArray();
-
-					var report = (HttpWebRequest)WebRequest.Create(T[197]);
-					report.ContentType = T[178];
-					report.Method = "POST";
-
-					byte[] reportbytes = new byte[id.Length];
-					for (int i = 0; i < id.Length; i++)
+					
+					try
 					{
-						reportbytes[i] = (byte)Array.IndexOf(URLalphabet, id[i]);
-					}
-					report.ContentLength = reportbytes.Length;
+						WebResponse response = request.GetResponse();
 
-					using (Stream reportStream = report.GetRequestStream())
+						Stream stream2 = response.GetResponseStream();
+						StreamReader reader2 = new StreamReader(stream2);
+						reader2.ReadToEnd();
+						// printed to check variables in PHP, outputting nothing
+						// now that this is figured out (for the most part)
+
+						print("Log saved to launcher.txt");
+					}
+					catch (WebException eex)
 					{
-						reportStream.Write(reportbytes, 0, reportbytes.Length);
+						Stream stream2 = eex.Response.GetResponseStream();
+						StreamReader reader2 = new StreamReader(stream2);
+						print(reader2.ReadToEnd());
 					}
-					Stream stream3 = report.GetResponse().GetResponseStream();
-					StreamReader reader3 = new StreamReader(stream3);
-					reader3.ReadToEnd();
-					// im not returning any data, so
-
-					print("Log saved to " + outlink);
-				} catch { print(T[137]); }
+				}
+				catch (Exception eex)
+				{
+					print(eex);
+					print(T[137]);
+				}
 			}
 
 			if (newinstance)

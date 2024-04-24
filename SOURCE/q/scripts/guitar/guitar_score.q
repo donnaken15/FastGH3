@@ -40,6 +40,8 @@ script reset_score
 	repeat <array_Size>
 	Change \{whammy_mania_achievement_invalidated = 0}
 	Change \{gStar_Power_Triggered = 0}
+	solo_reset \{i = 1 reset_hud}
+	solo_reset \{i = 2 reset_hud}
 endscript
 
 script hit_note

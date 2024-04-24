@@ -113,6 +113,7 @@ for (var R in reslist) {
 			buf += '\0';
 		else
 			buf = Buffer.concat([buf, Buffer(1)]);
+	const sep = "~";
 	var string;
 	var data_type;
 	var raw_string = null;
@@ -132,7 +133,7 @@ for (var R in reslist) {
 		data_type = "string";
 		if (string_array)
 		{
-			string = string.replace(new RegExp(res.splitter, 'g'), '~');
+			string = string.replace(new RegExp(res.splitter, 'g'), sep);
 			data_type += "[]";
 		}
 		if (res.escaped)
@@ -143,7 +144,7 @@ for (var R in reslist) {
 		//					.replaceAll('\\\\', '\\');
 			string = string.replace(/([^\\\n])?\\./g, parse_esc);
 		if (string_array)
-			raw_string = string.split('^');
+			raw_string = string.split(sep);
 		else
 			raw_string = string;
 		//fs.writeFileSync('test.txt',
@@ -155,10 +156,11 @@ for (var R in reslist) {
 	string = string
 		.replace(/\n/g,'n')
 		.replace(/\r/g,'r')
-		.replace(/\u2029/g,'\\u2029')
-		.replace(/"/g,'\\"')
+		.replace(/\u2029/g, '\\u2029')
+		.replace(/\\/g, '\\\\')
+		.replace(/"/g, '\\"')
 		.replace(//g,'\\u0085') // wtf is this, causes newline
-		.replace(/\\/g,'\\\\');
+		;
 		//.replaceAll(/[\x80-\x8F]/g,());
 	output += '\tpublic static readonly '+(data_type)+" "+R+" = ";
 	// MESSSSSSSSSSSSSSSSSSSSSS
@@ -212,7 +214,7 @@ for (var R in reslist) {
 		if (!dontConvert)
 			output += ')';
 		if (string_array)
-			output += '.Split(new char[] {\'~\'}, StringSplitOptions.RemoveEmptyEntries)';
+			output += '.Split(new char[] {\''+sep+'\'}, StringSplitOptions.RemoveEmptyEntries)';
 		output += ';\n';
 	}
 }

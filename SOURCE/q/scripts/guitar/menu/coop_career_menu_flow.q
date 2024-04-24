@@ -201,10 +201,10 @@ coop_career_play_song_fs = {
 			action = pause_game
 			flow_state = coop_career_pause_fs
 		}
-		{
-			action = preencore_win_song
-			flow_state = coop_career_encore_confirmation_fs
-		}
+		//{
+		//	action = preencore_win_song
+		//	flow_state = coop_career_encore_confirmation_fs
+		//}
 		{
 			action = unlocktier_win_song
 			flow_state = career_select_venue_fs
@@ -717,19 +717,3 @@ script find_coop_career_unlock_successor
 		endif
 	endif
 endscript
-coop_career_encore_confirmation_fs = {
-	create = create_encore_confirmation_menu
-	Destroy = destroy_encore_confirmation_menu
-	actions = [
-		{
-			action = continue
-			func = start_encore
-			flow_state = coop_career_play_song_fs
-		}
-		{
-			action = quit
-			func = kill_gem_scroller
-			flow_state = coop_career_newspaper_fs
-		}
-	]
-}

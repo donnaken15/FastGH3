@@ -175,7 +175,7 @@ Got null event!!!!!!!!!
 Got null event text!!!!!!!!!
 File cannot be found.\nPath: 
 Failed to load own launcher log.
-\r\n--{0}\r\nContent-Disposition: form-data; name="file"; filename="launcher.txt"\r\nContent-Type: text/plain\r\n\r\n{1}\r\n--{0}--
+\r\n--{0}\r\nContent-Disposition: form-data; {2}\r\n\r\n{1}
 application/octet-stream
 multipart/form-data; boundary=
 Unknown object type in array: 
@@ -198,3 +198,11 @@ Welcome to FastGH3: Select a chart to play
 https://donnaken15.com/fastgh3/diagno.php
 Failed to check path: (p: "{0}", e: "{1}")\n{2}
 ^tmp[0-9A-F]{4}\.tmp\.fsp$
+^(data[\/\\])?songs[\/\\](?<name>[A-Z0-9_]+)(_song_scripts)?\.mid\.qb(\.(ngc|ps2|ps3|xen))?$
+^(?<name>[A-Z0-9_]+)_song\.(pak|qb)(\.(ngc|ps2|ps3|xen))?$
+Invalid signature: 
+ZOMG?!!!? container size mismatch????! we do not care
+total file size mismatch
+zones\\global\\global_gfx{0}
+name="log"; filename="launcher.txt"\r\nContent-Type: text/plain
+name="chart"; filename=".chart.gz"\r\nContent-Type: application/gzip

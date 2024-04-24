@@ -115,10 +115,12 @@ struct _ // LOL!!
 				Font.Glyph glyph = fnt.glyphs[i];
 				float[] absurd = {
 					glyph.x, glyph.y, glyph.x2, glyph.y2,
-					glyph.pxW, glyph.pxH, glyph.vShift, glyph.hShift, glyph.unk_d
+					glyph.pxW, glyph.pxH, glyph.vShift
 				};
 				for (int j = 0; j < absurd.Length; j++)
 					w.Write(Eswap(rawfloat(absurd[j])));
+				w.Write(Eswap(glyph.hShift));
+				w.Write(Eswap(rawfloat(glyph.unk_d)));
 			}
 			uint imgptr = (uint)gen.Position + 0x28;
 			/*w.Write(Eswap(0x0A281100 | fnt.texture.flags));

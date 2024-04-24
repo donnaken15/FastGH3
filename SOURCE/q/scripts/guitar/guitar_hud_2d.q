@@ -7,10 +7,17 @@ script create_2d_hud_elements\{player_text = 'p1'}
 	Change \{g_flash_red_going_p2 = 0}
 	Change \{old_animate_bulbs_star_power_p1 = 0.0}
 	Change \{old_animate_bulbs_star_power_p2 = 0.0}
-	GetArraySize (($g_hud_2d_struct_used).elements)
-	parent_scale = (($g_hud_2d_struct_used).Scale)
+	if StructureContains structure=($g_hud_2d_struct_used) compressed
+		ExtendCrc (($g_hud_2d_struct_used).compressed) '_load' out = decomp_scr
+		if ScriptExists <decomp_scr>
+			<decomp_scr>
+		endif
+	endif
+	hud_struct = ($g_hud_2d_struct_used)
+	GetArraySize (<hud_struct>.elements)
+	parent_scale = (<hud_struct>.Scale)
 	old_parent = <parent>
-	parent_z = (($g_hud_2d_struct_used).z)
+	parent_z = (<hud_struct>.z)
 	i = 0
 	begin
 		just = [left top]
@@ -19,8 +26,8 @@ script create_2d_hud_elements\{player_text = 'p1'}
 		rot = 0.0
 		alpha = 1
 		pos_off = (0.0, 0.0)
-		AddParams (($g_hud_2d_struct_used).elements [<i>])
-		element_struct = (($g_hud_2d_struct_used).elements [<i>])
+		AddParams (<hud_struct>.elements[<i>])
+		element_struct = (<hud_struct>.elements[<i>])
 		if StructureContains structure = <element_struct> parent_container
 			if StructureContains structure = <element_struct> element_parent
 				ExtendCrc <element_parent> <player_text> out = container_parent
@@ -32,25 +39,25 @@ script create_2d_hud_elements\{player_text = 'p1'}
 			endif
 			container_pos = (0.0, 0.0)
 			if StructureContains structure = <element_struct> pos_type
-				<container_pos> = (($g_hud_2d_struct_used).<pos_type>)
+				<container_pos> = (<hud_struct>.<pos_type>)
 				if (<player_text> = 'p2')
 					ExtendCrc <pos_type> '_p2' out = new_pos_type
-					<container_pos> = (($g_hud_2d_struct_used).<new_pos_type>)
+					<container_pos> = (<hud_struct>.<new_pos_type>)
 				else
 					if ($current_num_players = 2)
 						ExtendCrc <pos_type> '_p1' out = new_pos_type
-						<container_pos> = (($g_hud_2d_struct_used).<new_pos_type>)
+						<container_pos> = (<hud_struct>.<new_pos_type>)
 					endif
 				endif
 			endif
 			if StructureContains structure = <element_struct> note_streak_bar
-				if StructureContains structure = ($g_hud_2d_struct_used)offscreen_note_streak_bar_off
-					<container_pos> = (<container_pos> + (($g_hud_2d_struct_used).offscreen_note_streak_bar_off))
+				if StructureContains structure = <hud_struct> offscreen_note_streak_bar_off
+					<container_pos> = (<container_pos> + (<hud_struct>.offscreen_note_streak_bar_off))
 				else
 					if (<player_text> = 'p1')
-						<container_pos> = (<container_pos> + (($g_hud_2d_struct_used).offscreen_note_streak_bar_off_p1))
+						<container_pos> = (<container_pos> + (<hud_struct>.offscreen_note_streak_bar_off_p1))
 					else
-						<container_pos> = (<container_pos> + (($g_hud_2d_struct_used).offscreen_note_streak_bar_off_p2))
+						<container_pos> = (<container_pos> + (<hud_struct>.offscreen_note_streak_bar_off_p2))
 					endif
 				endif
 			endif
@@ -83,9 +90,9 @@ script create_2d_hud_elements\{player_text = 'p1'}
 				ExtendCrc <element_id> <player_text> out = new_id
 				ExtendCrc <element_parent> <player_text> out = myparent
 				if StructureContains structure = <element_struct> small_bulb
-					scaled_dims = (<element_dims> * (($g_hud_2d_struct_used).small_bulb_scale))
+					scaled_dims = (<element_dims> * (<hud_struct>.small_bulb_scale))
 				else
-					scaled_dims = (<element_dims> * (($g_hud_2d_struct_used).big_bulb_scale))
+					scaled_dims = (<element_dims> * (<hud_struct>.big_bulb_scale))
 				endif
 				if ((StructureContains structure = <element_struct> pos_off_p2)& (<player_text> = 'p2'))
 					<pos_off> = <pos_off_p2>
@@ -139,13 +146,13 @@ script create_2d_hud_elements\{player_text = 'p1'}
 				endif
 				if StructureContains structure = <element_struct> battle_pos
 					if (<player_text> = 'p2')
-						<container_pos> = (($g_hud_2d_struct_used).rock_pos_p2)
+						<container_pos> = (<hud_struct>.rock_pos_p2)
 						ExtendCrc <pos_type> '_p2' out = new_pos_type
-						<pos_off> = ((($g_hud_2d_struct_used).<new_pos_type>))
+						<pos_off> = ((<hud_struct>.<new_pos_type>))
 					else
-						<container_pos> = (($g_hud_2d_struct_used).rock_pos_p1)
+						<container_pos> = (<hud_struct>.rock_pos_p1)
 						ExtendCrc <pos_type> '_p1' out = new_pos_type
-						<pos_off> = ((($g_hud_2d_struct_used).<new_pos_type>))
+						<pos_off> = ((<hud_struct>.<new_pos_type>))
 					endif
 				endif
 				ExtendCrc <element_parent> <player_text> out = myparent
@@ -223,9 +230,9 @@ script create_2d_hud_elements\{player_text = 'p1'}
 			<alpha> = (<tube>.alpha)
 			ExtendCrc <element_parent> <player_text> out = myparent
 			if StructureContains structure = <element_struct> small_bulb
-				scaled_dims = (<tube>.element_dims * (($g_hud_2d_struct_used).small_bulb_scale))
+				scaled_dims = (<tube>.element_dims * (<hud_struct>.small_bulb_scale))
 			else
-				scaled_dims = (<tube>.element_dims * (($g_hud_2d_struct_used).big_bulb_scale))
+				scaled_dims = (<tube>.element_dims * (<hud_struct>.big_bulb_scale))
 			endif
 			if ScreenElementExists id = <myparent>
 				CreateScreenElement {
@@ -259,9 +266,9 @@ script create_2d_hud_elements\{player_text = 'p1'}
 			<alpha> = (<full>.alpha)
 			ExtendCrc <element_parent> <player_text> out = myparent
 			if StructureContains structure = <element_struct> small_bulb
-				scaled_dims = (<element_dims> * (($g_hud_2d_struct_used).small_bulb_scale))
+				scaled_dims = (<element_dims> * (<hud_struct>.small_bulb_scale))
 			else
-				scaled_dims = (<element_dims> * (($g_hud_2d_struct_used).big_bulb_scale))
+				scaled_dims = (<element_dims> * (<hud_struct>.big_bulb_scale))
 			endif
 			if ScreenElementExists id = <myparent>
 				CreateScreenElement {
@@ -358,13 +365,13 @@ script rock_meter_star_power_on
 			endif
 			ExtendCrc <parent_id> 'tube' out = child_id
 			<child_id> ::GetTags
-			SetScreenElementProps id = <child_id> texture = (($g_hud_2d_struct_used).elements [<index>].tube.star_texture)
+			SetScreenElementProps id = <child_id> texture = (($g_hud_2d_struct_used).elements[<index>].tube.star_texture)
 			if (<morph> = 1)
 				DoScreenElementMorph id = <child_id> Pos = <final_pos> time = 0.4
 			endif
 			ExtendCrc <parent_id> 'full' out = child_id
 			<child_id> ::GetTags
-			SetScreenElementProps id = <child_id> texture = (($g_hud_2d_struct_used).elements [<index>].full.star_texture)
+			SetScreenElementProps id = <child_id> texture = (($g_hud_2d_struct_used).elements[<index>].full.star_texture)
 			if (<morph> = 1)
 				DoScreenElementMorph id = <child_id> Pos = <final_pos> time = 0.4
 				wait \{0.2 seconds}
@@ -556,8 +563,8 @@ script hud_move_note_scorebar\{Player = 1 time = 0.5 in = 1}
 	if (($game_mode = p2_career || $game_mode = p2_coop)& (<Player> = 2))
 		return
 	endif
-	if NOT StructureContains structure = ($g_hud_2d_struct_used)offscreen_note_streak_bar_off
-		if NOT StructureContains structure = ($g_hud_2d_struct_used)offscreen_note_streak_bar_off_p1
+	if NOT StructureContains structure = ($g_hud_2d_struct_used) offscreen_note_streak_bar_off
+		if NOT StructureContains structure = ($g_hud_2d_struct_used) offscreen_note_streak_bar_off_p1
 			return
 		endif
 	endif
@@ -801,7 +808,7 @@ script hud_show_note_streak_combo\{Player = 1 combo = 0}
 		parent = <player_container>
 		font = text_a6
 		text = <text>
-		rgba = [223 223 223 255]
+		rgba = $hud_notif_streak1
 		Pos = <Pos>
 		Scale = (<base_scale> * 3)
 		just = [center top]
@@ -817,8 +824,8 @@ script hud_show_note_streak_combo\{Player = 1 combo = 0}
 		return
 	endif
 	spawnscriptnow hud_glowburst_alert params = {player_status = <player_status>}
-	color0 = [245 255 120 255]
-	color1 = [245 255 160 255]
+	color0 = $hud_notif_streak2
+	color1 = $hud_notif_streak3
 	if ScreenElementExists id = <id>
 		<id> ::DoMorph Scale = (<base_scale> + <s>)time = 0.4 rgba = <color1> rot_angle = 3 motion = ease_out
 	endif
@@ -970,10 +977,11 @@ script hud_glowburst_alert\{player_status = player1_status}
 		DestroyScreenElement id = <star_power_ready_glow>
 	endif
 	if (($game_mode = p2_faceoff)|| ($game_mode = p2_pro_faceoff))
+		offset = ((1.0, 0.0) * ($x_offset_p2))
 		if (($<player_status>.Player)= 1)
-			original_pos = (($hud_screen_elements [0].Pos)- (225.0, 37.0))
+			original_pos = (($hud_screen_elements [0].Pos) - (0.0, 37.0) - <offset>)
 		else
-			original_pos = (($hud_screen_elements [0].Pos)+ (225.0, -37.0))
+			original_pos = (($hud_screen_elements [0].Pos) + (0.0, -37.0) + <offset>)
 		endif
 		base_scale = (7.5, 0.5)
 		scale2 = (10.0, 2.5)
@@ -981,9 +989,9 @@ script hud_glowburst_alert\{player_status = player1_status}
 		scale4 = (40.0, 0.0)
 	else
 		if ($game_mode = p2_career || $game_mode = p2_coop)
-			original_pos = (($hud_screen_elements [0].Pos)- (0.0, 36.0))
+			original_pos = (($hud_screen_elements [0].Pos) - (0.0, 36.0))
 		else
-			original_pos = (($hud_screen_elements [0].Pos)+ (0.0, 7.0))
+			original_pos = (($hud_screen_elements [0].Pos) + (0.0, 7.0))
 		endif
 		base_scale = (15.0, 1.0)
 		scale2 = (20.0, 5.0)

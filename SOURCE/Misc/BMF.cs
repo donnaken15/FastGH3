@@ -12,6 +12,8 @@ public struct BMF
 	//bool Bold, Italic;
 	public float LineHeight;
 	public int Baseline;
+	public int Shifter;
+	public int Spacing;
 
 	// Neversoft fonts are one page only
 	public Zones.RawImg Page;
@@ -31,6 +33,8 @@ public struct BMF
 		BinaryReader br = new BinaryReader(inp, Encoding.UTF8);
 		string magic = new string(br.ReadChars(3));
 		inp.Seek(-3, SeekOrigin.Current);
+		Shifter = -3;
+		Spacing = 0;
 		switch (magic)
 		{
 			case "BMF": // binary
@@ -123,6 +127,16 @@ public struct BMF
 					a = f.SelectSingleNode("common").Attributes;
 					LineHeight = ushort.Parse(a["lineHeight"].Value);
 					Baseline = ushort.Parse(a["base"].Value);
+					try
+					{
+						Shifter = ushort.Parse(a["shifter"].Value);
+					}
+					catch { }
+					try
+					{
+						Spacing = ushort.Parse(a["spacing"].Value);
+					}
+					catch { }
 
 					a = f.SelectSingleNode("pages/page").Attributes;
 					Page = Zones.RawImg.MakeFromRaw(a["file"].Value);
@@ -138,7 +152,7 @@ public struct BMF
 							Area = new Rectangle(
 								ushort.Parse(a["x"].Value), ushort.Parse(a["y"].Value),
 								ushort.Parse(a["width"].Value), ushort.Parse(a["height"].Value)),
-							Pad = new Point(ushort.Parse(a["xoffset"].Value), ushort.Parse(a["yoffset"].Value)),
+							Pad = new Point(short.Parse(a["xoffset"].Value), short.Parse(a["yoffset"].Value)),
 							Shift = ushort.Parse(a["xadvance"].Value),
 							Symbol = (char)(ushort.Parse(a["id"].Value))
 						};
@@ -185,6 +199,20 @@ public struct BMF
 										case "base":
 											Baseline = ushort.Parse(v);
 											break;
+										case "shifter":
+											try
+											{
+												Shifter = int.Parse(v);
+											}
+											catch { }
+											break;
+										case "spacing":
+											try
+											{
+												Spacing = int.Parse(v);
+											}
+											catch { }
+											break;
 									}
 									break;
 								case "page":
@@ -215,25 +243,25 @@ public struct BMF
 											Glyphs[i].Symbol = (char)ushort.Parse(v);
 											break;
 										case "x":
-											Glyphs[i].Area.X = (char)ushort.Parse(v);
+											Glyphs[i].Area.X = ushort.Parse(v);
 											break;
 										case "y":
-											Glyphs[i].Area.Y = (char)ushort.Parse(v);
+											Glyphs[i].Area.Y = ushort.Parse(v);
 											break;
 										case "width":
-											Glyphs[i].Area.Width = (char)ushort.Parse(v);
+											Glyphs[i].Area.Width = ushort.Parse(v);
 											break;
 										case "height":
-											Glyphs[i].Area.Height = (char)ushort.Parse(v);
+											Glyphs[i].Area.Height = ushort.Parse(v);
 											break;
 										case "xoffset":
-											Glyphs[i].Pad.X = (char)ushort.Parse(v);
+											Glyphs[i].Pad.X = ushort.Parse(v);
 											break;
 										case "yoffset":
-											Glyphs[i].Pad.Y = (char)ushort.Parse(v);
+											Glyphs[i].Pad.Y = ushort.Parse(v);
 											break;
 										case "xadvance":
-											Glyphs[i].Shift = (char)ushort.Parse(v);
+											Glyphs[i].Shift = ushort.Parse(v);
 											break;
 									}
 									break;

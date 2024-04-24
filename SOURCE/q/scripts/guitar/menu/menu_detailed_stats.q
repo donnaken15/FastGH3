@@ -264,7 +264,7 @@ script add_basic_stats_desc
 		desc_column = 'center'
 	endif
 	add_text_to_column column = <desc_column> text = "NOTES HIT" dims = (400.0, 0.0)
-	if NOT ($game_mode = p2_battle || $current_song = bosstom || $current_song = bossslash || $current_song = bossdevil)
+	if NOT ($game_mode = p2_battle || $boss_battle = 1)
 		add_text_to_column column = <desc_column> text = "SP PHRASES" dims = (400.0, 0.0)
 		add_text_to_column column = <desc_column> text = "AVG MULTIPLIER" dims = (400.0, 0.0)
 		if ($current_num_players = 2)
@@ -294,7 +294,7 @@ script add_basic_stats
 			endif
 		endif
 		add_text_to_column column = <stat_column> text = (<notes_ratio> [<Player>])dims = (150.0, 0.0)
-		if NOT ($game_mode = p2_battle || $current_song = bosstom || $current_song = bossslash || $current_song = bossdevil)
+		if NOT ($game_mode = p2_battle || $boss_battle = 1)
 			add_text_to_column column = <stat_column> text = (<sp_ratio> [<Player>])dims = (150.0, 0.0)
 			add_text_to_column column = <stat_column> text = (<avg_multiplier> [<Player>])dims = (150.0, 0.0)
 			if ($current_num_players = 2)

@@ -337,7 +337,9 @@ public struct Zones
 		public float space_width;
 		public struct Glyph
 		{
-			public float x, y, x2, y2, pxW, pxH, vShift, hShift, unk_d;
+			public float x, y, x2, y2, pxW, pxH, vShift;
+			public int hShift; // screw this game
+			public float unk_d;
 		}
 		public List<Glyph> glyphs;
 		public RawImg texture;
@@ -400,7 +402,7 @@ public struct Zones
 					pxW = Float(b),
 					pxH = Float(b),
 					vShift = Float(b),
-					hShift = Float(b),
+					hShift = b.ReadInt32(),
 					unk_d = Float(b),
 				});
 			}
@@ -421,8 +423,8 @@ public struct Zones
 		{
 			Font fnt = new Font();
 			fnt.baseline = (int)Math.Max(0, bmf.LineHeight - bmf.Baseline);
-			fnt.shifter = -2;
-			fnt.spacing = -2;
+			fnt.shifter = bmf.Shifter;
+			fnt.spacing = bmf.Spacing;
 			fnt.height = bmf.LineHeight;
 			//fnt.constA = 2; // ???, just looks like a pointer to the glyphs
 			//fnt.constB = 164;
@@ -444,6 +446,10 @@ public struct Zones
 			//}
 			foreach (BMF.Glyph g in bmf.Glyphs)
 			{
+				if (g.Symbol == ' ')
+				{
+					fnt.space_width = g.Area.Width + g.Shift;
+				}
 				Glyph newglyph = new Glyph()
 				{
 					x = (float)g.Area.X / (float)bmf.Page.Image.Width,
@@ -457,8 +463,10 @@ public struct Zones
 				newglyph.y2 += newglyph.y;
 				//if (g.Symbol == 'g' || g.Symbol == 'A')
 				//	newglyph.vShift = (g.Pad.Y / 2f);
-				//newglyph.vShift = 0;
-				//newglyph.hShift = 0;// doesnt work
+				newglyph.vShift = (g.Area.Height + g.Pad.Y) - bmf.Baseline;
+				//newglyph.hShift = (int)((float)(g.Shift - g.Area.Width) / 2);
+				newglyph.hShift = -(g.Pad.X);
+				//newglyph.hShift = -1;
 				int j = 0;
 				for (; j < fnt.glyphs.Count; j++)
 				{

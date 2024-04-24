@@ -14,24 +14,226 @@ static partial class Launcher
 	public static readonly string[] T = A.GetString(
 		U.GetBytes(
 		// [0]
-		// Initializing...~FastGH3 Launcher LogTM(C)(R)Allrightsreserved
-		// --------------------------------~Shuffle section cannot be found in settings.ini.
+		// Initializing...
+		// [1]
+		// FastGH3 Launcher LogTM(C)(R)Allrightsreserved
+		// --------------------------------
+		// [2]
+		// Shuffle section cannot be found in settings.ini.
 		// Usage:
 		// [Shuffle]
 		// path1=C:\charts\
 		// path2=D:\charts2\
 		// path3=E:\retail_games\
-		// ~Can't find any charts!~Cannot find a file indicating of containing highway GFX.~global.pak isn't named correctly.~One of the entered files don't exist.~
+		// 
+		// [3]
+		// Can't find any charts!
+		// [4]
+		// Cannot find a file indicating of containing highway GFX.
+		// [5]
+		// global.pak isn't named correctly.
+		// [6]
+		// One of the entered files don't exist.
+		// [7]
+		// 
 		// ######### DOWNLOAD SONG PHASE #########
-		// ~Downloading song package...~already downloaded file.~Unique file date checking enabled.~Date not cached~This song package is a larger file than usual. ({0} MB)
-		// Do you want to continue?~Writing link to cache...~Writing date to cache...~
+		// 
+		// [8]
+		// Downloading song package...
+		// [9]
+		// already downloaded file.
+		// [10]
+		// Unique file date checking enabled.
+		// [11]
+		// Date not cached
+		// [12]
+		// This song package is a larger file than usual. ({0} MB)
+		// Do you want to continue?
+		// [13]
+		// Writing link to cache...
+		// [14]
+		// Writing date to cache...
+		// [15]
+		// 
 		// ######### MAIN LAUNCHER PHASE #########
-		// ~Reading file.~Detected chart file.~Detected midi file.~Converting to chart...~Cannot find chart after converting from MIDI. Something must've went wrong with mid2chart. Exiting.~Checking cache...~Encoding song.~Getting audio files...~Found audio with the chart name~Found FOF structure files / ~Checking if extra audio exists~Found isolated drums audio (~Found isolated vocals audio~Current selected audio streams are:~No song audio can be found.
-		// Do you want to search for it?~Want to play without audio?
-		// This is not compatible with practice mode.~Failed to delete the temp FSB folder!~Found more than three audio tracks, merging.~Creating encoder process...~ynchronous mode set
-		// ~Starting FSB building...~Cached audio found.~Failed to copy cached FSB. WHY?!!!~Deleting the currently loaded FSB in case.~Chart is not cached.~Opening song pak.~why~WHY~Compiling chart.~Creating note arrays...~Error in parsing notes for ~Error in parsing solos for ~Creating and adding starpower arrays...~Getting end time...~Unable to get the end time for a note track [~Calculating end time, so far: ~End time is ~Reading boss props...~Song detected as boss~Ignoring death lick script~Got non-existent powerup in boss.ini: ~Creating powerup arrays...~Sorting scripts by time.~Creating face-off sections...~Creating time signature arrays...~No time sigs? https://i.kym-cdn.com/photos/images/original/002/297/355/cb3~Creating fretbar arrays...~Collecting garbage...~Creating marker arrays...~Aligning pointers...~Compiling PAK.~Writing PAK to cache.~DID EVERYTHING WORK?!~Cached chart found.~Waiting for song encoding to finish.~Writing audio to cache.~Waiting for extra track merging to finish.~Elapsed audio encoding time: ~Creating GH3 process...~Ready, go!~Cleaning up SoX temp files FOR SOME REASON!!!~
+		// 
+		// [16]
+		// Reading file.
+		// [17]
+		// Detected chart file.
+		// [18]
+		// Detected midi file.
+		// [19]
+		// Converting to chart...
+		// [20]
+		// Cannot find chart after converting from MIDI. Something must've went wrong with mid2chart. Exiting.
+		// [21]
+		// Checking cache...
+		// [22]
+		// Encoding song.
+		// [23]
+		// Getting audio files...
+		// [24]
+		// Found audio with the chart name
+		// [25]
+		// Found FOF structure files / 
+		// [26]
+		// Checking if extra audio exists
+		// [27]
+		// Found isolated drums audio (
+		// [28]
+		// Found isolated vocals audio
+		// [29]
+		// Current selected audio streams are:
+		// [30]
+		// No song audio can be found.
+		// Do you want to search for it?
+		// [31]
+		// Want to play without audio?
+		// This is not compatible with practice mode.
+		// [32]
+		// Failed to delete the temp FSB folder!
+		// [33]
+		// Found more than three audio tracks, merging.
+		// [34]
+		// Creating encoder process...
+		// [35]
+		// ynchronous mode set
+		// 
+		// [36]
+		// Starting FSB building...
+		// [37]
+		// Cached audio found.
+		// [38]
+		// Failed to copy cached FSB. WHY?!!!
+		// [39]
+		// Deleting the currently loaded FSB in case.
+		// [40]
+		// Chart is not cached.
+		// [41]
+		// Opening song pak.
+		// [42]
+		// why
+		// [43]
+		// WHY
+		// [44]
+		// Compiling chart.
+		// [45]
+		// Creating note arrays...
+		// [46]
+		// Error in parsing notes for 
+		// [47]
+		// Error in parsing solos for 
+		// [48]
+		// Creating and adding starpower arrays...
+		// [49]
+		// Getting end time...
+		// [50]
+		// Unable to get the end time for a note track [
+		// [51]
+		// Calculating end time, so far: 
+		// [52]
+		// End time is 
+		// [53]
+		// Reading boss props...
+		// [54]
+		// Song detected as boss
+		// [55]
+		// Ignoring death lick script
+		// [56]
+		// Got non-existent powerup in boss.ini: 
+		// [57]
+		// Creating powerup arrays...
+		// [58]
+		// Sorting scripts by time.
+		// [59]
+		// Creating face-off sections...
+		// [60]
+		// Creating time signature arrays...
+		// [61]
+		// No time sigs? https://i.kym-cdn.com/photos/images/original/002/297/355/cb3
+		// [62]
+		// Creating fretbar arrays...
+		// [63]
+		// Collecting garbage...
+		// [64]
+		// Creating marker arrays...
+		// [65]
+		// Aligning pointers...
+		// [66]
+		// Compiling PAK.
+		// [67]
+		// Writing PAK to cache.
+		// [68]
+		// DID EVERYTHING WORK?!
+		// [69]
+		// Cached chart found.
+		// [70]
+		// Waiting for song encoding to finish.
+		// [71]
+		// Writing audio to cache.
+		// [72]
+		// Waiting for extra track merging to finish.
+		// [73]
+		// Elapsed audio encoding time: 
+		// [74]
+		// Creating GH3 process...
+		// [75]
+		// Ready, go!
+		// [76]
+		// Cleaning up SoX temp files FOR SOME REASON!!!
+		// [77]
+		// 
 		// ######### FSP EXTRACT PHASE #########
-		// ~Detected song package.~Found cached ID.~ZIP not cached.~Found cached FSP.~Error: Cached FSP does not exist. Extracting.~Error extracting a file: ~Looking for command line accessible 7Zip.~Looking for 7Zip in registry.~Wait WTF, THE PROGRAM ISN'T THERE!! HOW!~Could not find 7-Zip path in registry. Is it installed?~Somehow looking for 7-Zip failed. Is it installed?~7Zip is installed. Using that...~7Zip could not be found.~Looking for command line accessible WinRAR or UnRar.exe~Found UnRAR. Using that...~UnRAR could not be found.~Unsupported archive type~Writing path to cache...~That file does not exist. Exiting.~DEQhd2uFteibPwq0SWBInTpA_jcZL5GKz3YCR14Ulk87Jors9vNHgfaOmMXy6Vx-~Press any key to exit~Found Bink background video~No Bink background video found~
+		// 
+		// [78]
+		// Detected song package.
+		// [79]
+		// Found cached ID.
+		// [80]
+		// ZIP not cached.
+		// [81]
+		// Found cached FSP.
+		// [82]
+		// Error: Cached FSP does not exist. Extracting.
+		// [83]
+		// Error extracting a file: 
+		// [84]
+		// Looking for command line accessible 7Zip.
+		// [85]
+		// Looking for 7Zip in registry.
+		// [86]
+		// Wait WTF, THE PROGRAM ISN'T THERE!! HOW!
+		// [87]
+		// Could not find 7-Zip path in registry. Is it installed?
+		// [88]
+		// Somehow looking for 7-Zip failed. Is it installed?
+		// [89]
+		// 7Zip is installed. Using that...
+		// [90]
+		// 7Zip could not be found.
+		// [91]
+		// Looking for command line accessible WinRAR or UnRar.exe
+		// [92]
+		// Found UnRAR. Using that...
+		// [93]
+		// UnRAR could not be found.
+		// [94]
+		// Unsupported archive type
+		// [95]
+		// Writing path to cache...
+		// [96]
+		// That file does not exist. Exiting.
+		// [97]
+		// DEQhd2uFteibPwq0SWBInTpA_jcZL5GKz3YCR14Ulk87Jors9vNHgfaOmMXy6Vx-
+		// [98]
+		// Press any key to exit
+		// [99]
+		// Found Bink background video
+		// [100]
+		// No Bink background video found
+		// [101]
+		// 
 		// ___     ___\
 		//    \   /   /
 		//     \ /
@@ -39,44 +241,254 @@ static partial class Launcher
 		//     / \
 		// ___/   \___\
 		//            /
-		// ~Set max FPS, if not capped by Vsync.
+		// 
+		// [102]
+		// Set max FPS, if not capped by Vsync.
 		// If set to 0, the frame rate limit will not take effect.
 		// As of now, it can only cap to 1ms / 1000 FPS.
 		// Warning: Some frame rates will make the game look
 		// choppy depending on the refresh rate your monitor supports,
-		// or depending on your GPU.~Override the note limit. Set to -1 to make
+		// or depending on your GPU.
+		// [103]
+		// Override the note limit. Set to -1 to make
 		// the program determine how many notes
 		// there are in the chart opened.
-		// RAM usage may vary.~This allows you to change the window size of the game according to your monitor settings.~Clean files from downloading and extracting Song Packages.
+		// RAM usage may vary.
+		// [104]
+		// This allows you to change the window size of the game according to your monitor settings.
+		// [105]
+		// Clean files from downloading and extracting Song Packages.
 		// Warning: Reuse of these files will require downloading and
-		// extracting them again, some of which can take a bit of time.~Change the bitrate used for converting songs.
+		// extracting them again, some of which can take a bit of time.
+		// [106]
+		// Change the bitrate used for converting songs.
 		// This will only take effect for the next songs converted.
 		// The default is 128kbps, as decided by the game.
 		// If song caching is turned on, the cached songs will
 		// keep the bitrate setting they were converted with.
 		// Note: This will also result in larger or smaller
-		// compiled audio files, which effects your song cache as well.~Change the controller that is selected to play when Keyboard mode is off.
-		// WARNING: Unplugging or plugging in controllers can affect this setting.~This applies for both player hyperspeeds.~This applies for both player difficulties.~Credits will be displayed in console.~Enter percentage of song speed when playing. This also effects the pitch of the song.~Change instrument or track to be played in game.~Relaunch the game with the previous song in place.~Select what plugins should be loaded or disabled.
-		// Requires GH3+ compatible plugins.~View cached chart files. Songs will appear here only
-		// for those that were converted when song caching was turned on.~Change the format of currentsong.txt. Can be useful for streaming.~Change the amount of time to wait before the
-		// song starts. Requires "No intro" to be turned on.~Change controls for playing on keyboard.~Required for playing face-off and battle.~Set current background image when playing a song.~Background image that's going to be shown in the game.
-		// Double click to see a larger preview of how it will look.~Speed:                            %~6f1d2b61d5a011cfbfc7444553540000~201 202 203 204 205 311 999 219 235 400 401 999 307~The extractor returned a non-zero error code. This could mean that the extraction has failed.~7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.~Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed, or the target URL returned an invalid response.~%a - Author, %t - Title, %b - Album, %% - Percent,
-		// %c - Charter, %y - Year, %l - Length, %g - Genre~/!\ Error adding a starpower phrase. If this message appears more than once, there may be a problem~Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen;*.pak.ps3|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|Guitar Hero 3 PAK|*.pak;*.pak.xen;*.pak.ps3|Any type|*.*~Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal~Saving user background video~Restoring user background video~Failed to kill helix or SoX executables.~Running mid2chart, log:~Audio is not cached.~Failed to upload log. It is saved to launcher.txt.~https://donnaken15.com/fastgh3/gameBlank.png~\PLUGINS\~\disabled\~*.dll~core.dll~(*)~_log.txt~Loaded: plugins\~USERPROFILE~\AppData\Local\Aspyr\FastGH3\AspyrConfig.xml~Easy%Medium%Hard%Expert~No QB config found, cannot save changes.~DATA\gameplay_BG.img.xen~Failed to get background image!~Reading settings...~Speed percentage cannot be zero or less!!!~FastGH3: Keybinds~Selected button:~Loading scripts for override checks...~Failed to set user QB value.~GH3+ Plugin / Dynamic Link Library (*.dll)|*.dll~Guitar Hero III+ Log: (last session)~No QB config file found, cannot set value.~There is more than one file in this Song Package.
-		// Which one do you choose?~https://donnaken15.com/fastgh3/assets/control/xplorer.jpg~Select a controller button and
-		// then click a key to assign to it.~backgrnd_video.bik.xen~Failed to copy song video.~got invalid directory, skipping: ~Audio files|*.mp3;*.wav;*.ogg;*.opus|Any type|*.*~Is there a guitar track too?~Is there a rhythm track too?~Using blank music file~fsbtmp\fastgh3_{0}.mp3~DO YOU HAVE THE GAME OPEN????~Got null event!!!!!!!!!~Got null event text!!!!!!!!!~File cannot be found.
-		// Path: ~Failed to load own launcher log.~
+		// compiled audio files, which effects your song cache as well.
+		// [107]
+		// Change the controller that is selected to play when Keyboard mode is off.
+		// WARNING: Unplugging or plugging in controllers can affect this setting.
+		// [108]
+		// This applies for both player hyperspeeds.
+		// [109]
+		// This applies for both player difficulties.
+		// [110]
+		// Credits will be displayed in console.
+		// [111]
+		// Enter percentage of song speed when playing. This also effects the pitch of the song.
+		// [112]
+		// Change instrument or track to be played in game.
+		// [113]
+		// Relaunch the game with the previous song in place.
+		// [114]
+		// Select what plugins should be loaded or disabled.
+		// Requires GH3+ compatible plugins.
+		// [115]
+		// View cached chart files. Songs will appear here only
+		// for those that were converted when song caching was turned on.
+		// [116]
+		// Change the format of currentsong.txt. Can be useful for streaming.
+		// [117]
+		// Change the amount of time to wait before the
+		// song starts. Requires "No intro" to be turned on.
+		// [118]
+		// Change controls for playing on keyboard.
+		// [119]
+		// Required for playing face-off and battle.
+		// [120]
+		// Set current background image when playing a song.
+		// [121]
+		// Background image that's going to be shown in the game.
+		// Double click to see a larger preview of how it will look.
+		// [122]
+		// Speed:                            %
+		// [123]
+		// 6f1d2b61d5a011cfbfc7444553540000
+		// [124]
+		// 201 202 203 204 205 311 999 219 235 400 401 999 307
+		// [125]
+		// The extractor returned a non-zero error code. This could mean that the extraction has failed.
+		// [126]
+		// 7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.
+		// [127]
+		// Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed, or the target URL returned an invalid response.
+		// [128]
+		// %a - Author, %t - Title, %b - Album, %% - Percent,
+		// %c - Charter, %y - Year, %l - Length, %g - Genre
+		// [129]
+		// /!\ Error adding a starpower phrase. If this message appears more than once, there may be a problem
+		// [130]
+		// Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen;*.pak.ps3|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|Guitar Hero 3 PAK|*.pak;*.pak.xen;*.pak.ps3|Any type|*.*
+		// [131]
+		// Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal
+		// [132]
+		// Saving user background video
+		// [133]
+		// Restoring user background video
+		// [134]
+		// Failed to kill helix or SoX executables.
+		// [135]
+		// Running mid2chart, log:
+		// [136]
+		// Audio is not cached.
+		// [137]
+		// Failed to upload log. It is saved to launcher.txt.
+		// [138]
+		// https://donnaken15.com/fastgh3/gameBlank.png
+		// [139]
+		// \PLUGINS\
+		// [140]
+		// \disabled\
+		// [141]
+		// *.dll
+		// [142]
+		// core.dll
+		// [143]
+		// (*)
+		// [144]
+		// _log.txt
+		// [145]
+		// Loaded: plugins\
+		// [146]
+		// USERPROFILE
+		// [147]
+		// \AppData\Local\Aspyr\FastGH3\AspyrConfig.xml
+		// [148]
+		// Easy%Medium%Hard%Expert
+		// [149]
+		// No QB config found, cannot save changes.
+		// [150]
+		// DATA\gameplay_BG.img.xen
+		// [151]
+		// Failed to get background image!
+		// [152]
+		// Reading settings...
+		// [153]
+		// Speed percentage cannot be zero or less!!!
+		// [154]
+		// FastGH3: Keybinds
+		// [155]
+		// Selected button:
+		// [156]
+		// Loading scripts for override checks...
+		// [157]
+		// Failed to set user QB value.
+		// [158]
+		// GH3+ Plugin / Dynamic Link Library (*.dll)|*.dll
+		// [159]
+		// Guitar Hero III+ Log: (last session)
+		// [160]
+		// No QB config file found, cannot set value.
+		// [161]
+		// There is more than one file in this Song Package.
+		// Which one do you choose?
+		// [162]
+		// https://donnaken15.com/fastgh3/assets/control/xplorer.jpg
+		// [163]
+		// Select a controller button and
+		// then click a key to assign to it.
+		// [164]
+		// backgrnd_video.bik.xen
+		// [165]
+		// Failed to copy song video.
+		// [166]
+		// got invalid directory, skipping: 
+		// [167]
+		// Audio files|*.mp3;*.wav;*.ogg;*.opus|Any type|*.*
+		// [168]
+		// Is there a guitar track too?
+		// [169]
+		// Is there a rhythm track too?
+		// [170]
+		// Using blank music file
+		// [171]
+		// fsbtmp\fastgh3_{0}.mp3
+		// [172]
+		// DO YOU HAVE THE GAME OPEN????
+		// [173]
+		// Got null event!!!!!!!!!
+		// [174]
+		// Got null event text!!!!!!!!!
+		// [175]
+		// File cannot be found.
+		// Path: 
+		// [176]
+		// Failed to load own launcher log.
+		// [177]
+		// 
 		// --{0}
-		// Content-Disposition: form-data; name="file"; filename="launcher.txt"
-		// Content-Type: text/plain
+		// Content-Disposition: form-data; {2}
 		// 
 		// {1}
-		// --{0}--~application/octet-stream~multipart/form-data; boundary=~Unknown object type in array: ~Mod info item is missing. (~Can't find the mod info struct ({0}) with a matching mod name or an ambiguously named mod info struct (mod_info). Is the file not properly named?~ is a required file but does not exist.
-		// ~Cannot find a file indicating of a QB.~QB file|*.qb.xen;*.qb|Zipped QB|*.zip~These items replace the game's data:~Supported image formats|*.png;*.jpg;*.bmp;*.dds|Portable Network Graphics|*.png|JPEG|*.jpeg|Bitmap|*.bmp|DirectDraw Surface|*.dds|Any type|*.*~Hiroaki Sano%Circus Game%8BIT MUSIC POWER%donnaken15%2016%2:22%Chiptune~FastGH3 Launcher is already running!~Multi instance checking is off. Be careful!~World Tour-- song files are not compatible with GH3. Exiting...~Detected WT note upper bitmask: ~This song appears to be compiled for World Tour or later games, which is not compatible with Guitar Hero III since its note track format has changed.~Misc%Player%Launcher%SongtextFormat%FinishedLog%Killswitch%SongVideos%LastSongHadVideo~Found {0}, extracting...~Welcome to FastGH3: Select a chart to play~https://donnaken15.com/fastgh3/diagno.php~Failed to check path: (p: "{0}", e: "{1}")
-		// {2}~
-		// [1]
-		// tmp[0-9A-F]{4}.tmp.fsp$
+		// [178]
+		// application/octet-stream
+		// [179]
+		// multipart/form-data; boundary=
+		// [180]
+		// Unknown object type in array: 
+		// [181]
+		// Mod info item is missing. (
+		// [182]
+		// Can't find the mod info struct ({0}) with a matching mod name or an ambiguously named mod info struct (mod_info). Is the file not properly named?
+		// [183]
+		//  is a required file but does not exist.
+		// 
+		// [184]
+		// Cannot find a file indicating of a QB.
+		// [185]
+		// QB file|*.qb.xen;*.qb|Zipped QB|*.zip
+		// [186]
+		// These items replace the game's data:
+		// [187]
+		// Supported image formats|*.png;*.jpg;*.bmp;*.dds|Portable Network Graphics|*.png|JPEG|*.jpeg|Bitmap|*.bmp|DirectDraw Surface|*.dds|Any type|*.*
+		// [188]
+		// Hiroaki Sano%Circus Game%8BIT MUSIC POWER%donnaken15%2016%2:22%Chiptune
+		// [189]
+		// FastGH3 Launcher is already running!
+		// [190]
+		// Multi instance checking is off. Be careful!
+		// [191]
+		// World Tour-- song files are not compatible with GH3. Exiting...
+		// [192]
+		// Detected WT note upper bitmask: 
+		// [193]
+		// This song appears to be compiled for World Tour or later games, which is not compatible with Guitar Hero III since its note track format has changed.
+		// [194]
+		// Misc%Player%Launcher%SongtextFormat%FinishedLog%Killswitch%SongVideos%LastSongHadVideo
+		// [195]
+		// Found {0}, extracting...
+		// [196]
+		// Welcome to FastGH3: Select a chart to play
+		// [197]
+		// https://donnaken15.com/fastgh3/diagno.php
+		// [198]
+		// Failed to check path: (p: "{0}", e: "{1}")
+		// {2}
+		// [199]
+		// ^tmp[0-9A-F]{4}.tmp.fsp$
+		// [200]
+		// ^(data[/\])?songs[/\](?<name>[A-Z0-9_]+)(_song_scripts)?.mid.qb(.(ngc|ps2|ps3|xen))?$
+		// [201]
+		// ^(?<name>[A-Z0-9_]+)_song.(pak|qb)(.(ngc|ps2|ps3|xen))?$
+		// [202]
+		// Invalid signature: 
+		// [203]
+		// ZOMG?!!!? container size mismatch????! we do not care
+		// [204]
+		// total file size mismatch
+		// [205]
+		// zones\global\global_gfx{0}
+		// [206]
+		// name="log"; filename="launcher.txt"
+		// Content-Type: text/plain
+		// [207]
+		// name="chart"; filename=".chart.gz"
+		// Content-Type: application/gzip
 		#region
-		"湉瑩慩楬楺杮⸮縮慆瑳䡇″慌湵档牥䰠杯䵔䌨⠩⥒汁牬杩瑨牳獥牥敶੤ⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭ卾畨晦敬猠捥楴湯挠湡潮⁴敢映畯摮椠⁮敳瑴湩獧椮楮ਮ獕条㩥嬊桓晵汦嵥瀊瑡ㅨ䌽尺档牡獴ੜ慰桴㴲㩄捜慨瑲㉳ੜ慰桴㴳㩅牜瑥楡彬慧敭屳縊慃❮⁴楦摮愠祮挠慨瑲ⅳ䍾湡潮⁴楦摮愠映汩⁥湩楤慣楴杮漠⁦潣瑮楡楮杮栠杩睨祡䜠塆縮汧扯污瀮歡椠湳琧渠浡摥挠牯敲瑣祬縮湏⁥景琠敨攠瑮牥摥映汩獥搠湯琧攠楸瑳縮⌊⌣⌣⌣⌣䐠坏䱎䅏⁄体䝎倠䅈䕓⌠⌣⌣⌣⌣縊潄湷潬摡湩⁧潳杮瀠捡慫敧⸮縮污敲摡⁹潤湷潬摡摥映汩⹥啾楮畱⁥楦敬搠瑡⁥档捥楫杮攠慮汢摥縮慄整渠瑯挠捡敨繤桔獩猠湯⁧慰正条⁥獩愠氠牡敧⁲楦敬琠慨⁮獵慵⹬⠠ほ⁽䉍਩潄礠畯眠湡⁴潴挠湯楴畮㽥坾楲楴杮氠湩⁫潴挠捡敨⸮縮牗瑩湩⁧慤整琠⁯慣档⹥⸮੾⌣⌣⌣⌣‣䅍义䰠啁䍎䕈⁒䡐十⁅⌣⌣⌣⌣ਣ剾慥楤杮映汩⹥䑾瑥捥整⁤档牡⁴楦敬縮敄整瑣摥洠摩⁩楦敬縮潃癮牥楴杮琠⁯档牡⹴⸮䍾湡潮⁴楦摮挠慨瑲愠瑦牥挠湯敶瑲湩⁧牦浯䴠䑉⹉匠浯瑥楨杮洠獵❴敶眠湥⁴牷湯⁧楷桴洠摩挲慨瑲‮硅瑩湩⹧䍾敨正湩⁧慣档⹥⸮䕾据摯湩⁧潳杮縮敇瑴湩⁧畡楤⁯楦敬⹳⸮䙾畯摮愠摵潩眠瑩⁨桴⁥档牡⁴慮敭䙾畯摮䘠䙏猠牴捵畴敲映汩獥⼠縠桃捥楫杮椠⁦硥牴⁡畡楤⁯硥獩獴䙾畯摮椠潳慬整⁤牤浵⁳畡楤⁯縨潆湵⁤獩汯瑡摥瘠捯污⁳畡楤繯畃牲湥⁴敳敬瑣摥愠摵潩猠牴慥獭愠敲縺潎猠湯⁧畡楤⁯慣⁮敢映畯摮ਮ潄礠畯眠湡⁴潴猠慥捲⁨潦⁲瑩縿慗瑮琠⁯汰祡眠瑩潨瑵愠摵潩ਿ桔獩椠⁳潮⁴潣灭瑡扩敬眠瑩⁨牰捡楴散洠摯⹥䙾楡敬⁤潴搠汥瑥⁥桴⁥整灭䘠䉓映汯敤ⅲ䙾畯摮洠牯⁥桴湡琠牨敥愠摵潩琠慲正ⱳ洠牥楧杮縮牃慥楴杮攠据摯牥瀠潲散獳⸮縮湹档潲潮獵洠摯⁥敳ੴ卾慴瑲湩⁧卆⁂畢汩楤杮⸮縮慃档摥愠摵潩映畯摮縮慆汩摥琠⁯潣祰挠捡敨⁤卆⹂圠奈ℿ℡䑾汥瑥湩⁧桴⁥畣牲湥汴⁹潬摡摥䘠䉓椠⁮慣敳縮桃牡⁴獩渠瑯挠捡敨⹤佾数楮杮猠湯⁧慰⹫睾票坾奈䍾浯楰楬杮挠慨瑲縮牃慥楴杮渠瑯⁥牡慲獹⸮縮牅潲⁲湩瀠牡楳杮渠瑯獥映牯縠牅潲⁲湩瀠牡楳杮猠汯獯映牯縠牃慥楴杮愠摮愠摤湩⁧瑳牡潰敷⁲牡慲獹⸮縮敇瑴湩⁧湥⁤楴敭⸮縮湕扡敬琠⁯敧⁴桴⁥湥⁤楴敭映牯愠渠瑯⁥牴捡⁫繛慃捬汵瑡湩⁧湥⁤楴敭‬潳映牡›䕾摮琠浩⁥獩縠敒摡湩⁧潢獳瀠潲獰⸮縮潓杮搠瑥捥整⁤獡戠獯繳杉潮楲杮搠慥桴氠捩⁫捳楲瑰䝾瑯渠湯攭楸瑳湥⁴潰敷畲⁰湩戠獯⹳湩㩩縠牃慥楴杮瀠睯牥灵愠牲祡⹳⸮卾牯楴杮猠牣灩獴戠⁹楴敭縮牃慥楴杮映捡ⵥ景⁦敳瑣潩獮⸮縮牃慥楴杮琠浩⁥楳湧瑡牵⁥牡慲獹⸮縮潎琠浩⁥楳獧‿瑨灴㩳⼯⹩祫⵭摣⹮潣⽭桰瑯獯椯慭敧⽳牯杩湩污〯㈰㈯㜹㌯㔵振㍢䍾敲瑡湩⁧牦瑥慢⁲牡慲獹⸮縮潃汬捥楴杮朠牡慢敧⸮縮牃慥楴杮洠牡敫⁲牡慲獹⸮縮汁杩楮杮瀠楯瑮牥⹳⸮䍾浯楰楬杮倠䭁縮牗瑩湩⁧䅐⁋潴挠捡敨縮䥄⁄噅剅呙䥈䝎圠剏㽋縡慃档摥挠慨瑲映畯摮縮慗瑩湩⁧潦⁲潳杮攠据摯湩⁧潴映湩獩⹨坾楲楴杮愠摵潩琠⁯慣档⹥坾楡楴杮映牯攠瑸慲琠慲正洠牥楧杮琠⁯楦楮桳縮汅灡敳⁤畡楤⁯湥潣楤杮琠浩㩥縠牃慥楴杮䜠㍈瀠潲散獳⸮縮敒摡ⱹ朠Ⅿ䍾敬湡湩⁧灵匠塯琠浥⁰楦敬⁳但⁒体䕍删䅅体ⅎ℡੾⌣⌣⌣⌣‣卆⁐塅剔䍁⁔䡐十⁅⌣⌣⌣⌣ਣ䑾瑥捥整⁤潳杮瀠捡慫敧縮潆湵⁤慣档摥䤠⹄婾偉渠瑯挠捡敨⹤䙾畯摮挠捡敨⁤卆⹐䕾牲牯›慃档摥䘠偓搠敯⁳潮⁴硥獩⹴䔠瑸慲瑣湩⹧䕾牲牯攠瑸慲瑣湩⁧⁡楦敬›䱾潯楫杮映牯挠浯慭摮氠湩⁥捡散獳扩敬㜠楚⹰䱾潯楫杮映牯㜠楚⁰湩爠来獩牴⹹坾楡⁴呗ⱆ吠䕈倠佒則䵁䤠乓吧吠䕈䕒℡䠠坏縡潃汵⁤潮⁴楦摮㜠娭灩瀠瑡⁨湩爠来獩牴⹹䤠⁳瑩椠獮慴汬摥縿潓敭潨⁷潬歯湩⁧潦⁲ⴷ楚⁰慦汩摥‮獉椠⁴湩瑳污敬㽤㝾楚⁰獩椠獮慴汬摥‮獕湩⁧桴瑡⸮縮娷灩挠畯摬渠瑯戠⁥潦湵⹤䱾潯楫杮映牯挠浯慭摮氠湩⁥捡散獳扩敬圠湩䅒⁒牯唠剮牡攮數䙾畯摮唠剮剁‮獕湩⁧桴瑡⸮縮湕䅒⁒潣汵⁤潮⁴敢映畯摮縮湕畳灰牯整⁤牡档癩⁥祴数坾楲楴杮瀠瑡⁨潴挠捡敨⸮縮桔瑡映汩⁥潤獥渠瑯攠楸瑳‮硅瑩湩⹧䑾充摨甲瑆楥偢煷匰䉗湉灔彁捪䱚䜵穋夳剃㐱汕㡫䨷牯㥳乶杈慦浏塍㙹硖縭牐獥⁳湡⁹敫⁹潴攠楸繴潆湵⁤楂歮戠捡杫潲湵⁤楶敤繯潎䈠湩⁫慢正牧畯摮瘠摩潥映畯摮੾彟 ††彟屟 †⁜† †ਯ††⁜ਯ††堠 †⼠尠弊彟 †彜彟ੜ†††††⼠縊敓⁴慭⁸偆ⱓ椠⁦潮⁴慣灰摥戠⁹獖湹⹣䤊⁦敳⁴潴〠‬桴⁥牦浡⁥慲整氠浩瑩眠汩⁬潮⁴慴敫攠晦捥⹴䄊⁳景渠睯‬瑩挠湡漠汮⁹慣⁰潴ㄠ獭⼠ㄠ〰‰偆⹓圊牡楮杮›潓敭映慲敭爠瑡獥眠汩⁬慭敫琠敨朠浡⁥潬歯挊潨灰⁹敤数摮湩⁧湯琠敨爠晥敲桳爠瑡⁥潹牵洠湯瑩牯猠灵潰瑲ⱳ漊⁲敤数摮湩⁧湯礠畯⁲假⹕佾敶牲摩⁥桴⁥潮整氠浩瑩‮敓⁴潴ⴠ‱潴洠歡੥桴⁥牰杯慲⁭敤整浲湩⁥潨⁷慭祮渠瑯獥琊敨敲愠敲椠⁮桴⁥档牡⁴灯湥摥ਮ䅒⁍獵条⁥慭⁹慶祲縮桔獩愠汬睯⁳潹⁵潴挠慨杮⁥桴⁥楷摮睯猠穩⁥景琠敨朠浡⁥捡潣摲湩⁧潴礠畯⁲潭楮潴⁲敳瑴湩獧縮汃慥⁮楦敬⁳牦浯搠睯汮慯楤杮愠摮攠瑸慲瑣湩⁧潓杮倠捡慫敧⹳圊牡楮杮›敒獵⁥景琠敨敳映汩獥眠汩⁬敲畱物⁥潤湷潬摡湩⁧湡੤硥牴捡楴杮琠敨⁭条楡Ɱ猠浯⁥景眠楨档挠湡琠歡⁥⁡楢⁴景琠浩⹥䍾慨杮⁥桴⁥楢牴瑡⁥獵摥映牯挠湯敶瑲湩⁧潳杮⹳吊楨⁳楷汬漠汮⁹慴敫攠晦捥⁴潦⁲桴⁥敮瑸猠湯獧挠湯敶瑲摥ਮ桔⁥敤慦汵⁴獩ㄠ㠲扫獰‬獡搠捥摩摥戠⁹桴⁥慧敭ਮ晉猠湯⁧慣档湩⁧獩琠牵敮⁤湯‬桴⁥慣档摥猠湯獧眠汩੬敫灥琠敨戠瑩慲整猠瑥楴杮琠敨⁹敷敲挠湯敶瑲摥眠瑩⹨上瑯㩥吠楨⁳楷汬愠獬⁯敲畳瑬椠⁮慬杲牥漠⁲浳污敬ੲ潣灭汩摥愠摵潩映汩獥‬桷捩⁨晥敦瑣⁳潹牵猠湯⁧慣档⁥獡眠汥⹬䍾慨杮⁥桴⁥潣瑮潲汬牥琠慨⁴獩猠汥捥整⁤潴瀠慬⁹桷湥䬠祥潢牡⁤潭敤椠⁳景⹦圊剁䥎䝎›湕汰杵楧杮漠⁲汰杵楧杮椠⁮潣瑮潲汬牥⁳慣⁮晡敦瑣琠楨⁳敳瑴湩⹧呾楨⁳灡汰敩⁳潦⁲潢桴瀠慬敹⁲票数獲数摥⹳呾楨⁳灡汰敩⁳潦⁲潢桴瀠慬敹⁲楤晦捩汵楴獥縮牃摥瑩⁳楷汬戠⁥楤灳慬敹⁤湩挠湯潳敬縮湅整⁲数捲湥慴敧漠⁦潳杮猠数摥眠敨⁮汰祡湩⹧吠楨⁳污潳攠晦捥獴琠敨瀠瑩档漠⁦桴⁥潳杮縮桃湡敧椠獮牴浵湥⁴牯琠慲正琠⁯敢瀠慬敹⁤湩朠浡⹥剾汥畡据⁨桴⁥慧敭眠瑩⁨桴⁥牰癥潩獵猠湯⁧湩瀠慬散縮敓敬瑣眠慨⁴汰杵湩⁳桳畯摬戠⁥潬摡摥漠⁲楤慳汢摥ਮ敒畱物獥䜠㍈‫潣灭瑡扩敬瀠畬楧獮縮楖睥挠捡敨⁤档牡⁴楦敬⹳匠湯獧眠汩⁬灡数牡栠牥⁥湯祬昊牯琠潨敳琠慨⁴敷敲挠湯敶瑲摥眠敨⁮潳杮挠捡楨杮眠獡琠牵敮⁤湯縮桃湡敧琠敨映牯慭⁴景挠牵敲瑮潳杮琮瑸‮慃⁮敢甠敳畦⁬潦⁲瑳敲浡湩⹧䍾慨杮⁥桴⁥浡畯瑮漠⁦楴敭琠⁯慷瑩戠晥牯⁥桴੥潳杮猠慴瑲⹳删煥極敲⁳丢⁯湩牴≯琠⁯敢琠牵敮⁤湯縮桃湡敧挠湯牴汯⁳潦⁲汰祡湩⁧湯欠祥潢牡⹤剾煥極敲⁤潦⁲汰祡湩⁧慦散漭晦愠摮戠瑡汴⹥卾瑥挠牵敲瑮戠捡杫潲湵⁤浩条⁥桷湥瀠慬楹杮愠猠湯⹧䉾捡杫潲湵⁤浩条⁥桴瑡猧朠楯杮琠⁯敢猠潨湷椠⁮桴⁥慧敭ਮ潄扵敬挠楬正琠⁯敳⁥⁡慬杲牥瀠敲楶睥漠⁦潨⁷瑩眠汩⁬潬歯縮灓敥㩤††††††††††††††縥昶搱戲ㄶ㕤ちㄱ晣晢㝣㐴㔴㌵㐵〰〰㉾㄰㈠㈰㈠㌰㈠㐰㈠㔰㌠ㄱ㤠㤹㈠㤱㈠㔳㐠〰㐠㄰㤠㤹㌠㜰呾敨攠瑸慲瑣牯爠瑥牵敮⁤⁡潮⵮敺潲攠牲牯挠摯⹥吠楨⁳潣汵⁤敭湡琠慨⁴桴⁥硥牴捡楴湯栠獡映楡敬⹤㝾⁚獩渠瑯猠灵潰瑲摥戠⁹湕䅒ⱒ甠汮獥⁳潹⁵慨敶㜠娭灩椠獮慴汬摥‬牯洠湡慵汬⁹硥牴捡⁴桴⁥娷甠楳杮琠敨圠湩䅒⁒湩整晲捡⹥啾獮灵潰瑲摥愠捲楨敶琠灹ⱥ甠汮獥⁳潹⁵慨敶㜠娭灩漠⁲楗剮剁漠⁲湕䅒⁒湩瑳污敬Ɽ漠⁲桴⁥慴杲瑥唠䱒爠瑥牵敮⁤湡椠癮污摩爠獥潰獮⹥╾⁡‭畁桴牯‬琥ⴠ吠瑩敬‬戥ⴠ䄠扬浵‬┥ⴠ倠牥散瑮ਬ挥ⴠ䌠慨瑲牥‬礥ⴠ夠慥Ⱳ┠⁬‭敌杮桴‬朥ⴠ䜠湥敲⽾尡䔠牲牯愠摤湩⁧⁡瑳牡潰敷⁲桰慲敳‮晉琠楨⁳敭獳条⁥灡数牡⁳潭敲琠慨⁮湯散‬桴牥⁥慭⁹敢愠瀠潲汢浥䅾祮猠灵潰瑲摥映汩獥⩼挮慨瑲⨻洮摩⨻昮灳⨻種灩⨻㜮㭺⸪慲㭲⸪慰⹫數㭮⸪慰⹫獰簳汁⁬档牡⁴祴数米⸪档牡㭴⸪業籤慆瑳䡇″潓杮倠捡慫敧⩼昮灳⨻種灩⨻㜮㭺⸪慲籲畇瑩牡䠠牥⁯″䅐籋⸪慰㭫⸪慰⹫數㭮⸪慰⹫獰簳湁⁹祴数⩼⨮䱾杩瑨楮杮䐬晩楦畣瑬啹Ɒ潄扵敬潎整ⱳ敌瑦乹瑯獥䈬潲敫卮牴湩Ⱨ桗浡祭瑁慴正倬睯牥灕瑓慥繬慓楶杮甠敳⁲慢正牧畯摮瘠摩潥剾獥潴楲杮甠敳⁲慢正牧畯摮瘠摩潥䙾楡敬⁤潴欠汩⁬敨楬⁸牯匠塯攠數畣慴汢獥縮畒湮湩⁧業㉤档牡ⱴ氠杯縺畁楤⁯獩渠瑯挠捡敨⹤䙾楡敬⁤潴甠汰慯⁤潬⹧䤠⁴獩猠癡摥琠⁯慬湵档牥琮瑸縮瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨术浡䉥慬歮瀮杮屾䱐䝕义屓屾楤慳汢摥繜⸪汤繬潣敲搮汬⡾⤪彾潬⹧硴繴潌摡摥›汰杵湩屳啾䕓偒佒䥆䕌屾灁䑰瑡屡潌慣屬獁祰屲慆瑳䡇尳獁祰䍲湯楦⹧浸繬慅祳䴥摥畩╭慈摲䔥灸牥繴潎儠⁂潣普杩映畯摮‬慣湮瑯猠癡⁥档湡敧⹳䑾呁屁慧敭汰祡䉟⹇浩⹧數繮慆汩摥琠⁯敧⁴慢正牧畯摮椠慭敧縡敒摡湩⁧敳瑴湩獧⸮縮灓敥⁤数捲湥慴敧挠湡潮⁴敢稠牥⁯牯氠獥ⅳ℡䙾獡䝴㍈›敋批湩獤卾汥捥整⁤畢瑴湯縺潌摡湩⁧捳楲瑰⁳潦⁲癯牥楲敤挠敨正⹳⸮䙾楡敬⁤潴猠瑥甠敳⁲䉑瘠污敵縮䡇⬳倠畬楧⁮ 祄慮業⁣楌歮䰠扩慲祲⠠⸪汤⥬⩼搮汬䝾極慴⁲效潲䤠䥉‫潌㩧⠠慬瑳猠獥楳湯縩潎儠⁂潣普杩映汩⁥潦湵Ɽ挠湡潮⁴敳⁴慶畬⹥呾敨敲椠⁳潭敲琠慨⁮湯⁥楦敬椠⁮桴獩匠湯⁧慐正条⹥圊楨档漠敮搠⁯潹⁵档潯敳縿瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨愯獳瑥⽳潣瑮潲⽬灸潬敲⹲灪繧敓敬瑣愠挠湯牴汯敬⁲畢瑴湯愠摮琊敨⁮汣捩⁫⁡敫⁹潴愠獳杩⁮潴椠⹴找捡杫湲彤楶敤⹯楢⹫數繮慆汩摥琠⁯潣祰猠湯⁧楶敤⹯松瑯椠癮污摩搠物捥潴祲‬歳灩楰杮›䅾摵潩映汩獥⩼洮㍰⨻眮癡⨻漮杧⨻漮異米湁⁹祴数⩼⨮䥾⁳桴牥⁥⁡畧瑩牡琠慲正琠潯縿獉琠敨敲愠爠票桴⁭牴捡⁫潴㽯啾楳杮戠慬歮洠獵捩映汩繥獦瑢灭晜獡杴㍨筟細洮㍰䑾⁏余⁕䅈䕖吠䕈䜠䵁⁅偏久㼿㼿䝾瑯渠汵⁬癥湥ⅴ℡℡℡℡䝾瑯渠汵⁬癥湥⁴整瑸℡℡℡℡縡楆敬挠湡潮⁴敢映畯摮ਮ慐桴›䙾楡敬⁤潴氠慯⁤睯⁮慬湵档牥氠杯縮਍ⴭほൽ䌊湯整瑮䐭獩潰楳楴湯›潦浲搭瑡㭡渠浡㵥昢汩≥※楦敬慮敭∽慬湵档牥琮瑸ഢ䌊湯整瑮吭灹㩥琠硥⽴汰楡൮ഊ笊紱਍ⴭほ⵽縭灡汰捩瑡潩⽮捯整⵴瑳敲浡浾汵楴慰瑲是牯⵭慤慴※潢湵慤祲總湕湫睯⁮扯敪瑣琠灹⁥湩愠牲祡›䵾摯椠普⁯瑩浥椠⁳業獳湩⹧⠠䍾湡琧映湩⁤桴⁥潭⁤湩潦猠牴捵⁴笨細\\u2029楷桴愠洠瑡档湩⁧潭⁤慮敭漠⁲湡愠扭杩潵獵祬渠浡摥洠摯椠普⁯瑳畲瑣⠠潭彤湩潦⸩䤠⁳桴⁥楦敬渠瑯瀠潲数汲⁹慮敭㽤⁾獩愠爠煥極敲⁤楦敬戠瑵搠敯⁳潮⁴硥獩⹴縊慃湮瑯映湩⁤⁡楦敬椠摮捩瑡湩⁧景愠儠⹂兾⁂楦敬⩼焮⹢數㭮⸪扱婼灩数⁤䉑⩼種灩呾敨敳椠整獭爠灥慬散琠敨朠浡❥⁳慤慴縺畓灰牯整⁤浩条⁥潦浲瑡米⸪湰㭧⸪灪㭧⸪浢㭰⸪摤米潐瑲扡敬丠瑥潷歲䜠慲桰捩米⸪湰籧偊䝅⩼樮数籧楂浴灡⩼戮灭䑼物捥䑴慲⁷畓晲捡籥⸪摤米湁⁹祴数⩼⨮䡾物慯楫匠湡╯楃捲獵䜠浡╥䈸呉䴠单䍉倠坏剅搥湯慮敫ㅮ┵〲㘱㈥㈺┲桃灩畴敮䙾獡䝴㍈䰠畡据敨⁲獩愠牬慥祤爠湵楮杮縡畍瑬⁩湩瑳湡散挠敨正湩⁧獩漠晦‮敂挠牡晥汵縡潗汲⁤潔牵ⴭ猠湯⁧楦敬⁳牡⁥潮⁴潣灭瑡扩敬眠瑩⁨䡇⸳䔠楸楴杮⸮縮敄整瑣摥圠⁔潮整甠灰牥戠瑩慭歳›呾楨⁳潳杮愠灰慥獲琠⁯敢挠浯楰敬⁤潦⁲潗汲⁤潔牵漠⁲慬整⁲慧敭ⱳ眠楨档椠⁳潮⁴潣灭瑡扩敬眠瑩⁨畇瑩牡䠠牥⁯䥉⁉楳据⁥瑩⁳潮整琠慲正映牯慭⁴慨⁳档湡敧⹤䵾獩╣汐祡牥䰥畡据敨╲潓杮整瑸潆浲瑡䘥湩獩敨䱤杯䬥汩獬楷捴╨潓杮楖敤獯䰥獡却湯䡧摡楖敤繯潆湵⁤ほⱽ攠瑸慲瑣湩⹧⸮坾汥潣敭琠⁯慆瑳䡇㨳匠汥捥⁴⁡档牡⁴潴瀠慬繹瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨搯慩湧⹯桰繰慆汩摥琠⁯档捥⁫慰桴›瀨›笢細Ⱒ攠›笢紱⤢笊紲幾浴孰ⴰ䄹䘭筝紴琮灭昮灳"
+		"湉瑩慩楬楺杮⸮縮慆瑳䡇″慌湵档牥䰠杯䵔䌨⠩⥒汁牬杩瑨牳獥牥敶੤ⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭⴭ卾畨晦敬猠捥楴湯挠湡潮⁴敢映畯摮椠⁮敳瑴湩獧椮楮ਮ獕条㩥嬊桓晵汦嵥瀊瑡ㅨ䌽尺档牡獴ੜ慰桴㴲㩄捜慨瑲㉳ੜ慰桴㴳㩅牜瑥楡彬慧敭屳縊慃❮⁴楦摮愠祮挠慨瑲ⅳ䍾湡潮⁴楦摮愠映汩⁥湩楤慣楴杮漠⁦潣瑮楡楮杮栠杩睨祡䜠塆縮汧扯污瀮歡椠湳琧渠浡摥挠牯敲瑣祬縮湏⁥景琠敨攠瑮牥摥映汩獥搠湯琧攠楸瑳縮⌊⌣⌣⌣⌣䐠坏䱎䅏⁄体䝎倠䅈䕓⌠⌣⌣⌣⌣縊潄湷潬摡湩⁧潳杮瀠捡慫敧⸮縮污敲摡⁹潤湷潬摡摥映汩⹥啾楮畱⁥楦敬搠瑡⁥档捥楫杮攠慮汢摥縮慄整渠瑯挠捡敨繤桔獩猠湯⁧慰正条⁥獩愠氠牡敧⁲楦敬琠慨⁮獵慵⹬⠠ほ⁽䉍਩潄礠畯眠湡⁴潴挠湯楴畮㽥坾楲楴杮氠湩⁫潴挠捡敨⸮縮牗瑩湩⁧慤整琠⁯慣档⹥⸮੾⌣⌣⌣⌣‣䅍义䰠啁䍎䕈⁒䡐十⁅⌣⌣⌣⌣ਣ剾慥楤杮映汩⹥䑾瑥捥整⁤档牡⁴楦敬縮敄整瑣摥洠摩⁩楦敬縮潃癮牥楴杮琠⁯档牡⹴⸮䍾湡潮⁴楦摮挠慨瑲愠瑦牥挠湯敶瑲湩⁧牦浯䴠䑉⹉匠浯瑥楨杮洠獵❴敶眠湥⁴牷湯⁧楷桴洠摩挲慨瑲‮硅瑩湩⹧䍾敨正湩⁧慣档⹥⸮䕾据摯湩⁧潳杮縮敇瑴湩⁧畡楤⁯楦敬⹳⸮䙾畯摮愠摵潩眠瑩⁨桴⁥档牡⁴慮敭䙾畯摮䘠䙏猠牴捵畴敲映汩獥⼠縠桃捥楫杮椠⁦硥牴⁡畡楤⁯硥獩獴䙾畯摮椠潳慬整⁤牤浵⁳畡楤⁯縨潆湵⁤獩汯瑡摥瘠捯污⁳畡楤繯畃牲湥⁴敳敬瑣摥愠摵潩猠牴慥獭愠敲縺潎猠湯⁧畡楤⁯慣⁮敢映畯摮ਮ潄礠畯眠湡⁴潴猠慥捲⁨潦⁲瑩縿慗瑮琠⁯汰祡眠瑩潨瑵愠摵潩ਿ桔獩椠⁳潮⁴潣灭瑡扩敬眠瑩⁨牰捡楴散洠摯⹥䙾楡敬⁤潴搠汥瑥⁥桴⁥整灭䘠䉓映汯敤ⅲ䙾畯摮洠牯⁥桴湡琠牨敥愠摵潩琠慲正ⱳ洠牥楧杮縮牃慥楴杮攠据摯牥瀠潲散獳⸮縮湹档潲潮獵洠摯⁥敳ੴ卾慴瑲湩⁧卆⁂畢汩楤杮⸮縮慃档摥愠摵潩映畯摮縮慆汩摥琠⁯潣祰挠捡敨⁤卆⹂圠奈ℿ℡䑾汥瑥湩⁧桴⁥畣牲湥汴⁹潬摡摥䘠䉓椠⁮慣敳縮桃牡⁴獩渠瑯挠捡敨⹤佾数楮杮猠湯⁧慰⹫睾票坾奈䍾浯楰楬杮挠慨瑲縮牃慥楴杮渠瑯⁥牡慲獹⸮縮牅潲⁲湩瀠牡楳杮渠瑯獥映牯縠牅潲⁲湩瀠牡楳杮猠汯獯映牯縠牃慥楴杮愠摮愠摤湩⁧瑳牡潰敷⁲牡慲獹⸮縮敇瑴湩⁧湥⁤楴敭⸮縮湕扡敬琠⁯敧⁴桴⁥湥⁤楴敭映牯愠渠瑯⁥牴捡⁫繛慃捬汵瑡湩⁧湥⁤楴敭‬潳映牡›䕾摮琠浩⁥獩縠敒摡湩⁧潢獳瀠潲獰⸮縮潓杮搠瑥捥整⁤獡戠獯繳杉潮楲杮搠慥桴氠捩⁫捳楲瑰䝾瑯渠湯攭楸瑳湥⁴潰敷畲⁰湩戠獯⹳湩㩩縠牃慥楴杮瀠睯牥灵愠牲祡⹳⸮卾牯楴杮猠牣灩獴戠⁹楴敭縮牃慥楴杮映捡ⵥ景⁦敳瑣潩獮⸮縮牃慥楴杮琠浩⁥楳湧瑡牵⁥牡慲獹⸮縮潎琠浩⁥楳獧‿瑨灴㩳⼯⹩祫⵭摣⹮潣⽭桰瑯獯椯慭敧⽳牯杩湩污〯㈰㈯㜹㌯㔵振㍢䍾敲瑡湩⁧牦瑥慢⁲牡慲獹⸮縮潃汬捥楴杮朠牡慢敧⸮縮牃慥楴杮洠牡敫⁲牡慲獹⸮縮汁杩楮杮瀠楯瑮牥⹳⸮䍾浯楰楬杮倠䭁縮牗瑩湩⁧䅐⁋潴挠捡敨縮䥄⁄噅剅呙䥈䝎圠剏㽋縡慃档摥挠慨瑲映畯摮縮慗瑩湩⁧潦⁲潳杮攠据摯湩⁧潴映湩獩⹨坾楲楴杮愠摵潩琠⁯慣档⹥坾楡楴杮映牯攠瑸慲琠慲正洠牥楧杮琠⁯楦楮桳縮汅灡敳⁤畡楤⁯湥潣楤杮琠浩㩥縠牃慥楴杮䜠㍈瀠潲散獳⸮縮敒摡ⱹ朠Ⅿ䍾敬湡湩⁧灵匠塯琠浥⁰楦敬⁳但⁒体䕍删䅅体ⅎ℡੾⌣⌣⌣⌣‣卆⁐塅剔䍁⁔䡐十⁅⌣⌣⌣⌣ਣ䑾瑥捥整⁤潳杮瀠捡慫敧縮潆湵⁤慣档摥䤠⹄婾偉渠瑯挠捡敨⹤䙾畯摮挠捡敨⁤卆⹐䕾牲牯›慃档摥䘠偓搠敯⁳潮⁴硥獩⹴䔠瑸慲瑣湩⹧䕾牲牯攠瑸慲瑣湩⁧⁡楦敬›䱾潯楫杮映牯挠浯慭摮氠湩⁥捡散獳扩敬㜠楚⹰䱾潯楫杮映牯㜠楚⁰湩爠来獩牴⹹坾楡⁴呗ⱆ吠䕈倠佒則䵁䤠乓吧吠䕈䕒℡䠠坏縡潃汵⁤潮⁴楦摮㜠娭灩瀠瑡⁨湩爠来獩牴⹹䤠⁳瑩椠獮慴汬摥縿潓敭潨⁷潬歯湩⁧潦⁲ⴷ楚⁰慦汩摥‮獉椠⁴湩瑳污敬㽤㝾楚⁰獩椠獮慴汬摥‮獕湩⁧桴瑡⸮縮娷灩挠畯摬渠瑯戠⁥潦湵⹤䱾潯楫杮映牯挠浯慭摮氠湩⁥捡散獳扩敬圠湩䅒⁒牯唠剮牡攮數䙾畯摮唠剮剁‮獕湩⁧桴瑡⸮縮湕䅒⁒潣汵⁤潮⁴敢映畯摮縮湕畳灰牯整⁤牡档癩⁥祴数坾楲楴杮瀠瑡⁨潴挠捡敨⸮縮桔瑡映汩⁥潤獥渠瑯攠楸瑳‮硅瑩湩⹧䑾充摨甲瑆楥偢煷匰䉗湉灔彁捪䱚䜵穋夳剃㐱汕㡫䨷牯㥳乶杈慦浏塍㙹硖縭牐獥⁳湡⁹敫⁹潴攠楸繴潆湵⁤楂歮戠捡杫潲湵⁤楶敤繯潎䈠湩⁫慢正牧畯摮瘠摩潥映畯摮੾彟 ††彟屟 †⁜† †ਯ††⁜ਯ††堠 †⼠尠弊彟 †彜彟ੜ†††††⼠縊敓⁴慭⁸偆ⱓ椠⁦潮⁴慣灰摥戠⁹獖湹⹣䤊⁦敳⁴潴〠‬桴⁥牦浡⁥慲整氠浩瑩眠汩⁬潮⁴慴敫攠晦捥⹴䄊⁳景渠睯‬瑩挠湡漠汮⁹慣⁰潴ㄠ獭⼠ㄠ〰‰偆⹓圊牡楮杮›潓敭映慲敭爠瑡獥眠汩⁬慭敫琠敨朠浡⁥潬歯挊潨灰⁹敤数摮湩⁧湯琠敨爠晥敲桳爠瑡⁥潹牵洠湯瑩牯猠灵潰瑲ⱳ漊⁲敤数摮湩⁧湯礠畯⁲假⹕佾敶牲摩⁥桴⁥潮整氠浩瑩‮敓⁴潴ⴠ‱潴洠歡੥桴⁥牰杯慲⁭敤整浲湩⁥潨⁷慭祮渠瑯獥琊敨敲愠敲椠⁮桴⁥档牡⁴灯湥摥ਮ䅒⁍獵条⁥慭⁹慶祲縮桔獩愠汬睯⁳潹⁵潴挠慨杮⁥桴⁥楷摮睯猠穩⁥景琠敨朠浡⁥捡潣摲湩⁧潴礠畯⁲潭楮潴⁲敳瑴湩獧縮汃慥⁮楦敬⁳牦浯搠睯汮慯楤杮愠摮攠瑸慲瑣湩⁧潓杮倠捡慫敧⹳圊牡楮杮›敒獵⁥景琠敨敳映汩獥眠汩⁬敲畱物⁥潤湷潬摡湩⁧湡੤硥牴捡楴杮琠敨⁭条楡Ɱ猠浯⁥景眠楨档挠湡琠歡⁥⁡楢⁴景琠浩⹥䍾慨杮⁥桴⁥楢牴瑡⁥獵摥映牯挠湯敶瑲湩⁧潳杮⹳吊楨⁳楷汬漠汮⁹慴敫攠晦捥⁴潦⁲桴⁥敮瑸猠湯獧挠湯敶瑲摥ਮ桔⁥敤慦汵⁴獩ㄠ㠲扫獰‬獡搠捥摩摥戠⁹桴⁥慧敭ਮ晉猠湯⁧慣档湩⁧獩琠牵敮⁤湯‬桴⁥慣档摥猠湯獧眠汩੬敫灥琠敨戠瑩慲整猠瑥楴杮琠敨⁹敷敲挠湯敶瑲摥眠瑩⹨上瑯㩥吠楨⁳楷汬愠獬⁯敲畳瑬椠⁮慬杲牥漠⁲浳污敬ੲ潣灭汩摥愠摵潩映汩獥‬桷捩⁨晥敦瑣⁳潹牵猠湯⁧慣档⁥獡眠汥⹬䍾慨杮⁥桴⁥潣瑮潲汬牥琠慨⁴獩猠汥捥整⁤潴瀠慬⁹桷湥䬠祥潢牡⁤潭敤椠⁳景⹦圊剁䥎䝎›湕汰杵楧杮漠⁲汰杵楧杮椠⁮潣瑮潲汬牥⁳慣⁮晡敦瑣琠楨⁳敳瑴湩⹧呾楨⁳灡汰敩⁳潦⁲潢桴瀠慬敹⁲票数獲数摥⹳呾楨⁳灡汰敩⁳潦⁲潢桴瀠慬敹⁲楤晦捩汵楴獥縮牃摥瑩⁳楷汬戠⁥楤灳慬敹⁤湩挠湯潳敬縮湅整⁲数捲湥慴敧漠⁦潳杮猠数摥眠敨⁮汰祡湩⹧吠楨⁳污潳攠晦捥獴琠敨瀠瑩档漠⁦桴⁥潳杮縮桃湡敧椠獮牴浵湥⁴牯琠慲正琠⁯敢瀠慬敹⁤湩朠浡⹥剾汥畡据⁨桴⁥慧敭眠瑩⁨桴⁥牰癥潩獵猠湯⁧湩瀠慬散縮敓敬瑣眠慨⁴汰杵湩⁳桳畯摬戠⁥潬摡摥漠⁲楤慳汢摥ਮ敒畱物獥䜠㍈‫潣灭瑡扩敬瀠畬楧獮縮楖睥挠捡敨⁤档牡⁴楦敬⹳匠湯獧眠汩⁬灡数牡栠牥⁥湯祬昊牯琠潨敳琠慨⁴敷敲挠湯敶瑲摥眠敨⁮潳杮挠捡楨杮眠獡琠牵敮⁤湯縮桃湡敧琠敨映牯慭⁴景挠牵敲瑮潳杮琮瑸‮慃⁮敢甠敳畦⁬潦⁲瑳敲浡湩⹧䍾慨杮⁥桴⁥浡畯瑮漠⁦楴敭琠⁯慷瑩戠晥牯⁥桴੥潳杮猠慴瑲⹳删煥極敲⁳丢⁯湩牴≯琠⁯敢琠牵敮⁤湯縮桃湡敧挠湯牴汯⁳潦⁲汰祡湩⁧湯欠祥潢牡⹤剾煥極敲⁤潦⁲汰祡湩⁧慦散漭晦愠摮戠瑡汴⹥卾瑥挠牵敲瑮戠捡杫潲湵⁤浩条⁥桷湥瀠慬楹杮愠猠湯⹧䉾捡杫潲湵⁤浩条⁥桴瑡猧朠楯杮琠⁯敢猠潨湷椠⁮桴⁥慧敭ਮ潄扵敬挠楬正琠⁯敳⁥⁡慬杲牥瀠敲楶睥漠⁦潨⁷瑩眠汩⁬潬歯縮灓敥㩤††††††††††††††縥昶搱戲ㄶ㕤ちㄱ晣晢㝣㐴㔴㌵㐵〰〰㉾㄰㈠㈰㈠㌰㈠㐰㈠㔰㌠ㄱ㤠㤹㈠㤱㈠㔳㐠〰㐠㄰㤠㤹㌠㜰呾敨攠瑸慲瑣牯爠瑥牵敮⁤⁡潮⵮敺潲攠牲牯挠摯⹥吠楨⁳潣汵⁤敭湡琠慨⁴桴⁥硥牴捡楴湯栠獡映楡敬⹤㝾⁚獩渠瑯猠灵潰瑲摥戠⁹湕䅒ⱒ甠汮獥⁳潹⁵慨敶㜠娭灩椠獮慴汬摥‬牯洠湡慵汬⁹硥牴捡⁴桴⁥娷甠楳杮琠敨圠湩䅒⁒湩整晲捡⹥啾獮灵潰瑲摥愠捲楨敶琠灹ⱥ甠汮獥⁳潹⁵慨敶㜠娭灩漠⁲楗剮剁漠⁲湕䅒⁒湩瑳污敬Ɽ漠⁲桴⁥慴杲瑥唠䱒爠瑥牵敮⁤湡椠癮污摩爠獥潰獮⹥╾⁡‭畁桴牯‬琥ⴠ吠瑩敬‬戥ⴠ䄠扬浵‬┥ⴠ倠牥散瑮ਬ挥ⴠ䌠慨瑲牥‬礥ⴠ夠慥Ⱳ┠⁬‭敌杮桴‬朥ⴠ䜠湥敲⽾尡䔠牲牯愠摤湩⁧⁡瑳牡潰敷⁲桰慲敳‮晉琠楨⁳敭獳条⁥灡数牡⁳潭敲琠慨⁮湯散‬桴牥⁥慭⁹敢愠瀠潲汢浥䅾祮猠灵潰瑲摥映汩獥⩼挮慨瑲⨻洮摩⨻昮灳⨻種灩⨻㜮㭺⸪慲㭲⸪慰⹫數㭮⸪慰⹫獰簳汁⁬档牡⁴祴数米⸪档牡㭴⸪業籤慆瑳䡇″潓杮倠捡慫敧⩼昮灳⨻種灩⨻㜮㭺⸪慲籲畇瑩牡䠠牥⁯″䅐籋⸪慰㭫⸪慰⹫數㭮⸪慰⹫獰簳湁⁹祴数⩼⨮䱾杩瑨楮杮䐬晩楦畣瑬啹Ɒ潄扵敬潎整ⱳ敌瑦乹瑯獥䈬潲敫卮牴湩Ⱨ桗浡祭瑁慴正倬睯牥灕瑓慥繬慓楶杮甠敳⁲慢正牧畯摮瘠摩潥剾獥潴楲杮甠敳⁲慢正牧畯摮瘠摩潥䙾楡敬⁤潴欠汩⁬敨楬⁸牯匠塯攠數畣慴汢獥縮畒湮湩⁧業㉤档牡ⱴ氠杯縺畁楤⁯獩渠瑯挠捡敨⹤䙾楡敬⁤潴甠汰慯⁤潬⹧䤠⁴獩猠癡摥琠⁯慬湵档牥琮瑸縮瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨术浡䉥慬歮瀮杮屾䱐䝕义屓屾楤慳汢摥繜⸪汤繬潣敲搮汬⡾⤪彾潬⹧硴繴潌摡摥›汰杵湩屳啾䕓偒佒䥆䕌屾灁䑰瑡屡潌慣屬獁祰屲慆瑳䡇尳獁祰䍲湯楦⹧浸繬慅祳䴥摥畩╭慈摲䔥灸牥繴潎儠⁂潣普杩映畯摮‬慣湮瑯猠癡⁥档湡敧⹳䑾呁屁慧敭汰祡䉟⹇浩⹧數繮慆汩摥琠⁯敧⁴慢正牧畯摮椠慭敧縡敒摡湩⁧敳瑴湩獧⸮縮灓敥⁤数捲湥慴敧挠湡潮⁴敢稠牥⁯牯氠獥ⅳ℡䙾獡䝴㍈›敋批湩獤卾汥捥整⁤畢瑴湯縺潌摡湩⁧捳楲瑰⁳潦⁲癯牥楲敤挠敨正⹳⸮䙾楡敬⁤潴猠瑥甠敳⁲䉑瘠污敵縮䡇⬳倠畬楧⁮ 祄慮業⁣楌歮䰠扩慲祲⠠⸪汤⥬⩼搮汬䝾極慴⁲效潲䤠䥉‫潌㩧⠠慬瑳猠獥楳湯縩潎儠⁂潣普杩映汩⁥潦湵Ɽ挠湡潮⁴敳⁴慶畬⹥呾敨敲椠⁳潭敲琠慨⁮湯⁥楦敬椠⁮桴獩匠湯⁧慐正条⹥圊楨档漠敮搠⁯潹⁵档潯敳縿瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨愯獳瑥⽳潣瑮潲⽬灸潬敲⹲灪繧敓敬瑣愠挠湯牴汯敬⁲畢瑴湯愠摮琊敨⁮汣捩⁫⁡敫⁹潴愠獳杩⁮潴椠⹴找捡杫湲彤楶敤⹯楢⹫數繮慆汩摥琠⁯潣祰猠湯⁧楶敤⹯松瑯椠癮污摩搠物捥潴祲‬歳灩楰杮›䅾摵潩映汩獥⩼洮㍰⨻眮癡⨻漮杧⨻漮異米湁⁹祴数⩼⨮䥾⁳桴牥⁥⁡畧瑩牡琠慲正琠潯縿獉琠敨敲愠爠票桴⁭牴捡⁫潴㽯啾楳杮戠慬歮洠獵捩映汩繥獦瑢灭晜獡杴㍨筟細洮㍰䑾⁏余⁕䅈䕖吠䕈䜠䵁⁅偏久㼿㼿䝾瑯渠汵⁬癥湥ⅴ℡℡℡℡䝾瑯渠汵⁬癥湥⁴整瑸℡℡℡℡縡楆敬挠湡潮⁴敢映畯摮ਮ慐桴›䙾楡敬⁤潴氠慯⁤睯⁮慬湵档牥氠杯縮਍ⴭほൽ䌊湯整瑮䐭獩潰楳楴湯›潦浲搭瑡㭡笠紲਍਍ㅻ繽灡汰捩瑡潩⽮捯整⵴瑳敲浡浾汵楴慰瑲是牯⵭慤慴※潢湵慤祲總湕湫睯⁮扯敪瑣琠灹⁥湩愠牲祡›䵾摯椠普⁯瑩浥椠⁳業獳湩⹧⠠䍾湡琧映湩⁤桴⁥潭⁤湩潦猠牴捵⁴笨細\\u2029楷桴愠洠瑡档湩⁧潭⁤慮敭漠⁲湡愠扭杩潵獵祬渠浡摥洠摯椠普⁯瑳畲瑣⠠潭彤湩潦⸩䤠⁳桴⁥楦敬渠瑯瀠潲数汲⁹慮敭㽤⁾獩愠爠煥極敲⁤楦敬戠瑵搠敯⁳潮⁴硥獩⹴縊慃湮瑯映湩⁤⁡楦敬椠摮捩瑡湩⁧景愠儠⹂兾⁂楦敬⩼焮⹢數㭮⸪扱婼灩数⁤䉑⩼種灩呾敨敳椠整獭爠灥慬散琠敨朠浡❥⁳慤慴縺畓灰牯整⁤浩条⁥潦浲瑡米⸪湰㭧⸪灪㭧⸪浢㭰⸪摤米潐瑲扡敬丠瑥潷歲䜠慲桰捩米⸪湰籧偊䝅⩼樮数籧楂浴灡⩼戮灭䑼物捥䑴慲⁷畓晲捡籥⸪摤米湁⁹祴数⩼⨮䡾物慯楫匠湡╯楃捲獵䜠浡╥䈸呉䴠单䍉倠坏剅搥湯慮敫ㅮ┵〲㘱㈥㈺┲桃灩畴敮䙾獡䝴㍈䰠畡据敨⁲獩愠牬慥祤爠湵楮杮縡畍瑬⁩湩瑳湡散挠敨正湩⁧獩漠晦‮敂挠牡晥汵縡潗汲⁤潔牵ⴭ猠湯⁧楦敬⁳牡⁥潮⁴潣灭瑡扩敬眠瑩⁨䡇⸳䔠楸楴杮⸮縮敄整瑣摥圠⁔潮整甠灰牥戠瑩慭歳›呾楨⁳潳杮愠灰慥獲琠⁯敢挠浯楰敬⁤潦⁲潗汲⁤潔牵漠⁲慬整⁲慧敭ⱳ眠楨档椠⁳潮⁴潣灭瑡扩敬眠瑩⁨畇瑩牡䠠牥⁯䥉⁉楳据⁥瑩⁳潮整琠慲正映牯慭⁴慨⁳档湡敧⹤䵾獩╣汐祡牥䰥畡据敨╲潓杮整瑸潆浲瑡䘥湩獩敨䱤杯䬥汩獬楷捴╨潓杮楖敤獯䰥獡却湯䡧摡楖敤繯潆湵⁤ほⱽ攠瑸慲瑣湩⹧⸮坾汥潣敭琠⁯慆瑳䡇㨳匠汥捥⁴⁡档牡⁴潴瀠慬繹瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨搯慩湧⹯桰繰慆汩摥琠⁯档捥⁫慰桴›瀨›笢細Ⱒ攠›笢紱⤢笊紲幾浴孰ⴰ䄹䘭筝紴琮灭昮灳縤⡞慤慴⽛嵜㼩潳杮孳尯⡝㰿慮敭嬾ⵁず㤭嵟⤫弨潳杮獟牣灩獴㼩洮摩焮⡢⠮杮籣獰簲獰簳數⥮㼩縤⡞㰿慮敭嬾ⵁず㤭嵟⤫獟湯⹧瀨歡煼⥢⸨渨捧灼㉳灼㍳硼湥⤩␿䥾癮污摩猠杩慮畴敲›婾䵏㽇℡㼡挠湯慴湩牥猠穩⁥業浳瑡档㼿㼿‡敷搠⁯潮⁴慣敲瑾瑯污映汩⁥楳敺洠獩慭捴繨潺敮屳汧扯污杜潬慢彬晧筸細湾浡㵥氢杯㬢映汩湥浡㵥氢畡据敨⹲硴≴਍潃瑮湥⵴祔数›整瑸瀯慬湩湾浡㵥挢慨瑲㬢映汩湥浡㵥⸢档牡⹴穧ഢ䌊湯整瑮吭灹㩥愠灰楬慣楴湯术楺p"
 		#endregion
 		)
 	).Split(new char[] {'~'}, StringSplitOptions.RemoveEmptyEntries);
@@ -175,7 +587,9 @@ static partial class Launcher
 	);
 	public static readonly string[] TT = 
 		// [0]
-		// FASTGH3 BACKGROUND PREVIEW™©®~
+		// FASTGH3 BACKGROUND PREVIEW™©®
+		// [1]
+		// 
 		#region
 		"FASTGH3 BACKGROUND PREVIEW™©®~"
 
@@ -184,7 +598,1371 @@ static partial class Launcher
 	public static readonly string[] gsn = A.GetString(
 		U.GetBytes(
 		// [0]
-		// fastgh3~song~fastgh3~test~wewillrise~anarchyintheuk~avalancha~barracuda~beforeiforget~bellyofashark~blackmagicwoman~blacksunshine~bossslash~bosstom~bossdevil~bullsonparade~cantbesaved~cherubrock~citiesonflame~cliffsofdover~closer~cultofpersonality~dontholdback~downndirty~evenflow~fcpremix~generationrock~gothatfar~helicopter~hitmewithyourbestshot~hierkommtalex~holidayincambodia~imintheband~impulse~inlove~koolthing~knightsofcydonia~lagrange~laydown~mauvaisgarcon~metalheavylady~minuscelsius~mississippiqueen~missmurder~monsters~mutetest~mycurse~mynameisjonas~nothingformehere~numberofthebeast~one~paintitblack~paranoid~prayeroftherefugee~pridenjoy~radiosong~rainingblood~reptilia~rocknrollallnite~rockulikeahurricane~ruby~sabotage~sameoldsonganddance~schoolsout~shebangsadrum~slowride~stricken~storyofmylife~suckmykiss~sunshineofyourlove~synctest~synctestaudioandvisual~synctestplaytoaudio~talkdirtytome~takethislife~testsong~themetal~theseeker~thewayitends~threesandsevens~thrufireandflames~welcometothejungle~whenyouwereyoung~Tutorial_1B~Tutorial_1C~Tutorial_1D~Tutorial_1E~Tutorial_2A~Tutorial_2B~Tutorial_2C~Tutorial_3A~Tutorial_3B~Tutorial_3C~Tutorial_3D~Tutorial_4C~Tutorial_4E~Aboutagirl~Aggro~AmericanWoman~AntiSocial~AreYouGonnaGoMyWay~Assassin~BandOnTheRun~beatit~beautifuldisaster~bossted~bosszakk~BYOB~CrazyTrain~Dammit~demolitionman~DemolitionMan_perf2~doitagain~escueladecalor~everlong~eyeofthetiger~FeelThePain~floaton~freakonaleash~goodgod~goyourownway~hailtothefreaks~heartbreaker~heymanniceshot~hollywoodnights~HotelCalifornia~hotforteacher~kickoutthejams~thekill~lvialviaquez~LaBamba~lazyeye~livingonaprayer~LoveMeTwoTimes~loveremovalmachine~LoveSpreads~themiddle~miserybusiness~monsoon~mountainsong~mrcrowley~NeverTooLate~nosleeptillbrooklyn~Nuvole~obstacle1~OnTheRoadAgain~OneArmedScissor~onewayoranother~ourtruth~Overkill~Parabola~PrettyVacant~PrisonerOfSociety~PullMeUnder~PurpleHaze~ramblinman~RebelYell~reedthroughlabor~rooftops~Santeria~SatchBoogie~Schism~Screamaimfire~shiver~somemightsay~SoulDoubt~Spiderwebs~Stillborn~Stillborn_Perf2~Stranglehold~SweetHomeAlabama~thejoker~theoneilove~today~Today_perf2~ToyBoy~TooMuchTooYoung~TrappedUnderIce~UpAroundTheBend~Vicarious~vinternoll2~WeaponOfChoice~whativedone~windcriesmary~youregonnasayyeah~jamsession~DrumStreamTest~synctest~synctestplaytoaudio~synctestaudioandvisual~synctestmuting~tenseconddebug~elevenseconddebug~twelveseconddebug~testtones~PlaceHolderSong~Again~Aqualung~BatCountry~BeenCaughtStealing~BlackRain~BlackWidow~BleedItOut~bloodlines~Bodies~bohemianrhapsody~Burn~BurninForYou~Calling~CallMeTheBreeze~ChemicalWarfare~CherryBomb~ChildrenOfTheGrave~Cryin~DanceDance~DancingThroughSunday~Deadfall~FascinationStreet~FeelGoodDrag~FeelsLikeTheFirstTime~fortunateson~FreeRide~FuryOfTheStorm~GetFree~Ghost~Graduate~HardToSee~HolyWars~HowYouRemindMe~IKnowWhatIAm~ImBroken~ImNotOk~Indians~InterstateLoveSong~ItsOnlyAnotherParsec~JetCityWoman~Lasso~ListenToHerHeart~LosingMyReligion~LoveGun~LunaticFringe~Machinehead~ModernDayCowboy~MoneyForNothing~Motivation~MoveItOnOver~Nemesis~NoMoreMrNiceGuy~NoSecretsThisYear~NoWayBack~paranoid~PourSomeSugarOnMe~PrepareForWar~Psychosocial~Ravenous~ReIgnition~Renegade~RockInAmerica~RockinInTheFreeWorld~Rush2112P1~Rush2112P2~Rush2112P3~Rush2112P4~Rush2112P5~Rush2112P6~Rush2112P7~Savior~ScumbagBlues~SelfEsteemGH6~SettingFire~SevenNationArmy~SharpDressedMan~SlowHands~Speeding~Spiderman~StrayCatBlues~SuddenDeath~Suffocate~TheOutsider~ThisDayWeFight~TickTickBoom~TiesThatBind~TonesOfHome~UnskinnyBop~Uprising~WaidmannsHeil~WereNotGonnaTakeIt~WhatDoIGet~Wish~yyz~dlc10~dlc11~dlc12~dlc13~dlc14~dlc15~dlc16~dlc17~dlc18~dlc19~dlc1~dlc24~dlc25~dlc26~dlc27~dlc28~dlc29~dlc2~dlc30~dlc31~dlc32~dlc33~dlc34~dlc35~dlc36~dlc37~dlc38~dlc39~dlc3~dlc40~dlc45~dlc46~dlc47~dlc49~dlc4~dlc50~dlc51~dlc5~dlc62~dlc63~dlc66~dlc68~dlc69~dlc6~dlc70~dlc71~dlc72~dlc73~dlc74~dlc75~dlc7~dlc80~dlc81~dlc82~dlc83~dlc84~dlc85~dlc86~dlc87~dlc88~dlc89~dlc8~dlc90~dlc91~dlc92~dlc93~dlc9~dlc94~dlc95~dlc96~dlc97~dlc98~dlc99~dlc100~alldayandallofthenight~alltheyoungdudes~alwaysontherun~backinthesaddle~BeyondBeautiful~bossjoe~brightlightfright~CatScratchFever~combination~completecontrol~drawtheline~dreamon~dreampolice~hardtohandle~ihatemyselfforlovingyou~joeperryguitarbattle~kingofrock~KingsAndQueensCredits~KingsAndQueens~letthemusicdothetalking~livinontheedge~loveinanelevator~MakeIt~mamakin~mercy~movinout~nobodysfault~nosurprize~pandorasbox~personalityCrisis~pink~ragdoll~ratsinthecellar~sextypething~shakinmycage~shesellssanctuary~sweetemotion~talktalking~TimRappTest~toysintheattic~trainkeptarollin~UncleSalty~walkthiswayrundmc~walkthisway~almosteasy~fortheloveofgod~holeintheearth~jukeboxhero~motorhead~nomoresorrow~peaceofmind~prettyhandsomeawkward~sleepinggiant~surfingwiththealien~thearsonist~thisisacall~yellow~areyougonnabemygirl~ballroomblitz~blackholesun~blitzkriegbop~brainpower~celebrityskin~cherubrock~creep~danicalifornia~deadonarrival~detroitrockcity~dirtylittlesecret~dontfearthereaper~dontlookbackinanger~electricversion~entersandman~epic~flirtinwithdisaster~foreplaylongtime~gimmeshelter~gowiththeflow~greengrass~hereitgoesagain~highwaystar~imsosick~inbloom~ithinkimparanoid~learntofly~mainoffender~maps~missqueen~nexttoyou~nightmare~orangecrush~roam~rockawaybeach~roxanne~runtothehills~sayitaintso~shouldistay~suffragettecity~thehandthatfeeds~timewehad~timmy~tomsawyer~trainkeptarollin~vasoline~wanteddeadoralive~waveofmutilation~welcomehome~wontgetfooled~3sand7s~afterlife~callme~elscorcho~girlswhoplayguitars~girluwant~indestructible~ithurts~justwhatineeded~messageinabottle~monkeygonetoheaven~perfectdrug~rio~saintsoflosangeles~simpleman~snowheyoh~thisaintascene~timeisrunningout~whydoyouloveme~yougotanotherthingcoming~zero~29fingers~blooddoll~cantletgo~daylatedollarshort~igetby~outside~pleasure~seven~blackdog~sweethomealabama~borntobewild~ibelievein~liveandletdie~proudmary~shetalkstoangels~takingcareof~tieyourmother~wewillrockyou~youshookme~angelofdeath~soulless~soulless1~soulless2~soulless3~soulless4~soulless5~soulless6~amalgamation~monochrome~mindsofthemad~speedtest~jshot~misadventure~hollow~helidox~eruption~epidox~3999~marchmadness~ubersong~ubersong2~patterns~patterns1~patterns2~patterns3~respawn~phantomwrath~zoidberg~zoidbergthecowboy~universes~soulless6uc~soulless6ucuc~coalescence~secondloudest~advharmony~westernworld~bodysnatchers~crashtest~crashtest1~crashtest2~crashtest3~crashtest4~crashtest5~six~lol~300~350~400~40021~410~450~500~550~600~650~700~750~800~999~untitled~track0~track1~track2~track3~track4~track5~track6~track7~track8~track9~track00~track01~track02~track03~track04~track05~track06~track07~track08~track09~track10~track11~track12~track13~track14~track15~track16~track17~track18~track19~track20~track21~track22~track23~track24~track25~track26~track27~track28~track29~track30~track31~track32~track33~track34~track35~track36~track37~track38~track39~track40~track41~track42~track43~track44~track45~track46~track47~track48~track49~track50~track51~track52~track53~track54~track55~track56~track57~track58~track59~track60~track61~track62~track63~track64~track65~track66~track67~track68~track69~track70~track71~track72~track73~track74~track75~track76~track77~track78~track79~track80~track81~track82~track83~track84~track85~track86~track87~track88~track89~track90~track91~track92~track93~track94~track95~track96~track97~track98~track99
+		// fastgh3
+		// [1]
+		// song
+		// [2]
+		// fastgh3
+		// [3]
+		// test
+		// [4]
+		// wewillrise
+		// [5]
+		// anarchyintheuk
+		// [6]
+		// avalancha
+		// [7]
+		// barracuda
+		// [8]
+		// beforeiforget
+		// [9]
+		// bellyofashark
+		// [10]
+		// blackmagicwoman
+		// [11]
+		// blacksunshine
+		// [12]
+		// bossslash
+		// [13]
+		// bosstom
+		// [14]
+		// bossdevil
+		// [15]
+		// bullsonparade
+		// [16]
+		// cantbesaved
+		// [17]
+		// cherubrock
+		// [18]
+		// citiesonflame
+		// [19]
+		// cliffsofdover
+		// [20]
+		// closer
+		// [21]
+		// cultofpersonality
+		// [22]
+		// dontholdback
+		// [23]
+		// downndirty
+		// [24]
+		// evenflow
+		// [25]
+		// fcpremix
+		// [26]
+		// generationrock
+		// [27]
+		// gothatfar
+		// [28]
+		// helicopter
+		// [29]
+		// hitmewithyourbestshot
+		// [30]
+		// hierkommtalex
+		// [31]
+		// holidayincambodia
+		// [32]
+		// imintheband
+		// [33]
+		// impulse
+		// [34]
+		// inlove
+		// [35]
+		// koolthing
+		// [36]
+		// knightsofcydonia
+		// [37]
+		// lagrange
+		// [38]
+		// laydown
+		// [39]
+		// mauvaisgarcon
+		// [40]
+		// metalheavylady
+		// [41]
+		// minuscelsius
+		// [42]
+		// mississippiqueen
+		// [43]
+		// missmurder
+		// [44]
+		// monsters
+		// [45]
+		// mutetest
+		// [46]
+		// mycurse
+		// [47]
+		// mynameisjonas
+		// [48]
+		// nothingformehere
+		// [49]
+		// numberofthebeast
+		// [50]
+		// one
+		// [51]
+		// paintitblack
+		// [52]
+		// paranoid
+		// [53]
+		// prayeroftherefugee
+		// [54]
+		// pridenjoy
+		// [55]
+		// radiosong
+		// [56]
+		// rainingblood
+		// [57]
+		// reptilia
+		// [58]
+		// rocknrollallnite
+		// [59]
+		// rockulikeahurricane
+		// [60]
+		// ruby
+		// [61]
+		// sabotage
+		// [62]
+		// sameoldsonganddance
+		// [63]
+		// schoolsout
+		// [64]
+		// shebangsadrum
+		// [65]
+		// slowride
+		// [66]
+		// stricken
+		// [67]
+		// storyofmylife
+		// [68]
+		// suckmykiss
+		// [69]
+		// sunshineofyourlove
+		// [70]
+		// synctest
+		// [71]
+		// synctestaudioandvisual
+		// [72]
+		// synctestplaytoaudio
+		// [73]
+		// talkdirtytome
+		// [74]
+		// takethislife
+		// [75]
+		// testsong
+		// [76]
+		// themetal
+		// [77]
+		// theseeker
+		// [78]
+		// thewayitends
+		// [79]
+		// threesandsevens
+		// [80]
+		// thrufireandflames
+		// [81]
+		// welcometothejungle
+		// [82]
+		// whenyouwereyoung
+		// [83]
+		// Tutorial_1B
+		// [84]
+		// Tutorial_1C
+		// [85]
+		// Tutorial_1D
+		// [86]
+		// Tutorial_1E
+		// [87]
+		// Tutorial_2A
+		// [88]
+		// Tutorial_2B
+		// [89]
+		// Tutorial_2C
+		// [90]
+		// Tutorial_3A
+		// [91]
+		// Tutorial_3B
+		// [92]
+		// Tutorial_3C
+		// [93]
+		// Tutorial_3D
+		// [94]
+		// Tutorial_4C
+		// [95]
+		// Tutorial_4E
+		// [96]
+		// Aboutagirl
+		// [97]
+		// Aggro
+		// [98]
+		// AmericanWoman
+		// [99]
+		// AntiSocial
+		// [100]
+		// AreYouGonnaGoMyWay
+		// [101]
+		// Assassin
+		// [102]
+		// BandOnTheRun
+		// [103]
+		// beatit
+		// [104]
+		// beautifuldisaster
+		// [105]
+		// bossted
+		// [106]
+		// bosszakk
+		// [107]
+		// BYOB
+		// [108]
+		// CrazyTrain
+		// [109]
+		// Dammit
+		// [110]
+		// demolitionman
+		// [111]
+		// DemolitionMan_perf2
+		// [112]
+		// doitagain
+		// [113]
+		// escueladecalor
+		// [114]
+		// everlong
+		// [115]
+		// eyeofthetiger
+		// [116]
+		// FeelThePain
+		// [117]
+		// floaton
+		// [118]
+		// freakonaleash
+		// [119]
+		// goodgod
+		// [120]
+		// goyourownway
+		// [121]
+		// hailtothefreaks
+		// [122]
+		// heartbreaker
+		// [123]
+		// heymanniceshot
+		// [124]
+		// hollywoodnights
+		// [125]
+		// HotelCalifornia
+		// [126]
+		// hotforteacher
+		// [127]
+		// kickoutthejams
+		// [128]
+		// thekill
+		// [129]
+		// lvialviaquez
+		// [130]
+		// LaBamba
+		// [131]
+		// lazyeye
+		// [132]
+		// livingonaprayer
+		// [133]
+		// LoveMeTwoTimes
+		// [134]
+		// loveremovalmachine
+		// [135]
+		// LoveSpreads
+		// [136]
+		// themiddle
+		// [137]
+		// miserybusiness
+		// [138]
+		// monsoon
+		// [139]
+		// mountainsong
+		// [140]
+		// mrcrowley
+		// [141]
+		// NeverTooLate
+		// [142]
+		// nosleeptillbrooklyn
+		// [143]
+		// Nuvole
+		// [144]
+		// obstacle1
+		// [145]
+		// OnTheRoadAgain
+		// [146]
+		// OneArmedScissor
+		// [147]
+		// onewayoranother
+		// [148]
+		// ourtruth
+		// [149]
+		// Overkill
+		// [150]
+		// Parabola
+		// [151]
+		// PrettyVacant
+		// [152]
+		// PrisonerOfSociety
+		// [153]
+		// PullMeUnder
+		// [154]
+		// PurpleHaze
+		// [155]
+		// ramblinman
+		// [156]
+		// RebelYell
+		// [157]
+		// reedthroughlabor
+		// [158]
+		// rooftops
+		// [159]
+		// Santeria
+		// [160]
+		// SatchBoogie
+		// [161]
+		// Schism
+		// [162]
+		// Screamaimfire
+		// [163]
+		// shiver
+		// [164]
+		// somemightsay
+		// [165]
+		// SoulDoubt
+		// [166]
+		// Spiderwebs
+		// [167]
+		// Stillborn
+		// [168]
+		// Stillborn_Perf2
+		// [169]
+		// Stranglehold
+		// [170]
+		// SweetHomeAlabama
+		// [171]
+		// thejoker
+		// [172]
+		// theoneilove
+		// [173]
+		// today
+		// [174]
+		// Today_perf2
+		// [175]
+		// ToyBoy
+		// [176]
+		// TooMuchTooYoung
+		// [177]
+		// TrappedUnderIce
+		// [178]
+		// UpAroundTheBend
+		// [179]
+		// Vicarious
+		// [180]
+		// vinternoll2
+		// [181]
+		// WeaponOfChoice
+		// [182]
+		// whativedone
+		// [183]
+		// windcriesmary
+		// [184]
+		// youregonnasayyeah
+		// [185]
+		// jamsession
+		// [186]
+		// DrumStreamTest
+		// [187]
+		// synctest
+		// [188]
+		// synctestplaytoaudio
+		// [189]
+		// synctestaudioandvisual
+		// [190]
+		// synctestmuting
+		// [191]
+		// tenseconddebug
+		// [192]
+		// elevenseconddebug
+		// [193]
+		// twelveseconddebug
+		// [194]
+		// testtones
+		// [195]
+		// PlaceHolderSong
+		// [196]
+		// Again
+		// [197]
+		// Aqualung
+		// [198]
+		// BatCountry
+		// [199]
+		// BeenCaughtStealing
+		// [200]
+		// BlackRain
+		// [201]
+		// BlackWidow
+		// [202]
+		// BleedItOut
+		// [203]
+		// bloodlines
+		// [204]
+		// Bodies
+		// [205]
+		// bohemianrhapsody
+		// [206]
+		// Burn
+		// [207]
+		// BurninForYou
+		// [208]
+		// Calling
+		// [209]
+		// CallMeTheBreeze
+		// [210]
+		// ChemicalWarfare
+		// [211]
+		// CherryBomb
+		// [212]
+		// ChildrenOfTheGrave
+		// [213]
+		// Cryin
+		// [214]
+		// DanceDance
+		// [215]
+		// DancingThroughSunday
+		// [216]
+		// Deadfall
+		// [217]
+		// FascinationStreet
+		// [218]
+		// FeelGoodDrag
+		// [219]
+		// FeelsLikeTheFirstTime
+		// [220]
+		// fortunateson
+		// [221]
+		// FreeRide
+		// [222]
+		// FuryOfTheStorm
+		// [223]
+		// GetFree
+		// [224]
+		// Ghost
+		// [225]
+		// Graduate
+		// [226]
+		// HardToSee
+		// [227]
+		// HolyWars
+		// [228]
+		// HowYouRemindMe
+		// [229]
+		// IKnowWhatIAm
+		// [230]
+		// ImBroken
+		// [231]
+		// ImNotOk
+		// [232]
+		// Indians
+		// [233]
+		// InterstateLoveSong
+		// [234]
+		// ItsOnlyAnotherParsec
+		// [235]
+		// JetCityWoman
+		// [236]
+		// Lasso
+		// [237]
+		// ListenToHerHeart
+		// [238]
+		// LosingMyReligion
+		// [239]
+		// LoveGun
+		// [240]
+		// LunaticFringe
+		// [241]
+		// Machinehead
+		// [242]
+		// ModernDayCowboy
+		// [243]
+		// MoneyForNothing
+		// [244]
+		// Motivation
+		// [245]
+		// MoveItOnOver
+		// [246]
+		// Nemesis
+		// [247]
+		// NoMoreMrNiceGuy
+		// [248]
+		// NoSecretsThisYear
+		// [249]
+		// NoWayBack
+		// [250]
+		// paranoid
+		// [251]
+		// PourSomeSugarOnMe
+		// [252]
+		// PrepareForWar
+		// [253]
+		// Psychosocial
+		// [254]
+		// Ravenous
+		// [255]
+		// ReIgnition
+		// [256]
+		// Renegade
+		// [257]
+		// RockInAmerica
+		// [258]
+		// RockinInTheFreeWorld
+		// [259]
+		// Rush2112P1
+		// [260]
+		// Rush2112P2
+		// [261]
+		// Rush2112P3
+		// [262]
+		// Rush2112P4
+		// [263]
+		// Rush2112P5
+		// [264]
+		// Rush2112P6
+		// [265]
+		// Rush2112P7
+		// [266]
+		// Savior
+		// [267]
+		// ScumbagBlues
+		// [268]
+		// SelfEsteemGH6
+		// [269]
+		// SettingFire
+		// [270]
+		// SevenNationArmy
+		// [271]
+		// SharpDressedMan
+		// [272]
+		// SlowHands
+		// [273]
+		// Speeding
+		// [274]
+		// Spiderman
+		// [275]
+		// StrayCatBlues
+		// [276]
+		// SuddenDeath
+		// [277]
+		// Suffocate
+		// [278]
+		// TheOutsider
+		// [279]
+		// ThisDayWeFight
+		// [280]
+		// TickTickBoom
+		// [281]
+		// TiesThatBind
+		// [282]
+		// TonesOfHome
+		// [283]
+		// UnskinnyBop
+		// [284]
+		// Uprising
+		// [285]
+		// WaidmannsHeil
+		// [286]
+		// WereNotGonnaTakeIt
+		// [287]
+		// WhatDoIGet
+		// [288]
+		// Wish
+		// [289]
+		// yyz
+		// [290]
+		// dlc10
+		// [291]
+		// dlc11
+		// [292]
+		// dlc12
+		// [293]
+		// dlc13
+		// [294]
+		// dlc14
+		// [295]
+		// dlc15
+		// [296]
+		// dlc16
+		// [297]
+		// dlc17
+		// [298]
+		// dlc18
+		// [299]
+		// dlc19
+		// [300]
+		// dlc1
+		// [301]
+		// dlc24
+		// [302]
+		// dlc25
+		// [303]
+		// dlc26
+		// [304]
+		// dlc27
+		// [305]
+		// dlc28
+		// [306]
+		// dlc29
+		// [307]
+		// dlc2
+		// [308]
+		// dlc30
+		// [309]
+		// dlc31
+		// [310]
+		// dlc32
+		// [311]
+		// dlc33
+		// [312]
+		// dlc34
+		// [313]
+		// dlc35
+		// [314]
+		// dlc36
+		// [315]
+		// dlc37
+		// [316]
+		// dlc38
+		// [317]
+		// dlc39
+		// [318]
+		// dlc3
+		// [319]
+		// dlc40
+		// [320]
+		// dlc45
+		// [321]
+		// dlc46
+		// [322]
+		// dlc47
+		// [323]
+		// dlc49
+		// [324]
+		// dlc4
+		// [325]
+		// dlc50
+		// [326]
+		// dlc51
+		// [327]
+		// dlc5
+		// [328]
+		// dlc62
+		// [329]
+		// dlc63
+		// [330]
+		// dlc66
+		// [331]
+		// dlc68
+		// [332]
+		// dlc69
+		// [333]
+		// dlc6
+		// [334]
+		// dlc70
+		// [335]
+		// dlc71
+		// [336]
+		// dlc72
+		// [337]
+		// dlc73
+		// [338]
+		// dlc74
+		// [339]
+		// dlc75
+		// [340]
+		// dlc7
+		// [341]
+		// dlc80
+		// [342]
+		// dlc81
+		// [343]
+		// dlc82
+		// [344]
+		// dlc83
+		// [345]
+		// dlc84
+		// [346]
+		// dlc85
+		// [347]
+		// dlc86
+		// [348]
+		// dlc87
+		// [349]
+		// dlc88
+		// [350]
+		// dlc89
+		// [351]
+		// dlc8
+		// [352]
+		// dlc90
+		// [353]
+		// dlc91
+		// [354]
+		// dlc92
+		// [355]
+		// dlc93
+		// [356]
+		// dlc9
+		// [357]
+		// dlc94
+		// [358]
+		// dlc95
+		// [359]
+		// dlc96
+		// [360]
+		// dlc97
+		// [361]
+		// dlc98
+		// [362]
+		// dlc99
+		// [363]
+		// dlc100
+		// [364]
+		// alldayandallofthenight
+		// [365]
+		// alltheyoungdudes
+		// [366]
+		// alwaysontherun
+		// [367]
+		// backinthesaddle
+		// [368]
+		// BeyondBeautiful
+		// [369]
+		// bossjoe
+		// [370]
+		// brightlightfright
+		// [371]
+		// CatScratchFever
+		// [372]
+		// combination
+		// [373]
+		// completecontrol
+		// [374]
+		// drawtheline
+		// [375]
+		// dreamon
+		// [376]
+		// dreampolice
+		// [377]
+		// hardtohandle
+		// [378]
+		// ihatemyselfforlovingyou
+		// [379]
+		// joeperryguitarbattle
+		// [380]
+		// kingofrock
+		// [381]
+		// KingsAndQueensCredits
+		// [382]
+		// KingsAndQueens
+		// [383]
+		// letthemusicdothetalking
+		// [384]
+		// livinontheedge
+		// [385]
+		// loveinanelevator
+		// [386]
+		// MakeIt
+		// [387]
+		// mamakin
+		// [388]
+		// mercy
+		// [389]
+		// movinout
+		// [390]
+		// nobodysfault
+		// [391]
+		// nosurprize
+		// [392]
+		// pandorasbox
+		// [393]
+		// personalityCrisis
+		// [394]
+		// pink
+		// [395]
+		// ragdoll
+		// [396]
+		// ratsinthecellar
+		// [397]
+		// sextypething
+		// [398]
+		// shakinmycage
+		// [399]
+		// shesellssanctuary
+		// [400]
+		// sweetemotion
+		// [401]
+		// talktalking
+		// [402]
+		// TimRappTest
+		// [403]
+		// toysintheattic
+		// [404]
+		// trainkeptarollin
+		// [405]
+		// UncleSalty
+		// [406]
+		// walkthiswayrundmc
+		// [407]
+		// walkthisway
+		// [408]
+		// almosteasy
+		// [409]
+		// fortheloveofgod
+		// [410]
+		// holeintheearth
+		// [411]
+		// jukeboxhero
+		// [412]
+		// motorhead
+		// [413]
+		// nomoresorrow
+		// [414]
+		// peaceofmind
+		// [415]
+		// prettyhandsomeawkward
+		// [416]
+		// sleepinggiant
+		// [417]
+		// surfingwiththealien
+		// [418]
+		// thearsonist
+		// [419]
+		// thisisacall
+		// [420]
+		// yellow
+		// [421]
+		// areyougonnabemygirl
+		// [422]
+		// ballroomblitz
+		// [423]
+		// blackholesun
+		// [424]
+		// blitzkriegbop
+		// [425]
+		// brainpower
+		// [426]
+		// celebrityskin
+		// [427]
+		// cherubrock
+		// [428]
+		// creep
+		// [429]
+		// danicalifornia
+		// [430]
+		// deadonarrival
+		// [431]
+		// detroitrockcity
+		// [432]
+		// dirtylittlesecret
+		// [433]
+		// dontfearthereaper
+		// [434]
+		// dontlookbackinanger
+		// [435]
+		// electricversion
+		// [436]
+		// entersandman
+		// [437]
+		// epic
+		// [438]
+		// flirtinwithdisaster
+		// [439]
+		// foreplaylongtime
+		// [440]
+		// gimmeshelter
+		// [441]
+		// gowiththeflow
+		// [442]
+		// greengrass
+		// [443]
+		// hereitgoesagain
+		// [444]
+		// highwaystar
+		// [445]
+		// imsosick
+		// [446]
+		// inbloom
+		// [447]
+		// ithinkimparanoid
+		// [448]
+		// learntofly
+		// [449]
+		// mainoffender
+		// [450]
+		// maps
+		// [451]
+		// missqueen
+		// [452]
+		// nexttoyou
+		// [453]
+		// nightmare
+		// [454]
+		// orangecrush
+		// [455]
+		// roam
+		// [456]
+		// rockawaybeach
+		// [457]
+		// roxanne
+		// [458]
+		// runtothehills
+		// [459]
+		// sayitaintso
+		// [460]
+		// shouldistay
+		// [461]
+		// suffragettecity
+		// [462]
+		// thehandthatfeeds
+		// [463]
+		// timewehad
+		// [464]
+		// timmy
+		// [465]
+		// tomsawyer
+		// [466]
+		// trainkeptarollin
+		// [467]
+		// vasoline
+		// [468]
+		// wanteddeadoralive
+		// [469]
+		// waveofmutilation
+		// [470]
+		// welcomehome
+		// [471]
+		// wontgetfooled
+		// [472]
+		// 3sand7s
+		// [473]
+		// afterlife
+		// [474]
+		// callme
+		// [475]
+		// elscorcho
+		// [476]
+		// girlswhoplayguitars
+		// [477]
+		// girluwant
+		// [478]
+		// indestructible
+		// [479]
+		// ithurts
+		// [480]
+		// justwhatineeded
+		// [481]
+		// messageinabottle
+		// [482]
+		// monkeygonetoheaven
+		// [483]
+		// perfectdrug
+		// [484]
+		// rio
+		// [485]
+		// saintsoflosangeles
+		// [486]
+		// simpleman
+		// [487]
+		// snowheyoh
+		// [488]
+		// thisaintascene
+		// [489]
+		// timeisrunningout
+		// [490]
+		// whydoyouloveme
+		// [491]
+		// yougotanotherthingcoming
+		// [492]
+		// zero
+		// [493]
+		// 29fingers
+		// [494]
+		// blooddoll
+		// [495]
+		// cantletgo
+		// [496]
+		// daylatedollarshort
+		// [497]
+		// igetby
+		// [498]
+		// outside
+		// [499]
+		// pleasure
+		// [500]
+		// seven
+		// [501]
+		// blackdog
+		// [502]
+		// sweethomealabama
+		// [503]
+		// borntobewild
+		// [504]
+		// ibelievein
+		// [505]
+		// liveandletdie
+		// [506]
+		// proudmary
+		// [507]
+		// shetalkstoangels
+		// [508]
+		// takingcareof
+		// [509]
+		// tieyourmother
+		// [510]
+		// wewillrockyou
+		// [511]
+		// youshookme
+		// [512]
+		// angelofdeath
+		// [513]
+		// soulless
+		// [514]
+		// soulless1
+		// [515]
+		// soulless2
+		// [516]
+		// soulless3
+		// [517]
+		// soulless4
+		// [518]
+		// soulless5
+		// [519]
+		// soulless6
+		// [520]
+		// amalgamation
+		// [521]
+		// monochrome
+		// [522]
+		// mindsofthemad
+		// [523]
+		// speedtest
+		// [524]
+		// jshot
+		// [525]
+		// misadventure
+		// [526]
+		// hollow
+		// [527]
+		// helidox
+		// [528]
+		// eruption
+		// [529]
+		// epidox
+		// [530]
+		// 3999
+		// [531]
+		// marchmadness
+		// [532]
+		// ubersong
+		// [533]
+		// ubersong2
+		// [534]
+		// patterns
+		// [535]
+		// patterns1
+		// [536]
+		// patterns2
+		// [537]
+		// patterns3
+		// [538]
+		// respawn
+		// [539]
+		// phantomwrath
+		// [540]
+		// zoidberg
+		// [541]
+		// zoidbergthecowboy
+		// [542]
+		// universes
+		// [543]
+		// soulless6uc
+		// [544]
+		// soulless6ucuc
+		// [545]
+		// coalescence
+		// [546]
+		// secondloudest
+		// [547]
+		// advharmony
+		// [548]
+		// westernworld
+		// [549]
+		// bodysnatchers
+		// [550]
+		// crashtest
+		// [551]
+		// crashtest1
+		// [552]
+		// crashtest2
+		// [553]
+		// crashtest3
+		// [554]
+		// crashtest4
+		// [555]
+		// crashtest5
+		// [556]
+		// six
+		// [557]
+		// lol
+		// [558]
+		// 300
+		// [559]
+		// 350
+		// [560]
+		// 400
+		// [561]
+		// 40021
+		// [562]
+		// 410
+		// [563]
+		// 450
+		// [564]
+		// 500
+		// [565]
+		// 550
+		// [566]
+		// 600
+		// [567]
+		// 650
+		// [568]
+		// 700
+		// [569]
+		// 750
+		// [570]
+		// 800
+		// [571]
+		// 999
+		// [572]
+		// untitled
+		// [573]
+		// track0
+		// [574]
+		// track1
+		// [575]
+		// track2
+		// [576]
+		// track3
+		// [577]
+		// track4
+		// [578]
+		// track5
+		// [579]
+		// track6
+		// [580]
+		// track7
+		// [581]
+		// track8
+		// [582]
+		// track9
+		// [583]
+		// track00
+		// [584]
+		// track01
+		// [585]
+		// track02
+		// [586]
+		// track03
+		// [587]
+		// track04
+		// [588]
+		// track05
+		// [589]
+		// track06
+		// [590]
+		// track07
+		// [591]
+		// track08
+		// [592]
+		// track09
+		// [593]
+		// track10
+		// [594]
+		// track11
+		// [595]
+		// track12
+		// [596]
+		// track13
+		// [597]
+		// track14
+		// [598]
+		// track15
+		// [599]
+		// track16
+		// [600]
+		// track17
+		// [601]
+		// track18
+		// [602]
+		// track19
+		// [603]
+		// track20
+		// [604]
+		// track21
+		// [605]
+		// track22
+		// [606]
+		// track23
+		// [607]
+		// track24
+		// [608]
+		// track25
+		// [609]
+		// track26
+		// [610]
+		// track27
+		// [611]
+		// track28
+		// [612]
+		// track29
+		// [613]
+		// track30
+		// [614]
+		// track31
+		// [615]
+		// track32
+		// [616]
+		// track33
+		// [617]
+		// track34
+		// [618]
+		// track35
+		// [619]
+		// track36
+		// [620]
+		// track37
+		// [621]
+		// track38
+		// [622]
+		// track39
+		// [623]
+		// track40
+		// [624]
+		// track41
+		// [625]
+		// track42
+		// [626]
+		// track43
+		// [627]
+		// track44
+		// [628]
+		// track45
+		// [629]
+		// track46
+		// [630]
+		// track47
+		// [631]
+		// track48
+		// [632]
+		// track49
+		// [633]
+		// track50
+		// [634]
+		// track51
+		// [635]
+		// track52
+		// [636]
+		// track53
+		// [637]
+		// track54
+		// [638]
+		// track55
+		// [639]
+		// track56
+		// [640]
+		// track57
+		// [641]
+		// track58
+		// [642]
+		// track59
+		// [643]
+		// track60
+		// [644]
+		// track61
+		// [645]
+		// track62
+		// [646]
+		// track63
+		// [647]
+		// track64
+		// [648]
+		// track65
+		// [649]
+		// track66
+		// [650]
+		// track67
+		// [651]
+		// track68
+		// [652]
+		// track69
+		// [653]
+		// track70
+		// [654]
+		// track71
+		// [655]
+		// track72
+		// [656]
+		// track73
+		// [657]
+		// track74
+		// [658]
+		// track75
+		// [659]
+		// track76
+		// [660]
+		// track77
+		// [661]
+		// track78
+		// [662]
+		// track79
+		// [663]
+		// track80
+		// [664]
+		// track81
+		// [665]
+		// track82
+		// [666]
+		// track83
+		// [667]
+		// track84
+		// [668]
+		// track85
+		// [669]
+		// track86
+		// [670]
+		// track87
+		// [671]
+		// track88
+		// [672]
+		// track89
+		// [673]
+		// track90
+		// [674]
+		// track91
+		// [675]
+		// track92
+		// [676]
+		// track93
+		// [677]
+		// track94
+		// [678]
+		// track95
+		// [679]
+		// track96
+		// [680]
+		// track97
+		// [681]
+		// track98
+		// [682]
+		// track99
 		#region
 		"慦瑳桧縳潳杮晾獡杴㍨瑾獥繴敷楷汬楲敳慾慮捲票湩桴略繫癡污湡档繡慢牲捡摵繡敢潦敲晩牯敧繴敢汬潹慦桳牡繫汢捡浫条捩潷慭繮汢捡獫湵桳湩繥潢獳汳獡繨潢獳潴繭潢獳敤楶繬畢汬潳灮牡摡繥慣瑮敢慳敶繤档牥扵潲正捾瑩敩潳普慬敭捾楬晦潳摦癯牥捾潬敳繲畣瑬景数獲湯污瑩繹潤瑮潨摬慢正摾睯湮楤瑲繹癥湥汦睯晾灣敲業繸敧敮慲楴湯潲正松瑯慨晴牡桾汥捩灯整繲楨浴睥瑩票畯扲獥獴潨繴楨牥潫浭慴敬繸潨楬慤楹据浡潢楤繡浩湩桴扥湡繤浩異獬繥湩潬敶歾潯瑬楨杮歾楮桧獴景祣潤楮繡慬牧湡敧汾祡潤湷浾畡慶獩慧捲湯浾瑥污敨癡汹摡繹業畮捳汥楳獵浾獩楳獳灩楰畱敥繮業獳畭摲牥浾湯瑳牥繳畭整整瑳浾捹牵敳浾湹浡楥橳湯獡湾瑯楨杮潦浲桥牥繥畮扭牥景桴扥慥瑳潾敮灾楡瑮瑩汢捡繫慰慲潮摩灾慲敹潲瑦敨敲畦敧繥牰摩湥潪繹慲楤獯湯繧慲湩湩执潬摯牾灥楴楬繡潲正牮汯慬汬楮整牾捯畫楬敫桡牵楲慣敮牾扵繹慳潢慴敧獾浡潥摬潳杮湡摤湡散獾档潯獬畯繴桳扥湡獧摡畲繭汳睯楲敤獾牴捩敫繮瑳牯潹浦汹晩繥畳正祭楫獳獾湵桳湩潥祦畯汲癯繥祳据整瑳獾湹瑣獥慴摵潩湡癤獩慵繬祳据整瑳汰祡潴畡楤繯慴歬楤瑲瑹浯繥慴敫桴獩楬敦瑾獥獴湯繧桴浥瑥污瑾敨敳步牥瑾敨慷楹整摮繳桴敲獥湡獤癥湥繳桴畲楦敲湡晤慬敭繳敷捬浯瑥瑯敨番杮敬睾敨祮畯敷敲潹湵繧畔潴楲污ㅟ繂畔潴楲污ㅟ繃畔潴楲污ㅟ繄畔潴楲污ㅟ繅畔潴楲污㉟繁畔潴楲污㉟繂畔潴楲污㉟繃畔潴楲污㍟繁畔潴楲污㍟繂畔潴楲污㍟繃畔潴楲污㍟繄畔潴楲污㑟繃畔潴楲污㑟繅扁畯慴楧汲䅾杧潲䅾敭楲慣坮浯湡䅾瑮卩捯慩繬牁奥畯潇湮䝡䵯坹祡䅾獳獡楳繮慂摮湏桔剥湵找慥楴繴敢畡楴畦摬獩獡整繲潢獳整繤潢獳慺歫䉾余繂牃穡呹慲湩䑾浡業繴敤潭楬楴湯慭繮敄潭楬楴湯慍彮数晲縲潤瑩条楡繮獥畣汥摡捥污牯敾敶汲湯繧祥潥瑦敨楴敧繲敆汥桔健楡繮汦慯潴繮牦慥潫慮敬獡繨潧摯潧繤潧潹牵睯睮祡桾楡瑬瑯敨牦慥獫桾慥瑲牢慥敫繲敨浹湡楮散桳瑯桾汯祬潷摯楮桧獴䡾瑯汥慃楬潦湲慩桾瑯潦瑲慥档牥歾捩潫瑵桴橥浡繳桴步汩繬癬慩癬慩畱穥䱾䉡浡慢汾穡敹敹汾癩湩潧慮牰祡牥䱾癯䵥呥潷楔敭繳潬敶敲潭慶浬捡楨敮䱾癯卥牰慥獤瑾敨業摤敬浾獩牥批獵湩獥繳潭獮潯繮潭湵慴湩潳杮浾捲潲汷祥乾癥牥潔䱯瑡繥潮汳敥瑰汩扬潲歯祬繮畎潶敬潾獢慴汣ㅥ佾呮敨潒摡杁楡繮湏䅥浲摥捓獩潳繲湯睥祡牯湡瑯敨繲畯瑲畲桴佾敶歲汩繬慐慲潢慬偾敲瑴噹捡湡繴牐獩湯牥晏潓楣瑥繹畐汬敍湕敤繲畐灲敬慈敺牾浡汢湩慭繮敒敢奬汥繬敲摥桴潲杵汨扡牯牾潯瑦灯繳慓瑮牥慩卾瑡档潂杯敩卾档獩繭捓敲浡楡晭物繥桳癩牥獾浯浥杩瑨慳繹潓汵潄扵繴灓摩牥敷獢卾楴汬潢湲卾楴汬潢湲偟牥㉦卾牴湡汧桥汯繤睓敥䡴浯䅥慬慢慭瑾敨潪敫繲桴潥敮汩癯繥潴慤繹潔慤役数晲縲潔䉹祯呾潯畍档潔奯畯杮呾慲灰摥湕敤䥲散啾䅰潲湵呤敨敂摮噾捩牡潩獵百湩整湲汯㉬坾慥潰佮䍦潨捩繥桷瑡癩摥湯繥楷摮牣敩浳牡繹潹牵来湯慮慳祹慥繨慪獭獥楳湯䑾畲卭牴慥呭獥繴祳据整瑳獾湹瑣獥灴慬瑹慯摵潩獾湹瑣獥慴摵潩湡癤獩慵繬祳据整瑳畭楴杮瑾湥敳潣摮敤畢繧汥癥湥敳潣摮敤畢繧睴汥敶敳潣摮敤畢繧整瑳潴敮繳汐捡䡥汯敤卲湯繧杁楡繮煁慵畬杮䉾瑡潃湵牴繹敂湥慃杵瑨瑓慥楬杮䉾慬正慒湩䉾慬正楗潤繷求敥䥤佴瑵找潬摯楬敮繳潂楤獥找桯浥慩牮慨獰摯繹畂湲䉾牵楮䙮牯潙繵慃汬湩繧慃汬敍桔䉥敲穥繥桃浥捩污慗晲牡繥桃牥祲潂扭䍾楨摬敲佮呦敨片癡繥牃楹繮慄据䑥湡散䑾湡楣杮桔潲杵卨湵慤繹敄摡慦汬䙾獡楣慮楴湯瑓敲瑥䙾敥䝬潯䑤慲繧敆汥䱳歩呥敨楆獲呴浩繥潦瑲湵瑡獥湯䙾敲剥摩繥畆祲晏桔卥潴浲䝾瑥牆敥䝾潨瑳䝾慲畤瑡繥慈摲潔敓繥潈祬慗獲䡾睯潙創浥湩䵤繥䭉潮坷慨䥴流䥾䉭潲敫繮浉潎佴繫湉楤湡繳湉整獲慴整潌敶潓杮䥾獴湏祬湁瑯敨偲牡敳繣敊䍴瑩坹浯湡䱾獡潳䱾獩整呮䡯牥效牡繴潌楳杮祍敒楬楧湯䱾癯䝥湵䱾湵瑡捩牆湩敧䵾捡楨敮敨摡䵾摯牥䑮祡潃扷祯䵾湯祥潆乲瑯楨杮䵾瑯癩瑡潩繮潍敶瑉湏癏牥乾浥獥獩乾䵯牯䵥乲捩䝥祵乾卯捥敲獴桔獩教牡乾坯祡慂正灾牡湡楯繤潐牵潓敭畓慧佲䵮繥牐灥牡䙥牯慗繲獐捹潨潳楣污剾癡湥畯繳敒杉楮楴湯剾湥来摡繥潒正湉流牥捩繡潒正湩湉桔䙥敲坥牯摬剾獵㉨ㄱ倲縱畒桳ㄲ㈱㉐剾獵㉨ㄱ倲縳畒桳ㄲ㈱㑐剾獵㉨ㄱ倲縵畒桳ㄲ㈱㙐剾獵㉨ㄱ倲縷慓楶牯卾畣扭条求敵繳敓晬獅整浥䡇縶敓瑴湩䙧物繥敓敶乮瑡潩䅮浲繹桓牡䑰敲獳摥慍繮汓睯慈摮繳灓敥楤杮卾楰敤浲湡卾牴祡慃䉴畬獥卾摵敤䑮慥桴卾晵潦慣整呾敨畏獴摩牥呾楨䑳祡敗楆桧繴楔正楔正潂浯呾敩味慨䉴湩繤潔敮佳䡦浯繥湕歳湩祮潂繰灕楲楳杮坾楡浤湡獮效汩坾牥乥瑯潇湮呡歡䥥繴桗瑡潄䝉瑥坾獩繨祹繺汤ㅣ縰汤ㅣ縱汤ㅣ縲汤ㅣ縳汤ㅣ縴汤ㅣ縵汤ㅣ縶汤ㅣ縷汤ㅣ縸汤ㅣ縹汤ㅣ摾捬㐲摾捬㔲摾捬㘲摾捬㜲摾捬㠲摾捬㤲摾捬縲汤㍣縰汤㍣縱汤㍣縲汤㍣縳汤㍣縴汤㍣縵汤㍣縶汤㍣縷汤㍣縸汤㍣縹汤㍣摾捬〴摾捬㔴摾捬㘴摾捬㜴摾捬㤴摾捬縴汤㕣縰汤㕣縱汤㕣摾捬㈶摾捬㌶摾捬㘶摾捬㠶摾捬㤶摾捬縶汤㝣縰汤㝣縱汤㝣縲汤㝣縳汤㝣縴汤㝣縵汤㝣摾捬〸摾捬ㄸ摾捬㈸摾捬㌸摾捬㐸摾捬㔸摾捬㘸摾捬㜸摾捬㠸摾捬㤸摾捬縸汤㥣縰汤㥣縱汤㥣縲汤㥣縳汤㥣摾捬㐹摾捬㔹摾捬㘹摾捬㜹摾捬㠹摾捬㤹摾捬〱縰污摬祡湡慤汬景桴湥杩瑨慾汬桴祥畯杮畤敤繳污慷獹湯桴牥湵找捡楫瑮敨慳摤敬䉾祥湯䉤慥瑵晩汵找獯橳敯找楲桧汴杩瑨牦杩瑨䍾瑡捓慲捴䙨癥牥捾浯楢慮楴湯捾浯汰瑥捥湯牴汯摾慲瑷敨楬敮摾敲浡湯摾敲浡潰楬散桾牡瑤桯湡汤繥桩瑡浥獹汥晦牯潬楶杮潹繵潪灥牥祲畧瑩牡慢瑴敬歾湩潧牦捯繫楋杮䅳摮畑敥獮牃摥瑩繳楋杮䅳摮畑敥獮汾瑥桴浥獵捩潤桴瑥污楫杮汾癩湩湯桴敥杤繥潬敶湩湡汥癥瑡牯䵾歡䥥繴慭慭楫繮敭捲繹潭楶潮瑵湾扯摯獹慦汵繴潮畳灲楲敺灾湡潤慲扳硯灾牥潳慮楬祴牃獩獩灾湩繫慲摧汯繬慲獴湩桴捥汥慬繲敳瑸灹瑥楨杮獾慨楫浮捹条繥桳獥汥獬慳据畴牡繹睳敥整潭楴湯瑾污瑫污楫杮呾浩慒灰敔瑳瑾祯楳瑮敨瑡楴繣牴楡歮灥慴潲汬湩啾据敬慓瑬繹慷歬桴獩慷特湵浤繣慷歬桴獩慷繹污潭瑳慥祳晾牯桴汥癯潥杦摯桾汯楥瑮敨慥瑲繨番敫潢桸牥繯潭潴桲慥繤潮潭敲潳牲睯灾慥散景業摮灾敲瑴桹湡獤浯慥歷慷摲獾敬灥湩杧慩瑮獾牵楦杮楷桴桴慥楬湥瑾敨牡潳楮瑳瑾楨楳慳慣汬祾汥潬繷牡祥畯潧湮扡浥杹物繬慢汬潲浯汢瑩繺汢捡桫汯獥湵找楬穴牫敩执灯找慲湩潰敷繲散敬牢瑩獹楫繮档牥扵潲正捾敲灥摾湡捩污晩牯楮繡敤摡湯牡楲慶繬敤牴楯牴捯捫瑩繹楤瑲汹瑩汴獥捥敲繴潤瑮敦牡桴牥慥数繲潤瑮潬歯慢正湩湡敧繲汥捥牴捩敶獲潩繮湥整獲湡浤湡敾楰繣汦物楴睮瑩摨獩獡整繲潦敲汰祡潬杮楴敭松浩敭桳汥整繲潧楷桴桴晥潬繷牧敥杮慲獳桾牥楥杴敯慳慧湩桾杩睨祡瑳牡楾獭獯捩繫湩汢潯繭瑩楨歮浩慰慲潮摩汾慥湲潴汦繹慭湩景敦摮牥浾灡繳業獳畱敥繮敮瑸潴潹繵楮桧浴牡繥牯湡敧牣獵繨潲浡牾捯慫慷批慥档牾硯湡敮牾湵潴桴桥汩獬獾祡瑩楡瑮潳獾潨汵楤瑳祡獾晵牦条瑥整楣祴瑾敨慨摮桴瑡敦摥繳楴敭敷慨繤楴浭繹潴獭睡敹繲牴楡歮灥慴潲汬湩百獡汯湩繥慷瑮摥敤摡牯污癩繥慷敶景畭楴慬楴湯睾汥潣敭潨敭睾湯杴瑥潦汯摥㍾慳摮猷慾瑦牥楬敦捾污浬繥汥捳牯档繯楧汲睳潨汰祡畧瑩牡繳楧汲睵湡繴湩敤瑳畲瑣扩敬楾桴牵獴橾獵睴慨楴敮摥摥浾獥慳敧湩扡瑯汴繥潭歮祥潧敮潴敨癡湥灾牥敦瑣牤杵牾潩獾楡瑮潳汦獯湡敧敬繳楳灭敬慭繮湳睯敨潹繨桴獩楡瑮獡散敮瑾浩楥牳湵楮杮畯繴桷摹祯畯潬敶敭祾畯潧慴潮桴牥桴湩捧浯湩繧敺潲㉾昹湩敧獲找潬摯潤汬捾湡汴瑥潧摾祡慬整潤汬牡桳牯繴杩瑥祢潾瑵楳敤灾敬獡牵繥敳敶繮汢捡摫杯獾敷瑥潨敭污扡浡繡潢湲潴敢楷摬楾敢楬癥楥繮楬敶湡汤瑥楤繥牰畯浤牡繹桳瑥污獫潴湡敧獬瑾歡湩捧牡潥繦楴祥畯浲瑯敨繲敷楷汬潲正潹繵潹獵潨歯敭慾杮汥景敤瑡繨潳汵敬獳獾畯汬獥ㅳ獾畯汬獥㉳獾畯汬獥㍳獾畯汬獥㑳獾畯汬獥㕳獾畯汬獥㙳慾慭杬浡瑡潩繮潭潮档潲敭浾湩獤景桴浥摡獾数摥整瑳橾桳瑯浾獩摡敶瑮牵繥潨汬睯桾汥摩硯敾畲瑰潩繮灥摩硯㍾㤹縹慭捲浨摡敮獳畾敢獲湯繧扵牥潳杮縲慰瑴牥獮灾瑡整湲ㅳ灾瑡整湲㉳灾瑡整湲㍳牾獥慰湷灾慨瑮浯牷瑡繨潺摩敢杲穾楯扤牥瑧敨潣扷祯畾楮敶獲獥獾畯汬獥㙳捵獾畯汬獥㙳捵捵捾慯敬捳湥散獾捥湯汤畯敤瑳慾癤慨浲湯繹敷瑳牥睮牯摬找摯獹慮捴敨獲捾慲桳整瑳捾慲桳整瑳縱牣獡瑨獥㉴捾慲桳整瑳縳牣獡瑨獥㑴捾慲桳整瑳縵楳繸潬繬〳縰㔳縰〴縰〴㈰縱ㄴ縰㔴縰〵縰㔵縰〶縰㔶縰〷縰㔷縰〸縰㤹縹湵楴汴摥瑾慲正縰牴捡ㅫ瑾慲正縲牴捡㍫瑾慲正縴牴捡㕫瑾慲正縶牴捡㝫瑾慲正縸牴捡㥫瑾慲正〰瑾慲正㄰瑾慲正㈰瑾慲正㌰瑾慲正㐰瑾慲正㔰瑾慲正㘰瑾慲正㜰瑾慲正㠰瑾慲正㤰瑾慲正〱瑾慲正ㄱ瑾慲正㈱瑾慲正㌱瑾慲正㐱瑾慲正㔱瑾慲正㘱瑾慲正㜱瑾慲正㠱瑾慲正㤱瑾慲正〲瑾慲正ㄲ瑾慲正㈲瑾慲正㌲瑾慲正㐲瑾慲正㔲瑾慲正㘲瑾慲正㜲瑾慲正㠲瑾慲正㤲瑾慲正〳瑾慲正ㄳ瑾慲正㈳瑾慲正㌳瑾慲正㐳瑾慲正㔳瑾慲正㘳瑾慲正㜳瑾慲正㠳瑾慲正㤳瑾慲正〴瑾慲正ㄴ瑾慲正㈴瑾慲正㌴瑾慲正㐴瑾慲正㔴瑾慲正㘴瑾慲正㜴瑾慲正㠴瑾慲正㤴瑾慲正〵瑾慲正ㄵ瑾慲正㈵瑾慲正㌵瑾慲正㐵瑾慲正㔵瑾慲正㘵瑾慲正㜵瑾慲正㠵瑾慲正㤵瑾慲正〶瑾慲正ㄶ瑾慲正㈶瑾慲正㌶瑾慲正㐶瑾慲正㔶瑾慲正㘶瑾慲正㜶瑾慲正㠶瑾慲正㤶瑾慲正〷瑾慲正ㄷ瑾慲正㈷瑾慲正㌷瑾慲正㐷瑾慲正㔷瑾慲正㘷瑾慲正㜷瑾慲正㠷瑾慲正㤷瑾慲正〸瑾慲正ㄸ瑾慲正㈸瑾慲正㌸瑾慲正㐸瑾慲正㔸瑾慲正㘸瑾慲正㜸瑾慲正㠸瑾慲正㤸瑾慲正〹瑾慲正ㄹ瑾慲正㈹瑾慲正㌹瑾慲正㐹瑾慲正㔹瑾慲正㘹瑾慲正㜹瑾慲正㠹瑾慲正㤹"
 		#endregion

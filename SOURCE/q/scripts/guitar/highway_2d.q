@@ -5,14 +5,16 @@ gHighwayEndFade = 1000.0
 
 script Set2DHighwaySpeed\{speed = -1.0}
 	Change StructureName = <player_status> highway_speed = <speed>
-	SetScreenElementProps id = <id> MaterialProps = [{name = m_velocityV property = <speed>}]
-	SetScreenElementProps id = <id> MaterialProps = [{name = m_tiling property = ($gHighwayTiling)}]
+	SetScreenElementProps id = <id> MaterialProps = [
+		{name = m_velocityV property = <speed>}
+		{name = m_tiling property = ($gHighwayTiling)}
+	]
 endscript
 
 script Set2DHighwayFade\{start = 720.0 end = 100.0}
 	SetScreenElementProps id = <id> MaterialProps = [
-		{name = m_startFade property = ($gHighwayStartFade)}
-		{name = m_endFade property = ($gHighwayEndFade)}
+		{name = m_startFade property = <start>}
+		{name = m_endFade property = <end>}
 		{name = m_playerIndex property = <Player>}
 	]
 endscript
@@ -1074,6 +1076,7 @@ gem_y_just = 0.0
 star_y_just = 0.0
 fretbar_start_scale = 0.0
 whammy_top_width = 0.0
+whammy_top_width_open_note = 0.0
 whammy_width_offset = 0.0
 sidebar_x_offset = 0.0
 sidebar_x_scale = 0.0
@@ -1085,53 +1088,40 @@ string_scale_x = 0.0
 string_scale_y = 0.0
 
 script generate_pos_table
-	if ($current_num_players = 1 & $end_credits = 0)
-		Change \{gHighwayTiling = $gHighwayTiling1}
-		Change \{highway_playline = $highway_playline1}
-		Change \{highway_height = $highway_height1}
-		Change \{highway_top_width = $highway_top_width1}
-		Change \{widthOffsetFactor = $widthOffsetFactor1}
-		Change \{highway_fade = $highway_fade1}
-		Change \{gem_start_scale = $gem_start_scale1}
-		Change \{gem_end_scale = $gem_end_scale1}
-		Change \{gem_star_scale = $gem_star_scale1}
-		Change \{gem_y_just = $gem_y_just1}
-		Change \{star_y_just = $star_y_just1}
-		Change \{fretbar_start_scale = $fretbar_start_scale1}
-		Change \{whammy_top_width = $whammy_top_width1}
-		Change \{whammy_width_offset = $whammy_width_offset1}
-		Change \{sidebar_x_offset = $sidebar_x_offset1}
-		Change \{sidebar_x_scale = $sidebar_x_scale1}
-		Change \{sidebar_y_scale = $sidebar_y_scale1}
-		Change \{starpower_fx_scale = $starpower_fx_scale1}
-		Change \{nowbar_scale_x = $nowbar_scale_x1}
-		Change \{nowbar_scale_y = $nowbar_scale_y1}
-		Change \{string_scale_x = $string_scale_x1}
-		Change \{string_scale_y = $string_scale_y1}
-	else
-		Change \{gHighwayTiling = $gHighwayTiling2}
-		Change \{highway_playline = $highway_playline2}
-		Change \{highway_height = $highway_height2}
-		Change \{highway_top_width = $highway_top_width2}
-		Change \{widthOffsetFactor = $widthOffsetFactor2}
-		Change \{highway_fade = $highway_fade2}
-		Change \{gem_start_scale = $gem_start_scale2}
-		Change \{gem_end_scale = $gem_end_scale2}
-		Change \{gem_star_scale = $gem_star_scale2}
-		Change \{gem_y_just = $gem_y_just2}
-		Change \{star_y_just = $star_y_just2}
-		Change \{fretbar_start_scale = $fretbar_start_scale2}
-		Change \{whammy_top_width = $whammy_top_width2}
-		Change \{whammy_width_offset = $whammy_width_offset2}
-		Change \{sidebar_x_offset = $sidebar_x_offset2}
-		Change \{sidebar_x_scale = $sidebar_x_scale2}
-		Change \{sidebar_y_scale = $sidebar_y_scale2}
-		Change \{starpower_fx_scale = $starpower_fx_scale2}
-		Change \{nowbar_scale_x = $nowbar_scale_x2}
-		Change \{nowbar_scale_y = $nowbar_scale_y2}
-		Change \{string_scale_x = $string_scale_x2}
-		Change \{string_scale_y = $string_scale_y2}
-	endif
+	tweaks = [
+		gHighwayTiling
+		highway_playline
+		highway_height
+		highway_top_width
+		widthOffsetFactor
+		highway_fade
+		gem_start_scale
+		gem_end_scale
+		gem_star_scale
+		gem_y_just
+		star_y_just
+		fretbar_start_scale
+		whammy_top_width
+		whammy_top_width_open_note
+		whammy_width_offset
+		sidebar_x_offset
+		sidebar_x_scale
+		sidebar_y_scale
+		starpower_fx_scale
+		nowbar_scale_x
+		nowbar_scale_y
+		string_scale_x
+		string_scale_y
+	]
+	Ternary ($current_num_players = 1 & $end_credits = 0) a = '1' b = '2'
+	GetArraySize \{tweaks}
+	index = 0
+	begin
+		tweak = (<tweaks>[<index>])
+		extendcrc <tweak> <ternary> out=val
+		change globalname=<tweak> newvalue=($<val>)
+		Increment \{index}
+	repeat <array_size>
 	SetAllWhammyValues \{value = 1.0 Player = 1}
 	SetAllWhammyValues \{value = 1.0 Player = 2}
 	<hheight> = ($highway_height - 162)
@@ -1141,8 +1131,8 @@ script generate_pos_table
 	if (<hheight> > 510)
 		<hheight> = 510
 	endif
-	Change heightPerspFact = ($heightPerspFactTable [<hheight>])
-	Change heightPerspExp = ($heightPerspExpTable [<hheight>])
+	Change heightPerspFact = ($heightPerspFactTable[<hheight>])
+	Change heightPerspExp = ($heightPerspExpTable[<hheight>])
 	heightOffsetFactor = $heightPerspFact
 	heightOffsetExp = $heightPerspExp
 	startY = ($highway_playline - $highway_height)
@@ -1175,16 +1165,16 @@ script generate_pos_table
 	ba = <atan>
 	Atan2 X = $highway_height y = (<osx> - <oex>)
 	oa = <atan>
-	SetButtonData array = button_models Color = green angle = <ga> start_x = <gsx> start_y = <startY> end_x = <gex> end_y = ($highway_playline)left_start_x = <osx> left_end_x = <oex> left_angle = <oa>
-	SetButtonData array = button_models Color = red angle = <ra> start_x = <rsx> start_y = <startY> end_x = <rex> end_y = ($highway_playline)left_start_x = <bsx> left_end_x = <bex> left_angle = <ba>
-	SetButtonData array = button_models Color = yellow angle = <ya> start_x = <ysx> start_y = <startY> end_x = <yex> end_y = ($highway_playline)left_start_x = <ysx> left_end_x = <yex> left_angle = <ya>
-	SetButtonData array = button_models Color = blue angle = <ba> start_x = <bsx> start_y = <startY> end_x = <bex> end_y = ($highway_playline)left_start_x = <rsx> left_end_x = <rex> left_angle = <ra>
-	SetButtonData array = button_models Color = orange angle = <oa> start_x = <osx> start_y = <startY> end_x = <oex> end_y = ($highway_playline)left_start_x = <gsx> left_end_x = <gex> left_angle = <ga>
-	SetButtonData array = button_up_models Color = green pos_x = <gex> pos_y = ($highway_playline)left_pos_x = <oex>
-	SetButtonData array = button_up_models Color = red pos_x = <rex> pos_y = ($highway_playline)left_pos_x = <bex>
-	SetButtonData array = button_up_models Color = yellow pos_x = <yex> pos_y = ($highway_playline)left_pos_x = <yex>
-	SetButtonData array = button_up_models Color = blue pos_x = <bex> pos_y = ($highway_playline)left_pos_x = <rex>
-	SetButtonData array = button_up_models Color = orange pos_x = <oex> pos_y = ($highway_playline)left_pos_x = <gex>
+	SetButtonData array = button_models Color = green angle = <ga> start_x = <gsx> start_y = <startY> end_x = <gex> end_y = ($highway_playline) left_start_x = <osx> left_end_x = <oex> left_angle = <oa>
+	SetButtonData array = button_models Color = red angle = <ra> start_x = <rsx> start_y = <startY> end_x = <rex> end_y = ($highway_playline) left_start_x = <bsx> left_end_x = <bex> left_angle = <ba>
+	SetButtonData array = button_models Color = yellow angle = <ya> start_x = <ysx> start_y = <startY> end_x = <yex> end_y = ($highway_playline) left_start_x = <ysx> left_end_x = <yex> left_angle = <ya>
+	SetButtonData array = button_models Color = blue angle = <ba> start_x = <bsx> start_y = <startY> end_x = <bex> end_y = ($highway_playline) left_start_x = <rsx> left_end_x = <rex> left_angle = <ra>
+	SetButtonData array = button_models Color = orange angle = <oa> start_x = <osx> start_y = <startY> end_x = <oex> end_y = ($highway_playline) left_start_x = <gsx> left_end_x = <gex> left_angle = <ga>
+	SetButtonData array = button_up_models Color = green pos_x = <gex> pos_y = ($highway_playline) left_pos_x = <oex>
+	SetButtonData array = button_up_models Color = red pos_x = <rex> pos_y = ($highway_playline) left_pos_x = <bex>
+	SetButtonData array = button_up_models Color = yellow pos_x = <yex> pos_y = ($highway_playline) left_pos_x = <yex>
+	SetButtonData array = button_up_models Color = blue pos_x = <bex> pos_y = ($highway_playline) left_pos_x = <rex>
+	SetButtonData array = button_up_models Color = orange pos_x = <oex> pos_y = ($highway_playline) left_pos_x = <gex>
 	Change fretbar_end_scale = ($fretbar_start_scale + ($fretbar_start_scale * $widthOffsetFactor))
 	Change gem_end_scale = ($gem_start_scale + ($gem_start_scale * $widthOffsetFactor))
 	fe = ($highway_playline - $highway_height)
@@ -1197,43 +1187,43 @@ script generate_pos_table
 	Change sidebar_angle = <atan>
 	vec_x = (<sbx> - <stx>)
 	vec_y = $highway_height
-	Change sidebar_x = ((<sbx> + (<vec_x> * 0.25))- $sidebar_x_offset)
+	Change sidebar_x = ((<sbx> + (<vec_x> * 0.25)) - $sidebar_x_offset)
 	Change sidebar_y = ($highway_playline + (<vec_y> * 0.25))
-	SetArrayElement \{ArrayName = rowHeightNormalizedDistance index = 0 NewValue = 1.0 GlobalArray}
-	<index> = 1
+	SetArrayElement \{ArrayName = rowHeightNormalizedDistance GlobalArray index = 0 NewValue = 1.0}
+	index = 0
 	begin
-		value = ($rowHeightNormalizedDistance [(<index> -1)] * <heightOffsetFactor>)
+		value = ($rowHeightNormalizedDistance[<index>] * <heightOffsetFactor>)
 		MathPow <value> exp = <heightOffsetExp>
-		SetArrayElement ArrayName = rowHeightNormalizedDistance index = <index> NewValue = <pow> GlobalArray
-		<index> = (<index> + 1)
-	repeat (<rows> -1)
-	<index> = 0
+		Increment \{index}
+		SetArrayElement GlobalArray index = <index> NewValue = <pow> ArrayName = rowHeightNormalizedDistance
+	repeat <rows>
+	index = 0
 	begin
-		<rowHeightNormalizationFactor> = (<rowHeightNormalizationFactor> + $rowHeightNormalizedDistance [<index>])
-		<index> = (<index> + 1)
+		<rowHeightNormalizationFactor> = (<rowHeightNormalizationFactor> + $rowHeightNormalizedDistance[<index>])
+		Increment \{index}
 	repeat <normal_rows>
 	<rowHeightNormalizationFactor> = (1.0 / <rowHeightNormalizationFactor>)
-	<index> = 0
+	index = 0
 	begin
-		value = ($rowHeightNormalizedDistance [<index>] * <rowHeightNormalizationFactor>)
-		SetArrayElement ArrayName = rowHeightNormalizedDistance index = <index> NewValue = <value> GlobalArray
-		SetArrayElement ArrayName = gem_time_table512 index = <index> NewValue = <value> GlobalArray
-		<index> = (<index> + 1)
+		value = ($rowHeightNormalizedDistance[<index>] * <rowHeightNormalizationFactor>)
+		SetArrayElement GlobalArray index = <index> NewValue = <value> ArrayName = rowHeightNormalizedDistance
+		SetArrayElement GlobalArray index = <index> NewValue = <value> ArrayName = gem_time_table512
+		Increment \{index}
 	repeat <rows>
-	SetArrayElement ArrayName = rowHeight index = 0 NewValue = <startY> GlobalArray
-	<index> = 1
+	SetArrayElement ArrayName = rowHeight GlobalArray index = 0 NewValue = <startY>
+	index = 0
 	begin
-		value = ($rowHeight [(<index> -1)] + (<height> * ($rowHeightNormalizedDistance [(<index> -1)])))
-		SetArrayElement ArrayName = rowHeight index = <index> NewValue = <value> GlobalArray
-		<index> = (<index> + 1)
+		value = ($rowHeight[<index>] + (<height> * ($rowHeightNormalizedDistance[<index>])))
+		Increment \{index}
+		SetArrayElement GlobalArray index = <index> NewValue = <value> ArrayName = rowHeight
 	repeat <rows>
-	SetArrayElement \{ArrayName = time_accum_table index = 0 NewValue = 0.0 GlobalArray}
-	<index> = 1
+	SetArrayElement \{ArrayName = time_accum_table GlobalArray index = 0 NewValue = 0.0}
+	index = 0
 	begin
-		value = ($time_accum_table [(<index> -1)] + $gem_time_table512 [<index>])
-		SetArrayElement ArrayName = time_accum_table index = <index> NewValue = <value> GlobalArray
-		<index> = (<index> + 1)
-	repeat (<rows> -1)
+		value = ($time_accum_table[<index>] + $gem_time_table512[<index>])
+		Increment \{index}
+		SetArrayElement GlobalArray index = <index> NewValue = <value> ArrayName = time_accum_table
+	repeat <rows>
 	SetRowHeightTables
 	SetGemConstants
 endscript

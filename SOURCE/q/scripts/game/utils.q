@@ -23,6 +23,7 @@ script Sum
 	return sum = <sum>
 endscript
 script Avg
+	// todo for optimization if slow: use goto and addparam?
 	Sum <#"0x00000000">
 	getarraysize \{#"0x00000000"}
 	return avg = (<sum> / <array_size>)
@@ -105,36 +106,30 @@ endscript
 // @parm name | pad | the character used to fill the width of the string
 // @return name | pad | the padded number
 script pad \{#"0x00000000" = 0 count = 2 pad = '0'}
-	formattext textname=text "%d" d=<#"0x00000000">
-	// optimize with stringlength
 	pad_chars = ""
-	if (<count> > 0)
-		if (<#"0x00000000"> < 0)
-			pad_chars = "-"
-		endif
-		digits = 1
+	formattext textname = pad_char "%d" d = <pad>
+	if (<#"0x00000000"> < 0 & <pad_char> = "0")
+		pad_chars = "-"
+		#"0x00000000" = (<#"0x00000000"> * -1)
+		count = (<count> - 1)
+	endif
+	formattext textname = text "%d" d = <#"0x00000000">
+	DestroyComponent \{pad}
+	StringToCharArray string = <text> // STRINGLENGTH IS BROKEN
+	getarraysize \{char_array}
+	pad = (<count> - <array_size>)
+	if (<pad> > 0)
 		begin
-			if (<#"0x00000000"> < 10)
-				break
-			endif
-			#"0x00000000" = (<#"0x00000000"> / 10)
-			Increment \{digits}
-		repeat <count>
-		formattext textname = pad_char "%d" d = <pad>
-		// i think i had this better optimized in my mind but im half asleep
-		if (<count> > <digits>)
-			begin
-				pad_chars = (<pad_chars> + <pad_char>)
-				//formattext textname = text '%p%d' p = <pad> d = <text>
-			repeat (<count> - <digits>)
-		endif
+			pad_chars = (<pad_chars> + <pad_char>)
+		repeat <pad>
 	endif
 	return pad = (<pad_chars> + <text>)
 endscript
 
 // @script | timestamp | get a string for the current time
-// @return name | timestamp | the padded number
+// @return name | timestamp | current time and date
 script timestamp \{format = $timestamp_format}
+	ProfilingStart
 	GetLocalSystemTime
 	AddParams <localsystemtime>
 	pad (<month>+1) // why is it one less
@@ -149,7 +144,8 @@ script timestamp \{format = $timestamp_format}
 	second = <pad>
 	pad <millisecond> count = 3
 	millisecond = <pad>
-	FormatText { textname = timestamp (<format>)
+	ProfilingEnd <...> 'timestamp'
+	FormatText { textname = timestamp <format>
 		// format guide
 		y = <year> m = <month> d = <dayofmonth>
 		h = <hour> n = <minute> s = <second> t = <millisecond> }
@@ -207,7 +203,7 @@ script wait_beats \{1}
 			if NOT (<last_beat_flip> = <cur_beat_flip>)
 				break
 			endif
-			wait 1 gameframe
+			wait \{1 gameframe}
 		repeat
 	repeat <#"0x00000000">
 endscript

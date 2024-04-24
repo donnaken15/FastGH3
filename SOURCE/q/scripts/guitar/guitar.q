@@ -163,23 +163,24 @@ mode_index = {
 	p2_battle = 5
 }
 
-fastgh3_build = '1.0-999010889'
+fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [  3  9 2024]
+build_timestamp = [ 4 24 2024]
 
 random_seed = -1
 // ^ originally 107482099
 // @script | guitar_startup | Initialization script
 script guitar_startup
 	GetTrueStartTime
-	DisplayLoadingScreen \{'../../zones/load_scr' spin_texture = '../../zones/load_disc' spin_x = 560 spin_y = 500}
+	DisplayLoadingScreen \{'../../zones/load_scr' spin_texture = '../../zones/load_disc' spin_x = 554 spin_y = 296}
 	StopRendering
 	begin
 		GetTrueElapsedTime startTime = <startTime>
-		if (<ElapsedTime> >= 100)
+		if (<ElapsedTime> >= 40)
 			break
 		endif
+		Wait \{1 gameframe}
 		// just to get loading screen to display
 	repeat
 	printf \{'####### FASTGH3 INITIALIZING... #######'}
@@ -208,8 +209,8 @@ script guitar_startup
 	//	printf \{'isn\'t CD'}
 	//endif
 	// region player init struct and deflate file size :/
-		change \{player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }}
-		change \{player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = #"0xce5b3c9f" guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }}
+		change \{player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = sys_Highway2D_sys_Highway2D guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }}
+		change \{player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = sys_Highway2D_sys_Highway2D guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }}
 	// endregion
 	
 	// region useless
@@ -717,6 +718,10 @@ script guitar_startup
 	Change StructureName = player1_status controller = ($primary_controller)
 	Change structurename = player2_status controller = ($startup_controller2)
 	KillSpawnedScript \{name = empty_script}
+	if ($player1_status.bot_play = 1)
+		change \{autolaunch_startnow = 1} // stuck on press any button screen when player 1 bot is on
+		// and on practice mode warning
+	endif
 	switch ($autolaunch_startnow)
 		case 0
 			HideLoadingScreen

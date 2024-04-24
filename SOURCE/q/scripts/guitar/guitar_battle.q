@@ -371,10 +371,11 @@ script battlemode_ready\{battle_gem = 0 player_status = player1_status steal = 0
 	else
 		begin_pos = (($button_up_models.<Color>.pos_2d)- (0.0, 90.0))
 	endif
+	offset = ((1.0, 0.0) * ($x_offset_p2))
 	if ($<player_status>.Player = 1)
-		<begin_pos> = (<begin_pos> - (225.0, 0.0))
+		<begin_pos> = (<begin_pos> - <offset>)
 	else
-		<begin_pos> = (<begin_pos> + (225.0, 0.0))
+		<begin_pos> = (<begin_pos> + <offset>)
 	endif
 	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = <current_num_powerups> s = ($<player_status>.Player)
 	CreateScreenElement {
@@ -2404,14 +2405,15 @@ script update_broken_string_arrows
 	endif
 	ExtendCrc gem_container ($<other_player_status>.text) out = container_id
 	Color = ($gem_colors [<id>])
-	arrow_pos = (($button_up_models.<Color>.pos_2d)- (0.0, 30.0))
-	lefty_arrow_pos = (($button_up_models.<Color>.left_pos_2d)- (0.0, 30.0))
+	arrow_pos = (($button_up_models.<Color>.pos_2d) - (0.0, 30.0))
+	lefty_arrow_pos = (($button_up_models.<Color>.left_pos_2d) - (0.0, 30.0))
+	offset = ((1.0, 0.0) * $x_offset_p2)
 	if ($<other_player_status>.Player = 1)
-		<arrow_pos> = (<arrow_pos> - (225.0, 0.0))
-		<lefty_arrow_pos> = (<lefty_arrow_pos> - (225.0, 0.0))
+		<arrow_pos> = (<arrow_pos> - <offset>)
+		<lefty_arrow_pos> = (<lefty_arrow_pos> - <offset>)
 	else
-		<arrow_pos> = (<arrow_pos> + (225.0, 0.0))
-		<lefty_arrow_pos> = (<lefty_arrow_pos> + (225.0, 0.0))
+		<arrow_pos> = (<arrow_pos> + <offset>)
+		<lefty_arrow_pos> = (<lefty_arrow_pos> + <offset>)
 	endif
 	if ($<other_player_status>.lefthanded_button_ups = 1)
 		start_pos = <lefty_arrow_pos>

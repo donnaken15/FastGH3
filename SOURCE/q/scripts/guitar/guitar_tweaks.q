@@ -14,7 +14,8 @@ gem_y_just1 = 0.83
 star_y_just1 = 0.5
 fretbar_start_scale1 = 0.15
 whammy_top_width1 = 10.0
-whammy_width_offset1 = 1.8
+whammy_top_width_open_note1 = 150.0
+whammy_width_offset1 = 2.15
 sidebar_x_offset1 = 4.0
 sidebar_x_scale1 = 0.3
 sidebar_y_scale1 = 1.0
@@ -36,6 +37,7 @@ gem_y_just2 = 0.83
 star_y_just2 = 0.5
 fretbar_start_scale2 = 0.16
 whammy_top_width2 = 9.1999998
+whammy_top_width_open_note2 = 120.0
 whammy_width_offset2 = 1.5
 sidebar_x_offset2 = 4.5
 sidebar_x_scale2 = 0.3
@@ -46,73 +48,53 @@ nowbar_scale_y2 = 0.8
 string_scale_x2 = 0.65
 string_scale_y2 = 0.5
 x_offset_p2 = 225
-sidebar_normal0 = [
-	255
-	255
-	255
-	255
-]
-sidebar_normal1 = [
-	192
-	255
-	255
-	255
-]
-sidebar_starready0 = [
-	255
-	255
-	255
-	255
-]
-sidebar_starready1 = [
-	128
-	192
-	255
-	255
-]
-sidebar_dying0 = [
-	255
-	255
-	255
-	255
-]
-sidebar_dying1 = [
-	255
-	80
-	80
-	255
-]
-sidebar_starpower0 = [
-	255
-	255
-	255
-	255
-]
-sidebar_starpower1 = [
-	192
-	255
-	255
-	255
-]
-highway_normal = [
-	255
-	255
-	255
-	255
-]
-highway_starpower = [
-	64
-	255
-	255
-	255
-]
-highway_pulse = [
-	0
-	0
-	0
-	255
-]
+
+openfx1_scale_start1 = (1.01, 0.77)
+openfx2_scale_start1 = (2.2, 2.4)
+openfx1_scale_start2 = (0.78, 0.9)
+openfx2_scale_start2 = (1.7, 2.4)
+openfx1_scale_end = (1.0, 2.0)
+openfx2_scale_end = 1.4
+
+color_white = [255 255 255 255]
+color_black = [0 0 0 255]
+color_transparent = [0 0 0 255]
+
+sidebar_normal0 = $color_white
+sidebar_normal1 = [192 255 255 255]
+sidebar_starready0 = $color_white
+sidebar_starready1 = [128 192 255 255]
+sidebar_dying0 = $color_white
+sidebar_dying1 = [255 80 80 255]
+sidebar_starpower0 = $color_white
+sidebar_starpower1 = [192 255 255 255]
+highway_normal = $color_white
+highway_starpower = [64 255 255 255]
+highway_pulse = $color_black
 highway_pulse_time = 0.2
+
+open_fx_color1_start	=	$color_white
+open_fx_color1_end		=	$color_transparent
+open_fx_color2_start	=	[212 0 255 255]
+open_fx_color2_end		=	[212 0 255 0]
+open_fx_starpower_color1_start	=	[199 252 255 255]
+open_fx_starpower_color1_end	=	[199 252 255 0]
+open_fx_starpower_color2_start	=	[0 247 255 255]
+open_fx_starpower_color2_end	=	[0 247 255 0]
+
+starsequence_particle1_color1 = [0 128 255 255]
+starsequence_particle1_color2 = [0 128 128 0]
+starsequence_particle2_color1 = [255 255 255 255]
+starsequence_particle2_color2 = [128 128 128 0]
+starsequence_particle3_color1 = [0 255 255 255]
+starsequence_particle3_color2 = [0 255 255 0]
+
+hud_notif_starpower1 = [190 225 255 250]
+hud_notif_starpower2 = [145 215 235 250]
+hud_notif_streak1 = [223 223 223 255]
+hud_notif_streak2 = [245 255 120 255]
+hud_notif_streak3 = [245 255 160 255]
+
 neck_sprite_size = 16
 neck_lip_add = 16
 neck_lip_base = 6
@@ -159,7 +141,7 @@ dragonforce_hack = 0
 prefretbar_time = 0.25
 star_spin_rate = -2.5
 whammy_shorten = 0.25
-whammy_cutoff = 1130.0
+whammy_cutoff = 1120.0
 whammy_min_hold_pct = 10.0
 whammy_min_hold_mute_ms = 750.0
 whammy_min_hold_pct_short = 35.0
@@ -219,3 +201,6 @@ Song_Win_Delay = 1
 star_power_trigger_frames = 3
 drum_kick_anim_delay = 0.2
 calibrate_lag_tick_ms_offset = 66
+
+
+

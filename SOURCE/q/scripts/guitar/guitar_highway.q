@@ -474,12 +474,7 @@ script move_highway_2d
 		//ProfilingStart
 		GetDeltaTime \{ignore_slomo}
 		interval = (1.0/<delta_time>/$current_speedfactor)
-		if (<interval> < 60)
-			interval = 60
-		endif
-		if (<interval> > 144)
-			interval = 144
-		endif
+		Clamp <interval> min = 60 max = 144
 		pos_start_orig = 0
 		GetSongTimeMs
 		movetime = ($current_intro.highway_move_time / 2200.0)
@@ -487,9 +482,9 @@ script move_highway_2d
 			SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))
 			return
 		endif
-		i1000 = (1000.0 / <interval>)
+		i1000 = (1000.0 / <clamped>)
 		//ProfilingEnd <...> 'move highway start'
-		generate_move_table interval=<interval> pos_start_orig=<pos_start_orig>
+		generate_move_table interval=<clamped> pos_start_orig=<pos_start_orig>
 		GetArraySize \{moveTable}
 		start_time = (<time> - (400.0 * <movetime>)) // instantly appear animating into screen
 		// TODO: adjust offset to go with ^ highway or sidebar height

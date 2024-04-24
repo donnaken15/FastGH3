@@ -1,47 +1,200 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ProjectGuid>{D97A2000-04C1-4EE5-A9C3-F68009A8796F}</ProjectGuid>
-		<OutputType>Exe</OutputType>
-		<RootNamespace>Updater</RootNamespace>
-		<AssemblyName>Updater</AssemblyName>
-		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-		<FileAlignment>512</FileAlignment>
-		<Deterministic>true</Deterministic>
-		<TargetFrameworkProfile />
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<PlatformTarget>AnyCPU</PlatformTarget>
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>..\..\</OutputPath>
-		<DefineConstants>
-		</DefineConstants>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-	</PropertyGroup>
-	<PropertyGroup>
-		<NoWin32Manifest>true</NoWin32Manifest>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="System" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="Program.cs" />
-		<Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="SimpleJSON.cs" />
-	</ItemGroup>
-	<ItemGroup>
-		<None Include="app.config" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\DotNetZip\Zip Reduced\Zip Reduced.csproj">
-			<Project>{49a128d3-c3f2-46b1-8f7a-eecd209ea860}</Project>
-			<Name>Zip Reduced</Name>
-		</ProjectReference>
-	</ItemGroup>
-	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D97A2000-04C1-4EE5-A9C3-F68009A8796F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Updater</RootNamespace>
+    <AssemblyName>Updater</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\dotnetzip\bzip2\BitWriter.cs">
+      <Link>DotNetZip\BZip2\BitWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\bzip2\BZip2Compressor.cs">
+      <Link>DotNetZip\BZip2\BZip2Compressor.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\bzip2\BZip2InputStream.cs">
+      <Link>DotNetZip\BZip2\BZip2InputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\bzip2\BZip2OutputStream.cs">
+      <Link>DotNetZip\BZip2\BZip2OutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\bzip2\ParallelBZip2OutputStream.cs">
+      <Link>DotNetZip\BZip2\ParallelBZip2OutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\bzip2\Rand.cs">
+      <Link>DotNetZip\BZip2\Rand.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\commonsrc\CRC32.cs">
+      <Link>DotNetZip\CRC32.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ComHelper.cs">
+      <Link>DotNetZip\Zip\ComHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\EncryptionAlgorithm.cs">
+      <Link>DotNetZip\Zip\EncryptionAlgorithm.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\Events.cs">
+      <Link>DotNetZip\Zip\Events.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\Exceptions.cs">
+      <Link>DotNetZip\Zip\Exceptions.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ExtractExistingFileAction.cs">
+      <Link>DotNetZip\Zip\ExtractExistingFileAction.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\FileSelector.cs">
+      <Link>DotNetZip\Zip\FileSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\OffsetStream.cs">
+      <Link>DotNetZip\Zip\OffsetStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\Shared.cs">
+      <Link>DotNetZip\Zip\Shared.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\WinZipAes.cs">
+      <Link>DotNetZip\Zip\WinZipAes.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipConstants.cs">
+      <Link>DotNetZip\Zip\ZipConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipCrypto.cs">
+      <Link>DotNetZip\Zip\ZipCrypto.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipDirEntry.cs">
+      <Link>DotNetZip\Zip\ZipDirEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipEntry.cs">
+      <Link>DotNetZip\Zip\ZipEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipEntry.Extract.cs">
+      <Link>DotNetZip\Zip\ZipEntry.Extract.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipEntry.Read.cs">
+      <Link>DotNetZip\Zip\ZipEntry.Read.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipEntry.Write.cs">
+      <Link>DotNetZip\Zip\ZipEntry.Write.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipEntrySource.cs">
+      <Link>DotNetZip\Zip\ZipEntrySource.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipErrorAction.cs">
+      <Link>DotNetZip\Zip\ZipErrorAction.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.AddUpdate.cs">
+      <Link>DotNetZip\Zip\ZipFile.AddUpdate.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.Check.cs">
+      <Link>DotNetZip\Zip\ZipFile.Check.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.cs">
+      <Link>DotNetZip\Zip\ZipFile.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.Events.cs">
+      <Link>DotNetZip\Zip\ZipFile.Events.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.Extract.cs">
+      <Link>DotNetZip\Zip\ZipFile.Extract.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.Read.cs">
+      <Link>DotNetZip\Zip\ZipFile.Read.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.Save.cs">
+      <Link>DotNetZip\Zip\ZipFile.Save.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.SaveSelfExtractor.cs">
+      <Link>DotNetZip\Zip\ZipFile.SaveSelfExtractor.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.Selector.cs">
+      <Link>DotNetZip\Zip\ZipFile.Selector.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipFile.x-IEnumerable.cs">
+      <Link>DotNetZip\Zip\ZipFile.x-IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipInputStream.cs">
+      <Link>DotNetZip\Zip\ZipInputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipOutputStream.cs">
+      <Link>DotNetZip\Zip\ZipOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zip\ZipSegmentedStream.cs">
+      <Link>DotNetZip\Zip\ZipSegmentedStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\Deflate.cs">
+      <Link>DotNetZip\Zlib\Deflate.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\DeflateStream.cs">
+      <Link>DotNetZip\Zlib\DeflateStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\GZipStream.cs">
+      <Link>DotNetZip\Zlib\GZipStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\Inflate.cs">
+      <Link>DotNetZip\Zlib\Inflate.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\InfTree.cs">
+      <Link>DotNetZip\Zlib\InfTree.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\ParallelDeflateOutputStream.cs">
+      <Link>DotNetZip\Zlib\ParallelDeflateOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\Tree.cs">
+      <Link>DotNetZip\Zlib\Tree.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\Zlib.cs">
+      <Link>DotNetZip\Zlib\Zlib.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\ZlibBaseStream.cs">
+      <Link>DotNetZip\Zlib\ZlibBaseStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\ZlibCodec.cs">
+      <Link>DotNetZip\Zlib\ZlibCodec.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\ZlibConstants.cs">
+      <Link>DotNetZip\Zlib\ZlibConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\dotnetzip\zlib\ZlibStream.cs">
+      <Link>DotNetZip\Zlib\ZlibStream.cs</Link>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleJSON.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rem POST BUILD / COMPRESS EXE
+call "$(ProjectDir)..\Misc\stripversion.bat" "$(TargetPath)"
+pushd "$(ProjectDir)"
+rem NetCompressor "$(TargetPath)" "$(TargetPath)" -gz
+rem call "$(ProjectDir)..\Misc\stripversion.bat" "$(TargetPath)"
+popd
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

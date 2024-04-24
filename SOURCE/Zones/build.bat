@@ -22,7 +22,7 @@ echo [91m######      image generation       ######[0m
 imggen root\*.png root\*.jpg root\*.dds > nul %OKNOTOK%
 echo [93m###### moving new generated images ######[0m
 move root\*.img.xen "!cache" > nul %OKNOTOK%
-echo [38;2;95;95;255m######     copying fonts (raw)     ######[0m
+echo [38;2;95;95;255m######    creating/copying fonts   ######[0m
 copy fonts\*.fnt.xen "!cache" > nul %OKNOTOK%
 echo [38;2;255;127;0m###### compiling optional scripts  ######[0m
 mkdir scripts 2>nul
@@ -65,7 +65,7 @@ move default\*.img.xen "default\!cache" > nul
 echo [96m######     copying fonts (raw)     ######[0m
 copy default\*.fnt.xen "default\!cache" > nul
 echo [96m######      generating fonts       ######[0m
-pushd fonts
+pushd default
 ..\mkfonts
 popd
 echo [96m######        compiling PAK        ######[0m

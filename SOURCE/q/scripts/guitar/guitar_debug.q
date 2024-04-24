@@ -1,28 +1,29 @@
 
 script init_play_log
 	if ($show_play_log = 1)
-		<Pos> = (256.0, 32.0)
+		<Pos> = (256.0, 80.0)
 		<name> = log_line
 		<line> = 0
+		scale = 0.7
 		begin
 			FormatText checksumName = id 'log_line_%l' l = <line> DontAssertForChecksums
 			CreateScreenElement {
 				Type = TextElement
 				parent = root_window
 				id = <id>
-				font = fontgrid_title_gh3
+				font = text_a1
 				Pos = <Pos>
 				just = [left top]
-				Scale = (0.5, 0.5)
+				Scale = <scale>
 				rgba = [210 210 210 250]
-				text = "Some Text"
+				text = ''
 				z_priority = 1000.0
 				alpha = 1
 			}
-			<Pos> = (<Pos> + (0.0, 24.0))
+			<Pos> = (<Pos> + ((0.0, 24.0) * <scale>))
 			<line> = (<line> + 1)
 		repeat $play_log_lines
-		<blank_text> = " "
+		<blank_text> = ''
 		Change log_strings = ($log_strings + {log_line_0 = <blank_text>})
 		Change log_strings = ($log_strings + {log_line_1 = <blank_text>})
 		Change log_strings = ($log_strings + {log_line_2 = <blank_text>})
@@ -56,16 +57,16 @@ script kill_debug_elements
 	endif
 endscript
 log_strings = {
-	log_line_0 = " "
-	log_line_1 = " "
-	log_line_2 = " "
-	log_line_3 = " "
-	log_line_4 = " "
-	log_line_5 = " "
-	log_line_6 = " "
-	log_line_7 = " "
-	log_line_8 = " "
-	log_line_9 = " "
+	log_line_0 = ''
+	log_line_1 = ''
+	log_line_2 = ''
+	log_line_3 = ''
+	log_line_4 = ''
+	log_line_5 = ''
+	log_line_6 = ''
+	log_line_7 = ''
+	log_line_8 = ''
+	log_line_9 = ''
 	log_line_0_color = green
 	log_line_1_color = green
 	log_line_2_color = green
@@ -154,7 +155,7 @@ script output_log_text
 			FormatText checksumName = id 'log_line_%l' l = <line> DontAssertForChecksums
 			SetScreenElementProps id = <id> text = ($log_strings.<id>)
 			FormatText checksumName = col 'log_line_%l_color' l = <line> DontAssertForChecksums
-			switch ($log_strings.<col>)
+			switch ($log_strings.<col>) // TODO: replace with structurecontains and ($struct.<color>)
 				case green
 					SetScreenElementProps id = <id> rgba = [48 210 48 250]
 				case darkgreen
@@ -165,6 +166,8 @@ script output_log_text
 					SetScreenElementProps id = <id> rgba = [160 16 16 250]
 				case orange
 					SetScreenElementProps id = <id> rgba = [210 128 16 250]
+				case yellow
+					SetScreenElementProps id = <id> rgba = [217 199 0 250]
 				default
 					SetScreenElementProps id = <id> rgba = [210 210 210 250]
 			endswitch
@@ -222,7 +225,7 @@ endscript
 script check_input_debug
 	GetHeldPattern controller = <controller> player_status = <player_status>
 	pressed = 0
-	switch hold_pattern
+	switch <hold_pattern>
 		case 65536
 			if (<button> = X)
 				<pressed> = 1

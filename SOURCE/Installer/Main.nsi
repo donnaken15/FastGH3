@@ -7,16 +7,16 @@ SetCompressor /FINAL lzma
 !define MUI_ICON Icon.ico
 !insertmacro MUI_LANGUAGE "English"
 
-Name "FastGH3 1.0"
-!define APPVER_MAJOR 0
-!define APPVER_MINOR 889
+Name "FastGH3 1.1"
+!define APPVER_MAJOR 1
+!define APPVER_MINOR 043
 !define APPVERSION 1.${APPVER_MAJOR}.${APPVER_MINOR}.0
-OutFile "FastGH3_1.0.exe"
+OutFile "FastGH3_1.1.exe"
 VIProductVersion "${APPVERSION}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "FastGH3 1.0"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "FastGH3 1.1"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Guitar Hero is trademark of Activision and Neversoft"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright Activision, Aspyr, Neversoft 2007"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "FastGH3 1.0"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "FastGH3 1.1 Installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APPVERSION}"
 InstallDir "$PROGRAMFILES\FastGH3"
 
@@ -89,6 +89,7 @@ Function .onInit
 	File /oname=$PLUGINSDIR\splash.bmp "InstSplash.bmp"
 FunctionEnd
 
+; need an array for this or something
 Function HideControls
 
 	LockWindow on
@@ -161,7 +162,7 @@ Function splashPage
 
 	SendMessage $HEADLINE ${WM_SETFONT} $HEADLINE_FONT 0
 
-	nsDialogs::CreateControl STATIC ${WS_VISIBLE}|${WS_CHILD}|${WS_CLIPSIBLINGS} 0 120u 24u -130u -32u "This will install FastGH3 1.0 on your computer, a mod built to reduce the hassle of playing customs for Guitar Hero (3), add QOL enhancements and gameplay additions, including ones the later games had, add endless customization and personalization, heavily optimized performance, tons of tweaks to change up the game, a plethra of fixes, portability, instant playability, from the double click in your file browser to rocking out in seconds, all in 13 megabytes!$\r$\n$\r$\nNote: this runs separate of normal GH3.$\r$\n$\r$\nVersion: 1.${APPVER_MAJOR}-99901${APPVER_MAJOR}${APPVER_MINOR}, build date: ${__DATE__} ${__TIME__}$\r$\n"
+	nsDialogs::CreateControl STATIC ${WS_VISIBLE}|${WS_CHILD}|${WS_CLIPSIBLINGS} 0 120u 24u -130u -32u "This will install FastGH3 1.0 on your computer, a mod built to reduce the hassle of playing customs for Guitar Hero (3), add QOL enhancements and gameplay additions, including ones the later games had, add endless customization and personalization, heavily optimized performance, tons of tweaks to change up the game, a plethra of fixes, portability, instant playability, from the double click in your file browser to rocking out in seconds, all in 12 megabytes!$\r$\n$\r$\nNote: this runs separate of normal GH3.$\r$\n$\r$\nVersion: 1.${APPVER_MAJOR}-99901${APPVER_MAJOR}${APPVER_MINOR}, build date: ${__DATE__} ${__TIME__}$\r$\n"
 	Pop $TEXT
 
 	SetCtlColors $DIALOG 0 0xffffff
