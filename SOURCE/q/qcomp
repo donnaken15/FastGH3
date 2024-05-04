@@ -78,5 +78,5 @@ done
 
 echo done...
 
-return $lasterrcode
+exit $lasterrcode
 

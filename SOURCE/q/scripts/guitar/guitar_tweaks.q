@@ -49,6 +49,8 @@ string_scale_x2 = 0.65
 string_scale_y2 = 0.5
 x_offset_p2 = 225
 
+bot_early_time = 0.3
+
 openfx1_scale_start1 = (1.01, 0.77)
 openfx2_scale_start1 = (2.2, 2.4)
 openfx1_scale_start2 = (0.78, 0.9)
@@ -82,12 +84,12 @@ open_fx_starpower_color1_end	=	[199 252 255 0]
 open_fx_starpower_color2_start	=	[0 247 255 255]
 open_fx_starpower_color2_end	=	[0 247 255 0]
 
-starsequence_particle1_color1 = [0 128 255 255]
-starsequence_particle1_color2 = [0 128 128 0]
-starsequence_particle2_color1 = [255 255 255 255]
-starsequence_particle2_color2 = [128 128 128 0]
-starsequence_particle3_color1 = [0 255 255 255]
-starsequence_particle3_color2 = [0 255 255 0]
+starsequence_particle1_color1	=	[0 128 255 255]
+starsequence_particle1_color2	=	[0 128 128 0]
+starsequence_particle2_color1	=	[255 255 255 255]
+starsequence_particle2_color2	=	[128 128 128 0]
+starsequence_particle3_color1	=	[0 255 255 255]
+starsequence_particle3_color2 	=	[0 255 255 0]
 
 hud_notif_starpower1 = [190 225 255 250]
 hud_notif_starpower2 = [145 215 235 250]
@@ -141,7 +143,7 @@ dragonforce_hack = 0
 prefretbar_time = 0.25
 star_spin_rate = -2.5
 whammy_shorten = 0.25
-whammy_cutoff = 1120.0
+whammy_cutoff = 1130.0
 whammy_min_hold_pct = 10.0
 whammy_min_hold_mute_ms = 750.0
 whammy_min_hold_pct_short = 35.0
@@ -201,6 +203,5 @@ Song_Win_Delay = 1
 star_power_trigger_frames = 3
 drum_kick_anim_delay = 0.2
 calibrate_lag_tick_ms_offset = 66
-
 
 

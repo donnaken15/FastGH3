@@ -9,7 +9,7 @@ IF "%ac%"=="" set ac=2
 IF "%ac%"=="1" ( set m=3 ) else ( set m=1 )
 set "HELIX=| "%~dp0helix" - "%~dp0fsbtmp\fastgh3_song.mp3" -%bm%%ab% -M%m% -X0 -U2 -Qquick -A1 -D -EC"
 IF "%ff%"=="" (
-	"%~dp0sox" -m %* -S --multi-threaded -t wav - channels %ac% rate %ar% norm -0.1 %HELIX%
+	"%~dp0sox" -m %* -S --multi-threaded --temp "%~dp0fsbtmp" -t wav - channels %ac% rate %ar% norm -0.1 %HELIX%
 ) else (
 	setlocal enabledelayedexpansion
 	set mix=

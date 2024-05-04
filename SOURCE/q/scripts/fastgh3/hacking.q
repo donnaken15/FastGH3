@@ -327,15 +327,16 @@ endscript
 // tired of all this code that has to awkwardly fetch for player_status
 // including formattext and stuff
 script GetPlayer \{#"0x00000000" = 1}
-	Ternary (<#"0x00000000"> = 2) a = player2_status b = player1_status out = info
+	Ternary (<#"0x00000000"> = 2) a = player2_status b = player1_status
 	if GotParam \{player_status}
-		player_status = <info>
+		player_status = <ternary>
 	endif
+	status = ($<ternary>)
 	if GotParam \{player_text}
-		player_text = ($<info>.text)
+		player_text = (<status>.text)
 	endif
 	if GotParam \{player}
-		player = ($<info>.player)
+		player = (<status>.player)
 	endif
 	return player_status = <player_status> player_text = <player_text> player = <player>
 endscript

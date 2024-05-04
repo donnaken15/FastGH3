@@ -20,7 +20,7 @@ VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "FastGH3 1.1 Installer"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APPVERSION}"
 InstallDir "$PROGRAMFILES\FastGH3"
 
-Caption "FastGH3 1.0"
+Caption "FastGH3 1.1"
 BrandingText "github.com/donnaken15/FastGH3"
 
 Page custom splashPage

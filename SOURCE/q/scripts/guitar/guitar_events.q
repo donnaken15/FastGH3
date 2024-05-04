@@ -1643,16 +1643,6 @@ script Open_NoteFX \{Player = 1 player_status = player1_status}
 		wait \{$button_sink_time seconds}
 	endif
 	if (<length> > 1)
-		//begin
-			// hack, move open sustain below frets like WOR // NOT WORKING!!!!!!!!!!
-			// i guess because z priority is always updated internally depending on button up pixels
-			//FormatText checksumname = whammy 'yellow_%e_whammybar_p%p' e = <array_entry> p = <player>
-			//if ScreenElementExists id = <whammy>
-			//	DoScreenElementMorph id = <whammy> z_priority = -99999.9999 *
-			//	break
-			//endif
-			//wait \{1 gameframe}
-		//repeat
 		flash_interval = 0.08
 		// was going to make this loop for a number of times
 		// to make this last as long as the sustain
@@ -1667,14 +1657,11 @@ script Open_NoteFX \{Player = 1 player_status = player1_status}
 				spawnscriptnow Open_NoteFX params = { player = <player> player_status = <player_status> sustain = 1 }
 				delta = 0.0
 			endif
-			// hack for *
 			i = 0
 			begin
 				SetArrayElement ArrayName = <pixel_array> GlobalArray index = <i> NewValue = 0.0000001
 				Increment \{i}
 			repeat 5
-			// crashes when letting go a second time
-			//change globalname = <pixel_array> newvalue = [ 0.0000000001 0.0000000001 0.0000000001 0.0000000001 0.0000000001 ]
 			// for some reason, if button sink values are not zero, then the frets actually go in front of the whammy sprite
 			wait \{1 gameframe}
 		repeat
@@ -1729,9 +1716,13 @@ script Open_NoteFX \{Player = 1 player_status = player1_status}
 	endif
 	//ProfilingEnd <...> 'Open_NoteFX'
 	time = (0.1 / $current_speedfactor)
-	DoScreenElementMorph id = <fx_id> time = <time> rgba = <open_color1_end> Scale = ($openfx1_scale_end) relative_scale
+	if ScreenElementExists id = <fx_id>
+		DoScreenElementMorph id = <fx_id> time = <time> rgba = <open_color1_end> Scale = ($openfx1_scale_end) relative_scale
+	endif
 	if NOT (<sustain> = 1)
-		DoScreenElementMorph id = <fx2_id> time = <time> rgba = <open_color2_end> Scale = ($openfx2_scale_end) relative_scale
+		if ScreenElementExists id = <fx2_id>
+			DoScreenElementMorph id = <fx2_id> time = <time> rgba = <open_color2_end> Scale = ($openfx2_scale_end) relative_scale
+		endif
 	endif
 	wait <time> seconds
 	if ScreenElementExists id = <fx_id>

@@ -301,7 +301,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	endif
 	if (<do_bot> = 1)
 		SpawnScriptLater gem_iterator params = {iterator_text = 'bot' song_name = <song_name> difficulty = <difficulty> part = <part> use_input_array = 'input_array' one_event_per_frame
-			time_offset = (<early_time> * 1.0) strum_function = check_buttons_bot skipleadin = <scroll_time>
+			time_offset = (<early_time> * $bot_early_time) strum_function = check_buttons_bot skipleadin = <scroll_time>
 			Player = <Player> player_status = <player_status> player_text = <player_text>}
 		printf \{channel = log 'Spawned bot!'}
 	endif

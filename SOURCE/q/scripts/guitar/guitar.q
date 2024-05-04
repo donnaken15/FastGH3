@@ -166,7 +166,7 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [ 4 24 2024]
+build_timestamp = [ 5  4 2024]
 
 random_seed = -1
 // ^ originally 107482099
@@ -420,52 +420,89 @@ script guitar_startup
 	// region mod load
 		ProfilingStart
 		printf \{'Loading user mods'}
+		array = []
+		array_size = 0
 		StartWildcardSearch \{wildcard = 'MODS\*.qb.xen'}
 		begin
 			if NOT GetWildcardFile
 				break
 			endif
-			change \{mod_info = {}}
-			printf 'Loading %f.qb' f = <basename>
-			formattext textname = file 'MODS/%f.qb' f = <basename>
-			LoadQB <file>
-			FastFormatCrc a = <basename> b = '_mod_info' out = mod_info_name
-			if GlobalExists name = <mod_info_name> type = structure
-				mod_info = ($<mod_info_name>)
-			elseif GlobalExists \{name = mod_info type = structure}
-				mod_info = ($mod_info)
-			else
-				mod_info = {failed}
-			endif
-			//printstruct <mod_info>
-			name = 'Untitled'
-			author = 'Unknown'
-			version = 'unknown'
-			if StructureContains \{structure=mod_info name}
-				name = (<mod_info>.name)
-			endif
-			if StructureContains \{structure=mod_info author}
-				author = (<mod_info>.author)
-			endif
-			if StructureContains \{structure=mod_info version}
-				version = (<mod_info>.version)
-			endif
-			FSZ <filesize>
-			printf "Mod info: %t by %a / version %v, size: %s" t=<name> a=<author> v=<version> s=<textsize>
-			if StructureContains \{structure=mod_info desc}
-				printf "Description: %d" d=(<mod_info>.desc)
-			endif
-			FastFormatCrc a = <basename> b = '_startup' out = startup_script
-			if ScriptExists <startup_script>
-				SpawnScriptNow <startup_script> params = { filename = <filename> basename = <basename> }
-			else
-				if ScriptExists \{mod_startup}
-					SpawnScriptNow mod_startup params = { filename = <filename> basename = <basename> }
-				endif
-			endif
-			// get rid of ambiguously named mod_info global struct after loading?
+			// i'm stupid
+			AddArrayElement array = <array> element = {
+				filename = <filename>
+				basename = <basename>
+				filesize = <filesize>
+			}
+			Increment \{array_size}
 		repeat
 		EndWildcardSearch
+		
+		if NOT (<array_size> = 0)
+			m = 0
+			begin
+				change \{mod_info = {}}
+				AddParams (<array>[<i>])
+				printf 'Loading %f.qb' f = <basename>
+				formattext textname = file 'MODS/%f.qb' f = <basename>
+				LoadQB <file>
+				FastFormatCrc a = <basename> b = '_mod_info' out = mod_info_name
+				if GlobalExists name = <mod_info_name> type = structure
+					mod_info = ($<mod_info_name>)
+				elseif GlobalExists \{name = mod_info type = structure}
+					mod_info = ($mod_info)
+				else
+					mod_info = {failed}
+				endif
+				continue = 1
+				if StructureContains \{structure=mod_info requires}
+					requires = (<mod_info>.requires)
+					GetArraySize \{requires}
+					if NOT (<array_size> = 0)
+						i = 0
+						begin
+							FormatText textname = target 'mods/%s' s = (<requires>[<i>])
+							if NOT exists <target>
+								printf 'Required file of this mod cannot be found: %s' s = (<requires>[<i>])
+								UnloadQB <file>
+								continue = 0
+								break
+							endif
+							Increment \{i}
+						repeat <array_size>
+					endif
+				endif
+				if (<continue>)
+					//printstruct <mod_info>
+					name = 'Untitled'
+					author = 'Unknown'
+					version = 'unknown'
+					if StructureContains \{structure=mod_info name}
+						name = (<mod_info>.name)
+					endif
+					if StructureContains \{structure=mod_info author}
+						author = (<mod_info>.author)
+					endif
+					if StructureContains \{structure=mod_info version}
+						version = (<mod_info>.version)
+					endif
+					FSZ <filesize>
+					printf "Mod info: %t by %a / version %v, size: %s" t=<name> a=<author> v=<version> s=<textsize>
+					if StructureContains \{structure=mod_info desc}
+						printf "Description: %d" d=(<mod_info>.desc)
+					endif
+					FastFormatCrc a = <basename> b = '_startup' out = startup_script
+					if ScriptExists <startup_script>
+						SpawnScriptNow <startup_script> params = { filename = <filename> basename = <basename> }
+					else
+						if ScriptExists \{mod_startup}
+							SpawnScriptNow mod_startup params = { filename = <filename> basename = <basename> }
+						endif
+					endif
+				endif
+				// get rid of ambiguously named mod_info global struct after loading?
+				Increment \{m}
+			repeat <array_size>
+		endif
 		ProfilingEnd <...> 'mod load'
 	// endregion
 	
