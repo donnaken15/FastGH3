@@ -18,8 +18,6 @@ JUNK*
 *.VC.db
 *.VC.opendb
 !/FastGH3.pdb
-PLUGINS/disabled
-PLUGINS/disabled3
 DATA/CACHE
 *_*.idb
 bin/
@@ -75,7 +73,7 @@ DATA/ZONES/__themes/*/
 /DATA/ZONES/__themes/*.gfx.xen
 /DATA/ZONES/__themes/*.zip
 /DATA/MODS/*.*
-/DATA/MODS/disabled/
+disabled/
 SOURCE/q/test
 
 # if i add items to this list that were already committed before, will it remove it from the repo?

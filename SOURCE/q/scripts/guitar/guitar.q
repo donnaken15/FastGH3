@@ -166,7 +166,7 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [ 5  4 2024]
+build_timestamp = [ 5 16 2024]
 
 random_seed = -1
 // ^ originally 107482099
@@ -375,7 +375,7 @@ script guitar_startup
 		endif
 		
 		FGH3Config \{sect='Player' 'Mode' #"0x1ca1ff20"=0}
-		if (<value> < 6)
+		if (<value> < 6 & <value> >= 0)
 			change game_mode = ($modes[<value>])
 		else
 			printf \{'Invalid game mode index!!!!!!!!'}
@@ -441,7 +441,7 @@ script guitar_startup
 			m = 0
 			begin
 				change \{mod_info = {}}
-				AddParams (<array>[<i>])
+				AddParams (<array>[<m>])
 				printf 'Loading %f.qb' f = <basename>
 				formattext textname = file 'MODS/%f.qb' f = <basename>
 				LoadQB <file>

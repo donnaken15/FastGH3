@@ -1,7 +1,8 @@
 @echo off
 echo Creating class keys...
 set C=reg add
-set CMD="\"%~dp0FastGH3.exe\" \"%%1\""
+set "EXE=%~dp0FastGH3.exe"
+set CMD="\"%EXE%\" \"%%1\""
 set OPEN=shell\open
 set K=HKCR\FastGH3
 set D=/f /ve /d
@@ -14,9 +15,11 @@ set FAIL=echo FAIL
 %C% "%K%\%OPEN%\command" %D% "\"%~dp0FastGH3.exe\" dl \"%%1\"" && %OK% || %FAIL%
 %C% "%K%.chart" %D% "Guitar Hero Chart" && %OK% || %FAIL%
 %C% "%K%.chart\%OPEN%" %D% "Play" && %OK% || %FAIL%
+%C% "%K%.chart\%OPEN%" /f /v Icon /d "\"%EXE%\",0" && %OK% || %FAIL%
 %C% "%K%.chart\%OPEN%\command" %D% %CMD% && %OK% || %FAIL%
 %C% "%K%.FSP" %D% "FastGH3 Song Package" && %OK% || %FAIL%
 %C% "%K%.FSP\%OPEN%" %D% "Play" && %OK% || %FAIL%
+%C% "%K%.FSP\%OPEN%" /f /v Icon /d "\"%EXE%\",0" && %OK% || %FAIL%
 %C% "%K%.FSP\%OPEN%\command" %D% %CMD% && %OK% || %FAIL%
 set FAIL=%ERRORLEVEL%
 echo If you see any FAILs here, something went wrong.

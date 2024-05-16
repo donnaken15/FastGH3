@@ -17,3 +17,9 @@
 	path = SOURCE/QueenBee
 	url = https://github.com/donnaken15/Queen-Bee
 	branch = main
+[submodule "SOURCE/q/mods"]
+	path = SOURCE/q/mods
+	url = https://github.com/donnaken15/QBMods
+[submodule "SOURCE/mid2chart"]
+	path = SOURCE/mid2chart
+	url = https://github.com/donnaken15/mid2chart

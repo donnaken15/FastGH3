@@ -299,7 +299,7 @@ script FastFormatCrc \{#"0xFFFFFFFF"}
 	endif
 	//x = <#"0x00000000">
 	//ProfilingStart
-	AddParams \{params = [a b c d e]}
+	AddParams \{params = [a b c d e f]}
 	// allow as many strings as i'll necessarily need
 	GetArraySize \{params}
 	i = 0

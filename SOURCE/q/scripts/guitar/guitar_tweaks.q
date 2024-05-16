@@ -36,7 +36,7 @@ gem_star_scale2 = 1.3
 gem_y_just2 = 0.83
 star_y_just2 = 0.5
 fretbar_start_scale2 = 0.16
-whammy_top_width2 = 9.1999998
+whammy_top_width2 = 9.2
 whammy_top_width_open_note2 = 120.0
 whammy_width_offset2 = 1.5
 sidebar_x_offset2 = 4.5
@@ -49,7 +49,7 @@ string_scale_x2 = 0.65
 string_scale_y2 = 0.5
 x_offset_p2 = 225
 
-bot_early_time = 0.3
+bot_early_time = 0.7
 
 openfx1_scale_start1 = (1.01, 0.77)
 openfx2_scale_start1 = (2.2, 2.4)

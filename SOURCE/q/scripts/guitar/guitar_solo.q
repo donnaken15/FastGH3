@@ -5,18 +5,15 @@ script solo\{part = guitar diff = expert}
 	endif
 	// for performance sake since S5 has the event for all difficulties
 	// and executes part of main for 6ms >:(
+	GetDeltaTime
 	coop_track = 0
 	matched_player = 0
 	ExtendCrc \{$current_song '_extra' out = extra_struct}
+	difficulty = current_difficulty
 	i = 1
 	begin
 		FormatText checksumName = player_status 'player%d_status' d = <i>
-		if (<i> = 1)
-			player_difficulty = current_difficulty
-		elseif (<i> = 2)
-			player_difficulty = current_difficulty2
-		endif
-		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
+		if (<part> = $<player_status>.part & <diff> = $<difficulty>)
 			matched_player = 1
 		endif
 		if StructureContains structure = ($<extra_struct>) use_coop_notetracks
@@ -38,96 +35,98 @@ script solo\{part = guitar diff = expert}
 				endif
 			endif
 		endif
+		ExtendCrc <difficulty> '2' out = difficulty
 		Increment \{i}
 	repeat ($current_num_players)
 	if (<matched_player> = 0)
 		return
 	endif
 	
-	ProfilingStart
-	//get_song_prefix \{song = $current_song}
-	//FormatText checksumName = scripts_name '%d_scripts' d = <song_prefix>
-	ExtendCrc \{$current_song '_scripts' out = scripts_name}
-	scripts = $<scripts_name>
-	GetArraySize \{scripts}
-	k = 0
-	found_self = 0
-	GetDeltaTime
-	begin
-		// find own script props just for the exact time it was due to spawn
-		scr = (<scripts>[<k>])
-		if ((<Scr>.time + (<delta_time> * 1000)) >= <time> & (<Scr>.time) < <time> & (<Scr>.Scr) = solo)
-			// fallback for no param entered
-			part2 = guitar
-			diff2 = expert
-			if StructureContains \{structure = Scr params}
-				tmpval = (<Scr>.params)
-				if StructureContains \{structure = tmpval part}
-					part2 = (<tmpval>.part)
+	if NOT GotParam \{manual}
+		ProfilingStart
+		//get_song_prefix \{song = $current_song}
+		//FormatText checksumName = scripts_name '%d_scripts' d = <song_prefix>
+		ExtendCrc \{$current_song '_scripts' out = scripts_name}
+		scripts = $<scripts_name>
+		GetArraySize \{scripts}
+		k = 0
+		found_self = 0
+		begin
+			// find own script props just for the exact time it was due to spawn
+			scr = (<scripts>[<k>])
+			if ((<Scr>.time + (<delta_time> * 1000)) >= <time> & (<Scr>.time)< <time> & (<Scr>.Scr) = solo)
+				// fallback for no param entered
+				part2 = guitar
+				diff2 = expert
+				if StructureContains \{structure = Scr params}
+					tmpval = (<Scr>.params)
+					if StructureContains \{structure = tmpval part}
+						part2 = (<tmpval>.part)
+					endif
+					if StructureContains \{structure = tmpval diff}
+						diff = (<tmpval>.diff)
+					endif
 				endif
-				if StructureContains \{structure = tmpval diff}
-					diff = (<tmpval>.diff)
+				// part == part2 && diff == diff2 && time just about matches
+				// so this has to be my script!
+				if checksumequals a = <part> b = <part2>
+					if checksumequals a = <diff> b = <diff2>
+						// get real due time
+						time = (<Scr>.time)
+						found_self = 1
+						break
+					endif
 				endif
 			endif
-			// part == part2 && diff == diff2 && time just about matches
-			// so this has to be my script!
-			if checksumequals a = <part> b = <part2>
-				if checksumequals a = <diff> b = <diff2>
-					// get real due time
-					time = (<Scr>.time)
-					found_self = 1
-					break
-				endif
+			Increment \{k}
+			if (<k> >= <array_size>)
+				return
 			endif
+		repeat <array_size>
+		if (<found_self> = 0)
+			printf \{'why'}
 		endif
 		Increment \{k}
-		if (<k> >= <array_size>)
+		found_soloend = 0
+		endtime = (<time> + 5000) // why did i even add this // oh right
+		// find matching soloend in fastgh3_scripts
+		begin
+			// soloend.params.part == %part then endtime = soloend.time
+			Scr = (<scripts>[<k>])
+			if (<Scr>.time >= <time> & <Scr>.Scr = soloend)
+				part2 = guitar
+				diff2 = expert
+				if StructureContains \{structure = Scr params}
+					tmpval = (<Scr>.params)
+					if StructureContains \{structure = tmpval part}
+						part2 = (<tmpval>.part)
+					endif
+					if StructureContains \{structure = tmpval diff}
+						diff2 = (<tmpval>.diff)
+					endif
+				endif
+				// wait why is this checked differently,
+				// did this work the entire time?
+				if (<part> = <part2>)
+					if (<diff> = <diff2>)
+						endtime = (<Scr>.time)
+						found_soloend = 1
+						break
+					endif
+				endif
+			endif
+			Increment \{k}
+			if (<k> >= <array_Size>)
+				break
+			endif
+		repeat <array_Size>
+		ProfilingEnd <...> 'solo find scripts'
+		// wrote because general section events (not just section markers) appeared in Soulless 1
+		// quit if soloend for this script's part can't be found
+		if (<found_soloend> = 0)
+			printf \{'why'}
 			return
 		endif
-	repeat <array_size>
-	if (<found_self> = 0)
-		printf \{'why'}
-	endif
-	Increment \{k}
-	found_soloend = 0
-	endtime = (<time> + 5000) // why did i even add this
-	// find matching soloend in fastgh3_scripts
-	begin
-		// soloend.params.part == %part then endtime = soloend.time
-		Scr = (<scripts>[<k>])
-		if (<Scr>.time >= <time> & <Scr>.Scr = soloend)
-			part2 = guitar
-			diff2 = expert
-			if StructureContains \{structure = Scr params}
-				tmpval = (<Scr>.params)
-				if StructureContains \{structure = tmpval part}
-					part2 = (<tmpval>.part)
-				endif
-				if StructureContains \{structure = tmpval diff}
-					diff2 = (<tmpval>.diff)
-				endif
-			endif
-			// wait why is this checked differently,
-			// did this work the entire time?
-			if (<part> = <part2>)
-				if (<diff> = <diff2>)
-					endtime = (<Scr>.time)
-					found_soloend = 1
-					break
-				endif
-			endif
-		endif
-		Increment \{k}
-		if (<k> >= <array_Size>)
-			break
-		endif
-	repeat <array_Size>
-	ProfilingEnd <...> 'solo find scripts'
-	// wrote because general section events (not just section markers) appeared in Soulless 1
-	// quit if soloend for this script's part can't be found
-	if (<found_soloend> = 0)
-		printf \{'why'}
-		return
 	endif
 	if (<coop_track> = 1)
 		if (<part> = guitarcoop)
@@ -137,15 +136,11 @@ script solo\{part = guitar diff = expert}
 			part = rhythm
 		endif
 	endif
+	difficulty = current_difficulty
 	i = 1
 	begin
 		FormatText checksumName = player_status 'player%d_status' d = <i>
-		if (<i> = 1)
-			player_difficulty = current_difficulty
-		elseif (<i> = 2)
-			player_difficulty = current_difficulty2
-		endif
-		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
+		if (<part> = $<player_status>.part & <diff> = $<difficulty>)
 			if NOT (($<player_status>.highway_layout) = solo_highway)
 				// get player's raw note track (time,fret,len)
 				gemarrayid = ($<player_status>.current_song_gem_array)
@@ -231,6 +226,7 @@ script solo\{part = guitar diff = expert}
 				solo_ui_create Player = <i>
 			endif
 		endif
+		ExtendCrc <difficulty> '2' out = difficulty
 		Increment \{i}
 	repeat ($current_num_players)
 endscript
@@ -239,14 +235,10 @@ script soloend \{part = guitar diff = expert}
 	if ($game_mode = p2_battle || $enable_solos = 0)
 		return
 	endif
+	difficulty = current_difficulty
 	i = 1
 	begin
 		FormatText checksumName = player_status 'player%d_status' d = <i>
-		if (<i> = 1)
-			player_difficulty = current_difficulty
-		elseif (<i> = 2)
-			player_difficulty = current_difficulty2
-		endif
 		ExtendCrc \{$current_song '_extra' out = extra_struct}
 		if StructureContains structure = ($<extra_struct>) use_coop_notetracks
 			if ChecksumEquals a = guitarcoop b = <part>
@@ -260,7 +252,7 @@ script soloend \{part = guitar diff = expert}
 				endif
 			endif
 		endif
-		if (<part> = ($<player_status>.part)& <diff> = ($<player_difficulty>))
+		if (<part> = $<player_status>.part & <diff> = $<difficulty>)
 			if NOT (($<player_status>.highway_layout) = solo_highway)
 				begin
 					if (<i> = 1)
@@ -295,6 +287,7 @@ script soloend \{part = guitar diff = expert}
 				solo_reset i = <i>
 			endif
 		endif
+		ExtendCrc <difficulty> '2' out = difficulty
 		Increment \{i}
 	repeat ($current_num_players)
 endscript

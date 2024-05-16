@@ -174,7 +174,7 @@ script GuitarEvent_MissedNote
 	//printstruct <...>
 	//broadcastevent Type = <id> data = {song = <song> array_entry = <array_entry>}
 	
-	note_time = ($<song> [<array_entry>] [0])
+	note_time = ($<song>[<array_entry>][0])
 	if ($show_play_log = 1)
 		pad <note_time> count = 8 pad = '.'
 		output_log_text '%p - MN: (%t)' p = <player> t = <note_time> Color = orange
@@ -185,61 +185,38 @@ highway_pulse_black_p1 = 0
 highway_pulse_black_p2 = 0
 script highway_pulse_black
 	extendcrc highway_pulse_black_ <player_text> out = pulse_var
-	highway_pulse = $<pulse_var>
+	highway_pulse = ($<pulse_var>)
+	change globalname = <pulse_var> newvalue = 1
 	if (<highway_pulse> = 1)
 		return
 	endif
-	change globalname = <pulse_var> newvalue = 1
-	<half_time> = (($highway_pulse_time / 2.0) / $current_speedfactor)
 	ExtendCrc Highway_2D <player_text> out = highway
 	GetScreenElementProps id = <highway>
-	DoScreenElementMorph id = <highway> rgba = ($highway_pulse) time = <half_time>
+	DoScreenElementMorph id = <highway> rgba = <rgba>
+	<half_time> = (($highway_pulse_time / 2.0) / $current_speedfactor)
+	DoScreenElementMorph id = <highway> rgba = $highway_pulse time = <half_time>
 	wait <half_time> seconds
 	DoScreenElementMorph id = <highway> rgba = <rgba> time = <half_time>
+	wait <half_time> seconds
+	wait \{1 gameframe}
 	change globalname = <pulse_var> newvalue = 0
 endscript
 
 script Guitar_Wrong_Note_Sound_Logic
-	if ($current_num_players = 1)
-		get_song_rhythm_track song = ($current_song)
-		if ($<player_status>.part = rhythm)
-			if (<rhythm_track> = 1)
-				SoundEvent \{event = Single_Player_Bad_Note_Guitar}
-			else
-				SoundEvent \{event = Single_Player_Bad_Note_Bass}
-			endif
-		else
-			SoundEvent \{event = Single_Player_Bad_Note_Guitar}
-		endif
-	else
-		if ($<player_status>.Player = 1)
-			get_song_rhythm_track song = ($current_song)
-			if ($<player_status>.part = rhythm)
-				if (<rhythm_track> = 1)
-					SoundEvent \{event = First_Player_Bad_Note_Guitar}
-				else
-					SoundEvent \{event = First_Player_Bad_Note_Bass}
-				endif
-			else
-				SoundEvent \{event = First_Player_Bad_Note_Guitar}
-			endif
-		else
-			get_song_rhythm_track song = ($current_song)
-			if ($boss_battle = 1)
-				SoundEvent \{event = Second_Player_Bad_Note_Guitar}
-			else
-				if ($<player_status>.part = rhythm)
-					if (<rhythm_track> = 1)
-						SoundEvent \{event = Second_Player_Bad_Note_Guitar}
-					else
-						SoundEvent \{event = Second_Player_Bad_Note_Bass}
-					endif
-				else
-					SoundEvent \{event = Second_Player_Bad_Note_Guitar}
-				endif
-			endif
-		endif
+	event = Single_Player_Bad_Note_
+	get_song_rhythm_track song = ($current_song)
+	Ternary (<rhythm_track> = 1) a = 'Guitar' b = 'Bass'
+	Ternary ($<player_status>.part = rhythm) a = <ternary> b = 'Guitar'
+	part = <ternary>
+	if NOT ($current_num_players = 1)
+		player = ($<player_status>.Player)
+		Ternary (<player> = 1) a = First_Player_Bad_Note_ b = Second_Player_Bad_Note_ // mega iq: ([b, a][<bool>]) // doesn't even work >:(
+		event = <ternary>
+		Ternary (<player> != 1 & $boss_battle = 1) a = 'Guitar' b = <part>
+		part = <ternary>
 	endif
+	ExtendCrc <event> <part> out = event
+	SoundEvent event = <event>
 endscript
 
 script GuitarEvent_UnnecessaryNote

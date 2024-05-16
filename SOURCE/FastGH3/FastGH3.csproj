@@ -68,6 +68,8 @@
     <DefineConstants>PC_ONLY;NO_ZLIB</DefineConstants>
     <Optimize>true</Optimize>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
@@ -229,6 +231,111 @@
     <Compile Include="..\dotnetzip\zlib\ZlibStream.cs">
       <Link>DotNetZip\Zlib\ZlibStream.cs</Link>
     </Compile>
+    <Compile Include="..\mid2chart\ChartWriter.cs">
+      <Link>mid2chart\ChartWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\Event.cs">
+      <Link>mid2chart\Event.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\MidReader.cs">
+      <Link>mid2chart\MidReader.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\MergeSort.cs">
+      <Link>mid2chart\NAudio\MergeSort.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\ChannelAfterTouchEvent.cs">
+      <Link>mid2chart\NAudio\ChannelAfterTouchEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\ControlChangeEvent.cs">
+      <Link>mid2chart\NAudio\ControlChangeEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\KeySignatureEvent.cs">
+      <Link>mid2chart\NAudio\KeySignatureEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\MetaEvent.cs">
+      <Link>mid2chart\NAudio\MetaEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\MetaEventType.cs">
+      <Link>mid2chart\NAudio\MetaEventType.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\MidiCommandCode.cs">
+      <Link>mid2chart\NAudio\MidiCommandCode.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\MidiController.cs">
+      <Link>mid2chart\NAudio\MidiController.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\MidiEvent.cs">
+      <Link>mid2chart\NAudio\MidiEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\MidiEventCollection.cs">
+      <Link>mid2chart\NAudio\MidiEventCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\MidiEventComparer.cs">
+      <Link>mid2chart\NAudio\MidiEventComparer.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\MidiFile.cs">
+      <Link>mid2chart\NAudio\MidiFile.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\NoteEvent.cs">
+      <Link>mid2chart\NAudio\NoteEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\NoteOnEvent.cs">
+      <Link>mid2chart\NAudio\NoteOnEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\PatchChangeEvent.cs">
+      <Link>mid2chart\NAudio\PatchChangeEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\PitchWheelChangeEvent.cs">
+      <Link>mid2chart\NAudio\PitchWheelChangeEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\RawMetaEvent.cs">
+      <Link>mid2chart\NAudio\RawMetaEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\SequencerSpecificEvent.cs">
+      <Link>mid2chart\NAudio\SequencerSpecificEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\SmpteOffsetEvent.cs">
+      <Link>mid2chart\NAudio\SmpteOffsetEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\SysexEvent.cs">
+      <Link>mid2chart\NAudio\SysexEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\TempoEvent.cs">
+      <Link>mid2chart\NAudio\TempoEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\TextEvent.cs">
+      <Link>mid2chart\NAudio\TextEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\TimeSignatureEvent.cs">
+      <Link>mid2chart\NAudio\TimeSignatureEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Midi\TrackSequenceNumberEvent.cs">
+      <Link>mid2chart\NAudio\TrackSequenceNumberEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NAudio\Utils\ByteEncoding.cs">
+      <Link>mid2chart\NAudio\ByteEncoding.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\Note.cs">
+      <Link>mid2chart\Note.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\NoteSection.cs">
+      <Link>mid2chart\NoteSection.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\Program.cs">
+      <Link>mid2chart\Program.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\Section.cs">
+      <Link>mid2chart\Section.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\Song.cs">
+      <Link>mid2chart\Song.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\Stopwatch.cs">
+      <Link>mid2chart\Stopwatch.cs</Link>
+    </Compile>
+    <Compile Include="..\mid2chart\Sync.cs">
+      <Link>mid2chart\Sync.cs</Link>
+    </Compile>
     <Compile Include="..\QueenBee\QueenBeeParser\BinaryEndianReader.cs">
       <Link>QueenBee\BinaryEndianReader.cs</Link>
     </Compile>
@@ -379,7 +486,6 @@
     <Compile Include="modovrddiag.Designer.cs">
       <DependentUpon>modovrddiag.cs</DependentUpon>
     </Compile>
-    <Compile Include="P\AssemblyInfo.cs" />
     <Compile Include="Launcher.cs" />
     <Compile Include="settings.cs">
       <SubType>Form</SubType>
@@ -432,6 +538,7 @@ call "$(ProjectDir)..\Misc\stripversion.bat" "$(TargetPath)"
 pushd "$(ProjectDir)"
 rem program breaks for some reason if -i has absolute path with spaces
 NetCompressor "$(TargetPath)" "$(TargetPath)" -gz -a "P\AssemblyInfo.cs" -i "P\note.ico"
+rem mpress "$(TargetPath)" -S -s -r
 popd
 dash "$(SolutionDir)Misc/write_build_date.sh"</PostBuildEvent>
   </PropertyGroup>

@@ -956,16 +956,17 @@ static partial class Launcher
 						bool ischart = false;
 						log.WriteLine(T[15]); // "\n######### MAIN LAUNCHER PHASE #########\n"
 						vl("File is: " + args[0]);
-						Process mid2chart = cmd(folder + "mid2chart.exe",
-							paksongmid.Quotes() + " -k -u -p -m");
+						string[] m2cA = new string[]
+						{
+							paksongmid, "-k", "-u", "-p", "-m"
+						};
 						print(T[16], chartConvColor); // "Reading file."
 						if (ext == chartext)
 						{
 							vl(T[17], chartConvColor); // "Detected chart file."
 							ischart = true;
 						}
-						else if (ext == midext ||
-							ext == (midext + 'i'))
+						else if (ext == midext || ext == (midext + 'i'))
 						{
 							vl(T[18], chartConvColor); // "Detected midi file."
 							vl(T[19], chartConvColor); // "Converting to chart..."
@@ -975,13 +976,7 @@ static partial class Launcher
 							//Console.ReadKey();
 							File.Copy(args[0], paksongmid, true);
 							vl(T[135]);
-							mid2chart.Start();
-							if (vb || wl)
-							{
-								mid2chart.BeginErrorReadLine();
-								mid2chart.BeginOutputReadLine();
-							}
-							mid2chart.WaitForExit();
+							mid2chart.Program.Main(m2cA);
 							// im suffering so hard
 							if (!File.Exists(paksongchart))
 							{
@@ -2747,19 +2742,7 @@ static partial class Launcher
 							if (ext == midext ||
 								ext == (midext + 'i'))
 							{
-								mid2chart.Start();
-								try
-								{
-									// ugh
-									if (vb || wl)
-									{
-										mid2chart.BeginErrorReadLine();
-										mid2chart.BeginOutputReadLine();
-									}
-								}
-								catch { }
-								if (!mid2chart.HasExited)
-									mid2chart.WaitForExit();
+								mid2chart.Program.Main(m2cA);
 							}
 							if (ischart)
 							{

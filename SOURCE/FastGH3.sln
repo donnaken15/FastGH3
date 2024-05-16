@@ -76,6 +76,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mkfnt", "Misc\mkfnt.csproj"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueenBeeParser", "QueenBee\QueenBeeParser\QueenBeeParser.csproj", "{EEFF0E58-CD15-4D7B-945C-2C2F0584D43B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mp3enc", "Helix\hmp3\mp3enc_asm.vcxproj", "{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -399,6 +401,14 @@ Global
 		{EEFF0E58-CD15-4D7B-945C-2C2F0584D43B}.Release|x64.Build.0 = Release|Any CPU
 		{EEFF0E58-CD15-4D7B-945C-2C2F0584D43B}.Release|x86.ActiveCfg = Release|Any CPU
 		{EEFF0E58-CD15-4D7B-945C-2C2F0584D43B}.Release|x86.Build.0 = Release|Any CPU
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}.Debug|x64.ActiveCfg = Debug|Win32
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}.Debug|x86.ActiveCfg = Debug|Win32
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}.Debug|x86.Build.0 = Debug|Win32
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}.Release|Any CPU.ActiveCfg = Release|Win32
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}.Release|x64.ActiveCfg = Release|Win32
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}.Release|x86.ActiveCfg = Release|Win32
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -431,6 +441,7 @@ Global
 		{0281F7C1-A618-49A9-BB9E-2DF27DF76A1E} = {E44AC199-1849-4F8C-BD1F-56D331D966C9}
 		{822E3318-036A-42E1-A2ED-7C2382DF5557} = {B2F0A10C-BD1A-49D1-B978-4E1E85E38E3A}
 		{742ACEBE-5653-4162-8735-752DA7AA597A} = {B2F0A10C-BD1A-49D1-B978-4E1E85E38E3A}
+		{12BE1F5C-DD4C-445B-AC0E-E12B8F98B1EF} = {B2F0A10C-BD1A-49D1-B978-4E1E85E38E3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4F626D18-605C-460B-9D2C-4AE45CE11016}
