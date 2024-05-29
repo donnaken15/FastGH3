@@ -74,25 +74,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 	set_unfocus_color \{rgba = $winport_calibrate_lag_hilite_unselected}
 	z = 100
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = winport_cl_container Pos = (0.0, 0.0)}
-	create_menu_backdrop \{texture = venue_bg}
-	displaySprite {
-		parent = winport_cl_container
-		tex = venue_bg
-		Pos = (640.0, 360.0)
-		dims = (1280.0, 720.0)
-		just = [center center]
-		z = (<z> - 4)
-	}
-	CreateScreenElement {
-		Type = SpriteElement
-		parent = winport_cl_container
-		id = as_light_overlay
-		texture = Venue_Overlay
-		Pos = (640.0, 360.0)
-		dims = (1280.0, 720.0)
-		just = [center center]
-		z_priority = (<z> - 1)
-	}
+	create_menu_backdrop \{texture = black}
 	<tape_offset> = (90.0, 325.0)
 	/*displaySprite {
 		parent = winport_cl_container
@@ -130,7 +112,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 		z = (<z> + 2)
 		rot_angle = 100
 	}*///
-	upper_helper = "Some computer hardware may cause audio and gameplay to fall out of sync. If you have to play notes ahead of the music, try adding 20 ms to the value.  Subtract 20 ms if you have to play behind the music.\nFine tune the number from there based on your personal preferences."
+	upper_helper = "Some computer hardware may cause audio and gameplay to fall out of sync. If you have to play notes ahead of the music, try adding 20 ms to the value. Subtract 20 ms if you have to play behind the music.\nFine tune the number from there based on your personal preferences."
 	CreateScreenElement {
 		Type = TextBlockElement
 		parent = winport_cl_container
@@ -139,7 +121,7 @@ script winport_create_calibrate_lag_menu\{from_in_game = 1}
 		font = text_a6
 		dims = (740.0, 0.0)
 		allow_expansion
-		rgba = [60 40 115 255]
+		rgba = [175 145 255 255]
 		Scale = 0.5
 		just = [left top]
 		internal_just = [left top]
@@ -159,7 +141,7 @@ script winport_calibrate_lag_fill_options\{z = 100}
 	else
 		<controller> = ($primary_controller)
 	endif
-	displaySprite parent = winport_cl_container id = winport_calibrate_lag_hilite tex = options_calibrate_highlight Pos = $winport_calibrate_lag_hilite_pos0 rgba = $winport_calibrate_lag_hilite_unselected z = <z>
+	displaySprite parent = winport_cl_container id = winport_calibrate_lag_hilite tex = white Pos = $winport_calibrate_lag_hilite_pos0 rgba = $winport_calibrate_lag_hilite_unselected z = <z>
 	calib_eh = [
 		{pad_back winport_menu_calibrate_go_back}
 	]
@@ -690,14 +672,14 @@ script winport_create_audio_calibrate_reminder
 		just = [center center]
 		z_priority = (<z> - 1)
 	}
-	displaySprite {
+	/*displaySprite {
 		parent = winport_cl_container
 		tex = audio_calib_reminder_amp
 		Pos = (540.0, 340.0)
 		just = [center center]
 		Scale = 1.42
 		z = (<z> -2)
-	}
+	}*///
 	textProps = {
 		Type = TextBlockElement
 		parent = winport_cl_container

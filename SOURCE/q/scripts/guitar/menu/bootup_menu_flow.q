@@ -72,6 +72,7 @@ endscript
 script bootup_sequence
 	wait_for_legal_timer
 	StartRendering
+	WinPortCreateLaptopUi
 	spawnscriptnow \{ui_flow_manager_respond_to_action params = {action = skip_bootup_sequence play_sound = 0}}
 endscript
 
@@ -130,7 +131,6 @@ script process_signin_complete
 			endif
 		repeat
 	endif
-	WinPortCreateLaptopUi
 	return \{flow_state = bootup_to_game_fs}
 endscript
 'SO HACKY!!!'

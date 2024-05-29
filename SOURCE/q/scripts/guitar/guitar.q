@@ -166,7 +166,7 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [ 5 16 2024]
+build_timestamp = [ 5 28 2024]
 
 random_seed = -1
 // ^ originally 107482099
@@ -315,6 +315,8 @@ script guitar_startup
 				{'CoopTracks' out=coop_tracks} // effective only when chart actually has both co-op parts
 				//{'Speed' out=current_speedfactor #"0x1ca1ff20"=1.0}
 				{'OutputStats' out=output_song_stats}
+				{'OverlappingSP' out=overlapping_starpower #"0x1ca1ff20"=1}
+				{'Speed' out=current_speedfactor #"0x1ca1ff20"=1.0}
 			] }
 			{ sect='GFX' [
 				{'MaxFPS' out=fps_max #"0x1ca1ff20"=1000}
@@ -363,10 +365,7 @@ script guitar_startup
 			Increment \{i}
 			// 2MS >:(
 		repeat <array_size>
-		FGH3Config \{sect='Player' 'Speed' #"0x1ca1ff20"=1.0}
-		if (<value> > 0.0)
-			change current_speedfactor = <value>
-		else
+		if NOT ($current_speedfactor > 0.0)
 			if FGH3Config \{sect='Player' 'Speed' #"0x1ca1ff20"=1.0}
 				printf \{'Can\'t have zero percent speed!!!!!'}
 				FGH3Config \{sect='Player' 'Speed' set=1.0}
@@ -562,6 +561,7 @@ script guitar_startup
 		ProfilingEnd <...> 'AllocArray x12'
 		
 		ProfilingStart
+		create_loading_strings
 		
 		change mode_buttons = [
 			{ range = 5 param = mode texts = mode_text id = select_gamemode }
@@ -831,6 +831,7 @@ script autolaunch_spawned
 			flow = quickplay_play_song_fs
 	endswitch
 	start_flow_manager flow_state = <flow>
+	WinPortCreateLaptopUi
 	SpawnScriptLater \{start_song params = {device_num = $startup_controller}}
 endscript
 kill_dummy_bg_camera = $EmptyScript
@@ -850,23 +851,49 @@ script StopRendering
 	Change \{pause_no_render = 1}
 endscript
 
+
+script blank_chart
+	ExtendCrc \{$current_song '_song_expert' out = track}
+	getarraysize ($<track>)
+	if (<array_size> >= 3)
+		if NOT ($<track>[0] = 2100000000)
+			return
+		endif
+	endif
+	flicker = 0
+	CreateScreenElement {
+		id = blank_chart parent = gem_containerp1 pos = ((640.0, 230.0) + ((1.0, 0.0) * ($x_offset_p2 * ($current_num_players = 2))))
+		just = [center center] rgba = [ 255 0 0 255 ] type = textelement text = 'No chart inserted! Open the launcher to play a chart.' font = text_a11
+	}
+	begin
+		flicker = (1 - <flicker>)
+		SetScreenElementProps id = blank_chart alpha = <flicker>
+		Wait \{0.4 seconds}
+		if NOT ScreenElementExists id = blank_chart
+			break
+		endif
+	repeat 200
+endscript
+
+
+
 nullStruct = {}
 nullArray = []
-nullNoteArray = [0 0 0]
+nullNoteArray = [2100000000 0 0]
 nullPhraseArray = [[0 0 0]]
 
-/*fastgh3_song_easy = $nullArray
-fastgh3_song_medium = $nullArray
-fastgh3_song_hard = $nullArray
-fastgh3_song_expert = $nullArray
+fastgh3_song_easy = $nullNoteArray
+fastgh3_song_medium = $nullNoteArray
+fastgh3_song_hard = $nullNoteArray
+fastgh3_song_expert = $nullNoteArray
 fastgh3_song_rhythm_easy = $nullArray
 fastgh3_song_rhythm_medium = $nullArray
 fastgh3_song_rhythm_hard = $nullArray
 fastgh3_song_rhythm_expert = $nullArray
-fastgh3_song_guitarcoop_easy = $nullArray
-fastgh3_song_guitarcoop_medium = $nullArray
-fastgh3_song_guitarcoop_hard = $nullArray
-fastgh3_song_guitarcoop_expert = $nullArray
+fastgh3_song_guitarcoop_easy = $nullNoteArray
+fastgh3_song_guitarcoop_medium = $nullNoteArray
+fastgh3_song_guitarcoop_hard = $nullNoteArray
+fastgh3_song_guitarcoop_expert = $nullNoteArray
 fastgh3_song_rhythmcoop_easy = $nullArray
 fastgh3_song_rhythmcoop_medium = $nullArray
 fastgh3_song_rhythmcoop_hard = $nullArray
@@ -908,7 +935,9 @@ fastgh3_faceoffp2 = [ [ 0 2147483647 ] ]
 fastgh3_bossbattlep1 = []
 fastgh3_bossbattlep2 = []
 fastgh3_timesig = [ [ 0 4 4 ] ]
-fastgh3_fretbars = [ 0 999999999 ]
-fastgh3_markers = []*///
+fastgh3_fretbars = [ 2147483646 2147483647 ]
+fastgh3_markers = [{time = 0 marker = ''}]
+fastgh3_scripts = [{time = 0 scr = blank_chart}]
+/**///
 
 

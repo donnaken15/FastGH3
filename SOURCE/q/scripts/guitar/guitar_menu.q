@@ -524,6 +524,10 @@ script create_main_menu_backdrop
 endscript
 
 script WinPortCreateLaptopUi
+	FGH3Config \{sect='GFX' 'LaptopUI' #"0x1ca1ff20"=1}
+	if (<value> = 0)
+		return
+	endif
 	z = 1000000
 	CreateScreenElement {
 		Type = SpriteElement
@@ -561,10 +565,6 @@ script WinPortCreateLaptopUi
 	spawnscriptnow \{WinPortUpdateLaptopUi}
 endscript
 script WinPortUpdateLaptopUi
-	FGH3Config sect='GFX' 'LaptopUI' #"0x1ca1ff20"=1
-	if (<value> = 0)
-		return
-	endif
 	begin
 		WinPortGetLaptopInfo
 		if (<batteryPercent> > -1)

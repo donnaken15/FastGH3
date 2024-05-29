@@ -1,8 +1,8 @@
-menu_pos = (200.0, 200.0)
+menu_pos = (150.0, 170.0)
 debug_menu_params = {
 	type = textelement
 	font = text_a1
-	scale = 0.75
+	scale = 0.5
 	rgba = [127 127 127 191]
 	just = [left top]
 	z_priority = 100.0

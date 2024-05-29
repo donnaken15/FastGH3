@@ -114,7 +114,7 @@ script create_audio_settings_menu\{popup = 0}
 		CreateScreenElement \{Type = SpriteElement parent = aom_container id = as_light_overlay texture = menu_venue_overlay Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 99}
 		set_focus_color \{rgba = [230 190 70 255]}
 		set_unfocus_color \{rgba = [150 150 150 255]}
-		displaySprite \{parent = aom_container tex = options_audio_poster Pos = (340.0, 40.0) dims = (672.0, 672.0)}
+		//displaySprite \{parent = aom_container tex = options_audio_poster Pos = (340.0, 40.0) dims = (672.0, 672.0)}
 		//displaySprite \{parent = aom_container tex = tape_h_01 Pos = (360.0, 40.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
 		//displaySprite \{parent = aom_container tex = tape_h_01 rgba = [0 0 0 128] Pos = (360.0, 48.0) dims = (192.0, 96.0) z = 10 rot_angle = -20}
 		//displaySprite \{parent = aom_container tex = tape_v_01 Pos = (870.0, 550.0) dims = (96.0, 192.0) z = 10 rot_angle = 16}
@@ -122,8 +122,8 @@ script create_audio_settings_menu\{popup = 0}
 		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 50.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
 		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 219.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
 		displaySprite parent = aom_container tex = options_audio_knob Pos = ($aom_menu_pos + (15.0, 386.0))dims = (96.0, 96.0) rgba = [150 150 150 255] z = 9
-		displaySprite \{parent = aom_container id = aom_belly_strings tex = options_audio_bellystrings Pos = (744.0, 146.0) dims = (74.0, 318.0) z = 10}
-		displaySprite parent = aom_container id = aom_pointer tex = options_audio_pointer_v2 Pos = ($as_pointer_pos [0])dims = (256.0, 128.0) relative_scale z = 10
+		//displaySprite \{parent = aom_container id = aom_belly_strings tex = options_audio_bellystrings Pos = (744.0, 146.0) dims = (74.0, 318.0) z = 10}
+		//displaySprite parent = aom_container id = aom_pointer tex = options_audio_pointer_v2 Pos = ($as_pointer_pos [0])dims = (256.0, 128.0) relative_scale z = 10
 		displaySprite parent = aom_container id = aom_knob_line_1 tex = options_audio_knob_line Pos = ($aom_menu_pos + (63.0, 94.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]
 		displaySprite parent = aom_container id = aom_knob_line_2 tex = options_audio_knob_line Pos = ($aom_menu_pos + (63.0, 263.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]
 		displaySprite parent = aom_container id = aom_knob_line_3 tex = options_audio_knob_line Pos = ($aom_menu_pos + (63.0, 430.0))dims = (48.0, 12.0) z = 10 rgba = [230 190 70 255] just = [1.0 0.0]

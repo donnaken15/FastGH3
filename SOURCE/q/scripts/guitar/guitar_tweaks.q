@@ -89,7 +89,7 @@ starsequence_particle1_color2	=	[0 128 128 0]
 starsequence_particle2_color1	=	[255 255 255 255]
 starsequence_particle2_color2	=	[128 128 128 0]
 starsequence_particle3_color1	=	[0 255 255 255]
-starsequence_particle3_color2 	=	[0 255 255 0]
+starsequence_particle3_color2	=	[0 255 255 0]
 
 hud_notif_starpower1 = [190 225 255 250]
 hud_notif_starpower2 = [145 215 235 250]

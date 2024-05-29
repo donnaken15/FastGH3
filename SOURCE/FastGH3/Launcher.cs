@@ -1,6 +1,4 @@
 ﻿using ChartEdit;
-using Ionic.Zip;
-using Ionic.Zlib;
 using Microsoft.Win32;
 using Nanook.QueenBee.Parser;
 using System;
@@ -12,27 +10,31 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Shell32;
+#if !USE_SZL
+using Ionic.Zip;
+using Ionic.Zlib;
+#else
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.GZip;
+#endif
 
-static partial class Launcher
+public static partial class Launcher
 {
-	#region INI stuff
+#region INI stuff
 	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileInt", CharSet = CharSet.Unicode)]
-	public static extern int GI(
-		string a, string k, int d, string f);
+	public static extern int GI(string a, string k, int d, string f);
 	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileString", CharSet = CharSet.Unicode)]
 	public static extern int GStr(
 		string a, string k,
 		string d, [In, Out] byte[] s,
 		int n, string f);
 	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileSectionNames", CharSet = CharSet.Unicode)]
-	public static extern int GSN(
-		char[] s, int n, string f);
+	public static extern int GSN(char[] s, int n, string f);
 	[DllImport("kernel32.dll", EntryPoint = "WritePrivateProfileString", CharSet = CharSet.Unicode)]
-	public static extern bool WSec(
-		string a, string s, string f);
+	public static extern bool WSec(string a, string s, string f);
 	[DllImport("kernel32.dll", EntryPoint = "WritePrivateProfileString", CharSet = CharSet.Unicode)]
-	public static extern bool WStr(
-		string a, string k, string s, string f);
+	public static extern bool WStr(string a, string k, string s, string f);
 	//https://www.pinvoke.net/default.aspx/kernel32.GetPrivateProfileSectionNames
 	public static string[] sn(string i)
 	{
@@ -66,6 +68,7 @@ static partial class Launcher
 	public static void iniw(string s, string k, object d, string f)	{ WStr(s, k, d.ToString(), f); }
 	public static void cfgW(string s, string k, object d)			{ iniw(s, k, d, inif); }
 
+	public static string folder;
 	public static string[] ikeys = T[194].Split('%');
 	public static string m = ikeys[0];
 	public static string l = ikeys[2];
@@ -76,11 +79,11 @@ static partial class Launcher
 	public static string stf = ikeys[3];
 	public static string IF(string f) // ini path fix
 	{
-		return Path.IsPathRooted(f) ? f : Directory.GetCurrentDirectory() + '\\' + f;
+		return Path.IsPathRooted(f) ? f : (Directory.GetCurrentDirectory() + '\\' + f);
 	}
-	#endregion
+#endregion
 
-	public static string folder, dataf = "DATA\\", pakf,
+	public static string dataf = "DATA\\", pakf,
 		music, vid, mt, cf, title = "FastGH3";
 
 	static bool vb, wl = true;
@@ -97,13 +100,13 @@ static partial class Launcher
 					.ToUpperInvariant();
 	}
 
-	#region little functions
+#region little functions
 	public static void killgame()	{ cfgW(m, ks, 1); }
 	public static void unkillgame()	{ cfgW(m, ks, 0); }
 	// copy song video
 	static void cSV(string bik)
 	{
-		#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART
+#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART
 		// definitely no one will use this
 		if (cfg(l, sv, 0) == 1)
 		{
@@ -146,7 +149,8 @@ static partial class Launcher
 							File.Delete(lv);
 						}
 						else
-							File.Delete(target);
+							if (File.Exists(target))
+								File.Delete(target);
 						// if there's no previous video, just delete the current one
 						cfgW(m, lshv, 0);
 					}
@@ -158,7 +162,7 @@ static partial class Launcher
 				vl(e);
 			}
 		}
-		#endregion
+#endregion
 	}
 	// todo: send ctrl-c to fsbbuild scripts
 	static void killEncoders()
@@ -277,9 +281,9 @@ static partial class Launcher
 		}
 		return false;
 	}
-	#endregion
+#endregion
 
-	#region process functions, functions for part of conversion, misc
+#region process functions, functions for part of conversion, misc
 	//http://csharptest.net/526/how-to-search-the-environments-path-for-an-exe-or-dll/index.html
 	/// <summary>
 	/// Expands environment variables and, if unqualified, locates the exe in the working directory
@@ -500,7 +504,7 @@ static partial class Launcher
 		p.WaitForExit();
 		return p.ExitCode;
 	}
-	#endregion
+#endregion
 
 	static DateTime unixstart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 	static DateTime FromUnixTime(uint seconds)
@@ -512,24 +516,62 @@ static partial class Launcher
 		return (uint)(ts - unixstart).TotalSeconds;
 	}
 
+	public struct DAT
+	{
+		public uint streamCount;
+		public uint fileSize; // doesn't matter
+		public struct DATEntry
+		{
+			public QbKey name;
+			public uint index;
+			// 3 padded ints
+		}
+		public DATEntry[] streams;
+	}
+	public static DAT LoadDAT(string f)
+	{
+		MemoryStream ms = new MemoryStream(File.ReadAllBytes(f));
+		BinaryEndianReader br = new BinaryEndianReader(ms);
+		DAT dat = new DAT();
+		dat.streamCount = br.ReadUInt32(EndianType.Big);
+		dat.fileSize = br.ReadUInt32(EndianType.Big);
+		dat.streams = new DAT.DATEntry[dat.streamCount];
+		for (int i = 0; i < dat.streamCount; i++)
+		{
+			dat.streams[i].name = QbKey.Create(br.ReadUInt32(EndianType.Big));
+			dat.streams[i].index = br.ReadUInt32(EndianType.Big);
+			br.ReadUInt32();
+			br.ReadUInt32();
+			br.ReadUInt32();
+		}
+		br.Dispose();
+		ms.Dispose();
+		return dat;
+	}
+	public static string ReplaceCI(this string v, string a, string b)
+	{
+		return Regex.Replace(v, a, b, RegexOptions.IgnoreCase);
+	}
+
 	[DllImport("kernel32.dll", SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
-	static extern bool FreeConsole();
+	public static extern bool FreeConsole();
 
+	static bool outputPAK = false;
 	static bool newinstance = false;
 	static bool initlog = false;
 	public static string version = "1.1-999011043";
 	public static string branch = "main";
 	public static DateTime builddate;
 	[STAThread]
-	static int Main(string[] args)
+	public static int Main(string[] args)
 	{
 		// 36 KB
 		try
 		{
 			folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
 			inif = folder + "settings.ini";
-			#region NO ARGS ROUTINE
+#region NO ARGS ROUTINE
 			if (args.Length == 0)
 			{
 				if (cfg(l, settings.t.NoStartupMsg.ToString(), 0) == 0)
@@ -557,7 +599,7 @@ static partial class Launcher
 				else
 					return unchecked(0x11111111);
 			}
-			#endregion
+#endregion
 			Console.Title = title;
 			// System.Reflection.Emit wat dis
 			bool mic_ = cfg(l, "DisableMultiInstCheck", 0) == 0;
@@ -605,7 +647,18 @@ static partial class Launcher
 			}
 			else
 				print(T[190]);
+			retryExe:
 			GH3EXEPath = NP(folder + "game.exe");
+			if (!File.Exists(GH3EXEPath))
+				GH3EXEPath = NP(folder + "game!.exe");
+			if (!File.Exists(GH3EXEPath))
+			{
+				if (MessageBox.Show(T[209], "Error",
+					MessageBoxButtons.RetryCancel, MessageBoxIcon.Error,
+					MessageBoxDefaultButton.Button1) == DialogResult.Retry)
+					goto retryExe;
+				return 1;
+			}
 			vb = cfg(l, settings.t.VerboseLog.ToString(), 0) == 1;
 			dataf = folder + dataf;
 			pakf = dataf + "PAK\\";
@@ -643,7 +696,8 @@ static partial class Launcher
 						// half kb?
 						if (newfile)
 						{
-							File.Delete(folder + "launcher.txt");
+							if (File.Exists(folder + "launcher.txt"))
+								File.Delete(folder + "launcher.txt");
 						}
 						log = new StreamWriter(folder + "launcher.txt", !newfile);
 						log.NewLine = "\n"; // \r causing inconsistencies with multiline strings
@@ -661,7 +715,9 @@ static partial class Launcher
 					paksongmid = pakf + "song" + midext,
 					paksongchart = pakf + "song" + chartext,
 					songpak = pakf + "song.pak.xen",
-					fsb = music + "fastgh3.fsb.xen";
+					songqb = pakf + "song.qb.xen",
+					fsb = music + "fastgh3.fsb.xen",
+					dat = music + "fastgh3.dat.xen";
 				ConsoleColor cacheColor = ConsoleColor.Cyan,
 					chartConvColor = ConsoleColor.Green,
 					bossColor = ConsoleColor.Blue,
@@ -675,7 +731,7 @@ static partial class Launcher
 					new settings().ShowDialog();
 					// settings file 31kb
 				}
-				#region SHUFFLE
+#region SHUFFLE
 				else if (args[0].ToLower() == "-shuffle")
 				{
 					// 0.5-1 kb
@@ -718,8 +774,8 @@ static partial class Launcher
 					return sub("\"" + files[choose] + "\"");
 					//die();
 				}
-				#endregion
-				#region GFXSWAP
+#endregion
+#region GFXSWAP
 				else if (args[0].ToLower() == "-gfxswap")
 				{
 					// 0.5-1 kb?
@@ -728,37 +784,64 @@ static partial class Launcher
 					{
 						if (File.Exists(args[1]) && File.Exists(args[2]))
 						{
-							string defaultscn = dataf + "zones\\default.scn.xen";
+							//string defaultscn = dataf + "zones\\default.scn.xen";
 							if (args[2].EndsWith(".pak.xen"))
 							{
-								PakFormat pf = new PakFormat(args[2], args[2].Replace(".pak.xen", ".pab.xen"), "", PakFormatType.PC);
+								PakFormat pf = new PakFormat(args[2], args[2].ReplaceCI(".pak.xen", ".pab.xen"), "", PakFormatType.PC);
 								PakEditor pe = new PakEditor(pf, false);
 								if (args[1].EndsWith(".zip"))
 								{
-									ZipFile zip = ZipFile.Read(args[1]);
+									ZipFile zip =
+#if !USE_SZL
+										ZipFile.Read(args[1])
+#else
+										new ZipFile(args[1])
+#endif
+									;
 									MemoryStream gfx = null, scn = null;
 									// expecting .gfx and .scn in these
 									foreach (ZipEntry file in zip)
 									{
+#if !USE_SZL
+										string fn = file.FileName.ToLower();
+										int sz = (int)file.UncompressedSize;
+#else
+										if (!file.IsFile)
+											continue;
+										string fn = file.Name.ToLower();
+										long sz = file.Size;
+										var s = zip.GetInputStream(file);
+#endif
 										//Console.WriteLine(file.FileName);
-										if ((file.FileName.EndsWith(".gfx.xen") ||
-											file.FileName.EndsWith(".tex.xen") ||
-											file.FileName.EndsWith(".gfx") ||
-											file.FileName.EndsWith(".tex")) &&
+										if ((fn.EndsWith(".gfx.xen") ||
+											fn.EndsWith(".tex.xen") ||
+											fn.EndsWith(".gfx") ||
+											fn.EndsWith(".tex")) &&
 											gfx == null)
 										{
 											Console.WriteLine("found");
-											gfx = new MemoryStream((int)file.UncompressedSize);
+											gfx = new MemoryStream((int)sz);
+#if !USE_SZL
 											file.Extract(gfx);
+#else
+											s.CopyTo(gfx);
+#endif
 										}
-										if ((file.FileName.EndsWith(".scn.xen") ||
-											file.FileName.EndsWith(".scn")) &&
+										if ((fn.EndsWith(".scn.xen") ||
+											fn.EndsWith(".scn")) &&
 											scn == null)
 										{
 											Console.WriteLine("found");
-											scn = new MemoryStream((int)file.UncompressedSize);
+											scn = new MemoryStream((int)sz);
+#if !USE_SZL
 											file.Extract(scn);
+#else
+											s.CopyTo(scn);
+#endif
 										}
+#if USE_SZL
+										s.Dispose();
+#endif
 									}
 									if (gfx == null)
 									{
@@ -775,17 +858,21 @@ static partial class Launcher
 										pe.ReplaceFile(string.Format(T[205], ".scn"), scn.ToArray());
 									}
 									else
-										pe.ReplaceFile(string.Format(T[205], ".scn"), defaultscn);
+										pe.ReplaceFile(string.Format(T[205], ".scn"), defscn);
+#if USE_SZL
+									zip.Close();
+#endif
 								}
 								else
 								{
 									pe.ReplaceFile(string.Format(T[205], ".tex"), args[1]);
-									if (File.Exists(args[1].Replace(".tex", ".scn").Replace(".gfx", ".scn")))
+									string target = args[1].ReplaceCI(".tex", ".scn").ReplaceCI(".gfx", ".scn");
+									if (File.Exists(target))
 									{
-										pe.ReplaceFile(string.Format(T[205], ".scn"), args[1].Replace(".tex", ".scn").Replace(".gfx", ".scn"));
+										pe.ReplaceFile(string.Format(T[205], ".scn"), target);
 									}
 									else
-										pe.ReplaceFile(string.Format(T[205], ".scn"), defaultscn);
+										pe.ReplaceFile(string.Format(T[205], ".scn"), defscn);
 								}
 							}
 							else
@@ -811,18 +898,23 @@ static partial class Launcher
 						return 1;
 					}
 				}
-				#endregion
-				#region DOWNLOAD SONG
+#endregion
+#region DOWNLOAD SONG
 				else if (args[0] == "dl" && (args[1] != "" || args[1] != null))
 				{
 					cfgW("Temp", "ConvPID", Process.GetCurrentProcess().Id);
 					// 2kb
-					Console.WriteLine(title + " by donnaken15");
+					if (Environment.GetEnvironmentVariable("FASTGH3_BANNER") != "1")
+					{
+						Console.WriteLine(title + " by donnaken15");
+						newinstance = true;
+					}
+					Environment.SetEnvironmentVariable("FASTGH3_BANNER", "1");
 					log.WriteLine(T[7]); // "\n######### DOWNLOAD SONG PHASE #########\n"
 					print(T[8], FSPcolor); // "Downloading song package..."
 					vl("URL: " + args[1], FSPcolor);
 					bool datecheck = true;
-					Uri fsplink = new Uri(args[1].Replace("fastgh3://", "http://"));
+					Uri fsplink = new Uri(args[1].ReplaceCI("fastgh3://", "http://"));
 					string cs = ""; // ...
 					string uC = "";
 					string tF = "null";
@@ -939,11 +1031,46 @@ static partial class Launcher
 					killtmpfsp(tF);
 					//die();
 				}
-				#endregion
+#endregion
 				else if (File.Exists(args[0]))
 				{
+					if (Path.GetDirectoryName(args[0]) == "")
+						args[0] = Directory.GetCurrentDirectory() + '\\' + args[0];
 					cfgW("Temp", "ConvPID", Process.GetCurrentProcess().Id);
-					#region STANDARD ROUTINE
+					//bool relfile = false;
+					try
+					{
+						Directory.SetCurrentDirectory(Path.GetDirectoryName(args[0]));
+					}
+					catch
+					{
+						//relfile = true;
+						try
+						{
+							Directory.SetCurrentDirectory(Path.GetPathRoot(args[0]));
+						}
+						catch
+						{
+
+						}
+						//Console.WriteLine(Path.GetPathRoot(args[0]));
+					}
+					try
+					{
+						Shell sh = new Shell();
+						Folder dir = sh.NameSpace(Path.GetDirectoryName(args[0]));
+						FolderItem fI = dir.ParseName(Path.GetFileName(args[0]));
+						if (fI != null)
+						{
+							if (fI.IsLink)
+							{
+								ShellLinkObject lnk = (ShellLinkObject)fI.GetLink;
+								args[0] = lnk.Path;
+							}
+						}
+					}
+					catch (Exception ex) { vl(ex); }
+#region STANDARD ROUTINE
 					string ext = Path.GetExtension(args[0]).ToLower();
 					if (Environment.GetEnvironmentVariable("FASTGH3_BANNER") != "1")
 					{
@@ -1003,8 +1130,10 @@ static partial class Launcher
 							chart.Load(args[0]);
 						}
 						else chart.Load(paksongchart);
-						File.Delete(paksongmid);
-						File.Delete(paksongchart);
+						if (File.Exists(paksongmid))
+							File.Delete(paksongmid);
+						if (File.Exists(paksongchart))
+							File.Delete(paksongchart);
 						if (wl && log != null)
 						{
 							string songName = "";
@@ -1021,25 +1150,7 @@ static partial class Launcher
 							}
 							log.WriteLine(songName);
 						}
-						//bool relfile = false;
-						try
-						{
-							Directory.SetCurrentDirectory(Path.GetDirectoryName(args[0]));
-						}
-						catch
-						{
-							//relfile = true;
-							try
-							{
-								Directory.SetCurrentDirectory(Path.GetPathRoot(args[0]));
-							}
-							catch
-							{
-
-							}
-							//Console.WriteLine(Path.GetPathRoot(args[0]));
-						}
-						#region ENCODE SONGS
+#region ENCODE SONGS
 						print(T[22], FSBcolor);
 						//print("Encoding song.", FSBcolor);
 						vl(T[23], FSBcolor);
@@ -1524,9 +1635,9 @@ static partial class Launcher
 							//print("Cached audio found.", FSBcolor);
 							try
 							{
-								File.Copy(
-									cf + audhash.ToString("X16"),
-									fsb, true);
+								File.Copy(cf + audhash.ToString("X16"), fsb, true);
+								File.WriteAllBytes(dat, fsbdat);
+								// shows i need to severely rewrite how FSB is created
 							}
 							catch (IOException e)
 							{
@@ -1542,8 +1653,10 @@ static partial class Launcher
 								//disallowGameStartup();
 								print(T[39]);
 								//print("Deleting the currently loaded FSB in case.");
-								File.Delete(fsb);
+								if (File.Exists(fsb))
+									File.Delete(fsb);
 								File.Copy(cf + audhash.ToString("X16"), fsb, true);
+								File.WriteAllBytes(dat, fsbdat);
 							}
 						}
 #endregion
@@ -1562,35 +1675,41 @@ static partial class Launcher
 							byte[] __ = new byte[0xB0],
 								pn = (byte[])Launcher.pn,
 								qn = (byte[])Launcher.qn;
-							Array.Copy(pn, 0, __, 0, pn.Length);
-							Array.Copy(qn, 0, __, 0x80, qn.Length);
-							File.WriteAllBytes(songpak, __);
+							if (File.Exists(songqb))
+								File.Delete(songqb);
+							if (outputPAK)
+							{
+								Array.Copy(pn, 0, __, 0, pn.Length);
+								Array.Copy(qn, 0, __, 0x80, qn.Length);
+								File.WriteAllBytes(songpak, __);
+							}
 							//vl("Creating pak editor...", chartConvColor);
 							print(T[41], chartConvColor);
 							//print("Opening song pak.", chartConvColor);
-							PakFormat PF = new PakFormat(songpak, "", "", PakFormatType.PC);
-							PakEditor build;
-							try
-							{
-								build = new PakEditor(PF, false);
-							}
-							catch (Exception e)
-							{
-								vl("wtf:");
-								vl(e);
+							PakFormat PF = new PakFormat(outputPAK ? songpak : "", "", "", PakFormatType.PC);
+							PakEditor build = null;
+							if (outputPAK)
 								try
 								{
-									vl(T[42], ConsoleColor.Red);
 									build = new PakEditor(PF, false);
 								}
-								catch
+								catch (Exception e)
 								{
-									vl(T[43], ConsoleColor.Red);
-									File.Move(pakf + "dbg.pak.xen", pakf + "dbg.pak.xen.bak");
-									build = new PakEditor(PF, false);
-									// if even after this it fails, look for god
+									vl("wtf:");
+									vl(e);
+									try
+									{
+										vl(T[42], ConsoleColor.Red);
+										build = new PakEditor(PF, false);
+									}
+									catch
+									{
+										vl(T[43], ConsoleColor.Red);
+										File.Move(pakf + "dbg.pak.xen", pakf + "dbg.pak.xen.bak");
+										build = new PakEditor(PF, false);
+										// if even after this it fails, look for god
+									}
 								}
-							}
 							print(T[44], chartConvColor);
 							//print("Compiling chart.", chartConvColor);
 							//vl("Creating QbFile using PakFormat", chartConvColor);
@@ -1734,6 +1853,7 @@ static partial class Launcher
 												p.ItemQbKey = QbKey.Create(0x7031F10C);
 												// i'm getting desperate at shortening these names for tipping over the 512 byte difference
 												// and for the fact that WHY DO THESE THINGS NEED NAMES IN THE EXE WHEN IT SHOULD BE OPTIMIZED
+												// NB: C# does not do this for localized vars
 
 												// wish there was a simpler way to make these objects
 												QbItemQbKey pp = new QbItemQbKey(mid);
@@ -2613,7 +2733,7 @@ static partial class Launcher
 							QbItemString songchrtr = new QbItemString(mid);
 							songchrtr.Create(QbItemType.StructItemString);
 							songchrtr.ItemQbKey = QbKey.Create("charter");
-							songtitle.Strings[0] = ini("song", "name", "Untitled", sini).Trim();
+							songtitle.Strings[0] = ini("song", "name", "Unknown", sini).Trim();
 							songauthr.Strings[0] = ini("song", "artist", "Unknown", sini).Trim();
 							songalbum.Strings[0] = ini("song", "album", "Unknown", sini).Trim();
 							songyear.Strings[0] = ini("song", "year", "Unknown", sini).Trim();
@@ -2621,13 +2741,30 @@ static partial class Launcher
 							string genre = ini("song", "genre", "Unknown", sini).Trim();
 							foreach (SongSectionEntry s in chart.Song)
 							{
-								if (s.Key == "Name" && (s.Value.Trim() != ""))
-									songtitle.Strings[0] = chart.Song["Name"].Value.Trim();
-								if (s.Key == "Artist" && (s.Value.Trim() != ""))
-									songauthr.Strings[0] = chart.Song["Artist"].Value.Trim();
-								if (s.Key == "Charter" && (s.Value.Trim() != ""))
-									songchrtr.Strings[0] = chart.Song["Charter"].Value.Trim();
-							};
+								string v = s.Value.Trim();
+								if (v != "")
+								{
+									switch (s.Key)
+									{
+										case "Name":
+											if (v != "Untilted Song")
+												songtitle.Strings[0] = v;
+											break;
+										case "Artist":
+											if (v != "Unknown Artist")
+												songauthr.Strings[0] = v;
+											break;
+										case "Charter":
+											if (v != "Unknown Charter")
+												songchrtr.Strings[0] = v;
+											break;
+										case "Genre":
+											if (v != "rock")
+												genre = v;
+											break;
+									}
+								}
+							}
 							mid.AddItem(songmeta);
 							songmeta.AddItem(songtitle);
 							songmeta.AddItem(songauthr);
@@ -2708,25 +2845,36 @@ static partial class Launcher
 							// matter here because of how the game
 							// loads paks, which doesnt care about
 							// whatever the files are called,
-							// as long as its data gets loaded
+							// as long as its data gets loaded unless
+							// that's just PC because there was script
+							// code for manually loading assets
 							string qb_name = "songs\\fastgh3.mid.qb";
-							try
+							if (outputPAK)
+								try
+								{
+									build.ReplaceFile(qb_name, mid);// folder + pak + "song.qb"); // songs\fastgh3.mid.qb
+								}
+								catch
+								{
+									build.AddFile(mid, qb_name, QbKey.Create(".qb"), false);
+								}
+							else
 							{
-								build.ReplaceFile(qb_name, mid);// folder + pak + "song.qb"); // songs\fastgh3.mid.qb
+								mid.Write(songqb);
 							}
-							catch
-							{
-								build.AddFile(mid, qb_name, QbKey.Create(".qb"), false);
-							}
-							File.Delete(pakf + "song.qb");
+							if (File.Exists(outputPAK ? songqb : songpak))
+								File.Delete(outputPAK ? songqb : songpak);
+							//File.Delete(pakf + "song.qb");
 							if (caching)
 							{
 								print(T[67], cacheColor);
 								//print("Writing PAK to cache.", cacheColor);
-								File.Copy(songpak, cf + charthash.ToString("X16"), true);
+								File.Copy(outputPAK ? songpak : songqb, cf + charthash.ToString("X16"), true);
 								iniw(charthash.ToString("X16"), "Title", songtitle.Strings[0], cachf);
 								iniw(charthash.ToString("X16"), "Author", songauthr.Strings[0], cachf);
 								iniw(charthash.ToString("X16"), "Length", timeString, cachf);
+								if (outputPAK)
+									iniw(charthash.ToString("X16"), "QB", 1, cachf);
 							}
 							vl(T[68]);
 							//vl("DID EVERYTHING WORK?!");
@@ -2736,8 +2884,11 @@ static partial class Launcher
 							string cacheidStr = charthash.ToString("X16");
 							print(T[69], cacheColor);
 							//print("Cached chart found.", cacheColor);
+							if (File.Exists(outputPAK ? songqb : songpak))
+								File.Delete(outputPAK ? songqb : songpak);
 							File.Copy(cf + cacheidStr,
-								songpak, true);
+								ini(cacheidStr, "QB", 0, cachf) == 0 ? songpak : songqb, true);
+							// should use ternary "song." + (a ? "qb" : "pak") + ".xen"
 							File.Copy(args[0], paksongmid, true);
 							if (ext == midext ||
 								ext == (midext + 'i'))
@@ -2772,13 +2923,25 @@ static partial class Launcher
 							}
 							foreach (SongSectionEntry s in chart.Song)
 							{
-								// also optimize this with switch and have Value != "" wrap around it
-								if (s.Key == "Name" && (s.Value.Trim() != ""))
-									_title = chart.Song["Name"].Value.Trim();
-								if (s.Key == "Artist" && (s.Value.Trim() != ""))
-									author = chart.Song["Artist"].Value.Trim();
-								if (s.Key == "Charter" && (s.Value.Trim() != ""))
-									charter = chart.Song["Charter"].Value.Trim();
+								string v = s.Value.Trim();
+								if (v != "")
+								{
+									switch (s.Key)
+									{
+										case "Name":
+											if (v != "Untilted Song")
+												_title = v;
+											break;
+										case "Artist":
+											if (v != "Unknown Artist")
+												author = v;
+											break;
+										case "Charter":
+											if (v != "Unknown Charter")
+												charter = v;
+											break;
+									}
+								}
 							};
 							string[] songParams = new string[] {
 								author,
@@ -2792,8 +2955,10 @@ static partial class Launcher
 							File.WriteAllText(folder + "currentsong.txt",
 								FormatText(Regex.Unescape(cfg(l, stf, "%a - %t")),
 								songParams));
-							File.Delete(paksongmid);
-							File.Delete(paksongchart);
+							if (File.Exists(paksongmid))
+								File.Delete(paksongmid);
+							if (File.Exists(paksongchart))
+								File.Delete(paksongchart);
 						}
 #region COMPILE AUDIO TO FSB
 						vl(T[74]);
@@ -2812,6 +2977,7 @@ static partial class Launcher
 								print(T[70], FSBcolor);
 								//print("Waiting for song encoding to finish.", FSBcolor);
 								fsbbuild.WaitForExit();
+								File.WriteAllBytes(dat, fsbdat);
 								audioConv_end = time;
 								if (caching)
 								{
@@ -2893,6 +3059,7 @@ static partial class Launcher
 							}
 							if (!fsbbuild3.HasExited)
 								fsbbuild3.WaitForExit();
+							File.WriteAllBytes(dat, fsbdat);
 							{
 								if (caching)
 								{
@@ -2945,14 +3112,14 @@ static partial class Launcher
 						{
 							// why is program sending this log when it's successful
 							// and this is in its own try catch block
-							vl(T[76]);
+							//vl(T[76]);
 							//vl("Cleaning up SoX temp files FOR SOME REASON!!!");
 							// stupid SoX
 							// didn't happen on the previous version from 2010
 							// so WHY DOES IT CREATE THESE
 							// happens with the NJ3T encoding
-							foreach (var f in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
-								try { f.Delete(); } catch { }
+							//foreach (var f in new DirectoryInfo(Path.GetTempPath()).EnumerateFiles("libSox.tmp.*"))
+							//	try { f.Delete(); } catch { }
 							//foreach (var f in new DirectoryInfo(tmpf).EnumerateFiles())
 							//	try { f.Delete(); } catch { }
 							//foreach (var f in new DirectoryInfo(tmpf).EnumerateDirectories())
@@ -2970,7 +3137,10 @@ static partial class Launcher
 #endregion
 #region FSP EXTRACT
 					else if ((ext == ".fsp" || ext == ".zip" ||
-						ext == ".7z" || ext == ".rar") || ext == ".sng")
+						ext == ".7z" || ext == ".rar")
+						|| ext == ".sng"
+						|| ext == ".sgh"
+						|| ext == ".tgh")
 					{
 						// TODO: DON'T KEEP EXTRACTED FILES
 						// 7kb
@@ -3002,6 +3172,7 @@ static partial class Launcher
 							// when it's not a default option on windows
 							//Directory.Delete(tmpf, true);
 							{
+								vl("Deleting old FSP temp folder");
 								foreach (string f in Directory.GetFiles(tmpf, "*.*", SearchOption.TopDirectoryOnly))
 								{
 									try
@@ -3028,6 +3199,7 @@ static partial class Launcher
 						}
 						if (fspcache && Directory.Exists(tmpf) && caching)
 						{
+							vl("Is cached FSP");
 							// freaking copy and paste
 							foreach (string ff in Directory.GetFiles(tmpf, "*.*", SearchOption.AllDirectories))
 							{
@@ -3046,7 +3218,10 @@ static partial class Launcher
 								}
 								if (f.EndsWith(".fsb") ||
 									f.EndsWith(".fsb.xen") ||
-									f.EndsWith(".fsb.ps3"))
+									f.EndsWith(".fsb.ps3") ||
+									f.EndsWith(".dat") ||
+									f.EndsWith(".dat.xen") ||
+									f.EndsWith(".dat.ps3"))
 								{
 									vl(foundtext, FSPcolor);
 									killgame();
@@ -3071,6 +3246,7 @@ static partial class Launcher
 							Directory.CreateDirectory(tmpf);
 							if (ext == ".sng")
 							{
+								vl("Is SNG");
 								Sng test = Sng.Load(args[0]);
 								Stream sini = File.OpenWrite(tmpf + "\\song.ini");
 								StreamWriter tw = new StreamWriter(sini);
@@ -3113,29 +3289,116 @@ static partial class Launcher
 							}
 							else
 							{
+								vl("Zip check");
+								// passwords for GHTCP and GHPCED songs
+								// idgaf lol
+								// 0: SGH
+								// 1: TGH
+								// 2: GHC chart zip
+								// 3: GHT, for built in tracks, contains OGGs
+								// 4: GHP, ???? // DANNY JOHNSON CONFIRMED!!1//1?/!1?!1!//!/??!!/!?!!!1111
+								// (non-zip)
+								// 5: GHX
+								// 6: GHZ
+								string[] passwords = T[208].Split(';');
 								bool zipReadBlatantfail = false;
 								// cheap just to get around
-								// ambiguous zip type when downloading (a 7Z) from drive
+								// ambiguous zip type when downloading (a 7Z or RAR) from drive
+#if USE_SZL
+								ZipFile file = null;
+#endif
 								try
 								{
+#if !USE_SZL
 									ZipFile.Read(args[0]);
+#else
+									file = new ZipFile(args[0]);
+#endif
 								}
 								catch
 								{
 									zipReadBlatantfail = true;
 								}
-								if ((ext == ".zip" || ext == ".fsp" /* :( */) && !zipReadBlatantfail)
+								if ((ext == ".zip" || ext == ".fsp" || // :(
+									ext == ".sgh" || ext == ".tgh") && !zipReadBlatantfail)
 								{
-									using (ZipFile file = ZipFile.Read(args[0]))
+									vl("Is ZIP");
+#if !USE_SZL
+									vl("Using DotNetZip");
+#else
+									vl("Using SharpZipLib");
+#endif
+									bool unlocked = false;
+#if !USE_SZL
+									string pass = "";
+									if (!ZipFile.CheckZipPassword(args[0], ""))
 									{
-										file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
-										foreach (ZipEntry data in file)
+										for (int i = 0; i < 4; i++)
+										{
+											if (ZipFile.CheckZipPassword(args[0], passwords[i]))
+											{
+												pass = passwords[i];
+												vl("Unlocked ZIP with "+pass);
+												break;
+											}
+										}
+									}
+									using (ZipFile file = ZipFile.Read(args[0]))
+#else
+									string pass = null;
+									//if (file.Count < 1)
+									//	goto zeroCount;
+									bool locked = !(unlocked = !file[0].IsCrypted);
+									if (locked)
+									{
+										vl("Password protected, testing GHTCP passwords");
+										for (int i = 0; i < 4; i++)
 										{
 											try
 											{
+												file.Password = passwords[i];
+												Stream dummy = file.GetInputStream(0);
+												// guessing index zero is the first file available :/
+												// and that it throws if password is incorrect
+												dummy.Close();
+												unlocked = true;
+												pass = passwords[i];
+												break; // breaking through try, perturbing
+											}
+											catch
+											{
+
+											}
+										}
+										if (!unlocked)
+										{
+											// TODO: password dialog
+										}
+									}
+									else
+										vl("No password");
+									if (unlocked)
+#endif
+									{
+#if !USE_SZL
+										file.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+#endif
+										// should replace this all with a central class routing to these functions
+										foreach (ZipEntry data in file)
+										{
+#if USE_SZL
+											file.GetInputStream(data);
+#endif
+											try
+											{
+#if !USE_SZL
 												string f = data.FileName.ToLower();
-												string foundtext = string.Format(T[195], f);
 												data.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
+#else
+												string f = data.Name.ToLower();
+												Stream s = file.GetInputStream(data);
+#endif
+												string foundtext = string.Format(T[195], f);
 												if (f.EndsWith(".pak") ||
 													f.EndsWith(".pak.xen") ||
 													f.EndsWith(".pak.ps3") ||
@@ -3144,24 +3407,45 @@ static partial class Launcher
 												{
 													killgame();
 													vl(foundtext, FSPcolor);
-													data.Extract(tmpf);
+#if !USE_SZL
+													data.ExtractWithPassword(tmpf, pass);
+#else
+													Stream ff = File.Open(tmpf + f, FileMode.Create); // ugh
+													s.CopyTo(ff);
+													ff.Dispose();
+#endif
 													multichartcheck.Add(f);
 													selectedtorun = tmpf + f;
 												}
 												if (f.EndsWith(".fsb") ||
 													f.EndsWith(".fsb.xen") ||
-													f.EndsWith(".fsb.ps3"))
+													f.EndsWith(".fsb.ps3") ||
+													f.EndsWith(".dat") ||
+													f.EndsWith(".dat.xen") ||
+													f.EndsWith(".dat.ps3"))
 												{
 													killgame();
 													vl(foundtext, FSPcolor);
-													data.Extract(tmpf);
+#if !USE_SZL
+													data.ExtractWithPassword(tmpf, pass);
+#else
+													Stream ff = File.Open(tmpf + f, FileMode.Create); // ugh
+													s.CopyTo(ff);
+													ff.Dispose();
+#endif
 												}
 												if (f == "song.ini" ||
 													f == "boss.ini" ||
 													f == "background.bik")
 												{
 													vl(foundtext, FSPcolor);
-													data.Extract(tmpf);
+#if !USE_SZL
+													data.ExtractWithPassword(tmpf, pass);
+#else
+													Stream ff = File.Open(tmpf + f, FileMode.Create); // ugh
+													s.CopyTo(ff);
+													ff.Dispose();
+#endif
 												}
 												if (f.EndsWith(".ogg") ||
 													f.EndsWith(".mp3") ||
@@ -3171,16 +3455,34 @@ static partial class Launcher
 												// actually be used by the chart
 												{
 													vl(string.Format(T[195], "audio"), FSPcolor);
-													data.Extract(tmpf);
+#if !USE_SZL
+													data.ExtractWithPassword(tmpf, pass);
+#else
+													Stream ff = File.Open(tmpf + f, FileMode.Create); // ugh
+													s.CopyTo(ff);
+													ff.Dispose();
+#endif
 												}
+#if USE_SZL
+												s.Dispose();
+#endif
 											}
 											catch (Exception e)
 											{
-												vl(T[83] + data.FileName + '\n' + e, ConsoleColor.Yellow);
+												vl(T[83] + data.
+#if USE_SZL
+												Name
+#else
+												FileName
+#endif
+												+ '\n' + e, ConsoleColor.Yellow);
 												//vl("Error extracting a file: " + data.FileName + '\n' + e, ConsoleColor.Yellow);
 											}
 										}
 									}
+#if USE_SZL
+									file.Close();
+#endif
 								}
 								else
 								// extract using 7-zip or WinRAR if installed
@@ -3248,8 +3550,8 @@ static partial class Launcher
 									if (got7Z)
 									{
 										vl(T[89], FSPcolor);
-										//vl("7Zip is installed. Using that...", FSPcolor);
-										//verboseline(z7path);
+										vl("7Zip is installed. Using that...", FSPcolor);
+										//vl(z7path);
 									}
 									else
 									{
@@ -3261,12 +3563,12 @@ static partial class Launcher
 										gotWRAR = rarpath != "";
 										if (gotWRAR)
 										{
-											if (!args[0].EndsWith(".rar"))
+											/*if (!args[0].EndsWith(".rar"))
 											{
 												exit();
-												MessageBox.Show(T[125], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+												MessageBox.Show(T[126], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 												return 1;
-											}
+											}*/
 											vl(T[92], FSPcolor);
 											//vl("Found UnRAR. Using that...", FSPcolor);
 										}
@@ -3294,11 +3596,14 @@ static partial class Launcher
 										MessageBox.Show(T[126], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 										return 1;
 									}
-									Process x = cmd(xf, xa);
-									if (got7Z || gotWRAR)
+									int currentPassword = -1;
+									int passwordsToTest = 4;
+									Process x = cmd(xf, xa + " -p" + (gotWRAR ? "-" : ""));
+									//if (got7Z || gotWRAR)
 									{
 										vl("Executing " + x.StartInfo.FileName.Quotes() + " " + x.StartInfo.Arguments, FSPcolor);
 										vl("log:");
+										retryPass7Z:
 										x.Start();
 										if (vb || wl)
 										{
@@ -3306,7 +3611,25 @@ static partial class Launcher
 											x.BeginOutputReadLine();
 										}
 										x.WaitForExit();
+										if (vb || wl)
+										{
+											x.CancelErrorRead();
+											x.CancelOutputRead();
+										}
 										vl("Exit code: " + x.ExitCode, FSPcolor);
+										if ((x.ExitCode == 2 && got7Z) || (x.ExitCode == 11 && gotWRAR))
+										{
+											if (currentPassword == -1)
+												vl("Possibly password protected, retrying");
+											if (++currentPassword < passwordsToTest)
+											{
+												string pass = passwords[currentPassword];
+												x.StartInfo.Arguments = xa + " -p" + pass;
+												print("Testing "+pass);
+												goto retryPass7Z;
+											}
+										}
+										// TODO: password dialog
 										if (x.ExitCode != 0)
 										{
 											exit();
@@ -3330,7 +3653,10 @@ static partial class Launcher
 											}
 											if (f.EndsWith(".fsb") ||
 												f.EndsWith(".fsb.xen") ||
-												f.EndsWith(".fsb.ps3"))
+												f.EndsWith(".fsb.ps3") ||
+												f.EndsWith(".dat") ||
+												f.EndsWith(".dat.xen") ||
+												f.EndsWith(".dat.ps3"))
 											{
 												vl(foundtext, FSPcolor);
 												killgame();
@@ -3424,7 +3750,12 @@ static partial class Launcher
 						QbKey EXT_QB = QbKey.Create(0xA7F505C4), EXT_MQB = QbKey.Create(0x4BC1E85E);
 						vl("Start reading headers");
 						QbFile songdata = null;
-						string[] test_keys = gsn;
+						string[] user_keys = cfg(l, "KnownSongIDs", "").
+							Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+						string[] test_keys = new string[gsn.Length + user_keys.Length];
+						Array.Copy(gsn, test_keys, gsn.Length);
+						if (user_keys.Length > 0)
+							Array.Copy(user_keys, 0, test_keys, gsn.Length, user_keys.Length);
 						bool manual_test = false;
 						bool cancel = false;
 						unkname setp = new unkname();
@@ -3482,6 +3813,8 @@ static partial class Launcher
 												id = s;
 												vl("done");
 												gotname = true;
+												if (manual_test)
+													cfgW(l, "KnownSongIDs", s + ',' + cfg(l, "KnownSongIDs", ""));
 												break;
 											}
 										}
@@ -3501,6 +3834,8 @@ static partial class Launcher
 													id = s;
 													vl("done");
 													gotname = true;
+													if (manual_test)
+														cfgW(l, "KnownSongIDs", s + ',' + cfg(l, "KnownSongIDs", ""));
 													break;
 												}
 											}
@@ -3531,26 +3866,97 @@ static partial class Launcher
 							}
 							if (gotname)
 							{
-								string source_fsb = args[0].Replace(".pak", ".fsb");
-								if (!File.Exists(source_fsb))
+								string source_fsb = args[0].ReplaceCI("_song.pak", ".fsb").ReplaceCI(".pak", ".fsb");
+								string source_dat = source_fsb.ReplaceCI(".fsb", ".dat");
+								string source_basename = null;
+								string idkwhattonamethis = "";
+								for (int i = 0; i < 2; i++)
 								{
-									source_fsb = Path.GetDirectoryName(args[0]) + '\\' + id + ".fsb";
-									if (File.Exists(source_fsb + ".xen"))
-										source_fsb += ".xen";
-									else if (File.Exists(source_fsb + ".ps3"))
-										source_fsb += ".ps3";
+									if (!File.Exists(source_fsb))
+									{
+										source_basename = Path.GetDirectoryName(args[0]) + '\\' + idkwhattonamethis + id;
+										source_fsb = source_basename + ".fsb";
+										source_dat = source_basename + ".dat";
+										if (File.Exists(source_fsb + ".xen"))
+										{
+											source_fsb += ".xen";
+											source_dat += ".xen";
+										}
+										else if (File.Exists(source_fsb + ".ps3"))
+										{
+											source_fsb += ".ps3";
+											source_dat += ".ps3";
+										}
+									}
+									idkwhattonamethis = "..\\MUSIC\\";
 								}
-								if (!File.Exists(source_fsb))
+								bool cant_find_fsb = !(File.Exists(source_fsb) && File.Exists(source_dat));
+								bool no_dat = false;
+								bool _0_7c = false; // compatibility just because
+								if (id.ToLower() == "fastgh3")
 								{
-									source_fsb = Path.GetDirectoryName(args[0]) + "\\..\\MUSIC\\" + id + ".fsb";
-									if (File.Exists(source_fsb + ".xen"))
-										source_fsb += ".xen";
-									else if (File.Exists(source_fsb + ".ps3"))
-										source_fsb += ".ps3";
+									cant_find_fsb = false;
+									no_dat = true;
+									File.WriteAllBytes(dat, fsbdat);
+								}
+								if (id.ToLower() == "song")
+								{
+									_0_7c = true;
+									vl(T[212] + new string('!', 60));
+									cant_find_fsb = false;
+									no_dat = true;
+									File.WriteAllBytes(dat, fsbdat07);
 								}
 								// uhhhh, forgot the code for encoding non-FSB isn't here
-								if (!File.Exists(source_fsb))
+								no_dat = !File.Exists(source_dat);
+								if (!no_dat)
 								{
+									//string[] stnames = { "", "", "" };
+									//uint[] stidx = { 0, 0, 0 };
+									int[] found_streams = { -1, -1, -1 };
+									DAT hed = LoadDAT(source_dat);
+									// MESS!!!!!!!!!!!!!!!!!!!!
+									string[] audstnames = { "song", "guitar", "rhythm" };
+									for (int x = 0; x < 2; x++)
+									{
+										for (uint i = 0; i < hed.streamCount; i++)
+										{
+											for (uint s = 0; s < audstnames.Length; s++)
+											{
+												QbKey stream = QbKey.Create(id + '_' + audstnames[s]);
+												if (hed.streams[i].name.Equals(stream))
+												{
+													//stnames[i] = audstnames[s];
+													//stidx[i] = dat.streams[i].index;
+													found_streams[s] = (int)i;
+													vl("Found stream for " + audstnames[s]);
+													break;
+												}
+											}
+										}
+										audstnames[1] = "lead";
+										audstnames[2] = "bass";
+									}
+									for (uint i = 0; i < found_streams.Length; i++)
+									{
+										if (found_streams[i] == -1)
+											vl("Cannot find stream " + i.ToString());
+									}
+									// wtf is this key 147D7BD4, comes from respawn
+									// 2F9FA8C2 == respawn_song
+									cant_find_fsb = !cant_find_fsb && found_streams[0] == -1;
+								}
+								// dismissed TODO: overwrite MP3 filenames to match fastgh3 // IT'S NOT THAT SIMPLE!!
+								
+								if (!cant_find_fsb)
+								{
+									File.Copy(source_fsb, fsb, true);
+									if (!no_dat)
+										File.Copy(source_dat, dat, true);
+								}
+								else
+								{
+									vl("Could not find main audio stream of the chart PAK");
 									DialogResult audiolost, playsilent = DialogResult.No, searchaudioresult = DialogResult.Cancel;
 									OpenFileDialog searchaudio = new OpenFileDialog()
 									{
@@ -3558,7 +3964,7 @@ static partial class Launcher
 										CheckFileExists = true,
 										CheckPathExists = true,
 										InitialDirectory = Path.GetDirectoryName(args[0]),
-										Filter = "FMOD Sound Bank|*.fsb;*.fsb.xen;*.fsb.ps3"
+										Filter = T[124]
 									};
 									do
 									{
@@ -3595,11 +4001,8 @@ static partial class Launcher
 									}
 									while (playsilent == DialogResult.No);
 								}
-								if (File.Exists(source_fsb))
-									File.Copy(source_fsb, fsb, true);
-								// TODO: overwrite MP3 filenames to match fastgh3
 
-								// gem arrays are always first
+								// note arrays are always first
 								string[][] ts = // track_suffixes
 								{
 									new string[] {
@@ -3643,7 +4046,9 @@ static partial class Launcher
 								byte[] __ = new byte[0xB0];
 								Array.Copy(pn, 0, __, 0, pn.Length);
 								Array.Copy(qn, 0, __, 0x80, qn.Length);
-								string output = pakf + "song.pak.xen";
+								string output = songpak;
+								if (File.Exists(songqb))
+									File.Delete(songqb);
 								File.WriteAllBytes(output, __);
 								PakFormat PF = new PakFormat(output, "", "", PakFormatType.PC);
 								PakEditor PE = new PakEditor(PF);
@@ -3709,6 +4114,49 @@ static partial class Launcher
 											renamed_qb.AddItem(item.Clone());
 										}
 									}
+									item = (QbItemArray)songdata.FindItem(QbKey.Create("fastgh3" + sectmisc[6]), false);
+									if (item != null)
+									{
+										if (item.Items[0].QbItemType == QbItemType.ArrayStruct)
+										{
+											var markers = ((QbItemStructArray)item.Items[0]);
+											foreach (QbItemStruct qs in markers.Items)
+											{
+												var time = (QbItemInteger)qs.FindItem(QbKey.Create("time"), false);
+												var marker = qs.FindItem(QbKey.Create("marker"), false);
+												if (marker.QbItemType == QbItemType.StructItemQbKeyString)
+												{
+													var key = ((QbItemQbKey)marker).Values[0];
+													foreach (string sect in sctn)
+													{
+														QbKey test = QbKey.Create(id + "_markers_text_" + QbKey.Create(sect).Crc.ToString("X8"));
+														if (key.Crc != test.Crc)
+															continue;
+														vl(T[211] + test.Text + " (" + time.Values[0] + ')');
+														QbItemString str = new QbItemString(renamed_qb);
+														str.Create(QbItemType.SectionString);
+														str.ItemQbKey = test;
+														str.Strings[0] = sect;
+														renamed_qb.AddItem(str);
+														// couldn't inject or remove items in the struct for some reason
+														// unless i'm missing something
+														break;
+													}
+												}
+											}
+										}
+									}
+									QbItemStruct fastgh3_extra = new QbItemStruct(renamed_qb);
+									fastgh3_extra.Create(QbItemType.SectionStruct);
+									fastgh3_extra.ItemQbKey = QbKey.Create("fastgh3_extra");
+
+									// poor
+									renamed_qb.AddItem(fastgh3_extra);
+									QbItemQbKey s = new QbItemQbKey(renamed_qb);
+									s.Create(QbItemType.StructItemQbKey);
+									s.ItemQbKey = QbKey.Create("original_stream_name");
+									s.Values[0] = QbKey.Create(id);
+									fastgh3_extra.AddItem(s);
 
 									renamed_qb.AlignPointers();
 									string qb_name = "songs\\fastgh3.mid.qb";
@@ -3749,6 +4197,10 @@ static partial class Launcher
 								}
 							}
 						}
+					}
+					else
+					{
+						MessageBox.Show(T[210], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 					}
 #endregion
 				}
@@ -3817,7 +4269,15 @@ static partial class Launcher
 					{
 						if (initlog)
 						{
+#if !USE_SZL
 							chartgz = Convert.ToBase64String(GZipStream.CompressBuffer(File.ReadAllBytes(args[0])));
+#else
+							MemoryStream ms = new MemoryStream();
+							Stream i = File.Open(args[0], FileMode.Open);
+							Stream o = new GZipOutputStream(ms);
+							i.CopyTo(o);
+							chartgz = Convert.ToBase64String(ms.ToArray());
+#endif
 						}
 					}
 					catch (Exception e)

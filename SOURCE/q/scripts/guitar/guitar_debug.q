@@ -1,10 +1,10 @@
 
 script init_play_log
 	if ($show_play_log = 1)
-		<Pos> = (256.0, 80.0)
+		<Pos> = (192.0, 160.0)
 		<name> = log_line
 		<line> = 0
-		scale = 0.7
+		scale = 0.5
 		begin
 			FormatText checksumName = id 'log_line_%l' l = <line> DontAssertForChecksums
 			CreateScreenElement {
@@ -20,7 +20,7 @@ script init_play_log
 				z_priority = 1000.0
 				alpha = 1
 			}
-			<Pos> = (<Pos> + ((0.0, 24.0) * <scale>))
+			<Pos> = (<Pos> + ((0.0, 36.0) * <scale>))
 			<line> = (<line> + 1)
 		repeat $play_log_lines
 		<blank_text> = ''

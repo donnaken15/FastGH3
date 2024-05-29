@@ -2,7 +2,7 @@ options_menu_font = fontgrid_title_gh3
 g_options_start_pos = (460.0, 100.0)
 options_menu_index = 1
 
-script create_options_menu
+/*script create_options_menu
 	Change \{options_for_manage_band = 0}
 	Change \{current_num_players = 1}
 	font_size = 0.95
@@ -314,7 +314,7 @@ script create_options_menu
 		Pos = (5.0, 5.0)
 		rgba = [0 0 0 128]
 		z = 19
-	}*///
+	}///
 	//displaySprite \{parent = om_container tex = Venue_Overlay Pos = (0.0, 0.0) dims = (1280.0, 720.0) z = 50}
 	Change \{menu_options_current_index = 1}
 	LaunchEvent \{Type = focus target = om_text_1}
@@ -398,3 +398,7 @@ script options_menu_hilight
 	SetScreenElementProps id = om_black_bg Pos = <bg_pos> dims = <bg_dims>
 	retail_menu_focus
 endscript
+
+
+
+*///

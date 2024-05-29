@@ -38,10 +38,15 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 		DownloadContentLost
 		return
 	endif
-	stream_config = gh1
-	get_song_struct song = <song_name>
 	if StructureContains structure = <song_struct> name = version
 		stream_config = (<song_struct>.version)
+	else
+		stream_config = gh1
+	endif
+	if StructureContains structure = <song_struct> name = original_stream_name
+		stream_name = (<song_struct>.original_stream_name)
+	else
+		stream_name = <song_name>
 	endif
 	SoundBussUnlock \{Band_Balance}
 	SoundBussUnlock \{Guitar_Balance}
@@ -77,9 +82,9 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 			endif
 		endif
 	endif
-	FastFormatCrc <song_name> a = <stream_infix> b = 'song' out = song_stream
-	FastFormatCrc <song_name> a = <stream_infix> b = 'guitar' out = guitar_stream
-	FastFormatCrc <song_name> a = <stream_infix> b = 'rhythm' out = rhythm_stream
+	FastFormatCrc <stream_name> a = <stream_infix> b = 'song' out = song_stream
+	FastFormatCrc <stream_name> a = <stream_infix> b = 'guitar' out = guitar_stream
+	FastFormatCrc <stream_name> a = <stream_infix> b = 'rhythm' out = rhythm_stream
 	Change song_stream_id = <song_stream>
 	if PreloadStream <song_stream> buss = Master useForSongTimeSync = 1
 		Change song_unique_id = <unique_id>
@@ -95,7 +100,7 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 		<extra_stream> = <rhythm_stream>
 	endif
 	if StructureContains structure = <song_struct> name = extra_stream
-		FastFormatCrc <song_name> a = '_' b = (<song_struct>.extra_stream) out = extra_stream
+		FastFormatCrc <stream_name> a = '_' b = (<song_struct>.extra_stream) out = extra_stream
 	endif
 	if ($current_num_players = 1)
 		if (($player1_status.part)= rhythm & (<stream_config> != gh1))

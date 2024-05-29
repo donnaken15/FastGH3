@@ -78,7 +78,7 @@ endscript
 
 script get_song_struct\{song = invalid}
 	if StructureContains structure = $gh3_songlist_props <song>
-		return song_struct = ($gh3_songlist_props.<song>)
+		return song_struct = { ($gh3_songlist_props.<song>) ($fastgh3_extra) }
 	endif
 	assert_song_data <...>
 endscript

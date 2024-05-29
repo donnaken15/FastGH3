@@ -1,5 +1,5 @@
 
-script key_events
+/*script key_events
 	begin
 		//if ($toggle_console = 0)
 		WinPortSioGetControlPress \{deviceNum = $player1_device}
@@ -31,6 +31,7 @@ last_key = 0
 old_speed = -1.0
 hold_tab = 0
 fastforward = 2.0
+*///
 
 script lefty_toggle \{player_status = player1_status}
 	killspawnedscript \{id=lefty_toggle}

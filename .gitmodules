@@ -8,18 +8,21 @@
 	path = SOURCE/q/GHSDK
 	url = https://gitgud.io/fretworks/guitar-hero-sdk
 [submodule "SOURCE/Helix"]
-	path = SOURCE/Helix
+	path = SOURCE/dependencies/Helix
 	url = https://github.com/donnaken15/hmp3
 [submodule "SOURCE/DotNetZip"]
-	path = SOURCE/DotNetZip
+	path = SOURCE/dependencies/DotNetZip
 	url = https://github.com/DinoChiesea/DotNetZip
 [submodule "SOURCE/QueenBee"]
-	path = SOURCE/QueenBee
+	path = SOURCE/dependencies/QueenBee
 	url = https://github.com/donnaken15/Queen-Bee
 	branch = main
 [submodule "SOURCE/q/mods"]
 	path = SOURCE/q/mods
 	url = https://github.com/donnaken15/QBMods
 [submodule "SOURCE/mid2chart"]
-	path = SOURCE/mid2chart
+	path = SOURCE/dependencies/mid2chart
 	url = https://github.com/donnaken15/mid2chart
+[submodule "SOURCE/dependencies/SharpZipLib"]
+	path = SOURCE/dependencies/SharpZipLib
+	url = https://github.com/icsharpcode/SharpZipLib

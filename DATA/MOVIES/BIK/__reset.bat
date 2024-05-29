@@ -1,1 +1,1 @@
-del backgrnd_video.bik.xen
+del "%~dp0backgrnd_video.bik.xen" /q

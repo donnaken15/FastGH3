@@ -8,7 +8,8 @@ const fs = require('fs');
 
 const classname = "Launcher";
 const reslist = {
-	T: {	// launcher strings
+	T: {
+		// launcher strings
 		// next step in autism, compress with LZSS and huffman
 		// maybe pointless if i'm already using mpress
 		binary: false,
@@ -34,6 +35,19 @@ const reslist = {
 	pn: {	// new pak
 		binary: true,
 		source: "pn.bin"
+	},
+	fsbdat: { // modern day hed
+		binary: true,
+		source: "dat.bin"
+	},
+	fsbdat07: { // uh oh
+		binary: true,
+		source: "dat_0.7.bin"
+	},
+	defscn: {
+		binary: true,
+		source: "def.scn",
+		raw: true
 	},
 	xmlDefault: {
 		ascii: true,
@@ -69,8 +83,15 @@ const reslist = {
 			"FASTGH3 BACKGROUND PREVIEW™©®\n" +
 			""
 	},
+	sctn: {
+		ascii: true, // fix plain unicode string output
+		splitter: '\n',
+		source: "sctn.txt"
+	},
 	gsn: {
 		ascii: true,
+		ignore_empty: true,
+		//skip_dupes: true,
 		splitter: '\n',
 		source: "gsn.txt"
 	} // should rather be stored as a precalculated qbkey list if I can even make that work like ExtendCRC somehow.
@@ -107,12 +128,14 @@ static partial class Launcher
 for (var R in reslist) {
 	const res = reslist[R];
 	var direct_string = res.hasOwnProperty("string");
-	var buf = !direct_string ? fs.readFileSync('Resources/'+res.source) : res.string;
+	var buf = !direct_string ? fs.readFileSync('res/'+res.source) : res.string;
 	if (buf.length % 2 === 1)
+	{
 		if (direct_string)
 			buf += '\0';
 		else
 			buf = Buffer.concat([buf, Buffer(1)]);
+	}
 	const sep = "~";
 	var string;
 	var data_type;
@@ -122,7 +145,10 @@ for (var R in reslist) {
 	if (res.binary === true && !direct_string)
 	{
 		//console.log(res.source);
-		string = buf.toString('utf16le');
+		if (res.raw !== true)
+			string = buf.toString('ucs2');
+		else
+			string = new Uint8Array(buf).toString();
 		//fs.writeFileSync('test.txt', string, {encoding: 'utf8'});
 		//console.log(string);
 		data_type = "byte[]";
@@ -156,21 +182,35 @@ for (var R in reslist) {
 	string = string
 		.replace(/\n/g,'n')
 		.replace(/\r/g,'r')
-		.replace(/\u2029/g, '\\u2029')
 		.replace(/\\/g, '\\\\')
 		.replace(/"/g, '\\"')
+		.replace(/\u2027/g, '\\u2027') // wtf are these chars
+		.replace(/\u2028/g, '\\u2028')
+		.replace(/\u2029/g, '\\u2029')
+		//.replace(/\ude30/g, '\\ude30')
+		//.replace(/\udb68/g, '\\udb68')
+		//.replace(/\uddca/g, '\\uddca') // need a function for this
+		//.replace(/\udd27/g, '\\udd27') // if this entire range is like this
+		//.replace(/\udbeb/g, '\\udbeb') // doesnt correct the problem i had
+		//.replace(/\udb03/g, '\\udb03')
+		//.replace(/[\uaa00-\uffff]/g,(e) => '\\u'+e.charCodeAt(0).toString(16))
+		.replace(/\u0000/g, '\\0')
 		.replace(//g,'\\u0085') // wtf is this, causes newline
 		;
 		//.replaceAll(/[\x80-\x8F]/g,());
 	output += '\tpublic static readonly '+(data_type)+" "+R+" = ";
 	// MESSSSSSSSSSSSSSSSSSSSSS
 	var dontConvert = !(res.binary === true || (res.ascii === true && res.binary !== true));
+	dontConvert = (!dontConvert && (res.raw === true && !direct_string)); // my head hurts
+	dontConvert = (!dontConvert && !(res.ascii === true || res.binary === true)); // my head hurts
 	if (res.binary === true || res.ascii === true || direct_string)
 	{
 		if (res.ascii === true)
 			output += "A.GetString(\n\t\t";
 		//console.log(res);
-		if (!dontConvert)
+		if (res.binary === true && res.raw === true)
+			output += "new byte[] {";
+		else if (!dontConvert)
 			output += "U.GetBytes(";
 		if (raw_string !== null)
 		{
@@ -185,11 +225,14 @@ for (var R in reslist) {
 			else
 			{
 				output += '\n';
+				var j = 0;
 				for (var i = 0; i < raw_string.length; i++)
 				{
+					if (raw_string[i] === '')
+						continue;
 					if (i > 0)
 						output += '\n';
-					output += "\t\t// ["+i+"]\n\t\t// " +
+					output += "\t\t// ["+(j++)+"]\n\t\t// " +
 						raw_string[i]
 							.replace('\0', '')
 							.replace(/\r/g, '')
@@ -197,11 +240,15 @@ for (var R in reslist) {
 				}
 				output += '\n\t\t#region';
 			}
-			output += '\n\t\t"'+string.replace(/\\\\u0085/g,'\\u0085')+'"\n';
+			output += '\n\t\t"'+string+'"\n';
 		}
 		else
 		{
-			output += '\n\t\t#region\n\t\t"'+string.replace(/\\\\u0085/g,'\\u0085')+'"';
+			output += '\n\t\t#region\n\t\t';
+			if (res.raw === true && res.binary === true)
+				output += string;
+			else
+				output += '"'+string+'"';
 		}
 		if (res.ascii !== true)
 			output += '\n';
@@ -211,10 +258,12 @@ for (var R in reslist) {
 		if (res.ascii === true)
 			output += "\t\t)\n";
 		output += '\t';
-		if (!dontConvert)
+		if (res.raw === true && res.binary === true)
+			output += '}';
+		else if (!dontConvert)
 			output += ')';
 		if (string_array)
-			output += '.Split(new char[] {\''+sep+'\'}, StringSplitOptions.RemoveEmptyEntries)';
+			output += '.Split(new char[] {\''+sep+'\'}' + (res.ignore_empty === true ? ', StringSplitOptions.RemoveEmptyEntries' : '') + ')';
 		output += ';\n';
 	}
 }

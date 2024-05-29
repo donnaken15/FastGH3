@@ -116,7 +116,7 @@ script return_from_practice
 	return \{flow_state = enter_mode_fs}
 endscript
 script enter_mode
-	printstruct <...>
+	//printstruct <...>
 	action = quickplay
 	// dont know if i can have a fallback action
 	switch $game_mode

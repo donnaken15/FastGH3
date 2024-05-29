@@ -127,6 +127,8 @@ script solo\{part = guitar diff = expert}
 			printf \{'why'}
 			return
 		endif
+	else
+		GetSongTimeMs // why even
 	endif
 	if (<coop_track> = 1)
 		if (<part> = guitarcoop)
@@ -254,19 +256,21 @@ script soloend \{part = guitar diff = expert}
 		endif
 		if (<part> = $<player_status>.part & <diff> = $<difficulty>)
 			if NOT (($<player_status>.highway_layout) = solo_highway)
-				begin
-					if (<i> = 1)
-						if ($last_solo_index_p1 >= $last_solo_total_p1 || $solo_active_p1 = 0)
-							break
+				if NOT GotParam \{manual}
+					begin
+						if (<i> = 1)
+							if ($last_solo_index_p1 >= $last_solo_total_p1 || $solo_active_p1 = 0)
+								break
+							endif
+						elseif (<i> = 2)
+							if ($last_solo_index_p2 >= $last_solo_total_p2 || $solo_active_p2 = 0)
+								break
+							endif
 						endif
-					elseif (<i> = 2)
-						if ($last_solo_index_p2 >= $last_solo_total_p2 || $solo_active_p2 = 0)
-							break
-						endif
-					endif
-					printf \{'waiting for something to happen to the last few notes'}
-					wait \{1 gameframe}
-				repeat
+						printf \{'waiting for something to happen to the last few notes'}
+						wait \{1 gameframe}
+					repeat
+				endif
 				if (<i> = 1)
 					num = ($player1_status.score + ($last_solo_hits_p1 * $solo_bonus_pts))
 					Change StructureName = player1_status score = <num>

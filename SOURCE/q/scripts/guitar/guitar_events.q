@@ -99,8 +99,12 @@ script event_spawner
 endscript
 
 script event_iterator
-	printf "Event Iterator started with time %d" d = <time_offset>
+	printf 'Event Iterator for %s started with time %d' s = <event_string> d = <time_offset>
 	FastFormatCrc <song_name> a = '_' b = <event_string> out=song
+	if NOT GlobalExists name = <song> type = array
+		printf 'song %f is missing events track %s' f = <song_name> s = <event_string>
+		return
+	endif
 	array_entry = 0
 	GetArraySize $<song>
 	if (<array_Size> = 0)
@@ -108,7 +112,7 @@ script event_iterator
 	endif
 	GetSongTimeMs time_offset = <time_offset>
 	begin
-		if ((<time> - <skipleadin>)< (($<song> [<array_entry>]).time))
+		if ((<time> - <skipleadin>) < (($<song>[<array_entry>]).time))
 			break
 		endif
 		<array_entry> = (<array_entry> + 1)
@@ -176,7 +180,7 @@ script GuitarEvent_MissedNote
 	
 	note_time = ($<song>[<array_entry>][0])
 	if ($show_play_log = 1)
-		pad <note_time> count = 8 pad = '.'
+		pad <note_time> count = 8 pad = ' '
 		output_log_text '%p - MN: (%t)' p = <player> t = <note_time> Color = orange
 	endif
 endscript
@@ -236,13 +240,13 @@ script GuitarEvent_UnnecessaryNote
 			if (<prev_time> < ($check_time_late * 1000.0))
 				<prev_time> = 1000000.0
 			endif
-			pad <next_time> count = 8 pad = '.'
+			pad <next_time> count = 8 pad = ' '
 			next_time_str = <pad>
-			pad <next_note> count = 8 pad = '.'
+			pad <next_note> count = 8 pad = ' '
 			next_note = <pad>
-			pad <prev_time> count = 8 pad = '.'
+			pad <prev_time> count = 8 pad = ' '
 			prev_time_str = <pad>
-			pad <prev_note> count = 8 pad = '.'
+			pad <prev_note> count = 8 pad = ' '
 			prev_note = <pad>
 			if (<next_time> < <prev_time>)
 				<next_time> = (0 - <next_time>)
@@ -297,9 +301,9 @@ script GuitarEvent_HitNotes
 		if ($show_play_log = 1)
 			off_note = (0.0 - (<off_note> - $time_input_offset))
 			note_time = ($<song>[<array_entry>][0])
-			pad <off_note> count = 8 pad = '.'
+			pad <off_note> count = 8 pad = ' '
 			off_note_str = <pad>
-			pad <note_time> count = 8 pad = '.'
+			pad <note_time> count = 8 pad = ' '
 			if (<off_note> < 0)
 				output_log_text '%p - HE: %n (%t)' p = <player> n = <off_note_str> t = <pad> Color = green
 			else
@@ -582,7 +586,7 @@ script GuitarEvent_WhammyOff
 		return
 	endif
 	if ($show_play_log = 1)
-		pad <time> count = 8 pad = '.'
+		pad <time> count = 8 pad = ' '
 		if (<time> > 0)
 			output_log_text '%p - DS: %l' p = <player> l = <pad> color = yellow
 		endif
@@ -1371,7 +1375,7 @@ script StarSequenceFX
 			}
 			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx_id>
-			<particle_pos> = (<pos2d> - (0.0, 0.0))
+			<particle_pos> = (<pos2d> - (0.0, 32.0))
 			Create2DParticleSystem {
 				id = <fx_id>
 				Pos = <particle_pos>
@@ -1395,7 +1399,7 @@ script StarSequenceFX
 				time = 2.0
 			}
 			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
-			<particle_pos> = (<pos2d> - (0.0, 0.0))
+			<particle_pos> = (<pos2d> - (0.0, 32.0))
 			Create2DParticleSystem {
 				id = <fx2_id>
 				Pos = <particle_pos>

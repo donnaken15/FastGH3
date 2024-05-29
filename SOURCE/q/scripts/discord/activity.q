@@ -57,16 +57,13 @@ script richpres_start_song
 	else
 		bot_text1 = ''
 		bot_text2 = ''
-		if ($player1_status.bot_play = 1)
-			bot_text1 = ' (BOT)'
-		endif
-		if ($player2_status.bot_play = 1)
+		if ($player1_status.bot_play = 1 || $player2_status.bot_play = 1)
 			bot_text2 = ' (BOT)'
 		endif
 		FormatText {
 			textname = lrgtxt '%a - %b%e, %c - %d%f'
-			a = ($difficulty_list_props.($current_difficulty).text)
-			c = ($difficulty_list_props.($current_difficulty2).text)
+			a = ($difficulty_list_props.$current_difficulty.text)
+			c = ($difficulty_list_props.$current_difficulty2.text)
 			b = ($part_names.($player1_status.part))
 			d = ($part_names.($player2_status.part))
 			e = <bot_text1>

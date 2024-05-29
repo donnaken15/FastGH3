@@ -25,20 +25,21 @@ script create_loading_strings
 		'Now you can DOWNLOAD CHARTS THROUGH THIS MOD?! WHY DIDN\'T ANYONE THINK OF THIS!?!' 'Murderous Speed'
 		'5atu6w4zaw5atu6w4zaw5atu6w4zaw5atu6w4zaw' 'IT\'S NOT FAST ENOUGH!' 'MASSIVE ADBLOCK!' 'SHE\'S TOO STONED! NINTENDO!'
 		'I\nI\nO\n$\nV' 'ALIGNING POINTERS...' 'ScreenShot Paused\n\b0\nScreen\b1\b2Drop    \n\b3\nViewer'
-		'Frequently updated at github.com/donnaken15/FastGH3 !' 'EXECUTING ACTIONS...!'
+		'Frequently updated at github.com/donnaken15/FastGH3!' 'EXECUTING ACTIONS...!'
 		'For more fun with GH3 in general, check out progress on GH3+ at github.com/donnaken15/GH3-Plus'
 		'3 PAK files? WHAT?!?' 'ASPIRING TO REKT ASPYR' 'Hey look, it works now! I think...'
 		'IS THIS WORKING?!?!' 'DON\'T CRASH!!' 'DON\'T BREAK!! PLEASE!! I DON\'T BEG FOR MUCH!!!'
 		'SecuROM tried to kill Exile, but it failed, as HATRED struck it down, to the ground!'
-		'Convenient!' 'I got heX-ray mode on!' 'New loading text for no reason!!' 'Check out the FastGH3 settings for extra customization.'
+		'Convenient!' 'I got heX-ray mode on!' 'New loading text for no reason!!'
+		'Check out the FastGH3 settings for extra customization.'
 		'Unlock even more fun by enabling Debug Menu in settings!'
 		'\'\'I figured out..... I figured out animated textures. T/N: I did not figure out animated textures\'\' PSPS: I did (4 years later) PSPSPS: Actually, no PSPSPSPS: Actually, yes'
 		'I bet you can\'t read this FAST enough!' 'FC THIS!!!' 'FIXED!' 'BLOODY FAST\n100% No Slow Guaranteed'
 		'I\'M RUNNING OUT OF THINGS TO SAY!' 'YOU RESTARTED JUST TO SEE THIS MESSAGE!'
 		'HAX!' 'BOT!' 'FAAAKE!!' 'EPIC FAIL' 'WHAT ARE YOU DOING' 'WARNING: Requires x0.5 \b3 Presses'
 		'unCHARTed' '\c9INVISIBLE INK\n\nwait, uh oh' 'are you actually reading these?' 'CHARTS ON DEMAND'
-		'FITS 5565 TIMES ON A FLASH DRIVE, DO THE MATH!' 'FROM 4.7 GB TO 11.7 MB! WOW!'
-		/* formula: 1024/((13012884/1024/1024)/64)
+		'FITS 5769 TIMES ON A FLASH DRIVE, DO THE MATH!' 'FROM 4.7 GB TO 11.4 MB! WOW!'
+		/* formula: 1024/((11910811/1024/1024)/64)
 		64 = usual flash drive GB capacity (<-- stuck in 2011 or something thinking this is common)
 		"DO THE MATH"
 		Reverse of original calc: (15*4346)/1024 *///
@@ -65,11 +66,12 @@ script create_loading_strings
 		'door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123'
 		'uber song fc' 'NAIL THE 540' '58,473 X 4\nStar Power + BS 360 Riff + Kissed the Sustain + FS Solo + FS 1440 GRYBRYBO'
 		'ROCKING OUT IN THE ABYSS!!' 'IN SECONDS...!' '\c4ACCESS GRANTED' '>sudo skate8.exe -gem_array fastgh3_song_expert'
-		'\c6AM: GAIN 3 STARS\n\c3PRO: GAIN 5 STARS\n\c5SICK: FULL COMBO SONG, GAIN 5 GOLDEN STARS'
 		'It looks like you\'re trying to hit the note. Would you like help with:\n\b3 Strumming\n\b2 Holding down the frets\n\b0 SHUT UP!!!\n\b1 Applying tinfoil'
 		'!!!!!!! Guitarist not found !!!!!!!' '(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)'
 		'LEXER ERROR (5189): Unknown token in array:   ()' 'A.K.A: GH3DE, GH3DX, or GH3++' '__FASTcall void initGH3(int*)'
 		'dummy' 'This game is practically a mod of Tony Hawk\'s Project 8' 'Powered by Tony Hawk'
+		'\c6AM: GAIN 3 STARS\n\c3PRO: GAIN 5 STARS\n\c5SICK: FULL COMBO SONG, GAIN 5 GOLDEN STARS'
+		'\c6AM: HIT A HOPO PATTERN WITH YOUR WRIST OVER THE NECK\n\c3PRO: PLAY THE OPPOSITE HANDEDNESS WITH HYPERSPEED 10\n\c5SICK: PLAY THE OPPOSITE HANDEDNESS WITH THE GUITAR BEHIND YOUR BACK\c0' // i wrote this without realizing i already made a similar thing
 		'This is a mod of Project 8 which is an update of American Wasteland which is an update of Underground 2 which is an update of Underground 1 which is an update of Pro Skater 4 which is an update of Pro Skater 3 which is an update of Pro Skater 2 which is an update of Pro Skater 1 which is an update of Apocalypse which is an update of MDK'
 		'\c2I WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED'
 	]
@@ -106,7 +108,7 @@ script create_loading_screen\{mode = play_song}
 			id = FGH3_load_logo
 			just = [center center]
 			Pos = (380,240)
-			Scale = 1
+			Scale = 0.8
 			z = 5000
 		}
 		CreateScreenElement {
@@ -118,7 +120,7 @@ script create_loading_screen\{mode = play_song}
 			Scale = 0.9
 			just = [center center]
 			internal_just = [center center]
-			dims = (550.0, 680.0)
+			dims = (700.0, 680.0)
 			Pos = (860.0, 360.0)
 			rgba = [255 255 255 255]
 			z_priority = 5000

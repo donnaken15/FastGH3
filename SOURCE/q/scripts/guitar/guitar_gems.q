@@ -365,16 +365,18 @@ script gem_scroller\{Player = 1 training_mode = 0}
 		//SpawnScriptLater cameracuts_iterator params = {song_name = <song_name> time_offset = <gem_offset> skipleadin = 0}
 		GetArraySize \{$scripts_array}
 		array_count = 0
-		begin
-			<lead_ms> = ($scripts_array [<array_count>].lead_ms)
-			SpawnScriptLater event_iterator params = {song_name = <song_name> difficulty = <difficulty>
-				event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
-				Player = <Player> player_status = <player_status> player_text = <player_text>}
-			//SpawnScriptLater notemap_startiterator params = {song_name = <song_name> difficulty = <difficulty>
-			//	event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
-			//	Player = <Player> player_status = <player_status> player_text = <player_text>}
-			Increment \{array_count}
-		repeat <array_Size>
+		if (<array_size> > 0)
+			begin
+				<lead_ms> = ($scripts_array [<array_count>].lead_ms)
+				SpawnScriptLater event_iterator params = {song_name = <song_name> difficulty = <difficulty>
+					event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
+					Player = <Player> player_status = <player_status> player_text = <player_text>}
+				//SpawnScriptLater notemap_startiterator params = {song_name = <song_name> difficulty = <difficulty>
+				//	event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
+				//	Player = <Player> player_status = <player_status> player_text = <player_text>}
+				Increment \{array_count}
+			repeat <array_Size>
+		endif
 	endif
 	SpawnScriptLater win_song params = {<...> }
 endscript

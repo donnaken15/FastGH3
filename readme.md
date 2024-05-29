@@ -76,7 +76,7 @@ and then press any button on your keyboard or controller to play.
 * Easy highway and zone swapping for ultimate personalization
 * Background images and videos
 * Easy chart downloads and instant play through fastgh3:// links
-* Play charts straight from [Google Drive](https://donnaken15.com/fastgh3/gdrive.html) <!-- TODO: TARGET ENCHORUS -->
+* Play charts straight from [Google Drive and Chorus Encore](https://donnaken15.com/fastgh3/gdrive.html)
 * Song caching (songs converted at least once are saved for later play)
 * Autoplay with automatic starpower activation, and automated battle attacks
 * A multitude of fixes, such as for:

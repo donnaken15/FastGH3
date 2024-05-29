@@ -79,26 +79,18 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 		just = [center center]
 		z = (<z> - 4)
 	}
-	CreateScreenElement {
-		Type = SpriteElement
-		parent = cl_container
-		id = as_light_overlay
-		texture = menu_venue_overlay
-		Pos = (640.0, 360.0)
-		dims = (1280.0, 720.0)
-		just = [center center]
-		z_priority = (<z> - 1)
-	}
 	displaySprite {
 		parent = cl_container
-		tex = options_calibrate_poster
+		tex = white
+		rgba = [127 127 127 255]
 		Pos = (250.0, 0.0)
 		dims = (432.0, 954.0)
-		z = <z>
+		z = (<z> - 3)
 	}
-	displayText \{parent = cl_container text = "HDTV LAG" Pos = (770.0, 80.0) font = fontgrid_title_gh3 rgba = [0 0 0 255] noshadow}
+	displayText \{parent = cl_container text = "HDTV LAG" Pos = (770.0, 80.0) font = fontgrid_title_gh3 rgba = $color_white noshadow}
 	upper_helper = "Some HDTVs have an audio/video delay that makes playing difficult. If you're ready to blame your TV, try calibrating."
 	lower_helper = "Strum your guitar to the beat of the notes crossing the target."
+	rgba = [182, 156, 255]
 	CreateScreenElement {
 		Type = TextBlockElement
 		parent = cl_container
@@ -107,7 +99,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 		font = text_a6
 		dims = (575.0, 0.0)
 		allow_expansion
-		rgba = [60 40 115 255]
+		rgba = <rgba>
 		Scale = 0.56
 		just = [left top]
 		internal_just = [left top]
@@ -123,7 +115,7 @@ script create_calibrate_lag_menu\{from_in_game = 1}
 		font = text_a6
 		dims = (575.0, 0.0)
 		allow_expansion
-		rgba = [60 40 115 255]
+		rgba = <rgba>
 		Scale = 0.56
 		just = [left top]
 		internal_just = [left top]
@@ -153,7 +145,7 @@ script calibrate_lag_fill_options\{z = 100}
 	else
 		<controller> = ($primary_controller)
 	endif
-	displaySprite parent = cl_container id = calibrate_lag_hilite tex = options_calibrate_highlight Pos = $calibrate_lag_hilite_pos0 rgba = $calibrate_lag_hilite_unselected z = <z>
+	displaySprite parent = cl_container id = calibrate_lag_hilite tex = white Pos = $calibrate_lag_hilite_pos0 rgba = $calibrate_lag_hilite_unselected z = <z>
 	calib_eh = [
 		{pad_back menu_calibrate_go_back}
 	]
@@ -202,7 +194,7 @@ script calibrate_lag_fill_options\{z = 100}
 		Type = SpriteElement
 		id = cl_manual_adjust_up_arrow
 		parent = <container_id>
-		texture = xb_online_arrow
+		texture = Online_Arrow
 		just = [center bottom]
 		Pos = (16.0, 16.0)
 		rgba = ($calibrate_lag_hilite_unselected)
@@ -215,7 +207,7 @@ script calibrate_lag_fill_options\{z = 100}
 		Type = SpriteElement
 		id = cl_manual_adjust_down_arrow
 		parent = <container_id>
-		texture = xb_online_arrow
+		texture = Online_Arrow
 		just = [center top]
 		Pos = (16.0, 20.0)
 		rgba = ($calibrate_lag_hilite_unselected)

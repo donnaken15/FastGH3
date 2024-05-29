@@ -197,6 +197,16 @@ public struct Zones
 			rawimg = ms.ToArray();
 			head.size = (uint)rawimg.Length;
 		}
+		public RawImg(Image img, byte[] raw) // why image why
+		{
+			setHead();
+			head.w_scale = (ushort)img.Width;
+			head.h_scale = (ushort)img.Height;
+			head.w_clip = (ushort)img.Width;
+			head.h_clip = (ushort)img.Height;
+			rawimg = raw;
+			head.size = (uint)rawimg.Length;
+		}
 		public RawImg(DDSImage dds, byte[] data)
 		{
 			setHead();
@@ -286,7 +296,7 @@ public struct Zones
 				return new RawImg(raw);
 			}
 			else
-				return new RawImg(Image.FromFile(fname));
+				return new RawImg(Image.FromFile(fname), raw);
 		}
 		public void Export(string fname)
 		{
