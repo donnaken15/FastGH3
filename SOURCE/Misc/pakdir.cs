@@ -42,7 +42,7 @@ class _
 	}
 	static string ext(bool b)
 	{
-		return ".pa" + (b ? 'b' : 'k') + exts[1];
+		return ".pa" + (b ? 'b' : 'k');
 	}
 	static uint align(uint a, uint b)
 	{

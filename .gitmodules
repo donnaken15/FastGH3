@@ -12,7 +12,7 @@
 	url = https://github.com/donnaken15/hmp3
 [submodule "SOURCE/DotNetZip"]
 	path = SOURCE/dependencies/DotNetZip
-	url = https://github.com/DinoChiesea/DotNetZip
+	url = https://github.com/DinoChiesa/DotNetZip
 [submodule "SOURCE/QueenBee"]
 	path = SOURCE/dependencies/QueenBee
 	url = https://github.com/donnaken15/Queen-Bee

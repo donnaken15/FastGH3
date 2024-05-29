@@ -222,7 +222,7 @@ public partial class moddiag : Form
 					}
 				}
 			}
-			filename = filename.Substring(0, filename.LastIndexOf(".qb.xen"));
+			filename = filename.Substring(0, filename.LastIndexOf(".qb"));
 			modinfo = (QbItemStruct)getItem(QbKey.Create(filename + "_mod_info"));
 			if (modinfo == null)
 			{
@@ -316,7 +316,7 @@ public partial class moddiag : Form
 	{
 		InitializeComponent();
 		OFD.Filter = Launcher.T[185];
-		//Height += new DirectoryInfo(folder + modf).GetFiles("*.qb.xen", SearchOption.AllDirectories).Length * 9;
+		//Height += new DirectoryInfo(folder + modf).GetFiles("*.qb", SearchOption.AllDirectories).Length * 9;
 		if (!Directory.Exists(df))
 			Directory.CreateDirectory(df);
 		modrefresh(null, null);
@@ -362,11 +362,11 @@ public partial class moddiag : Form
 		modovers.Enabled = false;
 		modcfgbtn.Enabled = false;
 		modslist.Items.Clear();
-		foreach (FileInfo file in new DirectoryInfo(folder + modf).GetFiles("*.qb.xen", SearchOption.TopDirectoryOnly))
+		foreach (FileInfo file in new DirectoryInfo(folder + modf).GetFiles("*.qb", SearchOption.TopDirectoryOnly))
 			modslist.Items.Add(file);
 		try
 		{
-			foreach (FileInfo file in new DirectoryInfo(df).GetFiles("*.qb.xen"))
+			foreach (FileInfo file in new DirectoryInfo(df).GetFiles("*.qb"))
 				modslist.Items.Add(Launcher.T[143] + file);
 		}
 		catch (Exception ex) { Console.WriteLine(ex); }
@@ -461,6 +461,8 @@ public partial class moddiag : Form
 					file.EndsWith(".qb"))
 				{
 					string path = folder + modf + Path.GetFileName(file);
+					path = path.Substring(0,
+						(path.LastIndexOf(".qb") == -1) ? path.LastIndexOf(".qb") : path.Length) + ".qb";
 					SafeCopy(file, path);
 					mod = new QbMod(path);
 					foreach (string a in mod.requiredFiles)

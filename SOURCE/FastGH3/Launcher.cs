@@ -561,7 +561,7 @@ public static partial class Launcher
 	static bool newinstance = false;
 	static bool initlog = false;
 	public static string version = "1.1-999011043";
-	public static string branch = "main";
+	public static string branch = "xenless";
 	public static DateTime builddate;
 	[STAThread]
 	public static int Main(string[] args)
@@ -714,10 +714,10 @@ public static partial class Launcher
 				string chartext = ".chart", midext = ".mid",
 					paksongmid = pakf + "song" + midext,
 					paksongchart = pakf + "song" + chartext,
-					songpak = pakf + "song.pak.xen",
-					songqb = pakf + "song.qb.xen",
-					fsb = music + "fastgh3.fsb.xen",
-					dat = music + "fastgh3.dat.xen";
+					songpak = pakf + "song.pak",
+					songqb = pakf + "song.qb",
+					fsb = music + "fastgh3.fsb",
+					dat = music + "fastgh3.dat";
 				ConsoleColor cacheColor = ConsoleColor.Cyan,
 					chartConvColor = ConsoleColor.Green,
 					bossColor = ConsoleColor.Blue,
@@ -784,10 +784,10 @@ public static partial class Launcher
 					{
 						if (File.Exists(args[1]) && File.Exists(args[2]))
 						{
-							//string defaultscn = dataf + "zones\\default.scn.xen";
-							if (args[2].EndsWith(".pak.xen"))
+							//string defaultscn = dataf + "zones\\default.scn";
+							if (args[2].EndsWith(".pak"))
 							{
-								PakFormat pf = new PakFormat(args[2], args[2].ReplaceCI(".pak.xen", ".pab.xen"), "", PakFormatType.PC);
+								PakFormat pf = new PakFormat(args[2], args[2].ReplaceCI(".pak", ".pab"), "", PakFormatType.PC);
 								PakEditor pe = new PakEditor(pf, false);
 								if (args[1].EndsWith(".zip"))
 								{
@@ -813,8 +813,8 @@ public static partial class Launcher
 										var s = zip.GetInputStream(file);
 #endif
 										//Console.WriteLine(file.FileName);
-										if ((fn.EndsWith(".gfx.xen") ||
-											fn.EndsWith(".tex.xen") ||
+										if ((fn.EndsWith(".gfx") ||
+											fn.EndsWith(".tex") ||
 											fn.EndsWith(".gfx") ||
 											fn.EndsWith(".tex")) &&
 											gfx == null)
@@ -827,7 +827,7 @@ public static partial class Launcher
 											s.CopyTo(gfx);
 #endif
 										}
-										if ((fn.EndsWith(".scn.xen") ||
+										if ((fn.EndsWith(".scn") ||
 											fn.EndsWith(".scn")) &&
 											scn == null)
 										{
@@ -1705,7 +1705,7 @@ public static partial class Launcher
 									catch
 									{
 										vl(T[43], ConsoleColor.Red);
-										File.Move(pakf + "dbg.pak.xen", pakf + "dbg.pak.xen.bak");
+										File.Move(pakf + "dbg.pak", pakf + "dbg.pak.bak");
 										build = new PakEditor(PF, false);
 										// if even after this it fails, look for god
 									}
@@ -2873,7 +2873,7 @@ public static partial class Launcher
 								iniw(charthash.ToString("X16"), "Title", songtitle.Strings[0], cachf);
 								iniw(charthash.ToString("X16"), "Author", songauthr.Strings[0], cachf);
 								iniw(charthash.ToString("X16"), "Length", timeString, cachf);
-								if (outputPAK)
+								if (!outputPAK)
 									iniw(charthash.ToString("X16"), "QB", 1, cachf);
 							}
 							vl(T[68]);
@@ -3736,7 +3736,7 @@ public static partial class Launcher
 					}
 #endregion
 #region PRECOMPILED PAK
-					else if ((ext == (".pak") ||
+					else if ((ext.ToLower() == (".pak") ||
 						args[0].ToLower().EndsWith(".pak.xen") ||
 						//ext == (".pak.ngc") ||
 						args[0].ToLower().EndsWith(".pak.ps3")))

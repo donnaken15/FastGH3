@@ -33,10 +33,9 @@ for %%I in (
 	HIGHWAYS\__change.bat
 	HIGHWAYS\_black.dds
 	HIGHWAYS\highwaygen.exe
-	MUSIC\fastgh3.dat.xen
-	PAK\engine_params.qb.xen
-	PAK\qb.pak.xen
-	PAK\qb.pab.xen
+	PAK\engine_params.qb
+	PAK\qb.pak
+	PAK\qb.pab
 	MOVIES\BIK\__change.bat
 	MOVIES\BIK\__reset.bat
 	MOVIES\BIK\usage.txt
@@ -44,13 +43,13 @@ for %%I in (
 	..\THEMES\__changeTEX.bat
 	"..\THEMES\FastGH3 Themes.url"
 	..\THEMES\readme.txt
-	ZONES\default.pak.xen
-	ZONES\default.scn.xen
-	ZONES\load_disc.img.xen
-	ZONES\load_scr.img.xen
-	ZONES\global.pak.xen
-	ZONES\global.pab.xen
-	ZONES\global_sfx.pak.xen
+	ZONES\default.pak
+	ZONES\default.scn
+	ZONES\load_disc.img
+	ZONES\load_scr.img
+	ZONES\global.pak
+	ZONES\global.pab
+	ZONES\global_sfx.pak
 ) do copy DATA\%%I __FINAL\DATA\%%I /y
 for %%I in (
 	core
@@ -61,7 +60,7 @@ for %%I in (
 	SongLimitFix
 	TapHopoChord
 ) do copy PLUGINS\%%I.dll __FINAL\PLUGINS\%%I.dll /y
-copy SOURCE\Misc\user.pak.xen __FINAL\DATA\user.pak.xen /y
+copy SOURCE\Misc\user.pak __FINAL\DATA\user.pak /y
 
 :: not needed now, no crashes with that :D
 ::copy SOURCE\Misc\null.fsb __FINAL\DATA\MUSIC\fastgh3.fsb.xen /y

@@ -67,8 +67,8 @@ public partial class songcache : Form
 		string t = Launcher.ini(cs, "Title", null, 64, i);
 		string a = Launcher.ini(cs, "Author", null, 64, i);
 		string l = Launcher.ini(cs, "Length", "00:00", 8, i);
-		File.Copy(folder + cs, folder + "..\\PAK\\song.pak.xen", true);
-		File.Copy(folder + au, folder + "..\\MUSIC\\fastgh3.fsb.xen", true);
+		File.Copy(folder + cs, folder + "..\\PAK\\song."+((Launcher.ini(cs, "QB", 0, i) == 0) ? "pak" : "qb"), true);
+		File.Copy(folder + au, folder + "..\\MUSIC\\fastgh3.fsb", true);
 		string[] songParams = new string[] {
 			a,
 			t,

@@ -52,7 +52,7 @@ no_update=1
 	}
 done
 (cd "$indir" && $find * -type f -name "*.q" 2>$nul) | while read -r f; do
-	out="$outdir${f%.q*}.qb.xen"
+	out="$outdir${f%.q*}.qb"
 	# (re)compile files after being modified / or if they're new
 	[ ! -f "$out" -o "$out" -ot "$indir/$f" ] && {
 		[ $no_update -eq 1 ] && {

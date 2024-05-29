@@ -148,7 +148,7 @@ USERPROFILE
 \\AppData\\Local\\Aspyr\\FastGH3\\AspyrConfig.xml
 Easy%Medium%Hard%Expert
 No QB config found, cannot save changes.
-DATA\\gameplay_BG.img.xen
+DATA\\gameplay_BG.img
 Failed to get background image!
 Reading settings...
 Speed percentage cannot be zero or less!!!
@@ -162,7 +162,7 @@ No QB config file found, cannot set value.
 There is more than one file in this Song Package.\nWhich one do you choose?
 https://donnaken15.com/fastgh3/assets/control/xplorer.jpg
 Select a controller button and\nthen click a key to assign to it.
-backgrnd_video.bik.xen
+backgrnd_video.bik
 Failed to copy song video.
 got invalid directory, skipping: 
 Audio files|*.mp3;*.wav;*.ogg;*.opus|Any type|*.*

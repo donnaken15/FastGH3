@@ -350,6 +350,8 @@ script create_version_text
 			branch_text = 'main'
 		case unpak
 			branch_text = 'unpak'
+		case xenless
+			branch_text = 'xenless'
 		case wii
 			branch_text = 'wii'
 		case online

@@ -12,7 +12,7 @@ which wslpath 2>$nul >$nul && crc32="crc32" || crc32="crc32.exe"
 [ "$(basename "$indir")" = "scripts" ] && scripts_root="scripts/" || scripts_root="" # uhhh
 
 (cd "$indir" && $find * -type f -name "*.q" 2>$nul) | while read -r f; do
-	out="$outdir${f%%.*}.dbg.xen"
+	out="$outdir${f%%.*}.dbg"
 	[ ! -f "$out" -o "$out" -ot "$indir/$f" ] && {
 		mkdir -p "${outdir}$(dirname $f)"
 		echo "Processing $f..."

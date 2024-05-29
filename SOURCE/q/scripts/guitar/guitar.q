@@ -164,7 +164,7 @@ mode_index = {
 }
 
 fastgh3_build = '1.1-999011043'
-fastgh3_branch = main
+fastgh3_branch = xenless
 bleeding_edge = 1
 build_timestamp = [ 5 28 2024]
 
@@ -239,9 +239,9 @@ script guitar_startup
 			LoadPak \{'user.pak'}
 			//migrate = 1
 		endif
-		if FileExists \{'gameplay_BG.img.xen'}
+		if FileExists \{'gameplay_BG.img'}
 			LoadTexture \{'../gameplay_BG'}
-		elseif FileExists \{'bkgd.pak.xen'} // deprecated, BTFO'd by above
+		elseif FileExists \{'bkgd.pak'} // deprecated, BTFO'd by above
 			LoadPak \{'bkgd.pak' Heap = heap_global_pak}
 		endif
 		ProfilingEnd <...> 'load config files'
@@ -796,8 +796,7 @@ endscript
 // wrapped in sys_(name)_1_highway_sys_(name)_1_highway
 // @parm name | filename | path of the pak
 script load_highway \{player_status = player1_status name = 'axel' filename = 'hway.pak'}
-	Formattext textname = xen '%s.xen' s = <filename>
-	if NOT FileExists <xen>
+	if NOT FileExists <filename>
 		return \{FALSE}
 	endif
 	if NOT LoadPakAsync pak_name = <filename> Heap = none async = 0

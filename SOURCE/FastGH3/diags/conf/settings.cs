@@ -141,7 +141,7 @@ public partial class settings : Form
 	{
 		if (!foundqconf) { Launcher.print(T[149]); return; }
 		userqb.AlignPointers();
-		if (!userpak) userqb.Write(Launcher.dataf + "config.qb.xen");
+		if (!userpak) userqb.Write(Launcher.dataf + "config.qb");
 		else qbedit.ReplaceFile("config.qb", userqb);
 	}
 
@@ -319,13 +319,13 @@ public partial class settings : Form
 		//	Launcher.FreeConsole();
 		Launcher.vl("Loading QBs...");
 		try {
-			userqb = new QbFile(Launcher.dataf + "config.qb.xen", new PakFormat("", "", "", PakFormatType.PC));
+			userqb = new QbFile(Launcher.dataf + "config.qb", new PakFormat("", "", "", PakFormatType.PC));
 			foundqconf = true;
 		} catch { }
 		try {
 			if (!foundqconf)
 			{
-				pakformat = new PakFormat(Launcher.dataf + "user.pak.xen", Launcher.dataf + "user.pak.xen", "", PakFormatType.PC, false);
+				pakformat = new PakFormat(Launcher.dataf + "user.pak", Launcher.dataf + "user.pak", "", PakFormatType.PC, false);
 				qbedit = new PakEditor(pakformat, false);
 				userqb = qbedit.ReadQbFile("config.qb");
 				userpak = true;
@@ -359,8 +359,8 @@ public partial class settings : Form
 		spL.Text = T[122];
 		selImg.Filter = T[187];
 		//bkgdPF = new PakFormat(
-		//	Program.dataf + "bkgd.pak.xen",
-		//	Program.dataf + "bkgd.pab.xen", "",
+		//	Program.dataf + "bkgd.pak",
+		//	Program.dataf + "bkgd.pak", "",
 		//	PakFormatType.PC, false);
 		//bkgdPE = new PakEditor(bkgdPF, false);
 		bImg.Image = getBGIMG();
@@ -545,11 +545,11 @@ public partial class settings : Form
 		{
 			Launcher.vl(T[156]);
 			moddiag.built_in_items = new List<moddiag.OverrideItem>();
-			string dbgf = Launcher.pakf + "dbg.pak.xen";
+			string dbgf = Launcher.pakf + "dbg.pak";
 			if (!File.Exists(dbgf))
 				dbgf = "";
 			PakFormat O_PF = new PakFormat(
-				Launcher.pakf + "qb.pak.xen", Launcher.pakf + "qb.pab.xen", dbgf, PakFormatType.PC, false);
+				Launcher.pakf + "qb.pak", Launcher.pakf + "qb.pab", dbgf, PakFormatType.PC, false);
 			if (dbgf != "")
 			{
 				PakFormat D_PF = new PakFormat(dbgf, dbgf, "", PakFormatType.PC, false);
@@ -597,7 +597,7 @@ public partial class settings : Form
 			else
 			{
 				PakFormat nullPF = new PakFormat("", "", "", PakFormatType.PC);
-				foreach (string fn in Directory.GetFiles(Launcher.dataf + "SCRIPTS\\", "*.qb.xen", SearchOption.AllDirectories))
+				foreach (string fn in Directory.GetFiles(Launcher.dataf + "SCRIPTS\\", "*.qb", SearchOption.AllDirectories))
 				{
 					//Program.vl(fn);
 					try

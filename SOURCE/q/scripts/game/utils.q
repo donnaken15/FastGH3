@@ -169,19 +169,6 @@ script screen_shot
 endscript
 
 script FileExists \{#"0x00000000" = ''}
-	if exists <#"0x00000000">
-		return \{true}
-	endif
-	GetPlatformExt
-	// would concatenation be faster than this
-	// but also cstr and wstr can't be concat together
-	Formattext textname = xen "%s.%x" s = <#"0x00000000"> x = <platform_ext>
-	if exists <xen>
-		return \{true}
-	endif
-	return \{false}
-endscript
-script exists \{#"0x00000000" = ''}
 	StartWildcardSearch wildcard = <#"0x00000000">
 	begin
 		if GetWildcardFile

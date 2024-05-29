@@ -28,156 +28,157 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\dotnetzip\bzip2\BitWriter.cs">
+    <Compile Include="..\dependencies\dotnetzip\bzip2\BitWriter.cs">
       <Link>DotNetZip\BZip2\BitWriter.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\bzip2\BZip2Compressor.cs">
+    <Compile Include="..\dependencies\dotnetzip\bzip2\BZip2Compressor.cs">
       <Link>DotNetZip\BZip2\BZip2Compressor.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\bzip2\BZip2InputStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\bzip2\BZip2InputStream.cs">
       <Link>DotNetZip\BZip2\BZip2InputStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\bzip2\BZip2OutputStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\bzip2\BZip2OutputStream.cs">
       <Link>DotNetZip\BZip2\BZip2OutputStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\bzip2\ParallelBZip2OutputStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\bzip2\ParallelBZip2OutputStream.cs">
       <Link>DotNetZip\BZip2\ParallelBZip2OutputStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\bzip2\Rand.cs">
+    <Compile Include="..\dependencies\dotnetzip\bzip2\Rand.cs">
       <Link>DotNetZip\BZip2\Rand.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\commonsrc\CRC32.cs">
+    <Compile Include="..\dependencies\dotnetzip\commonsrc\CRC32.cs">
       <Link>DotNetZip\CRC32.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ComHelper.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ComHelper.cs">
       <Link>DotNetZip\Zip\ComHelper.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\EncryptionAlgorithm.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\EncryptionAlgorithm.cs">
       <Link>DotNetZip\Zip\EncryptionAlgorithm.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\Events.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\Events.cs">
       <Link>DotNetZip\Zip\Events.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\Exceptions.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\Exceptions.cs">
       <Link>DotNetZip\Zip\Exceptions.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ExtractExistingFileAction.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ExtractExistingFileAction.cs">
       <Link>DotNetZip\Zip\ExtractExistingFileAction.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\FileSelector.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\FileSelector.cs">
       <Link>DotNetZip\Zip\FileSelector.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\OffsetStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\OffsetStream.cs">
       <Link>DotNetZip\Zip\OffsetStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\Shared.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\Shared.cs">
       <Link>DotNetZip\Zip\Shared.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\WinZipAes.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\WinZipAes.cs">
       <Link>DotNetZip\Zip\WinZipAes.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipConstants.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipConstants.cs">
       <Link>DotNetZip\Zip\ZipConstants.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipCrypto.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipCrypto.cs">
       <Link>DotNetZip\Zip\ZipCrypto.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipDirEntry.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipDirEntry.cs">
       <Link>DotNetZip\Zip\ZipDirEntry.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntry.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntry.cs">
       <Link>DotNetZip\Zip\ZipEntry.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntry.Extract.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntry.Extract.cs">
       <Link>DotNetZip\Zip\ZipEntry.Extract.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntry.Read.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntry.Read.cs">
       <Link>DotNetZip\Zip\ZipEntry.Read.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntry.Write.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntry.Write.cs">
       <Link>DotNetZip\Zip\ZipEntry.Write.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntrySource.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntrySource.cs">
       <Link>DotNetZip\Zip\ZipEntrySource.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipErrorAction.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipErrorAction.cs">
       <Link>DotNetZip\Zip\ZipErrorAction.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.AddUpdate.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.AddUpdate.cs">
       <Link>DotNetZip\Zip\ZipFile.AddUpdate.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Check.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Check.cs">
       <Link>DotNetZip\Zip\ZipFile.Check.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.cs">
       <Link>DotNetZip\Zip\ZipFile.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Events.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Events.cs">
       <Link>DotNetZip\Zip\ZipFile.Events.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Extract.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Extract.cs">
       <Link>DotNetZip\Zip\ZipFile.Extract.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Read.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Read.cs">
       <Link>DotNetZip\Zip\ZipFile.Read.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Save.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Save.cs">
       <Link>DotNetZip\Zip\ZipFile.Save.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.SaveSelfExtractor.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.SaveSelfExtractor.cs">
       <Link>DotNetZip\Zip\ZipFile.SaveSelfExtractor.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Selector.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Selector.cs">
       <Link>DotNetZip\Zip\ZipFile.Selector.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.x-IEnumerable.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.x-IEnumerable.cs">
       <Link>DotNetZip\Zip\ZipFile.x-IEnumerable.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipInputStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipInputStream.cs">
       <Link>DotNetZip\Zip\ZipInputStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipOutputStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipOutputStream.cs">
       <Link>DotNetZip\Zip\ZipOutputStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipSegmentedStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipSegmentedStream.cs">
       <Link>DotNetZip\Zip\ZipSegmentedStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\Deflate.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\Deflate.cs">
       <Link>DotNetZip\Zlib\Deflate.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\DeflateStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\DeflateStream.cs">
       <Link>DotNetZip\Zlib\DeflateStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\GZipStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\GZipStream.cs">
       <Link>DotNetZip\Zlib\GZipStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\Inflate.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\Inflate.cs">
       <Link>DotNetZip\Zlib\Inflate.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\InfTree.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\InfTree.cs">
       <Link>DotNetZip\Zlib\InfTree.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\ParallelDeflateOutputStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\ParallelDeflateOutputStream.cs">
       <Link>DotNetZip\Zlib\ParallelDeflateOutputStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\Tree.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\Tree.cs">
       <Link>DotNetZip\Zlib\Tree.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\Zlib.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\Zlib.cs">
       <Link>DotNetZip\Zlib\Zlib.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\ZlibBaseStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\ZlibBaseStream.cs">
       <Link>DotNetZip\Zlib\ZlibBaseStream.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\ZlibCodec.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\ZlibCodec.cs">
       <Link>DotNetZip\Zlib\ZlibCodec.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\ZlibConstants.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\ZlibConstants.cs">
       <Link>DotNetZip\Zlib\ZlibConstants.cs</Link>
     </Compile>
-    <Compile Include="..\dotnetzip\zlib\ZlibStream.cs">
+    <Compile Include="..\dependencies\dotnetzip\zlib\ZlibStream.cs">
       <Link>DotNetZip\Zlib\ZlibStream.cs</Link>
     </Compile>
     <Compile Include="Program.cs" />
