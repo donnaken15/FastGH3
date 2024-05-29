@@ -33,7 +33,6 @@ for %%I in (
 	HIGHWAYS\__change.bat
 	HIGHWAYS\_black.dds
 	HIGHWAYS\highwaygen.exe
-	MUSIC\fastgh3.dat.xen
 	PAK\engine_params.qb.xen
 	PAK\qb.pak.xen
 	PAK\qb.pab.xen
