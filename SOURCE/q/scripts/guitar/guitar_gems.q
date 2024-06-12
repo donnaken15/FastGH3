@@ -38,6 +38,14 @@ scripts_array = [
 	}
 ]
 fretbar_end_scale = 0.48
+button_base = {
+	star_power_material = sys_Gem2D_StarPower_sys_Gem2D_StarPower
+	star_power_hammer_material = sys_Gem2D_StarPower_hammer_sys_Gem2D_StarPower_hammer
+	star_power_tap_material = sys_tap2d_starpower_sys_tap2d_starpower
+	// can't even memorize GH3+ texture names
+	star_power_whammy_material = sys_Whammy2D_StarPower_sys_Whammy2D_StarPower
+	dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
+}
 button_models = {
 	green = {
 		gem_material = sys_Gem2D_Green_sys_Gem2D_Green
@@ -47,10 +55,7 @@ button_models = {
 		battle_star_material = sys_BattleGEM_Green01_sys_BattleGEM_Green01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_Green01_sys_BattleGEM_Hammer_Green01
 		whammy_material = sys_Whammy2D_Green_sys_Whammy2D_Green
-		star_power_material = sys_Gem2D_StarPower_sys_Gem2D_StarPower
-		star_power_hammer_material = sys_Gem2D_StarPower_hammer_sys_Gem2D_StarPower_hammer
-		star_power_whammy_material = sys_Whammy2D_StarPower_sys_Whammy2D_StarPower
-		dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
+		$button_base
 		name = button_g
 	}
 	red = {
@@ -61,10 +66,7 @@ button_models = {
 		battle_star_material = sys_BattleGEM_RED01_sys_BattleGEM_RED01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_RED01_sys_BattleGEM_Hammer_RED01
 		whammy_material = sys_Whammy2D_Red_sys_Whammy2D_Red
-		star_power_material = sys_Gem2D_StarPower_sys_Gem2D_StarPower
-		star_power_hammer_material = sys_Gem2D_StarPower_hammer_sys_Gem2D_StarPower_hammer
-		star_power_whammy_material = sys_Whammy2D_StarPower_sys_Whammy2D_StarPower
-		dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
+		$button_base
 		name = button_r
 	}
 	yellow = {
@@ -75,10 +77,7 @@ button_models = {
 		battle_star_material = sys_BattleGEM_Yellow01_sys_BattleGEM_Yellow01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_Yellow01_sys_BattleGEM_Hammer_Yellow01
 		whammy_material = sys_Whammy2D_Yellow_sys_Whammy2D_Yellow
-		star_power_material = sys_Gem2D_StarPower_sys_Gem2D_StarPower
-		star_power_hammer_material = sys_Gem2D_StarPower_hammer_sys_Gem2D_StarPower_hammer
-		star_power_whammy_material = sys_Whammy2D_StarPower_sys_Whammy2D_StarPower
-		dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
+		$button_base
 		name = button_y
 	}
 	blue = {
@@ -89,10 +88,7 @@ button_models = {
 		battle_star_material = sys_BattleGEM_Blue01_sys_BattleGEM_Blue01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_Blue01_sys_BattleGEM_Hammer_Blue01
 		whammy_material = sys_Whammy2D_Blue_sys_Whammy2D_Blue
-		star_power_material = sys_Gem2D_StarPower_sys_Gem2D_StarPower
-		star_power_hammer_material = sys_Gem2D_StarPower_hammer_sys_Gem2D_StarPower_hammer
-		star_power_whammy_material = sys_Whammy2D_StarPower_sys_Whammy2D_StarPower
-		dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
+		$button_base
 		name = button_b
 	}
 	orange = {
@@ -103,10 +99,7 @@ button_models = {
 		battle_star_material = sys_BattleGEM_Orange01_sys_BattleGEM_Orange01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_Orange01_sys_BattleGEM_Hammer_Orange01
 		whammy_material = sys_Whammy2D_Orange_sys_Whammy2D_Orange
-		star_power_material = sys_Gem2D_StarPower_sys_Gem2D_StarPower
-		star_power_hammer_material = sys_Gem2D_StarPower_hammer_sys_Gem2D_StarPower_hammer
-		star_power_whammy_material = sys_Whammy2D_StarPower_sys_Whammy2D_StarPower
-		dead_whammy = sys_Whammy2D_Dead_sys_Whammy2D_Dead
+		$button_base
 		name = button_o
 	}
 	// already injected by GH3+ but whatever
@@ -211,17 +204,13 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	Change StructureName = <player_status> check_time_early = ($check_time_early * $current_speedfactor)
 	Change StructureName = <player_status> check_time_late = ($check_time_late * $current_speedfactor)
 	ExtendCrc input_array <player_text> out = input_array
-	printf \{'-----------------------------------'}
-	printf \{'-----------------------------------'}
-	printf \{'-----------------------------------'}
-	printf \{'-----------------------------------'}
-	printf \{'-----------------------------------'}
+	begin
+		printf \{'-----------------------------------'}
+	repeat 5
 	printf 'Creating array for %p' p = <player_text>
-	printf \{'-----------------------------------'}
-	printf \{'-----------------------------------'}
-	printf \{'-----------------------------------'}
-	printf \{'-----------------------------------'}
-	printf \{'-----------------------------------'}
+	begin
+		printf \{'-----------------------------------'}
+	repeat 5
 	InputArrayCreate name = <input_array>
 	if (<Player> = 1)
 		if ($input_mode = record)

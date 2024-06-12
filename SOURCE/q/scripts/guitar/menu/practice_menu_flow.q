@@ -112,6 +112,7 @@ practice_select_difficulty_fs = {
 practice_last_mode = p1_quickplay
 script return_from_practice
 	restore_start_key_binding
+	practice_kill_select_key_binding
 	change game_mode = ($practice_last_mode)
 	return \{flow_state = enter_mode_fs}
 endscript

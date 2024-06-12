@@ -68,7 +68,12 @@ menu_select_controller_guitar_big = (384.0, 192.0)
 menu_select_controller_guitar_small = (320.0, 160.0)
 in_controller_select_menu = 0
 
+old_2p_background = 0
+
 script create_select_controller_menu
+	if ($playing_song)
+		disable_bg_viewport
+	endif
 	Change \{in_controller_select_menu = 1}
 	Change \{p1_ready = 0}
 	Change \{p2_ready = 0}
@@ -78,14 +83,43 @@ script create_select_controller_menu
 	menu_font = text_a5
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = msc_container Pos = (0.0, 0.0)}
 	create_menu_backdrop \{texture = controller_2p_bg}
-	displayText \{parent = msc_container text = "Select Controller" Pos = (690.0, 140.0) Scale = 1.4 just = [center center] rgba = [90 25 20 255] font = text_a10 z = 100 noshadow}
-	CreateScreenElement \{Type = TextElement parent = msc_container text = "Move the desired controller" Pos = (620.0, 570.0) Scale = 0.7 just = [center center] rgba = [90 25 20 255] font = text_a11 z = 100 Shadow shadow_rgba = [185 180 135 255] shadow_offs = (2.0, 2.0)}
-	CreateScreenElement \{Type = TextElement parent = msc_container text = "to your side of the screen." Pos = (620.0, 610.0) Scale = 0.7 just = [center center] rgba = [90 25 20 255] font = text_a11 z = 100 Shadow shadow_rgba = [185 180 135 255] shadow_offs = (2.0, 2.0)}
-	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow1 texture = controller_2p_arrow rgba = [240 140 80 255] dims = (64.0, 128.0) Pos = (450.0, 270.0) just = [left top] rot_angle = -20}
-	<id> ::SetTags old_pos = (450.0, 270.0)
-	CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow2 texture = controller_2p_arrow rgba = [130 90 205 255] dims = (64.0, 128.0) Pos = (705.0, 445.0) just = [left top] flip_v flip_h rot_angle = -20}
-	<id> ::SetTags old_pos = (680.0, 420.0)
-	spawnscriptnow \{cs_bounce_arrows}
+	displayText \{parent = msc_container text = "CONTROLLER SELECT" Pos = (640.0, 160.0) Scale = 1.7 just = [center center] rgba = [255 255 255 255] font = text_a3 z = 100 shadow shadow_rgba = [127 0 0 255] shadow_offs = (4.0, 4.0)}
+	CreateScreenElement \{Type = TextElement parent = msc_container text = "Move the desired controller" Pos = (680.0, 240.0) Scale = 0.9 just = [center center] rgba = [185 180 135 255] font = text_a4 z = 100 Shadow shadow_rgba = [90 25 20 255] shadow_offs = (2.0, 2.0)}
+	CreateScreenElement \{Type = TextElement parent = msc_container text = "to your side of the screen." Pos = (680.0, 290.0) Scale = 0.9 just = [center center] rgba = [185 180 135 255] font = text_a4 z = 100 Shadow shadow_rgba = [90 25 20 255] shadow_offs = (2.0, 2.0)}
+	if ($old_2p_background) // support original background if available
+		CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow1 texture = controller_2p_arrow rgba = [240 140 80 255] dims = (64.0, 128.0) Pos = (450.0, 270.0) just = [left top] rot_angle = -20}
+		<id> ::SetTags old_pos = (450.0, 270.0)
+		CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow2 texture = controller_2p_arrow rgba = [130 90 205 255] dims = (64.0, 128.0) Pos = (705.0, 445.0) just = [left top] flip_v flip_h rot_angle = -20}
+		<id> ::SetTags old_pos = (680.0, 420.0)
+		spawnscriptnow \{cs_bounce_arrows}
+	else
+		if (randomrange(0.0, 1.0) > 0.5)
+			tex1 = Controller_2p_ring
+			tex2 = Controller_2p_ring_b
+		else
+			tex1 = Controller_2p_ring_b
+			tex2 = Controller_2p_ring
+		endif
+		rgba = [ 112 112 112 255 ]
+		CreateScreenElement {
+			Type = SpriteElement parent = msc_container id = ring1
+			texture = <tex1> rgba = <rgba> Pos = (350.0, 440.0) scale = 1.9
+			just = [center center]
+		}
+		CreateScreenElement {
+			Type = SpriteElement parent = msc_container id = ring2
+			texture = <tex2> rgba = <rgba> Pos = (888.0, 525.0) scale = 1.9
+			just = [center center]
+		}
+		if (randomrange(0.0, 1.0) > 0.5)
+			ring1::SetProps flip_h
+		endif
+		if (randomrange(0.0, 1.0) > 0.5)
+			ring2::SetProps flip_h
+		endif
+		spawnscriptnow \{cs_rotate_rings}
+		spawnscriptnow \{cs_rotate_rings params = { id = ring2 }}
+	endif
 	//spawnscriptnow \{jump_up_and_down_peasants}
 	common_control_helpers \{select back nav}
 	create_ready_icons \{pos1 = (300.0, 450.0) pos2 = (835.0, 510.0)}
@@ -99,15 +133,35 @@ script create_select_controller_menu
 endscript
 
 script destroy_select_controller_menu
+	if ($playing_song)
+		enable_bg_viewport
+	endif
 	destroy_ready_icons
 	Change \{menu_select_num_controllers = 0}
 	clean_up_user_control_helpers
+	killspawnedscript \{name = cs_rotate_rings}
 	killspawnedscript \{name = cs_bounce_arrows}
 	//killspawnedscript \{name = jump_up_and_down_peasants}
 	killspawnedscript \{name = menu_select_controller_poll_for_controllers}
 	destroy_menu \{menu_id = msc_container}
 	destroy_menu_backdrop
 	Change \{in_controller_select_menu = 0}
+endscript
+
+script cs_rotate_rings \{id = ring1}
+	#"360_degree_interval" = randomrange(2.7, 8.9)
+	rotations = 1000
+	time = (<#"360_degree_interval"> * <rotations>)
+	start_angle = randomrange(-360.0, 360.0)
+	end_angle = (360.0 * <rotations> + <start_angle>)
+	begin
+		if ScreenElementExists id = <id>
+			DoScreenElementMorph id = <id> rot_angle = <start_angle>
+			DoScreenElementMorph id = <id> rot_angle = <end_angle> time = <time>
+		endif
+		wait <time> seconds
+		printf \{'you\'re still here? i get it, it\'s a cool design, right? guess the reference and @ ptr__WESLEY on twitter if you know'}
+	repeat
 endscript
 
 script cs_bounce_arrows
@@ -489,3 +543,131 @@ script controller_jiggle
 	<controller_icon_id> ::DoMorph Pos = {(-10.0, 0.0) relative}time = 0.05
 	<controller_icon_id> ::DoMorph Pos = {(5.0, 0.0) relative}time = 0.1 motion = ease_out
 endscript
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+script select_instrument_go_back
+	if (<Player> = 1)
+		if ($p1_ready = 1)
+			Change \{p1_ready = 0}
+			Change \{g_si_player2_locked = 0}
+			drop_out_ready_sign Player = <Player>
+			SoundEvent \{event = Generic_menu_back_SFX}
+		else
+			menu_flow_go_back
+		endif
+	else
+		if ($p2_ready = 1)
+			Change \{p2_ready = 0}
+			Change \{g_si_player1_locked = 0}
+			drop_out_ready_sign Player = <Player>
+			SoundEvent \{event = Generic_menu_back_SFX}
+		else
+			menu_flow_go_back
+		endif
+	endif
+endscript
+
+script create_ready_icons\{pos1 = (440.0, 120.0) pos2 = (720.0, 580.0)}
+	if NOT ((GotParam parent1)|| (GotParam parent2))
+		parent1 = root_window
+		parent2 = root_window
+	endif
+	if GotParam \{parent1}
+		destroy_menu \{menu_id = ready_container_p1}
+		CreateScreenElement {
+			Type = ContainerElement
+			parent = <parent1>
+			id = ready_container_p1
+			just = [left top]
+			Pos = <pos1>
+			rot_angle = -10
+			z_priority = 70
+			Scale = 1
+			alpha = 0
+		}
+		displaySprite \{parent = ready_container_p1 tex = dialog_title_bg flip_v dims = (128.0, 128.0)}
+		displaySprite parent = <id> tex = dialog_title_bg Pos = (128.0, 0.0) dims = (128.0, 128.0)
+		displayText \{parent = ready_container_p1 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.8999999761581421) font = text_a4 z = 100 rgba = [223 223 223 255]}
+		SetScreenElementProps id = <id> Scale = 1
+		fit_text_in_rectangle id = <id> dims = (160.0, 42.0)
+	endif
+	if GotParam \{parent2}
+		destroy_menu \{menu_id = ready_container_p2}
+		CreateScreenElement {
+			Type = ContainerElement
+			parent = <parent2>
+			id = ready_container_p2
+			just = [left top]
+			Pos = <pos2>
+			rot_angle = 10
+			z_priority = 70
+			Scale = 1
+			alpha = 0
+		}
+		displaySprite \{parent = ready_container_p2 tex = dialog_title_bg flip_v dims = (128.0, 128.0)}
+		displaySprite parent = <id> tex = dialog_title_bg Pos = (128.0, 0.0) dims = (128.0, 128.0)
+		displayText \{parent = ready_container_p2 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.8999999761581421) font = text_a4 z = 100 rgba = [223 223 223 255]}
+		SetScreenElementProps id = <id> Scale = 1
+		fit_text_in_rectangle id = <id> dims = (160.0, 42.0)
+	endif
+endscript
+
+script destroy_ready_icons
+	destroy_menu \{menu_id = ready_container_p1}
+	destroy_menu \{menu_id = ready_container_p2}
+endscript
+
+script drop_in_ready_sign\{Player = 1}
+	FormatText checksumName = ready_container 'ready_container_p%d' d = <Player>
+	if NOT ScreenElementExists id = <ready_container>
+		create_ready_icons
+	endif
+	DoScreenElementMorph id = <ready_container> alpha = 1
+	DoScreenElementMorph id = <ready_container> Scale = 0.5 time = 0.1
+	wait \{0.1 seconds}
+	FormatText checksumName = sound_event 'CheckBox_Check_SFX_P%d' d = <Player>
+	SoundEvent event = <sound_event>
+	DoScreenElementMorph id = <ready_container> Scale = 1 time = 0.1
+	wait \{0.1 seconds}
+endscript
+
+script drop_out_ready_sign\{Player = 1}
+	FormatText checksumName = ready_container 'ready_container_p%d' d = <Player>
+	DoScreenElementMorph id = <ready_container> Scale = 0.5 time = 0.1
+	wait \{0.1 seconds}
+	FormatText checksumName = sound_event 'Checkbox_SFX_P%d' d = <Player>
+	SoundEvent event = <sound_event>
+	DoScreenElementMorph id = <ready_container> Scale = 1 time = 0.1
+	wait \{0.1 seconds}
+	DoScreenElementMorph id = <ready_container> alpha = 0
+endscript
+
+script change_pos_ready_sign\{Player = 1 Pos = (0.0, 0.0)}
+	if (<Player> = 1)
+		if ScreenElementExists \{id = ready_container_p1}
+			SetScreenElementProps id = ready_container_p1 Pos = <Pos>
+		endif
+	else
+		if ScreenElementExists \{id = ready_container_p2}
+			SetScreenElementProps id = ready_container_p2 Pos = <Pos>
+		endif
+	endif
+endscript
+
+
+

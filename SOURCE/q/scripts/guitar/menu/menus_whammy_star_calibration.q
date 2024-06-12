@@ -50,14 +50,14 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	text_block_2_dims = (840.0, 100.0)
 	text_block_3_pos = (750.0, 195.0)
 	text_block_3_dims = (525.0, 300.0)
-	<text_1> = "Press  the  whammy  bar   completely   down, and  gently  allow  it  to  return  to  its  resting   position."
-	button_color = "Green"
+	<text_1> = 'Press  the  whammy  bar   completely   down, and  gently  allow  it  to  return  to  its  resting   position.'
+	button_color = '\b4'
 	GetEnterButtonAssignment
 	if (<assignment> = Circle)
-		button_color = "Red"
+		button_color = '\b5'
 	endif
-	FormatText textname = text_2 "Press  the  %a  Button  to  calibrate  using  this  position." a = <button_color>
-	<text_3> = "Repeat  the  process  until  you  see  the  \c1''Resting  position  calibrated'' \c0message  every  time  you  return  the  whammy  bar  to  its  resting  position."
+	text_2 = ( 'Press ' + <button_color> + ' to  calibrate  using  this  position.' )
+	<text_3> = 'Repeat  the  process  until  you  see  the  \c1\'\'Resting  position  calibrated\'\' \c0message  every  time  you  return  the  whammy  bar  to  its  resting  position.'
 	CreateScreenElement {
 		Type = TextBlockElement
 		font = text_a3
@@ -108,26 +108,26 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 	}
 	CreateScreenElement {
 		Type = TextElement
-		font = text_a5
-		Pos = (760.0, 315.0)
+		font = text_a4
+		Pos = (760.0, 285.0)
 		parent = wbc_container
-		text = "Calibrate"
+		text = 'Calibrate'
 		rgba = [220 220 220 255]
 		z_priority = (<z> + 1)
 		just = [center top]
-		Scale = 1.6
+		Scale = 1.5
 		rot_angle = -4
 	}
 	CreateScreenElement {
 		Type = TextElement
-		font = text_a5
-		Pos = (800.0, 365.0)
+		font = text_a4
+		Pos = (800.0, 345.0)
 		parent = wbc_container
-		text = "Whammy"
+		text = 'Whammy'
 		rgba = [220 220 220 255]
 		z_priority = (<z> + 1)
 		just = [center top]
-		Scale = 1.6
+		Scale = 1.5
 		rot_angle = -4
 	}
 	CreateScreenElement {
@@ -135,7 +135,7 @@ script create_whammy_bar_calibration_menu\{controller = 0 popup = 0}
 		font = text_a3
 		rgba = [140 235 170 255]
 		Pos = (810.0, 408.0)
-		text = "RESTING POSITION CALIBRATED"
+		text = 'RESTING POSITION CALIBRATED'
 		just = [center top]
 		internal_just = [center center]
 		dims = (400.0, 200.0)
@@ -277,12 +277,12 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 		z = (<z> + 3)
 	}
 	SetScreenElementProps id = <id> Hide
-	button_color = "Green"
+	button_color = '\b4'
 	GetEnterButtonAssignment
 	if (<assignment> = Circle)
-		button_color = "Red"
+		button_color = '\b5'
 	endif
-	FormatText textname = element_text "Raise the Guitar up to the point at which you would like Star Power to be triggered and press the %a Button to set this value." a = <button_color>
+	element_text = ('Raise the Guitar up to the point at which you would like Star Power to be triggered and press the '+<button_color>+' Button to set this value.')
 	CreateScreenElement {
 		Type = TextBlockElement
 		id = star_calibration_text
@@ -401,64 +401,64 @@ script create_guitar_diagnostic_menu
 	CreateScreenElement {
 		<text_params>
 		id = title_text
-		text = "Guitar info"
+		text = 'Guitar info'
 		Pos = (540.0, 100.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = leftx
-		text = "Left X "
+		text = 'Left X '
 		Pos = (580.0, 200.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = rightx
-		text = "Right X "
+		text = 'Right X '
 		Pos = (580.0, 240.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = lefty
-		text = "Left Y "
+		text = 'Left Y '
 		Pos = (580.0, 280.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = righty
-		text = "Right Y "
+		text = 'Right Y '
 		Pos = (580.0, 320.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = leftlength
-		text = "Left Length "
+		text = 'Left Length '
 		Pos = (580.0, 360.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = rightlength
-		text = "Right Length "
+		text = 'Right Length '
 		Pos = (580.0, 400.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = LeftTrigger
-		text = "Left Trigger "
+		text = 'Left Trigger '
 		Pos = (580.0, 440.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = RightTrigger
-		text = "Right Trigger "
+		text = 'Right Trigger '
 		Pos = (580.0, 480.0)
 	}
 	CreateScreenElement {
 		<text_params>
 		id = VerticalDist
-		text = "Vertical Dist "
+		text = 'Vertical Dist '
 		Pos = (580.0, 520.0)
 	}
-	spawnscriptnow \{update_guitar_diagnostic_menu}
+	spawnscriptnow update_guitar_diagnostic_menu params = {controller = <device_num>}
 endscript
 
 script destroy_guitar_diagnostic_menu
@@ -466,18 +466,18 @@ script destroy_guitar_diagnostic_menu
 	destroy_menu \{menu_id = gd_container}
 endscript
 
-script update_guitar_diagnostic_menu
+script update_guitar_diagnostic_menu \{controller = 0}
 	begin
-		if GuitarGetAnalogueInfo \{controller = 0}
-			FormatText textname = leftxtext "Left X - %v" v = <leftx>
-			FormatText textname = rightxtext "Whammy position - %v" v = <rightx>
-			FormatText textname = leftytext "Left Y - %v" v = <lefty>
-			FormatText textname = rightytext "Right Y - %v" v = <righty>
-			FormatText textname = leftlengthtext "Left Length - %v" v = <leftlength>
-			FormatText textname = rightlengthtext "Right Length - %v" v = <rightlength>
-			FormatText textname = lefttriggertext "Left Trigger - %v" v = <LeftTrigger>
-			FormatText textname = righttriggertext "Right Trigger - %v" v = <RightTrigger>
-			FormatText textname = verticaldisttext "Vertical orientation - %v" v = <VerticalDist>
+		if GuitarGetAnalogueInfo controller = <controller>
+			FormatText textname = leftxtext 'Left X - %v' v = <leftx>
+			FormatText textname = rightxtext 'Whammy position - %v' v = <rightx>
+			FormatText textname = leftytext 'Left Y - %v' v = <lefty>
+			FormatText textname = rightytext 'Right Y - %v' v = <righty>
+			FormatText textname = leftlengthtext 'Left Length - %v' v = <leftlength>
+			FormatText textname = rightlengthtext 'Right Length - %v' v = <rightlength>
+			FormatText textname = lefttriggertext 'Left Trigger - %v' v = <LeftTrigger>
+			FormatText textname = righttriggertext 'Right Trigger - %v' v = <RightTrigger>
+			FormatText textname = verticaldisttext 'Vertical orientation - %v' v = <VerticalDist>
 			SetScreenElementProps id = leftx text = <leftxtext>
 			SetScreenElementProps id = rightx text = <rightxtext>
 			SetScreenElementProps id = lefty text = <leftytext>

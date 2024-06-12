@@ -166,7 +166,7 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [ 5 28 2024]
+build_timestamp = [ 6 12 2024]
 
 random_seed = -1
 // ^ originally 107482099
@@ -516,6 +516,11 @@ script guitar_startup
 		//endif
 		// test time to load
 		ProfilingEnd <...> 'LoadPak global.pak'
+		
+		if IsTextureInDictionary \{texture = Controller_2p_BG}
+			change \{old_2p_background = 1}
+		endif
+		
 		ProfilingStart
 		LoadPak \{'zones/default.pak'}
 		ProfilingEnd <...> 'LoadPak default.pak'

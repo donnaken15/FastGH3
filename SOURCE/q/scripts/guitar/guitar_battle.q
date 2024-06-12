@@ -17,7 +17,7 @@ battlemode_powerups = [
 	{
 		$powerup_base
 		name = Lightning
-		name_text = "Amp Overload"
+		name_text = 'Amp Overload'
 		Scr = battle_lightning
 		card_texture = icon_attack_blast
 		easy_flicker = 2
@@ -30,21 +30,21 @@ battlemode_powerups = [
 	{
 		$powerup_base
 		name = DifficultyUp
-		name_text = "Difficulty Up"
+		name_text = 'Difficulty Up'
 		Scr = battle_up_difficulty
 		card_texture = icon_attack_difficulty
 	}
 	{
 		$powerup_base
 		name = DoubleNotes
-		name_text = "Double Notes"
+		name_text = 'Double Notes'
 		Scr = battle_double_notes
 		card_texture = icon_attack_addnote
 	}
 	{
 		$powerup_base
 		name = PowerUpSteal
-		name_text = "Powerup Steal"
+		name_text = 'Powerup Steal'
 		weight_losing = 10
 		Scr = battle_steal
 		card_texture = icon_attack_drain
@@ -55,8 +55,8 @@ battlemode_powerups = [
 	{
 		$powerup_base
 		name = LeftyNotes
-		name_text = "Lefty Flip"
-		alt_name_text = "Righty Flip"
+		name_text = 'Lefty Flip'
+		alt_name_text = 'Righty Flip'
 		weight_losing = 10
 		Scr = battle_lefty_notes
 		card_texture = icon_attack_leftyrighty
@@ -64,7 +64,7 @@ battlemode_powerups = [
 	{
 		$powerup_base
 		name = BrokenString
-		name_text = "Broken String"
+		name_text = 'Broken String'
 		Scr = battle_broken_string
 		card_texture = icon_attack_string
 		easy_repair = 6
@@ -76,7 +76,7 @@ battlemode_powerups = [
 	{
 		$powerup_base
 		name = WhammyAttack
-		name_text = "Whammy"
+		name_text = 'Whammy'
 		weight_losing = 10
 		Scr = battle_whammy_attack
 		card_texture = icon_attack_whammy
@@ -90,7 +90,7 @@ battlemode_powerups = [
 	{
 		$powerup_base
 		name = DeathLick
-		name_text = "Death Drain"
+		name_text = 'Death Drain'
 		weight = 0
 		Scr = battle_death_lick
 		card_texture = icon_attack_deth
@@ -104,7 +104,7 @@ battlemode_powerups = [
 	{
 		$powerup_base
 		name = starpower
-		name_text = "Star Power"
+		name_text = 'Star Power'
 		weight = 10
 		Scr = battle_starpower
 		card_texture = icon_attack_star
@@ -114,33 +114,43 @@ battlemode_powerups = [
 	}
 ]
 
+script battle_reset_struct \{#"0x00000000" = player1_status}
+	//array = [ battlemode_creation_selection final_blow_powerup shake_notes double_notes diffup_notes lefty_notes whammy_attack stealing_powerup death_lick_attack last_selected_attack ]
+	//GetArraySize \{array}
+	//i = 0
+	//begin
+	//	Change StructureName = <player_status> battlemode_creation_selection = -1
+	//	i = (<i> + 1)
+	//repeat <array_size>
+	Change StructureName = <#"0x00000000"> final_blow_powerup = -1
+	Change StructureName = <#"0x00000000"> shake_notes = -1
+	Change StructureName = <#"0x00000000"> double_notes = -1
+	Change StructureName = <#"0x00000000"> diffup_notes = -1
+	Change StructureName = <#"0x00000000"> lefty_notes = -1
+	Change StructureName = <#"0x00000000"> whammy_attack = -1
+	Change StructureName = <#"0x00000000"> stealing_powerup = -1
+	Change StructureName = <#"0x00000000"> death_lick_attack = -1
+	Change StructureName = <#"0x00000000"> last_selected_attack = -1
+	Change StructureName = <#"0x00000000"> last_hit_note = None
+	Change StructureName = <#"0x00000000"> current_num_powerups = 0
+	Change StructureName = <#"0x00000000"> battle_text_count = 0
+	Change StructureName = <#"0x00000000"> broken_string_mask = 0
+	Change StructureName = <#"0x00000000"> broken_string_green = 0
+	Change StructureName = <#"0x00000000"> broken_string_red = 0
+	Change StructureName = <#"0x00000000"> broken_string_yellow = 0
+	Change StructureName = <#"0x00000000"> broken_string_blue = 0
+	Change StructureName = <#"0x00000000"> broken_string_orange = 0
+	Change StructureName = <#"0x00000000"> battle_num_attacks = 0
+	Change StructureName = <#"0x00000000"> hold_difficulty_up = 0.0
+endscript
+
 script battlemode_init
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = battlemode_container Pos = (0.0, 0.0) just = [left top]}
 	Player = 1
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player> AddToStringLookup
-		Change StructureName = <player_status> battlemode_creation_selection = -1
-		Change StructureName = <player_status> current_num_powerups = 0
-		Change StructureName = <player_status> final_blow_powerup = -1
-		Change StructureName = <player_status> battle_text_count = 0
-		Change StructureName = <player_status> shake_notes = -1
-		Change StructureName = <player_status> double_notes = -1
-		Change StructureName = <player_status> diffup_notes = -1
-		Change StructureName = <player_status> lefty_notes = -1
-		Change StructureName = <player_status> whammy_attack = -1
-		Change StructureName = <player_status> stealing_powerup = -1
-		Change StructureName = <player_status> death_lick_attack = -1
-		Change StructureName = <player_status> last_selected_attack = -1
-		Change StructureName = <player_status> last_hit_note = None
-		Change StructureName = <player_status> broken_string_mask = 0
-		Change StructureName = <player_status> broken_string_green = 0
-		Change StructureName = <player_status> broken_string_red = 0
-		Change StructureName = <player_status> broken_string_yellow = 0
-		Change StructureName = <player_status> broken_string_blue = 0
-		Change StructureName = <player_status> broken_string_orange = 0
-		Change StructureName = <player_status> battle_num_attacks = 0
-		Change StructureName = <player_status> hold_difficulty_up = 0.0
-		Player = (<Player> + 1)
+		battle_reset_struct <player_status>
+		Increment \{Player}
 	repeat 2
 	Change \{current_battle_text_p1 = [id id id]}
 	Change \{current_battle_text_p2 = [id id id]}
@@ -155,25 +165,7 @@ script battlemode_deinit
 	GH_BattleMode_Stop_Heartbeat_P1
 	GH_BattleMode_Stop_Heartbeat_P2
 	killspawnedscript \{id = battlemode}
-	Change StructureName = <player_status> battlemode_creation_selection = -1
-	Change StructureName = <player_status> current_num_powerups = 0
-	Change StructureName = <player_status> battle_text_count = 0
-	Change StructureName = <player_status> shake_notes = -1
-	Change StructureName = <player_status> double_notes = -1
-	Change StructureName = <player_status> diffup_notes = -1
-	Change StructureName = <player_status> lefty_notes = -1
-	Change StructureName = <player_status> whammy_attack = -1
-	Change StructureName = <player_status> stealing_powerup = -1
-	Change StructureName = <player_status> death_lick_attack = -1
-	Change StructureName = <player_status> last_selected_attack = -1
-	Change StructureName = <player_status> last_hit_note = None
-	Change StructureName = <player_status> broken_string_mask = 0
-	Change StructureName = <player_status> broken_string_green = 0
-	Change StructureName = <player_status> broken_string_red = 0
-	Change StructureName = <player_status> broken_string_yellow = 0
-	Change StructureName = <player_status> broken_string_blue = 0
-	Change StructureName = <player_status> broken_string_orange = 0
-	Change StructureName = <player_status> hold_difficulty_up = 0.0
+	battle_reset_struct <player_status>
 	if NOT (($<player_status>.lefthanded_gems_flip_save)= ($<player_status>.lefthanded_gems))
 		Change StructureName = <player_status> lefthanded_gems = ($<player_status>.lefthanded_gems_flip_save)
 	endif
@@ -391,19 +383,9 @@ script battlemode_ready\{battle_gem = 0 player_status = player1_status steal = 0
 		z_priority = (($battle_hud_2d_elements.z)+ 19)
 	}
 	if (<steal> > 0)
-		DoScreenElementMorph {
-			id = <card_checksum>
-			Pos = <card_pos>
-			alpha = 1
-			time = 0
-		}
+		DoScreenElementMorph id = <card_checksum> Pos = <card_pos> alpha = 1 time = 0
 	else
-		DoScreenElementMorph {
-			id = <card_checksum>
-			Pos = <card_pos>
-			alpha = 1
-			time = 0.3
-		}
+		DoScreenElementMorph id = <card_checksum> Pos = <card_pos> alpha = 1 time = 0.3
 	endif
 	update_battlecards_add current_num_powerups = <current_num_powerups> player_status = <player_status>
 	if ($show_battle_text = 1)
@@ -466,11 +448,7 @@ script attack_ready_text
 		}
 	endif
 	wait \{3 seconds}
-	DoScreenElementMorph {
-		id = <text_checksum>
-		alpha = 0
-		time = 0.3
-	}
+	DoScreenElementMorph id = <text_checksum> alpha = 0 time = 0.3
 endscript
 
 script update_battlecards_add
@@ -1936,33 +1914,10 @@ script battle_broken_string
 		non_broken_index = 0
 		non_broken_strings = [-1 -1 -1 -1 -1]
 		begin
-			switch <gem_color>
-				case 0
-					if ($<other_player_status>.broken_string_green = 0)
-						SetArrayElement ArrayName = non_broken_strings index = <non_broken_index> NewValue = <gem_color>
-						<non_broken_index> = (<non_broken_index> + 1)
-					endif
-				case 1
-					if ($<other_player_status>.broken_string_red = 0)
-						SetArrayElement ArrayName = non_broken_strings index = <non_broken_index> NewValue = <gem_color>
-						<non_broken_index> = (<non_broken_index> + 1)
-					endif
-				case 2
-					if ($<other_player_status>.broken_string_yellow = 0)
-						SetArrayElement ArrayName = non_broken_strings index = <non_broken_index> NewValue = <gem_color>
-						<non_broken_index> = (<non_broken_index> + 1)
-					endif
-				case 3
-					if ($<other_player_status>.broken_string_blue = 0)
-						SetArrayElement ArrayName = non_broken_strings index = <non_broken_index> NewValue = <gem_color>
-						<non_broken_index> = (<non_broken_index> + 1)
-					endif
-				case 4
-					if ($<other_player_status>.broken_string_orange = 0)
-						SetArrayElement ArrayName = non_broken_strings index = <non_broken_index> NewValue = <gem_color>
-						<non_broken_index> = (<non_broken_index> + 1)
-					endif
-			endswitch
+			if ($<other_player_status>.($broken_strings[<gem_color>]) = 0)
+				SetArrayElement ArrayName = non_broken_strings index = <non_broken_index> NewValue = <gem_color>
+				<non_broken_index> = (<non_broken_index> + 1)
+			endif
 			<gem_color> = (<gem_color> + 1)
 		repeat <highest_value>
 		if (<non_broken_index> = 0)
@@ -2156,15 +2111,15 @@ script battle_starpower
 	//printf 'sp on'
 	// hack :( lazy to detour but also thinking about how i would have to patch it and how it works out in the long run if something needs to change
 	last_health = ($<player_status>.current_health)
-	ExtendCrc health_change_good_battle_ ($difficulty_list_props.<difficulty>.text_nl) out = health_change
+	ExtendCrc health_change_star_ ($difficulty_list_props.<difficulty>.text_nl) out = health_change
 	begin
 		if ($<player_status>.star_power_amount = 0)
 			break
 		endif
 		if ($<player_status>.current_health > <last_health>)
 			//printf 'boost'
-			change structurename=player1_status current_health=($<player_status>.current_health + ($<health_change> * 2.0))
-			CrowdIncrease player_status = <player_status>
+			change structurename=player1_status current_health=($<player_status>.current_health + ($<health_change>))
+			//CrowdIncrease player_status = <player_status>
 		endif
 		last_health = ($<player_status>.current_health)
 		wait 1 gameframe
@@ -2223,8 +2178,9 @@ script animate_lefty_flip
 endscript
 
 script update_training_whammy_bar
-	FormatText checksumName = training_whammy_checksum 'training_whammy_bar_%s' s = ($<other_player_status>.Player)
-	FormatText checksumName = training_whammy_text_checksum 'training_whammy_bar_text_%s' s = ($<other_player_status>.Player)
+	other_player_text = ($<other_player_status>.text)
+	ExtendCrc training_whammy_bar_ <other_player_text> out = training_whammy_checksum
+	ExtendCrc training_whammy_bar_text_ <other_player_text> out = training_whammy_text_checksum
 	if ScreenElementExists id = <training_whammy_checksum>
 		DestroyScreenElement id = <training_whammy_checksum>
 	endif
@@ -2256,7 +2212,7 @@ script update_training_whammy_bar
 		parent = <training_whammy_checksum>
 		id = <training_whammy_text_checksum>
 		Pos = (120.0, 145.0)
-		text = "WHAMMY"
+		text = 'WHAMMY'
 		rot_angle = 53
 		font = text_a4
 		rgba = [255 255 255 255]
@@ -2269,90 +2225,46 @@ endscript
 
 script animate_whammy_bar
 	pulse_on = 0
+	GetArraySize \{$gem_colors}
 	begin
-		GetArraySize \{$gem_colors}
 		array_count = 0
 		begin
-			Color = ($gem_colors [<array_count>])
+			Color = ($gem_colors[<array_count>])
 			ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
 			ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
 			original_bottom_bar_pos = (0.0, 0.0)
 			bottom_bar_pos = (<original_bottom_bar_pos> - ((0.0, 15.0) * ($<other_player_status>.whammy_attack)))
 			if NOT ($<other_player_status>.whammy_attack < 1)
 				if (<pulse_on> = 0)
-					DoScreenElementMorph {
-						id = <name_base>
-						alpha = 0.5
-						Pos = (<bottom_bar_pos> + (0.0, 5.0))
-						just = [center center]
-						time = 0.15
-					}
+					DoScreenElementMorph id = <name_base> alpha = 0.5 time = 0.15 just = [center center] Pos = (<bottom_bar_pos> + (0.0, 5.0))
 				else
-					DoScreenElementMorph {
-						id = <name_base>
-						alpha = 0.5
-						Pos = (<bottom_bar_pos> - (0.0, 5.0))
-						just = [center center]
-						time = 0.15
-					}
+					DoScreenElementMorph id = <name_base> alpha = 0.5 time = 0.15 just = [center center] Pos = (<bottom_bar_pos> - (0.0, 5.0))
 				endif
 			else
-				DoScreenElementMorph {
-					id = <name_base>
-					alpha = 1
-					Pos = (<original_bottom_bar_pos> + (0.0, 30.0))
-					just = [center center]
-					time = 0.15
-				}
+				DoScreenElementMorph id = <name_base> alpha = 1 time = 0.15 just = [center center] Pos = (<original_bottom_bar_pos> + (0.0, 30.0))
 			endif
 			array_count = (<array_count> + 1)
 		repeat <array_Size>
 		training_whammy_pos_new = (<training_whammy_pos> - ((0.0, 15.0) * ($<other_player_status>.whammy_attack)))
-		DoScreenElementMorph {
-			id = <id>
-			Pos = <training_whammy_pos_new>
-			time = 0.15
-		}
+		DoScreenElementMorph id = <id> Pos = <training_whammy_pos_new> time = 0.15
 		if NOT ($<other_player_status>.whammy_attack < 1)
 			if (<pulse_on> = 0)
-				DoScreenElementMorph {
-					id = <id>
-					rot_angle = (<training_whammy_angle> - 20)
-					just = [center bottom]
-					time = 0.15
-				}
+				DoScreenElementMorph id = <id> rot_angle = (<training_whammy_angle> - 20) time = 0.15 just = [center bottom]
 				<pulse_on> = 1
 			else
-				DoScreenElementMorph {
-					id = <id>
-					rot_angle = <training_whammy_angle>
-					just = [center bottom]
-					time = 0.15
-				}
+				DoScreenElementMorph id = <id> rot_angle = <training_whammy_angle> time = 0.15 just = [center bottom]
 				<pulse_on> = 0
 			endif
 		else
-			DoScreenElementMorph {
-				id = <id>
-				rot_angle = <training_whammy_angle>
-				just = [center bottom]
-				alpha = 0
-				time = 0.3
-			}
+			DoScreenElementMorph id = <id> rot_angle = <training_whammy_angle> just = [center bottom] alpha = 0 time = 0.3
 			wait \{0.15 seconds}
 			GetArraySize \{$gem_colors}
 			array_count = 0
 			begin
-				Color = ($gem_colors [<array_count>])
+				Color = ($gem_colors[<array_count>])
 				ExtendCrc ($button_up_models.<Color>.name) '_base' out = name_base
 				ExtendCrc <name_base> ($<other_player_status>.text) out = name_base
-				DoScreenElementMorph {
-					id = <name_base>
-					alpha = 1
-					Pos = <original_bottom_bar_pos>
-					just = [center center]
-					time = 0.1
-				}
+				DoScreenElementMorph id = <name_base> alpha = 1 Pos = <original_bottom_bar_pos> just = [center center] time = 0.1
 				array_count = (<array_count> + 1)
 			repeat <array_Size>
 			break
@@ -2362,26 +2274,15 @@ script animate_whammy_bar
 endscript
 
 script update_broken_button
-	broken_string_id = ($broken_strings [<id>])
-	Color = ($gem_colors [<id>])
+	broken_string_id = ($broken_strings[<id>])
+	Color = ($gem_colors[<id>])
 	button_up_name = ($button_up_models.<Color>.name)
 	ExtendCrc button_up_pixel_array ($<other_player_status>.text)out = pixel_array
 	<player_text> = ($<other_player_status>.text)
 	begin
 		<num_hammers> = 0
 		if NOT ($<other_player_status>.<broken_string_id> = 0)
-			switch <id>
-				case 0
-					<num_hammers> = ($<other_player_status>.broken_string_green)
-				case 1
-					<num_hammers> = ($<other_player_status>.broken_string_red)
-				case 2
-					<num_hammers> = ($<other_player_status>.broken_string_yellow)
-				case 3
-					<num_hammers> = ($<other_player_status>.broken_string_blue)
-				case 4
-					<num_hammers> = ($<other_player_status>.broken_string_orange)
-			endswitch
+			<num_hammers> = ($<other_player_status>.<broken_string_id>)
 		endif
 		if (<num_hammers> = 0)
 			break
@@ -2393,10 +2294,11 @@ script update_broken_button
 endscript
 
 script update_broken_string_arrows
-	broken_string_id = ($broken_strings [<id>])
+	broken_string_id = ($broken_strings[<id>])
 	string_id = <id>
-	FormatText checksumName = arrow_checksum 'broken_string_arrow_%i_%s' i = <id> s = ($<other_player_status>.Player)
-	FormatText checksumName = text_checksum 'broken_string_text_%i_%s' i = <id> s = ($<other_player_status>.Player)
+	FormatText textname = suffix '%i_%s' i = <id> s = ($<other_player_status>.Player)
+	ExtendCrc broken_string_arrow_ <suffix> out = arrow_checksum
+	ExtendCrc broken_string_text_ <suffix> out = text_checksum
 	if ScreenElementExists id = <arrow_checksum>
 		DestroyScreenElement id = <arrow_checksum>
 	endif
@@ -2404,7 +2306,7 @@ script update_broken_string_arrows
 		DestroyScreenElement id = <text_checksum>
 	endif
 	ExtendCrc gem_container ($<other_player_status>.text) out = container_id
-	Color = ($gem_colors [<id>])
+	Color = ($gem_colors[<id>])
 	arrow_pos = (($button_up_models.<Color>.pos_2d) - (0.0, 30.0))
 	lefty_arrow_pos = (($button_up_models.<Color>.left_pos_2d) - (0.0, 30.0))
 	offset = ((1.0, 0.0) * $x_offset_p2)
@@ -2439,7 +2341,7 @@ script update_broken_string_arrows
 		parent = <arrow_checksum>
 		id = <text_checksum>
 		Pos = ((53.0, 150.0) + (<x_offset> * (1.0, 0.0)))
-		text = "PUSH"
+		text = 'PUSH'
 		font = text_a4
 		rgba = [255 255 255 255]
 		just = [center bottom]
@@ -2451,21 +2353,10 @@ endscript
 
 script animate_arrow
 	pulse_on = 0
+	<num_hammers> = 0
 	begin
-		<num_hammers> = 0
 		if NOT ($<other_player_status>.<broken_string_id> = 0)
-			switch <string_id>
-				case 0
-					<num_hammers> = ($<other_player_status>.broken_string_green)
-				case 1
-					<num_hammers> = ($<other_player_status>.broken_string_red)
-				case 2
-					<num_hammers> = ($<other_player_status>.broken_string_yellow)
-				case 3
-					<num_hammers> = ($<other_player_status>.broken_string_blue)
-				case 4
-					<num_hammers> = ($<other_player_status>.broken_string_orange)
-			endswitch
+			<num_hammers> = ($<other_player_status>.<broken_string_id>)
 		endif
 		<up_pixels> = (<num_hammers> * 5)
 		if NOT ($<other_player_status>.lefthanded_button_ups = 1)
@@ -2480,12 +2371,7 @@ script animate_arrow
 		if NOT ($<other_player_status>.<broken_string_id> = 0)
 			if (<pulse_on> = 0)
 				if ScreenElementExists id = <arrow_id>
-					DoScreenElementMorph {
-						id = <arrow_id>
-						Pos = (<animate_pos> - (0.0, 10.0))
-						just = [center bottom]
-						time = 0.1
-					}
+					DoScreenElementMorph id = <arrow_id> Pos = (<animate_pos> - (0.0, 10.0)) just = [center bottom] time = 0.1
 				endif
 				wait \{0.1 seconds}
 				<pulse_on> = 1

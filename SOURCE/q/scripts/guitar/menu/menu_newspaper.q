@@ -367,10 +367,9 @@ script create_newspaper_menu\{for_practice = 0}
 					rgba = [223 223 223 255]
 					dims = (600.0, 200.0)
 				}
-				FormatText \{checksumName = card_checksum 'battlecard_final_blow'}
 				CreateScreenElement {
 					Type = SpriteElement
-					id = <card_checksum>
+					id = battlecard_final_blow
 					parent = newspaper_container
 					texture = <final_blow_attack_icon>
 					rgba = [255 255 255 255]

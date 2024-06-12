@@ -1,28 +1,25 @@
-[submodule "SOURCE/GH3Plus"]
+[submodule "GH3Plus"]
 	path = SOURCE/GH3Plus
 	url = https://github.com/donnaken15/GH3-Plus
-[submodule "SOURCE/q/QBC"]
+[submodule "QBC"]
 	path = SOURCE/q/QBC
 	url = https://github.com/donnaken15/NodeQBC
-[submodule "SOURCE/q/GHSDK"]
-	path = SOURCE/q/GHSDK
-	url = https://gitgud.io/fretworks/guitar-hero-sdk
-[submodule "SOURCE/Helix"]
+[submodule "deps/Helix"]
 	path = SOURCE/dependencies/Helix
 	url = https://github.com/donnaken15/hmp3
-[submodule "SOURCE/DotNetZip"]
+[submodule "deps/DotNetZip"]
 	path = SOURCE/dependencies/DotNetZip
-	url = https://github.com/DinoChiesea/DotNetZip
-[submodule "SOURCE/QueenBee"]
+	url = https://github.com/DinoChiesa/DotNetZip
+[submodule "QueenBee"]
 	path = SOURCE/dependencies/QueenBee
 	url = https://github.com/donnaken15/Queen-Bee
 	branch = main
-[submodule "SOURCE/q/mods"]
+[submodule "mods"]
 	path = SOURCE/q/mods
 	url = https://github.com/donnaken15/QBMods
-[submodule "SOURCE/mid2chart"]
+[submodule "mid2chart"]
 	path = SOURCE/dependencies/mid2chart
 	url = https://github.com/donnaken15/mid2chart
-[submodule "SOURCE/dependencies/SharpZipLib"]
+[submodule "deps/SharpZipLib"]
 	path = SOURCE/dependencies/SharpZipLib
 	url = https://github.com/icsharpcode/SharpZipLib

@@ -85,8 +85,10 @@ stats_*.txt
 # i put this and its showing these as untracked still
 /DATA/MOVIES/BIK/backgrnd_video.bik.xen
 /DATA/MUSIC/fastgh3.fsb.xen
+/DATA/MUSIC/fastgh3.dat.xen
 /DATA/PAK/player.pak.xen
 /DATA/PAK/song.pak.xen
+/DATA/PAK/song.qb.xen
 /SOURCE/Zones/highway/__output.scn
 /SOURCE/Zones/highway/__output.tex
 *.log.xz
@@ -94,3 +96,5 @@ stats_*.txt
 /PLUGINS/RichPresence.dll
 /DATA/hway.pak.xen
 /DATA/gameplay_BG.img.xen
+*.user
+# forgot if this ignore is based on visual studio ignore, but this should be excluded if its really just going to contain one user preference about how files are presented in a project

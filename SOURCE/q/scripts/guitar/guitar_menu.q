@@ -1238,7 +1238,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 				}
 				GetScreenElementDims \{id = pause_options_lefty}
 				<id> ::SetProps Pos = (<width> * (1.0, 0.0) + (22.0, 24.0))
-				if NOT ($end_credits = 1)
+				/*if NOT ($end_credits = 1)
 					new_pause_menu_button {
 						<params_params>
 						id = pause_credits
@@ -1250,7 +1250,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 						]
 						text = 'Credits'
 					}
-				endif
+				endif*///
 				new_pause_menu_button {
 					<params_params>
 					id = options_exit

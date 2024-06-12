@@ -119,6 +119,12 @@ Default_PreEncore_Transition = {
 }
 Common_PreEncore_Transition = {
 	ScriptTable = [
+		{
+			time = 0
+			Scr = play_outro
+			params = {
+			}
+		}
 	]
 	EndWithDefaultCamera
 }
@@ -131,6 +137,12 @@ Default_PreBoss_Transition = {
 }
 Common_PreBoss_Transition = {
 	ScriptTable = [
+		{
+			time = 0
+			Scr = play_outro
+			params = {
+			}
+		}
 	]
 }
 Default_Boss_Transition = {
@@ -170,6 +182,12 @@ Default_SongLost_Transition = {
 }
 Common_SongLost_Transition = {
 	ScriptTable = [
+		{
+			time = 0
+			Scr = play_outro
+			params = {
+			}
+		}
 	]
 }
 Default_BattleEnd_Transition = {
@@ -179,6 +197,12 @@ Default_BattleEnd_Transition = {
 }
 Common_BattleEnd_Transition = {
 	ScriptTable = [
+		{
+			time = 0
+			Scr = play_outro
+			params = {
+			}
+		}
 	]
 }
 

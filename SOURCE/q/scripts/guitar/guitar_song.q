@@ -515,7 +515,7 @@ endscript
 exit_on_song_end = 0
 
 script ExitOnSongEnd
-	if ($exit_on_song_end = 1)
+	if ($exit_on_song_end = 1 & battle_sudden_death = 0)
 		ResetEngine
 	endif
 endscript
