@@ -2,8 +2,8 @@
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Configuration>Release</Configuration>
+    <Platform>AnyCPU</Platform>
     <ProjectGuid>{822E3318-036A-42E1-A2ED-7C2382DF5557}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>c</RootNamespace>
@@ -12,9 +12,13 @@
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\DATA\MUSIC\TOOLS\</OutputPath>
@@ -24,22 +28,17 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>3</LangVersion>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="c128ks.cs" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(ProjectDir)stripversion.bat" "$(TargetPath)"
-move "$(TargetPath)" "$(TargetDir)c128ks.exe"</PostBuildEvent>
+copy "$(TargetPath)" "$(TargetDir)c128ks.exe" /y
+del "$(TargetPath)" /q</PostBuildEvent>
   </PropertyGroup>
 </Project>

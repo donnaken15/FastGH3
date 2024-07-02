@@ -20,7 +20,7 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <OutputPath>..\..\</OutputPath>
-    <DebugType>Full</DebugType>
+    <DebugType>PdbOnly</DebugType>
     <WarningLevel>4</WarningLevel>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
@@ -38,28 +38,39 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <ErrorReport>prompt</ErrorReport>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <LangVersion>3</LangVersion>
+    <LangVersion>Default</LangVersion>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Optimize>True</Optimize>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>
-    </ApplicationIcon>
     <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
     <StartupObject>Launcher</StartupObject>
     <BaseAddress>4194304</BaseAddress>
     <RegisterForComInterop>False</RegisterForComInterop>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>PC_ONLY;NO_ZLIB</DefineConstants>
+    <DefineConstants>PC_ONLY;NO_ZLIB;SHARPDEV</DefineConstants>
     <Optimize>true</Optimize>
     <NoWin32Manifest>true</NoWin32Manifest>
-    <LangVersion>3</LangVersion>
+    <RunCodeAnalysis>False</RunCodeAnalysis>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <SourceAnalysisOverrideSettingsFile>C:\Users\Owner\AppData\Roaming\ICSharpCode/SharpDevelop4\Settings.SourceAnalysis</SourceAnalysisOverrideSettingsFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SharpZipLib|AnyCPU'">
-    <DefineConstants>PC_ONLY;NO_ZLIB;USE_SZL</DefineConstants>
+    <DefineConstants>PC_ONLY;NO_ZLIB;SHARPDEV;USE_SZL</DefineConstants>
   </PropertyGroup>
+  <ItemGroup Condition="'0' == '1'">
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -638,7 +649,6 @@
     <Compile Include="diags\conf\settings.Designer.cs">
       <DependentUpon>settings.cs</DependentUpon>
     </Compile>
-    <None Include="res\AssemblyInfo.cs" />
     <Compile Include="Sng.cs" />
     <Compile Include="diags\conf\songcache.cs">
       <SubType>Form</SubType>
@@ -669,40 +679,24 @@
     <None Include="res\lt.txt" />
     <None Include="res\pn.bin" />
     <None Include="res\qn.bin" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="Shell32">
-      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="res\sctn.txt" />
+    <None Include="res\Version.rc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>rem POST BUILD / COMPRESS EXE
 call "$(ProjectDir)..\Misc\stripversion.bat" "$(TargetPath)"
 pushd "$(ProjectDir)"
-rem program breaks for some reason if -i has absolute path with spaces
-NetCompressor "$(TargetPath)" "$(TargetPath)" -gz -a "res\AssemblyInfo.cs" -i "res\note.ico"
-rem mpress "$(TargetPath)" -S -s -r
+NetCompressor "$(TargetPath)" "$(TargetPath)" -gz
+set "RES_HACK=start /b /wait "" "C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe""
+%25RES_HACK%25 -open "source\fastgh3\res\Version.rc" -save "source\fastgh3\res\Version.res" -action compile
+%25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action delete VERSIONINFO,, -action delete MANIFEST,,
+%25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action add -res "$(ProjectDir)res\Version.res"
+%25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action add -res "$(ProjectDir)res\note.ico" -mask ICONGROUP,32512,
+stripreloc /b /c "$(TargetPath)"
 popd
-dash "$(SolutionDir)Misc/write_build_date.sh"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
+dash "$(SolutionDir)Misc/write_build_date.sh"
+</PostBuildEvent>
     <PreBuildEvent>rem GENERATE RESOURCES / KILL LAUNCHER
 pushd "$(ProjectDir)"
 node GenerateLD.js

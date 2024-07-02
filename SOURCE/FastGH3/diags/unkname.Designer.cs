@@ -39,9 +39,6 @@
 			this.infolbl.Name = "infolbl";
 			this.infolbl.Size = new System.Drawing.Size(397, 83);
 			this.infolbl.TabIndex = 0;
-			this.infolbl.Text = "The selected song PAK has an unknown identifier.\r\nIf you know the internal name f" +
-    "or this song, enter it here to play:\r\n\r\n\r\nIf the name check does not succeed, yo" +
-    "u cannot continue.";
 			this.infolbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// text

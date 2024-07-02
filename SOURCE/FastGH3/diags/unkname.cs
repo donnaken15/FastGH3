@@ -13,5 +13,6 @@ public partial class unkname : Form
 	public unkname()
 	{
 		InitializeComponent();
+		this.infolbl.Text = Launcher.T[97];
 	}
 }

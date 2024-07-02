@@ -169,7 +169,6 @@
 	#endregion
 
 	private System.Windows.Forms.DataGridView c;
-	private System.Windows.Forms.DataGridViewTextBoxColumn Filesize;
 	private System.Windows.Forms.ContextMenuStrip tableContext;
 	private System.Windows.Forms.ToolStripMenuItem deleteTool;
 	private System.Windows.Forms.DataGridViewTextBoxColumn ID;

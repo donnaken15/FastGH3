@@ -67,10 +67,3 @@ copy SOURCE\Misc\user.pak.xen __FINAL\DATA\user.pak.xen /y
 ::copy SOURCE\Misc\null.pak __FINAL\DATA\PAK\song.pak.xen /y
 
 
-
-
-
-
-
-
-

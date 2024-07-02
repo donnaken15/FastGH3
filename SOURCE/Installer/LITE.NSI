@@ -1,13 +1,24 @@
 
-Name "FastGH3 LITE"
-OutFile "FastGH3_LITE.exe"
+SetCompressor /FINAL lzma
+!include VersionInfo.nsh
+
+Name "${TITLEVER} LITE"
 RequestExecutionLevel user
 # thanks instant express
-Icon "..\FastGH3\P\note.ico"
+Icon "..\FastGH3\res\note.ico"
 
 !include FileFunc.nsh
 !include LogicLib.nsh
 !include FindProcess.nsh
+
+OutFile "../../FastGH3_1.1_LITE.exe"
+VIProductVersion "${APPVERSION}"
+VIAddVersionKey "ProductName" "${TITLEVER}"
+VIAddVersionKey "LegalTrademarks" "Activision"
+VIAddVersionKey "LegalCopyright" "© Aspyr & Activision 2007-2008"
+VIAddVersionKey "FileDescription" "An advanced mod of Guitar Hero 3 designed for playing charts easily. Lite version packaged into ONE EXE."
+VIAddVersionKey "FileVersion" "${APPVERSION}"
+InstallDir "$PROGRAMFILES\FastGH3"
 
 ; https://nsis-dev.github.io/NSIS-Forums/html/t-214310.html
 Function TickCount
@@ -18,38 +29,53 @@ Function TickCount
 FunctionEnd
 
 Function .onInit
+	${GetParameters} $R0
+	StrCpy $R9 $R0
 	SetOutPath $TEMP\Z.TMP.FGH3
 	File /r "..\..\__FINAL\*"
 	;File /r /x settings.ini y no work
 	File /oname=settings.ini liteconfig.ini
-	
-	${GetParameters} $R0
 	; if user has settings.ini alongside this exec, use it in the temp dir
 	IfFileExists $EXEDIR\settings.ini 0 +2
 	CopyFiles $EXEDIR\settings.ini $OUTDIR
-	ExecWait '"$OUTDIR\FastGH3.exe" $R0' $1
-	${IfNot} $1 = 0x11111111
-	;${Else}
-		; launcher returning 1 where it should return 0 because conversion is successful
-		;${If} $1 = 0
-			Call TickCount
-			StrCpy $R8 $1 ; unironic brain damage wtf, nice one nullsoft
-			${Do}
-				Sleep 2000
-				${FindProcess} "game.exe" $0
-			${LoopWhile} $0 <> 0
-			; get playtime
-			Call TickCount
-			IntOp $R0 $1 - $R8
-			; if too short, either user got some error or
-			; the user just gave up on it early ( :(  ), so don't display message
-			IntCmp $R0 32000 0 short 0
-			MessageBox MB_OK "Thanks for playing! Unlock more potential by simply installing this (from https://donnaken15.com/FastGH3), which will make replaying songs way faster, allow you to save your settings, directly download and instantly play songs from URLs, and gain easy access to more features!"
-		short:
-			IfFileExists $EXEDIR\settings.ini 0 +2
-			CopyFiles $OUTDIR\settings.ini $EXEDIR
-		;${EndIf}
-	${EndIf}
+	StrCmp $R9 "" 0 main ; if parameters aren't empty, skip extra song if not ignored
+	ReadINIStr $R9 $OUTDIR\settings.ini Misc IgnoreExtra
+	StrCmp $R9 0 main 0
+	;ad: ;lol ; :(
+	MessageBox MB_YESNO \
+"There's a secret song inside! Do you want to play it? \
+Clicking ''No'' won't show this dialog again, unless a setting is undone." \
+	IDNO main
+	WriteINIStr $EXEDIR\settings.ini Misc IgnoreExtra 1
+	Exec '"$OUTDIR\game.exe"'
+	Goto ok
+	main:
+		StrCpy $R9 ""
+		ExecWait '"$OUTDIR\FastGH3.exe" $R9' $R9
+		Sleep 1000
+			IntCmp $R9 0 ok 0 0
+			Goto err
+			ok:
+				Sleep 5000
+				Call TickCount
+				StrCpy $R8 $1 ; unironic brain damage wtf, nice one nullsoft
+				${Do}
+					Sleep 2000
+					${FindProcess} "game.exe" $0 ; find full file name if possible
+				${LoopWhile} $0 <> 0
+				; get playtime
+				Call TickCount
+				IntOp $R0 $1 - $R8
+				
+				IfFileExists $EXEDIR\settings.ini 0 +2
+				CopyFiles $OUTDIR\settings.ini $EXEDIR
+				
+				; if too short, either user got some error or
+				; the user just gave up on it early ( :(  ), so don't display message
+				IntCmp $R0 32000 0 short 0
+				MessageBox MB_OK "Thanks for playing! Unlock more potential by simply installing this (from https://donnaken15.com/FastGH3), which will make replaying songs way faster, allow you to save your settings, directly download and instantly play songs from URLs, and gain easy access to more features!"
+			short:
+		err:
 	RMDir /r $OUTDIR
 	Delete $OUTDIR
 	Quit

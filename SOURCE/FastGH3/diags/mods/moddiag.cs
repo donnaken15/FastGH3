@@ -315,7 +315,7 @@ public partial class moddiag : Form
 	public moddiag()
 	{
 		InitializeComponent();
-		OFD.Filter = Launcher.T[185];
+		OFD.Filter = Launcher.uf(Launcher.T[185], true);
 		//Height += new DirectoryInfo(folder + modf).GetFiles("*.qb.xen", SearchOption.AllDirectories).Length * 9;
 		if (!Directory.Exists(df))
 			Directory.CreateDirectory(df);
@@ -411,7 +411,7 @@ public partial class moddiag : Form
 		{
 			string path = folder + modf + mod.ToString().Replace(Launcher.T[143], d);
 			QbMod test = new QbMod(path);
-			string addpath, addpath2;
+			string addpath2;
 			if (mod.ToString().StartsWith(Launcher.T[143]))
 				addpath2 = d;
 			else

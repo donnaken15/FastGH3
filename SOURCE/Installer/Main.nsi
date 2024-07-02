@@ -1,26 +1,14 @@
 
 SetCompressor /FINAL lzma
+!include VersionInfo.nsh
 
+Name "${TITLEVER}"
 !include MUI2.nsh
 !include nsDialogs.nsh
 !include LogicLib.nsh
 !define MUI_ICON Icon.ico
-!insertmacro MUI_LANGUAGE "English"
 
-Name "FastGH3 1.1"
-!define APPVER_MAJOR 1
-!define APPVER_MINOR 043
-!define APPVERSION 1.${APPVER_MAJOR}.${APPVER_MINOR}.0
-OutFile "FastGH3_1.1.exe"
-VIProductVersion "${APPVERSION}"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "FastGH3 1.1"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Guitar Hero is trademark of Activision and Neversoft"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "Copyright Activision, Aspyr, Neversoft 2007"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "FastGH3 1.1 Installer"
-VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APPVERSION}"
-InstallDir "$PROGRAMFILES\FastGH3"
-
-Caption "FastGH3 1.1"
+Caption "${TITLEVER}"
 BrandingText "github.com/donnaken15/FastGH3"
 
 Page custom splashPage
@@ -29,8 +17,9 @@ Page custom splashPage
 !insertmacro MUI_PAGE_DIRECTORY
 ; need a start menu/desktop shortcut checkbox
 !define MUI_INSTFILESPAGE_FINISHHEADER_TEXT "Installed"
-!define MUI_INSTFILESPAGE_FINISHHEADER_SUBTEXT "Done. lol. NOW JUST START PLAYING!"
+!define MUI_INSTFILESPAGE_FINISHHEADER_SUBTEXT "Done, lol. NOW JUST START PLAYING!"
 !insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_LANGUAGE "English"
 ;!define MUI_FINISHPAGE_RUN "$INSTDIR\FastGH3.exe"
 ;!define MUI_FINISHPAGE_RUN_TEXT "Play a chart now"
 ;!define MUI_WELCOMEFINISHPAGE_BITMAP "InstSplash.bmp"
@@ -41,6 +30,15 @@ Page custom splashPage
 ;"Thank you for installing FastGH3!"
 ;"Click Close to exit. Enjoy!"
 ;"Select a chart now"
+
+OutFile "../../FastGH3_1.1.exe"
+VIProductVersion "${APPVERSION}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${TITLEVER}"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Guitar Hero is trademark of Activision and Neversoft"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalCopyright" "© Activision, Aspyr, Neversoft 2007"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileDescription" "${TITLEVER} Installer"
+VIAddVersionKey /LANG=${LANG_ENGLISH} "FileVersion" "${APPVERSION}"
+InstallDir "$PROGRAMFILES\FastGH3"
 
 Section
 	!insertmacro MUI_HEADER_TEXT "Installing" "Don't blink!"
@@ -168,7 +166,7 @@ Function splashPage
 	SetCtlColors $DIALOG 0 0xffffff
 	SetCtlColors $HEADLINE 0 0xffffff
 	SetCtlColors $TEXT 0 0xffffff
-	SetCtlColors $RUNNOW_TEXT 0 0xffffff
+	;SetCtlColors $RUNNOW_TEXT 0 0xffffff
 
 	Call HideControls
 

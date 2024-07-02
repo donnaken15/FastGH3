@@ -10,7 +10,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+#if !SHARPDEV
 using Shell32;
+#endif
 #if !USE_SZL
 using Ionic.Zip;
 using Ionic.Zlib;
@@ -101,8 +103,8 @@ public static partial class Launcher
 	}
 
 #region little functions
-	public static void killgame()	{ cfgW(m, ks, 1); }
-	public static void unkillgame()	{ cfgW(m, ks, 0); }
+	public static void killgame()	{ cfgW("Temp", ks, 1); }
+	public static void unkillgame()	{ cfgW("Temp", ks, 0); }
 	// copy song video
 	static void cSV(string bik)
 	{
@@ -552,12 +554,56 @@ public static partial class Launcher
 	{
 		return Regex.Replace(v, a, b, RegexOptions.IgnoreCase);
 	}
+	public static string uf(string l, bool ga) //expand filter string
+	{
+		List<string> supportedtypes = new List<string>();
+		string sb = "", idk = T[214].Substring(9, 3);
+		bool first = true;
+		foreach (string g in l.Split(';'))
+		{
+			string[] s = g.Split(':'), t = s[1].Split(',');
+			supportedtypes.AddRange(t);
+			if (!first || ga)
+				sb += '|';
+			if (first)
+				first = false;
+			sb += s[0] + idk + string.Join(";*.", t);
+		}
+		sb += T[214];
+		if (ga)
+			sb = T[213] + idk + string.Join(";*.", supportedtypes.ToArray()) + sb;
+		return sb;
+	}
+	public static bool isTTY()
+	{
+		bool _ = false;
+		try
+		{
+			_ = (
+				Console.WindowWidth == 0 ||
+				Console.WindowHeight == 0
+			);
+		}
+		catch
+		{
+			_ = true;
+		}
+		return _ && Console.KeyAvailable &&
+			Console.CursorLeft == 0 && Console.CursorTop == 0;
+	}
+	static void pt(byte i)
+	{
+		log.WriteLine(T[15], T[7].Substring(i*13, 13));
+	}
 
+	[DllImport("kernel32.dll", SetLastError = true)]
+	[return: MarshalAs(UnmanagedType.Bool)]
+	public static extern bool AllocConsole();
 	[DllImport("kernel32.dll", SetLastError = true)]
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool FreeConsole();
 
-	static bool outputPAK = false;
+	static bool outputPAK = true;
 	static bool newinstance = false;
 	static bool initlog = false;
 	public static string version = "1.1-999011043";
@@ -580,21 +626,23 @@ public static partial class Launcher
 					Console.WriteLine(splashText);
 					Console.ReadKey();
 				}
-				FreeConsole();
+				if (!isTTY())
+					FreeConsole();
 				OpenFileDialog openchart = new OpenFileDialog()
 				{
 					AddExtension = true,
 					CheckFileExists = true,
 					CheckPathExists = true,
-					Filter = T[130],
+					Filter = uf(T[130], true),
 					RestoreDirectory = true,
 					Title = T[196]
 				};
 				if (openchart.ShowDialog() == DialogResult.OK)
 				{
+					AllocConsole();
 					// TODO?: process start and redirect output to this EXE
 					// when MMF is figured out for multi instances
-					sub(SubstringExtensions.Quotes(openchart.FileName));
+					return sub(SubstringExtensions.Quotes(openchart.FileName));
 				}
 				else
 					return unchecked(0x11111111);
@@ -704,7 +752,7 @@ public static partial class Launcher
 						initlog = true;
 						if (newfile)
 						{
-							log.WriteLine(T[1]);
+							log.WriteLine(T[1]+new string('-',32));
 							log.WriteLine("version " + version + " / build time: " + builddate + " / branch: " + branch);
 							newfile = false;
 							cfgW("Temp", fl, 0);
@@ -910,7 +958,7 @@ public static partial class Launcher
 						newinstance = true;
 					}
 					Environment.SetEnvironmentVariable("FASTGH3_BANNER", "1");
-					log.WriteLine(T[7]); // "\n######### DOWNLOAD SONG PHASE #########\n"
+					pt(1); // "\n######### DOWNLOAD SONG PHASE #########\n"
 					print(T[8], FSPcolor); // "Downloading song package..."
 					vl("URL: " + args[1], FSPcolor);
 					bool datecheck = true;
@@ -1057,6 +1105,7 @@ public static partial class Launcher
 					}
 					try
 					{
+						#if !SHARPDEV // can't use on #develop
 						Shell sh = new Shell();
 						Folder dir = sh.NameSpace(Path.GetDirectoryName(args[0]));
 						FolderItem fI = dir.ParseName(Path.GetFileName(args[0]));
@@ -1068,6 +1117,7 @@ public static partial class Launcher
 								args[0] = lnk.Path;
 							}
 						}
+						#endif
 					}
 					catch (Exception ex) { vl(ex); }
 #region STANDARD ROUTINE
@@ -1081,7 +1131,7 @@ public static partial class Launcher
 					if (ext == chartext || ext == midext)
 					{
 						bool ischart = false;
-						log.WriteLine(T[15]); // "\n######### MAIN LAUNCHER PHASE #########\n"
+						pt(0); // "\n######### MAIN LAUNCHER PHASE #########\n"
 						vl("File is: " + args[0]);
 						string[] m2cA = new string[]
 						{
@@ -1358,7 +1408,7 @@ public static partial class Launcher
 								CheckFileExists = true,
 								CheckPathExists = true,
 								InitialDirectory = Path.GetDirectoryName(args[0]),
-								Filter = T[167]
+								Filter = uf(T[167], false)
 							};
 							do
 							{
@@ -2873,7 +2923,9 @@ public static partial class Launcher
 								iniw(charthash.ToString("X16"), "Title", songtitle.Strings[0], cachf);
 								iniw(charthash.ToString("X16"), "Author", songauthr.Strings[0], cachf);
 								iniw(charthash.ToString("X16"), "Length", timeString, cachf);
-								if (outputPAK)
+								if (audCache)
+									iniw(charthash.ToString("X16"), "Audio", audhash.ToString("X16"), cachf);
+								if (!outputPAK)
 									iniw(charthash.ToString("X16"), "QB", 1, cachf);
 							}
 							vl(T[68]);
@@ -2884,10 +2936,10 @@ public static partial class Launcher
 							string cacheidStr = charthash.ToString("X16");
 							print(T[69], cacheColor);
 							//print("Cached chart found.", cacheColor);
-							if (File.Exists(outputPAK ? songqb : songpak))
-								File.Delete(outputPAK ? songqb : songpak);
-							File.Copy(cf + cacheidStr,
-								ini(cacheidStr, "QB", 0, cachf) == 0 ? songpak : songqb, true);
+							bool isQB = ini(cacheidStr, "QB", 0, cachf) == 1;
+							if (File.Exists(isQB ? songpak : songqb))
+								File.Delete(isQB ? songpak : songqb);
+							File.Copy(cf + cacheidStr, isQB ? songqb : songpak, true);
 							// should use ternary "song." + (a ? "qb" : "pak") + ".xen"
 							File.Copy(args[0], paksongmid, true);
 							if (ext == midext ||
@@ -3144,7 +3196,7 @@ public static partial class Launcher
 					{
 						// TODO: DON'T KEEP EXTRACTED FILES
 						// 7kb
-						log.WriteLine(T[77]);
+						pt(2);
 						//log.WriteLine("\n######### FSP EXTRACT PHASE #########\n");
 						print(T[78], cacheColor);
 						//print("Detected song package.", cacheColor);
@@ -3892,7 +3944,7 @@ public static partial class Launcher
 								}
 								bool cant_find_fsb = !(File.Exists(source_fsb) && File.Exists(source_dat));
 								bool no_dat = false;
-								bool _0_7c = false; // compatibility just because
+								//bool _0_7c = false; // compatibility just because
 								if (id.ToLower() == "fastgh3")
 								{
 									cant_find_fsb = false;
@@ -3901,7 +3953,7 @@ public static partial class Launcher
 								}
 								if (id.ToLower() == "song")
 								{
-									_0_7c = true;
+									//_0_7c = true;
 									vl(T[212] + new string('!', 60));
 									cant_find_fsb = false;
 									no_dat = true;
@@ -3964,7 +4016,7 @@ public static partial class Launcher
 										CheckFileExists = true,
 										CheckPathExists = true,
 										InitialDirectory = Path.GetDirectoryName(args[0]),
-										Filter = T[124]
+										Filter = uf(T[124], false)
 									};
 									do
 									{
@@ -4087,9 +4139,9 @@ public static partial class Launcher
 												renamed_qb.AddItem(item.Clone());
 											}
 										}
-										for (int l = 0; l < phrase_suffixes.Length; l++)
+										for (int ll = 0; ll < phrase_suffixes.Length; ll++)
 										{
-											ii = ts[1][j] + ts[0][i] + phrase_suffixes[l];
+											ii = ts[1][j] + ts[0][i] + phrase_suffixes[ll];
 											k = QbKey.Create(id + ii);
 											item = (QbItemArray)songdata.FindItem(k, false);
 											if (item != null)

@@ -1,11 +1,11 @@
 Initializing...
-FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n--------------------------------
+FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n
 Shuffle section cannot be found in settings.ini.\nUsage:\n[Shuffle]\npath1=C:\\charts\\\npath2=D:\\charts2\\\npath3=E:\\retail_games\\\n
 Can't find any charts!
 Cannot find a file indicating of containing highway GFX.
 global.pak isn't named correctly.
 One of the entered files don't exist.
-\n######### DOWNLOAD SONG PHASE #########\n
+MAIN LAUNCHERDOWNLOAD SONGFSP EXTRACT
 Downloading song package...
 already downloaded file.
 Unique file date checking enabled.
@@ -13,7 +13,7 @@ Date not cached
 This song package is a larger file than usual. ({0} MB)\nDo you want to continue?
 Writing link to cache...
 Writing date to cache...
-\n######### MAIN LAUNCHER PHASE #########\n
+\n######### {0} PHASE #########\n
 Reading file.
 Detected chart file.
 Detected midi file.
@@ -75,7 +75,7 @@ Elapsed audio encoding time:
 Creating GH3 process...
 Ready, go!
 Cleaning up SoX temp files FOR SOME REASON!!!
-\n######### FSP EXTRACT PHASE #########\n
+
 Detected song package.
 Found cached ID.
 ZIP not cached.
@@ -95,7 +95,7 @@ UnRAR could not be found.
 Unsupported archive type
 Writing path to cache...
 That file does not exist. Exiting.
-DEQhd2uFteibPwq0SWBInTpA_jcZL5GKz3YCR14Ulk87Jors9vNHgfaOmMXy6Vx-
+The selected song PAK has an unknown identifier.\nIf you know the internal name for this song, enter it here to play:\n\n\nIf the name check does not succeed, you cannot continue.
 Press any key to exit
 Found Bink background video
 No Bink background video found
@@ -122,13 +122,13 @@ Set current background image when playing a song.
 Background image that's going to be shown in the game.\nDouble click to see a larger preview of how it will look.
 Speed:                            %
 6f1d2b61d5a011cfbfc7444553540000
-FMOD Sound Bank|*.fsb;*.fsb.xen;*.fsb.ps3
+FMOD Sample Bank:fsb,fsb.xen,fsb.ps3
 The extractor returned a non-zero error code. This could mean that the extraction has failed.
 7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.
 Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed, or the target URL returned an invalid response. This could also be a password protected file. Check launcher.txt for the log of the extractor.
 %a - Author, %t - Title, %b - Album, %% - Percent,\n%c - Charter, %y - Year, %l - Length, %g - Genre
 /!\\ Error adding a starpower phrase. If this message appears more than once, there may be a problem
-Any supported files|*.chart;*.mid;*.fsp;*.zip;*.7z;*.rar;*.pak.xen;*.pak.ps3|All chart types|*.chart;*.mid|FastGH3 Song Package|*.fsp;*.zip;*.7z;*.rar|Guitar Hero 3 PAK|*.pak;*.pak.xen;*.pak.ps3|Any type|*.*
+All chart types:chart,msc,mid;FastGH3 Song Package:fsp,zip,sng,7z,rar;Guitar Hero 3 PAK:pak,pak.xen,pak.ps3
 Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal
 Saving user background video
 Restoring user background video
@@ -156,7 +156,7 @@ FastGH3: Keybinds
 Selected button:
 Loading scripts for override checks...
 Failed to set user QB value.
-GH3+ Plugin / Dynamic Link Library (*.dll)|*.dll
+GH3+ Plugin|*.dll
 Guitar Hero III+ Log: (last session)
 No QB config file found, cannot set value.
 There is more than one file in this Song Package.\nWhich one do you choose?
@@ -165,7 +165,7 @@ Select a controller button and\nthen click a key to assign to it.
 backgrnd_video.bik.xen
 Failed to copy song video.
 got invalid directory, skipping: 
-Audio files|*.mp3;*.wav;*.ogg;*.opus|Any type|*.*
+Audio files:mp3,wav,ogg,opus
 Is there a guitar track too?
 Is there a rhythm track too?
 Using blank music file
@@ -183,9 +183,9 @@ Mod info item is missing. (
 Can't find the mod info struct ({0}) with a matching mod name or an ambiguously named mod info struct (mod_info). Is the file not properly named?
  is a required file but does not exist.\n
 Cannot find a file indicating of a QB.
-QB file|*.qb.xen;*.qb|Zipped QB|*.zip
+QB file:qb.xen,qb;Zipped QB:zip
 These items replace the game's data:
-Supported image formats|*.png;*.jpg;*.bmp;*.dds|Portable Network Graphics|*.png|JPEG|*.jpeg|Bitmap|*.bmp|DirectDraw Surface|*.dds|Any type|*.*
+PNG:png;JPEG:jpeg;Bitmap:bmp;DDS:dds
 Hiroaki Sano%Circus Game%8BIT MUSIC POWER%donnaken15%2016%2:22%Chiptune
 FastGH3 Launcher is already running!
 Multi instance checking is off. Be careful!
@@ -211,3 +211,5 @@ Guitar Hero 3 executable cannot be found! Make sure game.exe or game!.exe exists
 Unrecognized file format
 Matched section key: 
 FastGH3 0.7 song package
+All supported types
+|Any type|*.*

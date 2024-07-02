@@ -357,7 +357,7 @@ public partial class settings : Form
 			tt.SetToolTip(ctrl_hints[i], T[102 + i]);
 		}
 		spL.Text = T[122];
-		selImg.Filter = T[187];
+		selImg.Filter = Launcher.uf(T[187], true);
 		//bkgdPF = new PakFormat(
 		//	Program.dataf + "bkgd.pak.xen",
 		//	Program.dataf + "bkgd.pab.xen", "",
@@ -498,12 +498,12 @@ public partial class settings : Form
 		while (EDS(null, d++, ref mode) == true) // Succeeded  
 		{
 			Size newSz = new Size((int)mode.w, (int)mode.h);
-			bool diff = true;
+			bool diff_ = true;
 			foreach (Size res_ in resz)
 			{
 				if (res_ == newSz)
 				{
-					diff = false;
+					diff_ = false;
 					break;
 				}
 			}
@@ -511,11 +511,11 @@ public partial class settings : Form
 			{
 				if (res_ == newSz)
 				{
-					diff = false;
+					diff_ = false;
 					break;
 				}
 			}
-			if (diff)
+			if (diff_)
 				resz.Add(newSz);
 		}
 		foreach (Size sz in resz)
@@ -561,7 +561,7 @@ public partial class settings : Form
 						case 0x559566CC: // .dbg
 							try {
 								QbFile.PopulateDebugNames(D_PE.ExtractFileToString(f.Filename));
-							} catch (Exception ex) {}
+							} catch {}
 							break;
 						default:
 							continue;

@@ -98,3 +98,5 @@ stats_*.txt
 /DATA/gameplay_BG.img.xen
 *.user
 # forgot if this ignore is based on visual studio ignore, but this should be excluded if its really just going to contain one user preference about how files are presented in a project
+*.aps
+*.res

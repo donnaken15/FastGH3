@@ -28,158 +28,313 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <Compile Include="..\dependencies\dotnetzip\bzip2\BitWriter.cs">
+      <Link>deps\Zip\DNZ\BZip2\BitWriter.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\bzip2\BZip2Compressor.cs">
+      <Link>deps\Zip\DNZ\BZip2\BZip2Compressor.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\bzip2\BZip2InputStream.cs">
+      <Link>deps\Zip\DNZ\BZip2\BZip2InputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\bzip2\BZip2OutputStream.cs">
+      <Link>deps\Zip\DNZ\BZip2\BZip2OutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\bzip2\ParallelBZip2OutputStream.cs">
+      <Link>deps\Zip\DNZ\BZip2\ParallelBZip2OutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\bzip2\Rand.cs">
+      <Link>deps\Zip\DNZ\BZip2\Rand.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\DotNetZip\CommonSrc\CRC32.cs">
+      <Link>deps\Zip\DNZ\CRC32.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ComHelper.cs">
+      <Link>deps\Zip\DNZ\Zip\ComHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\EncryptionAlgorithm.cs">
+      <Link>deps\Zip\DNZ\Zip\EncryptionAlgorithm.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\Events.cs">
+      <Link>deps\Zip\DNZ\Zip\Events.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\Exceptions.cs">
+      <Link>deps\Zip\DNZ\Zip\Exceptions.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ExtractExistingFileAction.cs">
+      <Link>deps\Zip\DNZ\Zip\ExtractExistingFileAction.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\FileSelector.cs">
+      <Link>deps\Zip\DNZ\Zip\FileSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\OffsetStream.cs">
+      <Link>deps\Zip\DNZ\Zip\OffsetStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\Shared.cs">
+      <Link>deps\Zip\DNZ\Zip\Shared.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\WinZipAes.cs">
+      <Link>deps\Zip\DNZ\Zip\WinZipAes.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipConstants.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipCrypto.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipCrypto.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipDirEntry.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipDirEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntry.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntry.Extract.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipEntry.Extract.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntry.Read.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipEntry.Read.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntry.Write.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipEntry.Write.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipEntrySource.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipEntrySource.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipErrorAction.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipErrorAction.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.AddUpdate.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.AddUpdate.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Check.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.Check.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Events.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.Events.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Extract.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.Extract.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Read.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.Read.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Save.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.Save.cs</Link>
+    </Compile>
+    <None Include="..\dependencies\dotnetzip\zip\ZipFile.SaveSelfExtractor.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.SaveSelfExtractor.cs</Link>
+    </None>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.Selector.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.Selector.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipFile.x-IEnumerable.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipFile.x-IEnumerable.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipInputStream.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipInputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipOutputStream.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zip\ZipSegmentedStream.cs">
+      <Link>deps\Zip\DNZ\Zip\ZipSegmentedStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\Deflate.cs">
+      <Link>deps\Zip\DNZ\Zlib\Deflate.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\DeflateStream.cs">
+      <Link>deps\Zip\DNZ\Zlib\DeflateStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\GZipStream.cs">
+      <Link>deps\Zip\DNZ\Zlib\GZipStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\Inflate.cs">
+      <Link>deps\Zip\DNZ\Zlib\Inflate.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\InfTree.cs">
+      <Link>deps\Zip\DNZ\Zlib\InfTree.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\ParallelDeflateOutputStream.cs">
+      <Link>deps\Zip\DNZ\Zlib\ParallelDeflateOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\Tree.cs">
+      <Link>deps\Zip\DNZ\Zlib\Tree.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\Zlib.cs">
+      <Link>deps\Zip\DNZ\Zlib\Zlib.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\ZlibBaseStream.cs">
+      <Link>deps\Zip\DNZ\Zlib\ZlibBaseStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\ZlibCodec.cs">
+      <Link>deps\Zip\DNZ\Zlib\ZlibCodec.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\ZlibConstants.cs">
+      <Link>deps\Zip\DNZ\Zlib\ZlibConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\dotnetzip\zlib\ZlibStream.cs">
+      <Link>deps\Zip\DNZ\Zlib\ZlibStream.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'SharpZipLib|AnyCPU'">
+    <Compile Include="..\dependencies\SharpZipLib\src\BZip2\BZip2.cs">
+      <Link>deps\Zip\SZL\BZip2\BZip2.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\BZip2\BZip2Constants.cs">
+      <Link>deps\Zip\SZL\BZip2\BZip2Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\BZip2\BZip2Exception.cs">
+      <Link>deps\Zip\SZL\BZip2\BZip2Exception.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\BZip2\BZip2InputStream.cs">
+      <Link>deps\Zip\SZL\BZip2\BZip2InputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\BZip2\BZip2OutputStream.cs">
+      <Link>deps\Zip\SZL\BZip2\BZip2OutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Checksums\Adler32.cs">
+      <Link>deps\Zip\SZL\Checksums\Adler32.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Checksums\CRC32.cs">
+      <Link>deps\Zip\SZL\Checksums\CRC32.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Checksums\IChecksum.cs">
+      <Link>deps\Zip\SZL\Checksums\IChecksum.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Checksums\StrangeCRC.cs">
+      <Link>deps\Zip\SZL\Checksums\StrangeCRC.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Core\FileSystemScanner.cs">
+      <Link>deps\Zip\SZL\Core\FileSystemScanner.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Core\INameTransform.cs">
+      <Link>deps\Zip\SZL\Core\INameTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Core\IScanFilter.cs">
+      <Link>deps\Zip\SZL\Core\IScanFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Core\NameFilter.cs">
+      <Link>deps\Zip\SZL\Core\NameFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Core\PathFilter.cs">
+      <Link>deps\Zip\SZL\Core\PathFilter.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Core\StreamUtils.cs">
+      <Link>deps\Zip\SZL\Core\StreamUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Core\WindowsPathUtils.cs">
+      <Link>deps\Zip\SZL\Core\WindowsPathUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Encryption\PkzipClassic.cs">
+      <Link>deps\Zip\SZL\Encryption\PkzipClassic.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Encryption\ZipAESStream.cs">
+      <Link>deps\Zip\SZL\Encryption\ZipAESStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Encryption\ZipAESTransform.cs">
+      <Link>deps\Zip\SZL\Encryption\ZipAESTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\GZip\GZIPConstants.cs">
+      <Link>deps\Zip\SZL\GZip\GZIPConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\GZip\GZipException.cs">
+      <Link>deps\Zip\SZL\GZip\GZipException.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\GZip\GzipInputStream.cs">
+      <Link>deps\Zip\SZL\GZip\GzipInputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\GZip\GzipOutputStream.cs">
+      <Link>deps\Zip\SZL\GZip\GzipOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\Deflater.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\Deflater.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\DeflaterConstants.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\DeflaterConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\DeflaterEngine.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\DeflaterEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\DeflaterHuffman.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\DeflaterHuffman.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\DeflaterPending.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\DeflaterPending.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\Inflater.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\Inflater.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\InflaterDynHeader.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\InflaterDynHeader.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\InflaterHuffmanTree.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\InflaterHuffmanTree.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\PendingBuffer.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\PendingBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\Streams\DeflaterOutputStream.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\Streams\DeflaterOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\Streams\InflaterInputStream.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\Streams\InflaterInputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\Streams\OutputWindow.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\Streams\OutputWindow.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\Compression\Streams\StreamManipulator.cs">
+      <Link>deps\Zip\SZL\Zip\Compression\Streams\StreamManipulator.cs</Link>
+    </Compile>
+    <None Include="..\dependencies\SharpZipLib\src\Zip\FastZip.cs">
+      <Link>deps\Zip\SZL\Zip\FastZip.cs</Link>
+    </None>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\IEntryFactory.cs">
+      <Link>deps\Zip\SZL\Zip\IEntryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\WindowsNameTransform.cs">
+      <Link>deps\Zip\SZL\Zip\WindowsNameTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipConstants.cs">
+      <Link>deps\Zip\SZL\Zip\ZipConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipEntry.cs">
+      <Link>deps\Zip\SZL\Zip\ZipEntry.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipEntryFactory.cs">
+      <Link>deps\Zip\SZL\Zip\ZipEntryFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipException.cs">
+      <Link>deps\Zip\SZL\Zip\ZipException.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipExtraData.cs">
+      <Link>deps\Zip\SZL\Zip\ZipExtraData.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipFile.cs">
+      <Link>deps\Zip\SZL\Zip\ZipFile.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipHelperStream.cs">
+      <Link>deps\Zip\SZL\Zip\ZipHelperStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipInputStream.cs">
+      <Link>deps\Zip\SZL\Zip\ZipInputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipNameTransform.cs">
+      <Link>deps\Zip\SZL\Zip\ZipNameTransform.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\Zip\ZipOutputStream.cs">
+      <Link>deps\Zip\SZL\Zip\ZipOutputStream.cs</Link>
+    </Compile>
+    <Compile Include="..\dependencies\SharpZipLib\src\SharpZipBaseException.cs">
+      <Link>deps\Zip\SZL\SharpZipBaseException.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\dotnetzip\bzip2\BitWriter.cs">
-      <Link>DotNetZip\BZip2\BitWriter.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\bzip2\BZip2Compressor.cs">
-      <Link>DotNetZip\BZip2\BZip2Compressor.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\bzip2\BZip2InputStream.cs">
-      <Link>DotNetZip\BZip2\BZip2InputStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\bzip2\BZip2OutputStream.cs">
-      <Link>DotNetZip\BZip2\BZip2OutputStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\bzip2\ParallelBZip2OutputStream.cs">
-      <Link>DotNetZip\BZip2\ParallelBZip2OutputStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\bzip2\Rand.cs">
-      <Link>DotNetZip\BZip2\Rand.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\commonsrc\CRC32.cs">
-      <Link>DotNetZip\CRC32.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ComHelper.cs">
-      <Link>DotNetZip\Zip\ComHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\EncryptionAlgorithm.cs">
-      <Link>DotNetZip\Zip\EncryptionAlgorithm.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\Events.cs">
-      <Link>DotNetZip\Zip\Events.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\Exceptions.cs">
-      <Link>DotNetZip\Zip\Exceptions.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ExtractExistingFileAction.cs">
-      <Link>DotNetZip\Zip\ExtractExistingFileAction.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\FileSelector.cs">
-      <Link>DotNetZip\Zip\FileSelector.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\OffsetStream.cs">
-      <Link>DotNetZip\Zip\OffsetStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\Shared.cs">
-      <Link>DotNetZip\Zip\Shared.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\WinZipAes.cs">
-      <Link>DotNetZip\Zip\WinZipAes.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipConstants.cs">
-      <Link>DotNetZip\Zip\ZipConstants.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipCrypto.cs">
-      <Link>DotNetZip\Zip\ZipCrypto.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipDirEntry.cs">
-      <Link>DotNetZip\Zip\ZipDirEntry.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntry.cs">
-      <Link>DotNetZip\Zip\ZipEntry.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntry.Extract.cs">
-      <Link>DotNetZip\Zip\ZipEntry.Extract.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntry.Read.cs">
-      <Link>DotNetZip\Zip\ZipEntry.Read.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntry.Write.cs">
-      <Link>DotNetZip\Zip\ZipEntry.Write.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipEntrySource.cs">
-      <Link>DotNetZip\Zip\ZipEntrySource.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipErrorAction.cs">
-      <Link>DotNetZip\Zip\ZipErrorAction.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.AddUpdate.cs">
-      <Link>DotNetZip\Zip\ZipFile.AddUpdate.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Check.cs">
-      <Link>DotNetZip\Zip\ZipFile.Check.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.cs">
-      <Link>DotNetZip\Zip\ZipFile.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Events.cs">
-      <Link>DotNetZip\Zip\ZipFile.Events.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Extract.cs">
-      <Link>DotNetZip\Zip\ZipFile.Extract.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Read.cs">
-      <Link>DotNetZip\Zip\ZipFile.Read.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Save.cs">
-      <Link>DotNetZip\Zip\ZipFile.Save.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.SaveSelfExtractor.cs">
-      <Link>DotNetZip\Zip\ZipFile.SaveSelfExtractor.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.Selector.cs">
-      <Link>DotNetZip\Zip\ZipFile.Selector.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipFile.x-IEnumerable.cs">
-      <Link>DotNetZip\Zip\ZipFile.x-IEnumerable.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipInputStream.cs">
-      <Link>DotNetZip\Zip\ZipInputStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipOutputStream.cs">
-      <Link>DotNetZip\Zip\ZipOutputStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zip\ZipSegmentedStream.cs">
-      <Link>DotNetZip\Zip\ZipSegmentedStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\Deflate.cs">
-      <Link>DotNetZip\Zlib\Deflate.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\DeflateStream.cs">
-      <Link>DotNetZip\Zlib\DeflateStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\GZipStream.cs">
-      <Link>DotNetZip\Zlib\GZipStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\Inflate.cs">
-      <Link>DotNetZip\Zlib\Inflate.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\InfTree.cs">
-      <Link>DotNetZip\Zlib\InfTree.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\ParallelDeflateOutputStream.cs">
-      <Link>DotNetZip\Zlib\ParallelDeflateOutputStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\Tree.cs">
-      <Link>DotNetZip\Zlib\Tree.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\Zlib.cs">
-      <Link>DotNetZip\Zlib\Zlib.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\ZlibBaseStream.cs">
-      <Link>DotNetZip\Zlib\ZlibBaseStream.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\ZlibCodec.cs">
-      <Link>DotNetZip\Zlib\ZlibCodec.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\ZlibConstants.cs">
-      <Link>DotNetZip\Zlib\ZlibConstants.cs</Link>
-    </Compile>
-    <Compile Include="..\dotnetzip\zlib\ZlibStream.cs">
-      <Link>DotNetZip\Zlib\ZlibStream.cs</Link>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleJSON.cs" />
