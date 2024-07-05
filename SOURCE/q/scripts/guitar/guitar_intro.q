@@ -18,7 +18,7 @@ immediate_sequence_props = $intro_sequence_props
 current_intro = fast_intro_sequence_props
 
 script play_intro
-	printf \{"Playing Intro"}
+	printf \{'Playing Intro'}
 	//printstruct <...>
 	if ($show_boss_helper_screen = 1)
 		return
@@ -38,14 +38,14 @@ script play_intro
 	if ($game_mode != tutorial)
 		spawnscriptnow \{intro_song_info id = intro_scripts}
 	endif
-	if NOT ($Cheat_PerformanceMode = 1 & $is_network_game = 0)
-		spawnscriptnow \{intro_highway_move id = intro_scripts}
-	endif
 	Player = 1
 	begin
 		FormatText checksumName = player_status 'player%i_status' i = <Player>
 		FormatText textname = player_text 'p%i' i = <Player>
 		spawnscriptnow intro_buttonup_ripple params = <...> id = intro_scripts
+		if NOT ($Cheat_PerformanceMode = 1 & $is_network_game = 0)
+			spawnscriptnow intro_highway_move id = intro_scripts player = <player>
+		endif
 		Player = (<Player> + 1)
 	repeat $current_num_players
 	if ($tutorial_disable_hud = 0)
@@ -60,7 +60,7 @@ script nointro
 	if ($Cheat_PerformanceMode = 1)
 		return
 	endif
-	printf \{"Intro... NOT!"}
+	printf \{'Intro... NOT!'}
 	//printstruct <...>
 	if ($show_boss_helper_screen = 1)
 		return
@@ -201,7 +201,7 @@ script intro_highway_move
 		wait \{1 gameframe}
 	repeat
 	spawnscriptnow \{Song_Intro_Highway_Up_SFX_Waiting}
-	move_highway_camera_to_default // <...> time = ($current_intro.highway_move_time / 1000.0)
+	move_highway_camera_to_default <...> time = ($current_intro.highway_move_time / 1000.0)
 	// doesn't even do anything with players
 endscript
 
@@ -253,94 +253,21 @@ script play_outro
 	practicemode_deinit
 	notemap_deinit
 	kill_startup_script <...>
-	killspawnedscript \{name = GuitarEvent_MissedNote}
-	killspawnedscript \{name = GuitarEvent_UnnecessaryNote}
-	killspawnedscript \{name = GuitarEvent_HitNotes}
-	killspawnedscript \{name = GuitarEvent_HitNote}
-	killspawnedscript \{name = GuitarEvent_StarPowerOn}
-	killspawnedscript \{name = GuitarEvent_StarPowerOff}
-	killspawnedscript \{name = GuitarEvent_StarHitNote}
-	killspawnedscript \{name = GuitarEvent_StarSequenceBonus}
-	killspawnedscript \{name = GuitarEvent_StarMissNote}
-	killspawnedscript \{name = GuitarEvent_WhammyOn}
-	killspawnedscript \{name = GuitarEvent_WhammyOff}
-	killspawnedscript \{name = GuitarEvent_StarWhammyOn}
-	killspawnedscript \{name = GuitarEvent_StarWhammyOff}
-	killspawnedscript \{name = GuitarEvent_Note_Window_Open}
-	killspawnedscript \{name = GuitarEvent_Note_Window_Close}
-	killspawnedscript \{name = GuitarEvent_crowd_poor_medium}
-	killspawnedscript \{name = GuitarEvent_crowd_medium_good}
-	killspawnedscript \{name = GuitarEvent_crowd_medium_poor}
-	killspawnedscript \{name = GuitarEvent_crowd_good_medium}
-	killspawnedscript \{name = GuitarEvent_CreateFirstGem}
-	killspawnedscript \{name = highway_pulse_black}
-	killspawnedscript \{name = GuitarEvent_HitNote_Spawned}
-	killspawnedscript \{name = hit_note_fx}
-	killspawnedscript \{name = first_gem_fx}
-	killspawnedscript \{name = gem_iterator}
-	killspawnedscript \{name = gem_array_stepper}
-	killspawnedscript \{name = gem_array_events}
-	killspawnedscript \{name = gem_step}
-	killspawnedscript \{name = gem_step_end}
-	killspawnedscript \{name = fretbar_iterator}
-	killspawnedscript \{name = Strum_iterator}
-	killspawnedscript \{name = FretPos_iterator}
-	killspawnedscript \{name = FretFingers_iterator}
-	killspawnedscript \{name = Drum_iterator}
-	killspawnedscript \{name = Drum_cymbal_iterator}
-	killspawnedscript \{name = WatchForStartPlaying_iterator}
-	killspawnedscript \{name = gem_scroller}
-	killspawnedscript \{name = button_checker}
-	killspawnedscript \{name = check_buttons}
-	killspawnedscript \{name = check_buttons_fast}
-	killspawnedscript \{name = fretbar_update_tempo}
-	killspawnedscript \{name = fretbar_update_hammer_on_tolerance}
-	killspawnedscript \{name = move_whammy}
-	killspawnedscript \{name = create_fretbar}
-	killspawnedscript \{name = move_highway_2d}
-	killspawnedscript \{name = update_score_fast}
-	killspawnedscript \{name = check_for_star_power}
-	killspawnedscript \{name = wait_for_inactive}
-	killspawnedscript \{name = GuitarEvent_PreFretbar}
-	killspawnedscript \{name = GuitarEvent_Fretbar}
-	killspawnedscript \{name = check_note_hold}
-	killspawnedscript \{name = star_power_whammy}
-	killspawnedscript \{name = show_star_power_ready}
-	killspawnedscript \{name = hud_glowburst_alert}
-	Change \{star_power_ready_on_p1 = 0}
-	Change \{star_power_ready_on_p2 = 0}
-	killspawnedscript \{name = event_iterator}
-	killspawnedscript \{name = win_song}
-	killspawnedscript \{name = hand_note_iterator}
-	killspawnedscript \{name = kill_object_later}
-	killspawnedscript \{name = show_coop_raise_axe_for_starpower}
-	killspawnedscript \{name = net_whammy_pitch_shift}
-	killspawnedscript \{name = Crowd_AllPlayAnim}
-	killspawnedscript \{name = hud_activated_star_power_spawned}
-	killspawnedscript \{name = pulsate_all_star_power_bulbs}
-	killspawnedscript \{name = pulsate_star_power_bulb}
-	killspawnedscript \{name = rock_meter_star_power_on}
-	killspawnedscript \{name = rock_meter_star_power_off}
-	killspawnedscript \{name = hud_activated_star_power}
-	killspawnedscript \{name = hud_move_note_scorebar}
-	killspawnedscript \{name = hud_flash_red_bg_p1}
-	killspawnedscript \{name = hud_flash_red_bg_p2}
-	killspawnedscript \{name = hud_flash_red_bg_kill}
-	killspawnedscript \{name = hud_lightning_alert}
-	killspawnedscript \{name = hud_show_note_streak_combo}
-	killspawnedscript \{name = play_intro}
-	killspawnedscript \{name = begin_song_after_intro}
-	killspawnedscript \{name = solo}
-	killspawnedscript \{name = soloend}
-	killspawnedscript \{name = solo_ui_create}
-	killspawnedscript \{name = solo_ui_update}
-	killspawnedscript \{name = solo_ui_end}
-	if GotParam \{kill_cameracuts_iterator}
-		killspawnedscript \{name = cameracuts_iterator}
+	array = ($gem_scroller_exit_scripts)
+	GetArraySize \{array}
+	i = 0
+	begin
+		killspawnedscript name = (<array>[<i>])
+		Increment \{i}
+	repeat <array_size>
+	Change \{ star_power_ready_on_p1 = 0 }
+	Change \{ star_power_ready_on_p2 = 0 }
+	if GotParam \{ kill_cameracuts_iterator }
+		killspawnedscript \{ name = cameracuts_iterator }
 	endif
-	printf \{"kill_gem_scroller - Killing Event Scripts"}
-	killspawnedscript \{id = song_event_scripts}
-	printf \{"kill_gem_scroller - Killing Event Scripts Finished"}
+	Printf \{ 'kill_gem_scroller - Killing Event Scripts' }
+	killspawnedscript \{ Id = song_event_scripts }
+	Printf \{ 'kill_gem_scroller - Killing Event Scripts Finished' }
 	Destroy_AllWhammyFX
 	destroy_intro
 	end_song <...>

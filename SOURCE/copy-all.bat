@@ -17,7 +17,6 @@ for %%I in (
 	register.bat
 	settings.bat
 	shuffle.bat
-	Updater.exe
 ) do copy %%I __FINAL /y
 mkdir __FINAL\DATA __FINAL\PLUGINS
 pushd __FINAL\DATA
@@ -61,9 +60,5 @@ for %%I in (
 	TapHopoChord
 ) do copy PLUGINS\%%I.dll __FINAL\PLUGINS\%%I.dll /y
 copy SOURCE\Misc\user.pak.xen __FINAL\DATA\user.pak.xen /y
-
-:: not needed now, no crashes with that :D
-::copy SOURCE\Misc\null.fsb __FINAL\DATA\MUSIC\fastgh3.fsb.xen /y
-::copy SOURCE\Misc\null.pak __FINAL\DATA\PAK\song.pak.xen /y
-
+popd
 

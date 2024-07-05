@@ -35,7 +35,7 @@ static partial class Launcher
 		// [6]
 		// One of the entered files don't exist.
 		// [7]
-		// MAIN LAUNCHERDOWNLOAD SONGFSP EXTRACT
+		// MAIN LAUNCHERDOWNLOAD SONG FSP EXTRACT 
 		// [8]
 		// Downloading song package...
 		// [9]
@@ -181,56 +181,58 @@ static partial class Launcher
 		// [76]
 		// Cleaning up SoX temp files FOR SOME REASON!!!
 		// [77]
-		// Detected song package.
+		// C:\Program Files (x86)\FastGH3\
 		// [78]
-		// Found cached ID.
+		// Detected song package.
 		// [79]
-		// ZIP not cached.
+		// Found cached ID.
 		// [80]
-		// Found cached FSP.
+		// ZIP not cached.
 		// [81]
-		// Error: Cached FSP does not exist. Extracting.
+		// Found cached FSP.
 		// [82]
-		// Error extracting a file: 
+		// Error: Cached FSP does not exist. Extracting.
 		// [83]
-		// Looking for command line accessible 7Zip.
+		// Error extracting a file: 
 		// [84]
-		// Looking for 7Zip in registry.
+		// Looking for command line accessible 7Zip.
 		// [85]
-		// Wait WTF, THE PROGRAM ISN'T THERE!! HOW!
+		// Looking for 7Zip in registry.
 		// [86]
-		// Could not find 7-Zip path in registry. Is it installed?
+		// Wait WTF, THE PROGRAM ISN'T THERE!! HOW!
 		// [87]
-		// Somehow looking for 7-Zip failed. Is it installed?
+		// Could not find 7-Zip path in registry. Is it installed?
 		// [88]
-		// 7Zip is installed. Using that...
+		// Somehow looking for 7-Zip failed. Is it installed?
 		// [89]
-		// 7Zip could not be found.
+		// 7Zip is installed. Using that...
 		// [90]
-		// Looking for command line accessible WinRAR or UnRar.exe
+		// 7Zip could not be found.
 		// [91]
-		// Found UnRAR. Using that...
+		// Looking for command line accessible WinRAR or UnRar.exe
 		// [92]
-		// UnRAR could not be found.
+		// Found UnRAR. Using that...
 		// [93]
-		// Unsupported archive type
+		// UnRAR could not be found.
 		// [94]
-		// Writing path to cache...
+		// Unsupported archive type
 		// [95]
-		// That file does not exist. Exiting.
+		// Writing path to cache...
 		// [96]
+		// That file does not exist. Exiting.
+		// [97]
 		// The selected song PAK has an unknown identifier.
 		// If you know the internal name for this song, enter it here to play:
 		// 
 		// 
 		// If the name check does not succeed, you cannot continue.
-		// [97]
-		// Press any key to exit
 		// [98]
-		// Found Bink background video
+		// Press any key to exit
 		// [99]
-		// No Bink background video found
+		// Found Bink background video
 		// [100]
+		// No Bink background video found
+		// [101]
 		// 
 		// ___     ___\
 		//    \   /   /
@@ -240,25 +242,25 @@ static partial class Launcher
 		// ___/   \___\
 		//            /
 		// 
-		// [101]
+		// [102]
 		// Set max FPS, if not capped by Vsync.
 		// If set to 0, the frame rate limit will not take effect.
 		// As of now, it can only cap to 1ms / 1000 FPS.
 		// Warning: Some frame rates will make the game look
 		// choppy depending on the refresh rate your monitor supports,
 		// or depending on your GPU.
-		// [102]
+		// [103]
 		// Override the note limit. Set to -1 to make
 		// the program determine how many notes
 		// there are in the chart opened.
 		// RAM usage may vary.
-		// [103]
-		// This allows you to change the window size of the game according to your monitor settings.
 		// [104]
+		// This allows you to change the window size of the game according to your monitor settings.
+		// [105]
 		// Clean files from downloading and extracting Song Packages.
 		// Warning: Reuse of these files will require downloading and
 		// extracting them again, some of which can take a bit of time.
-		// [105]
+		// [106]
 		// Change the bitrate used for converting songs.
 		// This will only take effect for the next songs converted.
 		// The default is 128kbps, as decided by the game.
@@ -266,241 +268,248 @@ static partial class Launcher
 		// keep the bitrate setting they were converted with.
 		// Note: This will also result in larger or smaller
 		// compiled audio files, which effects your song cache as well.
-		// [106]
+		// [107]
 		// Change the controller that is selected to play when Keyboard mode is off.
 		// WARNING: Unplugging or plugging in controllers can affect this setting.
-		// [107]
-		// This applies for both player hyperspeeds.
 		// [108]
-		// This applies for both player difficulties.
+		// This applies for both player hyperspeeds.
 		// [109]
-		// Credits will be displayed in console.
+		// This applies for both player difficulties.
 		// [110]
-		// Enter percentage of song speed when playing. This also effects the pitch of the song.
+		// Credits will be displayed in console.
 		// [111]
-		// Change instrument or track to be played in game.
+		// Enter percentage of song speed when playing. This also effects the pitch of the song.
 		// [112]
-		// Relaunch the game with the previous song in place.
+		// Change instrument or track to be played in game.
 		// [113]
+		// Relaunch the game with the previous song in place.
+		// [114]
 		// Select what plugins should be loaded or disabled.
 		// Requires GH3+ compatible plugins.
-		// [114]
+		// [115]
 		// View cached chart files. Songs will appear here only
 		// for those that were converted when song caching was turned on.
-		// [115]
-		// Change the format of currentsong.txt. Can be useful for streaming.
 		// [116]
+		// Change the format of currentsong.txt. Can be useful for streaming.
+		// [117]
 		// Change the amount of time to wait before the
 		// song starts. Requires "No intro" to be turned on.
-		// [117]
-		// Change controls for playing on keyboard.
 		// [118]
-		// Required for playing face-off and battle.
+		// Change controls for playing on keyboard.
 		// [119]
-		// Set current background image when playing a song.
+		// Required for playing face-off and battle.
 		// [120]
+		// Set current background image when playing a song.
+		// [121]
 		// Background image that's going to be shown in the game.
 		// Double click to see a larger preview of how it will look.
-		// [121]
-		// Speed:                            %
 		// [122]
-		// 6f1d2b61d5a011cfbfc7444553540000
+		// Speed:                            %
 		// [123]
-		// FMOD Sample Bank:fsb,fsb.xen,fsb.ps3
+		// 6f1d2b61d5a011cfbfc7444553540000
 		// [124]
-		// The extractor returned a non-zero error code. This could mean that the extraction has failed.
+		// FMOD Sample Bank:fsb,fsb.xen,fsb.ps3
 		// [125]
-		// 7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.
+		// The extractor returned a non-zero error code. This could mean that the extraction has failed.
 		// [126]
-		// Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed, or the target URL returned an invalid response. This could also be a password protected file. Check launcher.txt for the log of the extractor.
+		// 7Z is not supported by UnRAR, unless you have 7-Zip installed, or manually extract the 7Z using the WinRAR interface.
 		// [127]
+		// Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed, or the target URL returned an invalid response. This could also be a password protected file. Check launcher.txt for the log of the extractor.
+		// [128]
 		// %a - Author, %t - Title, %b - Album, %% - Percent,
 		// %c - Charter, %y - Year, %l - Length, %g - Genre
-		// [128]
-		// /!\ Error adding a starpower phrase. If this message appears more than once, there may be a problem
 		// [129]
-		// All chart types:chart,msc,mid;FastGH3 Song Package:fsp,zip,sng,7z,rar;Guitar Hero 3 PAK:pak,pak.xen,pak.ps3
+		// /!\ Error adding a starpower phrase. If this message appears more than once, there may be a problem
 		// [130]
-		// Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal
+		// All chart types:chart,msc,mid;FastGH3 Song Package:fsp,zip,sng,7z,rar;Guitar Hero 3 PAK:pak,pak.xen,pak.ps3
 		// [131]
-		// Saving user background video
+		// Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal
 		// [132]
-		// Restoring user background video
+		// Saving user background video
 		// [133]
-		// Failed to kill helix or SoX executables.
+		// Restoring user background video
 		// [134]
-		// Running mid2chart, log:
+		// Failed to kill helix or SoX executables.
 		// [135]
-		// Audio is not cached.
+		// Running mid2chart, log:
 		// [136]
-		// Failed to upload log. It is saved to launcher.txt.
+		// Audio is not cached.
 		// [137]
-		// https://donnaken15.com/fastgh3/gameBlank.png
+		// Failed to upload log. It is saved to launcher.txt.
 		// [138]
-		// \PLUGINS\
+		// https://donnaken15.com/fastgh3/gameBlank.png
 		// [139]
-		// \disabled\
+		// \PLUGINS\
 		// [140]
-		// *.dll
+		// \disabled\
 		// [141]
-		// core.dll
+		// *.dll
 		// [142]
-		// (*)
+		// core.dll
 		// [143]
-		// _log.txt
+		// (*)
 		// [144]
-		// Loaded: plugins\
+		// _log.txt
 		// [145]
-		// USERPROFILE
+		// Loaded: plugins\
 		// [146]
-		// \AppData\Local\Aspyr\FastGH3\AspyrConfig.xml
+		// USERPROFILE
 		// [147]
-		// Easy%Medium%Hard%Expert
+		// \AppData\Local\Aspyr\FastGH3\AspyrConfig.xml
 		// [148]
-		// No QB config found, cannot save changes.
+		// Easy%Medium%Hard%Expert
 		// [149]
-		// DATA\gameplay_BG.img.xen
+		// No QB config found, cannot save changes.
 		// [150]
-		// Failed to get background image!
+		// DATA\gameplay_BG.img.xen
 		// [151]
-		// Reading settings...
+		// Failed to get background image!
 		// [152]
-		// Speed percentage cannot be zero or less!!!
+		// Reading settings...
 		// [153]
-		// FastGH3: Keybinds
+		// Speed percentage cannot be zero or less!!!
 		// [154]
-		// Selected button:
+		// FastGH3: Keybinds
 		// [155]
-		// Loading scripts for override checks...
+		// Selected button:
 		// [156]
-		// Failed to set user QB value.
+		// Loading scripts for override checks...
 		// [157]
-		// GH3+ Plugin|*.dll
+		// Failed to set user QB value.
 		// [158]
-		// Guitar Hero III+ Log: (last session)
+		// GH3+ Plugin|*.dll
 		// [159]
-		// No QB config file found, cannot set value.
+		// Guitar Hero III+ Log: (last session)
 		// [160]
+		// No QB config file found, cannot set value.
+		// [161]
 		// There is more than one file in this Song Package.
 		// Which one do you choose?
-		// [161]
-		// https://donnaken15.com/fastgh3/assets/control/xplorer.jpg
 		// [162]
+		// https://donnaken15.com/fastgh3/assets/control/xplorer.jpg
+		// [163]
 		// Select a controller button and
 		// then click a key to assign to it.
-		// [163]
-		// backgrnd_video.bik.xen
 		// [164]
-		// Failed to copy song video.
+		// backgrnd_video.bik.xen
 		// [165]
-		// got invalid directory, skipping: 
+		// Failed to copy song video.
 		// [166]
-		// Audio files:mp3,wav,ogg,opus
+		// got invalid directory, skipping: 
 		// [167]
-		// Is there a guitar track too?
+		// Audio files:mp3,wav,ogg,opus
 		// [168]
-		// Is there a rhythm track too?
+		// Is there a guitar track too?
 		// [169]
-		// Using blank music file
+		// Is there a rhythm track too?
 		// [170]
-		// fsbtmp\fastgh3_{0}.mp3
+		// Using blank music file
 		// [171]
-		// DO YOU HAVE THE GAME OPEN????
+		// fsbtmp\fastgh3_{0}.mp3
 		// [172]
-		// Got null event!!!!!!!!!
+		// DO YOU HAVE THE GAME OPEN????
 		// [173]
-		// Got null event text!!!!!!!!!
+		// Got null event!!!!!!!!!
 		// [174]
+		// Got null event text!!!!!!!!!
+		// [175]
 		// File cannot be found.
 		// Path: 
-		// [175]
-		// Failed to load own launcher log.
 		// [176]
+		// Failed to load own launcher log.
+		// [177]
 		// 
 		// --{0}
 		// Content-Disposition: form-data; {2}
 		// 
 		// {1}
-		// [177]
-		// application/octet-stream
 		// [178]
-		// multipart/form-data; boundary=
+		// application/octet-stream
 		// [179]
-		// Unknown object type in array: 
+		// multipart/form-data; boundary=
 		// [180]
-		// Mod info item is missing. (
+		// Unknown object type in array: 
 		// [181]
-		// Can't find the mod info struct ({0}) with a matching mod name or an ambiguously named mod info struct (mod_info). Is the file not properly named?
+		// Mod info item is missing. (
 		// [182]
+		// Can't find the mod info struct ({0}) with a matching mod name or an ambiguously named mod info struct (mod_info). Is the file not properly named?
+		// [183]
 		//  is a required file but does not exist.
 		// 
-		// [183]
-		// Cannot find a file indicating of a QB.
 		// [184]
-		// QB file:qb.xen,qb;Zipped QB:zip
+		// Cannot find a file indicating of a QB.
 		// [185]
-		// These items replace the game's data:
+		// QB file:qb.xen,qb;Zipped QB:zip
 		// [186]
-		// PNG:png;JPEG:jpeg;Bitmap:bmp;DDS:dds
+		// These items replace the game's data:
 		// [187]
-		// Hiroaki Sano%Circus Game%8BIT MUSIC POWER%donnaken15%2016%2:22%Chiptune
+		// PNG:png;JPEG:jpeg;Bitmap:bmp;DDS:dds
 		// [188]
-		// FastGH3 Launcher is already running!
+		// Hiroaki Sano%Circus Game%8BIT MUSIC POWER%donnaken15%2016%2:22%Chiptune
 		// [189]
-		// Multi instance checking is off. Be careful!
+		// FastGH3 Launcher is already running!
 		// [190]
-		// World Tour-- song files are not compatible with GH3. Exiting...
+		// Multi instance checking is off. Be careful!
 		// [191]
-		// Detected WT note upper bitmask: 
+		// World Tour-- song files are not compatible with GH3. Exiting...
 		// [192]
-		// This song appears to be compiled for World Tour or later games, which is not compatible with Guitar Hero III since its note track format has changed.
+		// Detected WT note upper bitmask: 
 		// [193]
-		// Misc%Player%Launcher%SongtextFormat%FinishedLog%Killswitch%SongVideos%LastSongHadVideo
+		// This song appears to be compiled for World Tour or later games, which is not compatible with Guitar Hero III since its note track format has changed.
 		// [194]
-		// Found {0}, extracting...
+		// Misc%Player%Launcher%SongtextFormat%FinishedLog%Killswitch%SongVideos%LastSongHadVideo
 		// [195]
-		// Welcome to FastGH3: Select a chart to play
+		// Found {0}, extracting...
 		// [196]
-		// https://donnaken15.com/fastgh3/diagno.php
+		// Welcome to FastGH3 v1.1: Select a chart to play
 		// [197]
+		// https://donnaken15.com/fastgh3/diagno.php
+		// [198]
 		// Failed to check path: (p: "{0}", e: "{1}")
 		// {2}
-		// [198]
-		// ^tmp[0-9A-F]{4}.tmp.fsp$
 		// [199]
-		// ^(data[/\])?songs[/\](?<name>[A-Z0-9_]+)(_song_scripts)?.mid.qb(.(ngc|ps2|ps3|xen))?$
+		// ^tmp[0-9A-F]{4}.tmp.fsp$
 		// [200]
-		// ^(?<name>[A-Z0-9_]+)_song.(pak|qb)(.(ngc|ps2|ps3|xen))?$
+		// ^(data[/\])?songs[/\](?<name>[A-Z0-9_]+)(_song_scripts)?.mid.qb(.(ngc|ps2|ps3|xen))?$
 		// [201]
-		// Invalid signature: 
+		// ^(?<name>[A-Z0-9_]+)_song.(pak|qb)(.(ngc|ps2|ps3|xen))?$
 		// [202]
-		// ZOMG?!!!? container size mismatch????! we do not care
+		// Invalid signature: 
 		// [203]
-		// total file size mismatch
+		// ZOMG?!!!? container size mismatch????! we do not care
 		// [204]
-		// zones\global\global_gfx{0}
+		// total file size mismatch
 		// [205]
+		// zones\global\global_gfx{0}
+		// [206]
 		// name="log"; filename="launcher.txt"
 		// Content-Type: text/plain
-		// [206]
+		// [207]
 		// name="chart"; filename=".chart.gz"
 		// Content-Type: application/gzip
-		// [207]
-		// SGH9ZIP2PASS4MXKR;TGH9ZIP2PASS4MXKR;CUSTOM_SONG_TRACK_MASTERFILE_4000?;GHPCED_MUSIC_MASTER_TRACK_3000!;ghpcedsong00000x;ghpcedsong012345xXfileFoRmAt;ghpcedsongdata012345z
 		// [208]
-		// Guitar Hero 3 executable cannot be found! Make sure game.exe or game!.exe exists in this mod's folder.
+		// SGH9ZIP2PASS4MXKR;TGH9ZIP2PASS4MXKR;CUSTOM_SONG_TRACK_MASTERFILE_4000?;GHPCED_MUSIC_MASTER_TRACK_3000!;ghpcedsong00000x;ghpcedsong012345xXfileFoRmAt;ghpcedsongdata012345z
 		// [209]
-		// Unrecognized file format
+		// Guitar Hero 3 executable cannot be found! Make sure game.exe or game!.exe exists in this mod's folder.
 		// [210]
-		// Matched section key: 
+		// Unrecognized file format
 		// [211]
-		// FastGH3 0.7 song package
+		// Matched section key: 
 		// [212]
-		// All supported types
+		// FastGH3 0.7 song package
 		// [213]
+		// All supported types
+		// [214]
 		// |Any type|*.*
+		// [215]
+		// ERROR! ({0}) :(
+		// Reason: {1}
+		// Stack trace:
+		// {2}
+		// [216]
+		// Version: {0}, build time: {1}, branch {2}
 		#region
-		"湉瑩慩楬楺杮⸮縮慆瑳䡇″慌湵档牥䰠杯䵔䌨⠩⥒汁牬杩瑨牳獥牥敶੤卾畨晦敬猠捥楴湯挠湡潮⁴敢映畯摮椠⁮敳瑴湩獧椮楮ਮ獕条㩥嬊桓晵汦嵥瀊瑡ㅨ䌽尺档牡獴ੜ慰桴㴲㩄捜慨瑲㉳ੜ慰桴㴳㩅牜瑥楡彬慧敭屳縊慃❮⁴楦摮愠祮挠慨瑲ⅳ䍾湡潮⁴楦摮愠映汩⁥湩楤慣楴杮漠⁦潣瑮楡楮杮栠杩睨祡䜠塆縮汧扯污瀮歡椠湳琧渠浡摥挠牯敲瑣祬縮湏⁥景琠敨攠瑮牥摥映汩獥搠湯琧攠楸瑳縮䅍义䰠啁䍎䕈䑒坏䱎䅏⁄体䝎卆⁐塅剔䍁織潄湷潬摡湩⁧潳杮瀠捡慫敧⸮縮污敲摡⁹潤湷潬摡摥映汩⹥啾楮畱⁥楦敬搠瑡⁥档捥楫杮攠慮汢摥縮慄整渠瑯挠捡敨繤桔獩猠湯⁧慰正条⁥獩愠氠牡敧⁲楦敬琠慨⁮獵慵⹬⠠ほ⁽䉍਩潄礠畯眠湡⁴潴挠湯楴畮㽥坾楲楴杮氠湩⁫潴挠捡敨⸮縮牗瑩湩⁧慤整琠⁯慣档⹥⸮੾⌣⌣⌣⌣‣ほ⁽䡐十⁅⌣⌣⌣⌣ਣ剾慥楤杮映汩⹥䑾瑥捥整⁤档牡⁴楦敬縮敄整瑣摥洠摩⁩楦敬縮潃癮牥楴杮琠⁯档牡⹴⸮䍾湡潮⁴楦摮挠慨瑲愠瑦牥挠湯敶瑲湩⁧牦浯䴠䑉⹉匠浯瑥楨杮洠獵❴敶眠湥⁴牷湯⁧楷桴洠摩挲慨瑲‮硅瑩湩⹧䍾敨正湩⁧慣档⹥⸮䕾据摯湩⁧潳杮縮敇瑴湩⁧畡楤⁯楦敬⹳⸮䙾畯摮愠摵潩眠瑩⁨桴⁥档牡⁴慮敭䙾畯摮䘠䙏猠牴捵畴敲映汩獥⼠縠桃捥楫杮椠⁦硥牴⁡畡楤⁯硥獩獴䙾畯摮椠潳慬整⁤牤浵⁳畡楤⁯縨潆湵⁤獩汯瑡摥瘠捯污⁳畡楤繯畃牲湥⁴敳敬瑣摥愠摵潩猠牴慥獭愠敲縺潎猠湯⁧畡楤⁯慣⁮敢映畯摮ਮ潄礠畯眠湡⁴潴猠慥捲⁨潦⁲瑩縿慗瑮琠⁯汰祡眠瑩潨瑵愠摵潩ਿ桔獩椠⁳潮⁴潣灭瑡扩敬眠瑩⁨牰捡楴散洠摯⹥䙾楡敬⁤潴搠汥瑥⁥桴⁥整灭䘠䉓映汯敤ⅲ䙾畯摮洠牯⁥桴湡琠牨敥愠摵潩琠慲正ⱳ洠牥楧杮縮牃慥楴杮攠据摯牥瀠潲散獳⸮縮湹档潲潮獵洠摯⁥敳ੴ卾慴瑲湩⁧卆⁂畢汩楤杮⸮縮慃档摥愠摵潩映畯摮縮慆汩摥琠⁯潣祰挠捡敨⁤卆⹂圠奈ℿ℡䑾汥瑥湩⁧桴⁥畣牲湥汴⁹潬摡摥䘠䉓椠⁮慣敳縮桃牡⁴獩渠瑯挠捡敨⹤佾数楮杮猠湯⁧慰⹫睾票坾奈䍾浯楰楬杮挠慨瑲縮牃慥楴杮渠瑯⁥牡慲獹⸮縮牅潲⁲湩瀠牡楳杮渠瑯獥映牯縠牅潲⁲湩瀠牡楳杮猠汯獯映牯縠牃慥楴杮愠摮愠摤湩⁧瑳牡潰敷⁲牡慲獹⸮縮敇瑴湩⁧湥⁤楴敭⸮縮湕扡敬琠⁯敧⁴桴⁥湥⁤楴敭映牯愠渠瑯⁥牴捡⁫繛慃捬汵瑡湩⁧湥⁤楴敭‬潳映牡›䕾摮琠浩⁥獩縠敒摡湩⁧潢獳瀠潲獰⸮縮潓杮搠瑥捥整⁤獡戠獯繳杉潮楲杮搠慥桴氠捩⁫捳楲瑰䝾瑯渠湯攭楸瑳湥⁴潰敷畲⁰湩戠獯⹳湩㩩縠牃慥楴杮瀠睯牥灵愠牲祡⹳⸮卾牯楴杮猠牣灩獴戠⁹楴敭縮牃慥楴杮映捡ⵥ景⁦敳瑣潩獮⸮縮牃慥楴杮琠浩⁥楳湧瑡牵⁥牡慲獹⸮縮潎琠浩⁥楳獧‿瑨灴㩳⼯⹩祫⵭摣⹮潣⽭桰瑯獯椯慭敧⽳牯杩湩污〯㈰㈯㜹㌯㔵振㍢䍾敲瑡湩⁧牦瑥慢⁲牡慲獹⸮縮潃汬捥楴杮朠牡慢敧⸮縮牃慥楴杮洠牡敫⁲牡慲獹⸮縮汁杩楮杮瀠楯瑮牥⹳⸮䍾浯楰楬杮倠䭁縮牗瑩湩⁧䅐⁋潴挠捡敨縮䥄⁄噅剅呙䥈䝎圠剏㽋縡慃档摥挠慨瑲映畯摮縮慗瑩湩⁧潦⁲潳杮攠据摯湩⁧潴映湩獩⹨坾楲楴杮愠摵潩琠⁯慣档⹥坾楡楴杮映牯攠瑸慲琠慲正洠牥楧杮琠⁯楦楮桳縮汅灡敳⁤畡楤⁯湥潣楤杮琠浩㩥縠牃慥楴杮䜠㍈瀠潲散獳⸮縮敒摡ⱹ朠Ⅿ䍾敬湡湩⁧灵匠塯琠浥⁰楦敬⁳但⁒体䕍删䅅体ⅎ℡繾敄整瑣摥猠湯⁧慰正条⹥䙾畯摮挠捡敨⁤䑉縮䥚⁐潮⁴慣档摥縮潆湵⁤慣档摥䘠偓縮牅潲㩲䌠捡敨⁤卆⁐潤獥渠瑯攠楸瑳‮硅牴捡楴杮縮牅潲⁲硥牴捡楴杮愠映汩㩥縠潌歯湩⁧潦⁲潣浭湡⁤楬敮愠捣獥楳汢⁥娷灩縮潌歯湩⁧潦⁲娷灩椠⁮敲楧瑳祲縮慗瑩圠䙔‬䡔⁅剐䝏䅒⁍卉❎⁔䡔剅ⅅ‡佈⅗䍾畯摬渠瑯映湩⁤ⴷ楚⁰慰桴椠⁮敲楧瑳祲‮獉椠⁴湩瑳污敬㽤卾浯桥睯氠潯楫杮映牯㜠娭灩映楡敬⹤䤠⁳瑩椠獮慴汬摥縿娷灩椠⁳湩瑳污敬⹤唠楳杮琠慨⹴⸮㝾楚⁰潣汵⁤潮⁴敢映畯摮縮潌歯湩⁧潦⁲潣浭湡⁤楬敮愠捣獥楳汢⁥楗剮剁漠⁲湕慒⹲硥繥潆湵⁤湕䅒⹒唠楳杮琠慨⹴⸮啾剮剁挠畯摬渠瑯戠⁥潦湵⹤啾獮灵潰瑲摥愠捲楨敶琠灹繥牗瑩湩⁧慰桴琠⁯慣档⹥⸮呾慨⁴楦敬搠敯⁳潮⁴硥獩⹴䔠楸楴杮縮桔⁥敳敬瑣摥猠湯⁧䅐⁋慨⁳湡甠歮潮湷椠敤瑮晩敩⹲䤊⁦潹⁵湫睯琠敨椠瑮牥慮⁬慮敭映牯琠楨⁳潳杮‬湥整⁲瑩栠牥⁥潴瀠慬㩹ਊ䤊⁦桴⁥慮敭挠敨正搠敯⁳潮⁴畳捣敥Ɽ礠畯挠湡潮⁴潣瑮湩敵縮牐獥⁳湡⁹敫⁹潴攠楸繴潆湵⁤楂歮戠捡杫潲湵⁤楶敤繯潎䈠湩⁫慢正牧畯摮瘠摩潥映畯摮੾彟 ††彟屟 †⁜† †ਯ††⁜ਯ††堠 †⼠尠弊彟 †彜彟ੜ†††††⼠縊敓⁴慭⁸偆ⱓ椠⁦潮⁴慣灰摥戠⁹獖湹⹣䤊⁦敳⁴潴〠‬桴⁥牦浡⁥慲整氠浩瑩眠汩⁬潮⁴慴敫攠晦捥⹴䄊⁳景渠睯‬瑩挠湡漠汮⁹慣⁰潴ㄠ獭⼠ㄠ〰‰偆⹓圊牡楮杮›潓敭映慲敭爠瑡獥眠汩⁬慭敫琠敨朠浡⁥潬歯挊潨灰⁹敤数摮湩⁧湯琠敨爠晥敲桳爠瑡⁥潹牵洠湯瑩牯猠灵潰瑲ⱳ漊⁲敤数摮湩⁧湯礠畯⁲假⹕佾敶牲摩⁥桴⁥潮整氠浩瑩‮敓⁴潴ⴠ‱潴洠歡੥桴⁥牰杯慲⁭敤整浲湩⁥潨⁷慭祮渠瑯獥琊敨敲愠敲椠⁮桴⁥档牡⁴灯湥摥ਮ䅒⁍獵条⁥慭⁹慶祲縮桔獩愠汬睯⁳潹⁵潴挠慨杮⁥桴⁥楷摮睯猠穩⁥景琠敨朠浡⁥捡潣摲湩⁧潴礠畯⁲潭楮潴⁲敳瑴湩獧縮汃慥⁮楦敬⁳牦浯搠睯汮慯楤杮愠摮攠瑸慲瑣湩⁧潓杮倠捡慫敧⹳圊牡楮杮›敒獵⁥景琠敨敳映汩獥眠汩⁬敲畱物⁥潤湷潬摡湩⁧湡੤硥牴捡楴杮琠敨⁭条楡Ɱ猠浯⁥景眠楨档挠湡琠歡⁥⁡楢⁴景琠浩⹥䍾慨杮⁥桴⁥楢牴瑡⁥獵摥映牯挠湯敶瑲湩⁧潳杮⹳吊楨⁳楷汬漠汮⁹慴敫攠晦捥⁴潦⁲桴⁥敮瑸猠湯獧挠湯敶瑲摥ਮ桔⁥敤慦汵⁴獩ㄠ㠲扫獰‬獡搠捥摩摥戠⁹桴⁥慧敭ਮ晉猠湯⁧慣档湩⁧獩琠牵敮⁤湯‬桴⁥慣档摥猠湯獧眠汩੬敫灥琠敨戠瑩慲整猠瑥楴杮琠敨⁹敷敲挠湯敶瑲摥眠瑩⹨上瑯㩥吠楨⁳楷汬愠獬⁯敲畳瑬椠⁮慬杲牥漠⁲浳污敬ੲ潣灭汩摥愠摵潩映汩獥‬桷捩⁨晥敦瑣⁳潹牵猠湯⁧慣档⁥獡眠汥⹬䍾慨杮⁥桴⁥潣瑮潲汬牥琠慨⁴獩猠汥捥整⁤潴瀠慬⁹桷湥䬠祥潢牡⁤潭敤椠⁳景⹦圊剁䥎䝎›湕汰杵楧杮漠⁲汰杵楧杮椠⁮潣瑮潲汬牥⁳慣⁮晡敦瑣琠楨⁳敳瑴湩⹧呾楨⁳灡汰敩⁳潦⁲潢桴瀠慬敹⁲票数獲数摥⹳呾楨⁳灡汰敩⁳潦⁲潢桴瀠慬敹⁲楤晦捩汵楴獥縮牃摥瑩⁳楷汬戠⁥楤灳慬敹⁤湩挠湯潳敬縮湅整⁲数捲湥慴敧漠⁦潳杮猠数摥眠敨⁮汰祡湩⹧吠楨⁳污潳攠晦捥獴琠敨瀠瑩档漠⁦桴⁥潳杮縮桃湡敧椠獮牴浵湥⁴牯琠慲正琠⁯敢瀠慬敹⁤湩朠浡⹥剾汥畡据⁨桴⁥慧敭眠瑩⁨桴⁥牰癥潩獵猠湯⁧湩瀠慬散縮敓敬瑣眠慨⁴汰杵湩⁳桳畯摬戠⁥潬摡摥漠⁲楤慳汢摥ਮ敒畱物獥䜠㍈‫潣灭瑡扩敬瀠畬楧獮縮楖睥挠捡敨⁤档牡⁴楦敬⹳匠湯獧眠汩⁬灡数牡栠牥⁥湯祬昊牯琠潨敳琠慨⁴敷敲挠湯敶瑲摥眠敨⁮潳杮挠捡楨杮眠獡琠牵敮⁤湯縮桃湡敧琠敨映牯慭⁴景挠牵敲瑮潳杮琮瑸‮慃⁮敢甠敳畦⁬潦⁲瑳敲浡湩⹧䍾慨杮⁥桴⁥浡畯瑮漠⁦楴敭琠⁯慷瑩戠晥牯⁥桴੥潳杮猠慴瑲⹳删煥極敲⁳丢⁯湩牴≯琠⁯敢琠牵敮⁤湯縮桃湡敧挠湯牴汯⁳潦⁲汰祡湩⁧湯欠祥潢牡⹤剾煥極敲⁤潦⁲汰祡湩⁧慦散漭晦愠摮戠瑡汴⹥卾瑥挠牵敲瑮戠捡杫潲湵⁤浩条⁥桷湥瀠慬楹杮愠猠湯⹧䉾捡杫潲湵⁤浩条⁥桴瑡猧朠楯杮琠⁯敢猠潨湷椠⁮桴⁥慧敭ਮ潄扵敬挠楬正琠⁯敳⁥⁡慬杲牥瀠敲楶睥漠⁦潨⁷瑩眠汩⁬潬歯縮灓敥㩤††††††††††††††縥昶搱戲ㄶ㕤ちㄱ晣晢㝣㐴㔴㌵㐵〰〰䙾位⁄慓灭敬䈠湡㩫獦Ɫ獦⹢數Ɱ獦⹢獰縳桔⁥硥牴捡潴⁲敲畴湲摥愠渠湯稭牥⁯牥潲⁲潣敤‮桔獩挠畯摬洠慥⁮桴瑡琠敨攠瑸慲瑣潩⁮慨⁳慦汩摥縮娷椠⁳潮⁴畳灰牯整⁤祢唠剮剁‬湵敬獳礠畯栠癡⁥ⴷ楚⁰湩瑳污敬Ɽ漠⁲慭畮污祬攠瑸慲瑣琠敨㜠⁚獵湩⁧桴⁥楗剮剁椠瑮牥慦散縮湕畳灰牯整⁤牡档癩⁥祴数‬湵敬獳礠畯栠癡⁥ⴷ楚⁰牯圠湩䅒⁒牯唠剮剁椠獮慴汬摥‬牯琠敨琠牡敧⁴剕⁌敲畴湲摥愠⁮湩慶楬⁤敲灳湯敳‮桔獩挠畯摬愠獬⁯敢愠瀠獡睳牯⁤牰瑯捥整⁤楦敬‮桃捥⁫慬湵档牥琮瑸映牯琠敨氠杯漠⁦桴⁥硥牴捡潴⹲╾⁡‭畁桴牯‬琥ⴠ吠瑩敬‬戥ⴠ䄠扬浵‬┥ⴠ倠牥散瑮ਬ挥ⴠ䌠慨瑲牥‬礥ⴠ夠慥Ⱳ┠⁬‭敌杮桴‬朥ⴠ䜠湥敲⽾尡䔠牲牯愠摤湩⁧⁡瑳牡潰敷⁲桰慲敳‮晉琠楨⁳敭獳条⁥灡数牡⁳潭敲琠慨⁮湯散‬桴牥⁥慭⁹敢愠瀠潲汢浥䅾汬挠慨瑲琠灹獥挺慨瑲洬捳洬摩䘻獡䝴㍈匠湯⁧慐正条㩥獦Ɒ楺Ɒ湳Ⱨ稷爬牡䜻極慴⁲效潲㌠倠䭁瀺歡瀬歡砮湥瀬歡瀮㍳䱾杩瑨楮杮䐬晩楦畣瑬啹Ɒ潄扵敬潎整ⱳ敌瑦乹瑯獥䈬潲敫卮牴湩Ⱨ桗浡祭瑁慴正倬睯牥灕瑓慥繬慓楶杮甠敳⁲慢正牧畯摮瘠摩潥剾獥潴楲杮甠敳⁲慢正牧畯摮瘠摩潥䙾楡敬⁤潴欠汩⁬敨楬⁸牯匠塯攠數畣慴汢獥縮畒湮湩⁧業㉤档牡ⱴ氠杯縺畁楤⁯獩渠瑯挠捡敨⹤䙾楡敬⁤潴甠汰慯⁤潬⹧䤠⁴獩猠癡摥琠⁯慬湵档牥琮瑸縮瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨术浡䉥慬歮瀮杮屾䱐䝕义屓屾楤慳汢摥繜⸪汤繬潣敲搮汬⡾⤪彾潬⹧硴繴潌摡摥›汰杵湩屳啾䕓偒佒䥆䕌屾灁䑰瑡屡潌慣屬獁祰屲慆瑳䡇尳獁祰䍲湯楦⹧浸繬慅祳䴥摥畩╭慈摲䔥灸牥繴潎儠⁂潣普杩映畯摮‬慣湮瑯猠癡⁥档湡敧⹳䑾呁屁慧敭汰祡䉟⹇浩⹧數繮慆汩摥琠⁯敧⁴慢正牧畯摮椠慭敧縡敒摡湩⁧敳瑴湩獧⸮縮灓敥⁤数捲湥慴敧挠湡潮⁴敢稠牥⁯牯氠獥ⅳ℡䙾獡䝴㍈›敋批湩獤卾汥捥整⁤畢瑴湯縺潌摡湩⁧捳楲瑰⁳潦⁲癯牥楲敤挠敨正⹳⸮䙾楡敬⁤潴猠瑥甠敳⁲䉑瘠污敵縮䡇⬳倠畬楧籮⸪汤繬畇瑩牡䠠牥⁯䥉⭉䰠杯›氨獡⁴敳獳潩⥮乾⁯䉑挠湯楦⁧楦敬映畯摮‬慣湮瑯猠瑥瘠污敵縮桔牥⁥獩洠牯⁥桴湡漠敮映汩⁥湩琠楨⁳潓杮倠捡慫敧ਮ桗捩⁨湯⁥潤礠畯挠潨獯㽥桾瑴獰⼺搯湯慮敫ㅮ⸵潣⽭慦瑳桧⼳獡敳獴振湯牴汯砯汰牯牥樮杰卾汥捥⁴⁡潣瑮潲汬牥戠瑵潴⁮湡੤桴湥挠楬正愠欠祥琠⁯獡楳湧琠⁯瑩縮慢正牧摮癟摩潥戮歩砮湥䙾楡敬⁤潴挠灯⁹潳杮瘠摩潥縮潧⁴湩慶楬⁤楤敲瑣牯ⱹ猠楫灰湩㩧縠畁楤⁯楦敬㩳灭ⰳ慷ⱶ杯Ⱨ灯獵䥾⁳桴牥⁥⁡畧瑩牡琠慲正琠潯縿獉琠敨敲愠爠票桴⁭牴捡⁫潴㽯啾楳杮戠慬歮洠獵捩映汩繥獦瑢灭晜獡杴㍨筟細洮㍰䑾⁏余⁕䅈䕖吠䕈䜠䵁⁅偏久㼿㼿䝾瑯渠汵⁬癥湥ⅴ℡℡℡℡䝾瑯渠汵⁬癥湥⁴整瑸℡℡℡℡縡楆敬挠湡潮⁴敢映畯摮ਮ慐桴›䙾楡敬⁤潴氠慯⁤睯⁮慬湵档牥氠杯縮਍ⴭほൽ䌊湯整瑮䐭獩潰楳楴湯›潦浲搭瑡㭡笠紲਍਍ㅻ繽灡汰捩瑡潩⽮捯整⵴瑳敲浡浾汵楴慰瑲是牯⵭慤慴※潢湵慤祲總湕湫睯⁮扯敪瑣琠灹⁥湩愠牲祡›䵾摯椠普⁯瑩浥椠⁳業獳湩⹧⠠䍾湡琧映湩⁤桴⁥潭⁤湩潦猠牴捵⁴笨細\u2029楷桴愠洠瑡档湩⁧潭⁤慮敭漠⁲湡愠扭杩潵獵祬渠浡摥洠摯椠普⁯瑳畲瑣⠠潭彤湩潦⸩䤠⁳桴⁥楦敬渠瑯瀠潲数汲⁹慮敭㽤⁾獩愠爠煥極敲⁤楦敬戠瑵搠敯⁳潮⁴硥獩⹴縊慃湮瑯映湩⁤⁡楦敬椠摮捩瑡湩⁧景愠儠⹂兾⁂楦敬焺⹢數Ɱ扱娻灩数⁤䉑稺灩呾敨敳椠整獭爠灥慬散琠敨朠浡❥⁳慤慴縺乐㩇湰㭧偊䝅樺数㭧楂浴灡戺灭䐻卄携獤䡾物慯楫匠湡╯楃捲獵䜠浡╥䈸呉䴠单䍉倠坏剅搥湯慮敫ㅮ┵〲㘱㈥㈺┲桃灩畴敮䙾獡䝴㍈䰠畡据敨⁲獩愠牬慥祤爠湵楮杮縡畍瑬⁩湩瑳湡散挠敨正湩⁧獩漠晦‮敂挠牡晥汵縡潗汲⁤潔牵ⴭ猠湯⁧楦敬⁳牡⁥潮⁴潣灭瑡扩敬眠瑩⁨䡇⸳䔠楸楴杮⸮縮敄整瑣摥圠⁔潮整甠灰牥戠瑩慭歳›呾楨⁳潳杮愠灰慥獲琠⁯敢挠浯楰敬⁤潦⁲潗汲⁤潔牵漠⁲慬整⁲慧敭ⱳ眠楨档椠⁳潮⁴潣灭瑡扩敬眠瑩⁨畇瑩牡䠠牥⁯䥉⁉楳据⁥瑩⁳潮整琠慲正映牯慭⁴慨⁳档湡敧⹤䵾獩╣汐祡牥䰥畡据敨╲潓杮整瑸潆浲瑡䘥湩獩敨䱤杯䬥汩獬楷捴╨潓杮楖敤獯䰥獡却湯䡧摡楖敤繯潆湵⁤ほⱽ攠瑸慲瑣湩⹧⸮坾汥潣敭琠⁯慆瑳䡇㨳匠汥捥⁴⁡档牡⁴潴瀠慬繹瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨搯慩湧⹯桰繰慆汩摥琠⁯档捥⁫慰桴›瀨›笢細Ⱒ攠›笢紱⤢笊紲幾浴孰ⴰ䄹䘭筝紴琮灭昮灳縤⡞慤慴⽛嵜㼩潳杮孳尯⡝㰿慮敭嬾ⵁず㤭嵟⤫弨潳杮獟牣灩獴㼩洮摩焮⡢⠮杮籣獰簲獰簳數⥮㼩縤⡞㰿慮敭嬾ⵁず㤭嵟⤫獟湯⹧瀨歡煼⥢⸨渨捧灼㉳灼㍳硼湥⤩␿䥾癮污摩猠杩慮畴敲›婾䵏㽇℡㼡挠湯慴湩牥猠穩⁥業浳瑡档㼿㼿‡敷搠⁯潮⁴慣敲瑾瑯污映汩⁥楳敺洠獩慭捴繨潺敮屳汧扯污杜潬慢彬晧筸細湾浡㵥氢杯㬢映汩湥浡㵥氢畡据敨⹲硴≴਍潃瑮湥⵴祔数›整瑸瀯慬湩湾浡㵥挢慨瑲㬢映汩湥浡㵥⸢档牡⹴穧ഢ䌊湯整瑮吭灹㩥愠灰楬慣楴湯术楺繰䝓㥈䥚㉐䅐卓䴴䭘㭒䝔㥈䥚㉐䅐卓䴴䭘㭒啃呓䵏卟乏彇剔䍁彋䅍呓剅䥆䕌㑟〰㼰䜻偈䕃彄啍䥓彃䅍呓剅呟䅒䭃㍟〰ℰ朻灨散獤湯で〰〰㭸桧捰摥潳杮㄰㌲㔴塸楦敬潆浒瑁朻灨散獤湯摧瑡ち㈱㐳稵䝾極慴⁲效潲㌠攠數畣慴汢⁥慣湮瑯戠⁥潦湵Ⅴ䴠歡⁥畳敲朠浡⹥硥⁥牯朠浡Ⅵ攮數攠楸瑳⁳湩琠楨⁳潭❤⁳潦摬牥縮湕敲潣湧穩摥映汩⁥潦浲瑡䵾瑡档摥猠捥楴湯欠祥›䙾獡䝴㍈〠㜮猠湯⁧慰正条繥汁⁬畳灰牯整⁤祴数繳䅼祮琠灹籥⸪*"
+		"湉瑩慩楬楺杮⸮縮慆瑳䡇″慌湵档牥䰠杯䵔䌨⠩⥒汁牬杩瑨牳獥牥敶੤卾畨晦敬猠捥楴湯挠湡潮⁴敢映畯摮椠⁮敳瑴湩獧椮楮ਮ獕条㩥嬊桓晵汦嵥瀊瑡ㅨ䌽尺档牡獴ੜ慰桴㴲㩄捜慨瑲㉳ੜ慰桴㴳㩅牜瑥楡彬慧敭屳縊慃❮⁴楦摮愠祮挠慨瑲ⅳ䍾湡潮⁴楦摮愠映汩⁥湩楤慣楴杮漠⁦潣瑮楡楮杮栠杩睨祡䜠塆縮汧扯污瀮歡椠湳琧渠浡摥挠牯敲瑣祬縮湏⁥景琠敨攠瑮牥摥映汩獥搠湯琧攠楸瑳縮䅍义䰠啁䍎䕈䑒坏䱎䅏⁄体䝎䘠偓䔠员䅒呃縠潄湷潬摡湩⁧潳杮瀠捡慫敧⸮縮污敲摡⁹潤湷潬摡摥映汩⹥啾楮畱⁥楦敬搠瑡⁥档捥楫杮攠慮汢摥縮慄整渠瑯挠捡敨繤桔獩猠湯⁧慰正条⁥獩愠氠牡敧⁲楦敬琠慨⁮獵慵⹬⠠ほ⁽䉍਩潄礠畯眠湡⁴潴挠湯楴畮㽥坾楲楴杮氠湩⁫潴挠捡敨⸮縮牗瑩湩⁧慤整琠⁯慣档⹥⸮੾⌣⌣⌣⌣‣ほ⁽䡐十⁅⌣⌣⌣⌣ਣ剾慥楤杮映汩⹥䑾瑥捥整⁤档牡⁴楦敬縮敄整瑣摥洠摩⁩楦敬縮潃癮牥楴杮琠⁯档牡⹴⸮䍾湡潮⁴楦摮挠慨瑲愠瑦牥挠湯敶瑲湩⁧牦浯䴠䑉⹉匠浯瑥楨杮洠獵❴敶眠湥⁴牷湯⁧楷桴洠摩挲慨瑲‮硅瑩湩⹧䍾敨正湩⁧慣档⹥⸮䕾据摯湩⁧潳杮縮敇瑴湩⁧畡楤⁯楦敬⹳⸮䙾畯摮愠摵潩眠瑩⁨桴⁥档牡⁴慮敭䙾畯摮䘠䙏猠牴捵畴敲映汩獥⼠縠桃捥楫杮椠⁦硥牴⁡畡楤⁯硥獩獴䙾畯摮椠潳慬整⁤牤浵⁳畡楤⁯縨潆湵⁤獩汯瑡摥瘠捯污⁳畡楤繯畃牲湥⁴敳敬瑣摥愠摵潩猠牴慥獭愠敲縺潎猠湯⁧畡楤⁯慣⁮敢映畯摮ਮ潄礠畯眠湡⁴潴猠慥捲⁨潦⁲瑩縿慗瑮琠⁯汰祡眠瑩潨瑵愠摵潩ਿ桔獩椠⁳潮⁴潣灭瑡扩敬眠瑩⁨牰捡楴散洠摯⹥䙾楡敬⁤潴搠汥瑥⁥桴⁥整灭䘠䉓映汯敤ⅲ䙾畯摮洠牯⁥桴湡琠牨敥愠摵潩琠慲正ⱳ洠牥楧杮縮牃慥楴杮攠据摯牥瀠潲散獳⸮縮湹档潲潮獵洠摯⁥敳ੴ卾慴瑲湩⁧卆⁂畢汩楤杮⸮縮慃档摥愠摵潩映畯摮縮慆汩摥琠⁯潣祰挠捡敨⁤卆⹂圠奈ℿ℡䑾汥瑥湩⁧桴⁥畣牲湥汴⁹潬摡摥䘠䉓椠⁮慣敳縮桃牡⁴獩渠瑯挠捡敨⹤佾数楮杮猠湯⁧慰⹫睾票坾奈䍾浯楰楬杮挠慨瑲縮牃慥楴杮渠瑯⁥牡慲獹⸮縮牅潲⁲湩瀠牡楳杮渠瑯獥映牯縠牅潲⁲湩瀠牡楳杮猠汯獯映牯縠牃慥楴杮愠摮愠摤湩⁧瑳牡潰敷⁲牡慲獹⸮縮敇瑴湩⁧湥⁤楴敭⸮縮湕扡敬琠⁯敧⁴桴⁥湥⁤楴敭映牯愠渠瑯⁥牴捡⁫繛慃捬汵瑡湩⁧湥⁤楴敭‬潳映牡›䕾摮琠浩⁥獩縠敒摡湩⁧潢獳瀠潲獰⸮縮潓杮搠瑥捥整⁤獡戠獯繳杉潮楲杮搠慥桴氠捩⁫捳楲瑰䝾瑯渠湯攭楸瑳湥⁴潰敷畲⁰湩戠獯⹳湩㩩縠牃慥楴杮瀠睯牥灵愠牲祡⹳⸮卾牯楴杮猠牣灩獴戠⁹楴敭縮牃慥楴杮映捡ⵥ景⁦敳瑣潩獮⸮縮牃慥楴杮琠浩⁥楳湧瑡牵⁥牡慲獹⸮縮潎琠浩⁥楳獧‿瑨灴㩳⼯⹩祫⵭摣⹮潣⽭桰瑯獯椯慭敧⽳牯杩湩污〯㈰㈯㜹㌯㔵振㍢䍾敲瑡湩⁧牦瑥慢⁲牡慲獹⸮縮潃汬捥楴杮朠牡慢敧⸮縮牃慥楴杮洠牡敫⁲牡慲獹⸮縮汁杩楮杮瀠楯瑮牥⹳⸮䍾浯楰楬杮倠䭁縮牗瑩湩⁧䅐⁋潴挠捡敨縮䥄⁄噅剅呙䥈䝎圠剏㽋縡慃档摥挠慨瑲映畯摮縮慗瑩湩⁧潦⁲潳杮攠据摯湩⁧潴映湩獩⹨坾楲楴杮愠摵潩琠⁯慣档⹥坾楡楴杮映牯攠瑸慲琠慲正洠牥楧杮琠⁯楦楮桳縮汅灡敳⁤畡楤⁯湥潣楤杮琠浩㩥縠牃慥楴杮䜠㍈瀠潲散獳⸮縮敒摡ⱹ朠Ⅿ䍾敬湡湩⁧灵匠塯琠浥⁰楦敬⁳但⁒体䕍删䅅体ⅎ℡䍾尺牐杯慲⁭楆敬⁳砨㘸尩慆瑳䡇尳䑾瑥捥整⁤潳杮瀠捡慫敧縮潆湵⁤慣档摥䤠⹄婾偉渠瑯挠捡敨⹤䙾畯摮挠捡敨⁤卆⹐䕾牲牯›慃档摥䘠偓搠敯⁳潮⁴硥獩⹴䔠瑸慲瑣湩⹧䕾牲牯攠瑸慲瑣湩⁧⁡楦敬›䱾潯楫杮映牯挠浯慭摮氠湩⁥捡散獳扩敬㜠楚⹰䱾潯楫杮映牯㜠楚⁰湩爠来獩牴⹹坾楡⁴呗ⱆ吠䕈倠佒則䵁䤠乓吧吠䕈䕒℡䠠坏縡潃汵⁤潮⁴楦摮㜠娭灩瀠瑡⁨湩爠来獩牴⹹䤠⁳瑩椠獮慴汬摥縿潓敭潨⁷潬歯湩⁧潦⁲ⴷ楚⁰慦汩摥‮獉椠⁴湩瑳污敬㽤㝾楚⁰獩椠獮慴汬摥‮獕湩⁧桴瑡⸮縮娷灩挠畯摬渠瑯戠⁥潦湵⹤䱾潯楫杮映牯挠浯慭摮氠湩⁥捡散獳扩敬圠湩䅒⁒牯唠剮牡攮數䙾畯摮唠剮剁‮獕湩⁧桴瑡⸮縮湕䅒⁒潣汵⁤潮⁴敢映畯摮縮湕畳灰牯整⁤牡档癩⁥祴数坾楲楴杮瀠瑡⁨潴挠捡敨⸮縮桔瑡映汩⁥潤獥渠瑯攠楸瑳‮硅瑩湩⹧呾敨猠汥捥整⁤潳杮倠䭁栠獡愠⁮湵湫睯⁮摩湥楴楦牥ਮ晉礠畯欠潮⁷桴⁥湩整湲污渠浡⁥潦⁲桴獩猠湯Ⱨ攠瑮牥椠⁴敨敲琠⁯汰祡਺ਊ晉琠敨渠浡⁥档捥⁫潤獥渠瑯猠捵散摥‬潹⁵慣湮瑯挠湯楴畮⹥偾敲獳愠祮欠祥琠⁯硥瑩䙾畯摮䈠湩⁫慢正牧畯摮瘠摩潥乾⁯楂歮戠捡杫潲湵⁤楶敤⁯潦湵繤弊彟††张彟ੜ†尠†⼠†⼠ †尠⼠ ††੘†† ੜ彟⽟†尠彟屟 †††††ਯ卾瑥洠硡䘠卐‬晩渠瑯挠灡数⁤祢嘠祳据ਮ晉猠瑥琠⁯ⰰ琠敨映慲敭爠瑡⁥楬業⁴楷汬渠瑯琠歡⁥晥敦瑣ਮ獁漠⁦潮ⱷ椠⁴慣⁮湯祬挠灡琠⁯洱⁳ 〱〰䘠卐ਮ慗湲湩㩧匠浯⁥牦浡⁥慲整⁳楷汬洠歡⁥桴⁥慧敭氠潯੫档灯祰搠灥湥楤杮漠⁮桴⁥敲牦獥⁨慲整礠畯⁲潭楮潴⁲畳灰牯獴ਬ牯搠灥湥楤杮漠⁮潹牵䜠啐縮癏牥楲敤琠敨渠瑯⁥楬業⹴匠瑥琠⁯ㄭ琠⁯慭敫琊敨瀠潲牧浡搠瑥牥業敮栠睯洠湡⁹潮整ੳ桴牥⁥牡⁥湩琠敨挠慨瑲漠数敮⹤刊䵁甠慳敧洠祡瘠牡⹹呾楨⁳污潬獷礠畯琠⁯档湡敧琠敨眠湩潤⁷楳敺漠⁦桴⁥慧敭愠捣牯楤杮琠⁯潹牵洠湯瑩牯猠瑥楴杮⹳䍾敬湡映汩獥映潲⁭潤湷潬摡湩⁧湡⁤硥牴捡楴杮匠湯⁧慐正条獥ਮ慗湲湩㩧删略敳漠⁦桴獥⁥楦敬⁳楷汬爠煥極敲搠睯汮慯楤杮愠摮攊瑸慲瑣湩⁧桴浥愠慧湩‬潳敭漠⁦桷捩⁨慣⁮慴敫愠戠瑩漠⁦楴敭縮桃湡敧琠敨戠瑩慲整甠敳⁤潦⁲潣癮牥楴杮猠湯獧ਮ桔獩眠汩⁬湯祬琠歡⁥晥敦瑣映牯琠敨渠硥⁴潳杮⁳潣癮牥整⹤吊敨搠晥畡瑬椠⁳㈱欸灢ⱳ愠⁳敤楣敤⁤祢琠敨朠浡⹥䤊⁦潳杮挠捡楨杮椠⁳畴湲摥漠Ɱ琠敨挠捡敨⁤潳杮⁳楷汬權敥⁰桴⁥楢牴瑡⁥敳瑴湩⁧桴祥眠牥⁥潣癮牥整⁤楷桴ਮ潎整›桔獩眠汩⁬污潳爠獥汵⁴湩氠牡敧⁲牯猠慭汬牥挊浯楰敬⁤畡楤⁯楦敬ⱳ眠楨档攠晦捥獴礠畯⁲潳杮挠捡敨愠⁳敷汬縮桃湡敧琠敨挠湯牴汯敬⁲桴瑡椠⁳敳敬瑣摥琠⁯汰祡眠敨⁮敋批慯摲洠摯⁥獩漠晦ਮ䅗乒义㩇唠灮畬杧湩⁧牯瀠畬杧湩⁧湩挠湯牴汯敬獲挠湡愠晦捥⁴桴獩猠瑥楴杮縮桔獩愠灰楬獥映牯戠瑯⁨汰祡牥栠灹牥灳敥獤縮桔獩愠灰楬獥映牯戠瑯⁨汰祡牥搠晩楦畣瑬敩⹳䍾敲楤獴眠汩⁬敢搠獩汰祡摥椠⁮潣獮汯⹥䕾瑮牥瀠牥散瑮条⁥景猠湯⁧灳敥⁤桷湥瀠慬楹杮‮桔獩愠獬⁯晥敦瑣⁳桴⁥楰捴⁨景琠敨猠湯⹧䍾慨杮⁥湩瑳畲敭瑮漠⁲牴捡⁫潴戠⁥汰祡摥椠⁮慧敭縮敒慬湵档琠敨朠浡⁥楷桴琠敨瀠敲楶畯⁳潳杮椠⁮汰捡⹥卾汥捥⁴桷瑡瀠畬楧獮猠潨汵⁤敢氠慯敤⁤牯搠獩扡敬⹤刊煥極敲⁳䡇⬳挠浯慰楴汢⁥汰杵湩⹳噾敩⁷慣档摥挠慨瑲映汩獥‮潓杮⁳楷汬愠灰慥⁲敨敲漠汮੹潦⁲桴獯⁥桴瑡眠牥⁥潣癮牥整⁤桷湥猠湯⁧慣档湩⁧慷⁳畴湲摥漠⹮䍾慨杮⁥桴⁥潦浲瑡漠⁦畣牲湥獴湯⹧硴⹴䌠湡戠⁥獵晥汵映牯猠牴慥業杮縮桃湡敧琠敨愠潭湵⁴景琠浩⁥潴眠楡⁴敢潦敲琠敨猊湯⁧瑳牡獴‮敒畱物獥∠潎椠瑮潲•潴戠⁥畴湲摥漠⹮䍾慨杮⁥潣瑮潲獬映牯瀠慬楹杮漠⁮敫批慯摲縮敒畱物摥映牯瀠慬楹杮映捡ⵥ景⁦湡⁤慢瑴敬縮敓⁴畣牲湥⁴慢正牧畯摮椠慭敧眠敨⁮汰祡湩⁧⁡潳杮縮慂正牧畯摮椠慭敧琠慨❴⁳潧湩⁧潴戠⁥桳睯⁮湩琠敨朠浡⹥䐊畯汢⁥汣捩⁫潴猠敥愠氠牡敧⁲牰癥敩⁷景栠睯椠⁴楷汬氠潯⹫卾数摥›†††††††††††††┠㙾ㅦ㉤㙢搱愵㄰挱扦捦㐷㐴㔵㔳〴〰縰䵆䑏匠浡汰⁥慂歮昺扳昬扳砮湥昬扳瀮㍳呾敨攠瑸慲瑣牯爠瑥牵敮⁤⁡潮⵮敺潲攠牲牯挠摯⹥吠楨⁳潣汵⁤敭湡琠慨⁴桴⁥硥牴捡楴湯栠獡映楡敬⹤㝾⁚獩渠瑯猠灵潰瑲摥戠⁹湕䅒ⱒ甠汮獥⁳潹⁵慨敶㜠娭灩椠獮慴汬摥‬牯洠湡慵汬⁹硥牴捡⁴桴⁥娷甠楳杮琠敨圠湩䅒⁒湩整晲捡⹥啾獮灵潰瑲摥愠捲楨敶琠灹ⱥ甠汮獥⁳潹⁵慨敶㜠娭灩漠⁲楗剮剁漠⁲湕䅒⁒湩瑳污敬Ɽ漠⁲桴⁥慴杲瑥唠䱒爠瑥牵敮⁤湡椠癮污摩爠獥潰獮⹥吠楨⁳潣汵⁤污潳戠⁥⁡慰獳潷摲瀠潲整瑣摥映汩⹥䌠敨正氠畡据敨⹲硴⁴潦⁲桴⁥潬⁧景琠敨攠瑸慲瑣牯縮愥ⴠ䄠瑵潨Ⱳ┠⁴‭楔汴ⱥ┠⁢‭汁畢Ɑ┠‥‭敐捲湥ⱴ┊⁣‭桃牡整Ⱳ┠⁹‭教牡‬氥ⴠ䰠湥瑧ⱨ┠⁧‭敇牮繥ℯ⁜牅潲⁲摡楤杮愠猠慴灲睯牥瀠牨獡⹥䤠⁦桴獩洠獥慳敧愠灰慥獲洠牯⁥桴湡漠据ⱥ琠敨敲洠祡戠⁥⁡牰扯敬繭汁⁬档牡⁴祴数㩳档牡ⱴ獭Ᵽ業㭤慆瑳䡇″潓杮倠捡慫敧昺灳稬灩猬杮㜬ⱺ慲㭲畇瑩牡䠠牥⁯″䅐㩋慰Ⱬ慰⹫數Ɱ慰⹫獰縳楌桧湴湩Ⱨ楄晦捩汵祴灕䐬畯汢乥瑯獥䰬晥祴潎整ⱳ牂歯湥瑓楲杮圬慨浭䅹瑴捡Ⱬ潐敷啲印整污卾癡湩⁧獵牥戠捡杫潲湵⁤楶敤繯敒瑳牯湩⁧獵牥戠捡杫潲湵⁤楶敤繯慆汩摥琠⁯楫汬栠汥硩漠⁲潓⁘硥捥瑵扡敬⹳剾湵楮杮洠摩挲慨瑲‬潬㩧䅾摵潩椠⁳潮⁴慣档摥縮慆汩摥琠⁯灵潬摡氠杯‮瑉椠⁳慳敶⁤潴氠畡据敨⹲硴⹴桾瑴獰⼺搯湯慮敫ㅮ⸵潣⽭慦瑳桧⼳慧敭求湡⹫湰繧停啌䥇华繜摜獩扡敬層⩾搮汬捾牯⹥汤繬⨨縩江杯琮瑸䱾慯敤㩤瀠畬楧獮繜单剅剐䙏䱉繅䅜灰慄慴䱜捯污䅜灳特䙜獡䝴㍈䅜灳特潃普杩砮汭䕾獡╹敍楤浵䠥牡╤硅数瑲乾⁯䉑挠湯楦⁧潦湵Ɽ挠湡潮⁴慳敶挠慨杮獥縮䅄䅔杜浡灥慬役䝂椮杭砮湥䙾楡敬⁤潴朠瑥戠捡杫潲湵⁤浩条Ⅵ剾慥楤杮猠瑥楴杮⹳⸮卾数摥瀠牥散瑮条⁥慣湮瑯戠⁥敺潲漠⁲敬獳℡縡慆瑳䡇㨳䬠祥楢摮繳敓敬瑣摥戠瑵潴㩮䱾慯楤杮猠牣灩獴映牯漠敶牲摩⁥档捥獫⸮縮慆汩摥琠⁯敳⁴獵牥儠⁂慶畬⹥䝾㍈‫汐杵湩⩼搮汬䝾極慴⁲效潲䤠䥉‫潌㩧⠠慬瑳猠獥楳湯縩潎儠⁂潣普杩映汩⁥潦湵Ɽ挠湡潮⁴敳⁴慶畬⹥呾敨敲椠⁳潭敲琠慨⁮湯⁥楦敬椠⁮桴獩匠湯⁧慐正条⹥圊楨档漠敮搠⁯潹⁵档潯敳縿瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨愯獳瑥⽳潣瑮潲⽬灸潬敲⹲灪繧敓敬瑣愠挠湯牴汯敬⁲畢瑴湯愠摮琊敨⁮汣捩⁫⁡敫⁹潴愠獳杩⁮潴椠⹴找捡杫湲彤楶敤⹯楢⹫數繮慆汩摥琠⁯潣祰猠湯⁧楶敤⹯松瑯椠癮污摩搠物捥潴祲‬歳灩楰杮›䅾摵潩映汩獥洺㍰眬癡漬杧漬異繳獉琠敨敲愠朠極慴⁲牴捡⁫潴㽯䥾⁳桴牥⁥⁡桲瑹浨琠慲正琠潯縿獕湩⁧汢湡⁫畭楳⁣楦敬晾扳浴屰慦瑳桧弳ほ⹽灭縳佄夠問䠠噁⁅䡔⁅䅇䕍传䕐㽎㼿縿潇⁴畮汬攠敶瑮℡℡℡℡縡潇⁴畮汬攠敶瑮琠硥ⅴ℡℡℡℡䙾汩⁥慣湮瑯戠⁥潦湵⹤倊瑡㩨縠慆汩摥琠⁯潬摡漠湷氠畡据敨⁲潬⹧ൾⴊ笭細਍潃瑮湥⵴楄灳獯瑩潩㩮映牯⵭慤慴※㉻ൽഊ笊紱慾灰楬慣楴湯漯瑣瑥猭牴慥繭畭瑬灩牡⽴潦浲搭瑡㭡戠畯摮牡㵹啾歮潮湷漠橢捥⁴祴数椠⁮牡慲㩹縠潍⁤湩潦椠整⁭獩洠獩楳杮‮縨慃❮⁴楦摮琠敨洠摯椠普⁯瑳畲瑣⠠ほ⥽眠瑩⁨⁡慭捴楨杮洠摯渠浡⁥牯愠⁮浡楢畧畯汳⁹慮敭⁤潭⁤湩潦猠牴捵⁴洨摯楟普⥯‮獉琠敨映汩⁥潮⁴牰灯牥祬渠浡摥縿椠⁳⁡敲畱物摥映汩⁥畢⁴潤獥渠瑯攠楸瑳ਮ䍾湡潮⁴楦摮愠映汩⁥湩楤慣楴杮漠⁦⁡䉑縮䉑映汩㩥扱砮湥焬㭢楚灰摥儠㩂楺繰桔獥⁥瑩浥⁳敲汰捡⁥桴⁥慧敭猧搠瑡㩡偾䝎瀺杮䨻䕐㩇灪来䈻瑩慭㩰浢㭰䑄㩓摤繳楈潲歡⁩慓潮䌥物畣⁳慇敭㠥䥂⁔啍䥓⁃佐䕗╒潤湮歡湥㔱㈥㄰┶㨲㈲䌥楨瑰湵繥慆瑳䡇″慌湵档牥椠⁳污敲摡⁹畲湮湩Ⅷ䵾汵楴椠獮慴据⁥档捥楫杮椠⁳景⹦䈠⁥慣敲畦Ⅼ坾牯摬吠畯⵲‭潳杮映汩獥愠敲渠瑯挠浯慰楴汢⁥楷桴䜠㍈‮硅瑩湩⹧⸮䑾瑥捥整⁤呗渠瑯⁥灵数⁲楢浴獡㩫縠桔獩猠湯⁧灡数牡⁳潴戠⁥潣灭汩摥映牯圠牯摬吠畯⁲牯氠瑡牥朠浡獥‬桷捩⁨獩渠瑯挠浯慰楴汢⁥楷桴䜠極慴⁲效潲䤠䥉猠湩散椠獴渠瑯⁥牴捡⁫潦浲瑡栠獡挠慨杮摥縮楍捳倥慬敹╲慌湵档牥匥湯瑧硥䙴牯慭╴楆楮桳摥潌╧楋汬睳瑩档匥湯噧摩潥╳慌瑳潓杮慈噤摩潥䙾畯摮笠細‬硥牴捡楴杮⸮縮敗捬浯⁥潴䘠獡䝴㍈瘠⸱㨱匠汥捥⁴⁡档牡⁴潴瀠慬繹瑨灴㩳⼯潤湮歡湥㔱挮浯是獡杴㍨搯慩湧⹯桰繰慆汩摥琠⁯档捥⁫慰桴›瀨›笢細Ⱒ攠›笢紱⤢笊紲幾浴孰ⴰ䄹䘭筝紴琮灭昮灳縤⡞慤慴⽛嵜㼩潳杮孳尯⡝㰿慮敭嬾ⵁず㤭嵟⤫弨潳杮獟牣灩獴㼩洮摩焮⡢⠮杮籣獰簲獰簳數⥮㼩縤⡞㰿慮敭嬾ⵁず㤭嵟⤫獟湯⹧瀨歡煼⥢⸨渨捧灼㉳灼㍳硼湥⤩␿䥾癮污摩猠杩慮畴敲›婾䵏㽇℡㼡挠湯慴湩牥猠穩⁥業浳瑡档㼿㼿‡敷搠⁯潮⁴慣敲瑾瑯污映汩⁥楳敺洠獩慭捴繨潺敮屳汧扯污杜潬慢彬晧筸細湾浡㵥氢杯㬢映汩湥浡㵥氢畡据敨⹲硴≴਍潃瑮湥⵴祔数›整瑸瀯慬湩湾浡㵥挢慨瑲㬢映汩湥浡㵥⸢档牡⹴穧ഢ䌊湯整瑮吭灹㩥愠灰楬慣楴湯术楺繰䝓㥈䥚㉐䅐卓䴴䭘㭒䝔㥈䥚㉐䅐卓䴴䭘㭒啃呓䵏卟乏彇剔䍁彋䅍呓剅䥆䕌㑟〰㼰䜻偈䕃彄啍䥓彃䅍呓剅呟䅒䭃㍟〰ℰ朻灨散獤湯で〰〰㭸桧捰摥潳杮㄰㌲㔴塸楦敬潆浒瑁朻灨散獤湯摧瑡ち㈱㐳稵䝾極慴⁲效潲㌠攠數畣慴汢⁥慣湮瑯戠⁥潦湵Ⅴ䴠歡⁥畳敲朠浡⹥硥⁥牯朠浡Ⅵ攮數攠楸瑳⁳湩琠楨⁳潭❤⁳潦摬牥縮湕敲潣湧穩摥映汩⁥潦浲瑡䵾瑡档摥猠捥楴湯欠祥›䙾獡䝴㍈〠㜮猠湯⁧慰正条繥汁⁬畳灰牯整⁤祴数繳䅼祮琠灹籥⸪縪剅佒⅒⠠ほ⥽㨠ਨ敒獡湯›ㅻ੽瑓捡⁫牴捡㩥笊紲噾牥楳湯›ほⱽ戠極摬琠浩㩥笠紱‬牢湡档笠紲"
 		#endregion
 		)
 	).Split(new char[] {'~'});
@@ -593,7 +602,7 @@ static partial class Launcher
 	public static readonly string splashText = A.GetString(
 		U.GetBytes(
 		// 
-		//  Welcome to FastGH3 v1.0
+		//  Welcome to FastGH3 v1.1
 		// 
 		//  FastGH3 is an advanced mod of
 		//  Guitar Hero 3. With this mod, you
@@ -608,7 +617,7 @@ static partial class Launcher
 		// 
 		//  Press any key to load a chart.
 		#region
-		" 敗捬浯⁥潴䘠獡䝴㍈瘠⸱ਰ 慆瑳䡇″獩愠⁮摡慶据摥洠摯漠੦䜠極慴⁲效潲㌠‮楗桴琠楨⁳潭Ɽ礠畯 慣⁮汰祡挠獵潴獭眠瑩潨瑵愠祮琠捥湨捩污 敳畴Ɒ愠摮攠敶⁮獡潳楣瑡⁥档牡⁴牯洠摩 楦敬⁳楷桴琠敨朠浡⁥潳礠畯挠湡愠捣獥ੳ礠畯⁲档牡獴焠極正祬ਮ 潔愠捣獥⁳桴⁥灯楴湯ⱳ甠敳 桴⁥猭瑥楴杮⁳慰慲敭整⁲牯 灯湥猠瑥楴杮⹳慢⹴ਊ倠敲獳愠祮欠祥琠⁯潬摡愠挠慨瑲."
+		" 敗捬浯⁥潴䘠獡䝴㍈瘠⸱਱ 慆瑳䡇″獩愠⁮摡慶据摥洠摯漠੦䜠極慴⁲效潲㌠‮楗桴琠楨⁳潭Ɽ礠畯 慣⁮汰祡挠獵潴獭眠瑩潨瑵愠祮琠捥湨捩污 敳畴Ɒ愠摮攠敶⁮獡潳楣瑡⁥档牡⁴牯洠摩 楦敬⁳楷桴琠敨朠浡⁥潳礠畯挠湡愠捣獥ੳ礠畯⁲档牡獴焠極正祬ਮ 潔愠捣獥⁳桴⁥灯楴湯ⱳ甠敳 桴⁥猭瑥楴杮⁳慰慲敭整⁲牯 灯湥猠瑥楴杮⹳慢⹴ਊ倠敲獳愠祮欠祥琠⁯潬摡愠挠慨瑲."
 		#endregion
 		)
 	);

@@ -19,6 +19,7 @@ using Ionic.Zlib;
 #else
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.GZip;
+using System.Security.Cryptography;
 #endif
 
 public static partial class Launcher
@@ -472,7 +473,7 @@ public static partial class Launcher
 		if (var) // wait i just realized, keyword, lol, but it works just fine :p
 			pi.Arguments += " -v ";
 	}
-	//public static string ffmpeg = "";
+	public static string ffmpeg = "";
 
 	static void killtmpf(string path)
 	{
@@ -552,7 +553,7 @@ public static partial class Launcher
 	}
 	public static string ReplaceCI(this string v, string a, string b)
 	{
-		return Regex.Replace(v, a, b, RegexOptions.IgnoreCase);
+		return Regex.Replace(v, Regex.Escape(a), b, RegexOptions.IgnoreCase);
 	}
 	public static string uf(string l, bool ga) //expand filter string
 	{
@@ -574,23 +575,7 @@ public static partial class Launcher
 			sb = T[213] + idk + string.Join(";*.", supportedtypes.ToArray()) + sb;
 		return sb;
 	}
-	public static bool isTTY()
-	{
-		bool _ = false;
-		try
-		{
-			_ = (
-				Console.WindowWidth == 0 ||
-				Console.WindowHeight == 0
-			);
-		}
-		catch
-		{
-			_ = true;
-		}
-		return _ && Console.KeyAvailable &&
-			Console.CursorLeft == 0 && Console.CursorTop == 0;
-	}
+	static bool isTTY = false;
 	static void pt(byte i)
 	{
 		log.WriteLine(T[15], T[7].Substring(i*13, 13));
@@ -603,7 +588,7 @@ public static partial class Launcher
 	[return: MarshalAs(UnmanagedType.Bool)]
 	public static extern bool FreeConsole();
 
-	static bool outputPAK = true;
+	static bool outputPAK = false;
 	static bool newinstance = false;
 	static bool initlog = false;
 	public static string version = "1.1-999011043";
@@ -618,6 +603,18 @@ public static partial class Launcher
 			folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
 			inif = folder + "settings.ini";
 #region NO ARGS ROUTINE
+			try
+			{
+				isTTY = !(
+					Console.WindowWidth <= 0 ||
+					Console.WindowHeight <= 0
+				) && !(Console.CursorLeft == 0 && Console.CursorTop == 0);
+			}
+			catch
+			{
+				isTTY = false;
+			}
+
 			if (args.Length == 0)
 			{
 				if (cfg(l, settings.t.NoStartupMsg.ToString(), 0) == 0)
@@ -626,7 +623,7 @@ public static partial class Launcher
 					Console.WriteLine(splashText);
 					Console.ReadKey();
 				}
-				if (!isTTY())
+				if (!isTTY)
 					FreeConsole();
 				OpenFileDialog openchart = new OpenFileDialog()
 				{
@@ -639,7 +636,8 @@ public static partial class Launcher
 				};
 				if (openchart.ShowDialog() == DialogResult.OK)
 				{
-					AllocConsole();
+					if (!isTTY)
+						AllocConsole();
 					// TODO?: process start and redirect output to this EXE
 					// when MMF is figured out for multi instances
 					return sub(SubstringExtensions.Quotes(openchart.FileName));
@@ -707,6 +705,7 @@ public static partial class Launcher
 					goto retryExe;
 				return 1;
 			}
+			outputPAK = cfg(l, "OutputQB", 1) == 0; // where possible
 			vb = cfg(l, settings.t.VerboseLog.ToString(), 0) == 1;
 			dataf = folder + dataf;
 			pakf = dataf + "PAK\\";
@@ -718,7 +717,7 @@ public static partial class Launcher
 			// guessing people just don't migrate their
 			// config/user files when updating to a later version?
 			// or don't use the updater at all???? (it kind of sucks anyway)
-			
+
 			vl(T[0]);
 			caching = cfg(l, settings.t.SongCaching.ToString(), 1) == 1;
 			if (caching)
@@ -775,6 +774,8 @@ public static partial class Launcher
 				{
 					// muh classic theme
 					//Application.VisualStyleState = System.Windows.Forms.VisualStyles.VisualStyleState.NoneEnabled;
+					if (!isTTY && !vb)
+						FreeConsole();
 					Directory.SetCurrentDirectory(folder);
 					new settings().ShowDialog();
 					// settings file 31kb
@@ -1079,7 +1080,8 @@ public static partial class Launcher
 					killtmpfsp(tF);
 					//die();
 				}
-#endregion
+				#endregion
+				#region GOT FILE
 				else if (File.Exists(args[0]))
 				{
 					if (Path.GetDirectoryName(args[0]) == "")
@@ -1555,7 +1557,7 @@ public static partial class Launcher
 						bool[] is_stereo = { false, false, false };
 						if (!audCache)
 						{
-							//ffmpeg = where("ffmpeg.exe");
+							ffmpeg = where("ffmpeg.exe");
 							AB_param = (ushort)(cfg("Audio", "AB", 128) >> 1/*thx helix*/);
 							AR_param =
 								Math.Max(
@@ -1591,8 +1593,12 @@ public static partial class Launcher
 									if (ach(a) > 1)
 										is_stereo[0] = true;
 								}
-								ec(ref addaud, AB_param, true, AR_param, true, is_stereo[0], VBR);
 								al[0] = maxl;
+								addaud.StartInfo.EnvironmentVariables["ff"] = ffmpeg;
+								addaud.StartInfo.EnvironmentVariables["ab"] = (AB_param << 1 /*why*/).ToString();
+								addaud.StartInfo.EnvironmentVariables["ar"] = AR_param.ToString();
+								addaud.StartInfo.EnvironmentVariables["ac"] = is_stereo[0] ? "2" : "1";
+								addaud.StartInfo.EnvironmentVariables["bm"] = VBR ? "V" : "B";
 								addaud.StartInfo.WorkingDirectory = mt;
 								addaud.StartInfo.Arguments = "/c " + addaud.StartInfo.Arguments.Quotes();
 								addaud.Start();
@@ -1881,11 +1887,13 @@ public static partial class Launcher
 												//e.EventName == "")
 												// ALSO * IN A QBKEY LOL
 												//continue;
-												if (eventKey != QbKey.Create(0xF0FFFBEE) && // solo
+												if (
+													eventKey != QbKey.Create(0xF0FFFBEE) && // solo
 													eventKey != QbKey.Create(0x868BC002) && // soloend
 													eventKey != QbKey.Create(0x2DE8C60E) && // printf
-													eventKey != QbKey.Create(0xBE304E86) && // printf
-													eventKey != QbKey.Create(0xBE304E86)) // printstruct
+													eventKey != QbKey.Create(0xBE304E86) && // printstruct
+													eventKey != QbKey.Create(0xFF03CC4E) // end
+												)
 													continue;
 												vl("Found event: " + e.EventName, chartConvColor);
 												QbItemStruct newScript = new QbItemStruct(mid);
@@ -3261,7 +3269,8 @@ public static partial class Launcher
 									f.EndsWith(".pak.xen") ||
 									f.EndsWith(".pak.ps3") ||
 									f.EndsWith(chartext) ||
-									f.EndsWith(midext))
+									f.EndsWith(midext) ||
+									f.EndsWith(".sng"))
 								{
 									vl(foundtext, FSPcolor);
 									killgame();
@@ -3455,7 +3464,8 @@ public static partial class Launcher
 													f.EndsWith(".pak.xen") ||
 													f.EndsWith(".pak.ps3") ||
 													f.EndsWith(chartext) ||
-													f.EndsWith(midext))
+													f.EndsWith(midext) ||
+													f.EndsWith(".sng"))
 												{
 													killgame();
 													vl(foundtext, FSPcolor);
@@ -3696,7 +3706,8 @@ public static partial class Launcher
 												f.EndsWith(".pak.xen") ||
 												f.EndsWith(".pak.ps3") ||
 												f.EndsWith(chartext) ||
-												f.EndsWith(midext))
+												f.EndsWith(midext) ||
+												f.EndsWith(".sng"))
 											{
 												vl(foundtext, FSPcolor);
 												killgame();
@@ -4054,6 +4065,8 @@ public static partial class Launcher
 									while (playsilent == DialogResult.No);
 								}
 
+								killgame();
+
 								// note arrays are always first
 								string[][] ts = // track_suffixes
 								{
@@ -4210,6 +4223,55 @@ public static partial class Launcher
 									s.Values[0] = QbKey.Create(id);
 									fastgh3_extra.AddItem(s);
 
+									int endtime = -1;
+									string bossName = "";
+									bool isBoss = false;
+									switch (id.ToLower())
+									{
+										case "bosstom":
+											isBoss = true;
+											bossName = "TomMorello";
+											endtime = 197733;
+											break;
+										case "bossslash":
+											isBoss = true;
+											bossName = "slash";
+											endtime = 226504;
+											break;
+										case "bossdevil":
+											isBoss = true;
+											bossName = "devil";
+											endtime = 321466;
+											break;
+										case "bossjoe":
+											isBoss = true;
+											bossName = "slash";
+											endtime = 236950;
+											break;
+									}
+
+									if (isBoss)
+									{
+										QbKey key_boss_props = QbKey.Create("Boss_"+bossName+"_Props");
+										QbItemQbKey QB_bossenable = new QbItemQbKey(renamed_qb);
+										QB_bossenable.Create(QbItemType.StructItemQbKey);
+										QB_bossenable.ItemQbKey = QbKey.Create("boss");
+										QB_bossenable.Values[0] = QbKey.Create("Boss_Props"); // why do i exist
+										fastgh3_extra.AddItem(QB_bossenable);
+
+										QbItemQbKey QB_bossitems = new QbItemQbKey(renamed_qb);
+										QB_bossitems.Create(QbItemType.SectionQbKeyString);
+										QB_bossitems.ItemQbKey = QbKey.Create("Boss_Props");
+										QB_bossitems.Values[0] = key_boss_props;
+										renamed_qb.AddItem(QB_bossitems);
+
+										QbItemInteger QB_bossend = new QbItemInteger(renamed_qb);
+										QB_bossend.Create(QbItemType.SectionInteger);
+										QB_bossend.ItemQbKey = QbKey.Create(0x7DDBFF91);
+										QB_bossend.Values[0] = endtime;
+										renamed_qb.AddItem(QB_bossend);
+									}
+
 									renamed_qb.AlignPointers();
 									string qb_name = "songs\\fastgh3.mid.qb";
 									try
@@ -4221,6 +4283,7 @@ public static partial class Launcher
 										PE.AddFile(renamed_qb, qb_name, QbKey.Create(".qb"), false);
 									}
 
+									unkillgame();
 									killtmpf(args[0]);
 									Console.ResetColor();
 									print("Speeding up.");
@@ -4256,6 +4319,7 @@ public static partial class Launcher
 					}
 #endregion
 				}
+				#endregion
 				else
 				{
 					cfgW("Temp", fl, 1);
@@ -4270,8 +4334,14 @@ public static partial class Launcher
 			// almost 3kb
 			ConsoleColor oldcolor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
-			print("ERROR! :(");
-			print(ex);
+			print(string.Format(T[215],
+				ex.GetType().FullName,
+				ex.Message,
+				ex.StackTrace.ReplaceCI(T[77], "")
+			));
+			Console.WriteLine(string.Format(T[216],
+				version, builddate.ToString(), branch
+			));
 			// default value is 1, so why dont i just remove the key
 			// but then i would have to write some advanced code
 			// for that when using kernel funcs
@@ -4293,6 +4363,7 @@ public static partial class Launcher
 				print(T[176]);
 				return 1;
 			}
+#if true
 			string log = File.ReadAllText(folder + "launcher.txt");
 			if (initlog && cfg("Launcher","ErrorReporting",1)==1 && log.Length < 0x20000) // max 128 KB to upload
 			{
@@ -4324,11 +4395,15 @@ public static partial class Launcher
 #if !USE_SZL
 							chartgz = Convert.ToBase64String(GZipStream.CompressBuffer(File.ReadAllBytes(args[0])));
 #else
-							MemoryStream ms = new MemoryStream();
-							Stream i = File.Open(args[0], FileMode.Open);
-							Stream o = new GZipOutputStream(ms);
-							i.CopyTo(o);
-							chartgz = Convert.ToBase64String(ms.ToArray());
+							using (Stream
+								i = File.Open(args[0], FileMode.Open),
+								ms = new MemoryStream(),
+								o = new GZipOutputStream(ms))
+							{
+								i.CopyTo(o);
+								o.Close();
+								chartgz = Convert.ToBase64String(((MemoryStream)ms).ToArray());
+							}
 #endif
 						}
 					}
@@ -4336,6 +4411,10 @@ public static partial class Launcher
 					{
 						vl(e);
 					}
+					string a = "";
+					SHA256 _ = SHA256.Create();
+					using (FileStream e = File.OpenRead(Application.ExecutablePath))
+						a = BitConverter.ToString(_.ComputeHash(e)).Replace("-", "");
 					// brain drain
 					byte[] tempBuffer = Encoding.ASCII.GetBytes(
 						string.Format(T[177], boundary, log, T[206]) +
@@ -4344,7 +4423,9 @@ public static partial class Launcher
 						string.Format(T[177], boundary, branch, "name=\"b\"") +
 						string.Format(T[177], boundary, ToUnixTime(builddate), "name=\"bt\"") +
 						string.Format(T[177], boundary, ex.GetType().FullName, "name=\"ex\"") +
+						string.Format(T[177], boundary, ex.StackTrace, "name=\"stk\"") +
 						string.Format(T[177], boundary, ex.Message, "name=\"msg\"") +
+						string.Format(T[177], boundary, a, "name=\"xh\"") +
 						"\r\n--" + boundary + "--");
 					request.ContentLength = tempBuffer.Length;
 
@@ -4378,6 +4459,7 @@ public static partial class Launcher
 					print(T[137]);
 				}
 			}
+#endif
 
 			if (newinstance)
 			{

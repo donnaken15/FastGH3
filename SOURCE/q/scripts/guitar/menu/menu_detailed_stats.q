@@ -76,7 +76,7 @@ script create_detailed_stats_menu
 	endif
 	FormatText textname = p1_notes_ratio "%a/%b" a = <p1_notes_hit> b = <p1_notes_max>
 	SetArrayElement ArrayName = notes_ratio index = 0 NewValue = <p1_notes_ratio>
-	if NOT ($game_mode = p2_battle || $current_song = bosstom || $current_song = bossslash || $current_song = bossdevil)
+	if NOT ($game_mode = p2_battle || $boss_battle = 1)
 		FormatText textname = p1_sp_ratio "%a/%b" a = <p1_sp_phrases_hit> b = <p1_sp_phrases_max>
 		SetArrayElement ArrayName = sp_ratio index = 0 NewValue = <p1_sp_ratio>
 		FormatText textname = p1_avg_multiplier "%d X" d = <p1_avg_multiplier_val>
@@ -96,7 +96,7 @@ script create_detailed_stats_menu
 				casttointeger \{p1_time_in_lead}
 				p2_time_in_lead = (100 - <p1_time_in_lead>)
 			endif
-			if NOT ($game_mode = p2_battle || $current_song = bosstom || $current_song = bossslash || $current_song = bossdevil)
+			if NOT ($game_mode = p2_battle || $boss_battle = 1)
 				FormatText textname = p1_lead_percent "%d\%" d = <p1_time_in_lead>
 				SetArrayElement ArrayName = lead_percentage index = 0 NewValue = <p1_lead_percent>
 			endif
@@ -114,7 +114,7 @@ script create_detailed_stats_menu
 			endif
 			FormatText textname = p2_notes_ratio "%a/%b" a = <p2_notes_hit> b = <p2_notes_max>
 			SetArrayElement ArrayName = notes_ratio index = 1 NewValue = <p2_notes_ratio>
-			if NOT ($game_mode = p2_battle || $current_song = bosstom || $current_song = bossslash || $current_song = bossdevil)
+			if NOT ($game_mode = p2_battle || $boss_battle = 1)
 				FormatText textname = p2_sp_ratio "%a/%b" a = <p2_sp_phrases_hit> b = <p2_sp_phrases_max>
 				SetArrayElement ArrayName = sp_ratio index = 1 NewValue = <p2_sp_ratio>
 				FormatText textname = p2_avg_multiplier "%d X" d = <p2_avg_multiplier_val>
@@ -695,7 +695,7 @@ script add_divider_graphic
 			divider_element_num = 6
 		endif
 	endif
-	if ($current_song = bosstom || $current_song = bossslash || $current_song = bossdevil)
+	if ($boss_battle = 1)
 		divider_element_num = 3
 	endif
 	FormatText checksumName = entry_id '%c_column_%d' c = 'left' d = <divider_element_num>

@@ -50,8 +50,10 @@ button_models = {
 	green = {
 		gem_material = sys_Gem2D_Green_sys_Gem2D_Green
 		gem_hammer_material = sys_Gem2D_Green_hammer_sys_Gem2D_Green_hammer
+		//gem_tap_material = sys_Tap2D_Green_sys_Tap2D_Green
 		star_material = sys_Star2D_Green_sys_Star2D_Green
 		star_hammer_material = sys_Star2D_Green_Hammer_sys_Star2D_Green_Hammer
+		//star_tap_material = sys_Tap2D_Green_star_sys_Tap2D_Green_star
 		battle_star_material = sys_BattleGEM_Green01_sys_BattleGEM_Green01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_Green01_sys_BattleGEM_Hammer_Green01
 		whammy_material = sys_Whammy2D_Green_sys_Whammy2D_Green
@@ -61,8 +63,10 @@ button_models = {
 	red = {
 		gem_material = sys_Gem2D_Red_sys_Gem2D_Red
 		gem_hammer_material = sys_Gem2D_Red_hammer_sys_Gem2D_Red_hammer
+		//gem_tap_material = sys_Tap2D_Red_sys_Tap2D_Red
 		star_material = sys_Star2D_Red_sys_Star2D_Red
 		star_hammer_material = sys_Star2D_Red_Hammer_sys_Star2D_Red_Hammer
+		//star_tap_material = sys_Tap2D_Green_star_sys_Tap2D_Green_star
 		battle_star_material = sys_BattleGEM_RED01_sys_BattleGEM_RED01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_RED01_sys_BattleGEM_Hammer_RED01
 		whammy_material = sys_Whammy2D_Red_sys_Whammy2D_Red
@@ -72,8 +76,10 @@ button_models = {
 	yellow = {
 		gem_material = sys_Gem2D_Yellow_sys_Gem2D_Yellow
 		gem_hammer_material = sys_Gem2D_Yellow_hammer_sys_Gem2D_Yellow_hammer
+		//gem_tap_material = sys_Tap2D_Yellow_sys_Tap2D_Yellow
 		star_material = sys_Star2D_Yellow_sys_Star2D_Yellow
 		star_hammer_material = sys_Star2D_Yellow_Hammer_sys_Star2D_Yellow_Hammer
+		//star_tap_material = sys_Tap2D_Green_star_sys_Tap2D_Green_star
 		battle_star_material = sys_BattleGEM_Yellow01_sys_BattleGEM_Yellow01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_Yellow01_sys_BattleGEM_Hammer_Yellow01
 		whammy_material = sys_Whammy2D_Yellow_sys_Whammy2D_Yellow
@@ -83,8 +89,10 @@ button_models = {
 	blue = {
 		gem_material = sys_Gem2D_Blue_sys_Gem2D_Blue
 		gem_hammer_material = sys_Gem2D_Blue_hammer_sys_Gem2D_Blue_hammer
+		//gem_tap_material = sys_Tap2D_Blue_sys_Tap2D_Blue
 		star_material = sys_Star2D_Blue_sys_Star2D_Blue
 		star_hammer_material = sys_Star2D_Blue_Hammer_sys_Star2D_Blue_Hammer
+		//star_tap_material = sys_Tap2D_Green_star_sys_Tap2D_Green_star
 		battle_star_material = sys_BattleGEM_Blue01_sys_BattleGEM_Blue01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_Blue01_sys_BattleGEM_Hammer_Blue01
 		whammy_material = sys_Whammy2D_Blue_sys_Whammy2D_Blue
@@ -94,8 +102,10 @@ button_models = {
 	orange = {
 		gem_material = sys_Gem2D_Orange_sys_Gem2D_Orange
 		gem_hammer_material = sys_Gem2D_Orange_hammer_sys_Gem2D_Orange_hammer
+		gem_tap_material = sys_Tap2D_Orange_sys_Tap2D_Orange
 		star_material = sys_Star2D_Orange_sys_Star2D_Orange
 		star_hammer_material = sys_Star2D_Orange_Hammer_sys_Star2D_Orange_Hammer
+		//star_tap_material = sys_Tap2D_Green_star_sys_Tap2D_Green_star
 		battle_star_material = sys_BattleGEM_Orange01_sys_BattleGEM_Orange01
 		battle_star_hammer_material = sys_BattleGEM_Hammer_Orange01_sys_BattleGEM_Hammer_Orange01
 		whammy_material = sys_Whammy2D_Orange_sys_Whammy2D_Orange
@@ -412,6 +422,29 @@ script get_song_end_time
 	return total_end_time = <total_end_time>
 endscript
 
+script end
+	wait \{1 gameframe}
+endscript
+script check_manual_end
+	return false
+	ExtendCrc \{$current_song '_scripts' out=scripts_name}
+	if NOT GlobalExists <scripts_name>
+		return \{false}
+	endif
+	scripts = $<scripts_name>
+	GetArraySize \{scripts}
+	if (<array_size> < 1)
+		return \{false}
+	endif
+	i = 0
+	begin
+		if (<scripts>[<i>].scr = end)
+			return { true total_end_time = (<scripts>[<i>].time) }
+		endif
+		Increment \{i}
+	repeat <array_size>
+	return \{true}
+endscript
 script win_song
 	if (<Player> = 1)
 		Change \{num_players_finished = 0}
@@ -419,11 +452,20 @@ script win_song
 	song = <gem_array>
 	GetArraySize $<song>
 	if NOT (<array_Size> = 0)
-		get_song_end_time song = ($current_song)
-		end_s = ((<total_end_time> - <startTime>)/ 1000.0)
-		printf 'Waiting %s seconds for song end marker.' s = <end_s>
-		if (<end_s> > 0)
-			wait <end_s> seconds // totally good idea
+		if NOT check_manual_end
+			get_song_end_time \{song = $current_song}
+		endif
+		total_end_time = (<total_end_time> + ($Song_Win_Delay * 1000.0))
+		printf 'Waiting %s seconds for song end marker.' s = ((<total_end_time> - <startTime>) / 1000.0)
+		if (<total_end_time> > 0)
+			begin
+				GetSongTimeMs
+				if (<time> >= <total_end_time>)
+					break
+				endif
+				wait \{1 gameframe}
+			repeat
+			//wait <end_s> seconds // totally good idea
 		endif
 	endif
 	if ($current_num_players = 2)
@@ -432,9 +474,6 @@ script win_song
 		wait_on_player = 1
 	endif
 	if (<wait_on_player> = <Player>)
-		if IsWinPort
-			wait \{1.1 seconds}
-		endif
 		KillMovie \{textureSlot = 1}
 		preload_movie = 'Fret_Flames'
 		if ($game_mode = p2_faceoff || $game_mode = p2_pro_faceoff)
@@ -452,8 +491,6 @@ script win_song
 			no_hold
 		}
 	endif
-	printf \{'Waiting %s seconds for extra song win delay.' s = $Song_Win_Delay}
-	wait \{$Song_Win_Delay seconds}
 	Change num_players_finished = ($num_players_finished + 1)
 	printf 'win_song finished %i/%f' i = ($num_players_finished)f = ($current_num_players)
 	if ($num_players_finished >= $current_num_players)
@@ -538,10 +575,10 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 	if (<devil_finish_restart> = 1)
 		printf \{'FINISH DEVIL RESTART'}
 	else
-		Change \{devil_finish = 0}
-		if ($current_song = bossdevil)
+		if ($fastgh3_extra.original_stream_name = bossdevil & $devil_finish = 1)
 			<startTime> = 0
 		endif
+		Change \{devil_finish = 0}
 	endif
 	if (<end_credits_restart> = 1)
 		printf \{'END CREDITS RESTART'}
@@ -817,25 +854,6 @@ script show_boss_helper_now
 endscript
 
 gem_scroller_exit_scripts = [
-	lefty_toggle
-	move_2d_elements_to_default
-	wait_and_play_you_rock_movie
-	update_score_fast
-	check_for_star_power
-	wait_for_inactive
-	pulsate_all_star_power_bulbs
-	pulsate_star_power_bulb
-	rock_meter_star_power_on
-	rock_meter_star_power_off
-	star_power_activate_and_drain
-	hud_activated_star_power
-	hud_move_note_scorebar
-	hud_flash_red_bg_p1
-	hud_flash_red_bg_p2
-	hud_flash_red_bg_kill
-	hud_lightning_alert
-	hud_show_note_streak_combo
-	highway_pulse_multiplier_loss
 	GuitarEvent_MissedNote
 	GuitarEvent_UnnecessaryNote
 	GuitarEvent_HitNotes
@@ -860,7 +878,6 @@ gem_scroller_exit_scripts = [
 	GuitarEvent_HitNote_Spawned
 	hit_note_fx
 	first_gem_fx
-	Open_NoteFX
 	gem_iterator
 	gem_array_stepper
 	gem_array_events
@@ -877,17 +894,17 @@ gem_scroller_exit_scripts = [
 	button_checker
 	check_buttons
 	check_buttons_fast
-	net_check_buttons
 	fretbar_update_tempo
 	fretbar_update_hammer_on_tolerance
 	move_whammy
 	create_fretbar
 	move_highway_2d
-	move_highway_prepass
+	update_score_fast
+	check_for_star_power
+	wait_for_inactive
 	GuitarEvent_PreFretbar
 	GuitarEvent_Fretbar
 	check_note_hold
-	net_check_note_hold
 	star_power_whammy
 	show_star_power_ready
 	hud_glowburst_alert
@@ -895,12 +912,39 @@ gem_scroller_exit_scripts = [
 	win_song
 	hand_note_iterator
 	kill_object_later
-	waitandkillhighway
-	testlevel_debug
 	show_coop_raise_axe_for_starpower
 	net_whammy_pitch_shift
 	Crowd_AllPlayAnim
 	hud_activated_star_power_spawned
+	pulsate_all_star_power_bulbs
+	pulsate_star_power_bulb
+	rock_meter_star_power_on
+	rock_meter_star_power_off
+	hud_activated_star_power
+	hud_move_note_scorebar
+	hud_flash_red_bg_p1
+	hud_flash_red_bg_p2
+	hud_flash_red_bg_kill
+	hud_lightning_alert
+	hud_show_note_streak_combo
+	play_intro
+	begin_song_after_intro
+	solo
+	soloend
+	solo_ui_create
+	solo_ui_update
+	solo_ui_end
+	lefty_toggle
+	move_2d_elements_to_default
+	wait_and_play_you_rock_movie
+	star_power_activate_and_drain
+	highway_pulse_multiplier_loss
+	Open_NoteFX
+	net_check_buttons
+	move_highway_prepass
+	net_check_note_hold
+	waitandkillhighway
+	testlevel_debug
 	dispatch_player_state
 	network_events
 	online_win_song
@@ -966,6 +1010,7 @@ script kill_gem_scroller\{no_render = 0}
 		killspawnedscript name = (<array>[<i>])
 		Increment \{i}
 	repeat <array_size>
+	killspawnedscript \{name = GuitarEvent_SongFailed_Spawned}
 	Change \{star_power_ready_on_p1 = 0}
 	Change \{star_power_ready_on_p2 = 0}
 	new_net_logic_deinit
@@ -973,9 +1018,6 @@ script kill_gem_scroller\{no_render = 0}
 	destroy_gamertags
 	DestroyParticlesByGroupID \{groupID = zoneparticles}
 	Transition_KillAll
-	killspawnedscript \{name = GuitarEvent_SongFailed_Spawned}
-	killspawnedscript \{name = play_intro}
-	killspawnedscript \{name = begin_song_after_intro}
 	hud_flash_red_bg_kill \{Player = 1}
 	hud_flash_red_bg_kill \{Player = 2}
 	printf \{'kill_gem_scroller - Killing Event Scripts'}

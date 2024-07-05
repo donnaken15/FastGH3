@@ -1,6 +1,5 @@
 is_boss_song = 0
 is_guitar_controller = 0
-'somehow can\'t go into practice from here\n don\'t know what i did'
 
 script create_fail_song_menu
 	menu_font = fontgrid_title_gh3
@@ -39,41 +38,22 @@ script create_fail_song_menu
 	endif
 	get_song_title song = ($current_song)
 	GetUpperCaseString <song_title>
-	FormatText textname = completion_text "%d" d = <completion>
+	FormatText textname = completion_text '%d' d = <completion>
 	song_failed_off = (640.0, 217.0)
 	z = 100.0
 	offwhite = [223 223 223 255]
-	new_menu scrollid = fail_song_scrolling_menu vmenuid = fail_song_vmenu_id use_backdrop = 0 spacing = -58 menu_pos = <menu_pos>
-	create_pause_menu_frame z = (<z> - 10)
-	SetScreenElementProps \{id = fail_song_vmenu_id internal_just = [center center]}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = fail_song_static_text_container internal_just = [center center] Pos = (0.0, 0.0) z_priority = 2}
 	displaySprite parent = fail_song_static_text_container tex = dialog_title_bg flip_v Pos = (416.0, 100.0) Scale = (1.75, 1.75) z = <z>
 	displaySprite parent = fail_song_static_text_container tex = dialog_title_bg Pos = (640.0, 100.0) Scale = (1.75, 1.75) z = <z>
 	if ($is_boss_song = 1)
-		title = "BATTLE LOST"
+		title = 'BATTLE LOST'
 	else
-		title = "SONG FAILED"
+		title = 'SONG FAILED'
 	endif
-	CreateScreenElement {
-		Type = TextElement
-		parent = fail_song_static_text_container
-		font = <menu_font>
-		text = <title>
-		just = [center center]
-		Pos = {<song_failed_off> relative}
-		rgba = [223 223 223 255]
-		Scale = (1.2000000476837158, 1.2000000476837158)
-		z_priority = (<z> + 0.1)
-		Shadow
-		shadow_offs = (3.0, 3.0)
-		shadow_rgba = [0 0 0 255]
-	}
-	GetScreenElementDims id = <id>
-	fit_text_in_rectangle id = <id> dims = ((285.0, 0.0) + (<height> * (0.0, 1.0)))keep_ar = 1 only_if_larger_x = 1 start_x_scale = 1.2 start_y_scale = 1.2
-	if ($current_song = bosstom || $current_song = bossslash || $current_song = bossdevil)
+	if ($boss_battle = 1)
 		final_blow_powerup = -1
 		<final_blow_powerup> = ($player2_status.final_blow_powerup)
-		printf channel = trchen "FINAL BLOW %s" s = <final_blow_powerup>
+		//printf channel = trchen "FINAL BLOW %s" s = <final_blow_powerup>
 		if (<final_blow_powerup> > -1)
 			<completion_text_pos> = (420.0, 360.0)
 			<completion_text_just> = [left center]
@@ -99,7 +79,7 @@ script create_fail_song_menu
 				shadow_rgba = [0 0 0 255]
 				z_priority = (<z> + 0.1)
 				Scale = <finalblow_scale>
-				text = "FINAL BLOW:"
+				text = 'FINAL BLOW:'
 				rgba = [223 223 223 255]
 			}
 			fit_text_in_rectangle {
@@ -147,15 +127,9 @@ script create_fail_song_menu
 			shadow_rgba = [0 0 0 255]
 			z_priority = (<z> + 0.1)
 		}
-		if ($current_song = bosstom)
-			lost_text = "TOM MORELLO "
-		elseif ($current_song = bossslash)
-			lost_text = "SLASH "
-		elseif ($current_song = bossdevil)
-			lost_text = "LOU "
-		endif
-		CreateScreenElement <completion_text_params> Scale = 2 text = <lost_text> rgba = [223 223 223 255]
-		CreateScreenElement <completion_text_params> Scale = 2 text = "WINS" rgba = [223 223 223 255]
+		GetUpperCaseString ($Boss_Props.character_name)
+		CreateScreenElement <completion_text_params> Scale = 2 text = <uppercasestring> rgba = [223 223 223 255]
+		CreateScreenElement <completion_text_params> Scale = 2 text = " WINS" rgba = [223 223 223 255]
 		CreateScreenElement <completion_text_params> Scale = 1 text = " "
 		CreateScreenElement <completion_text_params> Scale = 1 text = "ON"
 		CreateScreenElement <completion_text_params> Scale = 1 text = " "
@@ -175,184 +149,23 @@ script create_fail_song_menu
 	endif
 	Change \{menu_focus_color = [180 50 50 255]}
 	Change \{menu_unfocus_color = [0 0 0 255]}
-	text_scale = (0.8999999761581421, 0.949999988079071)
-	if NOT English
-		text_scale = (0.8999999761581421, 0.8500000238418579)
-	endif
-	displaySprite parent = fail_song_static_text_container tex = white Pos = (492.0, 517.0) Scale = (75.0, 6.0) z = (<z> + 0.1)rgba = <offwhite>
-	displaySprite parent = fail_song_static_text_container tex = Dialog_Frame_Joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite parent = fail_song_static_text_container tex = Dialog_Frame_Joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite id = hi_right parent = fail_song_static_text_container tex = Dialog_Highlight Pos = (770.0, 533.0) just [left top] Scale = (1.0, 1.0) z = (<z> + 0.3)
-	displaySprite id = hi_left parent = fail_song_static_text_container tex = Dialog_Highlight flip_v just = [right top] Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)
 	if NOT GotParam \{exclusive_device}
 		exclusive_device = ($primary_controller)
 	endif
-	demo_mode_disable = {}
-	CreateScreenElement {
-		Type = ContainerElement
-		parent = fail_song_vmenu_id
-		event_handlers = [
-			{focus retry_highlight_focus params = {id = song_failed_retry}}
-			{unfocus retail_menu_unfocus params = {id = song_failed_retry}}
-			{pad_choose fail_song_menu_select_retry_song}
+	disable_pause
+	create_popup_warning_menu {
+		title = <title>
+		textblock = {text = "" Pos = (640.0, 380.0)}
+		player_device = <exclusive_device>
+		menu_pos = (640.0, 465.0)
+		dialog_dims = (275.0, 64.0)
+		menu_y = 1.33
+		options = [
+			{func = fail_song_menu_select_retry_song text = 'RETRY'}
+			{func = fail_song_menu_select_practice text = 'PRACTICE'}
+			{func = fail_song_menu_select_quit text = 'EXIT'}
 		]
-		dims = (100.0, 100.0)
-		z_priority = (<z> + 0.1)
 	}
-	CreateScreenElement {
-		Type = TextElement
-		parent = <id>
-		id = song_failed_retry
-		font = <menu_font>
-		text = "RETRY SONG"
-		rgba = ($menu_unfocus_color)
-		Scale = <text_scale>
-		just = [center top]
-	}
-	SetScreenElementProps {
-		id = <id>
-		exclusive_device = <exclusive_device>
-		Scale = <text_scale>
-	}
-	GetScreenElementDims id = <id>
-	if (<width> > 220)
-		fit_text_in_rectangle id = <id> dims = ((220.0, 0.0) + <height> * (0.0, 1.0))start_x_scale = (<text_scale>.(1.0, 0.0))start_y_scale = (<text_scale>.(0.0, 1.0))
-	endif
-	Change \{is_guitar_controller = 0}
-	player_device = ($primary_controller)
-	if IsGuitarController controller = <player_device>
-		Change \{is_guitar_controller = 1}
-	endif
-	if (($game_mode = p1_career & $is_boss_song = 0))
-		CreateScreenElement {
-			Type = ContainerElement
-			parent = fail_song_vmenu_id
-			event_handlers = [
-				{focus practice_highlight_focus params = {id = song_failed_practice}}
-				{unfocus retail_menu_unfocus params = {id = song_failed_practice}}
-				{pad_choose fail_song_menu_select_practice}
-			]
-			dims = (100.0, 100.0)
-			z_priority = (<z> + 0.1)
-		}
-		CreateScreenElement {
-			Type = TextElement
-			parent = <id>
-			id = song_failed_practice
-			font = <menu_font>
-			text = "PRACTICE"
-			rgba = ($menu_unfocus_color)
-			Scale = <text_scale>
-			just = [center top]
-		}
-		SetScreenElementProps {
-			id = <id>
-			exclusive_device = <exclusive_device>
-			Scale = <text_scale>
-		}
-		GetScreenElementDims id = <id>
-		if (<width> > 220)
-			fit_text_in_rectangle id = <id> dims = ((220.0, 0.0) + <height> * (0.0, 1.0))
-		endif
-		displaySprite parent = fail_song_static_text_container tex = dialog_bg Pos = (480.0, 428.0) Scale = (1.25, 1.600000023841858) z = <z>
-		displaySprite parent = fail_song_static_text_container tex = dialog_bg flip_h Pos = (480.0, 530.0) Scale = (1.25, 1.600000023841858) z = <z>
-	elseif ($is_boss_song = 1 & $is_guitar_controller = 1)
-		CreateScreenElement {
-			Type = ContainerElement
-			parent = fail_song_vmenu_id
-			event_handlers = [
-				{focus practice_highlight_focus params = {id = song_failed_tutorial}}
-				{unfocus retail_menu_unfocus params = {id = song_failed_tutorial}}
-				{pad_choose fail_song_menu_select_tutorial}
-			]
-			dims = (100.0, 100.0)
-			z_priority = (<z> + 0.1)
-		}
-		CreateScreenElement {
-			Type = TextElement
-			parent = <id>
-			id = song_failed_tutorial
-			font = <menu_font>
-			text = "TUTORIAL"
-			rgba = ($menu_unfocus_color)
-			Scale = <text_scale>
-			just = [center top]
-		}
-		SetScreenElementProps {
-			id = <id>
-			exclusive_device = <exclusive_device>
-			Scale = <text_scale>
-		}
-		GetScreenElementDims id = <id>
-		if (<width> > 220)
-			fit_text_in_rectangle id = <id> dims = ((220.0, 0.0) + <height> * (0.0, 1.0))
-		endif
-		displaySprite parent = fail_song_static_text_container tex = dialog_bg Pos = (480.0, 450.0) Scale = (1.25, 1.600000023841858) z = <z>
-		displaySprite parent = fail_song_static_text_container tex = dialog_bg flip_h Pos = (480.0, 552.0) Scale = (1.25, 1.600000023841858) z = <z>
-	else
-		displaySprite parent = fail_song_static_text_container tex = dialog_bg Pos = (480.0, 450.0) Scale = (1.25, 1.25) z = <z>
-		displaySprite parent = fail_song_static_text_container tex = dialog_bg flip_h Pos = (480.0, 530.0) Scale = (1.25, 1.25) z = <z>
-	endif
-	CreateScreenElement {
-		Type = ContainerElement
-		parent = fail_song_vmenu_id
-		event_handlers = [
-			{focus newsong_highlight_focus params = {id = song_failed_new_song}}
-			{unfocus retail_menu_unfocus params = {id = song_failed_new_song}}
-			{pad_choose fail_song_menu_select_new_song}
-		]
-		dims = (100.0, 100.0)
-		z_priority = (<z> + 0.1)
-	}
-	CreateScreenElement {
-		Type = TextElement
-		parent = <id>
-		id = song_failed_new_song
-		font = <menu_font>
-		text = "		"
-		rgba = ($menu_unfocus_color)
-		Scale = <text_scale>
-		just = [center top]
-	}
-	SetScreenElementProps {
-		id = <id>
-		exclusive_device = <exclusive_device>
-		Scale = <text_scale>
-	}
-	GetScreenElementDims id = <id>
-	if (<width> > 220)
-		fit_text_in_rectangle id = <id> dims = ((220.0, 0.0) + <height> * (0.0, 1.0))
-	endif
-	CreateScreenElement {
-		Type = ContainerElement
-		parent = fail_song_vmenu_id
-		event_handlers = [
-			{focus quit_highlight_focus params = {id = song_failed_new_quit}}
-			{unfocus retail_menu_unfocus params = {id = song_failed_new_quit}}
-			{pad_choose fail_song_menu_select_quit}
-		]
-		dims = (100.0, 100.0)
-		z_priority = (<z> + 0.1)
-	}
-	CreateScreenElement {
-		Type = TextElement
-		parent = <id>
-		id = song_failed_new_quit
-		font = <menu_font>
-		text = "QUIT"
-		rgba = ($menu_unfocus_color)
-		Scale = <text_scale>
-		just = [center top]
-	}
-	SetScreenElementProps {
-		id = <id>
-		exclusive_device = <exclusive_device>
-		Scale = <text_scale>
-	}
-	GetScreenElementDims id = <id>
-	if (<width> > 220)
-		fit_text_in_rectangle id = <id> dims = ((220.0, 0.0) + <height> * (0.0, 1.0))
-	endif
 	PauseGame
 	kill_start_key_binding
 endscript
@@ -366,9 +179,9 @@ endscript
 
 script destroy_fail_song_menu
 	restore_start_key_binding
-	destroy_menu \{menu_id = fail_song_scrolling_menu}
 	destroy_pause_menu_frame
 	destroy_menu \{menu_id = fail_song_static_text_container}
+	destroy_popup_warning_menu
 endscript
 
 script fail_song_menu_select_practice
@@ -395,6 +208,8 @@ script fail_song_menu_select_quit
 	ui_flow_manager_respond_to_action \{action = select_quit}
 endscript
 
+// 555-475
+// MAKE THIS A UNIFIED FUNCTION!!!!!!!!
 script retry_highlight_focus
 	retail_menu_focus id = <id>
 	if ScreenElementExists \{id = hi_left}
@@ -402,65 +217,19 @@ script retry_highlight_focus
 			GetScreenElementDims id = <id>
 			SetScreenElementProps id = hi_left Pos = ((635.0, 475.0) - <width> * (0.5, 0.0))flip_v
 			SetScreenElementProps id = hi_right Pos = ((645.0, 475.0) + <width> * (0.5, 0.0))
-			if ($game_mode = p1_career)
-				if ($is_boss_song = 1)
-					if ($is_guitar_controller = 1)
-						SetScreenElementProps id = hi_left Pos = ((635.0, 471.0) - <width> * (0.5, 0.0))flip_v
-						SetScreenElementProps id = hi_right Pos = ((645.0, 471.0) + <width> * (0.5, 0.0))
-					endif
-				else
-					SetScreenElementProps id = hi_left Pos = ((635.0, 455.0) - <width> * (0.5, 0.0))flip_v
-					SetScreenElementProps id = hi_right Pos = ((645.0, 455.0) + <width> * (0.5, 0.0))
-				endif
-			endif
 		endif
 	endif
 endscript
-
 script practice_highlight_focus
-	retail_menu_focus id = <id>
-	if ScreenElementExists \{id = hi_left}
-		if ScreenElementExists \{id = hi_right}
-			GetScreenElementDims id = <id>
-			SetScreenElementProps id = hi_left Pos = ((635.0, 495.0) - <width> * (0.5, 0.0))flip_v
-			SetScreenElementProps id = hi_right Pos = ((645.0, 495.0) + <width> * (0.5, 0.0))
-			if ($game_mode = p1_career)
-				if ($is_boss_song = 1)
-					if ($is_guitar_controller = 1)
-						SetScreenElementProps id = hi_left Pos = ((635.0, 515.0) - <width> * (0.5, 0.0))flip_v
-						SetScreenElementProps id = hi_right Pos = ((645.0, 515.0) + <width> * (0.5, 0.0))
-					endif
-				else
-					SetScreenElementProps id = hi_left Pos = ((635.0, 495.0) - <width> * (0.5, 0.0))flip_v
-					SetScreenElementProps id = hi_right Pos = ((645.0, 495.0) + <width> * (0.5, 0.0))
-				endif
-			endif
-		endif
-	endif
-endscript
-
-script newsong_highlight_focus
 	retail_menu_focus id = <id>
 	if ScreenElementExists \{id = hi_left}
 		if ScreenElementExists \{id = hi_right}
 			GetScreenElementDims id = <id>
 			SetScreenElementProps id = hi_left Pos = ((635.0, 515.0) - <width> * (0.5, 0.0))flip_v
 			SetScreenElementProps id = hi_right Pos = ((645.0, 515.0) + <width> * (0.5, 0.0))
-			if ($game_mode = p1_career)
-				if ($is_boss_song = 1)
-					if ($is_guitar_controller = 1)
-						SetScreenElementProps id = hi_left Pos = ((635.0, 555.0) - <width> * (0.5, 0.0))flip_v
-						SetScreenElementProps id = hi_right Pos = ((645.0, 555.0) + <width> * (0.5, 0.0))
-					endif
-				else
-					SetScreenElementProps id = hi_left Pos = ((635.0, 535.0) - <width> * (0.5, 0.0))flip_v
-					SetScreenElementProps id = hi_right Pos = ((645.0, 535.0) + <width> * (0.5, 0.0))
-				endif
-			endif
 		endif
 	endif
 endscript
-
 script quit_highlight_focus
 	retail_menu_focus id = <id>
 	if ScreenElementExists \{id = hi_left}
@@ -468,17 +237,6 @@ script quit_highlight_focus
 			GetScreenElementDims id = <id>
 			SetScreenElementProps id = hi_left Pos = ((635.0, 555.0) - <width> * (0.5, 0.0))flip_v
 			SetScreenElementProps id = hi_right Pos = ((645.0, 555.0) + <width> * (0.5, 0.0))
-			if ($game_mode = p1_career)
-				if ($is_boss_song = 1)
-					if ($is_guitar_controller = 1)
-						SetScreenElementProps id = hi_left Pos = ((635.0, 596.0) - <width> * (0.5, 0.0))flip_v
-						SetScreenElementProps id = hi_right Pos = ((645.0, 596.0) + <width> * (0.5, 0.0))
-					endif
-				else
-					SetScreenElementProps id = hi_left Pos = ((635.0, 575.0) - <width> * (0.5, 0.0))flip_v
-					SetScreenElementProps id = hi_right Pos = ((645.0, 575.0) + <width> * (0.5, 0.0))
-				endif
-			endif
 		endif
 	endif
 endscript
@@ -529,12 +287,9 @@ script fill_song_title_and_completion_details
 		shadow_rgba = [0 0 0 255]
 		z_priority = (<z> + 0.1)
 	}
-	CreateScreenElement <completion_text_params> Scale = 1 text = "COMPLETED"
-	CreateScreenElement <completion_text_params> Scale = 1 text = " "
+	CreateScreenElement <completion_text_params> Scale = 1 text = 'COMPLETED '
 	CreateScreenElement <completion_text_params> Scale = 2 text = <completion_text>
-	CreateScreenElement <completion_text_params> Scale = 1 text = "% "
-	CreateScreenElement <completion_text_params> Scale = 1 text = "ON"
-	CreateScreenElement <completion_text_params> Scale = 1 text = " "
+	CreateScreenElement <completion_text_params> Scale = 1 text = '% ON '
 	CreateScreenElement <completion_text_params> Scale = 2 text = <difficulty_text>
 	SetScreenElementLock \{id = fail_completion_stacker On}
 	fit_text_in_rectangle {

@@ -61,7 +61,7 @@ const reslist = {
 	splashText: {
 		ascii: true,
 		string: `
- Welcome to FastGH3 v1.0
+ Welcome to FastGH3 v1.1
 
  FastGH3 is an advanced mod of
  Guitar Hero 3. With this mod, you

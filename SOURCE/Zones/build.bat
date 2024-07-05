@@ -81,6 +81,7 @@ echo [96m######      generating fonts       ######[0m
 pushd default
 ..\mkfonts
 popd
+::node ..\q\QBC\QBC.js c unload.q -g gh3 -o default\!cache\unload.qb.xen >nul
 echo [96m######        compiling PAK        ######[0m
 ..\q\pakdir "default\!cache" ..\..\DATA\ZONES\default >nul
 echo [92mDone![0m

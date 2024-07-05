@@ -1,1 +1,1 @@
-FastGH3 -settings
+@start /b "" FastGH3 -settings

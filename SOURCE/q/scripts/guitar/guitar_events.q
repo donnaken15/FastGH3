@@ -641,7 +641,7 @@ script GuitarEvent_SongFailed_Spawned
 	Progression_SongFailed
 	if ($boss_battle = 1)
 		kill_start_key_binding
-		if ($current_song = bossdevil)
+		if ($fastgh3_extra.original_stream_name = bossdevil)
 			preload_movie = 'Satan-Battle_LOSS'
 		else
 			preload_movie = 'Player2_wins'
@@ -706,7 +706,7 @@ script GuitarEvent_SongFailed_Spawned
 		spawnscriptnow \{xenon_singleplayer_session_complete_uninit}
 	endif
 	UnPauseGame
-	SoundEvent \{event = Crowd_Fail_Song_SFX}
+	//SoundEvent \{event = Crowd_Fail_Song_SFX}
 	SoundEvent \{event = GH_SFX_You_Lose_Single_Player}
 	Transition_Play \{Type = songlost}
 	Transition_Wait
@@ -864,7 +864,7 @@ script GuitarEvent_SongWon_Spawned
 	if ($game_mode = training || $game_mode = tutorial)
 		return
 	endif
-	if ($current_song = bossdevil & $devil_finish = 0)
+	if ($fastgh3_extra.original_stream_name = bossdevil & $devil_finish = 0)
 		Change \{devil_finish = 1}
 	else
 		Change \{devil_finish = 0}
@@ -879,22 +879,21 @@ script GuitarEvent_SongWon_Spawned
 		//	SoundEvent \{event = You_Rock_End_SFX}
 		//endif
 	endif
-	//spawnscriptnow \{You_Rock_Waiting_Crowd_SFX}
 	if ($game_mode = p2_battle || $boss_battle = 1)
 		if ($player1_status.current_health >= $player2_status.current_health)
-			if ($current_song = bossdevil)
+			if ($fastgh3_extra.original_stream_name = bossdevil)
 				preload_movie = 'Satan-Battle_WIN'
 			else
 				preload_movie = 'Player1_wins'
 			endif
 		else
-			if ($current_song = bossdevil)
+			if ($fastgh3_extra.original_stream_name = bossdevil)
 				preload_movie = 'Satan-Battle_LOSS'
 			else
 				preload_movie = 'Player2_wins'
 			endif
 		endif
-		if ($current_song = bossdevil & $devil_finish = 0)
+		if ($fastgh3_extra.original_stream_name = bossdevil & $devil_finish = 0)
 			preload_movie = 'Golden_Guitar'
 		endif
 		if ($battle_sudden_death = 1)
@@ -953,17 +952,17 @@ script GuitarEvent_SongWon_Spawned
 			p1_score = ($player1_status.score)
 			p2_score = ($player2_status.score)
 			if (<p2_score> > <p1_score>)
-				winner = "Two"
+				winner = 'Two'
 				SoundEvent \{event = UI_2ndPlayerWins_SFX}
 			elseif (<p1_score> > <p2_score>)
-				winner = "One"
+				winner = 'One'
 				SoundEvent \{event = UI_1stPlayerWins_SFX}
 			else
 				<tie> = true
-				SoundEvent \{event = You_Rock_End_SFX}
+				//SoundEvent \{event = You_Rock_End_SFX}
 			endif
 			if (<tie> = true)
-				winner_text = "TIE!"
+				winner_text = 'TIE!'
 				winner_space_between = (15.0, 0.0)
 				winner_scale = 0.5
 				fit_dims = (100.0, 0.0)
@@ -979,19 +978,19 @@ script GuitarEvent_SongWon_Spawned
 					FormatText textname = winner_text <name>
 					<text_pos> = (640.0, 240.0)
 				else
-					FormatText textname = winner_text "Player %s Rocks!" s = <winner>
+					FormatText textname = winner_text 'Player %s Rocks!' s = <winner>
 				endif
 				winner_space_between = (50.0, 0.0)
 				winner_scale = 1.5
 			endif
 		else
-			winner_text = "You Rock!"
+			winner_text = 'You Rock!'
 			winner_space_between = (40.0, 0.0)
 			fit_dims = (350.0, 0.0)
 			winner_scale = 1.0
 		endif
 		if ($devil_finish = 1)
-			winner_text = "Now Finish Him!"
+			winner_text = 'Now Finish Him!'
 			winner_space_between = (55.0, 0.0)
 			winner_scale = 1.8
 		endif
@@ -1049,7 +1048,7 @@ script GuitarEvent_SongWon_Spawned
 		if NOT ($game_mode = p2_coop)
 			split_text_into_array_elements {
 				id = yourock_text_2
-				text = "Rocks!"
+				text = 'Rocks!'
 				text_pos = (640.0, 380.0)
 				fit_dims = <fit_dims>
 				space_between = <winner_space_between>
@@ -1066,7 +1065,7 @@ script GuitarEvent_SongWon_Spawned
 			}
 		endif
 	endif
-	if NOT ($battle_sudden_death = 1)
+	if NOT ($devil_finish = 1 || $battle_sudden_death = 1)
 		spawnscriptnow \{waitandkillhighway}
 		killspawnedscript \{name = jiggle_text_array_elements}
 		spawnscriptnow \{jiggle_text_array_elements params = {id = yourock_text time = 1.0 wait_time = 3000 explode = 1}}
@@ -1078,33 +1077,50 @@ script GuitarEvent_SongWon_Spawned
 		endif
 	endif
 	Change \{old_song = None}
-	if NOT ($battle_sudden_death = 1)
-		UnPauseGame
-		if NOT ($boss_battle = 1 || $game_mode = p2_battle)
-			Transition_Play \{Type = songwon}
+	if NOT ($devil_finish = 1)
+		if NOT ($battle_sudden_death = 1)
+			UnPauseGame
+			if NOT ($boss_battle = 1 || $game_mode = p2_battle)
+				Transition_Play \{Type = songwon}
+			else
+				Transition_Play \{Type = battleend}
+				Wait \{3 seconds}
+			endif
+			Transition_Wait
+			Change \{current_transition = None}
+			PauseGame
 		else
-			Transition_Play \{Type = battleend}
-			Wait \{3 seconds}
+			UnPauseGame
+			Transition_Play \{Type = songwon}
+			spawnscriptnow \{wait_and_play_you_rock_movie}
+			killspawnedscript \{name = jiggle_text_array_elements}
+			spawnscriptnow \{jiggle_text_array_elements params = {id = yourock_text time = 1.0 wait_time = 3000 explode = 1}}
+			spawnscriptnow \{Sudden_Death_Helper_Text params = {parent_id = yourock_text}}
+			wait \{0.1 seconds}
+			spawnscriptnow \{waitandkillhighway}
+			wait \{4 seconds}
+			Change \{current_transition = None}
+			PauseGame
 		endif
-		Transition_Wait
-		Change \{current_transition = None}
-		PauseGame
 	else
+		SoundEvent \{event = You_Rock_End_SFX}
 		UnPauseGame
 		Transition_Play \{Type = songwon}
 		spawnscriptnow \{wait_and_play_you_rock_movie}
 		killspawnedscript \{name = jiggle_text_array_elements}
 		spawnscriptnow \{jiggle_text_array_elements params = {id = yourock_text time = 1.0 wait_time = 3000 explode = 1}}
-		spawnscriptnow \{Sudden_Death_Helper_Text params = {parent_id = yourock_text}}
-		wait \{0.1 seconds}
+		devil_finish_anim
+		wait \{0.15 seconds}
 		spawnscriptnow \{waitandkillhighway}
-		wait \{4 seconds}
-		Change \{current_transition = None}
+		wait \{2.5 seconds}
+		SoundEvent \{ Event = Devil_Die_Transition_SFX }
+		wait \{1.0 seconds}
+		Change \{ current_transition = None }
 		PauseGame
 	endif
 	if ($battle_sudden_death = 1)
 		StopSoundEvent \{GH_SFX_BattleMode_Sudden_Death}
-		printf \{"BATTLE MODE, Song Won, Begin Sudden Death"}
+		printf \{'BATTLE MODE, Song Won, Begin Sudden Death'}
 		Change \{battle_sudden_death = 1}
 		if ($is_network_game)
 			ui_flow_manager_respond_to_action \{action = sudden_death_begin}
@@ -1116,6 +1132,8 @@ script GuitarEvent_SongWon_Spawned
 		if ScreenElementExists \{id = yourock_text}
 			DestroyScreenElement \{id = yourock_text}
 		endif
+	elseif ($devil_finish = 1)
+		start_devil_finish
 	else
 		destroy_menu \{menu_id = yourock_text}
 		destroy_menu \{menu_id = yourock_text_2}
@@ -1150,30 +1168,32 @@ script GuitarEvent_SongWon_Spawned
 	if ($is_network_game)
 		mark_safe_for_shutdown
 	endif
-	ExitOnSongEnd
+	if NOT ($devil_finish = 1)
+		ExitOnSongEnd
+	endif
 endscript
 
 script Sudden_Death_Helper_Text
-	FormatText \{checksumName = text_checksum 'sudden_death_helper'}
+	text_checksum = sudden_death_helper
 	CreateScreenElement {
 		Type = TextElement
 		id = <text_checksum>
 		parent = <parent_id>
 		Pos = (640.0, 500.0)
-		text = "All powerups are death drain attacks!"
+		text = 'All powerups are death drain attacks!'
 		font = text_a4
 		Scale = 0.8
 		rgba = [255 255 255 255]
 		just = [center bottom]
 		z_priority = 500
 	}
-	FormatText \{checksumName = text_checksum2 'sudden_death_helper2'}
+	text_checksum2 = sudden_death_helper2
 	CreateScreenElement {
 		Type = TextElement
 		id = <text_checksum2>
 		parent = <parent_id>
 		Pos = (640.0, 540.0)
-		text = "Launch a devastating DEATH DRAIN!"
+		text = 'Launch a devastating DEATH DRAIN!'
 		font = text_a4
 		Scale = 0.8
 		rgba = [255 255 255 255]
@@ -1191,49 +1211,6 @@ script Sudden_Death_Helper_Text
 		alpha = 0
 		time = 1
 	}
-endscript
-
-script Boss_Unlocked_Text
-	if ($current_song = bosstom)
-		FormatText \{textname = boss "Tom Morello"}
-		Pos = (634.0, 580.0)
-	elseif ($current_song = bossslash)
-		Pos = (634.0, 580.0)
-		FormatText \{textname = boss "Slash"}
-	elseif ($current_song = bossdevil)
-		Pos = (800.0, 580.0)
-		FormatText \{textname = boss "Lou"}
-	endif
-	FormatText \{textname = unlocked "unlocked"}
-	FormatText \{textname = visit_store "VISIT STORE"}
-	FormatText textname = text "%s %b, %v" s = <boss> b = <unlocked> v = <visit_store>
-	FormatText \{checksumName = boss_unlocked 'boss_unlocked'}
-	if ScreenElementExists id = <boss_unlocked>
-		DestroyScreenElement id = <boss_unlocked>
-	endif
-	CreateScreenElement {
-		Type = TextElement
-		id = <boss_unlocked>
-		parent = <parent_id>
-		Pos = <Pos>
-		text = <text>
-		font = text_a11
-		Scale = 0.8
-		rgba = [255 255 255 255]
-		just = [center bottom]
-		z_priority = 500
-		Shadow
-		shadow_offs = (1.0, 1.0)
-		shadow_rgba = [0 0 0 255]
-	}
-	wait \{3 seconds}
-	if ScreenElementExists id = <boss_unlocked>
-		DoScreenElementMorph {
-			id = <boss_unlocked>
-			alpha = 0
-			time = 1
-		}
-	endif
 endscript
 
 script start_devil_finish
@@ -1259,10 +1236,6 @@ endscript
 
 script devil_finish_anim
 	wait \{1 gameframe}
-	BASSIST ::Obj_SwitchScript \{Transition_PlayAnim_Spawned params = {anim = gh3_guit_satn_a_lose02}}
-	Change \{CameraCuts_AllowNoteScripts = FALSE}
-	Change \{CameraCuts_ForceTime = 3.2}
-	CameraCuts_SetArrayPrefix \{prefix = 'cameras_boss_finish' length = 0 changenow}
 	spawnscriptnow \{devil_camera_flash}
 endscript
 
@@ -1309,12 +1282,15 @@ script GuitarEvent_StarSequenceBonus
 		return
 	endif
 	player_text = ($<player_status>.text)
+	prefix = 'big_bolt_particle'
 	if ($disable_particles = 0)
 		i = 0
 		begin
-			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
+			Destroy2DParticleSystem id = <fx_id>
+			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx2_id>
-			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx3_id '%x3%p%e' p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx3_id>
 			Increment \{i}
 		repeat 5
@@ -1323,11 +1299,11 @@ script GuitarEvent_StarSequenceBonus
 	if ($disable_particles = 1)
 		i = 0
 		begin
-			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx_id>
-			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx2_id>
-			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx3_id '%x3%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx3_id>
 			Increment \{i}
 		repeat 5
@@ -1371,9 +1347,9 @@ script StarSequenceFX
 				rot_angle = <angle>
 				Scale = $star_power_bolt_scale
 				just = [center bottom]
-				z_priority = 6
+				z_priority = 8
 			}
-			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx_id>
 			<particle_pos> = (<pos2d> - (0.0, 32.0))
 			Create2DParticleSystem {
@@ -1398,7 +1374,7 @@ script StarSequenceFX
 				friction = (0.0, 66.0)
 				time = 2.0
 			}
-			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
 			<particle_pos> = (<pos2d> - (0.0, 32.0))
 			Create2DParticleSystem {
 				id = <fx2_id>
@@ -1422,7 +1398,7 @@ script StarSequenceFX
 				friction = (0.0, 55.0)
 				time = 2.0
 			}
-			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx3_id '%x3%p%e' x = <prefix>  p = <player_text> e = <gem_count> AddToStringLookup = true
 			<particle_pos> = (<pos2d> - (0.0, 15.0))
 			Create2DParticleSystem {
 				id = <fx3_id>

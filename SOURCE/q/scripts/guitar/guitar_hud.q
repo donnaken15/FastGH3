@@ -333,7 +333,7 @@ script nointro_hud_move
 endscript
 
 script morph_2d_hud_elements\{off_set = (0.0, 0.0) off_set_drop = (0.0, 0.0) time_to_move = 0 rot = 0}
-	if ($hudless = 1 || $Cheat_PerformanceMode = 1)
+	if ($hudless = 1)
 		return
 	endif
 	if ($current_num_players = 2)
@@ -399,7 +399,7 @@ script morph_2d_hud_elements\{off_set = (0.0, 0.0) off_set_drop = (0.0, 0.0) tim
 	morph_gamertags <...>
 endscript
 
-script split_text_into_array_elements\{text = "OOPS" text_pos = (0.0, 0.0) space_between = (0.0, 0.0) flags = {}}
+script split_text_into_array_elements\{text = "OOPS" text_pos = (0.0, 0.0) space_between = (0.0, 0.0) Scale = 1.5 flags = {}}
 	StringToCharArray string = <text>
 	GetArraySize <char_array>
 	if NOT GotParam \{parent}
@@ -427,7 +427,7 @@ script split_text_into_array_elements\{text = "OOPS" text_pos = (0.0, 0.0) space
 			parent = <parent_container>
 			text = <text>
 			font = text_a1
-			Scale = (<flags>.Scale)
+			Scale = (<Scale>)
 		}
 		GetScreenElementDims id = <id>
 		StringLength string = <text>

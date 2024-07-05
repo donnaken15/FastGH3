@@ -18,7 +18,6 @@ VIAddVersionKey "LegalTrademarks" "Activision"
 VIAddVersionKey "LegalCopyright" "© Aspyr & Activision 2007-2008"
 VIAddVersionKey "FileDescription" "An advanced mod of Guitar Hero 3 designed for playing charts easily. Lite version packaged into ONE EXE."
 VIAddVersionKey "FileVersion" "${APPVERSION}"
-InstallDir "$PROGRAMFILES\FastGH3"
 
 ; https://nsis-dev.github.io/NSIS-Forums/html/t-214310.html
 Function TickCount
@@ -39,16 +38,20 @@ Function .onInit
 	IfFileExists $EXEDIR\settings.ini 0 +2
 	CopyFiles $EXEDIR\settings.ini $OUTDIR
 	StrCmp $R9 "" 0 main ; if parameters aren't empty, skip extra song if not ignored
-	ReadINIStr $R9 $OUTDIR\settings.ini Misc IgnoreExtra
-	StrCmp $R9 0 main 0
-	;ad: ;lol ; :(
-	MessageBox MB_YESNO \
-"There's a secret song inside! Do you want to play it? \
-Clicking ''No'' won't show this dialog again, unless a setting is undone." \
-	IDNO main
-	WriteINIStr $EXEDIR\settings.ini Misc IgnoreExtra 1
-	Exec '"$OUTDIR\game.exe"'
-	Goto ok
+	ReadINIStr $R9 $EXEDIR\settings.ini Misc IgnoreExtra
+	${If} $R9 == 0
+	${OrIf} $R9 == ""
+		MessageBox MB_YESNO \
+	"There's a secret song inside! Do you want to play it? \
+	Clicking ''No'' won't show this dialog again, unless a setting is undone." \
+		IDNO IE
+		Exec '"$OUTDIR\game.exe"'
+		Goto ok
+	${Else}
+		Goto main
+	${EndIf}
+	IE:
+		WriteINIStr $EXEDIR\settings.ini Misc IgnoreExtra 1
 	main:
 		StrCpy $R9 ""
 		ExecWait '"$OUTDIR\FastGH3.exe" $R9' $R9

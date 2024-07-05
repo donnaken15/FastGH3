@@ -169,6 +169,10 @@ Common_Boss_Transition = {
 Default_SongWon_Transition = {
 	time = 0
 	ScriptTable = [
+		{
+			Time = 0
+			Scr = play_outro
+		}
 	]
 }
 Common_SongWon_Transition = {
@@ -186,6 +190,7 @@ Common_SongLost_Transition = {
 			time = 0
 			Scr = play_outro
 			params = {
+				song_failed_pitch_streams = 1
 			}
 		}
 	]
@@ -200,8 +205,6 @@ Common_BattleEnd_Transition = {
 		{
 			time = 0
 			Scr = play_outro
-			params = {
-			}
 		}
 	]
 }
@@ -230,7 +233,7 @@ script Transition_SelectTransition\{practice_intro = 0}
 		endif
 		if Progression_IsBossSong tier_global = <tier_global> Tier = <Tier> song = ($current_song)
 			if should_play_boss_intro
-				if NOT ($current_song = bossdevil)
+				if NOT ($fastgh3_extra.original_stream_name = bossdevil)
 					Change \{current_transition = boss}
 				else
 					Change \{current_transition = fastintro}

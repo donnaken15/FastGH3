@@ -82,6 +82,17 @@ script career_hud_2d_elements_load
 		big_bulb_scale = 1.0
 		z = 0
 		score_frame_width = 175.0
+		score_text_pos = (222.0, 70.0)
+		score_text_spacing = 5
+		score_text_scale = 1.1
+		score_text_rgba = [255 255 255 255]
+		score_z = 7
+		streak_text_pos = (222.0, 78.0)
+		streak_num_spacing = 37.0
+		streak_num_color = [
+			[230 230 230 200]
+			[15 15 70 200]
+		]
 		offscreen_gamertag_pos = (0.0, -400.0)
 		final_gamertag_pos = (0.0, 0.0)
 		elements = [

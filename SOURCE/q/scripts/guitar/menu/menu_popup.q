@@ -18,7 +18,7 @@ popup_event_handlers_options = [
 popup_event_handlers_nooptions = [
 ]
 
-script create_popup_warning_menu\{player_device = $primary_controller}
+script create_popup_warning_menu\{player_device = $primary_controller menu_y = 1.0}
 	//printstruct <...>
 	<menu_pos> = (640.0, 510.0)
 	<menu_bg_offset> = (0.0, -28.0)
@@ -61,8 +61,8 @@ script create_popup_warning_menu\{player_device = $primary_controller}
 			just = [center top]
 			internal_just = [center center]
 		}
-		displaySprite parent = options_bg_id tex = dialog_bg z = <z>
-		displaySprite parent = options_bg_id tex = dialog_bg flip_h z = <z>
+		displaySprite parent = options_bg_id tex = dialog_bg scale = ((1.0, 0.0) + ((0.0, 1.0) * <menu_y>)) z = <z>
+		displaySprite parent = options_bg_id tex = dialog_bg scale = ((1.0, 0.0) + ((0.0, 1.0) * <menu_y>)) flip_h z = <z>
 	endif
 	create_pause_menu_frame z = (<z> - 4)
 	create_popup_warning_text <...>

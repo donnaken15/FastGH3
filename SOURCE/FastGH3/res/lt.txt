@@ -5,7 +5,7 @@ Can't find any charts!
 Cannot find a file indicating of containing highway GFX.
 global.pak isn't named correctly.
 One of the entered files don't exist.
-MAIN LAUNCHERDOWNLOAD SONGFSP EXTRACT
+MAIN LAUNCHERDOWNLOAD SONG FSP EXTRACT 
 Downloading song package...
 already downloaded file.
 Unique file date checking enabled.
@@ -75,7 +75,7 @@ Elapsed audio encoding time:
 Creating GH3 process...
 Ready, go!
 Cleaning up SoX temp files FOR SOME REASON!!!
-
+C:\\Program Files (x86)\\FastGH3\\
 Detected song package.
 Found cached ID.
 ZIP not cached.
@@ -194,7 +194,7 @@ Detected WT note upper bitmask:
 This song appears to be compiled for World Tour or later games, which is not compatible with Guitar Hero III since its note track format has changed.
 Misc%Player%Launcher%SongtextFormat%FinishedLog%Killswitch%SongVideos%LastSongHadVideo
 Found {0}, extracting...
-Welcome to FastGH3: Select a chart to play
+Welcome to FastGH3 v1.1: Select a chart to play
 https://donnaken15.com/fastgh3/diagno.php
 Failed to check path: (p: "{0}", e: "{1}")\n{2}
 ^tmp[0-9A-F]{4}\.tmp\.fsp$
@@ -213,3 +213,5 @@ Matched section key:
 FastGH3 0.7 song package
 All supported types
 |Any type|*.*
+ERROR! ({0}) :(\nReason: {1}\nStack trace:\n{2}
+Version: {0}, build time: {1}, branch {2}

@@ -584,7 +584,7 @@ practice_restart_warning_fs = {
 practice_return_warning_fs = {
 	create = create_quit_warning_menu
 	create_params = {
-		option2_text = "RETURN TO GAME"
+		option2_text = 'RETURN TO GAME'
 		menu_pos = (470.0, 475.0)
 		bg_dims = (400.0, 80.0)
 		no_joiners

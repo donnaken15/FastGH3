@@ -54,7 +54,7 @@ script solo\{part = guitar diff = expert}
 		begin
 			// find own script props just for the exact time it was due to spawn
 			scr = (<scripts>[<k>])
-			if ((<Scr>.time + (<delta_time> * 1000)) >= <time> & (<Scr>.time)< <time> & (<Scr>.Scr) = solo)
+			if ((<Scr>.time + (<delta_time> * 1000) + 10) >= <time> & (<Scr>.time)< <time> & (<Scr>.Scr) = solo)
 				// fallback for no param entered
 				part2 = guitar
 				diff2 = expert

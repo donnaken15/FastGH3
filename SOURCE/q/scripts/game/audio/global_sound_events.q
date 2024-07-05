@@ -749,7 +749,7 @@ You_Rock_End_SFX_container = {
 	Sounds = {
 		Sound1 = {
 			you_rock
-			vol = 0
+			vol = 100
 		}
 	}
 }

@@ -166,7 +166,7 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [ 7  1 2024]
+build_timestamp = [ 7  4 2024]
 
 random_seed = -1
 // ^ originally 107482099
@@ -209,8 +209,8 @@ script guitar_startup
 	//	printf \{'isn\'t CD'}
 	//endif
 	// region player init struct and deflate file size :/
-		change \{player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = sys_Highway2D_sys_Highway2D guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }}
-		change \{player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = sys_Highway2D_sys_Highway2D guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }}
+		change \{player1_status = { controller = 0 Player = 1 text = 'p1' part = guitar bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = sys_Highway2D_sys_Highway2D current_highway = none guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }}
+		change \{player2_status = { controller = 1 Player = 2 text = 'p2' part = rhythm bot_play = 0 bot_pattern = 0 bot_strum = 0 bot_star_power = 0 star_power_usable = 0 star_power_amount = 0.0 star_tilt_threshold = 16.0 playline_song_measure_time = 0 star_power_used = 0 current_run = 0 resting_whammy_position = -0.76 lefthanded_gems = 0 lefthanded_button_ups = 0 lefthanded_gems_flip_save = 0 lefthanded_button_ups_flip_save = 0 current_song_gem_array = None current_song_fretbar_array = None current_song_star_array = None current_star_array_entry = 0 current_song_beat_time = 0 playline_song_beat_time = 0 current_song_measure_time = 0 current_detailedstats_array = None current_detailedstats_max_array = None current_detailedstats_array_entry = 0 time_in_lead = 0.0 hammer_on_tolerance = 0.0 check_time_early = 0.0 check_time_late = 0.0 whammy_on = 0 star_power_sequence = 0 star_power_note_count = 0 score = 0.0 notes_hit = 0 total_notes = 0 best_run = 0 max_notes = 0 base_score = 0.0 stars = 0 sp_phrases_hit = 0 sp_phrases_total = 0 multiplier_count = 0 num_multiplier = 0 sim_bot_score = 0.0 scroll_time = 5.0 game_speed = 1.5 highway_speed = 0.0 highway_material = sys_Highway2D_sys_Highway2D current_highway = none guitar_volume = 100 last_guitar_volume = 100 last_faceoff_note = 100 is_local_client = 1 highway_layout = default_highway net_id_first = 0 net_id_second = 0 battlemode_creation_selection = -1 current_num_powerups = 0 final_blow_powerup = -1 battle_text_count = 0 shake_notes = -1 double_notes = -1 diffup_notes = -1 lefty_notes = -1 whammy_attack = -1 stealing_powerup = -1 death_lick_attack = -1.0 last_hit_note = None broken_string_mask = 0 broken_string_green = 0 broken_string_red = 0 broken_string_yellow = 0 broken_string_blue = 0 broken_string_orange = 0 last_selected_attack = -1 battle_num_attacks = 0 hold_difficulty_up = 0.0 save_health = 0.0 save_num_powerups = 0 gem_filler_enabled_time_on = -1 gem_filler_enabled_time_off = -1 current_health = 0.0 health_invincible_time = 0.0 button_checker_up_time = -1.0 last_playline_song_beat_time = 1.0 last_playline_song_beat_change_time = 1.0 }}
 	// endregion
 	
 	// region useless
@@ -245,56 +245,6 @@ script guitar_startup
 			LoadPak \{'bkgd.pak' Heap = heap_global_pak}
 		endif
 		ProfilingEnd <...> 'load config files'
-		// region move old (common) config values over from QB since this will be used less now
-			// i'll probably have to package release with MigratedConfig values set for new users
-			//
-			// might just disable this for the time being, what percentage of users might've even
-			// moved their old configs over
-			/**
-			if IsTrue <migrate>
-				ProfilingStart
-				FGH3Config \{sect='Temp' 'MigratedConfig' #"0x1ca1ff20"=0}
-				ProfilingEnd <...> 'INI read x1'
-				if NOT IsTrue <value>
-					ProfilingStart
-					FGH3Config sect='Player' 'Hyperspeed' set=($Cheat_Hyperspeed)
-					FGH3Config sect='Player' 'Autostart' set=($autolaunch_startnow)
-					if GlobalExists \{name=p1_part type=int}
-						FGH3Config sect='Player1' 'Part' set=($p1_part) // this is my fault but because i had limited resources
-					else
-						FGH3Config sect='Player1' 'Part' set=($part_index.($player1_status.part))
-					endif
-					if GlobalExists \{name=p2_part type=int}
-						FGH3Config sect='Player2' 'Part' set=($p2_part)
-					else
-						FGH3Config sect='Player2' 'Part' set=($part_index.($player2_status.part))
-					endif
-					FGH3Config sect='Player1' 'Device' set=($startup_controller)
-					FGH3Config sect='Player2' 'Device' set=($startup_controller2)
-					FGH3Config sect='Player1' 'Diff' set=($difficulty_list_props.$current_difficulty.index)
-					FGH3Config sect='Player2' 'Diff' set=($difficulty_list_props.$current_difficulty2.index)
-					FGH3Config sect='GFX' 'MaxFPS' set=($fps_max)
-					FGH3Config sect='GFX' 'NoIntro' set=($disable_intro)
-					FGH3Config sect='Player' 'ExitOnSongEnd' set=($exit_on_song_end)
-					FGH3Config sect='Player' 'FCMode' set=($FC_MODE)
-					FGH3Config sect='Player' 'EasyExpert' set=($Cheat_EasyExpert)
-					FGH3Config sect='Player' 'Precision' set=($Cheat_PrecisionMode)
-					FGH3Config sect='Player' 'EarlySustains' set=($anytime_sustain_activation)
-					FGH3Config sect='Player' 'NoFail' set=($Cheat_NoFail)
-					FGH3Config sect='GFX' 'NoIntroReadyTime' set=($nointro_ready_time)
-					FGH3Config sect='GFX' 'BGVideo' set=($enable_video)
-					FGH3Config sect='GFX' 'NoHUD' set=($hudless)
-					FGH3Config sect='GFX' 'KillGemsHit' set=($kill_gems_on_hit)
-					FGH3Config sect='GFX' 'NoStreakDisp' set=($disable_notestreak_notif)
-					FGH3Config sect='GFX' 'NoParticles' set=($disable_particles)
-					FGH3Config sect='GFX' 'Performance' set=($Cheat_PerformanceMode)
-					FGH3Config sect='Misc' 'Debug' set=($enable_button_cheats)
-					ProfilingEnd <...> 'INI write x24'
-					FGH3Config \{sect='Temp' 'MigratedConfig' set=1}
-				endif
-			endif
-			/**///
-		// endregion
 		
 		printf \{'Reading INI'}
 		ProfilingStart
@@ -419,22 +369,7 @@ script guitar_startup
 	// region mod load
 		ProfilingStart
 		printf \{'Loading user mods'}
-		array = []
-		array_size = 0
-		StartWildcardSearch \{wildcard = 'MODS\*.qb.xen'}
-		begin
-			if NOT GetWildcardFile
-				break
-			endif
-			// i'm stupid
-			AddArrayElement array = <array> element = {
-				filename = <filename>
-				basename = <basename>
-				filesize = <filesize>
-			}
-			Increment \{array_size}
-		repeat
-		EndWildcardSearch
+		search_for \{'MODS\*.qb.xen'}
 		
 		if NOT (<array_size> = 0)
 			m = 0
@@ -503,6 +438,7 @@ script guitar_startup
 			repeat <array_size>
 		endif
 		ProfilingEnd <...> 'mod load'
+		
 	// endregion
 	
 	// region grafisxs and snoud
@@ -571,56 +507,38 @@ script guitar_startup
 		change mode_buttons = [
 			{ range = 5 param = mode texts = mode_text id = select_gamemode }
 			{ range = 1 param = players texts = playercount_text id = select_playercount
-				cont = {
-					pos_off = (10,0) just = [center top]
-				}
+				cont = { pos_off = (10,0) just = [center top] }
 			}
 			{ text = 'Bind' id = select_players button }
 			{ range = 3 param = diff
 				texts = diff_text id = select_diff
-				cont = {
-					pos_off = (60,0) just = [center top]
-				}
+				cont = { pos_off = (60,0) just = [center top] }
 			}
 			{ range = 3 param = diff2
 				texts = diff_text id = select_diff2
-				cont = {
-					pos_off = (200,-50) just = [center top]
-				}
+				cont = { pos_off = (200,-50) just = [center top] }
 			}
 			{ range = 1 param = part
 				texts = part_text id = select_part
-				cont = {
-					pos_off = ( 60,-50) just = [center top]
-				}
+				cont = { pos_off = ( 60,-50) just = [center top] }
 			}
 			{ range = 1 param = part2
 				texts = part_text id = select_part2
-				cont = {
-					pos_off = (200,-100) just = [center top]
-				}
+				cont = { pos_off = (200,-100) just = [center top] }
 			}
 			{ range = 1 param = bot
 				texts = toggle_text id = select_bot
-				cont = {
-					pos_off = ( 60,-100) just = [center top]
-				}
+				cont = { pos_off = ( 60,-100) just = [center top] }
 			}
 			{ range = 1 param = bot2
 				texts = toggle_text id = select_bot2
-				cont = {
-					pos_off = (200,-150) just = [center top]
-				}
+				cont = { pos_off = (200,-150) just = [center top] }
 			}
 			{ text = 'Save Settings' id = select_save button
-				cont = {
-					pos_off = (0,-150) just = [left top]
-				}
+				cont = { pos_off = (0,-150) just = [left top] }
 			}
 			{ text = 'Start!' id = select_start button
-				cont = {
-					pos_off = (0,-150) just = [left top]
-				}
+				cont = { pos_off = (0,-150) just = [left top] }
 			}
 		]
 		
@@ -814,6 +732,27 @@ script load_highway \{player_status = player1_status name = 'axel' filename = 'h
 	//FormatText checksumName = highway_material 'sys_%a_1_highway_sys_%a_1_highway' a = <name>
 	Change StructureName = <player_status> highway_material = <highway_material>
 endscript
+
+script search_for \{'*.pak.xen'}
+	array = []
+	array_size = 0
+	StartWildcardSearch wildcard = <#"0x00000000">
+	begin
+		if NOT GetWildcardFile
+			break
+		endif
+		// i'm stupid
+		AddArrayElement array = <array> element = {
+			filename = <filename>
+			basename = <basename>
+			filesize = <filesize>
+		}
+		Increment \{array_size}
+	repeat
+	EndWildcardSearch
+	return {array = <array> array_size = <array_size>}
+endscript
+
 
 script autolaunch_spawned
 	NewShowStorageSelector

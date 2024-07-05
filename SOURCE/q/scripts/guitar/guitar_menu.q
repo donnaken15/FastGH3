@@ -1364,6 +1364,9 @@ script create_pause_menu\{Player = 1 submenu = none}
 					value = (<item>.#"0x00000000")
 					value = ($<value>) // wtf
 					extra_format <value> type = (<item>.type)
+					if ((<item>.#"0x00000000") = fps_max)
+						strval = 'Unlimited'
+					endif
 					FormatText textname=text '%s: %v' s=(<item>.name) v=<strval>
 					FormatText checksumname=exid 'extras_%i' i=<i>
 					new_pause_menu_button {

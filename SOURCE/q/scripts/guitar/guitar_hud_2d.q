@@ -26,6 +26,7 @@ script create_2d_hud_elements\{player_text = 'p1'}
 		rot = 0.0
 		alpha = 1
 		pos_off = (0.0, 0.0)
+		blend = blend
 		AddParams (<hud_struct>.elements[<i>])
 		element_struct = (<hud_struct>.elements[<i>])
 		if StructureContains structure = <element_struct> parent_container
@@ -51,15 +52,11 @@ script create_2d_hud_elements\{player_text = 'p1'}
 				endif
 			endif
 			if StructureContains structure = <element_struct> note_streak_bar
-				if StructureContains structure = <hud_struct> offscreen_note_streak_bar_off
-					<container_pos> = (<container_pos> + (<hud_struct>.offscreen_note_streak_bar_off))
-				else
-					if (<player_text> = 'p1')
-						<container_pos> = (<container_pos> + (<hud_struct>.offscreen_note_streak_bar_off_p1))
-					else
-						<container_pos> = (<container_pos> + (<hud_struct>.offscreen_note_streak_bar_off_p2))
-					endif
+				pos_name = offscreen_note_streak_bar_off
+				if NOT StructureContains structure = <hud_struct> offscreen_note_streak_bar_off
+					ExtendCrc <pos_name> ('_'+<player_text>) out = pos_name
 				endif
+				<container_pos> = (<container_pos> + (<hud_struct>.<pos_name>))
 			endif
 			<container_pos> = (<container_pos> + <pos_off>)
 			ExtendCrc <element_id> <player_text> out = new_id
@@ -195,7 +192,7 @@ script create_2d_hud_elements\{player_text = 'p1'}
 					<pos_off> = <pos_off_p2>
 				endif
 				my_rgba = [255 255 255 255]
-				if (StructureContains structure = <element_struct> rgba)
+				if StructureContains structure = <element_struct> rgba
 					<my_rgba> = <rgba>
 				endif
 				if (<create_it>)
@@ -212,6 +209,7 @@ script create_2d_hud_elements\{player_text = 'p1'}
 						<flags>
 						rot_angle = <rot>
 						dims = <mydims>
+						blend = <blend>
 					}
 				endif
 				if StructureContains structure = <element_struct> Scale
@@ -234,6 +232,10 @@ script create_2d_hud_elements\{player_text = 'p1'}
 			else
 				scaled_dims = (<tube>.element_dims * (<hud_struct>.big_bulb_scale))
 			endif
+			my_rgba = [255 255 255 255]
+			if StructureContains structure = <element_struct> rgba
+				<my_rgba> = <rgba>
+			endif
 			if ScreenElementExists id = <myparent>
 				CreateScreenElement {
 					Type = SpriteElement
@@ -241,7 +243,8 @@ script create_2d_hud_elements\{player_text = 'p1'}
 					id = <new_child_id>
 					texture = (<tube>.texture)
 					Pos = (<pos_off> + (<tube>.pos_off))
-					rgba = [255 255 255 255]
+					rgba = <my_rgba>
+					blend = <blend>
 					dims = <scaled_dims>
 					just = [center bottom]
 					z_priority = <zoff>
@@ -279,6 +282,7 @@ script create_2d_hud_elements\{player_text = 'p1'}
 					Pos = <pos_off>
 					rgba = [255 255 255 255]
 					dims = <scaled_dims>
+					blend = <blend>
 					just = <just>
 					z_priority = <zoff>
 					alpha = <alpha>
@@ -294,12 +298,64 @@ script create_2d_hud_elements\{player_text = 'p1'}
 		endif
 		<i> = (<i> + 1)
 	repeat <array_Size>
+	create_score_text <...>
+endscript
+
+script create_score_text
 	if NOT ($game_mode = p2_battle || $boss_battle = 1)
 		ExtendCrc HUD2D_Score_Text <player_text> out = new_id
 		ExtendCrc HUD2D_score_container <player_text> out = new_score_container
-		score_text_pos = (222.0, 70.0)
-		if ($game_mode = p2_career || $game_mode = p2_coop)
-			<score_text_pos> = (226.0, 85.0)
+		if StructureContains structure=<hud_struct> score_text_pos
+			score_text_pos = (<hud_struct>.score_text_pos)
+		else
+			score_text_pos = (222.0, 70.0)
+			if ($game_mode = p2_career || $game_mode = p2_coop)
+				<score_text_pos> = (226.0, 85.0)
+			endif
+		endif
+		// has to be a more efficient way to do this
+		if StructureContains structure=<hud_struct> streak_text_pos
+			streak_text_pos = (<hud_struct>.streak_text_pos)
+		else
+			streak_text_pos = (222.0, 78.0)
+		endif
+		if StructureContains structure=<hud_struct> streak_num_spacing
+			streak_num_spacing = (<hud_struct>.streak_num_spacing)
+		else
+			streak_num_spacing = 37.0
+		endif
+		if StructureContains structure=<hud_struct> streak_num_color
+			streak_num_color = (<hud_struct>.streak_num_color)
+		else
+			streak_num_color = [
+				[230 230 230 200]
+				[15 15 70 200]
+			]
+		endif
+		if StructureContains structure=<hud_struct> score_text_spacing
+			score_text_spacing = (<hud_struct>.score_text_spacing)
+		else
+			score_text_spacing = 5
+		endif
+		if StructureContains structure=<hud_struct> score_text_scale
+			score_text_scale = (<hud_struct>.score_text_scale)
+		else
+			score_text_scale = 1.1
+		endif
+		if StructureContains structure=<hud_struct> score_text_rgba
+			score_text_rgba = (<hud_struct>.score_text_rgba)
+		else
+			score_text_rgba = [255 255 255 255]
+		endif
+		if StructureContains structure=<hud_struct> score_z
+			score_z = (<hud_struct>.score_z)
+		else
+			score_z = 7
+		endif
+		if StructureContains structure=<hud_struct> score_rot
+			score_rot = (<hud_struct>.score_rot)
+		else
+			score_rot = 0
 		endif
 		if ScreenElementExists id = <new_score_container>
 			displayText {
@@ -307,12 +363,12 @@ script create_2d_hud_elements\{player_text = 'p1'}
 				id = <new_id>
 				font = num_a9
 				Pos = <score_text_pos>
-				z = 20
-				Scale = (1.100000023841858, 1.100000023841858)
+				z = <score_z>
+				Scale = <score_text_scale>
 				just = [right right]
-				rgba = [255 255 255 255]
+				rgba = <score_text_rgba>
 			}
-			SetScreenElementProps id = <id> font_spacing = 5
+			SetScreenElementProps id = <id> font_spacing = <score_text_spacing> rot_angle = <score_rot>
 		endif
 		i = 1
 		begin
@@ -320,25 +376,22 @@ script create_2d_hud_elements\{player_text = 'p1'}
 			ExtendCrc <note_streak_text_id> <player_text> out = new_id
 			ExtendCrc HUD2D_note_container <player_text> out = new_note_container
 			if ScreenElementExists id = <new_note_container>
-				if (<i> = 1)
-					rgba = [15 15 70 200]
-				else
-					rgba = [230 230 230 200]
-				endif
+				rgba = (<streak_num_color>[(<i> = 1)])
+				space = (<streak_text_pos> + (<i> * <streak_num_spacing> * (-1.0, 0.0)))
 				displayText {
 					parent = <new_note_container>
 					id = <new_id>
 					font = num_a7
-					text = "0"
-					Pos = ((222.0, 78.0) + (<i> * (-37.0, 0.0)))
+					text = '0'
+					Pos = <space>
 					z = 25
 					just = [center center]
 					rgba = <rgba>
 					noshadow
 				}
-				<id> ::SetTags intial_pos = ((222.0, 78.0) + (<i> * (-37.0, 0.0)))
+				<id> ::SetTags intial_pos = <space>
 			endif
-			<i> = (<i> + 1)
+			Increment \{i}
 		repeat 4
 	endif
 endscript

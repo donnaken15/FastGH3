@@ -49,6 +49,52 @@ Boss_Props = {
 	character_profile = axel
 	character_name = $boss_name
 }
+Boss_TomMorello_Props = {
+	GainPerNote = { easy = 0.8 medium = 0.7 hard = 0.55 expert = 0.4 }
+	LossPerNote = { easy = 5.25 medium = 3.0 hard = 2.75 expert = 2.25 }
+	PowerUpMissedNote = { easy = 55.0 medium = 50.0 hard = 45.0 expert = 40.0 }
+	WhammySpeed = { easy = 1100 medium = 800 hard = 500 expert = 350 }
+	BrokenStringSpeed = { easy = 1200 medium = 950 hard = 700 expert = 450 }
+	BrokenStringMissedNote = { easy = 25.0 medium = 20.0 hard = 20.0 expert = 15.0 }
+	PowerUps = [ Lightning DifficultyUp DoubleNotes WhammyAttack ]
+	character_profile = axel
+	character_name = 'Tom Morello'
+}
+Boss_Slash_Props = {
+	GainPerNote = { easy = 0.8 medium = 0.7 hard = 0.55 expert = 0.4 }
+	LossPerNote = { easy = 5.0 medium = 2.75 hard = 2.5 expert = 2.0 }
+	PowerUpMissedNote = { easy = 45.0 medium = 42.0 hard = 35.0 expert = 30.0 }
+	WhammySpeed = { easy = 1150 medium = 900 hard = 500 expert = 350 }
+	BrokenStringSpeed = { easy = 1150 medium = 850 hard = 650 expert = 400 }
+	BrokenStringMissedNote = { easy = 24.0 medium = 17.0 hard = 14.0 expert = 11.5 }
+	PowerUps = [
+		Lightning
+		DifficultyUp
+		DoubleNotes
+		BrokenString
+		WhammyAttack
+	]
+	character_profile = axel
+	character_name = 'Slash'
+}
+Boss_Devil_Props = {
+	GainPerNote = { easy = 0.75 medium = 0.65 hard = 0.35 expert = 0.35 }
+	LossPerNote = { easy = 5.0 medium = 3.0 hard = 2.25 expert = 2.0 }
+	PowerUpMissedNote = { easy = 45.0 medium = 42.5 hard = 30.0 expert = 30.0 }
+	WhammySpeed = { easy = 1050 medium = 800 hard = 500 expert = 350 }
+	BrokenStringSpeed = { easy = 1100 medium = 950 hard = 600 expert = 350 }
+	BrokenStringMissedNote = { easy = 22.5 medium = 20.0 hard = 12.5 expert = 10.0 }
+	PowerUps = [
+		Lightning
+		DifficultyUp
+		DoubleNotes
+		LeftyNotes
+		BrokenString
+		WhammyAttack
+	]
+	character_profile = axel
+	character_name = 'Lou'
+}
 save_lefty_flip_p2 = 0
 
 script bossbattle_init
@@ -90,7 +136,7 @@ script bossbattle_init
 	Change \{boss_lastwhammytime = 0}
 	Change \{boss_lastbrokenstringtime = 0}
 	Change \{boss_hammer_count = 0}
-	if ($current_song = bossdevil)
+	if ($fastgh3_extra.original_stream_name = bossdevil)
 		if ($p2_lefty = 1)
 			Change \{save_lefty_flip_p2 = 1}
 			change \{p2_lefty = 0}
@@ -135,7 +181,7 @@ script bossbattle_deinit
 		GH_BattleMode_Stop_Heartbeat_P1
 		GH_BattleMode_Stop_Heartbeat_P2
 		Change \{boss_hammer_count = 0}
-		if ($current_song = bossdevil)
+		if ($fastgh3_extra.original_stream_name = bossdevil)
 			if ($save_lefty_flip_p2 = 1)
 				change \{p2_lefty = $save_lefty_flip_p2}
 			endif
