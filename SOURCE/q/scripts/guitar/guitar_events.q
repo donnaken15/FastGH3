@@ -920,8 +920,8 @@ script GuitarEvent_SongWon_Spawned
 	fit_dims = (350.0, 0.0)
 	if ($battle_sudden_death = 1)
 		winner_text = "Sudden Death!"
-		winner_space_between = (65.0, 0.0)
-		winner_scale = 1.8
+		winner_space_between = (80.0, 0.0)
+		winner_scale = 5.0
 	else
 		if ($game_mode = p2_battle)
 			p1_health = ($player1_status.current_health)
@@ -947,7 +947,7 @@ script GuitarEvent_SongWon_Spawned
 				FormatText textname = winner_text "Player %s Rocks!" s = <winner>
 			endif
 			winner_space_between = (50.0, 0.0)
-			winner_scale = 1.5
+			winner_scale = 5.0
 		elseif ($game_mode = p2_faceoff || $game_mode = p2_pro_faceoff)
 			p1_score = ($player1_status.score)
 			p2_score = ($player2_status.score)
@@ -963,8 +963,8 @@ script GuitarEvent_SongWon_Spawned
 			endif
 			if (<tie> = true)
 				winner_text = 'TIE!'
-				winner_space_between = (15.0, 0.0)
-				winner_scale = 0.5
+				winner_space_between = (80.0, 0.0)
+				winner_scale = 5.0
 				fit_dims = (100.0, 0.0)
 			else
 				if ($is_network_game)
@@ -980,19 +980,19 @@ script GuitarEvent_SongWon_Spawned
 				else
 					FormatText textname = winner_text 'Player %s Rocks!' s = <winner>
 				endif
-				winner_space_between = (50.0, 0.0)
-				winner_scale = 1.5
+				winner_space_between = (80.0, 0.0)
+				winner_scale = 5.0
 			endif
 		else
 			winner_text = 'You Rock!'
-			winner_space_between = (40.0, 0.0)
+			winner_space_between = (80.0, 0.0)
 			fit_dims = (350.0, 0.0)
-			winner_scale = 1.0
+			winner_scale = 5.0
 		endif
 		if ($devil_finish = 1)
 			winner_text = 'Now Finish Him!'
-			winner_space_between = (55.0, 0.0)
-			winner_scale = 1.8
+			winner_space_between = (90.0, 0.0)
+			winner_scale = 5.0
 		endif
 		/*if ($current_song = bossdevil & $devil_finish = 0)
 			<rock_legend> = 1
@@ -1078,30 +1078,35 @@ script GuitarEvent_SongWon_Spawned
 	endif
 	Change \{old_song = None}
 	if NOT ($devil_finish = 1)
-		if NOT ($battle_sudden_death = 1)
-			UnPauseGame
-			if NOT ($boss_battle = 1 || $game_mode = p2_battle)
-				Transition_Play \{Type = songwon}
+			if NOT ($battle_sudden_death = 1)
+				UnPauseGame
+				if NOT ($boss_battle = 1 || $game_mode = p2_battle)
+					Transition_Play \{Type = songwon}
+				else
+					if ($boss_battle = 1)
+						SoundEvent \{event = You_Rock_End_SFX}
+					endif
+					Transition_Play \{Type = battleend}
+					//Wait \{3 seconds}
+				endif
+				if NOT ($fastgh3_extra.original_stream_name = bossdevil)
+					Transition_Wait
+				endif
+				Change \{current_transition = None}
+				PauseGame
 			else
-				Transition_Play \{Type = battleend}
-				Wait \{3 seconds}
+				UnPauseGame
+				Transition_Play \{Type = songwon}
+				spawnscriptnow \{wait_and_play_you_rock_movie}
+				killspawnedscript \{name = jiggle_text_array_elements}
+				spawnscriptnow \{jiggle_text_array_elements params = {id = yourock_text time = 1.0 wait_time = 3000 explode = 1}}
+				spawnscriptnow \{Sudden_Death_Helper_Text params = {parent_id = yourock_text}}
+				wait \{0.1 seconds}
+				spawnscriptnow \{waitandkillhighway}
+				wait \{4 seconds}
+				Change \{current_transition = None}
+				PauseGame
 			endif
-			Transition_Wait
-			Change \{current_transition = None}
-			PauseGame
-		else
-			UnPauseGame
-			Transition_Play \{Type = songwon}
-			spawnscriptnow \{wait_and_play_you_rock_movie}
-			killspawnedscript \{name = jiggle_text_array_elements}
-			spawnscriptnow \{jiggle_text_array_elements params = {id = yourock_text time = 1.0 wait_time = 3000 explode = 1}}
-			spawnscriptnow \{Sudden_Death_Helper_Text params = {parent_id = yourock_text}}
-			wait \{0.1 seconds}
-			spawnscriptnow \{waitandkillhighway}
-			wait \{4 seconds}
-			Change \{current_transition = None}
-			PauseGame
-		endif
 	else
 		SoundEvent \{event = You_Rock_End_SFX}
 		UnPauseGame

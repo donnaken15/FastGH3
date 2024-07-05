@@ -132,6 +132,7 @@ old_song = None
 
 script create_newspaper_menu\{for_practice = 0}
 	menu_song_complete_sound
+	create_menu_backdrop \{texture = white rgba = [90 90 90 255]}
 	StopSoundsByBuss \{BinkCutScenes}
 	disable_pause
 	my_song = ($current_song)
@@ -143,15 +144,6 @@ script create_newspaper_menu\{for_practice = 0}
 	set_unfocus_color \{rgba = $g_ss_black}
 	show_replay = 1
 	replay_flow_params = {action = try_again}
-	if ($game_mode = p1_quickplay)
-		menu_top_rockers_check_for_new_top_score \{nowrite = 1}
-		if NOT (<new_score> = -1)
-			show_replay = 0
-		endif
-		if (<newbestscore> = 1)
-			replay_flow_params = {action = save_and_try_again}
-		endif
-	endif
 	if ($game_mode = training)
 		if ($menu_choose_practice_destroy_previous_menu = 0)
 			LaunchEvent \{Type = focus target = newspaper_vmenu}
@@ -367,9 +359,10 @@ script create_newspaper_menu\{for_practice = 0}
 					rgba = [223 223 223 255]
 					dims = (600.0, 200.0)
 				}
+				FormatText \{checksumName = card_checksum 'battlecard_final_blow'}
 				CreateScreenElement {
 					Type = SpriteElement
-					id = battlecard_final_blow
+					id = <card_checksum>
 					parent = newspaper_container
 					texture = <final_blow_attack_icon>
 					rgba = [255 255 255 255]
@@ -411,16 +404,6 @@ script create_newspaper_menu\{for_practice = 0}
 				rot_angle = -7.5
 			}
 		endif
-		displaySprite {
-			parent = newspaper_container
-			tex = <ss_logo>
-			Pos = (158.0, 25.0)
-		}
-		displaySprite {
-			parent = newspaper_container
-			tex = <ss_sidebar>
-			Pos = (858.0, 130.0)
-		}
 		GetUpperCaseString <song_title>
 		CreateScreenElement {
 			id = ss_song_title_text_block_id
@@ -936,7 +919,11 @@ script create_newspaper_menu\{for_practice = 0}
 				if (<i> = 3)
 					<i> = 2
 				endif
-				FormatText checksumName = hilite_tex 'Char_Select_Hilite%d' d = <i>
+				if (<i> = 1)
+					hilite_tex = Char_Select_Hilite1
+				else
+					hilite_tex = HUD_Score_flash
+				endif
 				<hilite_rgba> = [200 90 40 255]
 				<hilite_pos> = (<p1_stats_pos> + (46.0, 330.0))
 				if (<win_sqs> = '2')
@@ -999,16 +986,6 @@ script create_newspaper_menu\{for_practice = 0}
 		<ss_notestreak_fill_color> = $g_ss_black
 		<ss_notestreak_color> = $g_ss_offwhite
 		<ss_notestreak_text_color> = $g_ss_offwhite
-		displaySprite {
-			parent = newspaper_container
-			tex = <ss_logo>
-			Pos = (158.0, 25.0)
-		}
-		displaySprite {
-			parent = newspaper_container
-			tex = <ss_sidebar>
-			Pos = (858.0, 130.0)
-		}
 		get_song_artist song = <my_song>
 		GetUpperCaseString <song_artist>
 		<band_name> = <uppercasestring>
@@ -1329,7 +1306,7 @@ script destroy_newspaper_menu
 		killspawnedscript \{name = np_2p_hilites_p2}
 		destroy_menu \{menu_id = newspaper_scroll}
 		destroy_menu \{menu_id = newspaper_container}
-		//destroy_menu_backdrop
+		destroy_menu_backdrop
 		net_destroy_newspaper_menu
 		Change \{g_np_options_index = 0}
 	endif
@@ -1429,15 +1406,15 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 		<menu_offset> = (0.0, 0.0)
 	endif
 	if (<for_practice> = 1)
-		displayText id = np_option_0 parent = newspaper_container text = "CONTINUE" Pos = (($g_np_option_props [4].Pos)+ <menu_offset>)Scale = (0.8500000238418579, 0.699999988079071) rot = ($g_np_option_props [4].rot)font = <menu_font> noshadow
-		displayText id = np_option_1 parent = newspaper_container text = "RESTART" Pos = (($g_np_option_props [5].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [5].rot)font = <menu_font> noshadow
-		displayText id = np_option_2 parent = newspaper_container text = "CHANGE SPEED" Pos = (($g_np_option_props [6].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [6].rot)font = <menu_font> noshadow
-		displayText id = np_option_3 parent = newspaper_container text = "CHANGE SECTION" Pos = (($g_np_option_props [7].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [7].rot)font = <menu_font> noshadow
-		displayText id = np_option_4 parent = newspaper_container text = "QUIT" Pos = (($g_np_option_props [8].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [8].rot)font = <menu_font> noshadow
+		displayText id = np_option_0 parent = newspaper_container text = 'EXIT' Pos = (($g_np_option_props [4].Pos)+ <menu_offset>)Scale = (0.8500000238418579, 0.699999988079071) rot = ($g_np_option_props [4].rot)font = <menu_font> noshadow
+		displayText id = np_option_1 parent = newspaper_container text = 'RESTART' Pos = (($g_np_option_props [5].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [5].rot)font = <menu_font> noshadow
+		displayText id = np_option_2 parent = newspaper_container text = 'CHANGE SPEED' Pos = (($g_np_option_props [6].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [6].rot)font = <menu_font> noshadow
+		displayText id = np_option_3 parent = newspaper_container text = 'CHANGE SECTION' Pos = (($g_np_option_props [7].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [7].rot)font = <menu_font> noshadow
+		displayText id = np_option_4 parent = newspaper_container text = 'QUIT' Pos = (($g_np_option_props [8].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [8].rot)font = <menu_font> noshadow
 		retail_menu_unfocus \{id = np_option_4}
 		<initial_hl_pos> = (($g_np_option_props [4].Pos)+ ($g_np_option_props [4].offset)+ <menu_offset>)
 	else
-		displayText id = np_option_0 parent = newspaper_container text = "CONTINUE" Pos = (($g_np_option_props [0].Pos)+ <menu_offset>)Scale = (0.8500000238418579, 0.699999988079071) rot = ($g_np_option_props [0].rot)font = <menu_font> noshadow
+		displayText id = np_option_0 parent = newspaper_container text = "EXIT" Pos = (($g_np_option_props [0].Pos)+ <menu_offset>)Scale = (0.8500000238418579, 0.699999988079071) rot = ($g_np_option_props [0].rot)font = <menu_font> noshadow
 		SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 		if NOT ($end_credits = 1)
 			if (<show_replay> = 1)
@@ -1843,92 +1820,34 @@ script np_2p_fade_to_grey
 	else
 		<stroke_pos> = (934.0, 280.0)
 	endif
-	displaySprite {
-		id = ss_stroke_1
-		parent = newspaper_container
-		tex = Song_Summary_Brushstroke_2p
-		Pos = <stroke_pos>
-		rgba = $g_ss_AP_reddish
-		z = 80
-		rot_angle = 25
-		Scale = 0.125
-		relative_scale
-	}
-	DoScreenElementMorph id = ss_stroke_1 Scale = 10.0 relative_scale Pos = (<stroke_pos> + (-8.0, -10.0))time = 0.15 motion = ease_in
-	wait \{0.2 seconds}
-	displaySprite {
-		id = ss_stroke_2
-		parent = newspaper_container
-		tex = Song_Summary_Brushstroke_2p
-		Pos = (<stroke_pos> + (-110.0, -30.0))
-		rgba = [255 0 0 255]
-		z = 80
-		rot_angle = -10
-		flip_v
-		flip_h
-		Scale = 0.125
-		relative_scale
-	}
-	DoScreenElementMorph id = ss_stroke_2 Scale = 12.0 relative_scale Pos = (<stroke_pos> + (-120.0, -30.0))time = 0.125 motion = ease_out
-	wait \{0.125 seconds}
 	<drain_time> = 2
 	if (<winner> = "2")
-		if NOT ($g_ss_mag_number = 7)
-			DoScreenElementMorph id = ss_p1_note_streak_fill rgba = [128 128 128 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_note_streak rgba = [210 210 210 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_note_streak_text rgba = [220 220 220 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_score_fill rgba = [128 128 128 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_score_text rgba = [220 220 220 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_score rgba = [128 128 128 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_notes_hit rgba = [128 128 128 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_percent_sign rgba = [64 64 64 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_notes_text rgba = [64 64 64 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_hit_text rgba = [64 64 64 255] time = <drain_time>
-			DoScreenElementMorph id = np_circle_1 rgba = [192 192 192 255] time = <drain_time>
-		else
-			DoScreenElementMorph id = ss_p1_note_streak_fill rgba = [128 118 118 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_note_streak rgba = [210 200 200 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_note_streak_text rgba = [220 210 210 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_score_fill rgba = [128 118 118 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_score_text rgba = [220 210 210 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_score rgba = [128 118 118 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_notes_hit rgba = [128 118 118 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_percent_sign rgba = [64 54 54 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_notes_text rgba = [64 54 54 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p1_hit_text rgba = [64 54 54 255] time = <drain_time>
-			DoScreenElementMorph id = np_circle_1 rgba = [192 182 182 255] time = <drain_time>
-		endif
+		DoScreenElementMorph id = ss_p1_note_streak_fill rgba = [128 128 128 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_note_streak rgba = [210 210 210 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_note_streak_text rgba = [220 220 220 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_score_fill rgba = [128 128 128 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_score_text rgba = [220 220 220 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_score rgba = [128 128 128 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_notes_hit rgba = [128 128 128 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_percent_sign rgba = [64 64 64 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_notes_text rgba = [64 64 64 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p1_hit_text rgba = [64 64 64 255] time = <drain_time>
+		DoScreenElementMorph id = np_circle_1 rgba = [192 192 192 255] time = <drain_time>
 	else
-		if NOT ($g_ss_mag_number = 7)
-			DoScreenElementMorph id = ss_p2_note_streak_fill rgba = [128 128 128 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_note_streak rgba = [210 210 210 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_note_streak_text rgba = [220 220 220 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_score_fill rgba = [128 128 128 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_score_text rgba = [220 220 220 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_score rgba = [128 128 128 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_notes_hit rgba = [128 128 128 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_percent_sign rgba = [64 64 64 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_notes_text rgba = [64 64 64 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_hit_text rgba = [64 64 64 255] time = <drain_time>
-			DoScreenElementMorph id = np_circle_2 rgba = [192 192 192 255] time = <drain_time>
-		else
-			DoScreenElementMorph id = ss_p2_note_streak_fill rgba = [128 118 118 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_note_streak rgba = [210 200 200 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_note_streak_text rgba = [220 210 210 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_score_fill rgba = [128 118 118 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_score_text rgba = [220 210 210 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_score rgba = [128 118 118 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_notes_hit rgba = [128 118 118 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_percent_sign rgba = [64 54 54 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_notes_text rgba = [64 54 54 255] time = <drain_time>
-			DoScreenElementMorph id = ss_p2_hit_text rgba = [64 54 54 255] time = <drain_time>
-			DoScreenElementMorph id = np_circle_2 rgba = [192 182 182 255] time = <drain_time>
-		endif
+		DoScreenElementMorph id = ss_p2_note_streak_fill rgba = [128 128 128 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_note_streak rgba = [210 210 210 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_note_streak_text rgba = [220 220 220 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_score_fill rgba = [128 128 128 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_score_text rgba = [220 220 220 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_score rgba = [128 128 128 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_notes_hit rgba = [128 128 128 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_percent_sign rgba = [64 64 64 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_notes_text rgba = [64 64 64 255] time = <drain_time>
+		DoScreenElementMorph id = ss_p2_hit_text rgba = [64 64 64 255] time = <drain_time>
+		DoScreenElementMorph id = np_circle_2 rgba = [192 192 192 255] time = <drain_time>
 	endif
 	DoScreenElementMorph id = np_icon_skull rgba = [192 192 192 255] time = <drain_time>
 	wait (<drain_time> + 0.5)seconds
-	DoScreenElementMorph \{id = ss_stroke_1 alpha = 0 time = 0.25}
-	DoScreenElementMorph \{id = ss_stroke_2 alpha = 0 z = 1 time = 0.25}
 endscript
 
 script np_2p_hilites_p1\{time = 3.0}

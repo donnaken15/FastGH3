@@ -84,11 +84,7 @@ stats_*.txt
 
 # i put this and its showing these as untracked still
 /DATA/MOVIES/BIK/backgrnd_video.bik.xen
-/DATA/MUSIC/fastgh3.fsb.xen
-/DATA/MUSIC/fastgh3.dat.xen
 /DATA/PAK/player.pak.xen
-/DATA/PAK/song.pak.xen
-/DATA/PAK/song.qb.xen
 /SOURCE/Zones/highway/__output.scn
 /SOURCE/Zones/highway/__output.tex
 *.log.xz

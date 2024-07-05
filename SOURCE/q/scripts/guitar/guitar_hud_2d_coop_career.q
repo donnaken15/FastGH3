@@ -19,7 +19,7 @@ script coop_career_hud_2d_elements_load
 		z = 0
 		score_frame_width = 200.0
 		score_text_pos = (226.0, 85.0)
-		score_text_spacing = 10
+		score_z = 20
 		offscreen_gamertag_pos = (0.0, -400.0)
 		final_gamertag_pos = (0.0, 0.0)
 		#"0x936bb5fe" = $gameplaybg_pos

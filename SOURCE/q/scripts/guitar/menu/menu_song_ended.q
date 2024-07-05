@@ -67,30 +67,7 @@ script create_song_ended_menu\{Player = 1}
 		parent = <id>
 		id = song_ended_retry_text
 		font = <menu_font>
-		text = "RETRY SONG"
-		rgba = ($menu_unfocus_color)
-		Scale = <text_scale>
-		just = [center top]
-		z_priority = (<z> + 0.1)
-	}
-	GetScreenElementDims id = <id>
-	fit_text_in_rectangle id = <id> only_if_larger_x = 1 dims = ((220.0, 0.0) + <height> * (0.0, 1.0))
-	CreateScreenElement {
-		Type = ContainerElement
-		parent = song_ended_vmenu
-		dims = (0.0, 100.0)
-		event_handlers = [
-			{focus menu_se_newsong_highlight_focus params = {id = song_ended_new_song_text}}
-			{unfocus retail_menu_unfocus params = {id = song_ended_new_song_text}}
-			{pad_choose song_ended_menu_select_new_song params = {Player = <Player>}}
-		]
-	}
-	CreateScreenElement {
-		Type = TextElement
-		parent = <id>
-		id = song_ended_new_song_text
-		font = <menu_font>
-		text = "NEW SONG"
+		text = 'RETRY SONG'
 		rgba = ($menu_unfocus_color)
 		Scale = <text_scale>
 		just = [center top]
@@ -104,7 +81,7 @@ script create_song_ended_menu\{Player = 1}
 		parent = <id>
 		id = song_ended_main_menu_text
 		font = <menu_font>
-		text = "MAIN MENU"
+		text = 'EXIT'
 		rgba = ($menu_unfocus_color)
 		Scale = <text_scale>
 		just = [center top]

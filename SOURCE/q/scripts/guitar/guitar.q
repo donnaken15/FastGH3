@@ -165,7 +165,7 @@ mode_index = {
 
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
-bleeding_edge = 1
+bleeding_edge = 0
 build_timestamp = [ 7  4 2024]
 
 random_seed = -1

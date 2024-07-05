@@ -1157,9 +1157,9 @@ public static partial class Launcher
 							vl(T[135]);
 							mid2chart.Program.Main(m2cA);
 							// im suffering so hard
-							if (!File.Exists(paksongchart))
+							//if (!File.Exists(paksongchart))
 							{
-								throw new Exception(T[20]);
+								//throw m2cE;
 								//throw new Exception("Cannot find chart after converting from MIDI. Something must've went wrong with mid2chart. Aborting.");
 							}
 						}
@@ -4396,7 +4396,7 @@ public static partial class Launcher
 							chartgz = Convert.ToBase64String(GZipStream.CompressBuffer(File.ReadAllBytes(args[0])));
 #else
 							using (Stream
-								i = File.Open(args[0], FileMode.Open),
+								i = File.OpenRead(args[0]),
 								ms = new MemoryStream(),
 								o = new GZipOutputStream(ms))
 							{

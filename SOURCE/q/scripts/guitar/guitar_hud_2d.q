@@ -351,6 +351,9 @@ script create_score_text
 			score_z = (<hud_struct>.score_z)
 		else
 			score_z = 7
+			if ($game_mode = p2_career || $game_mode = p2_coop)
+				score_z = 20
+			endif
 		endif
 		if StructureContains structure=<hud_struct> score_rot
 			score_rot = (<hud_struct>.score_rot)

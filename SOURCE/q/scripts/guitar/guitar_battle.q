@@ -2111,14 +2111,17 @@ script battle_starpower
 	//printf 'sp on'
 	// hack :( lazy to detour but also thinking about how i would have to patch it and how it works out in the long run if something needs to change
 	last_health = ($<player_status>.current_health)
-	ExtendCrc health_change_star_ ($difficulty_list_props.<difficulty>.text_nl) out = health_change
+	ExtendCrc health_change_good_battle_ ($difficulty_list_props.<difficulty>.text_nl) out = health_change
 	begin
 		if ($<player_status>.star_power_amount = 0)
 			break
 		endif
 		if ($<player_status>.current_health > <last_health>)
 			//printf 'boost'
-			change structurename=player1_status current_health=($<player_status>.current_health + ($<health_change>))
+			change structurename=<player_status> current_health=(<last_health> + ($<health_change> * 2.0))
+			if ($<player_status>.current_health > $health_scale)
+				change structurename=<player_status> current_health = ($health_scale)
+			endif
 			//CrowdIncrease player_status = <player_status>
 		endif
 		last_health = ($<player_status>.current_health)
