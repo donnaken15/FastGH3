@@ -25,7 +25,6 @@ popd
 ::copy settings_Def.ini __FINAL\settings.ini /y
 echo Copying files...
 for %%I in (
-	FXFILES
 	MUSIC\TOOLS
 ) do copy DATA\%%I\*.* __FINAL\DATA\%%I\ /y
 for %%I in (
@@ -49,6 +48,7 @@ for %%I in (
 	ZONES\global.pak.xen
 	ZONES\global.pab.xen
 	ZONES\global_sfx.pak.xen
+	ZONES\MaterialLibrary.bin.xen
 ) do copy DATA\%%I __FINAL\DATA\%%I /y
 for %%I in (
 	core

@@ -9,8 +9,8 @@ The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer,
 ![version](https://img.shields.io/github/v/release/donnaken15/FastGH3)
 ![mod size](https://img.shields.io/endpoint?url=https%3A%2F%2Fdonnaken15.com%2Ffastgh3%2F__final_size.php)
 <br>
-![download count (EXE)](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.exe)
-![download count (ZIP)](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.0.zip)
+![download count (EXE)](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.1.exe)
+![download count (ZIP)](https://img.shields.io/github/downloads/donnaken15/FastGH3/latest/FastGH3_1.1.zip)
 <br>
 ![last release build](https://img.shields.io/github/release-date/donnaken15/FastGH3?label=last%20release%20build)
 ![commit activity](https://img.shields.io/github/commit-activity/m/donnaken15/FastGH3)
@@ -21,8 +21,8 @@ The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer,
 ![update frequency](https://img.shields.io/badge/update%20frequency-2/year-blue)
 
 PLAY NOW!
-* [Download (installer)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.exe)
-* [Download (portable)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.0.zip)
+* [Download (installer)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.1.exe)
+* [Download (portable)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.1.zip)
 * [Download (one EXE demo)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_LITE.EXE)
 * [Latest Dev Build](https://github.com/donnaken15/FastGH3/archive/refs/heads/main.zip)
 <br>![last commit](https://img.shields.io/github/last-commit/donnaken15/FastGH3)
