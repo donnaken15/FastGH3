@@ -51,7 +51,7 @@ https://github.com/donnaken15/FastGH3/assets/20864393/01756e3a-45da-49b8-9d02-49
 (Installer adds a shortcut for this)
 
 ### Extra steps
-* To enable file association (that is when you click on a file, it opens the program that supports it),
+* To enable file association (that is when you click on a file, the computer opens the program that supports it),
 you must use the installer or run register.bat, or click "Open with" on a chart or MIDI and select this program.
 <!--
 now asking user if game should boot song automatically or manually due to controller stuff
@@ -68,7 +68,7 @@ and then press any button on your keyboard or controller to play.
 * Overlapping starpower
 * Load charts stored in archive files (ZIP, RAR, 7Z)
 * Dynamically loadable [QbScript mods](https://donnaken15.com/fastgh3/mods.html)
-* Custom themes [available here](https://donnaken15.com/fastgh3/zones.html) <!-- , createable and pre-existing ones -->
+* Custom themes [available here](https://donnaken15.com/fastgh3/zones.html), createable and pre-existing ones
 * [GH3+ plugin system](https://github.com/donnaken15/GH3-Plus) (by ExileLord)
 * Windowed mode (and borderless)
 * Toggleable VSync

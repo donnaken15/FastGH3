@@ -82,6 +82,8 @@ script everyone_deploy // :P
 endscript
 
 fastgh3_path_triggers = []
+// szycag guitar
+;fastgh3_path_triggers = [112590 143270 190220 222920 246840 300770 377120 415890 436320 488420 528320 601820]
 // hellidox
 ;fastgh3_path_triggers = [35570 54000 83710 124570 141380 167580 186030 202350]
 // soulless 5

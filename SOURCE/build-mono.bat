@@ -4,7 +4,10 @@
 :: for GH3+, it's recommended you use Visual Studio
 :: directly to build the library and its plugins
 ::
+:: DO NOT USE RIGHT NOW
 @echo off
+echo ########## FASTGH3 ##########
+"%~dp0FastGH3\_monotest.bat"
 pushd "%~dp0"
 echo ########## C128KS  ##########
 call Misc\c128ks_mono.bat

@@ -277,13 +277,13 @@ script move_2d_elements_to_default
 		endif
 		wait \{1 gameframe}
 	repeat
-	off_set_drop = (0.0, 0.0)
-	off_set = (50.0, 0.0)
+	<off_set_drop> = (0.0, 0.0)
+	<off_set> = (50.0, 0.0)
 	if ($game_mode = p2_faceoff)
-		off_set_drop = (0.0, 50.0)
+		<off_set_drop> = (0.0, 50.0)
 	endif
-	rot = -5
-	time_to_move = 0.1
+	<rot> = -5
+	<time_to_move> = 0.1
 	morph_2d_hud_elements <...>
 	wait \{0.1 seconds}
 	<off_set> = (-25.0, 0.0)

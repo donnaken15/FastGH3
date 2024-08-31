@@ -3,33 +3,33 @@
 
 #echo "${y}(not as fake) qcomp${rc}"
 # no args
-[ $# -eq 0 ] && { echo "usage: qcomp [scripts folder] [output folder]"; exit 1; }
+[ $# -eq 0 ] && { echo 'usage: qcomp [scripts folder] [output folder]'; exit 1; }
 # non existent input dir arg
-[ ! -d "$1" ] && { echo "invalid path"; exit 1; }
-indir="$1"; NL=$'\n'; nul=/dev/null
-find=/usr/bin/find
+[ ! -d "$1" ] && { echo 'invalid path'; exit 1; }
+indir="$1"; NL=$'\n'; nul='/dev/null'
+find='/usr/bin/find'
 # >:(
-r="[91m"
-y="[93m"
-w="[97m"
-rc="[0m"
+r='[91m'
+y='[93m'
+w='[97m'
+rc='[0m'
 # check for manually specified output
-outdir="${2:-$1_build}/"
-[ ! "$(dirname "$0")" = "." ] && bin="$(realpath "$0")/" || bin="$(which "$0")/"
+outdir="${2:-${1}_build}/"
+[ ! "$(dirname "$0")" = '.' ] && bin="$(realpath "$0")/" || bin="$(which "$0")/"
 								# ???						# required when script is pathed
 # thx luke / https://stackoverflow.com/a/21913843
-bin=$(dirname "$bin"); wbin=$(cygpath -w "$bin" 2>$nul || wslpath -m "$bin")
+bin="$(dirname "$bin")"; wbin="$(cygpath -w "$bin" 2>$nul || wslpath -m "$bin")"
 #which wslpath 2>$nul >$nul
 #wsl=0
 
-echo "${y}*****  Q COMPILATION   *****${rc}"
+echo ${y}'*****  Q COMPILATION   *****'${rc}
 
 # for whatever reason # stop wasting my (mine and others') space
 node="$wbin/node"
 [ -f "$node" ] || {
 	node="$wbin/GHSDK/node"
 	[ -f "$node" ] || {
-		node="node"
+		node='node'
 	}
 }
 QBC="$wbin/QBC"
@@ -43,9 +43,9 @@ got_error=0
 lasterrcode=0
 no_update=1
 # ${SHELL}
-[ "$(basename ${0:-sh})" = "zsh" ] && setopt +o nomatch
+[ "$(basename ${0:-sh})" = 'zsh' ] && setopt +o nomatch
 # delete compiled QBs that don't have a matching existing source file
-(cd "$outdir" && $find * -type f -name "*.qb" -or -name "*.qb.xen" 2>$nul) | while read -r f; do
+(cd "$outdir" && $find * -type f -name '*.qb' -or -name '*.qb.xen' 2>$nul) | while read -r f; do
 	[ -f "$outdir/$f" -a ! -e "$indir/${f%.q*}.q" ] && {
 		echo "${r}Deleting ${f} as its source cannot be found.${rc}"
 		rm "$outdir/$f"
@@ -57,26 +57,26 @@ done
 	[ ! -f "$out" -o "$out" -ot "$indir/$f" ] && {
 		[ $no_update -eq 1 ] && {
 			no_update=0
-			rm qcomp.log qcomp.log.xz 2>$nul
+			rm 'qcomp.log' 'qcomp.log.xz' 2>$nul
 		}
 		mkdir -p "${outdir}$(dirname $f)"
-		echo "${w}Compiling $f...${rc}"
+		echo "${w}Compiling ${f}...${rc}"
 		# dash doesn't capture newlines in variables (neither does bash lol)
 		# todo?: somehow pipe errors to sed while getting the error code
 		log=$("$node" "$QBC/QBC.js" c -g gh3 -v "$indir/$f" -o "$out" 2>&1 >$nul) || {
 			got_error=1
 			lasterrcode=$?
 			echo "${r}Error compiling ${f}. Last lines:${rc}"
-			echo "${r}$(echo $log | tail -50)${rc}"
+			echo "${r}$(tail -50 <<< "$log")${rc}"
 		}
 		# maybe output a log file for each script instead?
-		echo $log>>qcomp.log
+		echo $log>>'qcomp.log'
 	}
 done
 
-[ -e qcomp.log ] && { echo Compressing log...; xz -9 -e -T 0 qcomp.log 2>$nul >$nul; } &
+[ -e 'qcomp.log' ] && { echo 'Compressing log...'; xz -9 -e -T 0 'qcomp.log' 2>$nul >$nul; } &
 
-echo done...
+echo 'done...'
 
 exit $lasterrcode
 

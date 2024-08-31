@@ -128,7 +128,7 @@ The extractor returned a non-zero error code. This could mean that the extractio
 Unsupported archive type, unless you have 7-Zip or WinRAR or UnRAR installed, or the target URL returned an invalid response. This could also be a password protected file. Check launcher.txt for the log of the extractor.
 %a - Author, %t - Title, %b - Album, %% - Percent,\n%c - Charter, %y - Year, %l - Length, %g - Genre
 /!\\ Error adding a starpower phrase. If this message appears more than once, there may be a problem
-All chart types:chart,msc,mid;FastGH3 Song Package:fsp,zip,sng,7z,rar;Guitar Hero 3 PAK:pak,pak.xen,pak.ps3
+All chart types:chart,msc,mid;FastGH3 Song Package:fsp,zip,sng,7z,rar;Guitar Hero III/Aerosmith PC/PS3 PAK:pak,pak.xen,pak.ps3
 Lightning,DifficultyUp,DoubleNotes,LeftyNotes,BrokenString,WhammyAttack,PowerUpSteal
 Saving user background video
 Restoring user background video

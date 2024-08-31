@@ -1,5 +1,6 @@
 @echo off
-pushd "%~dp0"
+::pushd "%~dp0"
+::popd
 echo BROKEN RIGHT NOW!!!1!! SDFGHJKLSDFGHJKLSDFGHJKL
 exit /b 1
 node GenerateLD.js
@@ -7,7 +8,7 @@ set OUT=..\..\FastGH3.exe
 ::set RES=FastGH3.P.res.resources
 ::call resgen /useSourcePath /compile P\res.resx
 ::move P\res.resources "P\%RES%"
-set DNZPATH=..\DotNetZip
+set DNZPATH=..\dependencies\DotNetZip
 call mcs -target:exe -debug- -nostdlib- -optimize+ ^
 	-reference:System.dll ^
 	-reference:System.Net.dll ^
@@ -15,76 +16,37 @@ call mcs -target:exe -debug- -nostdlib- -optimize+ ^
 	-reference:System.Drawing.dll ^
 	-reference:System.Windows.Forms.dll ^
 	--runtime:v4 -sdk:4 -langversion:3 -platform:anycpu ^
-	-out:"%OUT%" -main:Launcher -define:PC_ONLY;NO_ZLIB ^
-	..\Queenbee\QueenbeeParser\*.cs ^
-	..\Queenbee\QueenbeeParser\Pak\*.cs ^
-	..\Queenbee\QueenbeeParser\Qb\*.cs ^
-	..\Queenbee\QueenbeeParser\Qb\base\*.cs ^
-	*.cs ChartEdit\*.cs P\*.cs ^
-	%DNZPATH%\Zip\ComHelper.cs ^
-	%DNZPATH%\Zip\EncryptionAlgorithm.cs ^
-	%DNZPATH%\Zip\Events.cs ^
-	%DNZPATH%\Zip\Exceptions.cs ^
-	%DNZPATH%\Zip\ExtractExistingFileAction.cs ^
-	%DNZPATH%\Zip\FileSelector.cs ^
-	%DNZPATH%\Zip\OffsetStream.cs ^
-	%DNZPATH%\Zip\Shared.cs ^
-	%DNZPATH%\Zip\WinZipAes.cs ^
-	%DNZPATH%\Zip\ZipConstants.cs ^
-	%DNZPATH%\Zip\ZipCrypto.cs ^
-	%DNZPATH%\Zip\ZipDirEntry.cs ^
-	%DNZPATH%\Zip\ZipEntry.cs ^
-	%DNZPATH%\Zip\ZipEntry.Extract.cs ^
-	%DNZPATH%\Zip\ZipEntry.Read.cs ^
-	%DNZPATH%\Zip\ZipEntry.Write.cs ^
-	%DNZPATH%\Zip\ZipEntrySource.cs ^
-	%DNZPATH%\Zip\ZipErrorAction.cs ^
-	%DNZPATH%\Zip\ZipFile.AddUpdate.cs ^
-	%DNZPATH%\Zip\ZipFile.Check.cs ^
-	%DNZPATH%\Zip\ZipFile.cs ^
-	%DNZPATH%\Zip\ZipFile.Events.cs ^
-	%DNZPATH%\Zip\ZipFile.Extract.cs ^
-	%DNZPATH%\Zip\ZipFile.Read.cs ^
-	%DNZPATH%\Zip\ZipFile.Save.cs ^
-	%DNZPATH%\Zip\ZipFile.SaveSelfExtractor.cs ^
-	%DNZPATH%\Zip\ZipFile.Selector.cs ^
-	%DNZPATH%\Zip\ZipFile.x-IEnumerable.cs ^
-	%DNZPATH%\Zip\ZipInputStream.cs ^
-	%DNZPATH%\Zip\ZipOutputStream.cs ^
-	%DNZPATH%\Zip\ZipSegmentedStream.cs ^
-	%DNZPATH%\BZip2\BitWriter.cs ^
-	%DNZPATH%\BZip2\BZip2Compressor.cs ^
-	%DNZPATH%\BZip2\BZip2InputStream.cs ^
-	%DNZPATH%\BZip2\BZip2OutputStream.cs ^
-	%DNZPATH%\BZip2\ParallelBZip2OutputStream.cs ^
-	%DNZPATH%\BZip2\Rand.cs ^
-	%DNZPATH%\Zlib\Deflate.cs ^
-	%DNZPATH%\Zlib\DeflateStream.cs ^
-	%DNZPATH%\Zlib\GZipStream.cs ^
-	%DNZPATH%\Zlib\Inflate.cs ^
-	%DNZPATH%\Zlib\InfTree.cs ^
-	%DNZPATH%\Zlib\ParallelDeflateOutputStream.cs ^
-	%DNZPATH%\Zlib\Tree.cs ^
-	%DNZPATH%\Zlib\Zlib.cs ^
-	%DNZPATH%\Zlib\ZlibBaseStream.cs ^
-	%DNZPATH%\Zlib\ZlibCodec.cs ^
-	%DNZPATH%\Zlib\ZlibConstants.cs ^
-	%DNZPATH%\Zlib\ZlibStream.cs ^
+	-out:"%OUT%" -main:Launcher -define:PC_ONLY;NO_ZLIB;SHARPDEV ^
+	..\dependencies\Queenbee\QueenbeeParser\*.cs ^
+	..\dependencies\Queenbee\QueenbeeParser\Pak\*.cs ^
+	..\dependencies\Queenbee\QueenbeeParser\Qb\*.cs ^
+	..\dependencies\Queenbee\QueenbeeParser\Qb\base\*.cs ^
+	..\dependencies\mid2chart\*.cs ^
+	..\dependencies\mid2chart\NAudio\*.cs ^
+	..\dependencies\mid2chart\NAudio\Midi\*.cs ^
+	..\dependencies\mid2chart\NAudio\Utils\*.cs ^
+	Launcher.cs LD.cs Sng.cs WZK64.cs ^
+	diags\*.cs diags\conf\*.cs diags\mods\*.cs ^
+	deps\ChartEdit\*.cs deps\SubstrExt.cs ^
+	%DNZPATH%\Zip\*.cs ^
+	%DNZPATH%\BZip2\*.cs ^
+	%DNZPATH%\Zlib\*.cs ^
 	%DNZPATH%\CommonSrc\CRC32.cs
+	:: TODO: support SZL
 :: -win32icon:P\note.ico
 
-echo.
-echo.
-echo ###################################                                     Raw file size:
-wc -c "%OUT%" 2>nul
-echo.
-echo.
-call "..\Misc\stripversion.bat" "%OUT%"
-echo ###################################                                     Removed resources and reloc:
-wc -c "%OUT%" 2>nul
-echo.
-echo.
-::NetCompressor "%OUT%" "%OUT%" -gz -a "P\AssemblyInfo.cs" -i "P\note.ico"
+::echo.
+::echo.
+::echo ###################################                                     Raw file size:
+::wc -c "%OUT%" 2>nul
+::echo.
+::echo.
+::call "..\Misc\stripversion.bat" "%OUT%"
+::echo ###################################                                     Removed resources and reloc:
+::wc -c "%OUT%" 2>nul
+::echo.
+::echo.
+::::NetCompressor "%OUT%" "%OUT%" -gz -a "P\AssemblyInfo.cs" -i "P\note.ico"
 ::echo ###################################                                     Compressed:
 ::wc -c "%OUT%" 2>nul
 ::echo.

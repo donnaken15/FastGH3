@@ -10,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using System.Security.Cryptography;
 #if !SHARPDEV
 using Shell32;
 #endif
@@ -19,7 +20,6 @@ using Ionic.Zlib;
 #else
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.GZip;
-using System.Security.Cryptography;
 #endif
 
 public static partial class Launcher
@@ -71,7 +71,9 @@ public static partial class Launcher
 	public static void iniw(string s, string k, object d, string f)	{ WStr(s, k, d.ToString(), f); }
 	public static void cfgW(string s, string k, object d)			{ iniw(s, k, d, inif); }
 
-	public static string folder;
+	// must always be mod directory, current directory will always be the
+	// chart location, even when using absolute chart paths all the time
+	public static string folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';
 	public static string[] ikeys = T[194].Split('%');
 	public static string m = ikeys[0];
 	public static string l = ikeys[2];
@@ -86,8 +88,14 @@ public static partial class Launcher
 	}
 #endregion
 
-	public static string dataf = "DATA\\", pakf,
-		music, vid, mt, cf, title = "FastGH3";
+	public static string
+		dataf = folder + "DATA\\",
+		pakf = dataf + "PAK\\",
+		music = dataf + "MUSIC\\",
+		vid = dataf + "MOVES\\BIK\\",
+		mt = music + "TOOLS\\",
+		cf = dataf + "CACHE\\",
+		title = "FastGH3";
 
 	static bool vb, wl = true;
 	public static string inif;
@@ -167,10 +175,9 @@ public static partial class Launcher
 		}
 #endregion
 	}
-	// todo: send ctrl-c to fsbbuild scripts
 	static void killEncoders()
 	{
-		// TODO: send Ctrl-C to c128ks process
+		// TODO: send Ctrl-C to encoder process
 	}
 
 	static void die()
@@ -212,22 +219,20 @@ public static partial class Launcher
 	// print base
 	public static void _l(object t, bool v)
 	{
-		if (wl && log != null)
-		{
-			if (v) log.Write(ms);
-			log.WriteLine(t);
-			log.Flush();
-		}
+		if (!wl || log == null)
+			return;
+		if (v) log.Write(ms);
+		log.WriteLine(t);
+		log.Flush();
 	}
 	public static void v(object t)
 	{
 		if (vb)
 			Console.Write(t);
-		if (wl && log != null)
-		{
-			log.Write(t);
-			log.Flush();
-		}
+		if (!wl || log == null)
+			return;
+		log.Write(t);
+		log.Flush();
 	}
 	public static void v(object t, ConsoleColor c)
 	{
@@ -240,21 +245,20 @@ public static partial class Launcher
 	}
 	public static void vl(object t)
 	{
-		if (vb)
-		{
-			Console.Write(ms);
-			Console.WriteLine(t);
-		}
 		_l(t, true);
+		if (!vb)
+			return;
+		Console.Write(ms);
+		Console.WriteLine(t);
 	}
 	public static void vl(object t, ConsoleColor c)
 	{
-		ConsoleColor o = Console.ForegroundColor;
+		ConsoleColor oldcol = Console.ForegroundColor;
 		if (coll)
 			Console.ForegroundColor = c;
 		vl(t);
 		if (coll)
-			Console.ForegroundColor = o;
+			Console.ForegroundColor = oldcol;
 	}
 	public static void print(object t)
 	{
@@ -339,7 +343,7 @@ public static partial class Launcher
 		return Regex.Unescape(f);
 	}
 
-	static bool coll = true; // color log
+	const bool coll = true; // color log
 
 	enum SF {
 		FO1, FO2,
@@ -392,7 +396,7 @@ public static partial class Launcher
 	}
 	// progress bars
 	static short[] pbl; // lines to write to
-	static void pb(float p, int l) // update progress bar at that line
+	static void pb(float p, byte l) // update progress bar at that line
 	{
 		//Console.WriteLine(p);
 		//Console.WriteLine(l);
@@ -419,7 +423,7 @@ public static partial class Launcher
 	{
 		vl(a.Data);
 	}
-	public static Process cmd(string fn, string a) //new Headless process
+	public static Process cmd(string fn, string a) //new headless process
 	{
 		Process n = new Process();
 		n.StartInfo = new ProcessStartInfo()
@@ -463,15 +467,15 @@ public static partial class Launcher
 
 	public static void ec(ref Process p, ushort ab, bool fr, ushort ar, bool fc, bool s, bool var)
 	{
-		// STUPID COMPILATION MAKES IT ACCESS STARTINFO EVERY TIME
 		ProcessStartInfo pi = p.StartInfo;
-		pi.Arguments += " -b " + (ab << 1 /*ugh*/).ToString();
+		string _ = " -b " + (ab << 1 /*ugh*/).ToString();
 		if (fr)
-			pi.Arguments += " -r " + ar.ToString();
+			_ += " -r " + ar.ToString();
 		if (fc)
-			pi.Arguments += " -c " + (s ? '2' : '1');
-		if (var) // wait i just realized, keyword, lol, but it works just fine :p
-			pi.Arguments += " -v ";
+			_ += " -c " + (s ? '2' : '1');
+		if (var)
+			_ += " -v ";
+		pi.Arguments += _;
 	}
 	public static string ffmpeg = "";
 
@@ -493,19 +497,19 @@ public static partial class Launcher
 			if (File.Exists(path))
 				File.Delete(path);
 	}
-	// subprocess, because I'm lazy and my code is super hacky
+	// <s>subprocess</s>
+	// entry point calling itself, because I'm lazy and my code is super hacky
 	// and I refuse to move Main elsewhere or split the code up
 	// into their own functions
-	static int sub(string args)
+	// can't believe i didn't realize to do this instead of spawning a new
+	// process, but also i didn't realize to make main return int until recently
+	static int sub(string arg)
 	{
-		Process p = Process.Start(
-			new ProcessStartInfo(Application.ExecutablePath, args)
-			{
-				UseShellExecute = false
-			}
-		);
-		p.WaitForExit();
-		return p.ExitCode;
+		return Main(new string[] { arg });
+	}
+	static int sub(string[] args)
+	{
+		return Main(args);
 	}
 #endregion
 
@@ -522,7 +526,7 @@ public static partial class Launcher
 	public struct DAT
 	{
 		public uint streamCount;
-		public uint fileSize; // doesn't matter
+		public uint fileSize; // doesn't matter (when it can be 0xFFFFFFFF)
 		public struct DATEntry
 		{
 			public QbKey name;
@@ -543,9 +547,7 @@ public static partial class Launcher
 		{
 			dat.streams[i].name = QbKey.Create(br.ReadUInt32(EndianType.Big));
 			dat.streams[i].index = br.ReadUInt32(EndianType.Big);
-			br.ReadUInt32();
-			br.ReadUInt32();
-			br.ReadUInt32();
+			ms.Position += 4*3;
 		}
 		br.Dispose();
 		ms.Dispose();
@@ -600,7 +602,6 @@ public static partial class Launcher
 		// 36 KB
 		try
 		{
-			folder = Path.GetDirectoryName(Application.ExecutablePath) + '\\';//Environment.GetCommandLineArgs()[0].Replace("\\FastGH3.exe", "");
 			inif = folder + "settings.ini";
 #region NO ARGS ROUTINE
 			try
@@ -640,12 +641,12 @@ public static partial class Launcher
 						AllocConsole();
 					// TODO?: process start and redirect output to this EXE
 					// when MMF is figured out for multi instances
-					return sub(SubstringExtensions.Quotes(openchart.FileName));
+					return sub(openchart.FileName);
 				}
 				else
 					return unchecked(0x11111111);
 			}
-#endregion
+			#endregion
 			Console.Title = title;
 			// System.Reflection.Emit wat dis
 			bool mic_ = cfg(l, "DisableMultiInstCheck", 0) == 0;
@@ -707,12 +708,6 @@ public static partial class Launcher
 			}
 			outputPAK = cfg(l, "OutputQB", 1) == 0; // where possible
 			vb = cfg(l, settings.t.VerboseLog.ToString(), 0) == 1;
-			dataf = folder + dataf;
-			pakf = dataf + "PAK\\";
-			music = dataf + "MUSIC\\";
-			vid = dataf + "MOVIES\\BIK\\";
-			mt = music + "TOOLS\\";
-			cf = dataf + "CACHE\\";
 
 			// guessing people just don't migrate their
 			// config/user files when updating to a later version?
@@ -738,7 +733,7 @@ public static partial class Launcher
 				if (args[0].ToLower() != "-settings" &&
 					args[0].ToLower() != "-gfxswap" &&
 					args[0].ToLower() != "-shuffle")
-					if (wl)
+					if (wl && log == null)
 					{
 						// half kb?
 						if (newfile)
@@ -820,7 +815,7 @@ public static partial class Launcher
 					}
 					int choose = rand.Next(files.Count);
 					print("Choosing: " + files[choose]);
-					return sub("\"" + files[choose] + "\"");
+					return sub(files[choose]);
 					//die();
 				}
 #endregion
@@ -1073,11 +1068,8 @@ public static partial class Launcher
 					// FastGH3.exe  --> FastGH3.exe          --> FastGH3.exe  --> game.exe
 					// :P
 					//GC.Collect();
-					exit();
-					cfgW("Temp", fl, 0);
 					// "already running" >:(
-					return sub(tF.Quotes());
-					killtmpfsp(tF);
+					return sub(tF);
 					//die();
 				}
 				#endregion
@@ -1275,8 +1267,9 @@ public static partial class Launcher
 						}
 						string[] audstnames = { "song", "guitar", "rhythm" },
 							audextnames = { "ogg", "mp3", "wav", "opus" };
+						int type_count = audextnames.Length;
 						// if Stream values above can't be found, check if audio name matching chart exists
-						for (int i = 0; i < 4; i++)
+						for (int i = 0; i < type_count; i++)
 						{
 							if (!File.Exists(audiostreams[0]))
 							{
@@ -1296,7 +1289,7 @@ public static partial class Launcher
 							// if current stream doesn't exist
 							if (!File.Exists(audiostreams[i]))
 								// check every extension under the stream name until a file is found
-								for (int j = 0; j < 4; j++)
+								for (int j = 0; j < type_count; j++)
 								{
 									audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 									if (File.Exists(audtmpstr))
@@ -1312,7 +1305,7 @@ public static partial class Launcher
 						for (int i = 0; i < audstnames.Length; i++)
 						{
 							if (!File.Exists(audiostreams[i + 1]))
-								for (int j = 0; j < 4; j++)
+								for (int j = 0; j < type_count; j++)
 								{
 									audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 									if (File.Exists(audtmpstr))
@@ -1328,7 +1321,7 @@ public static partial class Launcher
 						List<string> nj3ts = new List<string>();
 						vl(T[26], FSBcolor); //vl("Checking if extra audio exists", FSBcolor);
 						// numbered drum streams
-						for (int j = 0; j < 4; j++)
+						for (int j = 0; j < type_count; j++)
 						{
 							for (int i = 1; i < 9; i++)
 							{
@@ -1343,7 +1336,7 @@ public static partial class Launcher
 						}
 						// also maybe ignore drums.ogg if numbered files exist
 						// numbered vocal streams
-						for (int j = 0; j < 4; j++)
+						for (int j = 0; j < type_count; j++)
 						{
 							audtmpstr = chf + "vocals." + audextnames[j];
 							if (File.Exists(audtmpstr))
@@ -1357,7 +1350,7 @@ public static partial class Launcher
 						audstnames = new string[] { "drums", /*"vocals",*/ "keys", "song" };
 						for (int i = 0; i < audstnames.Length; i++)
 						{
-							for (int j = 0; j < 4; j++)
+							for (int j = 0; j < type_count; j++)
 							{
 								audtmpstr = chf + audstnames[i] + '.' + audextnames[j];
 								if (File.Exists(audtmpstr))
@@ -1381,12 +1374,13 @@ public static partial class Launcher
 						if (!nj3t)
 						{
 							// CH sucks
-							if (!File.Exists(audiostreams[0]))
+							if (!File.Exists(audiostreams[0]) ||
+								Path.GetFileName(NP(audiostreams[0])).ToLower() == "guitar.ogg")
 							{
-								for (int i = 0; i < 4; i++)
+								for (int i = 0; i < type_count; i++)
 								{
 									audtmpstr = chf + "guitar" + '.' + audextnames[i];
-									vl(audtmpstr);
+									//vl(audtmpstr);
 									if (File.Exists(audtmpstr))
 									{
 										vl("Found cringe compatibility", FSBcolor);
@@ -3096,12 +3090,13 @@ public static partial class Launcher
 								// sox not immediately flushing text
 								// as it's printing it
 								System.Threading.Thread.Sleep(50);
-								for (int i = 0; i < 3; i++)
+								for (byte i = 0; i < 3; i++)
 									if (!locks[i])
 										if (File.Exists(mt + "fsbtmp\\fastgh3_" + fsbnames[i] + ".mp3"))
 											pb(new FileInfo(mt + "fsbtmp\\fastgh3_" +
-												fsbnames[i] + ".mp3").Length / 1000 / (al[i] * (AB_param >> (is_stereo[i] ? 1 : 2))), i);
-								for (int i = 0; i < fsbbuild2.Length; i++)
+												fsbnames[i] + ".mp3").Length / 1000 /
+													(al[i] * (AB_param >> (is_stereo[i] ? 1 : 2))), i);
+								for (byte i = 0; i < fsbbuild2.Length; i++)
 									if (!nj3t || (nj3t && i != 0))
 										if (!locks[i])
 											if (fsbbuild2[i].HasExited)
@@ -3304,7 +3299,8 @@ public static partial class Launcher
 						}
 						else
 						{
-							Directory.CreateDirectory(tmpf);
+							if (!Directory.Exists(tmpf))
+								Directory.CreateDirectory(tmpf);
 							if (ext == ".sng")
 							{
 								vl("Is SNG");
@@ -3380,6 +3376,8 @@ public static partial class Launcher
 								{
 									zipReadBlatantfail = true;
 								}
+								if (!Directory.Exists(tmpf))
+									Directory.CreateDirectory(tmpf);
 								if ((ext == ".zip" || ext == ".fsp" || // :(
 									ext == ".sgh" || ext == ".tgh") && !zipReadBlatantfail)
 								{
@@ -3456,7 +3454,7 @@ public static partial class Launcher
 												string f = data.FileName.ToLower();
 												data.ExtractExistingFile = ExtractExistingFileAction.OverwriteSilently;
 #else
-												string f = data.Name.ToLower();
+												string f = Path.GetFileName(data.Name).ToLower();
 												Stream s = file.GetInputStream(data);
 #endif
 												string foundtext = string.Format(T[195], f);
@@ -3790,12 +3788,9 @@ public static partial class Launcher
 							else
 #endif
 						{
-							exit();
-							cfgW("Temp", fl, 0);
-							return sub(selectedtorun.Quotes());
+							return sub(selectedtorun);
 							//die();
 						}
-						killtmpf(selectedtorun);
 					}
 #endregion
 #region PRECOMPILED PAK
@@ -4415,7 +4410,8 @@ public static partial class Launcher
 					SHA256 _ = SHA256.Create();
 					using (FileStream e = File.OpenRead(Application.ExecutablePath))
 						a = BitConverter.ToString(_.ComputeHash(e)).Replace("-", "");
-					// brain drain
+					// brain drain, should make individual format calls into its own function
+					// or an array......
 					byte[] tempBuffer = Encoding.ASCII.GetBytes(
 						string.Format(T[177], boundary, log, T[206]) +
 						(chartgz == null ? "" : string.Format(T[177], boundary, chartgz, T[207])) +

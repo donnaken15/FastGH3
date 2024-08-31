@@ -10,7 +10,7 @@ script create_credits_menu
 	endif
 	//PushAssetContext \{context = z_credits}
 	if NOT ($end_credits = 1)
-		CreateScreenElement \{Type = ContainerElement parent = root_window id = credits_backdrop_container Pos = (0.0, 0.0) just = [left top]}
+		//CreateScreenElement \{Type = ContainerElement parent = root_window id = credits_backdrop_container Pos = (0.0, 0.0) just = [left top]}
 		//CreateScreenElement \{Type = SpriteElement id = credits_backdrop parent = credits_backdrop_container texture = black rgba = [255 255 255 255] Pos = (640.0, 360.0) dims = (1280.0, 720.0) just = [center center] z_priority = 0 alpha = 1}
 		create_menu_backdrop \{texture = black z = 999}
 	endif

@@ -1,12 +1,13 @@
 @echo off
+:: DO NOT RUN DIRECTLY
+
 pushd "%~dp0"
 
-echo ########## FASTGH3 ##########
-call FastGH3\_monotest.bat
 echo ##########  ZONES  ##########
-call Zones\build.bat notimeout
+cmd /c call Zones\build.bat notimeout
+:: THIS IS SO STUPID!!!!!
 echo ########## QSCRIPT ##########
-call q\build.bat
+cmd /c call q\build.bat
 
 :: TODO: run NSIS, but it's not in PATH
 

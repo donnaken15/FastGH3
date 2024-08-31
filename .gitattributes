@@ -6,3 +6,4 @@
 *.dbg.xen text
 *.dbg	text
 *.cs	eol=crlf
+*.Designer.cs linguist-detectable=false

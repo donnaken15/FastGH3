@@ -426,7 +426,6 @@ script end
 	wait \{1 gameframe}
 endscript
 script check_manual_end
-	return false
 	ExtendCrc \{$current_song '_scripts' out=scripts_name}
 	if NOT GlobalExists <scripts_name>
 		return \{false}
@@ -443,7 +442,7 @@ script check_manual_end
 		endif
 		Increment \{i}
 	repeat <array_size>
-	return \{true}
+	return \{false}
 endscript
 script win_song
 	if (<Player> = 1)

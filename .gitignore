@@ -33,8 +33,9 @@ Release/
 /__BUILDS
 game.idb
 *.UserDbg
-fastgh3_1.0.exe
-FastGH3.exe.config
+*_1.*.exe
+*_1.*.zip
+*.config
 currentsong.txt
 /SOURCE/QbScripts/syntaxref/*.qbscript
 Debug/
@@ -73,26 +74,34 @@ launcher.txt
 disabled/
 !/DATA/MODS/disabled
 /SOURCE/q/test
+/SOURCE/Misc/verify_build.sh
 
-# if i add items to this list that were already committed before, will it remove it from the repo?
 stats_*.txt
 /DATA/HIGHWAYS
 /DATA/ZONES/__themes/*
 /SOURCE/.editorconfig
 
-# if i add items to this list that were already committed before, will it remove it from the repo?
-
-# i put this and its showing these as untracked still
-/DATA/MOVIES/BIK/backgrnd_video.bik.xen
-/DATA/PAK/player.pak.xen
 /SOURCE/Zones/highway/__output.scn
 /SOURCE/Zones/highway/__output.tex
 *.log.xz
 /THEMES/*/
 /PLUGINS/RichPresence.dll
-/DATA/hway.pak.xen
-/DATA/gameplay_BG.img.xen
 *.user
-# forgot if this ignore is based on visual studio ignore, but this should be excluded if its really just going to contain one user preference about how files are presented in a project
+# forgot if this ignore is based on visual studio ignore, but this should be excluded if it's really just going to contain one user preference about how files are presented in a project
 *.aps
 *.res
+
+# signature files, Y U NO TRUST ME OTHER WINDOWS MACHINES
+*.sig
+*.asc
+
+# user files, now don't need to worry about accidentally including
+# things because code won't crash from not having to load user things
+/DATA/hway.pak.xen
+/DATA/gameplay_BG.img.xen
+/DATA/MOVIES/BIK/backgrnd_video.bik.xen
+/DATA/PAK/player.pak.xen
+/DATA/MUSIC/fastgh3.fsb.xen
+/DATA/MUSIC/fastgh3.dat.xen
+/DATA/PAK/song.pak.xen
+/DATA/PAK/song.qb.xen
