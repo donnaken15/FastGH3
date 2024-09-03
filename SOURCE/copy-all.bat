@@ -20,7 +20,7 @@ for %%I in (
 ) do copy %%I __FINAL /y
 mkdir __FINAL\DATA __FINAL\PLUGINS
 pushd __FINAL\DATA
-mkdir CACHE FXFILES HIGHWAYS MUSIC MUSIC\TOOLS MOVIES MOVIES\BIK PAK ZONES ..\THEMES
+mkdir CACHE HIGHWAYS MUSIC MUSIC\TOOLS MOVIES MOVIES\BIK PAK ZONES ..\THEMES
 popd
 ::copy settings_Def.ini __FINAL\settings.ini /y
 echo Copying files...
@@ -55,7 +55,6 @@ for %%I in (
 	FastGH3
 	modifiers
 	NoteLimitFix
-	RichPresence
 	SongLimitFix
 	TapHopoChord
 ) do copy PLUGINS\%%I.dll __FINAL\PLUGINS\%%I.dll /y

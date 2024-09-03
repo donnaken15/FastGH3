@@ -67,7 +67,7 @@ done
 			got_error=1
 			lasterrcode=$?
 			echo "${r}Error compiling ${f}. Last lines:${rc}"
-			echo "${r}$(tail -50 <<< "$log")${rc}"
+			echo "${r}$(echo "$log" | tail -50)${rc}"
 		}
 		# maybe output a log file for each script instead?
 		echo $log>>'qcomp.log'

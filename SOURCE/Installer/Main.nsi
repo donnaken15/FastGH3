@@ -31,7 +31,7 @@ Page custom splashPage
 ;"Click Close to exit. Enjoy!"
 ;"Select a chart now"
 
-OutFile "../../FastGH3_1.1.exe"
+OutFile "../../FINALPKG.exe"
 VIProductVersion "${APPVERSION}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "ProductName" "${TITLEVER}"
 VIAddVersionKey /LANG=${LANG_ENGLISH} "LegalTrademarks" "Guitar Hero is trademark of Activision and Neversoft"

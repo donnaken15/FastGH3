@@ -28,7 +28,7 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>3</LangVersion>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>

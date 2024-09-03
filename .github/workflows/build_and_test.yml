@@ -1,0 +1,224 @@
+# DO NOT TEST YOURSELF
+# MIGHT ONLY WORK IN A VERY CONTROLLED ENVIRONMENT AS OF NOW
+
+
+name: "Build, test, bundle FastGH3"
+on:
+ push:
+  branches:
+   - main
+ pull_request:
+  branches:
+   - main
+ workflow_call:
+ workflow_dispatch:
+jobs:
+ build:
+  runs-on: self-hosted
+  env:
+   #NETPACKER: ${{vars.NETPACKER}} # mpress or DotNetCompressor
+   #cygenv:
+   # ${{vars.CYGENV == 'CYGWIN' && 'cygwin' || 'msys2'}}
+   # # value can be either CYGWIN or MSYS
+   node:
+    ${{vars.BUN == 'true' && 'bun' || 'nodejs'}}
+    # use Bun if true, Node.js if false
+   BUILD: ${{vars.BUILD}} # bitflags to indicate which types of builds to create
+   #NSIS: 'C:\Program Files (x86)\NSIS\makensis.exe'
+   #CYGWIN: winsymlinks:nativestrict
+  environment: Test env
+  if: github.actor == 'donnaken15'
+  steps:
+  -
+   name: Update system environment
+   run: |
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+  -
+   name: Install Git
+   run: |
+    where.exe git /q; if (-not $?) {
+      choco install git -y
+    }
+    "C:\Program Files\Git\bin\" | Out-File -FilePath $env:GITHUB_PATH -Append
+    "C:\Program Files\Git\usr\" | Out-File -FilePath $env:GITHUB_PATH -Append
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+    sleep 2
+  #-
+  # name: Install Cygwin or MSYS2
+  # run: |
+  #  $path = $null
+  #  where.exe git /q; if ($?) {
+  #    $path = "C:\Program Files\Git"
+  #    "Using Git Bash as it is already installed"
+  #  } else {
+  #    where.exe $env:cygenv /q; if (-not $?) {
+  #      choco install $env:cygenv -y
+  #    } else { "Unix environment is already installed" }
+  #    $path = $(if ($env:cygenv -eq 'cygwin') {"Cygwin"} else {"msys2\usr"})
+  #  }
+  #      v FIX LOL
+  #  "SH=C:\tools\${path}\bin\sh.exe" | Out-File -FilePath $env:GITHUB_ENV -Append
+  -
+   name: Install Node.js or Bun
+   run: |
+    where.exe $env:node /q; if (-not $?) {
+      choco install $env:node -y --no-progress
+    } else { "Node environment is already installed" }
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+    sleep 2
+  -
+   name: Install UPX
+   run: |
+    choco install upx
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+    sleep 2
+   # i need functions
+  -
+   name: Install NSIS
+   run: |
+    choco install nsis -y --no-progress
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+    sleep 2
+  -
+   name: Install 7-Zip
+   run: |
+    choco install 7zip -y --no-progress
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+    sleep 2
+  -
+   name: Install Resource Hacker
+   run: |
+    choco install resourcehacker.portable -y --no-progress
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+    sleep 2
+  -
+   name: Install DotNetCompressor
+   env:
+    condition: ${{vars.NETPACKERS}}
+   if: ${{env.condition == 'DotNetCompressor'}}
+   run: |
+    iwr -Uri "https://github.com/donnaken15/DotNetCompressor/releases/latest/download/NetCompressor.exe" -OutFile "C:\Windows\DotNetCompressor.exe"
+  -
+   name: Install mpress
+   env:
+    condition: ${{vars.NETPACKERS}}
+   if: ${{env.condition != 'DotNetCompressor'}}
+   #if: ${{vars.NETPACKER == 'mpress'}}
+   run: |
+    choco install mpress -y --no-progress
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+    sleep 2
+  -
+   name: Install stripreloc
+   env:
+    condition: ${{vars.NORELOC}}
+   if: ${{env.condition == 'true'}}
+   run: |
+    iwr -Uri "https://jrsoftware.org/download.php/striprlc.zip" -OutFile "striprlc.zip"
+    Expand-Archive -Path "striprlc.zip" -DestinationPath "C:\Windows" -Force
+    del "striprlc.zip"
+  -
+   name: Checkout repository
+   uses: actions/checkout@v2
+   with:
+    submodules: recursive
+  -
+   name: Set up MSBuild, Visual C# and C++
+   env:
+    GH3PLUS: ${{vars.GH3PLUS}} # build GH3+ plugins
+    condition: ${{vars.SHARPDEV}}
+   if: ${{env.condition != null}}
+   #uses: microsoft/setup-msbuild@v1 # NOT WORKING!!
+   #with:
+   # vs-version: 'latest'
+   run: | # this whole thing should probably be a for loop, AND CHECK IF ALREADY INSTALLED ANY OF THESE!!!!!!!!!!!!
+    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+    ""
+    "Visual C# 2015 Build Tools:"
+    "Downloading..."
+    iwr -Uri "https://download.microsoft.com/download/E/E/D/EEDF18A8-4AED-4CE0-BEBE-70A83094FC5A/BuildTools_Full.exe" -OutFile "BuildTools_Full.exe"
+    "Installing..."
+    start -NoNewWindow -Wait -FilePath "BuildTools_Full.exe" -Args "/q /passive /norestart /full"
+    del "BuildTools_Full.exe"
+    ".NET Framework 4.6.2 Targeting Pack for .NET Framework 4.0:"
+    "Downloading..."
+    iwr -Uri "https://download.microsoft.com/download/e/e/c/eec79116-8305-4bd0-aa83-27610987eec6/NDP462-DevPack-KB3151934-ENU.exe" -OutFile "NDP462.exe"
+    "Installing..."
+    start -NoNewWindow -Wait -FilePath "NDP462.exe" -Args "/install /passive /norestart"
+    del "NDP462.exe"
+    if ($env:GH3PLUS) {
+      "Visual C++ 2015 Build Tools:"
+      "Downloading..."
+      iwr -Uri "https://aka.ms/vs/17/release/vs_BuildTools.exe" -OutFile "vc15bt_full.exe"
+      "Installing..."
+      start -NoNewWindow -Wait -FilePath "vc15bt_full.exe" -Args "install --add Microsoft.VisualStudio.Component.VC.140,Microsoft.VisualStudio.Component.Windows10SDK.18362 --passive --norestart --nickname stupid --theme Light"
+      "DirectX SDK:"
+      "Downloading..."
+      iwr -Uri "https://archive.org/download/dxsdk_jun10/DXSDK_Jun10.exe" -OutFile "DXSDK_Jun10.exe"
+      "Installing..."
+      start -NoNewWindow -Wait -FilePath "DXSDK_Jun10.exe" -Args "/U"
+      del "DXSDK_Jun10.exe"
+      "Downloading ntdll.lib..."
+      iwr -Uri "https://drive.google.com/uc?id=16TzuL2DLDfs_cGts4QjUBjZ60KIUMlgf" -OutFile "SOURCE\GH3Plus\src\ntdll.lib"
+    }
+   #choco install microsoft-build-tools netfx-4.6.2-devpack visualcpp-build-tools -y
+   # NOPE: visualcpp-build-tools
+   # NOPE: VisualCppBuildTools
+   # vcbuildtools
+   # microsoft-visual-cpp-build-tools
+   #what a freaking useless "utility"
+   # https://download.microsoft.com/download/5/f/7/5f7acaeb-8363-451f-9425-68a90f98b238/visualcppbuildtools_full.exe
+   # https://download.microsoft.com/download/5/A/8/5A8B8314-CA70-4225-9AF0-9E957C9771F7/vs_BuildTools.exe
+   # https://aka.ms/vs/17/release/vs_BuildTools.exe
+   # vs_BuildTools.exe --add Microsoft.VisualStudio.Component.VC.140
+  -
+   name: Build project
+   env:
+    conf: ${{vars.GH3PLUS == true && 'Release' || 'NoVC++'}}
+    GH3PLUS: ${{vars.GH3PLUS}}
+    NORELOC: ${{vars.NORELOC}} # run stripreloc if true, need to override from here to the event script, glhf
+    RCASSETS: ${{vars.RCASSETS}} # recompile assets, NOT WORKING RIGHT NOW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    VCTargetsPath: C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\v140
+   run: |
+    & "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" SOURCE\FastGH3.sln /p:Configuration=$env:conf
+    if ($env:RCASSETS) {
+      cmd.exe /c "SOURCE\build-assets.bat"
+    }
+   # ERRORS AT 'DO' IN FOR BLOCK WTF
+ test:
+  runs-on: self-hosted
+  #env:
+  # EXTRACFG: ${{vars.EXTRACFG}} # custom INI properties
+  environment: Playtest env
+  steps:
+  -
+   name: Playtest
+   run: |
+    echo Test 123
+    cmd /c dir
+    cmd /c register.bat
+    "Testing songs:"
+    $songs = @(
+      ,@("fastgh3://drive.google.com/uc?id=1EQ8rvcxhv-Xq7T0FT62ZLOZ3rR2gcx9O","[ZIP] Squarepusher - Dark Steering")
+      ,@("fastgh3://drive.google.com/uc?id=13gt3k5WsiRkIthf9V5i6dAAmFK5poyFX","[ZIP] Kommisar - Springtime")
+      ,@("fastgh3://drive.google.com/uc?id=16Ipd-4SV1IqBzAVDA26P-42tWN4twvL7"," [7Z] The Used - Take It Away")
+      ,@("fastgh3://drive.google.com/uc?id=1_F-7Hv7YbF-sw9l_tS3FyjRmpKICa8lp"," [7Z] QOTSA - 3's & 7's (Metal Track Pack)")
+      ,@("fastgh3://drive.google.com/uc?id=16thK1ivFdKqsxd5TscRVh6DYZcQn23dA","[SNG] Fearofdark - TABNY (Fearofdark)")
+    )
+    for ($i = 0; $i -lt $songs.length; $i++) {
+      "* "+($songs[$i][1].ToString())
+      $arg = "dl "+($songs[$i][0].ToString()) # STUPID CRINGE THING WHY
+      start -Wait "FastGH3.exe" -WorkingDirectory "." -Args $arg
+      sleep 5
+      Wait-Process -Name "game.exe" -WorkingDirectory "." -Timeout 600 -ErrorAction SilentlyContinue -ErrorVariable to
+      if ($to) {
+        kill -Name "game.exe" -Force
+      }
+      sleep 15
+    }
+   # TODO: write configs to test
+   # TODO: CHECK IF BUILD TOOLS ARE INSTALLED
+   # TODO: should be made more cleanly by putting songs to test in this YAML
+   # TODO: fix game
+   # TODO: get a life
+# i hate powershell now

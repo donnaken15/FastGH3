@@ -25,5 +25,4 @@ call Misc\c128ks_mono.bat
 ::)
 ::popd
 
-call build-base.bat
 popd

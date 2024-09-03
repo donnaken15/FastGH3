@@ -79,7 +79,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <Compile Include="..\dependencies\dotnetzip\bzip2\BitWriter.cs">
       <Link>deps\Zip\DNZ\BZip2\BitWriter.cs</Link>
     </Compile>
@@ -231,7 +231,7 @@
       <Link>deps\Zip\DNZ\Zlib\ZlibStream.cs</Link>
     </Compile>
   </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)|$(Platform)' == 'SharpZipLib|AnyCPU'">
+  <ItemGroup Condition="'$(Configuration)' == 'SharpZipLib'">
     <Compile Include="..\dependencies\SharpZipLib\src\BZip2\BZip2.cs">
       <Link>deps\Zip\SZL\BZip2\BZip2.cs</Link>
     </Compile>
@@ -685,21 +685,33 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>rem POST BUILD / COMPRESS EXE
+rem copy "$(TargetPath)" "$(TargetDir)\STUPID.exe"
 call "$(ProjectDir)..\Misc\stripversion.bat" "$(TargetPath)"
 pushd "$(ProjectDir)"
-NetCompressor "$(TargetPath)" "$(TargetPath)" -gz
-set "RES_HACK=start /b /wait "" "C:\Program Files (x86)\Resource Hacker\ResourceHacker.exe""
+set NC=mpress
+where /q NetCompressor &amp;&amp;set NC=NetCompressor||where /q %25NC%25
+if /I "%25NC%25"=="NetCompressor" (
+%25NC%25 "$(TargetPath)" "$(TargetPath)" -gz
+) else (
+%25NC%25 "$(TargetPath)" -m -s
+)
+rem add "C:\Program Files (x86)\Resource Hacker\" to PATH or use choco install resourcehacker.portable
+set "RES_HACK=start /b /wait "" "ResourceHacker""
 %25RES_HACK%25 -open "source\fastgh3\res\Version.rc" -save "source\fastgh3\res\Version.res" -action compile
 %25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action delete VERSIONINFO,, -action delete MANIFEST,,
 %25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action add -res "$(ProjectDir)res\Version.res"
 %25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action add -res "$(ProjectDir)res\note.ico" -mask ICONGROUP,32512,
-stripreloc /b /c "$(TargetPath)"
+if "%25NC%25"=="NetCompressor" ( stripreloc /b /c "$(TargetPath)" )
 popd
-dash "$(SolutionDir)Misc/write_build_date.sh"
+set SH=sh
+where /q dash &amp;&amp;set SH=dash||where /q %25SH%25
+%25SH%25 "$(SolutionDir)Misc/write_build_date.sh"
 </PostBuildEvent>
     <PreBuildEvent>rem GENERATE RESOURCES / KILL LAUNCHER
 pushd "$(ProjectDir)"
-node GenerateLD.js
+set NODE=node
+where /q bun&amp;&amp;set NODE=bun||where /q %25NODE%25
+%25NODE%25 GenerateLD.js
 popd
 taskkill /f /fi "imagename eq $(TargetFileName)"</PreBuildEvent>
   </PropertyGroup>

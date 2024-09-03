@@ -21,6 +21,7 @@ using Ionic.Zlib;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.GZip;
 #endif
+using FormKV = System.Tuple<object, string>;
 
 public static partial class Launcher
 {
@@ -498,8 +499,8 @@ public static partial class Launcher
 				File.Delete(path);
 	}
 	// <s>subprocess</s>
-	// entry point calling itself, because I'm lazy and my code is super hacky
-	// and I refuse to move Main elsewhere or split the code up
+	// entry point calling itself, because i'm lazy and my code is super hacky
+	// and i refuse to move Main elsewhere or split the code up
 	// into their own functions
 	// can't believe i didn't realize to do this instead of spawning a new
 	// process, but also i didn't realize to make main return int until recently
@@ -615,7 +616,6 @@ public static partial class Launcher
 			{
 				isTTY = false;
 			}
-
 			if (args.Length == 0)
 			{
 				if (cfg(l, settings.t.NoStartupMsg.ToString(), 0) == 0)
@@ -655,15 +655,15 @@ public static partial class Launcher
 			// maybe admin related
 			if (mic_)
 			{
-				Process[] mic = Process.GetProcessesByName(
-					// who's going to rename this program
-					Path.GetFileNameWithoutExtension(Application.ExecutablePath));
+				string exe = Application.ExecutablePath;
+				Process[] mic = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(exe));
+				// who's going to rename this program
 				//MessageBox.Show(mic.Length.ToString());
 				if (mic.Length > 1)
 					foreach (Process fgh3 in mic)
 					{
 						if (NP(fgh3.MainModule.FileName) ==
-							NP(Application.ExecutablePath) &&
+							NP(exe) &&
 							fgh3.Id != Process.GetCurrentProcess().Id)
 						{
 							// can't check process arguments >:(
@@ -678,7 +678,7 @@ public static partial class Launcher
 								{
 									try
 									{
-										if (NP(Process.GetProcessById(pid).MainModule.FileName) == NP(Application.ExecutablePath))
+										if (NP(Process.GetProcessById(pid).MainModule.FileName) == NP(exe))
 										{
 											MessageBox.Show(T[189], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 											return 0x4DF; // ERROR_ALREADY_INITIALIZED
@@ -695,9 +695,7 @@ public static partial class Launcher
 			else
 				print(T[190]);
 			retryExe:
-			GH3EXEPath = NP(folder + "game.exe");
-			if (!File.Exists(GH3EXEPath))
-				GH3EXEPath = NP(folder + "game!.exe");
+			GH3EXEPath = NP(folder + "game" + (!File.Exists(GH3EXEPath) ? "!" : "") + ".exe");
 			if (!File.Exists(GH3EXEPath))
 			{
 				if (MessageBox.Show(T[209], "Error",
@@ -4329,14 +4327,8 @@ public static partial class Launcher
 			// almost 3kb
 			ConsoleColor oldcolor = Console.ForegroundColor;
 			Console.ForegroundColor = ConsoleColor.Red;
-			print(string.Format(T[215],
-				ex.GetType().FullName,
-				ex.Message,
-				ex.StackTrace.ReplaceCI(T[77], "")
-			));
-			Console.WriteLine(string.Format(T[216],
-				version, builddate.ToString(), branch
-			));
+			print(string.Format(T[215], ex.GetType().FullName, ex.Message, ex.StackTrace.ReplaceCI(T[77], "")));
+			Console.WriteLine(T[216], version, builddate.ToString(), branch);
 			// default value is 1, so why dont i just remove the key
 			// but then i would have to write some advanced code
 			// for that when using kernel funcs
@@ -4410,36 +4402,38 @@ public static partial class Launcher
 					SHA256 _ = SHA256.Create();
 					using (FileStream e = File.OpenRead(Application.ExecutablePath))
 						a = BitConverter.ToString(_.ComputeHash(e)).Replace("-", "");
-					// brain drain, should make individual format calls into its own function
-					// or an array......
-					byte[] tempBuffer = Encoding.ASCII.GetBytes(
-						string.Format(T[177], boundary, log, T[206]) +
-						(chartgz == null ? "" : string.Format(T[177], boundary, chartgz, T[207])) +
-						string.Format(T[177], boundary, version, "name=\"ver\"") +
-						string.Format(T[177], boundary, branch, "name=\"b\"") +
-						string.Format(T[177], boundary, ToUnixTime(builddate), "name=\"bt\"") +
-						string.Format(T[177], boundary, ex.GetType().FullName, "name=\"ex\"") +
-						string.Format(T[177], boundary, ex.StackTrace, "name=\"stk\"") +
-						string.Format(T[177], boundary, ex.Message, "name=\"msg\"") +
-						string.Format(T[177], boundary, a, "name=\"xh\"") +
-						"\r\n--" + boundary + "--");
-					request.ContentLength = tempBuffer.Length;
-
-					using (Stream requestStream = request.GetRequestStream())
+					// brain drain
+					string body = "\r\n--" + boundary + "--";
+					FormKV[] form = {
+						new FormKV(log, T[206]),
+						new FormKV(branch, "@b"),
+						new FormKV(version, "@ver"),
+						new FormKV(ToUnixTime(builddate), "@bt"),
+						new FormKV(ex.GetType().FullName, "@ex"),
+						new FormKV(ex.StackTrace, "@stk"),
+						new FormKV(ex.Message, "@msg"),
+						new FormKV(a, "@xh"),
+						new FormKV(chartgz, T[207]),
+					};
+					for (int i = 0; i < form.Length - (chartgz == null ? 1 : 0); i++)
 					{
-						requestStream.Write(tempBuffer, 0, tempBuffer.Length);
+						string itemname = form[i].Item2;
+						if (itemname.StartsWith("@"))
+							itemname = "name=\"" + itemname.Substring(1) + '"';
+						body = string.Format(T[177], boundary, form[i].Item1, itemname) + body;
 					}
-					
+					byte[] tempBuffer = Encoding.ASCII.GetBytes(body);
+					request.ContentLength = tempBuffer.Length;
+					using (Stream requestStream = request.GetRequestStream())
+						requestStream.Write(tempBuffer, 0, tempBuffer.Length);
 					try
 					{
 						WebResponse response = request.GetResponse();
-
 						Stream stream2 = response.GetResponseStream();
 						StreamReader reader2 = new StreamReader(stream2);
 						reader2.ReadToEnd();
 						// printed to check variables in PHP, outputting nothing
 						// now that this is figured out (for the most part)
-
 						print("Log saved to launcher.txt");
 					}
 					catch (WebException eex)

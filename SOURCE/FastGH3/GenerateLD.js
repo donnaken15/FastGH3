@@ -129,7 +129,8 @@ for (var R in reslist) {
 	const res = reslist[R];
 	var direct_string = res.hasOwnProperty("string");
 	var buf = !direct_string ? fs.readFileSync('res/'+res.source) : res.string;
-	if (buf.length % 2 === 1)
+	//console.error(R+", "+buf.length.toString());
+	if (buf.length & 1 === 1) // STUPID THING IS MAKING A STRING LIST GET CUT OFF, PROBABLY FROM UTF-16 CONVERSION
 	{
 		if (direct_string)
 			buf += '\0';

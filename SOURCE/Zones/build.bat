@@ -11,7 +11,7 @@ pushd highway
 ..\buildtex >nul
 popd
 mkdir "!cache\zones\global"
-copy "highway\__output.scn" "..\FastGH3\res\def.scn" /y > nul
+copy "highway\__output.scn" "..\FastGH3\res\def.scn" /y >nul
 copy "highway\__output.scn" "!cache\zones\global\global_gfx.scn.xen" /y >nul
 copy "highway\__output.tex" "!cache\zones\global\global_gfx.tex.xen" /y >nul
 echo [91m######      image generation       ######[0m
@@ -27,16 +27,16 @@ for /f "tokens=* delims=" %%D in ('dir root\*. /s /b') do call :process_imgdir "
 echo [93m###### moving new generated images ######[0m
 :: uhh
 
-echo [38;2;95;95;255m######    creating/copying fonts   ######[0m
+echo [38;2;95;95;255m######   creating/copying fonts    ######[0m
 pushd fonts
 ..\mkfonts
 popd
-copy fonts\*.fnt.xen "!cache" > nul %OKNOTOK%
+copy fonts\*.fnt.xen "!cache" >nul %OKNOTOK%
 echo [38;2;255;127;0m###### compiling optional scripts  ######[0m
 mkdir scripts 2>nul
 pushd "!cache"
 :: stupid
-dash ../../q/qcomp ../scripts .
+sh ../../q/qcomp ../scripts .
 popd
 echo [95m######        compiling PAK        ######[0m
 del ..\..\DATA\ZONES\global.pak.xen 2>nul
@@ -64,11 +64,11 @@ if not exist "..\..\DATA\ZONES\global_sfx.pak.xen" ( echo [91mthe built global_
 echo.
 echo [97m^<^<^<^<^<^<         DEFAULT.PAK         ^>^>^>^>^>^>[0m
 ::echo [96m######   emptying output folder    ######[0m
-del "default\!cache\*" /S/Q > nul
+del "default\!cache\*" /S/Q >nul
 ::rmdir default\!cache 2>nul
 mkdir "default\!cache" 2>nul
 echo [96m######      image generation       ######[0m
-imggen default\*.png default\*.jpg default\*.dds > nul
+imggen default\*.png default\*.jpg default\*.dds >nul
 echo [96m######  generating default fonts   ######[0m
 pushd default\fonts
 ..\..\mkfonts
@@ -76,7 +76,7 @@ copy *.fnt.xen "..\!cache" /y
 ::del *.fnt.xen /q
 popd
 echo [96m###### moving new generated images ######[0m
-move default\*.img.xen "default\!cache" > nul
+move default\*.img.xen "default\!cache" >nul
 echo [96m######      generating fonts       ######[0m
 pushd default
 ..\mkfonts
@@ -106,8 +106,8 @@ exit /b
 :: absurd
 :process_imgdir
 	if exist "%~1" do goto imgdirerr
-		imggen "%~1\*.png" "%~1\*.jpg" "%~1\*.dds" > nul %OKNOTOK%
-		move "%~1\*.img.xen" "!cache" > nul %OKNOTOK%
+		imggen "%~1\*.png" "%~1\*.jpg" "%~1\*.dds" >nul %OKNOTOK%
+		move "%~1\*.img.xen" "!cache" >nul %OKNOTOK%
 		goto imgdirnext
 	:imgdirerr
 		echo [91mInvalid directory: %~1[0m

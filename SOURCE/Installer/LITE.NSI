@@ -11,7 +11,7 @@ Icon "..\FastGH3\res\note.ico"
 !include LogicLib.nsh
 !include FindProcess.nsh
 
-OutFile "../../FastGH3_1.1_LITE.exe"
+OutFile "../../FINALPKG_LITE.exe"
 VIProductVersion "${APPVERSION}"
 VIAddVersionKey "ProductName" "${TITLEVER}"
 VIAddVersionKey "LegalTrademarks" "Activision"
