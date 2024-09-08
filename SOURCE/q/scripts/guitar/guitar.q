@@ -166,14 +166,21 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [ 8 31 2024]
+build_timestamp = [  9  8 2024]
 
 random_seed = -1
 // ^ originally 107482099
 // @script | guitar_startup | Initialization script
 script guitar_startup
 	GetTrueStartTime
-	DisplayLoadingScreen \{'../../zones/load_scr' spin_texture = '../../zones/load_disc' spin_x = 554 spin_y = 296}
+	bg_path = 'gameplay_BG'
+	if not FileExists (<bg_path>+'.img.xen')
+		bg_path = 'zones/load_scr'
+	else
+		bg_path = <bg_path>
+	endif
+	bg_path = ('../../'+<bg_path>)
+	DisplayLoadingScreen <bg_path> spin_texture = '../../zones/load_disc' spin_x = 554 spin_y = 296
 	StopRendering
 	begin
 		GetTrueElapsedTime startTime = <startTime>
@@ -649,6 +656,7 @@ script guitar_startup
 	ProfilingStart
 	printf \{'Initializing screen element system'}
 	ScreenElementSystemInit
+	CreateScreenElement \{Type = SpriteElement id = gameplay_BG texture = gameplay_BG parent = root_window rgba = $BGCol z_priority = -2147483648 pos = (640, 360) dims = (1280, 720)}
 	SetShadowProjectionTexture \{texture = white}
 	CreateScreenElement \{Type = ContainerElement id = dead_particle_container parent = root_window Pos = (0.0, 0.0)}
 	Init2DParticles \{parent = dead_particle_container}

@@ -76,7 +76,6 @@ script career_hud_2d_elements_load
 		score_pos_p2 = (900.0, 40.0)
 		counter_pos_p2 = (-2000.0, 200.0)
 		offscreen_note_streak_bar_off = (0.0, 800.0)
-		#"0x936bb5fe" = $gameplaybg_pos
 		Scale = 0.7
 		small_bulb_scale = 0.7
 		big_bulb_scale = 1.0
@@ -96,21 +95,6 @@ script career_hud_2d_elements_load
 		offscreen_gamertag_pos = (0.0, -400.0)
 		final_gamertag_pos = (0.0, 0.0)
 		elements = [
-			{
-				parent_container
-				element_id = #"0xa90fc148"
-				pos_type = #"0x936bb5fe"
-			}
-			{
-				element_id = #"0x99dd87cc"
-				element_parent = #"0xa90fc148"
-				texture = $gameplaybg_texture
-				dims = $gameplaybg_dims
-				rot = -0.1
-				just = [ left top ]
-				rgba = $BGCol
-				zoff = -2147483648
-			}
 			{
 				parent_container
 				element_id = HUD2D_rock_container

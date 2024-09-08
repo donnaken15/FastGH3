@@ -75,6 +75,7 @@ disabled/
 !/DATA/MODS/disabled
 /SOURCE/q/test
 /SOURCE/Misc/verify_build.sh
+/FINALPKG.*
 
 stats_*.txt
 /DATA/HIGHWAYS

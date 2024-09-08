@@ -29,7 +29,7 @@ node="$wbin/node"
 [ -f "$node" ] || {
 	node="$wbin/GHSDK/node"
 	[ -f "$node" ] || {
-		node='node'
+		which bun >$nul 2>$nul && node='bun' || node='node'
 	}
 }
 QBC="$wbin/QBC"
@@ -74,7 +74,10 @@ done
 	}
 done
 
-[ -e 'qcomp.log' ] && { echo 'Compressing log...'; xz -9 -e -T 0 'qcomp.log' 2>$nul >$nul; } &
+which xz >$nul 2>$nul &&
+	[ -e 'qcomp.log' ] && {
+		echo 'Compressing log...'; xz -9 -e -T 0 'qcomp.log' 2>$nul >$nul;
+	} &
 
 echo 'done...'
 

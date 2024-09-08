@@ -185,13 +185,13 @@ Can't find the mod info struct ({0}) with a matching mod name or an ambiguously 
 Cannot find a file indicating of a QB.
 QB file:qb.xen,qb;Zipped QB:zip
 These items replace the game's data:
-PNG:png;JPEG:jpeg;Bitmap:bmp;DDS:dds
+PNG:png;JPEG:jpg,jpeg;Bitmap:bmp;DDS:dds
 Hiroaki Sano%Circus Game%8BIT MUSIC POWER%donnaken15%2016%2:22%Chiptune
 FastGH3 Launcher is already running!
 Multi instance checking is off. Be careful!
 World Tour-- song files are not compatible with GH3. Exiting...
 Detected WT note upper bitmask: 
-This song appears to be compiled for World Tour or later games, which is not compatible with Guitar Hero III since its note track format has changed.
+This song appears to be compiled for World Tour or later games, which is not compatible with Guitar Hero III since the game's note track format changes.
 Misc%Player%Launcher%SongtextFormat%FinishedLog%Killswitch%SongVideos%LastSongHadVideo
 Found {0}, extracting...
 Welcome to FastGH3 v1.1: Select a chart to play

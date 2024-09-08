@@ -105,9 +105,9 @@ script setup_highway\{Player = 1}
 	highway_speed = (0.0 - ($gHighwayTiling / ($<player_status>.scroll_time - $destroy_time)))
 	printf "Setting highway speed to: %h" h = <highway_speed>
 	Set2DHighwaySpeed speed = <highway_speed> id = <highway_name> player_status = <player_status>
-	fe = ($highway_playline - $highway_height)
-	fs = (<fe> + $highway_fade)
-	Set2DHighwayFade start = <fs> end = <fe> id = <highway_name> Player = <Player>
+	//fe = ($highway_playline - $highway_height)
+	//fs = (<fe> + $highway_fade)
+	//Set2DHighwayFade start = <fs> end = <fe> id = <highway_name> Player = <Player> // NOT EVEN USED
 	Pos = ((640 * (1.0, 0.0)) + ($highway_playline * (0.0, 1.0)))
 	now_scale = (($nowbar_scale_x * (1.0, 0.0)) + ($nowbar_scale_y * (0.0, 1.0)))
 	lpos = (($sidebar_x * (1.0, 0.0)) + ($sidebar_y * (0.0, 1.0)))
@@ -296,11 +296,11 @@ script setup_highway\{Player = 1}
 				Increment \{j}
 			repeat 6
 			<Pos> = (((<pos2d>.(1.0, 0.0))* (1.0, 0.0))+ (1024 * (0.0, 1.0)))
+			params = {}
 			if ($<player_status>.lefthanded_button_ups = 1)
-				<playline_scale> = (((0 - <now_scale>.(1.0, 0.0))* (1.0, 0.0))+ (<now_scale>.(0.0, 1.0) * (0.0, 1.0)))
-			else
-				<playline_scale> = <now_scale>
+				params = { flip_v }
 			endif
+			<playline_scale> = <now_scale>
 			CreateScreenElement {
 				Type = ContainerElement
 				id = <name_base>
@@ -355,6 +355,7 @@ script setup_highway\{Player = 1}
 				Scale = <playline_scale>
 				just = [center bottom]
 				z_priority = 3.8
+				<params>
 			}
 			string_pos2d = ($button_up_models.<Color>.pos_2d)
 			<string_scale> = (($string_scale_x * (1.0, 0.0))+ ($string_scale_y * (0.0, 1.0)))

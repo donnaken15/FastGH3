@@ -48,6 +48,8 @@ nowbar_scale_y2 = 0.8
 string_scale_x2 = 0.65
 string_scale_y2 = 0.5
 x_offset_p2 = 225
+sidebar_y_offset1 = 0.0
+sidebar_y_offset2 = 0.0
 
 bot_early_time = 0.7
 

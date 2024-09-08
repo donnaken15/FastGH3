@@ -11,21 +11,6 @@ script Set2DHighwaySpeed\{speed = -1.0}
 	]
 endscript
 
-script Set2DHighwayFade\{start = 720.0 end = 100.0}
-	SetScreenElementProps id = <id> MaterialProps = [
-		{name = m_startFade property = <start>}
-		{name = m_endFade property = <end>}
-		{name = m_playerIndex property = <Player>}
-	]
-endscript
-
-script Set2DGemFade
-	SetScreenElementProps id = <id> MaterialProps = [
-		{name = m_startFade property = ($gHighwayStartFade)}
-		{name = m_endFade property = ($gHighwayEndFade)}
-		{name = m_playerIndex property = <Player>}
-	]
-endscript
 gem_time_table512 = []
 rowHeightNormalizedDistance = []
 rowHeight = []
@@ -1080,6 +1065,7 @@ whammy_top_width_open_note = 0.0
 whammy_width_offset = 0.0
 sidebar_x_offset = 0.0
 sidebar_x_scale = 0.0
+sidebar_y_offset = 0.0
 sidebar_y_scale = 0.0
 starpower_fx_scale = 0.0
 nowbar_scale_x = 0.0
@@ -1106,6 +1092,7 @@ script generate_pos_table
 		whammy_width_offset
 		sidebar_x_offset
 		sidebar_x_scale
+		sidebar_y_offset
 		sidebar_y_scale
 		starpower_fx_scale
 		nowbar_scale_x
@@ -1164,12 +1151,12 @@ script generate_pos_table
 	Atan2 X = $highway_height y = (<bsx> - <bex>)
 	ba = <atan>
 	Atan2 X = $highway_height y = (<osx> - <oex>)
-	oa = <atan>
-	SetButtonData array = button_models Color = green angle = <ga> start_x = <gsx> start_y = <startY> end_x = <gex> end_y = ($highway_playline) left_start_x = <osx> left_end_x = <oex> left_angle = <oa>
-	SetButtonData array = button_models Color = red angle = <ra> start_x = <rsx> start_y = <startY> end_x = <rex> end_y = ($highway_playline) left_start_x = <bsx> left_end_x = <bex> left_angle = <ba>
-	SetButtonData array = button_models Color = yellow angle = <ya> start_x = <ysx> start_y = <startY> end_x = <yex> end_y = ($highway_playline) left_start_x = <ysx> left_end_x = <yex> left_angle = <ya>
-	SetButtonData array = button_models Color = blue angle = <ba> start_x = <bsx> start_y = <startY> end_x = <bex> end_y = ($highway_playline) left_start_x = <rsx> left_end_x = <rex> left_angle = <ra>
-	SetButtonData array = button_models Color = orange angle = <oa> start_x = <osx> start_y = <startY> end_x = <oex> end_y = ($highway_playline) left_start_x = <gsx> left_end_x = <gex> left_angle = <ga>
+	params = {start_y = <startY> end_y = ($highway_playline)}
+	SetButtonData array = button_models <params> Color = green angle = <ga> start_x = <gsx> end_x = <gex> left_start_x = <osx> left_end_x = <oex> left_angle = <atan>
+	SetButtonData array = button_models <params> Color = red angle = <ra> start_x = <rsx> end_x = <rex> left_start_x = <bsx> left_end_x = <bex> left_angle = <ba>
+	SetButtonData array = button_models <params> Color = yellow angle = <ya> start_x = <ysx> end_x = <yex> left_start_x = <ysx> left_end_x = <yex> left_angle = <ya>
+	SetButtonData array = button_models <params> Color = blue angle = <ba> start_x = <bsx> end_x = <bex> left_start_x = <rsx> left_end_x = <rex> left_angle = <ra>
+	SetButtonData array = button_models <params> Color = orange angle = <atan> start_x = <osx> end_x = <oex> left_start_x = <gsx> left_end_x = <gex> left_angle = <ga>
 	SetButtonData array = button_up_models Color = green pos_x = <gex> pos_y = ($highway_playline) left_pos_x = <oex>
 	SetButtonData array = button_up_models Color = red pos_x = <rex> pos_y = ($highway_playline) left_pos_x = <bex>
 	SetButtonData array = button_up_models Color = yellow pos_x = <yex> pos_y = ($highway_playline) left_pos_x = <yex>
@@ -1187,8 +1174,8 @@ script generate_pos_table
 	Change sidebar_angle = <atan>
 	vec_x = (<sbx> - <stx>)
 	vec_y = $highway_height
-	Change sidebar_x = ((<sbx> + (<vec_x> * 0.25)) - $sidebar_x_offset)
-	Change sidebar_y = ($highway_playline + (<vec_y> * 0.25))
+	Change sidebar_x = (<sbx> + (<vec_x> * 0.25) - $sidebar_x_offset)
+	Change sidebar_y = ($highway_playline + (<vec_y> * 0.25) - ($sidebar_y_offset * 4.2))
 	SetArrayElement \{ArrayName = rowHeightNormalizedDistance GlobalArray index = 0 NewValue = 1.0}
 	index = 0
 	begin

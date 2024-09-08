@@ -60,6 +60,21 @@ script lefty_toggle \{player_status = player1_status}
 	wait ((0.28 / $current_speedfactor) * $<player_status>.scroll_time) seconds
 	animate_lefty_flip other_player_status = <player_status>
 	Change StructureName = <player_status> lefthanded_button_ups = <left>
+	lefty_flip_buttons player_status = <player_status>
+endscript
+script lefty_flip_buttons \{player_status = player1_status}
+	GetArraySize \{$gem_colors}
+	i = 0
+	begin
+		color = ($gem_colors[<i>])
+		FastFormatCrc ($button_up_models.<Color>.name) a = '_head' b = ($<player_status>.text) out = test
+		params = { }
+		if ($<player_status>.lefthanded_button_ups = 1)
+			params = { flip_v }
+		endif
+		SetScreenElementProps id = <test> <params>
+		Increment \{i}
+	repeat (<array_Size>)
 endscript
 
 script everyone_deploy // :P

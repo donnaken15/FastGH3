@@ -1117,14 +1117,9 @@ script destroy_game_backdrop2
 		DestroyScreenElement \{id = #"0x6b9ddabb"}
 	endif
 endscript
-gameplaybg_texture = gameplay_BG
-gameplaybg_pos = (0.0, -1.0)
-gameplaybg_dims = (1828.0, 1030.0)
-BGCol = [
-	255
-	255
-	255
-	255
-]
+gameplaybg_texture = none // DEPRECATED, REALIZED THE FAILURES OF THIS SYSTEM
+gameplaybg_pos = (-100.0, -100.0)
+gameplaybg_dims = (0.0, 0.0)
+BGCol = [255 255 255 255]
 Nofailvis = -20
 Nofailvis2 = -21

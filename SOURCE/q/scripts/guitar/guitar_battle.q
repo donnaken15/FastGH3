@@ -1603,6 +1603,7 @@ script battle_lefty_notes
 			if (<time> > (<start_time> - 500))
 				animate_lefty_flip other_player_status = <other_player_status> player_text = <player_text>
 				Change StructureName = <other_player_status> lefthanded_button_ups = (1 + $<other_player_status>.lefthanded_button_ups * -1)
+				lefty_flip_buttons player_status = <other_player_status>
 				start_time = -1
 			endif
 		endif
@@ -1610,6 +1611,7 @@ script battle_lefty_notes
 			printf \{"end battle"}
 			end_time = (<time> + (($<other_player_status>.scroll_time - $destroy_time)* 1000.0))
 			Change StructureName = <other_player_status> lefthanded_gems = (1 + $<other_player_status>.lefthanded_gems * -1)
+			lefty_flip_buttons player_status = <other_player_status>
 			break
 		endif
 		wait \{1 gameframe}
@@ -1620,6 +1622,7 @@ script battle_lefty_notes
 			if (<time> > <start_time>)
 				animate_lefty_flip other_player_status = <other_player_status> player_text = <player_text>
 				Change StructureName = <other_player_status> lefthanded_button_ups = (1 + $<other_player_status>.lefthanded_button_ups * -1)
+				lefty_flip_buttons player_status = <other_player_status>
 				start_time = -1
 			endif
 		endif
@@ -1627,6 +1630,7 @@ script battle_lefty_notes
 			animate_lefty_flip other_player_status = <other_player_status> player_text = <player_text>
 			Change StructureName = <other_player_status> lefthanded_button_ups = (1 + $<other_player_status>.lefthanded_button_ups * -1)
 			Change StructureName = <other_player_status> lefty_notes = -1
+			lefty_flip_buttons player_status = <other_player_status>
 			break
 		endif
 		wait \{1 gameframe}

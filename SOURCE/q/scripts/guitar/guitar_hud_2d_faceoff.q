@@ -25,22 +25,7 @@ script faceoff_hud_2d_elements_load
 		big_bulb_scale = 0.9
 		z = 0
 		score_frame_width = 175.0
-		#"0x936bb5fe" = $gameplaybg_pos
 		elements = [
-			{
-				parent_container
-				element_id = #"0xa90fc148"
-				pos_type = #"0x936bb5fe"
-			}
-			{
-				element_id = #"0x99dd87cc"
-				element_parent = #"0xa90fc148"
-				texture = $gameplaybg_texture
-				dims = $gameplaybg_dims
-				rot = -0.1
-				rgba = $BGCol
-				zoff = -2147483648
-			}
 			{
 				parent_container
 				element_id = HUD2D_rock_container

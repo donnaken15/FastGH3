@@ -7,8 +7,9 @@ pakdir !cache ..\..\DATA\PAK\qb -s
 
 :: kind of pointless to run every time but helps to reduce dbg.pak size
 :: AND IT'S SLLOOOWWWWWWW (my fault probably)
-where wsl /q && wsl -- dash ./qdbg ./scripts ./\!scripts_debug || dash ./qdbg ./scripts ./\!scripts_debug
-pakdir !scripts_debug ..\..\DATA\PAK\dbg
+:: FORGOT NO INSTANCE MAY BE INSTALLED where wsl /q && wsl -- dash ./qdbg ./scripts ./\!scripts_debug || dash ./qdbg ./scripts ./\!scripts_debug
+:: dash ./qdbg ./scripts ./\!scripts_debug
+::pakdir !scripts_debug ..\..\DATA\PAK\dbg
 dash "../Misc/write_build_date.sh"
 
 ::del !cache /S/Q
