@@ -2,8 +2,13 @@
 pushd "%~dp0"
 set MSB="C:\Program Files (x86)\MSBuild\14.0\bin\MSBuild.exe"
 set CONF=Release
+:: TODO: check if VC++ installed, and change configuration if it isn't
 echo ########## FASTGH3 ##########
-%MSB% "%~dp0FastGH3.sln" /p:Configuration=%CONF%
+%MSB% "%~dp0FastGH3.sln" /p:Configuration=%CONF% /t:Rebuild || ( pause & exit /b )
+pushd ..\PLUGINS
+upx -9 --ultra-brute *.dll
+upx -d core.dll TapHopoChord.dll RichPresence.dll FastGH3.dll
+popd
 ::echo ########## FASTGH3 ##########
 ::%MSB% "%~dp0FastGH3\FastGH3.csproj" "/p:SolutionDir=%~dp0" /p:Configuration=Release
 ::echo ########## C128KS  ##########

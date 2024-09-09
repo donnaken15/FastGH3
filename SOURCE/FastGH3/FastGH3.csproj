@@ -701,7 +701,7 @@ set "RES_HACK=start /b /wait "" "ResourceHacker""
 %25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action delete VERSIONINFO,, -action delete MANIFEST,,
 %25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action add -res "$(ProjectDir)res\Version.res"
 %25RES_HACK%25 -open "$(TargetPath)" -save "$(TargetPath)" -action add -res "$(ProjectDir)res\note.ico" -mask ICONGROUP,32512,
-if "%25NC%25"=="NetCompressor" ( stripreloc /b /c "$(TargetPath)" )
+if "%25NC%25"=="NetCompressor" ( ping localhost -n 3 &gt;NUL &amp; stripreloc /b /c "$(TargetPath)" )
 popd
 set SH=sh
 where /q dash &amp;&amp;set SH=dash||where /q %25SH%25

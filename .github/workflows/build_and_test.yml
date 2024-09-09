@@ -1,6 +1,6 @@
 # DO NOT TEST YOURSELF
 # MIGHT ONLY WORK IN A VERY CONTROLLED ENVIRONMENT AS OF NOW
-
+# only running this in a very small windows VM
 
 name: "Build, test, bundle FastGH3"
 on:
@@ -40,8 +40,11 @@ jobs:
     }
     "C:\Program Files\Git\bin\" | Out-File -FilePath $env:GITHUB_PATH -Append
     "C:\Program Files\Git\usr\" | Out-File -FilePath $env:GITHUB_PATH -Append
+    "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x86\" | Out-File -FilePath $env:GITHUB_PATH -Append
     Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
-    sleep 8
+    pushd "C:\Program Files\Git"
+    compact /c /f /s /a /i /exe:lzx *.exe *.dll *.txt *.pm *. | Select-Object -Last 3
+    popd
   -
    name: Install Node.js or Bun
    run: |
@@ -49,32 +52,11 @@ jobs:
       choco install $env:node -y --no-progress
     } else { "Node environment is already installed" }
     Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
-    sleep 8
   -
-   name: Install UPX
+   name: Install UPX, NSIS, 7Zip, Resource Hacker # make optionally installable if user decides so
    run: |
-    choco install upx
+    choco install upx nsis 7zip resourcehacker.portable -y --no-progress
     Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
-    sleep 8
-   # i need functions
-  -
-   name: Install NSIS
-   run: |
-    choco install nsis -y --no-progress
-    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
-    sleep 8
-  -
-   name: Install 7-Zip
-   run: |
-    choco install 7zip -y --no-progress
-    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
-    sleep 8
-  -
-   name: Install Resource Hacker
-   run: |
-    choco install resourcehacker.portable -y --no-progress
-    Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
-    sleep 8
   -
    name: Install DotNetCompressor
    env:
@@ -91,7 +73,6 @@ jobs:
    run: |
     choco install mpress -y --no-progress
     Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
-    sleep 8
   -
    name: Install stripreloc
    env:
@@ -106,6 +87,11 @@ jobs:
    uses: actions/checkout@v2
    with:
     submodules: recursive
+   # manual checkout all repositories: *
+   # for manual testing:
+   # set "PATH=%PATH%;C:\Program Files\git\bin;C:\Program Files\git\usr\bin"
+   # & "C:\Program Files\Git\bin\git" submodule update --init --recursive --remote
+   # & "C:\Program Files\Git\bin\git" pull --recurse-submodules
   -
    name: Set up MSBuild, Visual C# and C++
    env:
@@ -115,7 +101,7 @@ jobs:
    #uses: microsoft/setup-msbuild@v1 # NOT WORKING!!
    #with:
    # vs-version: 'latest'
-   run: | # this whole thing should probably be a for loop, AND CHECK IF ALREADY INSTALLED ANY OF THESE!!!!!!!!!!!!
+   run: |
     .\.github\workflows\visualDeps.ps1
    #choco install microsoft-build-tools netfx-4.6.2-devpack visualcpp-build-tools -y
    # NOPE: visualcpp-build-tools
@@ -133,15 +119,16 @@ jobs:
     conf: ${{vars.GH3PLUS == true && 'Release' || 'NoVC++'}}
     STUPID: true # STRIPRELOC BREAKS EXE ON SELF HOSTED RUNNER SOMEHOW
     GH3PLUS: ${{vars.GH3PLUS}}
-    NORELOC: ${{vars.NORELOC}} # run stripreloc if true, need to override from here to the event script, glhf
-    RCASSETS: ${{vars.RCASSETS}} # recompile assets, NOT WORKING RIGHT NOW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #NORELOC: ${{vars.NORELOC}} # BREAKS EXE ON VM
+    #RCASSETS: ${{vars.RCASSETS}} # recompile assets, NOT WORKING RIGHT NOW!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     VCTargetsPath: C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\v140
+   # *
    run: |
-    & "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" SOURCE\FastGH3.sln /p:Configuration=$env:conf /t:Rebuild
-    if ($env:RCASSETS) {
-      cmd.exe /c "SOURCE\build-assets.bat"
-    }
-   # ERRORS AT 'DO' IN FOR BLOCK WTF
+    & "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe" SOURCE\FastGH3.sln /p:Configuration=$env:CONF /p:WindowsTargetPlatformVersion=10.0.18362.0 /p:PlatformToolset=v140 /p:AdditionalIncludePaths="$env:INCLUDE" /t:Rebuild
+   #if ($env:RCASSETS) {
+   #  cmd.exe /c "SOURCE\build-assets.bat"
+   #}
+   # ERRORS AT 'DO' IN FOR BLOCK IN CMD WTF, BROKEN POS!!!
  test:
   runs-on: self-hosted
   env:
@@ -153,9 +140,21 @@ jobs:
   # uses: actions/checkout@v2
   # with:
   #  submodules: recursive
+  # directx 9 only
+  # https://archive.org/download/directx_9c/directx_9c_redist.exe
+  # http://software.oldversion.com/download.php?f=YTo1OntzOjQ6InRpbWUiO2k6MTcyNTg5MzYyOTtzOjI6ImlkIjtpOjE4NTU1O3M6NDoiZmlsZSI7czozNDoiZGlyZWN0eC05LTBjLWRpcmVjdHhfOWNfcmVkaXN0LmV4ZSI7czozOiJ1cmwiO3M6NDY6Imh0dHA6Ly93d3cub2xkdmVyc2lvbi5jb20vd2luZG93cy9kaXJlY3R4LTktMGMiO3M6NDoicGFzcyI7czozMjoiMmNmOGE1YzIzNTc5ZjEwYzUyM2Q4ZjI0NDFiZTZjZjAiO30%3D
+  # june 2010 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe
   -
    name: Playtest songs
    run: |
+    $DXTEMP = "C:\DXTEMP"
+    if (Test-Path -Path $DXTEMP) {
+      rm "$DXTEMP" -r -force
+    }
+    iwr -OutFile "DX9.EXE" -Uri "https://archive.org/download/directx_9c/directx_9c_redist.exe"
+    start -Wait -FilePath "DX9.EXE" -Args "/Q /T:$DXTEMP"
+    start -Wait -FilePath "$DXTEMP\DXSETUP.EXE" -Args "/silent"
+    rm "$DXTEMP" -r -force
     cmd /c dir
     cmd /c register.bat
     .\.github\workflows\testSongs.ps1
