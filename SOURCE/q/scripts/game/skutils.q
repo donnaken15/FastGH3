@@ -102,16 +102,6 @@ endscript
 script empty_script
 endscript
 
-script restore_start_key_binding
-	printf \{"+++ RESTORE START KEY"}
-	SetScreenElementProps \{id = root_window event_handlers = [{pad_start gh3_start_pressed}] replace_handlers}
-endscript
-
-script kill_start_key_binding
-	printf \{"--- KILL START KEY"}
-	SetScreenElementProps \{id = root_window event_handlers = [{pad_start null_script}] replace_handlers}
-endscript
-
 script BlockPendingPakManLoads\{map = all block_scripts = 0 noparse = 0}
 	if (<block_scripts> = 1)
 		PendingPakManLoads map = <map> block_scripts = 1 noparse = <noparse>

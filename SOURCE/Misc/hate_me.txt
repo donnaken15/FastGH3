@@ -1,0 +1,28 @@
+﻿.c128ks.mp3
+sox.exe
+helix.exe
+
+
+
+
+
+-hide_banner -i
+-V3 --multi-threaded
+ wav -
+" -X0 -U2 -Qquick -A1 -D -M
+
+
+
+
+
+
+
+{2} "{0}"
+ -{1}c {4} 
+-{1}r {3}
+d/e: 
+- "
+ffmpeg.exe
+
+ -
+PATH

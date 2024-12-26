@@ -463,6 +463,9 @@ script guitar_startup
 		if IsTextureInDictionary \{texture = Controller_2p_BG}
 			change \{old_2p_background = 1}
 		endif
+		if IsTextureInDictionary \{texture = hud_2p_c_rock_shadow}
+			change \{old_2p_shadow = 1}
+		endif
 		
 		ProfilingStart
 		LoadPak \{'zones/default.pak'}

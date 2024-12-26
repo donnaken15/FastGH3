@@ -17,7 +17,7 @@ Optional software:
 * NSIS
 * stripreloc
 
-Projects:
+Projects/components:
 * FastGH3 Launcher:
 	- Converts charts
 	- Interface for settings

@@ -370,11 +370,9 @@ public partial class settings : Form
 		Launcher.vl(T[152]);
 		dCtrl.Value = Launcher.cfg("Player1", "Device", 0);
 		RTnoi.Value = Launcher.cfg("Player", "NoIntroReadyTime", 400); // nointro_ready_time
-#pragma warning disable CS0162
 		// people wanted unlimited FPS, but
 		// then autoplay will hit too early sometimes
 		maxFPS.Value = Launcher.cfg("GFX", "MaxFPS", 1000);
-#pragma warning restore CS0162
 		hypers.Value = Launcher.cfg("Player", "Hyperspeed", 3); // Cheat_Hyperspeed
 		{
 			int disable_particles = Launcher.cfg("GFX", "NoParticles", 0); // disable_particles

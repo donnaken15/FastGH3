@@ -98,7 +98,7 @@ script PlayMovieAndWait
 			SetScreen \{hardware_letterbox = 1}
 		endif
 	endif
-	printf "Playing Movie %s" s = <movie>
+	printf 'Playing Movie %s' s = <movie>
 	PlayMovie {textureSlot = 0
 		TexturePri = 1000
 		no_looping
@@ -126,7 +126,7 @@ script PlayMovieAndWait
 	repeat
 	if NOT GotParam \{noblack}
 		wait \{2 gameframes}
-		printf "Finished Playing Movie %s" s = <movie>
+		printf 'Finished Playing Movie %s' s = <movie>
 		fadetoblack \{OFF time = 0}
 	endif
 	if NOT GotParam \{noletterbox}

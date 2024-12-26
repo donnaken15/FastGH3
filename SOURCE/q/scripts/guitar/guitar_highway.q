@@ -103,7 +103,7 @@ script setup_highway\{Player = 1}
 		z_priority = 0.1
 	}
 	highway_speed = (0.0 - ($gHighwayTiling / ($<player_status>.scroll_time - $destroy_time)))
-	printf "Setting highway speed to: %h" h = <highway_speed>
+	printf 'Setting highway speed to: %h' h = <highway_speed>
 	Set2DHighwaySpeed speed = <highway_speed> id = <highway_name> player_status = <player_status>
 	//fe = ($highway_playline - $highway_height)
 	//fs = (<fe> + $highway_fade)

@@ -1,4 +1,5 @@
 
+old_2p_shadow = 0
 
 coop_career_hud_2d_elements = {
 	compressed = coop_career_hud_2d_elements
@@ -6,6 +7,10 @@ coop_career_hud_2d_elements = {
 	z = 0
 }
 script coop_career_hud_2d_elements_load
+	ffs = {}
+	if (<old_2p_shadow> = 0)
+		ffs = { blend = subtract }
+	endif
 	change coop_career_hud_2d_elements = {
 		offscreen_rock_pos = (730.0, -440.0)
 		offscreen_score_pos = (730.0, -3000.0)
@@ -33,6 +38,9 @@ script coop_career_hud_2d_elements_load
 				element_id = HUD2D_2p_c_rock_shadow
 				element_parent = HUD2D_rock_container
 				texture = hud_2p_c_rock_shadow
+				<ffs>
+				pos_off = (0.0, -32.0)
+				scale = 2.1
 				zoff = -1
 				create_once
 			}

@@ -284,6 +284,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	<do_bot> = 0
 	if ($boss_battle = 1)
 		if (<Player> = 2)
+			change \{structurename = player2_status bot_play = 0}
 			ExtendCrc bossresponse_array <player_text> out = bossresponse_array
 			InputArrayCreate name = <bossresponse_array>
 			SpawnScriptLater gem_iterator params = {iterator_text = 'fill_bossarray' song_name = <song_name> difficulty = <difficulty> part = <part> input_array = <bossresponse_array>
@@ -710,9 +711,11 @@ script start_gem_scroller\{startTime = 0 practice_intro = 0 training_mode = 0 en
 		if (<Player> = 1)
 			Change StructureName = <player_status> lefthanded_gems = ($p1_lefty)
 			Change StructureName = <player_status> lefthanded_button_ups = ($p1_lefty)
-			//SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty>
-			//	time_offset = <gem_offset> fretbar_function = mbt_test skipleadin = 0
-			//	Player = <Player> player_status = <player_status> player_text = <player_text>}
+			if ($mbt_display = 1)
+				SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty>
+					time_offset = <gem_offset> fretbar_function = mbt_test skipleadin = 0
+					Player = <Player> player_status = <player_status> player_text = <player_text>}
+			endif
 		else
 			if ($is_network_game = 0)
 				Change StructureName = <player_status> lefthanded_gems = ($p2_lefty)
@@ -1112,7 +1115,7 @@ script restart_gem_scroller\{no_render = 0}
 	endif
 	PauseGame
 	LaunchEvent \{Type = unfocus target = root_window}
-	printf "Starting new song %s on %l" s = <song_name> l = <difficulty>
+	printf 'Starting new song %s on %l' s = <song_name> l = <difficulty>
 	kill_gem_scroller no_render = <no_render> restarting
 	start_gem_scroller <...>
 	Change \{check_for_unplugged_controllers = 1}
@@ -1137,7 +1140,7 @@ script fill_input_array
 	FillInputArray <...>
 endscript
 
-script gem_iterator\{song_name = test difficulty = easy array_type = "song" Player = 1}
+script gem_iterator\{song_name = test difficulty = easy array_type = 'song' Player = 1}
 	get_difficulty_text_nl difficulty = <difficulty>
 	spawnscriptnow gem_array_events params = {<...> difficulty_text_nl = <difficulty_text_nl>}
 	if GotParam \{use_input_array}
@@ -1151,7 +1154,7 @@ script gem_iterator\{song_name = test difficulty = easy array_type = "song" Play
 endscript
 
 script gem_array_events
-	printf "Changing event receivers... %i %d" i = <iterator_text> d = <difficulty_text_nl>
+	printf 'Changing event receivers... %i %d' i = <iterator_text> d = <difficulty_text_nl>
 	ClearEventHandlerGroup \{iterator_group}
 	ExtendCrc gem_step_event <player_text> out = id
 	ExtendCrc <id> <iterator_text> out = id

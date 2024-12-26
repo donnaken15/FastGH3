@@ -67,11 +67,10 @@ public partial class songcache : Form
 		string t = Launcher.ini(cs, "Title", null, 64, i);
 		string a = Launcher.ini(cs, "Author", null, 64, i);
 		string l = Launcher.ini(cs, "Length", "00:00", 8, i);
-		string[] tmp = { "qb", "pak" };
-		for (int i = 0; i < 2; i++)
+		foreach (string ii in new string[] { "qb", "pak" })
 		{
 			string s;
-			if (File.Exists(s = Launcher.pakf + "song." + tmp[i] + ".xen"))
+			if (File.Exists(s = Launcher.pakf + "song." + ii + ".xen"))
 				File.Delete(s);
 		}
 		File.Copy(folder + cs,

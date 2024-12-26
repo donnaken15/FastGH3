@@ -1,0 +1,15 @@
+﻿usage: c128ks [input] [output] [options]+
+flags:
+    -q             - silence processes
+    -p             - print more information (not compatible with -q)
+    -v             - convert using variable bitrate
+                     (use with caution as it will break seeking in game)
+switches:
+    -c [channels]  - force conversion to stereo or mono
+    -b [bitrate]   - set target bitrate
+    -r [samprate]  - set target sample rate
+
+if a switch above isn't entered, the output audio will
+retain the original parameter from the source audio
+
+press Ctrl-C to cancel conversion

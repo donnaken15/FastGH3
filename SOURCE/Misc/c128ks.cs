@@ -7,10 +7,9 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Text;
-
-class _
+partial class _
 {
+#if false
 	static int brs(int _)
 	{
 		if (_ < 1) return 0;
@@ -18,17 +17,20 @@ class _
 			return (32 + ((--_ & 3) << 3) << (_ >> 2)); // version 1 layer 3
 		return -1; // bad
 	}
+#endif
+#if !desperate
 	string td(bool enc) // done text
 	{
 		// \ncoder done
 		return string.Format(T[3]+T[4],T[enc?5:6]);
 	}
+#endif
 	Process d, e; // sox/ffmpeg, helix
-	Thread dt, et; // decoder thread, encoder thread
+	Thread D, E; // decoder thread, encoder thread
 	List<byte[]> Q; // queued blocks
 	const int BS = 1 << 17; // decoder reading doesn't surpass this (128k) in a singular call, typically reads ~1800 bytes
-	public int[] cb = new int[2]; // current block
-	public int[] xc = new int[2]; // process exit codes
+	public int[] B = new int[2]; // current block
+	public int[] X = new int[2]; // process exit codes
 	bool[] done = new bool[2]; // decoder and encoder statuses
 	bool C = false; // cancel task
 
@@ -39,7 +41,9 @@ class _
 	private ushort br = 96; // bitrate
 	public ushort r = 32000; // sample rate
 	public bool v = false, fr = false; // variable bitrate (don't use), force rate
+#if !desperate
 	public bool l = true, i = false; // log processes, verbose thread info
+#endif
 	public string I, O; // file names
 
 	//public _(string i) : this(i, null) { }
@@ -71,7 +75,7 @@ class _
 			}
 		};
 		// thread to asynchronously read bytes from decoder
-		dt = new Thread(() => {
+		D = new Thread(() => {
 			if (C)
 				return;
 			byte[] buf = new byte[BS];
@@ -90,7 +94,7 @@ class _
 					if (c == BS)
 					{
 						Q.Add((byte[])buf.Clone());
-						cb[0] = i++;
+						B[0] = i++;
 						c = 0;
 					}
 				}
@@ -99,18 +103,20 @@ class _
 					byte[] remaining = new byte[c];
 					Array.Copy(buf, remaining, c);
 					Q.Add(remaining);
-					cb[0] = i++;
+					B[0] = i++;
 					break;
 				}
 			}
+#if !desperate
 			if (this.i && !l)
-				td(false);
+				Console.WriteLine(T[3]+T[4], T[6]);
+#endif
 			done[0] = true;
 			if (d.HasExited)
-				xc[0] = d.ExitCode;
+				X[0] = d.ExitCode;
 		});
 		// thread to asynchronously encode data queued by above thread
-		et = new Thread(() => {
+		E = new Thread(() => {
 			while (Q.Count == 0)
 			{
 				if (done[0])
@@ -127,8 +133,10 @@ class _
 						return;
 					if (done[0])
 					{
+#if !desperate
 						if (this.i && !l)
-							td(true);
+							Console.WriteLine(T[3]+T[4], T[5]);
+#endif
 						done[1] = true;
 						return;
 					}
@@ -138,7 +146,7 @@ class _
 					return;
 				if (e.HasExited)
 				{
-					xc[1] = e.ExitCode;
+					X[1] = e.ExitCode;
 					return;
 				}
 				// TODO: remove block(s) from list once written
@@ -148,30 +156,35 @@ class _
 				byte[] block = Q[i];
 				IN.Write(block, 0, block.Length);
 				Q[i] = null;
-				cb[1] = i++;
+				B[1] = i++;
 			}
 		});
 	}
 
+#if !desperate
 	DateTime st;
 	public TimeSpan t = new TimeSpan(0);
+#endif
 
 	public void ST()
 	{
 		if (!File.Exists(I))
-			throw new /*FileNotFound*/Exception(T[7]);
+			throw new /*FileNotFound*/Exception(
+#if !desperate
+				T[7]
+#endif
+			);
 		e.StartInfo.Arguments = T[23] + O + T[11] + ((int)m) + T[26] + (v ? 'V' : 'B') + br.ToString();
 		d.StartInfo.Arguments = string.Format(T[19]+
-			(FC ? T[20] : " ")+
-			(fr ? T[21] : ""),
+			(FC ? T[20] : " ")+(fr ? T[21] : ""),
 			/* 0 */ I,
 			/* 1 */ ff ? "a" : "" /* audio switch labels */,
 			/* 2 */ T[ff ? 8 : 9] /* program specific switches */,
 			/* 3 */ r,
 			/* 4 */ S ? 2 : 1) + T[26] + (ff ? 'f' : 't') + T[10];
-		d.StartInfo.RedirectStandardError =
-			e.StartInfo.RedirectStandardError = !l;
 		Q = new List<byte[]>();
+#if !desperate
+		d.StartInfo.RedirectStandardError = e.StartInfo.RedirectStandardError = !l;
 		if (i)
 		{
 			// print process args
@@ -183,25 +196,28 @@ class _
 			Console.WriteLine(T[15] + (BS >> 10).ToString() + T[16]);
 		}
 		st = DateTime.Now;
-		d.Start();
-		e.Start();
+#endif
+		d.Start(); e.Start();
 		// for maximized CPU time, save bytes from decoder
 		// and asynchronously write the bytes at the
 		// separate speed that encoder can do
-		dt.Start();
-		et.Start();
+		D.Start(); E.Start();
+#if !desperate
 		if (i && !l)
 		{
 			while (!done[0] || !done[1])
 			{
-				Console.Write(
-					T[22]
-						+(cb[0]).ToString().PadLeft(6)+'/'
-						+(cb[1]).ToString().PadLeft(6)+'\r');
+				Console.Write(T[22]
+					+(cb[0]).ToString().PadLeft(6)+'/'
+					+(cb[1]).ToString().PadLeft(6)+'\r');
 				Thread.Sleep(4);
 			}
 			Console.WriteLine();
 		}
+#else
+		while (!done[0] || !done[1])
+			Thread.Sleep(4);
+#endif
 		CT(false);
 	}
 
@@ -212,71 +228,36 @@ class _
 	public void CT(bool _)
 	{
 		if (_)
-			if (dt.ThreadState != 0 &&
-				et.ThreadState != 0)
+			if (D.ThreadState != 0 &&
+				E.ThreadState != 0)
 				return;
-		this.C = _;
-		dt.Join();
-		et.Join();
+		C = _;
+		D.Join();
+		E.Join();
 		for (int i = 0; i < 1; i++)
-			if (xc[i] != 0)
-				throw new Exception(T[i==1?5:6] + T[3] +
-					T[17] + xc[i].ToString());
+			if (X[i] != 0)
+				throw new Exception(
+#if !desperate
+					T[i==1?5:6] + T[3] + T[17] + xc[i].ToString()
+#endif
+				);
 		if (_)
 		{
 			if (!d.HasExited)
 				d.Kill();
 			if (!e.HasExited)
 				e.Kill();
-			this.C = false;
+			C = false;
 		}
+#if !desperate
 		t = DateTime.Now - st;
+#endif
 		Q = null;
 		GC.Collect();
 	}
-	/*
- 0: .c128ks.mp3%
- 1: sox.exe%
- 2: helix.exe%
- 3: coder%
- 4:  done%
- 5: En%
- 6: De%
- 7: Input audio cannot be found.%
- 8: -hide_banner -i %
- 9: -V3 --multi-threaded %
-10:  -f wav -%
-11: " -X0 -U2 -Qquick -A1 -D -M%
-12: {0}{2}{3}: {5}
-{0}{2}{4}: {6}
-{1}{2}{3}: {7}
-{1}{2}{4}: {8}%
-13: executable%
-14: arguments %
-15: Reading/writing %
-16: kb per block, blocks processed:%
-17:  process returned with a non-zero error code: 
-18: Invalid argument: 
-19: {2} "{0}"
-20:  -{1}c {4} 
-21: -{1}r {3}
-22: d/e: 
-23: - "
-24: ffmpeg.exe
-25: Aborting...
-26:  -
-27: PATH
-*/
-	static string[] T = Encoding.ASCII.GetString(Encoding.Unicode.GetBytes(
-		"挮㈱欸⹳灭┳潳⹸硥╥敨楬⹸硥╥潣敤╲搠湯╥湅䐥╥湉異⁴畡楤⁯慣湮瑯戠⁥潦湵⹤ⴥ楨敤扟湡敮⁲"+
-		"椭ⴥ㍖ⴠ洭汵楴琭牨慥敤╤眠癡ⴠ∥ⴠじⴠ㉕ⴠ煑極正ⴠㅁⴠ⁄䴭笥細㉻筽紳›㕻੽ほ筽紲㑻"+
-		"㩽笠紶笊紱㉻筽紳›㝻੽ㅻ筽紲㑻㩽笠紸攥數畣慴汢╥牡畧敭瑮⁳別慥楤杮眯楲楴杮┠扫瀠牥"+
-		"戠潬正‬汢捯獫瀠潲散獳摥┺瀠潲散獳爠瑥牵敮⁤楷桴愠渠湯稭牥⁯牥潲⁲潣敤›䤥癮污摩愠杲浵"+
-		"湥㩴┠㉻⁽笢細┢ⴠㅻ捽笠紴┠笭紱⁲㍻╽⽤㩥┠‭┢晦灭来攮數䄥潢瑲湩⹧⸮‥┭䅐䡔"
-	)).Split('%');
 	static string b = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName) + '\\';
-	static string ffp = w(T[24]);
 
+#if C128KS_STANDALONE
 	// PROGRAM
 
 	//http://csharptest.net/526/how-to-search-the-environments-path-for-an-exe-or-dll/index.html
@@ -323,11 +304,13 @@ class _
 		return Path.GetFullPath(_);
 	}
 
+#if false
 	// desperate
 	public static string RS(string _)
 	{
 		return Encoding.ASCII.GetString(Encoding.Unicode.GetBytes(_));
 	}
+#endif
 
 	public static int Main(string[] _)
 	{
@@ -336,32 +319,7 @@ class _
 		if (_.Length < 1)
 		{
 #if false // BLOOOAAT STILLL
-			Console.WriteLine(
-				/*
-				usage: c128ks [input] [output] [options]+
-				flags:
-				  -q             - silence processes
-				  -p             - print more information (not compatible with -q)
-				  -v             - convert using variable bitrate
-								   (use with caution as it will break seeking in game)
-				switches:
-				  -c [channels]  - force conversion to stereo or mono
-				  -b [bitrate]   - set target bitrate
-				  -r [samprate]  - set target sample rate
-
-				if a switch above isn't entered, the output audio
-				will retain the parameter from the source audio
-
-				press Ctrl-C to cancel conversion
-				*/
-				RS(
-					"獵条㩥挠㈱欸⁳楛灮瑵⁝潛瑵異嵴嬠灯楴湯嵳ਫ汦条㩳 ⴠⁱ††††††‭楳敬据⁥牰捯獥敳ੳ†瀭††††††ⴠ瀠楲瑮"+
-					"洠牯⁥湩潦浲瑡潩⁮渨瑯挠浯慰楴汢⁥楷桴ⴠ⥱ ⴠ⁶††††††‭潣癮牥⁴獵湩⁧慶楲扡敬戠瑩慲整"+
-					" †††††††††用敳眠瑩⁨慣瑵潩⁮獡椠⁴楷汬戠敲歡猠敥楫杮椠⁮慧敭਩睳瑩档獥਺†挭嬠档湡敮獬⁝ⴠ"+
-					"映牯散挠湯敶獲潩⁮潴猠整敲⁯牯洠湯੯†戭嬠楢牴瑡嵥†ⴠ猠瑥琠牡敧⁴楢牴瑡੥†爭嬠慳灭慲整⁝"+
-					"ⴠ猠瑥琠牡敧⁴慳灭敬爠瑡੥椊⁦⁡睳瑩档愠潢敶椠湳琧攠瑮牥摥‬桴⁥畯灴瑵愠摵潩眊汩⁬"+
-					"敲慴湩琠敨瀠牡浡瑥牥映潲⁭桴⁥潳牵散愠摵潩ਊ牰獥⁳瑃汲䌭琠⁯慣据汥挠湯敶獲潩n")
-			);
+			Console.WriteLine(splash);
 #endif
 			return 1;
 		}
@@ -377,18 +335,24 @@ class _
 					if (_[i].Length != 2 ||
 						_[i][0] != '-')
 					{
-						throw new /*Argument*/Exception(T[18] + _[i]);
+						throw new /*Argument*/Exception(
+#if !desperate
+							T[18]+_[i]
+#endif
+						);
 						//return;
 					}
 					char arg_name = _[i][1];
 					switch (arg_name)
 					{
+#if !desperate
 						case 'q':
 							e.l = false;
 							break;
 						case 'p':
 							e.i = true;
 							break;
+#endif
 						case 'v':
 							e.v = true;
 							break;
@@ -396,12 +360,20 @@ class _
 						case 'b':
 						case 'r':
 							if (i >= _.Length - 1)
-								throw new /*ArgumentNull*/Exception(_[i]);
+								throw new /*ArgumentNull*/Exception(
+#if !desperate
+									_[i]
+#endif
+								);
 							flag = false;
 							switch_name = arg_name;
 							break;
+#if !desperate
 						default:
-							throw new /*Argument*/Exception(T[18] + _[i]);
+							throw new /*Argument*/Exception(
+								T[18]+_[i]
+							);
+#endif
 					}
 				}
 				else
@@ -422,22 +394,34 @@ class _
 							e.r = value;
 							break;
 						default:
-							throw new /*Argument*/Exception(T[18]+_[i]);
+							throw new /*Argument*/Exception(
+#if !desperate
+								T[18]+_[i]
+#endif
+							);
 					}
 					flag = true;
 				}
 			}
 		}
+#if !desperate
 		Console.CancelKeyPress += (s, d) => {
+			// thinking if this is still controllable from the command prompt during launcher, because
+			// if ctrl-c is hit, song conversion and overall execution should be cancelled, but also
+			// now i have the game launching ahead of time
 			if (d.SpecialKey != ConsoleSpecialKey.ControlC)
 				return;
 			Console.WriteLine(T[25]);
 			d.Cancel = true;
 			e.CT(true);
 		};
+#endif
 		e.ST();
+#if !desperate
 		Console.WriteLine(e.t);
+#endif
 		return 0;
 	}
-}
+#endif
+	}
 

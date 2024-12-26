@@ -38,8 +38,8 @@ script create_loading_strings
 		'I\'M RUNNING OUT OF THINGS TO SAY!' 'YOU RESTARTED JUST TO SEE THIS MESSAGE!'
 		'HAX!' 'BOT!' 'FAAAKE!!' 'EPIC FAIL' 'WHAT ARE YOU DOING' 'WARNING: Requires x0.5 \b3 Presses'
 		'unCHARTed' '\c9INVISIBLE INK\n\nwait, uh oh' 'are you actually reading these?' 'CHARTS ON DEMAND'
-		'FITS 5769 TIMES ON A FLASH DRIVE, DO THE MATH!' 'FROM 4.7 GB TO 11.4 MB! WOW!'
-		/* formula: 1024/((11910811/1024/1024)/64)
+		'FITS 5944 TIMES ON A FLASH DRIVE, DO THE MATH!' 'FROM 4.7 GB TO 11.0 MB! WOW!'
+		/* formula: 1024/((11561002/1024/1024)/64)
 		64 = usual flash drive GB capacity (<-- stuck in 2011 or something thinking this is common)
 		"DO THE MATH"
 		Reverse of original calc: (15*4346)/1024 *///

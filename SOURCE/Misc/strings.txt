@@ -1,0 +1,28 @@
+﻿.c128ks.mp3
+sox.exe
+helix.exe
+coder
+ done
+En
+De
+Input audio cannot be found.
+-hide_banner -i
+-V3 --multi-threaded
+ wav -
+" -X0 -U2 -Qquick -A1 -D -M
+{0}{2}{3}: {5}\n{0}{2}{4}: {6}\n{1}{2}{3}: {7}\n{1}{2}{4}: {8}
+executable
+arguments 
+Reading/writing 
+kb per block, blocks processed:
+ process returned with a non-zero error code: 
+Invalid argument: 
+{2} "{0}"
+ -{1}c {4} 
+-{1}r {3}
+d/e: 
+- "
+ffmpeg.exe
+Aborting...
+ -
+PATH

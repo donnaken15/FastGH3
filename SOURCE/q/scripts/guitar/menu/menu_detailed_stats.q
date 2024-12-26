@@ -128,12 +128,12 @@ script create_detailed_stats_menu
 		endif
 	endif
 	if ($game_mode = p2_battle)
-		p1_sp_ratio = "N/A"
-		p1_avg_multiplier = "N/A"
-		p1_lead_percent = "N/A"
-		p2_sp_ratio = "N/A"
-		p2_avg_multiplier = "N/A"
-		p2_lead_percent = "N/A"
+		p1_sp_ratio = 'N/A'
+		p1_avg_multiplier = 'N/A'
+		p1_lead_percent = 'N/A'
+		p2_sp_ratio = 'N/A'
+		p2_avg_multiplier = 'N/A'
+		p2_lead_percent = 'N/A'
 	endif
 	left_margin = 400
 	right_margin = 800
@@ -157,8 +157,8 @@ script create_detailed_stats_menu
 	if NOT ($game_mode = p2_career ||
 		$game_mode = p2_coop)
 		if ($current_num_players = 2)
-			add_text_to_column \{column = 'left' text = "PLAYER ONE"}
-			add_text_to_column \{column = 'right' text = "PLAYER TWO"}
+			add_text_to_column \{column = 'left' text = 'PLAYER ONE'}
+			add_text_to_column \{column = 'right' text = 'PLAYER TWO'}
 			add_text_to_column \{column = 'center' text = ""}
 			add_text_to_column \{column = 'left' text = ""}
 			add_text_to_column \{column = 'center' text = ""}
@@ -232,7 +232,7 @@ script create_detailed_stats_menu
 					Type = TextElement
 					parent = ds_container
 					Pos = (<best_pos> [<better_player>])
-					text = "BEST!"
+					text = 'BEST!'
 					font = text_a3
 					rot_angle = (<rot_vals> [<better_player>])
 					id = best_text
@@ -263,19 +263,19 @@ script add_basic_stats_desc
 	else
 		desc_column = 'center'
 	endif
-	add_text_to_column column = <desc_column> text = "NOTES HIT" dims = (400.0, 0.0)
+	add_text_to_column column = <desc_column> text = 'Notes hit' dims = (400.0, 0.0)
 	if NOT ($game_mode = p2_battle || $boss_battle = 1)
-		add_text_to_column column = <desc_column> text = "SP PHRASES" dims = (400.0, 0.0)
-		add_text_to_column column = <desc_column> text = "AVG MULTIPLIER" dims = (400.0, 0.0)
+		add_text_to_column column = <desc_column> text = 'SP Phrases' dims = (400.0, 0.0)
+		add_text_to_column column = <desc_column> text = 'Avg multiplier' dims = (400.0, 0.0)
 		if ($current_num_players = 2)
 			if ($game_mode = p2_faceoff ||
 				$game_mode = p2_pro_faceoff ||
 				$game_mode = p2_battle)
-				add_text_to_column column = <desc_column> text = "TIME IN LEAD" dims = (400.0, 0.0)
+				add_text_to_column column = <desc_column> text = 'Time in lead' dims = (400.0, 0.0)
 			endif
 		endif
 	else
-		add_text_to_column column = <desc_column> text = "ATTACKS THROWN" dims = (400.0, 0.0)
+		add_text_to_column column = <desc_column> text = 'Attacks thrown' dims = (400.0, 0.0)
 	endif
 endscript
 
@@ -379,7 +379,7 @@ script add_section_stats_and_desc\{section_index = 0 highlight = 0 for_practice 
 			endif
 		else
 			hit_percent = 0
-			FormatText \{textname = section_percent "N/A"}
+			FormatText \{textname = section_percent 'N/A'}
 			add_text_to_column column = <stat_column> text = <section_percent> highlight = <highlight> for_practice = <for_practice>
 		endif
 		if ($game_mode = p2_career ||
@@ -443,7 +443,7 @@ script detailed_stats_create_container\{for_practice = 0}
 			just = [left top]
 			z_priority = 2
 			font = ($detailed_stats_font)
-			text = "PRACTICE SECTIONS"
+			text = 'Practice sections'
 			rgba = [118 29 30 255]
 			Scale = (1.7000000476837158, 2.25)
 		}
@@ -455,7 +455,7 @@ script detailed_stats_create_container\{for_practice = 0}
 			just = [left top]
 			z_priority = 2
 			font = ($detailed_stats_font)
-			text = "DETAILED"
+			text = 'Detailed'
 			rgba = [118 29 30 255]
 			Scale = 2.75
 		}
@@ -466,7 +466,7 @@ script detailed_stats_create_container\{for_practice = 0}
 			just = [left top]
 			z_priority = 2
 			font = ($detailed_stats_font)
-			text = "BREAKDOWN"
+			text = 'Breakdown'
 			rgba = [118 29 30 255]
 			Scale = 2.75
 		}
@@ -479,16 +479,7 @@ script detailed_stats_create_container\{for_practice = 0}
 	CreateScreenElement \{Type = SpriteElement parent = root_window id = ds_spotlight texture = Detailed_stats_spotlight_overlay rgba = [255 255 255 255] dims = (1280.0, 720.0) Pos = (0.0, 0.0) just = [left top] z_priority = 7 blend = sub}
 endscript
 
-script add_text_to_column{
-		column = 'left'
-		text = "No string"
-		rgba = [75 75 75 255]
-		Scale = ($detailed_stats_text_scale)
-		rot = 0
-		highlight = 0
-		font = ($detailed_stats_font)
-		for_practice = 0
-	}
+script add_text_to_column \{column = 'left' text = "No string" rgba = [75 75 75 255] Scale = $detailed_stats_text_scale rot = 0 highlight = 0 font = $detailed_stats_font for_practice = 0}
 	FormatText checksumName = column_x '%s_column_x' s = (<column>)
 	FormatText checksumName = column_y_end '%s_column_y_end' s = (<column>)
 	FormatText checksumName = column_just '%s_column_just' s = (<column>)
@@ -575,29 +566,28 @@ script menu_detailed_stats_move_screen_down
 endscript
 
 script menu_detailed_stats_move_screen_up
-	if IsWinPort
-		GetDisplaySettings
-		if (<height> <= 480)
-			bottom_gap = 50
-		elseif (<height> > 480 & <height> <= 612)
-			bottom_gap = 100
-		elseif (<height> > 612 & <height> <= 800)
-			bottom_gap = 150
-		elseif (<height> > 800 & <height> <= 900)
-			bottom_gap = 300
-		elseif (<height> > 900 & <height> <= 1050)
-			bottom_gap = 450
-		elseif (<height> > 1050 & <height> <= 1200)
-			bottom_gap = 600
-		elseif (<height> > 1200 & <height> <= 1440)
-			bottom_gap = 800
-		elseif (<height> > 1440 & <height> <= 1536)
-			bottom_gap = 950
-		else
-			bottom_gap = 1200
-		endif
-	else
+	GetDisplaySettings
+	printstruct <...>
+	if (<height> <= 480)
+		bottom_gap = 50
+	elseif (<height> > 480 & <height> <= 612)
+		bottom_gap = 100
+	elseif (<height> > 612 & <height> <= 800)
 		bottom_gap = 150
+	elseif (<height> > 800 & <height> <= 900)
+		bottom_gap = 300
+	elseif (<height> > 900 & <height> <= 1050)
+		bottom_gap = 450
+	elseif (<height> > 1050 & <height> <= 1200)
+		bottom_gap = 600
+	elseif (<height> > 1200 & <height> <= 1440)
+		bottom_gap = 800
+	elseif (<height> > 1440 & <height> <= 1536)
+		bottom_gap = 1000
+	elseif (<height> > 1536 & <height> <= 2160)
+		bottom_gap = 1200
+	else
+		bottom_gap = 1500 // did this even do anything
 	endif
 	stats_end = ($relative_screen_y_position + $left_column_y_end)
 	GetScreenElementDims \{id = root_window}
@@ -616,7 +606,7 @@ endscript
 
 script menu_ds_scroll_background
 	scroll_position = (-1 * ($relative_screen_y_position))
-	printf "Scroll position is %d" d = <scroll_position>
+	printf 'Scroll position is %d' d = <scroll_position>
 	if (<scroll_position> < 240)
 		SetScreenElementProps id = detailed_stats_bg_container Pos = ((0.0, -1.0) * <scroll_position>)
 	else
@@ -701,7 +691,7 @@ script add_divider_graphic
 	FormatText checksumName = entry_id '%c_column_%d' c = 'left' d = <divider_element_num>
 	GetScreenElementProps id = <entry_id>
 	divider_y = (<Pos> [1])
-	printf "Divider_y = %d" d = <divider_y>
+	printf 'Divider_y = %d' d = <divider_y>
 	CreateScreenElement {
 		Type = SpriteElement
 		parent = ds_container

@@ -1,4 +1,5 @@
 
+/*
 script create_bonus_videos_menu\{came_from_movie = 0}
 	kill_start_key_binding
 	if (<came_from_movie> = 1)
@@ -411,3 +412,4 @@ script shutdown_options_video_monitor
 	KillMovie \{textureSlot = 1}
 	fadetoblack \{OFF time = 0}
 endscript
+/**///

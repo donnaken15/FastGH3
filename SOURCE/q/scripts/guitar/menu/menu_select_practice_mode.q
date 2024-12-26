@@ -3,7 +3,7 @@ training_mode = tutorials
 
 script create_select_practice_mode_menu
 	Change \{rich_presence_context = presence_main_menu}
-	spawnscriptnow \{Menu_Music_On}
+	//spawnscriptnow \{Menu_Music_On}
 	CreateScreenElement {
 		Type = ContainerElement
 		id = spm_container
@@ -48,7 +48,7 @@ script create_select_practice_mode_menu
 		Type = TextElement
 		parent = spm_container
 		id = tutorials_text
-		text = "tutorials"
+		text = 'tutorials'
 		font = text_a6
 		Pos = (555.0, 320.0)
 		Scale = 0.7
@@ -63,8 +63,8 @@ script create_select_practice_mode_menu
 		z_priority = 10
 		<demo_mode_disable>
 	}
-	displayText \{id = practice_text parent = spm_container text = "practice" font = text_a6 Pos = (710.0, 245.0) Scale = 0.7 just = [center center] rot = -5 z = 10}
-	displayText \{parent = spm_container text = "Select practice mode" font = text_a11 Pos = (655.0, 540.0) rgba = [255 195 20 255] rot = -5 z = 10 noshadow just = [center center]}
+	displayText \{id = practice_text parent = spm_container text = 'practice' font = text_a6 Pos = (710.0, 245.0) Scale = 0.7 just = [center center] rot = -5 z = 10}
+	displayText \{parent = spm_container text = 'Select practice mode' font = text_a11 Pos = (655.0, 540.0) rgba = [255 195 20 255] rot = -5 z = 10 noshadow just = [center center]}
 	fit_text_in_rectangle id = <id> only_if_larger_x = 1 dims = (320.0, 70.0)
 	LaunchEvent \{Type = focus target = tutorials_text}
 	update_training_menu

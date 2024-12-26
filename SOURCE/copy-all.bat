@@ -11,9 +11,7 @@ for %%I in (
 	FastGH3.exe
 	fmodex.dll
 	game.exe
-	Ionic.Zip.Reduced.dll
 	IntelLaptopGaming.dll
-	mid2chart.exe
 	register.bat
 	settings.bat
 	shuffle.bat

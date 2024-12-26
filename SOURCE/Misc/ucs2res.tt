@@ -1,0 +1,191 @@
+﻿<#@template language="C#" hostspecific="true"#>
+<#@output extension=".cs"#>
+<#@import namespace="System.IO"#>
+<#@import namespace="System.Text"#>
+<#@import namespace="System.Text.RegularExpressions"#>
+<#@import namespace="System.Collections.Generic"#>
+<#
+Encoding A = Encoding.ASCII, U = Encoding.Unicode, UTF8 = Encoding.UTF8;
+const byte
+	textfile = 0,
+	directstring = 1,
+	//binary = 2,
+	escapes = 4,
+	raw = 8; // use when unicode is present in string
+char[] throwawaySeps = "&~^\0".ToCharArray();
+char[] corrections = (// errors if any raw characters match these ranges in source files
+	"\u2027\u202a"+"\u0000\u0020"+"\u0080\u00a0"
+).ToCharArray();
+Dictionary<string, string> escs = new Dictionary<string, string>() {
+	{"\\", "\\\\"}, {"\"", "\\\""}, {"\n", "\\n"}, {"\r", "\\r"}, {"\t", "\\t"},
+};
+var rawstrings = new Tuple<string, string, byte, char>[] {
+	// awful
+	// fname or content, varname, file or direct string, string([]) or byte array, escaped, splitter (both disregarded if binary)
+	new Tuple<string, string, byte, char>(
+#if !true
+		"strings.txt"
+#else
+		"hate_me.txt" // sort necessary strings to the top and put logging at the bottom
+#endif
+	, "T", textfile | escapes, '\n'),
+};
+#>
+using System.Text;
+partial class _
+{
+	//static Encoding U = Encoding.Unicode, A = Encoding.UTF8;
+<#	foreach (var why in rawstrings) {
+		// i think i overcomplicated this
+		bool direct = (why.Item3 & directstring) == directstring;
+		bool escaped = (why.Item3 & escapes) == escapes;
+		bool rawstr = (why.Item3 & raw) == raw;
+		bool compactable = true;
+		//bool wide = false;
+		string varname = why.Item2;
+		string target = direct ? why.Item1 : Host.ResolvePath(why.Item1);
+		string type = (new string[] {"string", "byte[]"})[(why.Item3 >> 1 & 1)];
+		string convback = "Encoding.UTF8";
+		string convto = "Encoding.Unicode";
+		char splitter = why.Item4;
+		Encoding e = Encoding.UTF8;
+		char sep = '\0';
+		bool cant = true;
+		if (type == "string") {
+			// https://stackoverflow.com/questions/3825390
+			// "Blocks are not permitted after helpers" WTF IS THIS
+			byte bpc = 1;
+			if (!direct)
+			{
+				var bom = new byte[4];
+				using (var file = new FileStream(target, FileMode.Open, FileAccess.Read))
+					file.Read(bom, 0, 4);
+				uint bom4 = BitConverter.ToUInt32(bom, 0);
+				// hopefully this is still correct
+				if ((bom4 & 0xffffff) == 0x762f2b)
+				{
+					e = Encoding.UTF7;
+					//wide = true;
+				}
+				//if (bom[0] == 0x2b && bom[1] == 0x2f && bom[2] == 0x76) e = Encoding.UTF7;
+				if ((bom4 & 0xffffff) == 0xbfbbef)
+				{
+					e = Encoding.UTF8;
+					//wide = true;
+				}
+				//if (bom[0] == 0xef && bom[1] == 0xbb && bom[2] == 0xbf) e = Encoding.UTF8;
+				if (bom4 == 0x0000feff)
+				//if (bom[0] == 0xff && bom[1] == 0xfe && bom[2] == 0 && bom[3] == 0)
+				{
+					e = Encoding.UTF32; //UTF-32LE
+					//wide = true;
+					bpc = 4;
+				}
+				if (bom4 == 0xfffe0000)
+				{
+					e = new UTF32Encoding(true, true); //UTF-32BE
+					//wide = true;
+					bpc = 4;
+				}
+				//if (bom[0] == 0 && bom[1] == 0 && bom[2] == 0xfe && bom[3] == 0xff) e = new UTF32Encoding(true, true); //UTF-32BE
+				if ((bom4 & 0xffff) == 0xfeff)
+				//if (bom[0] == 0xff && bom[1] == 0xfe)
+				{
+					e = Encoding.Unicode; //UTF-16LE
+					//wide = true;
+					bpc = 2;
+				}
+				if (bom4 == 0xfffe)
+				{
+					e = Encoding.BigEndianUnicode; //UTF-16BE
+					//wide = true;
+					bpc = 2;
+				}
+				//if (bom[0] == 0xfe && bom[1] == 0xff) e = Encoding.BigEndianUnicode; //UTF-16BE
+				target = File.ReadAllText(target);
+			}
+			else
+			{
+				bpc = (byte)(rawstr ? 2 : 1);
+			}
+			if (rawstr)
+				compactable = false;
+			
+			if (splitter != 0)
+			{
+				type = "string[]";
+				foreach (char s in throwawaySeps)
+				{
+					if (!target.Contains(new string(s, 1)))
+					{
+						cant = false;
+						sep = s;
+						break;
+					}
+				}
+				if (cant)
+					throw new Exception("Couldn't find a throwaway separator");
+				target = target.Replace(new string(splitter, 1), new string(sep, 1));
+			}
+			if (escaped)
+			{
+				target = Regex.Unescape(target);
+			}
+			if ((target.Length & 1) == 1)
+			{
+				target += '\0';
+			}
+			
+			if (bpc > 2)
+			{
+				compactable = false;
+			}
+			//compactable = false;
+			if (compactable)
+			{
+				byte[] comp;
+				if (bpc == 1)
+					comp = UTF8.GetBytes(target);
+				else
+					comp = U.GetBytes(target);
+				target = U.GetString(comp);
+			}
+		} else {
+			byte[] uh = File.ReadAllBytes(target);
+			if ((uh.Length & 1) == 1)
+			{
+				Array.Resize(ref uh, uh.Length + 1);
+			}
+			target = U.GetString(uh);
+			compactable = true;
+		}
+		foreach (KeyValuePair<string, string> i in escs)
+			target = target.Replace(i.Key, i.Value);
+		for (int i = 0; i < corrections.Length; i++)
+			for (char c = corrections[i++]; c < corrections[i]; c++)
+				target = target.Replace(new string(c, 1), "\\u"+((ushort)c).ToString("x4"));
+		target = '\"' + target + '\"';
+		if (compactable)
+		{
+			target = convto+".GetBytes(" + target + ")";
+		}
+		if (type != "byte[]")
+		{
+			if (compactable)
+				target = convback+".GetString(" + target + ")";
+			if (type == "string[]")
+			{
+				string spl = new string(splitter, 1);
+				foreach (KeyValuePair<string, string> i in escs)
+					spl = spl.Replace(i.Key, i.Value);
+				target += ".Split(new char[1]{'"+sep+"'})";
+			}
+		}
+		Write("\tpublic static "+type+' '+varname+" = "+target+";\n");
+	}
+	//static Program()
+	//{
+	//}
+#>
+	static string ffp = w(T[24]);
+}

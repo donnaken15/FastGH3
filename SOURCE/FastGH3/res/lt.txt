@@ -2,8 +2,8 @@ Initializing...
 FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n
 Shuffle section cannot be found in settings.ini.\nUsage:\n[Shuffle]\npath1=C:\\charts\\\npath2=D:\\charts2\\\npath3=E:\\retail_games\\\n
 Can't find any charts!
-Cannot find a file indicating of containing highway GFX.
-global.pak isn't named correctly.
+
+
 One of the entered files don't exist.
 MAIN LAUNCHERDOWNLOAD SONG FSP EXTRACT 
 Downloading song package...
@@ -82,13 +82,13 @@ ZIP not cached.
 Found cached FSP.
 Error: Cached FSP does not exist. Extracting.
 Error extracting a file: 
-Looking for command line accessible 7Zip.
-Looking for 7Zip in registry.
+Looking for command line accessible 7-Zip.
+Looking for 7-Zip in registry.
 Wait WTF, THE PROGRAM ISN'T THERE!! HOW!
 Could not find 7-Zip path in registry. Is it installed?
 Somehow looking for 7-Zip failed. Is it installed?
-7Zip is installed. Using that...
-7Zip could not be found.
+7-Zip is installed. Using that...
+7-Zip could not be found.
 Looking for command line accessible WinRAR or UnRar.exe
 Found UnRAR. Using that...
 UnRAR could not be found.
@@ -215,3 +215,10 @@ All supported types
 |Any type|*.*
 ERROR! ({0}) :(\nReason: {1}\nStack trace:\n{2}
 Version: {0}, build time: {1}, branch {2}
+Found extractor 7za.exe, but it does not support RAR extraction.\nIt is recommended you have the full 7-Zip suite installed\nto play songs stored in a wider range of archive formats.
+Got 7za.exe but the user is opening a RAR.
+Got nowhere to go, args = {0}
+^-(settings|gfxswap|shuffle)$
+Insufficient arguments.
+Cannot find a file indicating of containing highway GFX.
+global.pak isn't named correctly.

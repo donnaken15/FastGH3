@@ -103,7 +103,7 @@ script practicemode_section
 		GetSongTimeMs
 		if (<time> > $current_starttime)
 			practice_sectiontext ::SetProps text = ($current_section_array [($current_section_array_entry)].marker)
-			practice_sectiontext ::DoMorph \{alpha = 1.0 time = 0.5}
+			practice_sectiontext ::DoMorph \{alpha = 1.0 time = 0.3}
 			current_section_index = ($current_section_array_entry)
 			break
 		endif
@@ -112,13 +112,13 @@ script practicemode_section
 	begin
 		GetSongTimeMs
 		if (<time> > $current_endtime)
-			practice_sectiontext ::DoMorph \{alpha = 0.0 time = 0.5}
+			practice_sectiontext ::DoMorph \{alpha = 0.0 time = 0.3}
 			break
 		elseif NOT (<current_section_index> = ($current_section_array_entry))
-			practice_sectiontext ::DoMorph \{alpha = 0.0 time = 0.5}
+			practice_sectiontext ::DoMorph \{alpha = 0.0 time = 0.3}
 			wait \{0.5 Second}
 			practice_sectiontext ::SetProps text = ($current_section_array [($current_section_array_entry)].marker)
-			practice_sectiontext ::DoMorph \{alpha = 1.0 time = 0.5}
+			practice_sectiontext ::DoMorph \{alpha = 1.0 time = 0.3}
 			current_section_index = ($current_section_array_entry)
 		endif
 		wait \{1 gameframe}

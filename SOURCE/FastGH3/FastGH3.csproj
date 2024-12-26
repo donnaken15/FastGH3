@@ -59,18 +59,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'SharpZipLib|AnyCPU'">
     <DefineConstants>PC_ONLY;NO_ZLIB;SHARPDEV;USE_SZL</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-  <ItemGroup Condition="'0' == '1'">
-    <COMReference Include="Shell32">
-      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-  </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -471,8 +461,8 @@
     <Compile Include="..\dependencies\mid2chart\ChartWriter.cs">
       <Link>deps\mid2chart\ChartWriter.cs</Link>
     </Compile>
-    <Compile Include="..\dependencies\mid2chart\Event.cs">
-      <Link>deps\mid2chart\Event.cs</Link>
+    <Compile Include="..\dependencies\mid2chart\ChartProps.cs">
+      <Link>deps\mid2chart\ChartProps.cs</Link>
     </Compile>
     <Compile Include="..\dependencies\mid2chart\MidReader.cs">
       <Link>deps\mid2chart\MidReader.cs</Link>
@@ -552,26 +542,14 @@
     <Compile Include="..\dependencies\mid2chart\NAudio\Utils\ByteEncoding.cs">
       <Link>deps\mid2chart\NAudio\ByteEncoding.cs</Link>
     </Compile>
-    <Compile Include="..\dependencies\mid2chart\Note.cs">
-      <Link>deps\mid2chart\Note.cs</Link>
-    </Compile>
-    <Compile Include="..\dependencies\mid2chart\NoteSection.cs">
-      <Link>deps\mid2chart\NoteSection.cs</Link>
-    </Compile>
     <Compile Include="..\dependencies\mid2chart\Program.cs">
       <Link>deps\mid2chart\Program.cs</Link>
-    </Compile>
-    <Compile Include="..\dependencies\mid2chart\Section.cs">
-      <Link>deps\mid2chart\Section.cs</Link>
     </Compile>
     <Compile Include="..\dependencies\mid2chart\Song.cs">
       <Link>deps\mid2chart\Song.cs</Link>
     </Compile>
     <Compile Include="..\dependencies\mid2chart\Stopwatch.cs">
       <Link>deps\mid2chart\Stopwatch.cs</Link>
-    </Compile>
-    <Compile Include="..\dependencies\mid2chart\Sync.cs">
-      <Link>deps\mid2chart\Sync.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -248,7 +248,8 @@ script PrintPlayer\{player_status = player1_status}
 	//printstruct $<player_status>
 endscript
 
-// ../guitar/guitar_gems.q:664
+// ../guitar/guitar_gems.q:714
+mbt_display = 0
 mbt_b = 1
 script mbt_test
 	if NOT ScreenElementExists \{id = mbt_test}
@@ -272,7 +273,25 @@ script mbt_test
 	pad <measure> count = 4
 	m = <pad>
 	pad ($mbt_b) count = 2
-	FormatText textname = text 'M.B.T: %m:%b' m = <m> b = <pad>
+	b = <pad>
+	ExtendCrc \{$current_song '_timesig' out=timesig}
+	GetArraySize $<timesig>
+	GetSongTimeMs
+	i = 0
+	begin
+		ts = ($<timesig>[<i>])
+		if (<ts>[0] >= <time>)
+			break
+		endif
+		Increment \{i}
+	repeat <array_size>
+	i = (<i> - 1)
+	ts = ($<timesig>[<i>])
+	pad (<ts>[1]) count = 2
+	t = <pad>
+	pad (<ts>[2]) count = 2
+	s = <pad>
+	FormatText textname = text 'MBT: %m:%b - TS(%i): %t/%s' m = <m> b = <b> t = <t> s = <s> i = <i>
 	SetScreenElementProps id = mbt_test text = <text>
 endscript
 
@@ -368,6 +387,295 @@ endscript
 	// GLITCH DOESN'T HAPPEN ON MY THUG1 SCRIPT FILE WHERE
 	// I DON'T USE THE // FIX FOR IT
 
+
+
+
+
+
+
+
+
+
+
+
+/*script what
+	if EnumContentFiles \{dofiles}
+		begin
+			if EnumContentFilesFinished
+				break
+			else
+				printf \{"Waiting for Download Contend Enumeration"}
+				wait \{1 gameframe}
+			endif
+		repeat
+	else
+		printf 'fail'
+	endif
+	if IsEnumContentFilesDamaged
+		printf 'why'
+	endif
+	GetContentFolderIndexFromFile 'dl25.pak.xen'
+	printstruct <...>
+	if GetLatestContentIndexFile
+		printf \{"Found latest content index file:"}
+		printstruct <...>
+		mark_unsafe_for_shutdown
+		EnableDuplicateSymbolWarning \{OFF}
+		if NOT LoadPakAsync pak_name = <FileName> Heap = heap_downloads async = 1
+			EnableDuplicateSymbolWarning
+			mark_safe_for_shutdown
+			DownloadContentLost
+			return
+		endif
+		EnableDuplicateSymbolWarning
+		Change global_content_index_pak = <FileName>
+		mark_safe_for_shutdown
+		Downloads_LoadLanguageContent <...>
+	else
+		printf \{"Found no latest content index file"}
+	endif
+endscript
+
+
+
+GH3_Download_Songs = {
+	prefix = 'download'
+	num_tiers = 1
+	tier1 = {
+		title = "Downloaded songs"
+		songs = [
+		]
+		defaultunlocked = 4
+		level = load_z_artdeco
+	}
+}
+
+script scan_globaltag_downloads
+	printstruct ($GH3_Download_Songs)
+	setup_setlisttags \{SetList_Songs = GH3_Download_Songs Force = 1}
+	setup_songtags
+	setup_generalvenuetags
+	setup_characterguitar_tags
+endscript
+global_content_index_pak = 'none'
+global_content_index_pak_language = 'none'
+
+script Downloads_EnumContent
+	mark_unsafe_for_shutdown
+	if EnumContentFiles \{download dofiles}
+		begin
+			if EnumContentFilesFinished
+				break
+			else
+				printf \{"Waiting for Download Contend Enumeration"}
+				wait \{1 gameframe}
+			endif
+		repeat
+	endif
+	mark_safe_for_shutdown
+	if IsEnumContentFilesDamaged
+		destroy_popup_warning_menu
+		create_popup_warning_menu \{create_popup_warning_menu textblock = {text = "A content package appears damaged or unreadable. Please re-download the content package." wait 3 seconds}menu_pos = (640.0, 490.0) dialog_dims = (288.0, 64.0) options = [{func = {Downloads_Enumcontentfiles_Continue}text = "CONTINUE" Scale = (1.0, 1.0)}]}
+		Change \{Downloads_Enumcontentfiles_Continue_Flag = 0}
+		begin
+			if ($Downloads_Enumcontentfiles_Continue_Flag = 1)
+				break
+			endif
+			wait \{1 gameframe}
+		repeat
+	endif
+	if GetLatestContentIndexFile
+		printf \{"Found latest content index file:"}
+		printstruct <...>
+		mark_unsafe_for_shutdown
+		EnableDuplicateSymbolWarning \{OFF}
+		if NOT LoadPakAsync pak_name = <FileName> Heap = heap_downloads async = 1
+			EnableDuplicateSymbolWarning
+			mark_safe_for_shutdown
+			DownloadContentLost
+			return
+		endif
+		EnableDuplicateSymbolWarning
+		Change global_content_index_pak = <FileName>
+		mark_safe_for_shutdown
+		Downloads_LoadLanguageContent <...>
+	else
+		printf \{"Found no latest content index file"}
+	endif
+	if ScriptExists \{Downloads_Startup}
+		Downloads_Startup
+	endif
+	Downloads_PostEnumContent
+endscript
+
+script destroy_downloads_EnumContent
+	killspawnedscript \{name = Downloads_EnumContent}
+	Downloads_CloseContentFolder \{Force = 1}
+endscript
+
+script Downloads_LoadLanguageContent
+	FormatText textname = pakname '%s_text.pak' s = <stem>
+	if English
+		FormatText textname = pakname '%s_text.pak' s = <stem>
+	elseif French
+		FormatText textname = pakname '%s_text_f.pak' s = <stem>
+	elseif Italian
+		FormatText textname = pakname '%s_text_i.pak' s = <stem>
+	elseif German
+		FormatText textname = pakname '%s_text_g.pak' s = <stem>
+	elseif Spanish
+		FormatText textname = pakname '%s_text_s.pak' s = <stem>
+	endif
+	GetContentFolderIndexFromFile <pakname>
+	if (<device> = content)
+		printf "Download Language Content found %s" s = <pakname>
+		mark_unsafe_for_shutdown
+		EnableDuplicateSymbolWarning \{OFF}
+		if NOT LoadPakAsync pak_name = <pakname> Heap = heap_downloads async = 1
+			EnableDuplicateSymbolWarning
+			mark_safe_for_shutdown
+			DownloadContentLost
+			return
+		endif
+		EnableDuplicateSymbolWarning
+		Change global_content_index_pak_language = <pakname>
+		mark_safe_for_shutdown
+	else
+		printf "Download Language Content no found %s" s = <pakname>
+	endif
+endscript
+
+script Downloads_PostEnumContent
+	Download_RecreateZones
+	scan_globaltag_downloads
+endscript
+Downloads_Enumcontentfiles_Continue_Flag = 0
+
+script Downloads_Enumcontentfiles_Continue
+	Change \{Downloads_Enumcontentfiles_Continue_Flag = 1}
+endscript
+
+script Downloads_UnloadContent
+	killspawnedscript \{name = Downloads_OpenContentFolder}
+	Change \{downloadcontentfolder_lock = 0}
+	if NOT ($global_content_index_pak = 'none')
+		UnLoadPak ($global_content_index_pak)
+		Change \{global_content_index_pak = 'none'}
+	endif
+	if NOT ($global_content_index_pak_language = 'none')
+		UnLoadPak ($global_content_index_pak_language)
+		Change \{global_content_index_pak_language = 'none'}
+	endif
+endscript
+
+script Download_RecreateZones
+	mark_unsafe_for_shutdown
+	printf \{"Loading Zone"}
+	SetPakManCurrentBlock \{map = zones pak = None}
+	DestroyPakManMap \{map = zones}
+	MemPushContext \{heap_zones}
+	CreatePakManMap \{map = zones links = GH3Zones folder = 'zones/' uselinkslots}
+	MemPopContext
+	SetPakManCurrentBlock \{map = zones pak = z_soundcheck}
+	mark_safe_for_shutdown
+endscript
+downloadcontentfolder_lock = 0
+downloadcontentfolder_index = -1
+downloadcontentfolder_count = 0
+
+script Downloads_OpenContentFolder
+	mark_unsafe_for_shutdown
+	begin
+		if ($downloadcontentfolder_lock = 0)
+			break
+		endif
+		if ($downloadcontentfolder_index = <content_index>)
+			Change downloadcontentfolder_count = ($downloadcontentfolder_count + 1)
+			mark_safe_for_shutdown
+			return \{true}
+		endif
+		wait \{1 gameframe}
+	repeat
+	Change \{downloadcontentfolder_lock = 1}
+	if NOT OpenContentFolder content_index = <content_index>
+		mark_safe_for_shutdown
+		return \{FALSE}
+	endif
+	begin
+		GetContentFolderState
+		if (<contentfolderstate> = failed)
+			Change \{downloadcontentfolder_lock = 0}
+			mark_safe_for_shutdown
+			return \{FALSE}
+		endif
+		if (<contentfolderstate> = opened)
+			break
+		endif
+		wait \{1 gameframe}
+	repeat
+	Change downloadcontentfolder_count = ($downloadcontentfolder_count + 1)
+	Change downloadcontentfolder_index = <content_index>
+	mark_safe_for_shutdown
+	return \{true}
+endscript
+
+script Downloads_CloseContentFolder\{Force = 0}
+	mark_unsafe_for_shutdown
+	if (<Force> = 1)
+		if ($downloadcontentfolder_index = -1)
+			mark_safe_for_shutdown
+			return
+		endif
+	endif
+	if (<Force> = 1)
+		Change \{downloadcontentfolder_count = 0}
+	else
+		Change downloadcontentfolder_count = ($downloadcontentfolder_count - 1)
+		if ($downloadcontentfolder_count > 0)
+			Change \{downloadcontentfolder_count = 0}
+			mark_safe_for_shutdown
+			return \{true}
+		endif
+	endif
+	if (<Force> = 1)
+		content_index = ($downloadcontentfolder_index)
+	else
+		Change \{downloadcontentfolder_index = -1}
+	endif
+	if NOT CloseContentFolder content_index = <content_index>
+		Change \{downloadcontentfolder_lock = 0}
+		mark_safe_for_shutdown
+		return \{FALSE}
+	endif
+	begin
+		GetContentFolderState
+		if (<contentfolderstate> = free)
+			break
+		endif
+		wait \{1 gameframe}
+	repeat
+	Change \{downloadcontentfolder_lock = 0}
+	mark_safe_for_shutdown
+	return \{true}
+endscript
+
+
+*///
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // enabled on unpak for testing performance
 /**
 script ProfilingStart
@@ -404,4 +712,8 @@ script ProfilingEnd \{ time = 0.0 #"0x00000000" = 'unnamed script' ____profiling
 		____profiling_samples = <array>
 	}
 endscript
+
+
+
+
 
