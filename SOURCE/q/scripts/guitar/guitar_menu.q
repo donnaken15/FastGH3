@@ -843,7 +843,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 		Change \{winport_in_top_pause_menu = 1}
 	endif
 	pause_z = 11000000
-	menu_pos = (130.0, 140.0)
+	menu_pos = (130.0, 110.0)
 	menu_offset = (0.0, 0.0)
 	spacing = -59
 	text_scale = (0.85, 0.85)
@@ -853,7 +853,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 			menu_offset = (250.0, 15.0)
 		case extras
 			spacing = -72
-			text_scale = (0.63, 0.63)
+			text_scale = (0.6, 0.6)
 	endswitch
 	new_menu {
 		scrollid = scrolling_pause
@@ -1182,13 +1182,9 @@ script create_pause_menu\{Player = 1 submenu = none}
 					endif
 				endif
 				if isSinglePlayerGame
-					lefty_flip_text = "Lefty flip:"
+					lefty_flip_text = 'Lefty flip:'
 				else
-					if (<Player> = 1)
-						lefty_flip_text = "P1 Lefty:"
-					else
-						lefty_flip_text = "P2 Lefty:"
-					endif
+					FormatText textname=lefty_flip_text 'P%p lefty flip:' p=<player>
 				endif
 				CreateScreenElement {
 					Type = ContainerElement

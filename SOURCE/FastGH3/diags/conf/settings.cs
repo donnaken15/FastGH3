@@ -315,8 +315,8 @@ public partial class settings : Form
 	public settings()
 	{
 		vl2 = Launcher.cfg(Launcher.l, t.VerboseLog.ToString(), 0) == 1;
-		//if (!vl2)
-		//	Launcher.FreeConsole();
+		if (!vl2)
+			Launcher.FreeConsole();
 		Launcher.vl("Loading QBs...");
 		try {
 			userqb = new QbFile(Launcher.dataf + "config.qb.xen", new PakFormat("", "", "", PakFormatType.PC));
@@ -356,6 +356,7 @@ public partial class settings : Form
 		{
 			tt.SetToolTip(ctrl_hints[i], T[102 + i]);
 		}
+		crLink.Visible = Launcher.isTTY || vl2;
 		spL.Text = T[122];
 		selImg.Filter = Launcher.uf(T[187], true);
 		//bkgdPF = new PakFormat(
@@ -391,6 +392,7 @@ public partial class settings : Form
 			}
 			tLb.SetItemCheckState((int)t.NoParticles, state);
 		}
+		// MAKE INTO ARRAY AND FOR LOOP
 		tLb.SetItemChecked((int)t.KeyboardMode, Launcher.cfg("Player", "Autostart", 1) == 0); // autolaunch_startnow
 		tLb.SetItemChecked((int)t.Performance, Launcher.cfg("Player", t.Performance.ToString(), 0) == 1); // Cheat_PerformanceMode
 		tLb.SetItemChecked((int)t.NoIntro, Launcher.cfg("Player", t.NoIntro.ToString(), 0) == 1); // disable_intro
@@ -492,27 +494,14 @@ public partial class settings : Form
 			new Size(640, 480),
 			new Size(720, 480),
 			new Size(720, 576),
+			new Size(3440, 1440),
 		};
-		while (EDS(null, d++, ref mode) == true) // Succeeded  
+		while (EDS(null, d++, ref mode) == true) // Succeeded
 		{
-			Size newSz = new Size((int)mode.w, (int)mode.h);
+			Size newSz = new Size((int)mode.w, (int)mode.h); // hZ discarded
 			bool diff_ = true;
-			foreach (Size res_ in resz)
-			{
-				if (res_ == newSz)
-				{
-					diff_ = false;
-					break;
-				}
-			}
-			foreach (Size res_ in cantwork)
-			{
-				if (res_ == newSz)
-				{
-					diff_ = false;
-					break;
-				}
-			}
+			if (resz.Contains(newSz) || Array.IndexOf(cantwork, newSz) > -1)
+				diff_ = false;
 			if (diff_)
 				resz.Add(newSz);
 		}
@@ -526,6 +515,7 @@ public partial class settings : Form
 		res.Text = oldres.Width.ToString() + 'x' + oldres.Height.ToString();
 		//if (ini.GetSection("Player") == null)
 		{
+			// fix and make plugin check for QB value instead
 			MaxN.Value = (Launcher.cfg("Player", "MaxNotesAuto", 0) == 0)
 				? Launcher.cfg("Player", "MaxNotes", mxn_d) : -1;
 		}
@@ -636,8 +626,15 @@ public partial class settings : Form
 
 	void crlink(object sender, LinkLabelLinkClickedEventArgs e)
 	{
-		Console.Clear();
-		Console.WriteLine(Launcher.cr);
+		if (Launcher.isTTY || vl2)
+		{
+			Console.Clear();
+			Console.WriteLine(Launcher.cr);
+		}
+		else
+		{
+			
+		}
 	}
 
 	void hyVC(object sender, EventArgs e)

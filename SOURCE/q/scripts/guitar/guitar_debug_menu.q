@@ -17,17 +17,21 @@ script create_debugging_menu
 	CreateScreenElement \{Type = VMenu parent = debug_scrolling_menu id = debug_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back back_to_retail_ui_flow}]}
 	disable_pause
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Repeat Last Song' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_start_song params = {uselaststarttime}}]}
-	CreateScreenElement \{$debug_menu_params parent = debug_vmenu id = toggle_playermode_menuitem text = 'Play Song: 1p_quickplay' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left toggle_playermode_left}{pad_right toggle_playermode_right}{pad_choose select_playermode}]}
-	toggle_playermode_setprop
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu id = toggle_playermode_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left toggle_playermode params={prev}}{pad_right toggle_playermode}{pad_choose select_playermode}]}
+	IndexOf \{delegate=verify_checksum array=$game_mode_list $game_mode}
+	if (<indexof> < 0)
+		indexof = 0
+	endif
+	toggle_playermode_setprop <indexof>
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Settings' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_settings_menu}]}
-	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Skip Into Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipintosong_menu}]}
-	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Screenshot" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose screen_shot}]}
-	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Credits Test" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
-	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Save Replay Buffer" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
-	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Load Replay" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
-	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Zones" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose RefreshCurrentZones}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Skip Into Song' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipintosong_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Screenshot' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose screen_shot}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Credits Test' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose debug_playcredits}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Save Replay Buffer' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose save_replay}]}
+	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Load Replay' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
+	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Reload Zones' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose RefreshCurrentZones}]}
 	if ($fastgh3_branch = unpak)
-		CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = "Reload Scripts" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose reload_scripts}]}
+		CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Reload Scripts' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose reload_scripts}]}
 	endif
 	LaunchEvent \{Type = focus target = debug_vmenu}
 endscript
@@ -64,7 +68,7 @@ script destroy_all_debug_menus
 endscript
 
 script back_to_online_menu
-	printf \{"---back_to_online_menu"}
+	printf \{'---back_to_online_menu'}
 	quit_network_game
 	destroy_create_session_menu
 	create_online_menu
@@ -83,9 +87,9 @@ script create_songversion_menu
 		Pos = ($menu_pos + (40.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = songversion_scrolling_menu id = songversion_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
-	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = "Play GH3 Song" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh3}}]}
-	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = "Play GH2 Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh2}}]}
-	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = "Play GH1 Song" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh1}}]}
+	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = 'Play GH3 Song' z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh3}}]}
+	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = 'Play GH2 Song' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh2}}]}
+	CreateScreenElement \{$debug_menu_params parent = songversion_vmenu text = 'Play GH1 Song' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_song_menu params = {version = gh1}}]}
 	LaunchEvent \{Type = focus target = songversion_vmenu}
 endscript
 
@@ -248,32 +252,35 @@ script create_settings_menu
 		Pos = ($menu_pos - (30.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = settings_scrolling_menu id = settings_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Change Venue" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changevenue_menu}]}
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Change Guitar" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = guitar}}]}
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Change Bass" just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = bass}}]}
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_visibility_menuitem text = "Toggle visibility" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_togglevisibility_menu}]}
-	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = select_slomo_menuitem text = "Select Slomo : 1.0" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_slomo}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = 'Change Venue' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changevenue_menu}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = 'Change Guitar' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = guitar}}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = 'Change Bass' just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_changeguitar_menu params = {Type = bass}}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_visibility_menuitem text = 'Toggle visibility' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_togglevisibility_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = select_slomo_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose select_slomo}]}
 	select_slomo_setprop
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showmeasures_menuitem text = "Show Measures" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showmeasures}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showmeasures_menuitem text = 'Show Measures' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showmeasures}]}
 	//toggle_showmeasures_setprop
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showcameraname_menuitem text = "Show Camera Name" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showcameraname}]}
+	toggle_params = {glob=mbt_display prop=toggle_showmbt_menuitem label='M.B Display'}
+	CreateScreenElement $debug_menu_params parent = settings_vmenu id = toggle_showmbt_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_button params=<toggle_params>}]
+	toggle_setprop <toggle_params>
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showcameraname_menuitem text = 'Show Camera Name' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showcameraname}]}
 	//toggle_showcameraname_setprop
-	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_inputlog_menuitem text = "Show Input Log" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_inputlog}]}
-	toggle_inputlog_setprop
-	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_botp1_menuitem text = "Toggle Bot P1" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_botp1}]}
-	toggle_botp1_setprop
-	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_botp2_menuitem text = "Toggle Bot P2" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_botp2}]}
-	toggle_botp2_setprop
-	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = edit_inputlog_lines_menuitem text = "Input Log Lines" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left edit_inputlog_lines_left}{pad_right edit_inputlog_lines_right}]}
+	// TODO: make central function to cause less clutter with scripts for changing each option, and array here for this list of buttons
+	toggle_params = {glob=show_play_log prop=toggle_inputlog_menuitem label='Input log'}
+	CreateScreenElement $debug_menu_params parent = settings_vmenu id = toggle_inputlog_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_button params=<toggle_params>}]
+	toggle_setprop <toggle_params>
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_botp1_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_bot params={player=1}}]}
+	toggle_bot_setprop \{player_status = player1_status prop = toggle_botp1_menuitem}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_botp2_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_bot params={player=2}}]}
+	toggle_bot_setprop \{player_status = player2_status prop = toggle_botp2_menuitem}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = edit_inputlog_lines_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_left edit_inputlog_lines_left}{pad_right edit_inputlog_lines_right}]}
 	edit_inputlog_lines_setprop
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_tilt_menuitem text = "Show Input Log" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_tilt}]}
-	//toggle_tilt_setprop
-	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_leftyflip_menuitem text = "Leftyflip" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_leftyflip}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_leftyflip_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_leftyflip}]}
 	toggle_leftyflip_setprop
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = create_cameracut_menuitem text = "Select CameraCut" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_cameracut_menu}]}
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Toggle GPU Time" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_gpu_time}}]}
-	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = "Toggle CPU Time" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_cpu_time}}]}
-	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_forcescore_menuitem text = "Force Score" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_forcescore}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = create_cameracut_menuitem text = 'Select CameraCut' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_cameracut_menu}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = 'Toggle GPU Time' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_gpu_time}}]}
+	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu text = 'Toggle CPU Time' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_global params = {global_toggle = show_cpu_time}}]}
+	CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_forcescore_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_forcescore}]}
 	toggle_forcescore_setprop
 	LaunchEvent \{Type = focus target = settings_vmenu}
 endscript
@@ -293,13 +300,6 @@ script destroy_settings_menu
 	endif
 	//destroy_generic_backdrop
 endscript
-CameraCutPrefixArray = [
-	''
-]
-
-debug_camera_array = None
-debug_camera_array_pakname = None
-debug_camera_array_count = 0
 
 script select_playermode
 	Change player1_device = <device_num>
@@ -308,6 +308,8 @@ script select_playermode
 endscript
 
 script translate_gamemode
+	// should probably make a rules struct for stuff like this
+	// because i thought about implementing two new modes
 	switch $game_mode
 		case p1_quickplay
 			Change \{StructureName = player1_status part = guitar}
@@ -343,75 +345,46 @@ script translate_gamemode
 	endswitch
 endscript
 
-script toggle_playermode_left
-	switch $game_mode
-		case p1_quickplay
-			Change \{game_mode = training}
-		case p1_career
-			Change \{game_mode = p1_quickplay}
-		case p1_improv
-			Change \{game_mode = p1_career}
-		case p1_boss
-			Change \{game_mode = p1_improv}
-		case p2_faceoff
-			Change \{game_mode = p1_boss}
-		case p2_coop
-			Change \{game_mode = p2_faceoff}
-		case p2_battle
-			Change \{game_mode = p2_coop}
-		case p2_career
-			Change \{game_mode = p2_battle}
-		case training
-			Change \{game_mode = p2_career}
-	endswitch
-	toggle_playermode_setprop
+game_mode_list = [
+	'p1_quickplay'
+	'p1_career'
+	'p1_improv'
+	'p1_boss'
+	'p2_faceoff'
+	'p2_coop'
+	'p2_battle'
+	'p2_career'
+	'training'
+]
+script verify_checksum \{a=#"0xFFFFFFFF" b=''}
+	ExtendCrc #"0xFFFFFFFF" <b> out = c
+	if ChecksumEquals a = <a> b = <c>
+		return \{true}
+	endif
+	return \{false}
 endscript
-
-script toggle_playermode_right
-	switch $game_mode
-		case p1_quickplay
-			Change \{game_mode = p1_career}
-		case p1_career
-			Change \{game_mode = p1_improv}
-		case p1_improv
-			Change \{game_mode = p1_boss}
-		case p1_boss
-			Change \{game_mode = p2_faceoff}
-		case p2_faceoff
-			Change \{game_mode = p2_coop}
-		case p2_coop
-			Change \{game_mode = p2_battle}
-		case p2_battle
-			Change \{game_mode = p2_career}
-		case p2_career
-			Change \{game_mode = training}
-		case training
-			Change \{game_mode = p1_quickplay}
-	endswitch
-	toggle_playermode_setprop
+script toggle_playermode
+	GetArraySize \{$game_mode_list}
+	IndexOf \{delegate=verify_checksum array=$game_mode_list $game_mode}
+	if GotParam \{prev}
+		indexof = (<indexof> -1)
+		if (<indexof> < 0)
+			indexof = (<array_size> -1)
+		endif
+	else
+		Increment \{indexof}
+		if (<indexof> >= <array_size>)
+			indexof = 0
+		endif
+	endif
+	ugh = ($game_mode_list[<indexof>])
+	ExtendCrc #"0xFFFFFFFF" <ugh> out = game_mode
+	change game_mode = <game_mode>
+	toggle_playermode_setprop <indexof>
 endscript
-
 script toggle_playermode_setprop
-	switch $game_mode
-		case p1_quickplay
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: p1_quickplay"}
-		case p1_career
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: p1_career"}
-		case p1_improv
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: p1_improv"}
-		case p1_boss
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: p1_boss"}
-		case p2_faceoff
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: p2_faceoff"}
-		case p2_coop
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: p2_coop"}
-		case p2_battle
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: p2_battle"}
-		case p2_career
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: p2_career"}
-		case training
-			toggle_playermode_menuitem ::SetProps \{text = "Play Song: training"}
-	endswitch
+	text = ('Play song in '+($game_mode_list[<#"0x00000000">]))
+	toggle_playermode_menuitem ::SetProps text = <text>
 endscript
 
 script select_slomo
@@ -445,36 +418,10 @@ script update_slomo
 endscript
 
 script select_slomo_setprop
-	FormatText \{textname = slomo_text "Select Slomo : %s" s = $current_speedfactor}
+	FormatText \{textname = slomo_text 'Select Slomo: %s' s = $current_speedfactor}
 	select_slomo_menuitem ::SetProps text = <slomo_text>
 endscript
-debug_showmeasures = ON
-
-script toggle_inputlog
-	ui_menu_select_sfx
-	kill_debug_elements
-	if ($show_play_log = 0)
-		Change \{show_play_log = 1}
-	else
-		Change \{show_play_log = 0}
-	endif
-	toggle_inputlog_setprop
-	init_play_log
-endscript
-
-script toggle_botp1
-	ui_menu_select_sfx
-	kill_debug_elements
-	Change StructureName = player1_status bot_play = (1 - ($player1_status.bot_play))
-	toggle_botp1_setprop
-endscript
-
-script toggle_botp2
-	ui_menu_select_sfx
-	kill_debug_elements
-	Change StructureName = player2_status bot_play = (1 - ($player2_status.bot_play))
-	toggle_botp2_setprop
-endscript
+//debug_showmeasures = ON
 
 script edit_inputlog_lines_left
 	ui_menu_select_sfx
@@ -498,69 +445,77 @@ script edit_inputlog_lines_right
 	init_play_log
 endscript
 
-script toggle_tilt
+
+script toggle_showmbt
 	ui_menu_select_sfx
 	kill_debug_elements
-	if ($show_guitar_tilt = 0)
-		Change \{show_guitar_tilt = 1}
-	else
-		Change \{show_guitar_tilt = 0}
+	toggle_global \{mbt_display}
+	if ($mbt_display = 0)
+		killspawnedscript \{name = mbt_test}
+		if ScreenElementExists \{id = mbt_test}
+			DestroyScreenElement \{id = mbt_test}
+		endif
 	endif
-	toggle_tilt_setprop
-	init_play_log
+	toggle_showmbt_setprop
 endscript
 
-script toggle_inputlog_setprop
-	if ($show_play_log = 0)
-		toggle_inputlog_menuitem ::SetProps \{text = "Show Input Log : off"}
-	else
-		toggle_inputlog_menuitem ::SetProps \{text = "Show Input Log : on"}
+script toggle_button
+	toggle_global <glob>
+	toggle_setprop <...>
+endscript
+script toggle_setprop
+	if NOT ScreenElementExists id=<prop>
+		printf 'moron'
+		return
 	endif
+	Ternary ($<glob> = 0) a = 'off' b = 'on'
+	FormatText textname=text '%l: %b' l=<label> b=<ternary>
+	SetScreenElementProps id=<prop> text=<text>
 endscript
 
-script toggle_botp1_setprop
-	if (($player1_status.bot_play)= 0)
-		toggle_botp1_menuitem ::SetProps \{text = "Toggle Bot P1: Off"}
-	else
-		toggle_botp1_menuitem ::SetProps \{text = "Toggle Bot P1: On"}
-	endif
+script toggle_bot
+	ui_menu_select_sfx
+	kill_debug_elements
+	FormatText checksumname = player_status 'player%d_status' d = <player>
+	Change StructureName = <player_status> bot_play = (1 - ($<player_status>.bot_play))
+	toggle_bot_setprop <...>
 endscript
 
-script toggle_botp2_setprop
-	if (($player2_status.bot_play)= 0)
-		toggle_botp2_menuitem ::SetProps \{text = "Toggle Bot P2: Off"}
-	else
-		toggle_botp2_menuitem ::SetProps \{text = "Toggle Bot P2: On"}
-	endif
+script toggle_bot_setprop
+	Ternary ($<player_status>.bot_play = 0) a = 'off' b = 'on'
+	FormatText textname=text 'Bot P%p: %b' p=($<player_status>.player) b=<ternary>
+	SetScreenElementProps id=<prop> text=<text>
 endscript
 
 script edit_inputlog_lines_setprop
-	FormatText textname = text "Input Log Lines: %l" l = ($play_log_lines)DontAssertForChecksums
+	FormatText \{textname = text 'Input Log Lines: %l' l = $play_log_lines DontAssertForChecksums}
 	edit_inputlog_lines_menuitem ::SetProps text = <text>
 endscript
 
+/*script toggle_tilt
+	ui_menu_select_sfx
+	kill_debug_elements
+	toggle_global \{show_guitar_tilt}
+	toggle_tilt_setprop
+endscript
 script toggle_tilt_setprop
 	if ($show_guitar_tilt = 0)
-		toggle_tilt_menuitem ::SetProps \{text = "Show Tilt : off"}
+		toggle_tilt_menuitem ::SetProps \{text = 'Show Tilt : off'}
 	else
-		toggle_tilt_menuitem ::SetProps \{text = "Show Tilt : on"}
+		toggle_tilt_menuitem ::SetProps \{text = 'Show Tilt : on'}
 	endif
-endscript
+endscript*/
 
 script toggle_leftyflip
 	ui_menu_select_sfx
-	toggle_global \{p1_lefty}
-	Change \{StructureName = player1_status lefthanded_gems = $p1_lefty}
-	Change \{StructureName = player1_status lefthanded_button_ups = $p1_lefty}
+	Change StructureName = player1_status lefthanded_gems = (1 - $player1_status.lefthanded_gems)
+	Change StructureName = player1_status lefthanded_button_ups = ($player1_status.lefthanded_gems)
 	toggle_leftyflip_setprop
 endscript
 
 script toggle_leftyflip_setprop
-	if ($p1_lefty = 0)
-		toggle_leftyflip_menuitem ::SetProps \{text = "Lefty Flip : off"}
-	else
-		toggle_leftyflip_menuitem ::SetProps \{text = "Lefty Flip : on"}
-	endif
+	Ternary ($player1_status.lefthanded_gems = 0) a = 'off' b = 'on'
+	toggle_leftyflip_menuitem ::SetProps text = ('Lefty flip: '+<ternary>)
 endscript
 debug_forcescore = OFF
 
@@ -585,20 +540,20 @@ endscript
 script toggle_forcescore_setprop
 	switch $debug_forcescore
 		case OFF
-			toggle_forcescore_menuitem ::SetProps \{text = "Force Score : off"}
+			toggle_forcescore_menuitem ::SetProps \{text = 'Force score: off'}
 		case poor
-			toggle_forcescore_menuitem ::SetProps \{text = "Force Score : poor"}
+			toggle_forcescore_menuitem ::SetProps \{text = 'Force score: poor'}
 		case medium
-			toggle_forcescore_menuitem ::SetProps \{text = "Force Score : medium"}
+			toggle_forcescore_menuitem ::SetProps \{text = 'Force score: medium'}
 		case good
-			toggle_forcescore_menuitem ::SetProps \{text = "Force Score : good"}
+			toggle_forcescore_menuitem ::SetProps \{text = 'Force score: good'}
 		default
-			toggle_forcescore_menuitem ::SetProps \{text = "Force Score : off"}
+			toggle_forcescore_menuitem ::SetProps \{text = 'Force score: off'}
 	endswitch
 endscript
 
-script back_to_changehighway_menu
-	create_changehighway_menu
+/*script back_to_changehighway_menu
+	create_changehighway_menu // WHAT IS THIS
 endscript
 
 script destroy_changehighway_menu
@@ -632,7 +587,7 @@ script create_togglevisibility_menu
 		Pos = ($menu_pos + (70.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = togglevisibility_scrolling_menu id = togglevisibility_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_settings_menu}}]}
-	CreateScreenElement \{$debug_menu_params parent = togglevisibility_vmenu id = toggle_bandvisible_menuitem text = "Toggle band" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_bandvisible}]}
+	CreateScreenElement \{$debug_menu_params parent = togglevisibility_vmenu id = toggle_bandvisible_menuitem text = 'Toggle band' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_bandvisible}]}
 	toggle_bandvisible_setprop
 	GetArraySize \{$HideByType_List}
 	array_count = 0
@@ -643,7 +598,7 @@ script create_togglevisibility_menu
 			$debug_menu_params
 			parent = togglevisibility_vmenu
 			id = <menuitem_checksum>
-			text = ""
+			text = ''
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -653,7 +608,7 @@ script create_togglevisibility_menu
 		array_count = (<array_count> + 1)
 	repeat <array_Size>
 	toggle_hidebytype_setprop
-	CreateScreenElement \{$debug_menu_params parent = togglevisibility_vmenu id = toggle_highway_menuitem text = "Toggle highway" z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_highway}]}
+	CreateScreenElement \{$debug_menu_params parent = togglevisibility_vmenu id = toggle_highway_menuitem text = 'Toggle highway' z_priority = 100.0 just = [left top] event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_highway}]}
 	toggle_highway_setprop
 	LaunchEvent \{Type = focus target = togglevisibility_vmenu}
 endscript
@@ -696,9 +651,9 @@ endscript
 
 script toggle_highway_setprop
 	if ($highwayvisible = OFF)
-		toggle_highway_menuitem ::SetProps \{text = "Toggle highway : off"}
+		toggle_highway_menuitem ::SetProps \{text = 'Toggle highway: off'}
 	else
-		toggle_highway_menuitem ::SetProps \{text = "Toggle highway : on"}
+		toggle_highway_menuitem ::SetProps \{text = 'Toggle highway: on'}
 	endif
 endscript
 bandvisible = On
@@ -711,9 +666,9 @@ endscript
 
 script toggle_bandvisible_setprop
 	if ($bandvisible = OFF)
-		toggle_bandvisible_menuitem ::SetProps \{text = "Toggle band : off"}
+		toggle_bandvisible_menuitem ::SetProps \{text = 'Toggle band : off'}
 	else
-		toggle_bandvisible_menuitem ::SetProps \{text = "Toggle band : on"}
+		toggle_bandvisible_menuitem ::SetProps \{text = 'Toggle band : on'}
 	endif
 endscript
 
@@ -747,15 +702,15 @@ script toggle_hidebytype_setprop
 	array_count = 0
 	begin
 		if (($HideByType_Visible [<array_count>])= OFF)
-			FormatText textname = menutext "Toggle %s : off" s = ($HideByType_List [<array_count>])
+			FormatText textname = menutext 'Toggle %s : off' s = ($HideByType_List [<array_count>])
 		else
-			FormatText textname = menutext "Toggle %s : on" s = ($HideByType_List [<array_count>])
+			FormatText textname = menutext 'Toggle %s : on' s = ($HideByType_List [<array_count>])
 		endif
 		FormatText checksumName = menuitem_checksum 'toggle_hidebytype_menuitem_%s' s = ($HideByType_List [<array_count>])
 		<menuitem_checksum> ::SetProps text = <menutext>
 		array_count = (<array_count> + 1)
 	repeat <array_Size>
-endscript
+endscript*/
 
 script create_skipintosong_menu
 	ui_menu_select_sfx
@@ -770,10 +725,10 @@ script create_skipintosong_menu
 		Pos = ($menu_pos + (20.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = skipintosong_scrolling_menu id = skipintosong_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_debug_menu}}]}
-	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = "Skip By Time" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbytime_menu}]}
-	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = "Skip By Marker" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymarker_menu}]}
-	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = "Skip By Measure" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymeasure_menu}]}
-	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = "Set Loop Point" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_looppoint_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = 'Skip By Time' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbytime_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = 'Skip By Marker' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymarker_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = 'Skip By Measure' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymeasure_menu}]}
+	CreateScreenElement \{$debug_menu_params parent = skipintosong_vmenu text = 'Set Loop Point' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_looppoint_menu}]}
 	LaunchEvent \{Type = focus target = skipintosong_vmenu}
 endscript
 
@@ -827,7 +782,7 @@ script create_skipbytime_menu
 		CreateScreenElement {
 			$debug_menu_params
 			parent = skipbytime_vmenu
-			text = "No Loop Point"
+			text = 'No Loop Point'
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -840,7 +795,7 @@ script create_skipbytime_menu
 	max_time = (($<fretbar_array> [(<array_Size> - 1)])/ 1000)
 	current_time = 0
 	begin
-		FormatText textname = menu_itemname "Time %ss" s = <current_time>
+		FormatText textname = menu_itemname 'Time %ss' s = <current_time>
 		if (<current_time> < <max_time>)
 			CreateScreenElement {
 				$debug_menu_params
@@ -906,7 +861,7 @@ script create_skipbymarker_menu
 		CreateScreenElement {
 			$debug_menu_params
 			parent = skipbymarker_vmenu
-			text = "No Loop Point"
+			text = 'No Loop Point'
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -920,7 +875,7 @@ script create_skipbymarker_menu
 		CreateScreenElement {
 			$debug_menu_params
 			parent = skipbymarker_vmenu
-			text = "start"
+			text = 'Start (0s)'
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -993,7 +948,7 @@ script create_skipbymeasure_menu
 		CreateScreenElement {
 			$debug_menu_params
 			parent = skipbymeasure_vmenu
-			text = "No Loop Point"
+			text = 'No Loop Point'
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
@@ -1048,8 +1003,8 @@ script create_skipbymeasure_menu
 			measures_per_menuitem_count = (<measures_per_menuitem_count> + 1)
 			if (<measures_per_menuitem_count> = <measures_per_menuitem>)
 				time = ($<fretbar_array> [(<array_entry>)])
-				FormatText textname = menu_itemname "Measure %m (%ss)" s = (<time> / 1000.0)m = <measure_count>
-				printf "%m" m = <menu_itemname>
+				FormatText textname = menu_itemname 'Measure %m (%ss)' s = (<time> / 1000.0)m = <measure_count>
+				printf '%m' m = <menu_itemname>
 				CreateScreenElement {
 					$debug_menu_params
 					parent = skipbymeasure_vmenu
@@ -1097,9 +1052,9 @@ script create_looppoint_menu
 		Pos = ($menu_pos + (20.0, 0.0))
 	}
 	CreateScreenElement \{Type = VMenu parent = looppoint_scrolling_menu id = looppoint_vmenu Pos = (0.0, 0.0) just = [left top] event_handlers = [{pad_up generic_menu_up_or_down_sound params = {up}}{pad_down generic_menu_up_or_down_sound params = {down}}{pad_back generic_menu_pad_back params = {callback = back_to_skipintosong_menu}}]}
-	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = "Loop By Time" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbytime_menu params = {looppoint}}]}
-	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = "Loop By Marker" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymarker_menu params = {looppoint}}]}
-	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = "Loop By Measure" event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymeasure_menu params = {looppoint}}]}
+	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = 'Loop By Time' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbytime_menu params = {looppoint}}]}
+	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = 'Loop By Marker' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymarker_menu params = {looppoint}}]}
+	CreateScreenElement \{$debug_menu_params parent = looppoint_vmenu text = 'Loop By Measure' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_skipbymeasure_menu params = {looppoint}}]}
 	LaunchEvent \{Type = focus target = looppoint_vmenu}
 endscript
 
@@ -1143,7 +1098,7 @@ script create_replay_menu
 			event_handlers = [
 				{focus menu_focus}
 				{unfocus menu_unfocus}
-				{pad_choose restart_gem_scroller params = {replay = <FileName> song_name = "blah" difficulty = "blah" difficulty2 = "blah"}}
+				{pad_choose restart_gem_scroller params = {replay = <FileName> song_name = 'blah' difficulty = 'blah' difficulty2 = 'blah'}}
 			]
 		}
 		<index> = (<index> + 1)

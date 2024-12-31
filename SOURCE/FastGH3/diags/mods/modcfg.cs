@@ -147,6 +147,14 @@ public partial class modcfg : Form
 				}
 				break;
 		}
+		string[] ini_kv;
+		if ((ini_kv = (string[])getItem(qs, QbKey.Create("ini"))) != null)
+		{
+			if (ini_kv.Length != 2) // forgot if root key/values are even allowed by winapi
+				throw new TypeLoadException("INI section/key specifier is invalid in this current setting");
+			Launcher.cfgW(ini_kv[0], ini_kv[1], value.ToString());
+			return;
+		}
 		settings.sQC(QbKey.Create(nonunique+name), value);
 	}
 	void setConfColor(object s, EventArgs e)
@@ -181,9 +189,13 @@ public partial class modcfg : Form
 			};
 			//i.FindItem(QbKey.Create("name"), false);
 			string paramTitle = structString(i, QbKey.Create("name"));
+			string[] kv_test;
+			bool iniVal = false;
+			if (iniVal = ((kv_test = (string[])getItem(i, QbKey.Create("ini"))) != null))
+				paramTitle = kv_test[1];
 			//string qname = paramTitle;
 			//if (nonunique != "")
-				//qname = nonunique + qname;
+			//qname = nonunique + qname;
 			Label paramName = new Label() {
 				Font = font,
 				Location = new Point(2,0),
@@ -225,13 +237,29 @@ public partial class modcfg : Form
 				ctrlType = ((QbKey)getItem(i, QbKey.Create("type"))).Crc;
 			QbItemBase defaultItem = (i.FindItem(QbKey.Create("default"), false));
 			object def = moddiag.getItemObject(defaultItem);
-			object setordef = settings.gQC(QbKey.Create(nonunique + paramTitle), def);
+			object setordef;
+			if (iniVal)
+				setordef = settings.gQC(QbKey.Create(nonunique + paramTitle), def);
+			else
+			{
+				setordef = Launcher.cfg(kv_test[0], kv_test[1], null);
+				if (kv_test.Length != 2)
+				{
+					defaultItem = null;
+					ctrlType = 0; // :(
+				}
+				if (string.IsNullOrEmpty((string)setordef)) // ^ i think null is getting treated as ""
+					setordef = def;
+			}
 			switch (ctrlType)
 			{
 				// uses int
 				case 0xAA7EC96D: // bool
 				case 0x8C79023A: // bool3
-					if (setordef == null) setordef = 0;
+					if (setordef == null)
+						setordef = 0;
+					if (iniVal)
+						setordef = Convert.ToInt32(setordef);
 					/*if (defaultItem.QbItemType != QbItemType.StructItemInteger ||
 						((defaultItem.QbItemType != QbItemType.StructItemQbKey &&
 						(((QbKey)def).Crc != 0x0203B372) && (((QbKey)def).Crc != 0xD43297CF))))
@@ -243,14 +271,17 @@ public partial class modcfg : Form
 						FlatStyle = FlatStyle.System,
 						ThreeState = ctrlType == 0x8C79023A,
 						Text = "Toggle",
-						CheckState = (CheckState)setordef,
+						CheckState = (CheckState)Enum.Parse(typeof(CheckState), Convert.ToString(setordef)), // unironically die
 						Name = paramTitle
 					};
 					(paramCtrl as CheckBox).CheckStateChanged += new EventHandler(setParamValue);
 					newParam.Height -= 4;
 					break;
 				case 0x3038EFF8: // slider
-					if (setordef == null) setordef = 0;
+					if (setordef == null)
+						setordef = 0;
+					if (iniVal)
+						setordef = Convert.ToInt32(setordef);
 					paramCtrl = new TrackBar()
 					{
 						Location = new Point(2, 20),
@@ -274,7 +305,10 @@ public partial class modcfg : Form
 					newParam.Controls.Add(trackbarText);
 					break;
 				case 0x99A9B716: // color
-					if (setordef == null) setordef = new int[] { 255, 255, 255, 255 }; // im cringing
+					if (setordef == null)
+						setordef = ColorToArray(Color.White);
+					if (iniVal)
+						setordef = uint.Parse((string)setordef, System.Globalization.NumberStyles.HexNumber); // to look proper and a recognizable format
 					paramCtrl = new Panel()
 					{
 						Location = new Point(2, 22),
@@ -311,6 +345,8 @@ public partial class modcfg : Form
 								(paramCtrl as TextBox).TextChanged += new EventHandler(setParamValue);
 								break;
 							case QbItemType.StructItemInteger:
+								if (iniVal)
+									setordef = Convert.ToInt32(setordef);
 								paramCtrl = new NumericUpDown()
 								{
 									Location = new Point(2, 23),
@@ -323,6 +359,8 @@ public partial class modcfg : Form
 								(paramCtrl as NumericUpDown).ValueChanged += new EventHandler(setParamValue);
 								break;
 							case QbItemType.StructItemFloat:
+								if (iniVal)
+									setordef = Convert.ToSingle(setordef);
 								paramCtrl = new NumericUpDown()
 								{
 									Location = new Point(2, 23),
@@ -340,7 +378,7 @@ public partial class modcfg : Form
 								{
 									Location = new Point(2, 24),
 									FlatStyle = FlatStyle.System,
-									Text = "Invalid type ("+defaultItem.QbItemType+")"
+									Text = "Unsupported/invalid type ("+defaultItem.QbItemType+")"
 								};
 								break;
 						}
@@ -355,12 +393,7 @@ public partial class modcfg : Form
 	}
 	public static Color ColorFromArray(int[] value)
 	{
-		return Color.FromArgb(
-			(value[0] << 16) |
-			(value[1] << 8) |
-			(value[2]) |
-			(value[3] << 24)
-		);
+		return Color.FromArgb((value[0] << 16) | (value[1] << 8) | (value[2]) | (value[3] << 24));
 	}
 	public static int[] ColorToArray(Color value)
 	{

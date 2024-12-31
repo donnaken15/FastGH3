@@ -370,6 +370,7 @@ script guitar_startup
 		
 		if ScriptExists \{startup}
 			startup // optional thing to load from config.qb/user.pak
+			// also [Mods] AutoExec to execute raw line(s) of code using eval
 		endif
 	// endregion
 	
@@ -607,6 +608,11 @@ script guitar_startup
 				kill_gems_on_hit
 				name='Hide Gems Upon Hit'
 				type=bool sect='GFX' key='KillGemsHit'
+			}
+			{
+				disable_notestreak_notif
+				name='Hide Note Streak Heads Up'
+				type=bool sect='GFX' key='NoStreakDisp'
 			}
 			{
 				enable_button_cheats

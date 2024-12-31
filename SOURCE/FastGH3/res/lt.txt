@@ -2,8 +2,8 @@ Initializing...
 FastGH3 Launcher LogTM(C)(R)Allrightsreserved\n
 Shuffle section cannot be found in settings.ini.\nUsage:\n[Shuffle]\npath1=C:\\charts\\\npath2=D:\\charts2\\\npath3=E:\\retail_games\\\n
 Can't find any charts!
-
-
+Can't find a suitable QB item type for that object.
+Recursive or multi-dimensional arrays are not supported yet.
 One of the entered files don't exist.
 MAIN LAUNCHERDOWNLOAD SONG FSP EXTRACT 
 Downloading song package...

@@ -919,7 +919,7 @@ script GuitarEvent_SongWon_Spawned
 	rock_legend = 0
 	fit_dims = (350.0, 0.0)
 	if ($battle_sudden_death = 1)
-		winner_text = "Sudden Death!"
+		winner_text = 'Sudden Death!'
 		winner_space_between = (80.0, 0.0)
 		winner_scale = 5.0
 	else
@@ -927,10 +927,10 @@ script GuitarEvent_SongWon_Spawned
 			p1_health = ($player1_status.current_health)
 			p2_health = ($player2_status.current_health)
 			if (<p2_health> > <p1_health>)
-				winner = "Two"
+				winner = 'Two'
 				SoundEvent \{event = UI_2ndPlayerWins_SFX}
 			else
-				winner = "One"
+				winner = 'One'
 				SoundEvent \{event = UI_1stPlayerWins_SFX}
 			endif
 			if ($is_network_game)
@@ -944,9 +944,9 @@ script GuitarEvent_SongWon_Spawned
 				FormatText textname = winner_text <name>
 				<text_pos> = (640.0, 240.0)
 			else
-				FormatText textname = winner_text "Player %s Rocks!" s = <winner>
+				FormatText textname = winner_text 'Player %s Rocks!' s = <winner>
 			endif
-			winner_space_between = (50.0, 0.0)
+			winner_space_between = (80.0, 0.0)
 			winner_scale = 5.0
 		elseif ($game_mode = p2_faceoff || $game_mode = p2_pro_faceoff)
 			p1_score = ($player1_status.score)

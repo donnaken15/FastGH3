@@ -121,28 +121,33 @@ script muh_arby_bot_star
 			j = 3
 			begin
 				formattext checksumname = player_status 'player%i_status' i = <i>
-				if ($<player_status>.bot_play = 1)
-					count = ($<player_status>.current_num_powerups)
-					if (<count> > 0)
-						ExtendCrc current_powerups_ ($<player_status>.text) out=pows
-						current_powerup = ($<pows>[(<count> - 1)])
-						if (randomrange (0.0, 100.0) > 90.0 || <current_powerup> = 3 || <current_powerup> = 8)
-							formattext checksumname = other_player_status 'player%i_status' i = (<j> - <i>)
-							if NOT ((<current_powerup> = 3 & // steal immediately if other has powerups
-										$<other_player_status>.current_num_powerups = 0) |
-									(<current_powerup> = 8 & // use starpower if not green or not active
-										($<player_status>.current_health > $health_medium_good |
-											$<player_status>.star_power_used = 1)))
-								// can't use multiple NOTs within conditions, stupid
-								if (<current_powerup> = 8 & $<player_status>.star_power_used = 1)
-									wait \{2 gameframe}
-									// causes display glitch if i don't wait when the bot has 2 star powers
-								endif
-								battle_trigger_on player_status = <player_status>
-							endif
-						endif
+				begin
+					if NOT ($<player_status>.bot_play = 1)
+						break // HACK AGAIN
 					endif
-				endif
+					count = ($<player_status>.current_num_powerups)
+					if (<count> < 1)
+						break //
+					endif
+					ExtendCrc current_powerups_ ($<player_status>.text) out=pows
+					current_powerup = ($<pows>[(<count> - 1)])
+					if NOT (randomrange (0.0, 100.0) > 90.0 || <current_powerup> = 3 || <current_powerup> = 8)
+						break //
+					endif
+					formattext checksumname = other_player_status 'player%i_status' i = (<j> - <i>)
+					if NOT ((<current_powerup> = 3 & // steal immediately if other has powerups
+								$<other_player_status>.current_num_powerups = 0) |
+							(<current_powerup> = 8 & // use starpower if not green or not active
+								($<player_status>.current_health > $health_medium_good |
+									$<player_status>.star_power_used = 1)))
+						// can't use multiple NOTs within conditions, stupid
+						if (<current_powerup> = 8 & $<player_status>.star_power_used = 1)
+							wait \{2 gameframe}
+							// causes display glitch if i don't wait when the bot has 2 star powers
+						endif
+						battle_trigger_on player_status = <player_status>
+					endif
+				repeat 1
 				Increment \{i}
 			repeat ($current_num_players)
 		repeat
@@ -252,6 +257,7 @@ endscript
 mbt_display = 0
 mbt_b = 1
 script mbt_test
+	SetSpawnInstanceLimits \{Max = 1 management = ignore_spawn_request}
 	if NOT ScreenElementExists \{id = mbt_test}
 		CreateScreenElement {
 			type = TextElement
@@ -324,7 +330,6 @@ script FastFormatCrc \{#"0xFFFFFFFF"}
 	// FormatText checksumName = gem_array '%s_%t_%p%d' s = <song_prefix> t = 'song' p = <part> d = <difficulty_text_nl> AddToStringLookup
 	// replaced with
 	// FastFormatCrc $current_song a = '_song_' b = <part> c = <difficulty_text_nl> out = gem_array
-	// also why does the game have a conniption fit when i create a variable named "test"
 	if NOT GotParam \{#"0x00000000"}
 		return
 	endif
@@ -397,7 +402,7 @@ endscript
 
 
 
-
+// HOW USE
 /*script what
 	if EnumContentFiles \{dofiles}
 		begin

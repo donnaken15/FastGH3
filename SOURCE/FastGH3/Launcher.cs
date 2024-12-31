@@ -585,7 +585,7 @@ public static partial class Launcher
 			sb = T[213] + idk + string.Join(";*.", supportedtypes.ToArray()) + sb;
 		return sb;
 	}
-	static bool isTTY = false;
+	public static bool isTTY = false;
 	static void pt(byte i)
 	{
 		log.WriteLine(T[15], T[7].Substring(i*13, 13));
@@ -989,7 +989,7 @@ public static partial class Launcher
 							if (gfx == null)
 							{
 								// "Cannot find a file indicating of containing highway GFX."
-								MessageBox.Show(T[4], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+								MessageBox.Show(T[222], "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 								return 1;
 							}
 							// someone actually tried dragging default.scn into this

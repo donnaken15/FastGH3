@@ -86,6 +86,7 @@ script IndexOf \{delegate = IntegerEquals #"0x00000000" = 0 array = []}
 	;if NOT ArrayContains array = <array> contains = <#"0x00000000">
 	;	return
 	;endif
+	// implement reverse scanning for multiple occurrences?
 	GetArraySize \{array}
 	if (<array_size> > 0)
 		i = 0
