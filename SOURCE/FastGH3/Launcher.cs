@@ -1609,7 +1609,7 @@ public static partial class Launcher
 					killgame();
 					string CMDpath = where("cmd.exe");
 					if (CMDpath == "") // somehow someone got an error of a process starting
-						CMDpath = "cmd"; // assuming its one of these building scripts
+						CMDpath = "C:\\windows\\system32\\cmd.exe"; // assuming its one of these building scripts
 					try
 					{
 						if (Directory.Exists(mt + "fsbtmp"))
