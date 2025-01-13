@@ -202,7 +202,7 @@ script training_create_whammy_sprites
 	else
 		whammy_pos = (666.0, 416.0)
 	endif
-	whammy_scale = (0.699999988079071, 0.699999988079071)
+	whammy_scale = (0.7, 0.7)
 	z = 21
 	CreateScreenElement {
 		parent = training_container
@@ -263,7 +263,7 @@ script training_create_whammy_arrows
 	else
 		whammy_pos = (616.0, 356.0)
 	endif
-	whammy_scale = (0.699999988079071, 0.699999988079071)
+	whammy_scale = (0.7, 0.7)
 	z = 21
 	CreateScreenElement {
 		parent = training_container
@@ -340,7 +340,7 @@ script training_2_2_show_whammy
 	training_set_lesson_header_body \{text = ""}
 	training_show_lesson_header
 	safe_show \{id = lou_icon}
-	//CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = tutorial_guitar_angle Pos = (300.0, 350.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (0.6000000238418579, 0.6000000238418579) z_priority = 20}
+	//CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = tutorial_guitar_angle Pos = (300.0, 350.0) rot_angle = 0 rgba = [255 255 255 255] Scale = (0.6, 0.6) z_priority = 20}
 	training_create_whammy_sprites
 	training_create_whammy_arrows
 	if IsWinPort
@@ -522,7 +522,7 @@ script training_2_3_explain
 	training_play_sound \{Sound = 'Tutorial_2C_01_lou'}
 	training_add_arrow \{id = training_arrow2 life = 6 Pos = (970.0, 430.0) Scale = 0.7 rot = 0}
 	wait \{7.0 seconds ignoreslomo}
-	CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = tutorial_controller_guitar Pos = (630.0, 400.0) rot_angle = 45 rgba = [255 255 255 255] Scale = (0.800000011920929, 0.800000011920929) z_priority = 4}
+	CreateScreenElement \{parent = training_container Type = SpriteElement id = guitar_sprite just = [center center] texture = tutorial_controller_guitar Pos = (630.0, 400.0) rot_angle = 45 rgba = [255 255 255 255] Scale = (0.8, 0.8) z_priority = 4}
 	wait \{0.5 seconds ignoreslomo}
 	DoScreenElementMorph \{id = guitar_sprite rot_angle = 0 time = 1.0}
 	wait \{3.75 seconds ignoreslomo}

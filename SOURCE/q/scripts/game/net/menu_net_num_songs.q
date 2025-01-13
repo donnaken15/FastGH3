@@ -43,7 +43,7 @@
 		Type = TextElement
 		parent = online_menu_ui_container
 		font = text_a4
-		Scale = (0.6500000357627869, 0.75)
+		Scale = (0.65, 0.75)
 		rgba = ($online_medium_blue)
 		text = <menu_title>
 		just = [center top]
@@ -55,7 +55,7 @@
 		Type = TextElement
 		parent = online_menu_ui_container
 		font = fontgrid_title_gh3
-		Scale = (0.6500000357627869, 0.75)
+		Scale = (0.65, 0.75)
 		rgba = ($online_dark_purple)
 		text = <menu_subtitle>
 		just = [center top]
@@ -68,7 +68,7 @@
 		Type = TextElement
 		parent = <vmenu_id>
 		font = fontgrid_title_gh3
-		Scale = (0.6500000357627869, 0.75)
+		Scale = (0.65, 0.75)
 		rgba = ($online_light_blue)
 		text = "1"
 		just = [left top]
@@ -91,7 +91,7 @@
 		Type = TextElement
 		parent = <vmenu_id>
 		font = fontgrid_title_gh3
-		Scale = (0.6500000357627869, 0.75)
+		Scale = (0.65, 0.75)
 		rgba = ($online_light_blue)
 		text = <option_text_num3>
 		just = [left top]
@@ -114,7 +114,7 @@
 		Type = TextElement
 		parent = <vmenu_id>
 		font = fontgrid_title_gh3
-		Scale = (0.6500000357627869, 0.75)
+		Scale = (0.65, 0.75)
 		rgba = ($online_light_blue)
 		text = <option_text_num5>
 		just = [left top]
@@ -137,7 +137,7 @@
 		Type = TextElement
 		parent = <vmenu_id>
 		font = fontgrid_title_gh3
-		Scale = (0.6500000357627869, 0.75)
+		Scale = (0.65, 0.75)
 		rgba = ($online_light_blue)
 		text = <option_text_num7>
 		just = [left top]

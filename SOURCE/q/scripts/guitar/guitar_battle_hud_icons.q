@@ -279,11 +279,11 @@ script update_battle_alert_icon\{player_status = player1_status}
 		<lefty> = 1
 	endif
 	if (<num_icons> = 1)
-		text_scale = (0.4000000059604645, 0.75)
+		text_scale = (0.4, 0.75)
 		fit_dims = (43.0, 25.0)
 		width_max = 100
 	elseif (<num_icons> = 2)
-		text_scale = (0.3500000238418579, 0.75)
+		text_scale = (0.35, 0.75)
 		fit_dims = (60.0, 25.0)
 		width_max = 150
 	elseif (<num_icons> = 3)
@@ -315,7 +315,7 @@ script update_battle_alert_icon\{player_status = player1_status}
 		frame_scale = 3
 		ExtendCrc ba_icon_fill_single <player_text> out = new_id
 		if ScreenElementExists id = <new_id>
-			DoScreenElementMorph id = <new_id> alpha = 1 time = 0.3 Scale = (1.2000000476837158, 1.0) relative_scale
+			DoScreenElementMorph id = <new_id> alpha = 1 time = 0.3 Scale = (1.2, 1.0) relative_scale
 			if (<lefty>)
 				change_battle_alert_icon player_text = <player_text> num = 2 tex = icon_attack_leftyrighty Pos = battle_alert_icon_pos_off_2
 				SetScreenElementProps id = <new_id> rgba = [55 170 130 255]
@@ -346,17 +346,17 @@ script update_battle_alert_icon\{player_status = player1_status}
 					change_battle_alert_icon num = 2 player_text = <player_text> tex = icon_attack_addnote Pos = battle_alert_icon_pos_off_2
 					change_battle_alert_icon num = 3 player_text = <player_text> tex = icon_attack_leftyrighty Pos = battle_alert_icon_pos_off_3
 				else
-					change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_hard_lefty Scale = (1.100000023841858, 1.0)
+					change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_hard_lefty Scale = (1.1, 1.0)
 					change_battle_alert_icon num = 1 player_text = <player_text> tex = icon_attack_difficulty Pos = battle_alert_icon_pos_off_4
 					change_battle_alert_icon num = 3 player_text = <player_text> tex = icon_attack_leftyrighty Pos = battle_alert_icon_pos_off_5
 				endif
 			else
-				change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_double_lefty Scale = (1.100000023841858, 1.0)
+				change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_double_lefty Scale = (1.1, 1.0)
 				change_battle_alert_icon num = 2 player_text = <player_text> tex = icon_attack_addnote Pos = battle_alert_icon_pos_off_4
 				change_battle_alert_icon num = 3 player_text = <player_text> tex = icon_attack_leftyrighty Pos = battle_alert_icon_pos_off_5
 			endif
 		else
-			change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_hard_double Scale = (1.100000023841858, 1.0)
+			change_battle_alert_back player_text = <player_text> bg = ba_icon_fill_hard_double Scale = (1.1, 1.0)
 			change_battle_alert_icon num = 1 player_text = <player_text> tex = icon_attack_difficulty Pos = battle_alert_icon_pos_off_4
 			change_battle_alert_icon num = 2 player_text = <player_text> tex = icon_attack_addnote Pos = battle_alert_icon_pos_off_5
 		endif

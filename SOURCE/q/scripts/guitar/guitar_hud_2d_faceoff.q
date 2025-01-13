@@ -387,7 +387,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 200.0)
 				pos_off_p2 = (-268.0, -232.0)
-				zoff = 5.0999999
+				zoff = 5.1
 				alpha = 0
 				flags = {
 					p2
@@ -401,7 +401,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 170.0)
 				pos_off_p2 = (-268.0, -202.0)
-				zoff = 5.0999999
+				zoff = 5.1
 				alpha = 0
 				flags = {
 					p2
@@ -415,7 +415,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 140.0)
 				pos_off_p2 = (-268.0, -172.0)
-				zoff = 5.0999999
+				zoff = 5.1
 				alpha = 0
 				flags = {
 					p2
@@ -429,7 +429,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 110.0)
 				pos_off_p2 = (-268.0, -142.0)
-				zoff = 5.0999999
+				zoff = 5.1
 				alpha = 0
 				flags = {
 					p2
@@ -443,7 +443,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 80.0)
 				pos_off_p2 = (-268.0, -112.0)
-				zoff = 5.0999999
+				zoff = 5.1
 				alpha = 0
 				flags = {
 					p2
@@ -457,7 +457,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 200.0)
 				pos_off_p2 = (-268.0, -232.0)
-				zoff = 5.1999998
+				zoff = 5.2
 				alpha = 0
 				flags = {
 					p2
@@ -471,7 +471,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 170.0)
 				pos_off_p2 = (-268.0, -202.0)
-				zoff = 5.1999998
+				zoff = 5.2
 				alpha = 0
 				flags = {
 					p2
@@ -485,7 +485,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 140.0)
 				pos_off_p2 = (-268.0, -172.0)
-				zoff = 5.1999998
+				zoff = 5.2
 				alpha = 0
 				flags = {
 					p2
@@ -499,7 +499,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 110.0)
 				pos_off_p2 = (-268.0, -142.0)
-				zoff = 5.1999998
+				zoff = 5.2
 				alpha = 0
 				flags = {
 					p2
@@ -513,7 +513,7 @@ script faceoff_hud_2d_elements_load
 				pos_type = score_pos
 				pos_off = (0.0, 80.0)
 				pos_off_p2 = (-268.0, -112.0)
-				zoff = 5.1999998
+				zoff = 5.2
 				alpha = 0
 				flags = {
 					p2

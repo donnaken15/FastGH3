@@ -315,8 +315,9 @@ script guitar_startup
 				if StructureContains \{structure=jj #"0x1ca1ff20"}
 					k = (<jj>.#"0x1ca1ff20")
 				endif
-				FGH3Config sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k>
-				change globalname=(<jj>.out) newvalue=<value>
+				if FGH3Config sect=<sect> (<jj>.#"0x00000000") #"0x1ca1ff20"=<k>
+					change globalname=(<jj>.out) newvalue=<value>
+				endif
 				Increment \{j}
 			repeat <array_size>
 			Increment \{i}

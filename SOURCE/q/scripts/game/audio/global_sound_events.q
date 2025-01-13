@@ -275,7 +275,7 @@ Star_Power_Awarded_SFX_container = {
 		Sound1 = {
 			sp_awarded1
 			vol = 90
-			pan1x = -0.5000002
+			pan1x = -0.5
 			pan1y = 0.8660253
 			pan2x = 0.5
 			pan2y = 0.8660254
@@ -915,7 +915,7 @@ GH_SFX_BattleMode_WhammyAttack_P1_container = {
 		Sound1 = {
 			gh3_battlemode_whammyattack
 			vol = 40
-			pan1x = -0.5000002
+			pan1x = -0.5
 			pan1y = 0.8660253
 			pan2x = -0.7674536
 			pan2y = 0.6411045
@@ -1122,7 +1122,7 @@ UI_1stPlayerWins_SFX_container = {
 		Sound1 = {
 			multiplayer_win_screen
 			vol = 125
-			pan1x = -0.5000002
+			pan1x = -0.5
 			pan1y = 0.8660253
 			pan2x = 0.5
 			pan2y = 0.8660254
@@ -1139,7 +1139,7 @@ UI_2ndPlayerWins_SFX_container = {
 			vol = 125
 			pan1x = 0.5
 			pan1y = 0.8660254
-			pan2x = -0.5000002
+			pan2x = -0.5
 			pan2y = 0.8660253
 		}
 	}
@@ -1374,7 +1374,7 @@ GH_SFX_BattleMode_Death_Drain_P1_container = {
 		Sound1 = {
 			gh3_battlemode_death_drain
 			vol = 45
-			pan1x = -0.5000002
+			pan1x = -0.5
 			pan1y = 0.8660253
 			pan2x = -0.792141
 			pan2y = 0.6103382
@@ -1522,9 +1522,9 @@ Battlemode_HeartBeat_P1_container = {
 		Sound1 = {
 			gh3_battlemode_heartbeat
 			vol = 35
-			pan1x = -0.5000002
+			pan1x = -0.5
 			pan1y = 0.8660253
-			pan2x = -0.5000002
+			pan2x = -0.5
 			pan2y = 0.8660253
 			num_loops = -1
 		}
@@ -1538,9 +1538,9 @@ Battlemode_HeartBeat_P2_container = {
 		Sound1 = {
 			gh3_battlemode_heartbeat
 			vol = 35
-			pan1x = 0.5000002
+			pan1x = 0.5
 			pan1y = 0.8660253
-			pan2x = 0.5000002
+			pan2x = 0.5
 			pan2y = 0.8660253
 			num_loops = -1
 		}

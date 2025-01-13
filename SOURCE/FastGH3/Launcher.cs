@@ -250,8 +250,11 @@ public static partial class Launcher
 		_l(t, true);
 		if (!vb)
 			return;
-		Console.Write(ms);
-		Console.WriteLine(t);
+		try
+		{
+			Console.Write(ms);
+			Console.WriteLine(t);
+		} catch { }
 	}
 	public static void vl(object t, ConsoleColor c)
 	{
@@ -264,7 +267,10 @@ public static partial class Launcher
 	}
 	public static void print(object t)
 	{
-		Console.WriteLine(t);
+		try
+		{
+			Console.WriteLine(t); // impossible
+		} catch { }
 		_l(t, true);
 	}
 	public static void print(object text, ConsoleColor col)

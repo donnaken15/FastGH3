@@ -1,22 +1,4 @@
-np_5star_headlines = [
-	"AUDIENCE KILLED BY SONIC ATTACK FROM %b"
-	"%b BLOWS UP THE WORLD WITH THEIR AWESOMENESS"
-	"10 OUT OF 10 ROCKERS LOVE %b"
-	"LOCK  UP YOUR DAUGHTERS, %b IS IN TOWN"
-]
-num_5star_headlines = 4
-np_4star_headlines = [
-	"%b IMPRESSES AUDIENCE WITH GOOD SET"
-	"SENIOR CITIZENS AGREE, %B IS TOO LOUD"
-	"AUDIENCE ENJOYS GOOD SHOW FROM %b"
-]
-num_4star_headlines = 3
-np_3star_headlines = [
-	"%b DOESNT SUCK TOO HORRIBLY"
-	"CROWD SLIGHTLY INTERESTED IN %b"
-	"%b SOUNDS BETTER THAN FINGERNAILS ON A CHALKBOARD"
-]
-num_3star_headlines = 3
+
 g_np_option_props = [
 	{
 		Pos = (680.0, 168.0)
@@ -67,66 +49,16 @@ g_np_option_props = [
 g_np_menu_icon_offset = (225.0, -22.0)
 g_np_options_index = 0
 g_ss_mag_number = 0
-g_grey = [
-	128
-	128
-	128
-	255
-]
-g_ss_offwhite = [
-	230
-	230
-	230
-	255
-]
-g_ss_black = [
-	0
-	0
-	0
-	255
-]
-g_ss_orangeish = [
-	200
-	135
-	55
-	255
-]
-g_ss_AP_reddish = [
-	200
-	60
-	55
-	255
-]
-g_ss_AP_blueish = [
-	55
-	80
-	135
-	255
-]
-g_ss_AP_yellowish = [
-	230
-	220
-	25
-	255
-]
-g_ss_p1_orangeish = [
-	210
-	165
-	110
-	255
-]
-g_ss_p2_violetish = [
-	180
-	155
-	205
-	255
-]
-g_ss_2p_song_title_whiteish = [
-	220
-	220
-	220
-	255
-]
+g_grey = [ 128 128 128 255 ]
+g_ss_offwhite = [ 230 230 230 255 ]
+g_ss_black = [ 0 0 0 255 ]
+g_ss_orangeish = [ 200 135 55 255 ]
+g_ss_AP_reddish = [ 200 60 55 255 ]
+g_ss_AP_blueish = [ 55 80 135 255 ]
+g_ss_AP_yellowish = [ 230 220 25 255 ]
+g_ss_p1_orangeish = [ 210 165 110 255 ]
+g_ss_p2_violetish = [ 180 155 205 255 ]
+g_ss_2p_song_title_whiteish = [ 220 220 220 255 ]
 use_last_player_scores = 0
 old_song = None
 
@@ -136,10 +68,10 @@ script create_newspaper_menu\{for_practice = 0}
 	StopSoundsByBuss \{BinkCutScenes}
 	disable_pause
 	my_song = ($current_song)
-	if NOT ($old_song = None)
-		my_song = ($old_song)
-		Change \{old_song = None}
-	endif
+	//if NOT ($old_song = None)
+	//	my_song = ($old_song)
+	//	Change \{old_song = None}
+	//endif
 	set_focus_color \{rgba = $g_ss_offwhite}
 	set_unfocus_color \{rgba = $g_ss_black}
 	show_replay = 1
@@ -214,10 +146,10 @@ script create_newspaper_menu\{for_practice = 0}
 	casttointeger \{p1_score}
 	casttointeger \{p2_score}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = newspaper_container Pos = (0.0, 0.0)}
-	FormatText textname = p1_note_streak_text "%d" d = <p1_note_streak>
-	FormatText textname = p2_note_streak_text "%d" d = <p2_note_streak>
-	FormatText textname = p1_score_text "%s" s = <p1_score>
-	FormatText textname = p2_score_text "%s" s = <p2_score>
+	FormatText textname = p1_note_streak_text '%d' d = <p1_note_streak>
+	FormatText textname = p2_note_streak_text '%d' d = <p2_note_streak>
+	FormatText textname = p1_score_text '%s' s = <p1_score>
+	FormatText textname = p2_score_text '%s' s = <p2_score>
 	get_progression_globals game_mode = ($game_mode)use_current_tab = 1
 	GetGlobalTags \{Progression params = current_tier}
 	show_stars = 1
@@ -264,42 +196,37 @@ script create_newspaper_menu\{for_practice = 0}
 		<ss_notestreak_text_color> = $g_ss_offwhite
 		if ($game_mode = p2_battle)
 			if (<p2_health> > <p1_health>)
-				<winner> = "2"
-				<win_sqs> = '2'
+				<winner> = 2
 				<winner_color> = $g_ss_p2_violetish
 			else
-				<winner> = "1"
-				<win_sqs> = '1'
+				<winner> = 1
 				<winner_color> = $g_ss_p1_orangeish
 			endif
 		else
 			if (<p2_score> > <p1_score>)
-				<winner> = "2"
-				<win_sqs> = '2'
+				<winner> = 2
 				<winner_color> = $g_ss_p2_violetish
 			elseif (<p1_score> > <p2_score>)
-				<winner> = "1"
-				<win_sqs> = '1'
+				<winner> = 1
 				<winner_color> = $g_ss_p1_orangeish
 			else
-				<winner> = "0"
-				<win_sqs> = '0'
+				<winner> = 0
 			endif
 		endif
 		if ($is_network_game)
 			do_achievement_check <...>
 			updateatoms \{name = achievement}
 		endif
-		if (<win_sqs> = '0')
+		if (<winner> = 0)
 			rand_status = Random (@ 1 @ 2)
 			FormatText checksumName = player_status 'player%i_status' i = <rand_status>
 		else
-			FormatText checksumName = player_status 'player%i_status' i = <win_sqs>
+			FormatText checksumName = player_status 'player%i_status' i = <winner>
 		endif
 		if ($game_mode = p2_battle)
 			displayText {
 				parent = newspaper_container
-				text = "EPIC BATTLE"
+				text = 'EPIC BATTLE'
 				just = [left top]
 				Pos = (256.0, 264.0)
 				Scale = 0.75
@@ -308,9 +235,9 @@ script create_newspaper_menu\{for_practice = 0}
 				rot = -7.5
 				noshadow
 			}
-			FormatText textname = winner_text "Player %d" d = <winner>
+			FormatText textname = winner_text 'Player %d' d = <winner>
 			if ($is_network_game)
-				if (<winner> = "2")
+				if (<winner> = 2)
 					winner_text = $opponent_gamertag
 				else
 					if (NetSessionFunc Obj = match func = get_gamertag)
@@ -318,7 +245,7 @@ script create_newspaper_menu\{for_practice = 0}
 					endif
 				endif
 			endif
-			FormatText textname = who_won_text "%s Rules!" s = <winner_text>
+			FormatText textname = who_won_text "%s%t" s = <winner_text> t = ' Rules!'
 			displayText {
 				parent = newspaper_container
 				text = <who_won_text>
@@ -332,9 +259,9 @@ script create_newspaper_menu\{for_practice = 0}
 			}
 			<final_blow_powerup> = ($<player_status>.final_blow_powerup)
 			if (<final_blow_powerup> > -1)
-				CreateScreenElement \{Type = TextBlockElement parent = newspaper_container just = [left top] Pos = (320.0, 415.0) rot_angle = -7.5 Scale = 0.45 text = "FINAL BLOW:" font = fontgrid_title_gh3 rgba = [223 223 223 255] dims = (300.0, 300.0)}
+				CreateScreenElement \{Type = TextBlockElement parent = newspaper_container just = [left top] Pos = (320.0, 415.0) rot_angle = -7.5 Scale = 0.45 text = 'FINAL BLOW:' font = fontgrid_title_gh3 rgba = [223 223 223 255] dims = (300.0, 300.0)}
 				select = <final_blow_powerup>
-				if (<winner> = "1")
+				if (<winner> = 1)
 					is_lefty_flip = $p2_lefty
 				else
 					is_lefty_flip = $p1_lefty
@@ -359,10 +286,9 @@ script create_newspaper_menu\{for_practice = 0}
 					rgba = [223 223 223 255]
 					dims = (600.0, 200.0)
 				}
-				FormatText \{checksumName = card_checksum 'battlecard_final_blow'}
 				CreateScreenElement {
 					Type = SpriteElement
-					id = <card_checksum>
+					id = battlecard_final_blow
 					parent = newspaper_container
 					texture = <final_blow_attack_icon>
 					rgba = [255 255 255 255]
@@ -374,20 +300,21 @@ script create_newspaper_menu\{for_practice = 0}
 			endif
 		else
 			winner_text = <winner>
-			FormatText textname = winner_text "Player %d" d = <winner>
+			FormatText textname = winner_text 'Player %d' d = <winner>
 			if ($is_network_game)
-				if (<winner> = "2")
+				if (<winner> = 2)
 					winner_text = $opponent_gamertag
 				else
-					if (NetSessionFunc Obj = match func = get_gamertag)
+					if NetSessionFunc \{Obj = match func = get_gamertag}
+						RemoveComponent \{winner_text} // imagining both string types will conflict
 						winner_text = <name>
 					endif
 				endif
 			endif
-			if (<winner> = "0")
-				who_won_text = "It's a TIE!"
+			if (<winner> = 0)
+				who_won_text = 'It\'s a TIE!'
 			else
-				FormatText textname = who_won_text "%d Conquers With Authority!" d = <winner_text>
+				FormatText textname = who_won_text "%d %t" d = <winner_text> t = Random ( @ 'Conquers With Authority!' @ 'Wins the Crowd!' @ )
 			endif
 			CreateScreenElement {
 				Type = TextBlockElement
@@ -412,7 +339,7 @@ script create_newspaper_menu\{for_practice = 0}
 			just = [left top]
 			internal_just = [left top]
 			Pos = (270.0, 352.0)
-			Scale = (0.550000011920929, 0.550000011920929)
+			Scale = (0.55, 0.55)
 			text = <uppercasestring>
 			font = text_a11
 			rgba = $g_ss_2p_song_title_whiteish
@@ -443,7 +370,7 @@ script create_newspaper_menu\{for_practice = 0}
 			just = [left top]
 			internal_just = [left top]
 			Pos = <artist_pos>
-			Scale = (0.45000001788139343, 0.45000001788139343)
+			Scale = (0.45, 0.45)
 			text = <band_name>
 			font = text_a4
 			rgba = <band_name_color>
@@ -451,10 +378,28 @@ script create_newspaper_menu\{for_practice = 0}
 			line_spacing = 0.85
 			rot_angle = -7.5
 		}
+		mode_text = ''
+		mode_text = ($mode_text[($mode_index.($game_mode))])
+		CreateScreenElement {
+			id = ss_mode_text_block_id
+			Type = TextBlockElement
+			parent = newspaper_container
+			just = [left top]
+			internal_just = [left top]
+			Pos = (285.0, 450.0)
+			Scale = (0.9, 0.9)
+			text = <mode_text>
+			font = text_a4
+			rgba = $g_ss_2p_song_title_whiteish
+			dims = (400.0, 134.0)
+			line_spacing = 0.85
+			rot_angle = -7.5
+		}
 		get_difficulty_text_upper difficulty = ($current_difficulty)
-		name_text_1 = "PLAYER 1"
+		name_text_1 = 'PLAYER 1'
 		if ($is_network_game)
 			if (NetSessionFunc Obj = match func = get_gamertag)
+				RemoveComponent \{name_text_1}
 				name_text_1 = <name>
 			endif
 		endif
@@ -463,7 +408,7 @@ script create_newspaper_menu\{for_practice = 0}
 			parent = newspaper_container
 			text = <p1_difficulty_text>
 			Pos = (298.0, 522.0)
-			Scale = (0.5, 0.550000011920929)
+			Scale = (0.5, 0.55)
 			font = text_a11
 			rgba = $g_ss_p1_orangeish
 			rot = -7.5
@@ -471,8 +416,9 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 2
 		get_difficulty_text_upper difficulty = ($current_difficulty2)
-		name_text_2 = "PLAYER 2"
+		name_text_2 = 'PLAYER 2'
 		if ($is_network_game)
+			RemoveComponent \{name_text_2}
 			name_text_2 = $opponent_gamertag
 		endif
 		FormatText textname = p2_difficulty_text "%n, %d" d = <difficulty_text> n = <name_text_2>
@@ -480,7 +426,7 @@ script create_newspaper_menu\{for_practice = 0}
 			parent = newspaper_container
 			text = <p2_difficulty_text>
 			Pos = (302.0, 552.0)
-			Scale = (0.5, 0.550000011920929)
+			Scale = (0.5, 0.55)
 			font = text_a11
 			rgba = $g_ss_p2_violetish
 			rot = -7.5
@@ -513,30 +459,30 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		displayText {
 			parent = newspaper_container
-			text = "1"
+			text = '1'
 			Pos = (<p1_stats_pos> + (23.0, 3.0))
-			Scale = (0.8999999761581421, 0.6000000238418579)
+			Scale = (0.9, 0.6)
 			font = text_a11
 			rgba = $g_ss_2p_song_title_whiteish
 			z = 9
 		}
 		displayText {
 			parent = newspaper_container
-			text = "2"
+			text = '2'
 			Pos = (<p2_stats_pos> + (21.0, 3.0))
-			Scale = (0.8999999761581421, 0.6000000238418579)
+			Scale = (0.9, 0.6)
 			font = text_a11
 			rgba = $g_ss_2p_song_title_whiteish
 			z = 9
 		}
-		if (<winner> = "1")
+		if (<winner> = 1)
 			<l_wing_pos> = (<p1_stats_pos> + (-44.0, 0.0))
 			<r_wing_pos> = (<p1_stats_pos> + (39.0, 0.0))
 		else
 			<l_wing_pos> = (<p2_stats_pos> + (-44.0, 0.0))
 			<r_wing_pos> = (<p2_stats_pos> + (44.0, 0.0))
 		endif
-		if NOT (<winner> = "0")
+		if NOT (<winner> = 0)
 			displaySprite {
 				id = np_left_wing
 				parent = newspaper_container
@@ -551,7 +497,7 @@ script create_newspaper_menu\{for_practice = 0}
 				Pos = <r_wing_pos>
 				z = 7
 			}
-			if (<winner> = "1")
+			if (<winner> = 1)
 				displaySprite {
 					parent = newspaper_container
 					tex = Song_Summary_Guitar_Winner_2p
@@ -598,7 +544,7 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		if (<p1_note_streak> > 999)
 			<ss_p1_notestreak_pos> = (<p1_stats_pos> + (13.0, 43.0))
-			<ss_notestreak_scale> = (1.1200000047683716, 1.5)
+			<ss_notestreak_scale> = (1.12, 1.5)
 		elseif (<p1_note_streak> > 99)
 			<ss_p1_notestreak_pos> = (<p1_stats_pos> + (12.0, 43.0))
 			<ss_notestreak_scale> = 1.5
@@ -623,10 +569,10 @@ script create_newspaper_menu\{for_practice = 0}
 		displayText {
 			id = ss_p1_note_streak_text
 			parent = newspaper_container
-			text = "note streak"
+			text = 'note streak'
 			just = [center center]
 			Pos = (<p1_stats_pos> + (52.0, 130.0))
-			Scale = (0.550000011920929, 0.699999988079071)
+			Scale = (0.55, 0.7)
 			font = text_a11
 			z = 4
 			rgba = <ss_notestreak_text_color>
@@ -636,7 +582,7 @@ script create_newspaper_menu\{for_practice = 0}
 		fit_text_in_rectangle id = ss_p1_note_streak_text dims = ((90.0, 0.0) + (0.0, 1.0) * <height>)Pos = (<p1_stats_pos> + (52.0, 130.0))start_x_scale = 0.55 start_y_scale = 0.7 only_if_larger_x = 1
 		if (<p2_note_streak> > 999)
 			<ss_p2_notestreak_pos> = (<p2_stats_pos> + (-40.0, 43.0))
-			<ss_notestreak_scale> = (1.1200000047683716, 1.5)
+			<ss_notestreak_scale> = (1.12, 1.5)
 		elseif (<p2_note_streak> > 99)
 			<ss_p2_notestreak_pos> = (<p2_stats_pos> + (-40.0, 43.0))
 			<ss_notestreak_scale> = 1.5
@@ -661,10 +607,10 @@ script create_newspaper_menu\{for_practice = 0}
 		displayText {
 			id = ss_p2_note_streak_text
 			parent = newspaper_container
-			text = "note streak"
+			text = 'note streak'
 			just = [center center]
 			Pos = (<p2_stats_pos> + (-2.0, 130.0))
-			Scale = (0.550000011920929, 0.699999988079071)
+			Scale = (0.55, 0.7)
 			font = text_a11
 			z = 4
 			rgba = <ss_notestreak_text_color>
@@ -708,9 +654,9 @@ script create_newspaper_menu\{for_practice = 0}
 		displayText {
 			id = ss_p1_score_text
 			parent = newspaper_container
-			text = "Score"
+			text = 'Score'
 			Pos = (<p1_stats_pos> + (10.0, 155.0))
-			Scale = (0.699999988079071, 0.5)
+			Scale = (0.7, 0.5)
 			font = text_a11
 			z = 4
 			rgba = $g_ss_2p_song_title_whiteish
@@ -720,9 +666,9 @@ script create_newspaper_menu\{for_practice = 0}
 		displayText {
 			id = ss_p2_score_text
 			parent = newspaper_container
-			text = "Score"
+			text = 'Score'
 			Pos = (<p2_stats_pos> + (-50.0, 155.0))
-			Scale = (0.699999988079071, 0.5)
+			Scale = (0.7, 0.5)
 			font = text_a11
 			z = 4
 			rgba = $g_ss_2p_song_title_whiteish
@@ -735,7 +681,7 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p1_score_text>
 			just = [center center]
 			Pos = (<p1_stats_pos> + (48.0, 200.0))
-			Scale = (0.800000011920929, 1.0)
+			Scale = (0.8, 1.0)
 			font = text_a4
 			rgba = <ss_score_color>
 			z = 3
@@ -747,22 +693,22 @@ script create_newspaper_menu\{for_practice = 0}
 			text = <p2_score_text>
 			just = [center center]
 			Pos = (<p2_stats_pos> + (-12.0, 200.0))
-			Scale = (0.800000011920929, 1.0)
+			Scale = (0.8, 1.0)
 			font = text_a4
 			rgba = <ss_score_color>
 			z = 3
 			noshadow
 		}
-		FormatText textname = p1_notes_hit "%d" d = <p1_percent_complete>
+		FormatText textname = p1_notes_hit '%d' d = <p1_percent_complete>
 		if (<p1_percent_complete> = 100)
 			<ss_percent_pos> = (<p1_stats_pos> + (2.0, 204.0))
-			<ss_percent_scale> = (0.699999988079071, 1.4700000286102295)
+			<ss_percent_scale> = (0.7, 1.47)
 		elseif (<p1_percent_complete> < 10)
 			<ss_percent_pos> = (<p1_stats_pos> + (10.0, 206.0))
-			<ss_percent_scale> = (1.600000023841858, 1.4700000286102295)
+			<ss_percent_scale> = (1.6, 1.47)
 		else
 			<ss_percent_pos> = (<p1_stats_pos> + (6.0, 207.0))
-			<ss_percent_scale> = (0.8999999761581421, 1.4700000286102295)
+			<ss_percent_scale> = (0.9, 1.47)
 		endif
 		displayText {
 			id = ss_p1_notes_hit
@@ -775,16 +721,16 @@ script create_newspaper_menu\{for_practice = 0}
 			rgba = <ss_percent_color>
 			noshadow
 		}
-		FormatText textname = p2_notes_hit "%d" d = <p2_percent_complete>
+		FormatText textname = p2_notes_hit '%d' d = <p2_percent_complete>
 		if (<p2_percent_complete> = 100)
 			<ss_percent_pos> = (<p2_stats_pos> + (-70.0, 204.0))
-			<ss_percent_scale> = (0.699999988079071, 1.4700000286102295)
+			<ss_percent_scale> = (0.7, 1.47)
 		elseif (<p2_percent_complete> < 10)
 			<ss_percent_pos> = (<p2_stats_pos> + (-62.0, 206.0))
-			<ss_percent_scale> = (1.600000023841858, 1.4700000286102295)
+			<ss_percent_scale> = (1.6, 1.47)
 		else
 			<ss_percent_pos> = (<p2_stats_pos> + (-66.0, 207.0))
-			<ss_percent_scale> = (0.8999999761581421, 1.4700000286102295)
+			<ss_percent_scale> = (0.9, 1.47)
 		endif
 		displayText {
 			id = ss_p2_notes_hit
@@ -800,21 +746,21 @@ script create_newspaper_menu\{for_practice = 0}
 		displayText {
 			id = ss_p1_percent_sign
 			parent = newspaper_container
-			text = "%"
+			text = '%'
 			Pos = (<p1_stats_pos> + (60.0, 226.0))
 			font = text_a4
 			z = 4
 			rgba = <ss_percent_color>
 			rot = 50
-			Scale = (0.699999988079071, 0.5)
+			Scale = (0.7, 0.5)
 			noshadow
 		}
 		displayText {
 			id = ss_p1_notes_text
 			parent = newspaper_container
-			text = "\u0NOTES"
+			text = '\u0NOTES' // wtf is this
 			Pos = (<p1_stats_pos> + (66.0, 232.0))
-			Scale = (0.4000000059604645, 0.699999988079071)
+			Scale = (0.4, 0.7)
 			font = text_a3
 			z = 4
 			rgba = <ss_percent_color>
@@ -825,9 +771,9 @@ script create_newspaper_menu\{for_practice = 0}
 		displayText {
 			id = ss_p1_hit_text
 			parent = newspaper_container
-			text = "\u0HIT"
+			text = '\u0HIT'
 			Pos = (<p1_stats_pos> + (67.0, 257.0))
-			Scale = (0.4000000059604645, 0.6000000238418579)
+			Scale = (0.4, 0.6)
 			font = text_a3
 			z = 4
 			rgba = <ss_percent_color>
@@ -838,21 +784,21 @@ script create_newspaper_menu\{for_practice = 0}
 		displayText {
 			id = ss_p2_percent_sign
 			parent = newspaper_container
-			text = "%"
+			text = '%'
 			Pos = (<p2_stats_pos> + (-12.0, 226.0))
 			font = text_a4
 			z = 4
 			rgba = <ss_percent_color>
 			rot = 50
-			Scale = (0.699999988079071, 0.5)
+			Scale = (0.7, 0.5)
 			noshadow
 		}
 		displayText {
 			id = ss_p2_notes_text
 			parent = newspaper_container
-			text = "\u0NOTES"
+			text = '\u0NOTES'
 			Pos = (<p2_stats_pos> + (-6.0, 232.0))
-			Scale = (0.4000000059604645, 0.699999988079071)
+			Scale = (0.4, 0.7)
 			font = text_a3
 			z = 4
 			rgba = <ss_percent_color>
@@ -863,9 +809,9 @@ script create_newspaper_menu\{for_practice = 0}
 		displayText {
 			id = ss_p2_hit_text
 			parent = newspaper_container
-			text = "\u0HIT"
+			text = '\u0HIT'
 			Pos = (<p2_stats_pos> + (-5.0, 257.0))
-			Scale = (0.4000000059604645, 0.6000000238418579)
+			Scale = (0.4, 0.6)
 			font = text_a3
 			z = 4
 			rgba = <ss_percent_color>
@@ -873,7 +819,7 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		SetScreenElementProps id = <id> font_spacing = 6
 		fit_text_in_rectangle id = ss_p2_hit_text dims = (45.0, 30.0) Pos = (<p2_stats_pos> + (-5.0, 257.0))start_x_scale = 0.4 start_y_scale = 0.6 only_if_larger_x = 1
-		if (<winner> = "1")
+		if (<winner> = 1)
 			displaySprite {
 				id = np_icon_thumb
 				parent = newspaper_container
@@ -891,7 +837,7 @@ script create_newspaper_menu\{for_practice = 0}
 				rgba = $g_ss_p2_violetish
 				dims = (64.0, 64.0)
 			}
-		elseif (<winner> = "2")
+		elseif (<winner> = 2)
 			displaySprite {
 				id = np_icon_thumb
 				parent = newspaper_container
@@ -912,10 +858,10 @@ script create_newspaper_menu\{for_practice = 0}
 				flip_v
 			}
 		endif
-		if NOT (<winner> = "0")
+		if NOT (<winner> = 0)
 			<i> = 1
 			begin
-				FormatText checksumName = hilite_id 'ss_hilite%d_p%p' d = <i> p = <win_sqs>
+				FormatText checksumName = hilite_id 'ss_hilite%d_p%p' d = <i> p = <winner>
 				if (<i> = 3)
 					<i> = 2
 				endif
@@ -926,7 +872,7 @@ script create_newspaper_menu\{for_practice = 0}
 				endif
 				<hilite_rgba> = [200 90 40 255]
 				<hilite_pos> = (<p1_stats_pos> + (46.0, 330.0))
-				if (<win_sqs> = '2')
+				if (<winner> = 2)
 					<hilite_rgba> = [180 130 220 255]
 					<hilite_pos> = (<p2_stats_pos> + (-16.0, 320.0))
 				endif
@@ -962,14 +908,14 @@ script create_newspaper_menu\{for_practice = 0}
 		if (<found> = 1)
 			PopAssetContext
 		endif
-		if NOT (<winner> = "0")
+		if NOT (<winner> = 0)
 			spawnscriptnow \{np_2p_flap_wings}
 			spawnscriptnow \{np_2p_thumb_zoom}
 			spawnscriptnow np_2p_fade_to_grey params = {winner = <winner>}
 		endif
-		if (<winner> = "1")
+		if (<winner> = 1)
 			spawnscriptnow \{np_2p_hilites_p1}
-		elseif (<winner> = "2")
+		elseif (<winner> = 2)
 			spawnscriptnow \{np_2p_hilites_p2}
 		endif
 	else
@@ -1024,7 +970,7 @@ script create_newspaper_menu\{for_practice = 0}
 			just = [left top]
 			internal_just = [left top]
 			Pos = <artist_pos>
-			Scale = (0.5, 0.550000011920929)
+			Scale = (0.5, 0.55)
 			text = <band_name>
 			font = text_a4
 			rgba = <band_name_color>
@@ -1038,10 +984,10 @@ script create_newspaper_menu\{for_practice = 0}
 			Pos = (267.0, 460.0)
 			dims = (336.0, 168.0)
 		}
-		FormatText textname = p1_notes_hit "%d" d = <p1_percent_complete>
+		FormatText textname = p1_notes_hit '%d' d = <p1_percent_complete>
 		if (<p1_percent_complete> = 100)
 			<ss_percent_pos> = (290.0, 503.0)
-			<ss_percent_scale> = (1.2999999523162842, 1.600000023841858)
+			<ss_percent_scale> = (1.3, 1.6)
 		elseif (<p1_percent_complete> < 10)
 			<ss_percent_pos> = (332.0, 496.0)
 			<ss_percent_scale> = 1.6
@@ -1062,7 +1008,7 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		displayText {
 			parent = newspaper_container
-			text = "%"
+			text = '%'
 			Pos = (364.0, 500.0)
 			font = text_a4
 			z = 4
@@ -1077,9 +1023,9 @@ script create_newspaper_menu\{for_practice = 0}
 		endif
 		displayText {
 			parent = newspaper_container
-			text = "\u0NOTES HIT"
+			text = '\u0NOTES HIT'
 			Pos = (403.0, 522.0)
-			Scale = (0.4399999976158142, 0.699999988079071)
+			Scale = (0.44, 0.7)
 			font = text_a3
 			z = 4
 			rgba = <np_notes_hit_color>
@@ -1139,7 +1085,7 @@ script create_newspaper_menu\{for_practice = 0}
 				text = <p1_score_text>
 				just = [right center]
 				Pos = (926.0, 116.0)
-				Scale = (0.8999999761581421, 0.6500000357627869)
+				Scale = (0.9, 0.65)
 				font = text_a4
 				rgba = <ss_score_color>
 				z = 3
@@ -1159,7 +1105,7 @@ script create_newspaper_menu\{for_practice = 0}
 				just = [left bottom]
 				text = <difficulty_text>
 				Pos = (946.0, 133.0)
-				Scale = (0.699999988079071, 0.6000000238418579)
+				Scale = (0.7, 0.6)
 				font = text_a11
 				z = 4
 				rgba = <ss_score_text_color>
@@ -1170,14 +1116,14 @@ script create_newspaper_menu\{for_practice = 0}
 		else
 			notes_hit = ($player1_status.notes_hit)
 			notes_total = ($player1_status.total_notes)
-			FormatText textname = notes_hit_out_of_total "%a OUT OF %b" a = <notes_hit> b = <notes_total>
+			FormatText textname = notes_hit_out_of_total '%a OUT OF %b' a = <notes_hit> b = <notes_total>
 			displayText {
 				id = np_score_text
 				parent = newspaper_container
 				text = <notes_hit_out_of_total>
 				just = [right center]
 				Pos = (911.0, 117.0)
-				Scale = (0.8999999761581421, 0.6500000357627869)
+				Scale = (0.9, 0.65)
 				font = text_a4
 				rgba = <ss_score_color>
 				z = 3
@@ -1185,21 +1131,21 @@ script create_newspaper_menu\{for_practice = 0}
 				rot = -2
 			}
 			GetScreenElementDims id = <id>
-			SetScreenElementProps id = <id> Scale = (0.8999999761581421, 0.6500000357627869)
-			fit_text_in_rectangle id = <id> dims = ((200.0, 0.0) + <height> * (0.0, 0.6500000357627869))
+			SetScreenElementProps id = <id> Scale = (0.9, 0.65)
+			fit_text_in_rectangle id = <id> dims = ((200.0, 0.0) + <height> * (0.0, 0.65))
 			displayText {
 				parent = newspaper_container
-				text = "NOTES"
+				text = 'NOTES'
 				Pos = (946.0, 98.0)
-				Scale = (0.699999988079071, 0.6000000238418579)
+				Scale = (0.7, 0.6)
 				font = text_a11
 				z = 4
 				rgba = <ss_score_text_color>
 				noshadow
 			}
 			GetScreenElementDims id = <id>
-			SetScreenElementProps id = <id> Scale = (0.699999988079071, 0.6000000238418579)
-			fit_text_in_rectangle id = <id> dims = ((70.0, 0.0) + <height> * (0.0, 0.6000000238418579))
+			SetScreenElementProps id = <id> Scale = (0.7, 0.6)
+			fit_text_in_rectangle id = <id> dims = ((70.0, 0.0) + <height> * (0.0, 0.6))
 		endif
 		displaySprite {
 			parent = newspaper_container
@@ -1216,7 +1162,7 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		if (<p1_note_streak> > 999)
 			<ss_notestreak_pos> = (740.0, 358.0)
-			<ss_notestreak_scale> = (1.1200000047683716, 1.5)
+			<ss_notestreak_scale> = (1.12, 1.5)
 		elseif (<p1_note_streak> > 99)
 			<ss_notestreak_pos> = (739.0, 358.0)
 			<ss_notestreak_scale> = 1.5
@@ -1239,9 +1185,9 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		displayText {
 			parent = newspaper_container
-			text = "note streak"
+			text = 'note streak'
 			Pos = (732.0, 425.0)
-			Scale = (0.4399999976158142, 0.550000011920929)
+			Scale = (0.44, 0.55)
 			font = text_a11
 			z = 4
 			rgba = <ss_notestreak_text_color>
@@ -1406,24 +1352,24 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 		<menu_offset> = (0.0, 0.0)
 	endif
 	if (<for_practice> = 1)
-		displayText id = np_option_0 parent = newspaper_container text = 'EXIT' Pos = (($g_np_option_props [4].Pos)+ <menu_offset>)Scale = (0.8500000238418579, 0.699999988079071) rot = ($g_np_option_props [4].rot)font = <menu_font> noshadow
-		displayText id = np_option_1 parent = newspaper_container text = 'RESTART' Pos = (($g_np_option_props [5].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [5].rot)font = <menu_font> noshadow
-		displayText id = np_option_2 parent = newspaper_container text = 'CHANGE SPEED' Pos = (($g_np_option_props [6].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [6].rot)font = <menu_font> noshadow
-		displayText id = np_option_3 parent = newspaper_container text = 'CHANGE SECTION' Pos = (($g_np_option_props [7].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [7].rot)font = <menu_font> noshadow
-		displayText id = np_option_4 parent = newspaper_container text = 'QUIT' Pos = (($g_np_option_props [8].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [8].rot)font = <menu_font> noshadow
+		displayText id = np_option_0 parent = newspaper_container text = 'EXIT' Pos = (($g_np_option_props [4].Pos)+ <menu_offset>)Scale = (0.85, 0.7) rot = ($g_np_option_props [4].rot)font = <menu_font> noshadow
+		displayText id = np_option_1 parent = newspaper_container text = 'RESTART' Pos = (($g_np_option_props [5].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [5].rot)font = <menu_font> noshadow
+		displayText id = np_option_2 parent = newspaper_container text = 'CHANGE SPEED' Pos = (($g_np_option_props [6].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [6].rot)font = <menu_font> noshadow
+		displayText id = np_option_3 parent = newspaper_container text = 'CHANGE SECTION' Pos = (($g_np_option_props [7].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [7].rot)font = <menu_font> noshadow
+		displayText id = np_option_4 parent = newspaper_container text = 'QUIT' Pos = (($g_np_option_props [8].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [8].rot)font = <menu_font> noshadow
 		retail_menu_unfocus \{id = np_option_4}
 		<initial_hl_pos> = (($g_np_option_props [4].Pos)+ ($g_np_option_props [4].offset)+ <menu_offset>)
 	else
-		displayText id = np_option_0 parent = newspaper_container text = "EXIT" Pos = (($g_np_option_props [0].Pos)+ <menu_offset>)Scale = (0.8500000238418579, 0.699999988079071) rot = ($g_np_option_props [0].rot)font = <menu_font> noshadow
+		displayText id = np_option_0 parent = newspaper_container text = "EXIT" Pos = (($g_np_option_props [0].Pos)+ <menu_offset>)Scale = (0.85, 0.7) rot = ($g_np_option_props [0].rot)font = <menu_font> noshadow
 		SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 		if NOT ($end_credits = 1)
 			if (<show_replay> = 1)
-				displayText id = np_option_1 parent = newspaper_container text = "RETRY SONG" Pos = (($g_np_option_props [1].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [1].rot)font = <menu_font> noshadow
+				displayText id = np_option_1 parent = newspaper_container text = "RETRY SONG" Pos = (($g_np_option_props [1].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [1].rot)font = <menu_font> noshadow
 				SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
-				displayText id = np_option_2 parent = newspaper_container text = "MORE STATS" Pos = (($g_np_option_props [2].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [2].rot)font = <menu_font> noshadow
+				displayText id = np_option_2 parent = newspaper_container text = "MORE STATS" Pos = (($g_np_option_props [2].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [2].rot)font = <menu_font> noshadow
 				SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 			else
-				displayText id = np_option_1 parent = newspaper_container text = "MORE STATS" Pos = (($g_np_option_props [1].Pos)+ <menu_offset>)Scale = (0.800000011920929, 0.699999988079071) rot = ($g_np_option_props [2].rot)font = <menu_font> noshadow
+				displayText id = np_option_1 parent = newspaper_container text = "MORE STATS" Pos = (($g_np_option_props [1].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [2].rot)font = <menu_font> noshadow
 				SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 			endif
 		endif

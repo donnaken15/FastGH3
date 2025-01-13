@@ -33,6 +33,6 @@ tilt_params = {
 		0.4
 	]
 	digital_button_tol_angle = 0.15
-	digital_button_tol_impulse = 0.9899999
+	digital_button_tol_impulse = 0.99
 	digital_button_tol_twist = 0.46
 }

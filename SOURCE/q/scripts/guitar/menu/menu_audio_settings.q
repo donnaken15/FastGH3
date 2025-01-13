@@ -75,7 +75,7 @@ script create_audio_settings_menu\{popup = 0}
 				just = [center center]
 				text = <player_paused_text>
 				rgba = [186 105 0 255]
-				Scale = (0.45000001788139343, 0.6000000238418579)
+				Scale = (0.45, 0.6)
 				z = (<z> + 11)
 				font = text_a6
 			}
@@ -527,8 +527,8 @@ script menu_audio_settings_highlight_item
 		GetScreenElementDims id = <id>
 		GetScreenElementPosition id = <id> absolute
 		if ($as_is_popup = 0)
-			<highlight_pos> = (<ScreenElementPos> + (-0.05000000074505806, 0.0) * <width> + (0.0, -0.05000000074505806) * <height>)
-			<highlight_dims> = ((1.100000023841858, 0.0) * <width> + (0.0, 0.800000011920929) * <height>)
+			<highlight_pos> = (<ScreenElementPos> + (-0.05, 0.0) * <width> + (0.0, -0.05) * <height>)
+			<highlight_dims> = ((1.1, 0.0) * <width> + (0.0, 0.8) * <height>)
 		else
 			<highlight_pos> = (<ScreenElementPos> + (-5.0, -3.0))
 			<highlight_dims> = ((1.0, 0.0) * <width> + (0.0, 1.0) * <height> + (12.0, 0.0))
@@ -559,13 +559,13 @@ script menu_audio_settings_get_buss_volume
 		case 10
 			<vol> = -1.2
 		case 9
-			<vol> = -2.4000001
+			<vol> = -2.4
 		case 8
 			<vol> = -3.7
 		case 7
-			<vol> = -4.9000001
+			<vol> = -4.9
 		case 6
-			<vol> = -6.1999998
+			<vol> = -6.2
 		case 5
 			<vol> = -8
 		case 4
@@ -695,8 +695,8 @@ script aom_spawn_ping\{time = 0.25}
 			DoScreenElementMorph id = aom_belly_strings Pos = <right_belly_pos> time = <jiggle_time>
 			wait <jiggle_time> seconds
 			DoScreenElementMorph id = aom_belly_strings Pos = <center_belly_pos> time = <jiggle_time>
-			<left_belly_pos> = (<left_belly_pos> + (3.3299999237060547, 0.0))
-			<right_belly_pos> = (<right_belly_pos> + (-3.3299999237060547, 0.0))
+			<left_belly_pos> = (<left_belly_pos> + (3.33, 0.0))
+			<right_belly_pos> = (<right_belly_pos> + (-3.33, 0.0))
 		repeat 6
 	endif
 endscript

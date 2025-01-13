@@ -1,5 +1,6 @@
 :: REQUIRES (AND USES CYGWIN) SH, Node
 @echo off
+mkdir ..\..\DATA\ZONES 2>nul
 set "OKNOTOK=|| goto :fail"
 pushd "%~dp0"
 echo [97m^<^<^<^<^<^<         GLOBAL.PAK          ^>^>^>^>^>^>[0m

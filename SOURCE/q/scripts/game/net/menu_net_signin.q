@@ -90,7 +90,7 @@ script create_winport_login_field
 		parent = <rotContainer>
 		id = <cursorId>
 		font = fontgrid_title_gh3
-		Scale = (0.5, 0.800000011920929)
+		Scale = (0.5, 0.8)
 		rgba = $loginTextColor
 		text = "I"
 		just = [left top]

@@ -535,7 +535,7 @@ script WinPortCreateLaptopUi
 		parent = root_window
 		texture = battery_charging
 		Pos = (65.0, 721.0)
-		Scale = (0.6600000262260437, 0.6600000262260437)
+		Scale = (0.66, 0.66)
 		just = [left bottom]
 		z_priority = <z>
 		Hide
@@ -546,7 +546,7 @@ script WinPortCreateLaptopUi
 		parent = root_window
 		texture = battery_level0
 		Pos = (65.0, 721.0)
-		Scale = (0.6600000262260437, 0.6600000262260437)
+		Scale = (0.66, 0.66)
 		just = [left bottom]
 		z_priority = (<z> - 1)
 		Hide
@@ -557,7 +557,7 @@ script WinPortCreateLaptopUi
 		parent = root_window
 		texture = wifi_bar0
 		Pos = (1201.0, 716.0)
-		Scale = (0.6600000262260437, 0.6600000262260437)
+		Scale = (0.66, 0.66)
 		just = [right bottom]
 		z_priority = <z>
 		Hide
@@ -1452,7 +1452,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 					just = [center center]
 					text = <player_paused_text>
 					rgba = [186 105 0 255]
-					Scale = (0.45000001788139343, 0.6000000238418579)
+					Scale = (0.45, 0.6)
 					z = (<pause_z> + 11)
 					font = <font>
 				}
@@ -1884,7 +1884,7 @@ script user_control_build_pills
 	endif
 	index = 0
 	initial_pill_x = (640 + -1 * (($num_user_control_helpers / 2.0)* <max_pill_width>)- ((0.5 * $user_control_pill_gap * <Scale>)* ($num_user_control_helpers -1)))
-	Pos = ((1.0, 0.0) * <initial_pill_x> + (0.0, 1.0) * ($user_control_pill_y_position)+ (0.0, 0.800000011920929) * (<Scale>))
+	Pos = ((1.0, 0.0) * <initial_pill_x> + (0.0, 1.0) * ($user_control_pill_y_position)+ (0.0, 0.8) * (<Scale>))
 	if NOT ($num_user_control_helpers = 0)
 		begin
 			FormatText checksumName = pill_id 'uc_pill_%d' d = <index>

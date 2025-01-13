@@ -113,7 +113,7 @@ script net_select_song
 	endif
 	FormatText checksumName = chosen_song_id 'chosen_song_id_p%a_%b' a = <Player> b = <menu_selection_index>
 	get_song_title song = <song_selection>
-	<chosen_song_id> ::SetProps text = <song_title> Scale = (0.5799999833106995, 0.75)
+	<chosen_song_id> ::SetProps text = <song_title> Scale = (0.58, 0.75)
 	SetArrayElement ArrayName = net_setlist_songs GlobalArray index = (<songlist_index> -1)NewValue = <song_selection>
 	SetArrayElement ArrayName = net_setlist_tiers GlobalArray index = (<songlist_index> -1)NewValue = <Tier>
 	if (($host_songs_to_pick + $client_songs_to_pick)= 0)

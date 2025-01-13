@@ -45,7 +45,7 @@ save_changes_message = "You are about to exit the Player Options. Any changes ma
 		Type = TextElement
 		parent = online_menu_ui_container
 		font = text_a4
-		Scale = (0.6500000357627869, 0.75)
+		Scale = (0.65, 0.75)
 		rgba = ($online_medium_blue)
 		text = <menu_title>
 		just = [center top]
@@ -56,7 +56,7 @@ save_changes_message = "You are about to exit the Player Options. Any changes ma
 		Type = TextElement
 		parent = online_menu_ui_container
 		font = fontgrid_title_gh3
-		Scale = (0.699999988079071, 0.75)
+		Scale = (0.7, 0.75)
 		rgba = ($online_dark_purple)
 		text = <menu_subtitle>
 		just = [center top]
@@ -85,7 +85,7 @@ save_changes_message = "You are about to exit the Player Options. Any changes ma
 		Type = TextElement
 		parent = <vmenu_id>
 		font = fontgrid_title_gh3
-		Scale = (0.6500000357627869, 0.75)
+		Scale = (0.65, 0.75)
 		rgba = ($online_light_blue)
 		text = "GAME OPTIONS"
 		just = [left top]
@@ -517,10 +517,10 @@ script create_online_options_changed_dialog\{menu_id = online_options_changed_me
 	Change \{menu_focus_color = [180 50 50 255]}
 	Change \{menu_unfocus_color = [0 0 0 255]}
 	create_pause_menu_frame \{parent = warning_message_container z = 16}
-	displaySprite \{parent = warning_message_container tex = dialog_title_bg Scale = (1.7000000476837158, 1.7000000476837158) z = 19 Pos = (640.0, 100.0) just = [right top] flip_v}
-	displaySprite \{parent = warning_message_container tex = dialog_title_bg Scale = (1.7000000476837158, 1.7000000476837158) z = 19 Pos = (640.0, 100.0) just = [left top]}
-	displaySprite \{parent = warning_message_container tex = dialog_frame_joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = 19}
-	displaySprite \{parent = warning_message_container tex = dialog_frame_joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = 19}
+	displaySprite \{parent = warning_message_container tex = dialog_title_bg Scale = (1.7, 1.7) z = 19 Pos = (640.0, 100.0) just = [right top] flip_v}
+	displaySprite \{parent = warning_message_container tex = dialog_title_bg Scale = (1.7, 1.7) z = 19 Pos = (640.0, 100.0) just = [left top]}
+	displaySprite \{parent = warning_message_container tex = dialog_frame_joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.575, 1.5) z = 19}
+	displaySprite \{parent = warning_message_container tex = dialog_frame_joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.575, 1.5) z = 19}
 	displaySprite \{parent = warning_message_container tex = dialog_menu_bg Pos = (480.0, 500.0) Scale = (1.25, 1.0) z = 19 just = [left botom]}
 	displaySprite \{parent = warning_message_container tex = dialog_menu_bg Pos = (480.0, 530.0) Scale = (1.25, 1.0) z = 19 just = [left top] flip_h}
 	CreateScreenElement \{Type = TextElement parent = warning_message_container font = fontgrid_title_gh3 Scale = 1.3 rgba = [223 223 223 250] text = "WARNING" just = [center top] z_priority = 20.0 Pos = (640.0, 175.0) Shadow shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255]}
@@ -532,7 +532,7 @@ script create_online_options_changed_dialog\{menu_id = online_options_changed_me
 		parent = <container_id>
 		local_id = text
 		font = fontgrid_title_gh3
-		Scale = (0.699999988079071, 0.8500000238418579)
+		Scale = (0.7, 0.85)
 		rgba = ($menu_unfocus_color)
 		text = "SAVE CHANGES"
 		just = [center top]
@@ -570,7 +570,7 @@ script create_online_options_changed_dialog\{menu_id = online_options_changed_me
 		parent = <container_id>
 		local_id = text
 		font = fontgrid_title_gh3
-		Scale = (0.45000001788139343, 0.8500000238418579)
+		Scale = (0.45, 0.85)
 		rgba = ($menu_unfocus_color)
 		text = "CONTINUE WITHOUT SAVING"
 		just = [center top]

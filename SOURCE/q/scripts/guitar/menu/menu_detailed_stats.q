@@ -224,7 +224,7 @@ script create_detailed_stats_menu
 					Pos = (<circle_pos> [<better_player>])
 					texture = circle_pen
 					just = [center center]
-					dims = ((1.7999999523162842, 0.0) * <width> + (0.0, 4.25) * <height>)
+					dims = ((1.8, 0.0) * <width> + (0.0, 4.25) * <height>)
 					rgba = [60 70 115 100]
 					z_priority = 7
 				}
@@ -328,7 +328,7 @@ script get_highest_lowest_stats
 	Player = 0
 	begin
 		if (<section_index> = 0)
-			SetArrayElement ArrayName = g_players_lowest_stat GlobalArray index = <Player> NewValue = 99.9000015
+			SetArrayElement ArrayName = g_players_lowest_stat GlobalArray index = <Player> NewValue = 99.9
 			SetArrayElement ArrayName = g_players_highest_stat GlobalArray index = <Player> NewValue = 0.1
 		endif
 		if (<notes_max> [<Player>] > 0)
@@ -445,7 +445,7 @@ script detailed_stats_create_container\{for_practice = 0}
 			font = ($detailed_stats_font)
 			text = 'Practice sections'
 			rgba = [118 29 30 255]
-			Scale = (1.7000000476837158, 2.25)
+			Scale = (1.7, 2.25)
 		}
 	else
 		CreateScreenElement {
@@ -696,7 +696,7 @@ script add_divider_graphic
 		Type = SpriteElement
 		parent = ds_container
 		Pos = ((1.0, 0.0) * $center_column_x + (0.0, 1.0) * (<divider_y> - 8))
-		Scale = (2.5, 1.399999976158142)
+		Scale = (2.5, 1.4)
 		texture = Detailed_stats_divider
 		just = [center center]
 		z_priority = 5

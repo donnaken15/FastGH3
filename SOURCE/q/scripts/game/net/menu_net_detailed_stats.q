@@ -136,7 +136,7 @@ endscript
 script net_add_stats_and_desc_row\{set_index = 0 highlight = 0}
 	desc_column = 'center'
 	get_song_title song = ($net_setlist_songs [<set_index>])
-	add_text_to_column column = <desc_column> text = <song_title> Scale = (0.800000011920929, 1.0) dims = (320.0, 0.0)
+	add_text_to_column column = <desc_column> text = <song_title> Scale = (0.8, 1.0) dims = (320.0, 0.0)
 	Player = 0
 	begin
 		Color = $detailed_stats_text_color

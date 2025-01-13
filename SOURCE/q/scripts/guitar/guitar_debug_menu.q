@@ -477,6 +477,7 @@ script toggle_bot
 	ui_menu_select_sfx
 	kill_debug_elements
 	FormatText checksumname = player_status 'player%d_status' d = <player>
+	FormatText checksumname = prop 'toggle_botp%d_menuitem' d = <player>
 	Change StructureName = <player_status> bot_play = (1 - ($<player_status>.bot_play))
 	toggle_bot_setprop <...>
 endscript

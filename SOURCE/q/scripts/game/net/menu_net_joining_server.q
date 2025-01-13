@@ -4,7 +4,7 @@ script create_join_server_menu
 	killspawnedscript \{name = destroy_loading_screen_spawned}
 	create_menu_backdrop \{texture = Online_Background}
 	displaySprite \{id = online_frame parent = joining_screen_container tex = Online_Frame_Large Pos = (640.0, 100.0) just = [center top] z = 2}
-	displaySprite \{id = online_frame_crown parent = joining_screen_container tex = #"0xf3ed3382" Pos = (640.0, 42.0) just = [center top] z = 2.0999999 dims = (256.0, 105.0)}
+	displaySprite \{id = online_frame_crown parent = joining_screen_container tex = #"0xf3ed3382" Pos = (640.0, 42.0) just = [center top] z = 2.1 dims = (256.0, 105.0)}
 	if (($ui_flow_manager_state [0])= quick_match_joining_game_fs)
 		<title_text> = "QUICKMATCH"
 	elseif (($ui_flow_manager_state [0])= invite_joining_game_fs)
@@ -23,7 +23,7 @@ script create_join_server_menu
 		text = <title_text>
 		Pos = (640.0, 135.0)
 		just = [center top]
-		z_priority = 2.0999999
+		z_priority = 2.1
 	}
 	CreateScreenElement {
 		Type = TextElement
@@ -35,7 +35,7 @@ script create_join_server_menu
 		font = fontgrid_title_gh3
 		Scale = 1.0
 		rgba = ($online_light_blue)
-		z_priority = 2.0999999
+		z_priority = 2.1
 	}
 	GetScreenElementDims id = <id>
 	CreateScreenElement {
@@ -47,7 +47,7 @@ script create_join_server_menu
 		rgba = ($online_light_blue)
 		text = ""
 		just = [left top]
-		z_priority = 2.0999999
+		z_priority = 2.1
 		Pos = (<width> * (1.0, 0.0) + (5.0, 15.0))
 	}
 	if ScreenElementExists \{id = dots_text}

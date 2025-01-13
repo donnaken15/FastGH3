@@ -135,7 +135,7 @@ script create_controller_settings_menu\{popup = 0}
 			z_priority = <z>
 		}
 		create_pause_menu_frame x_scale = 1.3 z = (<z> - 10)
-		text_params = {parent = cs_vmenu Type = TextElement font = ($cs_menu_font)rgba = ($menu_unfocus_color)z_priority = <z> Scale = (0.8999999761581421, 0.800000011920929)}
+		text_params = {parent = cs_vmenu Type = TextElement font = ($cs_menu_font)rgba = ($menu_unfocus_color)z_priority = <z> Scale = (0.9, 0.8)}
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
 		CreateScreenElement {
 			Type = SpriteElement
@@ -176,7 +176,7 @@ script create_controller_settings_menu\{popup = 0}
 			id = cs_controller_text
 			parent = cs_container
 			Pos = (465.0, 571.0)
-			Scale = (0.6500000357627869, 0.800000011920929)
+			Scale = (0.65, 0.8)
 			text = "Controller"
 			font = text_a6
 			rgba = ($menu_unfocus_color)
@@ -188,7 +188,7 @@ script create_controller_settings_menu\{popup = 0}
 			id = cs_options_text
 			parent = cs_container
 			Pos = (460.0, 293.0)
-			Scale = (0.5, 0.4000000059604645)
+			Scale = (0.5, 0.4)
 			text = "Options"
 			font = text_a6
 			rgba = ($menu_unfocus_color)

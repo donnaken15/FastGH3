@@ -126,7 +126,7 @@ script xboxlive_menu_optimatch_results_item_add
 			parent = <container_element>
 			font = text_a5
 			local_id = server_name
-			Scale = (0.75, 0.6500000357627869)
+			Scale = (0.75, 0.65)
 			rgba = ($online_light_blue)
 			text = <host_text>
 			just = [left top]
@@ -140,7 +140,7 @@ script xboxlive_menu_optimatch_results_item_add
 			parent = <container_element>
 			font = text_a5
 			local_id = mode
-			Scale = (0.75, 0.6500000357627869)
+			Scale = (0.75, 0.65)
 			rgba = ($online_light_blue)
 			text = <game_mode_value>
 			Pos = (220.0, 0.0)
@@ -154,7 +154,7 @@ script xboxlive_menu_optimatch_results_item_add
 			parent = <container_element>
 			font = text_a5
 			local_id = songs
-			Scale = (0.75, 0.6500000357627869)
+			Scale = (0.75, 0.65)
 			rgba = ($online_light_blue)
 			text = <num_songs_value>
 			Pos = (460.0, 0.0)

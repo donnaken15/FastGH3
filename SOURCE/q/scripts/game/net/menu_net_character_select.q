@@ -46,10 +46,10 @@
 	Change \{menu_focus_color = [180 50 50 255]}
 	Change \{menu_unfocus_color = [0 0 0 255]}
 	create_pause_menu_frame container_id = net_quit_warning parent = warning_message_container z = <z>
-	displaySprite parent = warning_message_container tex = dialog_title_bg Scale = (1.7000000476837158, 1.7000000476837158) z = (<z> + 4)Pos = (640.0, 100.0) just = [right top] flip_v
-	displaySprite parent = warning_message_container tex = dialog_title_bg Scale = (1.7000000476837158, 1.7000000476837158) z = (<z> + 4)Pos = (640.0, 100.0) just = [left top]
-	displaySprite parent = warning_message_container tex = dialog_frame_joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 5)
-	displaySprite parent = warning_message_container tex = dialog_frame_joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 5)
+	displaySprite parent = warning_message_container tex = dialog_title_bg Scale = (1.7, 1.7) z = (<z> + 4)Pos = (640.0, 100.0) just = [right top] flip_v
+	displaySprite parent = warning_message_container tex = dialog_title_bg Scale = (1.7, 1.7) z = (<z> + 4)Pos = (640.0, 100.0) just = [left top]
+	displaySprite parent = warning_message_container tex = dialog_frame_joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.575, 1.5) z = (<z> + 5)
+	displaySprite parent = warning_message_container tex = dialog_frame_joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.575, 1.5) z = (<z> + 5)
 	displaySprite parent = warning_message_container tex = dialog_menu_bg Pos = (480.0, 500.0) Scale = (1.25, 1.0) z = (<z> + 4)just = [left botom]
 	displaySprite parent = warning_message_container tex = dialog_menu_bg Pos = (480.0, 530.0) Scale = (1.25, 1.0) z = (<z> + 4)just = [left top] flip_h
 	CreateScreenElement {

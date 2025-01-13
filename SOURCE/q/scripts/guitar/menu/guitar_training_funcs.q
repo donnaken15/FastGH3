@@ -372,7 +372,7 @@ script training_create_pause_backdrop
 			just = [center center]
 			Pos = {(640.0, 217.0) relative}
 			rgba = [223 223 223 255]
-			Scale = (1.2000000476837158, 1.2000000476837158)
+			Scale = (1.2, 1.2)
 			z_priority = ($training_pause_z + 12)
 			Shadow
 			shadow_offs = (3.0, 3.0)
@@ -802,7 +802,7 @@ script training_create_quit_warning_backdrop
 			just = [center center]
 			Pos = {(640.0, 217.0) relative}
 			rgba = [223 223 223 255]
-			Scale = (1.2000000476837158, 1.2000000476837158)
+			Scale = (1.2, 1.2)
 			z_priority = ($training_pause_z + 12)
 			Shadow
 			shadow_offs = (3.0, 3.0)

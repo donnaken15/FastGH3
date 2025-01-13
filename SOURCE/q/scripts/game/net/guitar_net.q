@@ -547,7 +547,7 @@ script coop_fail_song
 	spawnscriptnow \{GuitarEvent_SongFailed_Spawned}
 endscript
 
-script add_searching_menu_item\{z = 2.0999999}
+script add_searching_menu_item\{z = 2.1}
 	if GotParam \{vmenu_id}
 		CreateScreenElement {
 			Type = ContainerElement

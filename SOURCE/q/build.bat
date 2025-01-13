@@ -3,6 +3,7 @@
 pushd "%~dp0"
 :: /!\ ZSH OPERATES ON SCRIPTS FASTER, EVEN FASTER THAN DASH, DASH L /!\
 where zsh /Q && zsh ./qcomp ./scripts ./!cache/scripts || dash ./qcomp ./scripts ./!cache/scripts
+mkdir ..\..\DATA\PAK 2>nul
 pakdir !cache ..\..\DATA\PAK\qb -s
 
 :: kind of pointless to run every time but helps to reduce dbg.pak size

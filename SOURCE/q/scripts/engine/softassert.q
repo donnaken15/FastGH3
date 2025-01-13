@@ -121,7 +121,7 @@ script soft_assert_message\{message = ""}
 			parent = soft_assert_anchor
 			id = soft_assert_callstack_v
 			just = [left top]
-			Pos = ((120.0, 90.0) + (<height> * (0.0, 0.8500000238418579)))
+			Pos = ((120.0, 90.0) + (<height> * (0.0, 0.85)))
 			dims = ((840.0, 0.0) + (<dim_h> * (0.0, 1.0)))
 			z_priority = 10005
 		}

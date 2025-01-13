@@ -53,7 +53,7 @@ script np_net_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu
 	else
 		<menu_offset> = (0.0, 0.0)
 	endif
-	displayText id = np_option_0 parent = newspaper_container text = "CONTINUE" Pos = (($g_np_option_props [0].Pos)+ <menu_offset> + (0.0, 13.0))Scale = (0.8500000238418579, 0.699999988079071) rot = ($g_np_option_props [0].rot)font = <menu_font> noshadow
+	displayText id = np_option_0 parent = newspaper_container text = "CONTINUE" Pos = (($g_np_option_props [0].Pos)+ <menu_offset> + (0.0, 13.0))Scale = (0.85, 0.7) rot = ($g_np_option_props [0].rot)font = <menu_font> noshadow
 	SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 	retail_menu_focus \{id = np_option_0}
 	retail_menu_unfocus \{id = np_option_1}
@@ -127,7 +127,7 @@ script net_np_ready_for_next_song\{Player = 1}
 endscript*///
 
 script net_np_create_timer\{Player = 1}
-	timer_z = 3.0999999
+	timer_z = 3.1
 	CreateScreenElement {
 		Type = ContainerElement
 		parent = root_window

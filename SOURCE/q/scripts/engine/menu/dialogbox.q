@@ -207,7 +207,7 @@ script create_snazzy_dialog_box\{title = "Title" text = "Default text" anchor_id
 			texture = <logo>
 			just = [center top]
 			rgba = [100 100 100 255]
-			Scale = ((1.399999976158142, 1.2999999523162842) * 1.4)
+			Scale = ((1.4, 1.3) * 1.4)
 		}
 		no_icon = no_icon
 	endif

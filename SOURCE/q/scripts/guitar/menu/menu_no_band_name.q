@@ -29,7 +29,7 @@ script create_no_band_menu
 		text = "ENTER A BAND NAME"
 		rgba = [130 50 50 255]
 		just = [center top]
-		Scale = (1.25, 1.149999976158142)
+		Scale = (1.25, 1.15)
 		Pos = <warning_text_pos>
 		z_priority = (<z> + 4)
 		Shadow
@@ -53,7 +53,7 @@ script create_no_band_menu
 		text = <no_band_text>
 		rgba = [210 210 210 250]
 		just = [center center]
-		Scale = (0.800000011920929, 0.699999988079071)
+		Scale = (0.8, 0.7)
 		font_spacing = 1
 		Pos = <quit_warning_text_pos>
 		dims = <quit_warning_text_dims>
@@ -62,8 +62,8 @@ script create_no_band_menu
 	displaySprite parent = no_band_container tex = dialog_bg Pos = (480.0, 485.0) dims = (320.0, 64.0) z = (<z> + 3)
 	displaySprite parent = no_band_container tex = dialog_bg flip_h Pos = (480.0, 554.0) dims = (320.0, 64.0) z = (<z> + 3)
 	displaySprite parent = no_band_container tex = white Pos = (492.0, 541.0) Scale = (75.0, 6.0) z = (<z> + 3)rgba = <offwhite>
-	displaySprite parent = no_band_container tex = Dialog_Frame_Joiner Pos = (480.0, 534.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 3.01)
-	displaySprite parent = no_band_container tex = Dialog_Frame_Joiner Pos = (750.0, 538.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 3.01)
+	displaySprite parent = no_band_container tex = Dialog_Frame_Joiner Pos = (480.0, 534.0) rot_angle = 5 Scale = (1.575, 1.5) z = (<z> + 3.01)
+	displaySprite parent = no_band_container tex = Dialog_Frame_Joiner Pos = (750.0, 538.0) flip_v rot_angle = -5 Scale = (1.575, 1.5) z = (<z> + 3.01)
 	displaySprite id = hi_right parent = no_band_container tex = Dialog_Highlight Pos = (770.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 3.02)
 	displaySprite id = hi_left parent = no_band_container tex = Dialog_Highlight flip_v Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 3.02)
 	set_focus_color \{rgba = [180 50 50 255]}

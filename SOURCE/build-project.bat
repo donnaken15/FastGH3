@@ -20,5 +20,5 @@ popd
 ::cmd /c call copy-all.bat
 ::cmd /c call bundle.bat
 echo FINALLY!!!!!!
-popd "%~dp0"
+popd
 

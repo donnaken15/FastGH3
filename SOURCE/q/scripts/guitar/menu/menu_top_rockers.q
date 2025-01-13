@@ -115,7 +115,7 @@ script menu_top_rockers_create_paper
 		FormatText textname = number_text "%n" n = <score_val>
 		FormatText checksumName = song_score_id 'song_score%d' d = <score_val>
 		FormatText checksumName = score_name_id 'score_name%d' d = <score_val>
-		score_scale = (0.6000000238418579, 0.800000011920929)
+		score_scale = (0.6, 0.8)
 		rand = Random (@ 1 @ 2)
 		FormatText checksumName = bar_tex 'Toprockers_Bar_%d' d = <rand>
 		bar_flags = {}
@@ -184,7 +184,7 @@ script menu_top_rockers_create_paper
 		}
 		fit_text_in_rectangle id = <id> dims = (65.0, 40.0) only_if_larger_x = 1
 		CreateScreenElement {
-			Scale = (0.800000011920929, 0.800000011920929)
+			Scale = (0.8, 0.8)
 			Type = TextElement
 			parent = tr_paper_container
 			Pos = ((1.0, 0.0) * <column_x> + <current_y_position> + <name_offset> + (0.0, 3.0))
@@ -394,7 +394,7 @@ script menu_tr_band_retreat_pointer
 			Change g_tr_went_past_max_width = ($g_tr_went_past_max_width - 1)
 			FormatText checksumName = score_name_id 'score_name%d' d = (<score_index> + 1)
 			if ($g_tr_went_past_max_width = 0)
-				SetScreenElementProps id = <score_name_id> Scale = (0.6000000238418579, 0.800000011920929)
+				SetScreenElementProps id = <score_name_id> Scale = (0.6, 0.8)
 			else
 				GetScreenElementProps id = <score_name_id>
 				SetScreenElementProps id = <score_name_id> Scale = 1

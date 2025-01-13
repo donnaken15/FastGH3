@@ -1287,15 +1287,16 @@ script GuitarEvent_StarSequenceBonus
 		return
 	endif
 	player_text = ($<player_status>.text)
+	redundant = {x = <prefix> p = <player_text> AddToStringLookup = true}
 	prefix = 'big_bolt_particle'
 	if ($disable_particles = 0)
 		i = 0
 		begin
-			FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx_id '%x%p%e' e = <i> <redundant>
 			Destroy2DParticleSystem id = <fx_id>
-			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx2_id '%x2%p%e' e = <i> <redundant>
 			Destroy2DParticleSystem id = <fx2_id>
-			FormatText checksumName = fx3_id '%x3%p%e' p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx3_id '%x3%p%e' e = <i> <redundant>
 			Destroy2DParticleSystem id = <fx3_id>
 			Increment \{i}
 		repeat 5
@@ -1304,11 +1305,11 @@ script GuitarEvent_StarSequenceBonus
 	if ($disable_particles = 1)
 		i = 0
 		begin
-			FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx_id '%x%p%e' e = <i> <redundant>
 			Destroy2DParticleSystem id = <fx_id>
-			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx2_id '%x2%p%e' e = <i> <redundant>
 			Destroy2DParticleSystem id = <fx2_id>
-			FormatText checksumName = fx3_id '%x3%p%e' x = <prefix> p = <player_text> e = <i> AddToStringLookup = true
+			FormatText checksumName = fx3_id '%x3%p%e' e = <i> <redundant>
 			Destroy2DParticleSystem id = <fx3_id>
 			Increment \{i}
 		repeat 5
@@ -1380,6 +1381,7 @@ script StarSequenceFX
 				time = 2.0
 			}
 			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
+			Destroy2DParticleSystem id = <fx2_id>
 			<particle_pos> = (<pos2d> - (0.0, 32.0))
 			Create2DParticleSystem {
 				id = <fx2_id>
@@ -1404,6 +1406,7 @@ script StarSequenceFX
 				time = 2.0
 			}
 			FormatText checksumName = fx3_id '%x3%p%e' x = <prefix>  p = <player_text> e = <gem_count> AddToStringLookup = true
+			Destroy2DParticleSystem id = <fx3_id>
 			<particle_pos> = (<pos2d> - (0.0, 15.0))
 			Create2DParticleSystem {
 				id = <fx3_id>
@@ -1432,6 +1435,7 @@ script StarSequenceFX
 	repeat <array_Size>
 	wait \{$star_power_bolt_time seconds}
 	gem_count = 0
+	prefix = 'big_bolt_particle'
 	begin
 		if (<gem_count> = 5)
 			gem_count = 7
@@ -1443,11 +1447,11 @@ script StarSequenceFX
 			endif
 			FormatText checksumName = name 'big_bolt%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			DestroyScreenElement id = <name>
-			FormatText checksumName = fx_id 'big_bolt_particle%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx_id> kill_when_empty
-			FormatText checksumName = fx2_id 'big_bolt_particle2%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx2_id> kill_when_empty
-			FormatText checksumName = fx3_id 'big_bolt_particle3%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
+			FormatText checksumName = fx3_id '%x3%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
 			Destroy2DParticleSystem id = <fx3_id> kill_when_empty
 			wait \{1 gameframe}
 		endif

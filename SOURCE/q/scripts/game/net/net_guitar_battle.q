@@ -498,11 +498,11 @@ script net_whammy_shake
 		if (<frame_count> = <shake_frequency>)
 			if (<shake_on> = 0)
 				<markers_name> ::Obj_GetPosition
-				<markers_name> ::Obj_SetPosition position = (<Pos> + (0.0, 0.05000000074505806, 0.0))
+				<markers_name> ::Obj_SetPosition position = (<Pos> + (0.0, 0.05, 0.0))
 				<shake_on> = 1
 			else
 				<markers_name> ::Obj_GetPosition
-				<markers_name> ::Obj_SetPosition position = (<Pos> + (0.0, -0.05000000074505806, 0.0))
+				<markers_name> ::Obj_SetPosition position = (<Pos> + (0.0, -0.05, 0.0))
 				<shake_on> = 0
 			endif
 			<frame_count> = 0

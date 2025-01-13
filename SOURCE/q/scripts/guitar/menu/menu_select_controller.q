@@ -602,7 +602,7 @@ script create_ready_icons\{pos1 = (440.0, 120.0) pos2 = (720.0, 580.0)}
 		}
 		displaySprite \{parent = ready_container_p1 tex = dialog_title_bg flip_v dims = (128.0, 128.0)}
 		displaySprite parent = <id> tex = dialog_title_bg Pos = (128.0, 0.0) dims = (128.0, 128.0)
-		displayText \{parent = ready_container_p1 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.8999999761581421) font = text_a4 z = 100 rgba = [223 223 223 255]}
+		displayText \{parent = ready_container_p1 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.9) font = text_a4 z = 100 rgba = [223 223 223 255]}
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> dims = (160.0, 42.0)
 	endif
@@ -621,7 +621,7 @@ script create_ready_icons\{pos1 = (440.0, 120.0) pos2 = (720.0, 580.0)}
 		}
 		displaySprite \{parent = ready_container_p2 tex = dialog_title_bg flip_v dims = (128.0, 128.0)}
 		displaySprite parent = <id> tex = dialog_title_bg Pos = (128.0, 0.0) dims = (128.0, 128.0)
-		displayText \{parent = ready_container_p2 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.8999999761581421) font = text_a4 z = 100 rgba = [223 223 223 255]}
+		displayText \{parent = ready_container_p2 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.9) font = text_a4 z = 100 rgba = [223 223 223 255]}
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> dims = (160.0, 42.0)
 	endif

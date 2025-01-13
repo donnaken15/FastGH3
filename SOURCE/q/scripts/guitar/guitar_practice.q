@@ -86,7 +86,7 @@ script practicemode_init
 		Type = TextElement
 		parent = practice_container
 		id = practice_sectiontext
-		Scale = (1.100000023841858, 0.8999999761581421)
+		Scale = (1.1, 0.9)
 		Pos = (640.0, 160.0)
 		font = ($practice_font)
 		rgba = [255 255 255 255]

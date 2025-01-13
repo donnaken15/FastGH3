@@ -53,10 +53,10 @@ script create_song_ended_menu\{Player = 1}
 	fill_song_title_and_completion_details <...> parent = song_ended_static_text_container
 	Change \{menu_focus_color = [180 50 50 255]}
 	Change \{menu_unfocus_color = [0 0 0 255]}
-	text_scale = (0.8999999761581421, 1.0)
+	text_scale = (0.9, 1.0)
 	displaySprite parent = song_ended_static_text_container tex = white Pos = (492.0, 517.0) Scale = (75.0, 6.0) z = (<z> + 0.1)rgba = <offwhite>
-	displaySprite parent = song_ended_static_text_container tex = Dialog_Frame_Joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
-	displaySprite parent = song_ended_static_text_container tex = Dialog_Frame_Joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.5750000476837158, 1.5) z = (<z> + 0.2)
+	displaySprite parent = song_ended_static_text_container tex = Dialog_Frame_Joiner Pos = (480.0, 510.0) rot_angle = 5 Scale = (1.575, 1.5) z = (<z> + 0.2)
+	displaySprite parent = song_ended_static_text_container tex = Dialog_Frame_Joiner Pos = (750.0, 514.0) flip_v rot_angle = -5 Scale = (1.575, 1.5) z = (<z> + 0.2)
 	displaySprite id = hi_right parent = song_ended_static_text_container tex = Dialog_Highlight Pos = (770.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)just = [left center]
 	displaySprite id = hi_left parent = song_ended_static_text_container tex = Dialog_Highlight flip_v Pos = (500.0, 533.0) Scale = (1.0, 1.0) z = (<z> + 0.3)just = [right center]
 	displaySprite parent = song_ended_static_text_container tex = dialog_bg Pos = (480.0, 450.0) Scale = (1.25, 1.25) z = <z>

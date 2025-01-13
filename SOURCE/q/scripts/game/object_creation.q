@@ -36,8 +36,8 @@ script CompositeObjects_RegisterDefault
 					{name = ItemControl}
 					{name = Vision}
 					{name = CollisionCache
-						params = {bbox_min = (-0.10000000149011612, -20.0, -0.10000000149011612)
-							bbox_max = (0.10000000149011612, 10.0, 0.10000000149011612)
+						params = {bbox_min = (-0.1, -20.0, -0.1)
+							bbox_max = (0.1, 10.0, 0.1)
 							layer = static_geometry_feeler}}
 					{name = navigation}
 					{name = motion}
@@ -89,8 +89,8 @@ script CompositeObjects_RegisterDefault
 					{name = Locator}
 					{name = ItemControl}
 					{name = CollisionCache
-						params = {bbox_min = (-0.10000000149011612, -20.0, -0.10000000149011612)
-							bbox_max = (0.10000000149011612, 10.0, 0.10000000149011612)
+						params = {bbox_min = (-0.1, -20.0, -0.1)
+							bbox_max = (0.1, 10.0, 0.1)
 							layer = static_geometry_feeler}}
 					{name = navigation}
 					{name = motion}

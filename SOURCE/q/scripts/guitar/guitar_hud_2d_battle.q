@@ -118,7 +118,7 @@ script battle_hud_2d_elements_load
 				element_id = HUD2D_battle_default_icon2_1
 				element_parent = HUD2D_rock_container
 				texture = icon_attack_default2
-				zoff = 18.8999996
+				zoff = 18.9
 				pos_off = (90.0, 150.0)
 				dims = (74.0, 74.0)
 			}
@@ -126,7 +126,7 @@ script battle_hud_2d_elements_load
 				element_id = HUD2D_battle_default_icon2_2
 				element_parent = HUD2D_rock_container
 				texture = icon_attack_default2
-				zoff = 18.8999996
+				zoff = 18.9
 				battle_pos
 				pos_type = card_default_2
 				dims = (48.0, 48.0)
@@ -139,7 +139,7 @@ script battle_hud_2d_elements_load
 				element_id = HUD2D_battle_default_icon2_3
 				element_parent = HUD2D_rock_container
 				texture = icon_attack_default2
-				zoff = 18.8999996
+				zoff = 18.9
 				battle_pos
 				pos_type = card_default_3
 				dims = (28.0, 28.0)

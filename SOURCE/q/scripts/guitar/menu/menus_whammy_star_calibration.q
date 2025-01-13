@@ -293,14 +293,14 @@ script create_star_power_trigger_calibration_menu\{controller = 0 popup = 0}
 		internal_just = [left top]
 		line_spacing = 0.85
 		dims = (940.0, 300.0)
-		Scale = (0.5, 0.6500000357627869)
+		Scale = (0.5, 0.65)
 		rgba = [225 200 120 255]
 		text = <element_text>
 		event_handlers = [
 			{pad_choose menu_star_power_trigger_enter_position params = {controller = <controller>}}
 			{pad_back ui_flow_manager_respond_to_action params = {action = go_back}}
 		]
-		z_priority = (<z> + 6.0999999)
+		z_priority = (<z> + 6.1)
 		rot_angle = -2
 	}
 	LaunchEvent \{Type = focus target = star_calibration_text}
