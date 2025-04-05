@@ -74,6 +74,7 @@ script create_loading_strings
 		'\c6AM: HIT A HOPO PATTERN WITH YOUR WRIST OVER THE NECK\n\c3PRO: PLAY THE OPPOSITE HANDEDNESS WITH HYPERSPEED 10\n\c5SICK: PLAY THE OPPOSITE HANDEDNESS WITH THE GUITAR BEHIND YOUR BACK\c0' // i wrote this without realizing i already made a similar thing
 		'This is a mod of Project 8 which is an update of American Wasteland which is an update of Underground 2 which is an update of Underground 1 which is an update of Pro Skater 4 which is an update of Pro Skater 3 which is an update of Pro Skater 2 which is an update of Pro Skater 1 which is an update of Apocalypse which is an update of MDK'
 		'\c2I WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED'
+                'the low snare frequency is wrong' 'Hi my name\'s Tyrone Rodriguez\nI\'mthe producer on Cave Story for WiiWare'
 	]
 endscript
 
