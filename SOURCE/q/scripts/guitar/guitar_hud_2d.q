@@ -400,6 +400,7 @@ script create_score_text
 endscript
 
 script rock_meter_star_power_on
+	SetSpawnInstanceLimits \{Max = $current_num_players management = ignore_spawn_request}
 	if ($game_mode = p2_career)
 		<player_status> = player1_status
 	endif
@@ -508,6 +509,7 @@ script pulsate_all_star_power_bulbs
 endscript
 
 script rock_back_and_forth_star_meter
+	SetSpawnInstanceLimits \{Max = $current_num_players management = ignore_spawn_request}
 	move_up_and_down = 1
 	if ($game_mode = p1_career || $game_mode = p1_quickplay || $game_mode = p2_career || $game_mode = p2_coop)
 		ExtendCrc HUD2D_rock_container <player_text> out = shake_container
@@ -550,6 +552,7 @@ script rock_meter_star_power_off\{player_text = 'p1'}
 	if ($game_mode = p2_battle || $boss_battle = 1)
 		return
 	endif
+	SetSpawnInstanceLimits \{Max = $current_num_players management = ignore_spawn_request}
 	j = 6
 	begin
 		FormatText checksumName = id 'HUD2D_rock_tube_%d' d = <j>
@@ -788,7 +791,7 @@ endscript
 
 disable_notestreak_notif = 0
 script hud_show_note_streak_combo\{Player = 1 combo = 0}
-	if ($end_credits = 1 || $Cheat_PerformanceMode = 1 || $disable_notestreak_notif = 1)
+	if ($end_credits = 1 || $Cheat_PerformanceMode = 1 || $disable_notestreak_notif != 0)
 		return
 	endif
 	if ($game_mode = p2_career || $game_mode = p2_coop)
@@ -916,6 +919,7 @@ script hud_show_note_streak_combo\{Player = 1 combo = 0}
 endscript
 
 script hud_lightning_alert
+	// OPTIMIZE, also missing frames compared to PS2
 	if NOT ScreenElementExists id = <alert_id>
 		return
 	endif
@@ -1026,7 +1030,11 @@ script hud_lightning_alert
 	endif
 endscript
 
+disable_starpower_notif = 0
 script hud_glowburst_alert\{player_status = player1_status}
+	if NOT ($disable_starpower_notif = 0)
+		return
+	endif
 	FormatText checksumName = star_power_ready_glow 'star_power_ready_glow_%d' d = ($<player_status>.Player)
 	ExtendCrc hud_destroygroup_window ($<player_status>.text)out = hud_destroygroup
 	if ScreenElementExists id = <star_power_ready_glow>

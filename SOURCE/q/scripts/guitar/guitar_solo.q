@@ -6,7 +6,7 @@ script solo\{part = guitar diff = expert}
 	// for performance sake since S5 has the event for all difficulties
 	// and executes part of main for 6ms >:(
 	GetDeltaTime
-	coop_track = 0
+	//coop_track = 0
 	matched_player = 0
 	ExtendCrc \{$current_song '_extra' out = extra_struct}
 	difficulty = current_difficulty
@@ -16,25 +16,26 @@ script solo\{part = guitar diff = expert}
 		if (<part> = $<player_status>.part & <diff> = $<difficulty>)
 			matched_player = 1
 		endif
-		if StructureContains structure = ($<extra_struct>) use_coop_notetracks
-			if ($coop_tracks = 1)
-				if ($game_mode = p2_career || $game_mode = p2_coop)
-					// hacky
-					if ChecksumEquals a = guitarcoop b = <part>
-						if ChecksumEquals a = guitar b = ($<player_status>.part)
-							coop_track = 1
-							matched_player = 1
-						endif
-					endif
-					if ChecksumEquals a = rhythmcoop b = <part>
-						if ChecksumEquals a = rhythm b = ($<player_status>.part)
-							coop_track = 1
-							matched_player = 1
-						endif
-					endif
-				endif
-			endif
-		endif
+		//nope
+		//if StructureContains structure = ($<extra_struct>) use_coop_notetracks
+		//	if ($coop_tracks = 1)
+		//		if ($game_mode = p2_career || $game_mode = p2_coop)
+		//			// hacky
+		//			if ChecksumEquals a = guitarcoop b = <part>
+		//				if ChecksumEquals a = guitar b = ($<player_status>.part)
+		//					coop_track = 1
+		//					matched_player = 1
+		//				endif
+		//			endif
+		//			if ChecksumEquals a = rhythmcoop b = <part>
+		//				if ChecksumEquals a = rhythm b = ($<player_status>.part)
+		//					coop_track = 1
+		//					matched_player = 1
+		//				endif
+		//			endif
+		//		endif
+		//	endif
+		//endif
 		ExtendCrc <difficulty> '2' out = difficulty
 		Increment \{i}
 	repeat ($current_num_players)
@@ -130,14 +131,14 @@ script solo\{part = guitar diff = expert}
 	else
 		GetSongTimeMs // why even
 	endif
-	if (<coop_track> = 1)
-		if (<part> = guitarcoop)
-			part = guitar
-		endif
-		if (<part> = rhythmcoop)
-			part = rhythm
-		endif
-	endif
+	//if (<coop_track> = 1)
+	//	if (<part> = guitarcoop)
+	//		part = guitar
+	//	endif
+	//	if (<part> = rhythmcoop)
+	//		part = rhythm
+	//	endif
+	//endif
 	difficulty = current_difficulty
 	i = 1
 	begin

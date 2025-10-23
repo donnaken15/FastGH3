@@ -1,3 +1,379 @@
+results_screen_layout = {
+	layouts = {
+		base = [
+			{
+				element = title
+				pos = (135.0, 32.0)
+				scale = 1.0
+				dims = (400.0, 134.0)
+				rot = 0
+				z = 999
+				line_spacing = 0.85
+				font = text_a4
+				
+				font = text_a11
+				just = [left bottom]
+				ijust = [left bottom]
+				iscale = 1.0
+				pos = (279.0, 400.0)
+				Scale = 0.75
+				dims = (300.0, 200.0)
+				line_spacing = 0.85
+				rot = -7.5
+			}
+			{
+				element = artist
+				pos = (135.0, 162.0)
+				scale = 0.8
+				dims = (500.0, 134.0)
+				rot = 0
+				z = 999
+				line_spacing = 0.85
+				font = text_a4
+				
+				font = text_a4
+				just = [left top]
+				ijust = [left top]
+				pos = (279.0, 405.0)
+				Scale = (0.5, 0.55)
+				dims = (400.0, 134.0)
+				line_spacing = 0.85
+				rot = -7.5
+			}
+		]
+		quickplay_1p = [
+			{
+				text = '%'
+				font = text_a4
+				Pos = (364.0, 500.0)
+				z = 4
+				rgba = $g_ss_percent_color
+				rot = -10
+				dims = (48.0, 48.0)
+			}
+			{
+				text = '\u0NOTES HIT'
+				font = text_a3
+				Pos = (403.0, 522.0)
+				Scale = (0.44, 0.7)
+				z = 4
+				rgba = $g_ss_black
+				rot = -10
+				font_spacing = 6
+				space_spacing = 1 // <-- wtf????????
+			}
+			{
+				type = sprite
+				texture = song_summary_score_fill_l
+				Pos = (674.0, 90.0)
+				dims = (268.0, 67.0)
+				rgba = $g_ss_score_fill_L_color
+				scale = 1.045 // why, stupid
+			}
+			{
+				type = sprite
+				texture = song_summary_score_fill_r
+				Pos = (934.0, 83.0)
+				dims = (134.0, 67.0)
+				rgba = $g_ss_score_fill_R_color
+				scale = 1.045
+			}
+			{
+				type = sprite
+				texture = song_summary_notestreak_fill
+				pos = (719.0, 359.0)
+				rgba = $g_ss_notestreak_fill_color
+			}
+			//{
+			//	type = textblock
+			//	text = '3999'
+			//	//element = streak
+			//	font = text_a4
+			//	just = [ center center ]
+			//	ijust = [ center center ]
+			//	Pos = (783.0, 397.0)
+			//	dims = (120.0, 80.0)
+			//	Scale = 1.5
+			//	z = 4
+			//	rgba = $g_ss_offwhite
+			//}
+			//{
+			//	type = text
+			//	text = 'note streak'
+			//	//element = streak
+			//	font = text_a11
+			//	Pos = (732.0, 425.0)
+			//	Scale = (0.44, 0.55)
+			//	z = 4
+			//	rgba = $g_ss_offwhite
+			//	font_spacing = 5
+			//	space_spacing = 3
+			//	//scale = 1 // why immediately override it
+			//	// followed by fit text
+			//}
+			
+			
+			
+			
+		]
+		battle_2p = [
+			{
+				text = 'EPIC BATTLE'
+				just = [left top]
+				font = text_a11
+				Pos = (256.0, 264.0)
+				Scale = 0.75
+				rot = -7.5
+				id = battle_header_text
+				//rgba = <winner_color> // :(
+			}
+			{
+				text = 'WHO WON?!' // WHO'S NEXT?! YOU DECIDE!!
+				just = [left top]
+				font = text_a11
+				Pos = (262.0, 302.0)
+				Scale = 0.75
+				rot = -7.5
+				id = battle_who_won_text
+			}
+		]
+		tugofwar_2p = [
+			{
+				type = textblock
+				text = 'It\'s a TIE!'
+				just = [left bottom]
+				ijust = [left bottom]
+				font = text_a11
+				Pos = (270.0, 345.0)
+				Scale = 0.7
+				dims = (350.0, 200.0)
+				line_spacing = 0.85
+				rot = -7.5
+				id = ss_winner_text
+			}
+		]
+		versus_2p = [
+			{
+				just = [left top]
+				ijust = [left top]
+				font = text_a4
+				rgba = $g_ss_2p_song_title_whiteish
+				Pos = (285.0, 450.0)
+				dims = (400.0, 134.0)
+				Scale = 0.9
+				line_spacing = 0.85
+				rot = -7.5
+				id = ss_mode_text_block_id
+			}
+			{
+				font = text_a11
+				rgba = $g_ss_p1_orangeish
+				Pos = (298.0, 522.0)
+				Scale = (0.5, 0.55)
+				line_spacing = 0.85
+				rot = -7.5
+				id = ss_p1_difficulty
+				font_spacing = 2
+				space_spacing = 2
+			}
+			{
+				font = text_a11
+				rgba = $g_ss_p2_violetish
+				Pos = (302.0, 552.0)
+				Scale = (0.5, 0.55)
+				line_spacing = 0.85
+				rot = -7.5
+				id = ss_p2_difficulty
+				font_spacing = 2
+				space_spacing = 2
+			}
+			//{
+			//	type = sprite
+			//	texture = Song_Summary_Circle_2p
+			//	rgba = $g_ss_p1_orangeish
+			//	rot = 180
+			//	z = 8
+			//	Pos = (668.0, 260.0)
+			//}
+			// add subitems
+		]
+	}
+	// make option list separate array here with indications for
+	// which modes these can be accessed from, or always show on all modes
+}
+
+g_gray = [ 128 128 128 255 ]
+g_ss_offwhite = [ 230 230 230 255 ]
+g_ss_black = [ 0 0 0 255 ]
+g_ss_gray = [100 100 100 255]
+g_ss_orangeish = [ 200 135 55 255 ]
+g_ss_AP_reddish = [ 200 60 55 255 ]
+g_ss_AP_blueish = [ 55 80 135 255 ]
+g_ss_AP_yellowish = [ 230 220 25 255 ]
+g_ss_p1_orangeish = [ 210 165 110 255 ]
+g_ss_p2_violetish = [ 180 155 205 255 ]
+g_ss_2p_song_title_whiteish = [ 220 220 220 255 ]
+
+g_ss_percent_color = $g_ss_offwhite
+g_ss_star_good_color = $g_ss_offwhite
+g_ss_star_bad_color = $g_ss_gray
+g_ss_score_color = $g_ss_offwhite
+g_ss_score_text_color = $g_ss_black
+g_ss_score_fill_L_color = $g_ss_black
+g_ss_score_fill_R_color = $g_ss_offwhite
+g_ss_notestreak_fill_color = $g_ss_black
+g_ss_notestreak_text_color = $g_ss_offwhite
+g_ss_notestreak_color = $g_ss_offwhite
+
+element_type_aliases = {
+	text = TextElement
+	textblock = TextBlockElement
+	sprite = SpriteElement
+	container = ContainerElement
+}
+element_types_allowed = [ // CreateElement
+	TextElement
+	TextBlockElement // has word wrapping
+	SpriteElement // texture (image) or material
+	MovieElement // ?????
+	// only PlayMovie is known and can only do fullscreen, but video venue has bink video displaying behind the truck
+	HMenu // apparently used for horizontal text stacking: menu_fail_song.q:270, i guess if events arent assigned
+	VMenu // but this is (obviously) used a lot for selection menus (because strum up/down)
+	HScrollingMenu
+	VScrollingMenu
+	ViewportElement
+	WindowElement // apparently suggested for (recreating) masking filled time bar on WOR HUD when white sprite works too
+	//Element3D // no 3D here lol
+]
+script create_results_layout
+	layouts = ($results_screen_layout.layouts)
+	if NOT StructureContains structure = <layouts> <layout>
+		printf 'can\'t find layout %s!!!!!!!!!!!!!!' s = <layout>
+		printstruct ($<layouts>)
+		return false
+	endif
+	GetArraySize (<layouts>.<layout>)
+	if NOT (<array_size> > 0)
+		return
+	endif
+	item_count = <array_size>
+	i = 0
+	//bbox_display = 1
+	begin
+		<create> = 1
+		item = (<layouts>.<layout>[<i>])
+		send_props = {
+			//<send_props>
+			
+			// fallback items
+			dims = (300.0, 300.0)
+			pos = (640.0, 360.0)
+			font = text_a1
+			scale = 1.0
+			rgba = [ 255 255 255 255 ]
+			just = [left top]
+			internal_just = [left top]
+			internal_scale = 1.0 // ???????
+			flip = [false false]
+			text = ''
+			type = text
+			
+			// whatever you want
+			id = (<item>.id) //not important for static stuff obviously
+			text = (<item>.text)
+			texture = (<item>.texture)
+			material = (<item>.material)
+			dims = (<item>.dims) // hopefully ineffective on simple text elements
+			pos = (<item>.pos)
+			rot_angle = (<item>.rot)
+			just = (<item>.just)
+			font = (<item>.font)
+			scale = (<item>.scale)
+			alpha = (<item>.alpha)
+			z_priority = (<item>.z)
+			rgba = (<item>.rgba)
+			line_spacing = (<item>.line_spacing)
+			internal_just = (<item>.ijust)
+			internal_scale = (<item>.iscale)
+			flip = (<item>.flip)
+			parent = <parent>
+		}
+		//if StructureContains structure=<info> (<item>.element)
+		//endif
+		switch (<item>.element)
+			case title // should be more freeform/ambiguous to accepting whatever info it gets
+			case artist
+			case album
+			case year
+			case artist_text
+				text = (<info>.(<item>.element))
+				if StructureContains structure=<item> uppercase
+					GetUpperCaseString <text>
+					text = <uppercasestring>
+				elseif StructureContains structure=<item> lowercase
+					GetLowerCaseString <text>
+					text = <lowercasestring>
+				endif
+				if StructureContains structure=<item> format
+					FormatText textname = text (<item>.format) s = <text> b = (<info>.artist_text)
+				endif
+				send_props = {
+					just = [left top]
+					font = text_a4
+					<send_props>
+					type = TextBlockElement
+					text = <text>
+					parent = <parent>
+				}
+			default
+				type = (<item>.type)
+				if StructureContains structure=$element_type_aliases <type> // make wiki page for func
+					type = ($element_type_aliases.<type>)
+				endif
+				if not IndexOf delegate = ChecksumEquals array = ($element_types_allowed) <type>
+					printf 'invalid element type = %t' t = <type>
+					<create> = 0
+				else
+					send_props = {
+						type = <type>
+						<send_props>
+					}
+				endif
+		endswitch
+		if (<create> = 1)
+			if (<bbox_display>)
+				CreateScreenElement {
+					<send_props>
+					type = SpriteElement
+					rgba = [ 255 0 0 255 ]
+					parent = <parent>
+					z = (<item>.z - 1)
+					alpha = 0.3
+				}
+				if (<item>.flip[0])
+					<id>::SetProps flip_h
+				endif
+				if (<item>.flip[1])
+					<id>::SetProps flip_v
+				endif
+			endif
+			CreateScreenElement <send_props>
+			if (<item>.flip[0])
+				<id>::SetProps flip_h
+			endif
+			if (<item>.flip[1])
+				<id>::SetProps flip_v
+			endif
+		endif
+		//if (<prop_count> > 0)
+		//	begin
+		//		RemoveComponent (<send_props>[<i>])
+		//	repeat <prop_count>
+		//endif
+		Increment \{i}
+	repeat <item_count>
+endscript
+
 
 g_np_option_props = [
 	{
@@ -49,16 +425,6 @@ g_np_option_props = [
 g_np_menu_icon_offset = (225.0, -22.0)
 g_np_options_index = 0
 g_ss_mag_number = 0
-g_grey = [ 128 128 128 255 ]
-g_ss_offwhite = [ 230 230 230 255 ]
-g_ss_black = [ 0 0 0 255 ]
-g_ss_orangeish = [ 200 135 55 255 ]
-g_ss_AP_reddish = [ 200 60 55 255 ]
-g_ss_AP_blueish = [ 55 80 135 255 ]
-g_ss_AP_yellowish = [ 230 220 25 255 ]
-g_ss_p1_orangeish = [ 210 165 110 255 ]
-g_ss_p2_violetish = [ 180 155 205 255 ]
-g_ss_2p_song_title_whiteish = [ 220 220 220 255 ]
 use_last_player_scores = 0
 old_song = None
 
@@ -106,7 +472,7 @@ script create_newspaper_menu\{for_practice = 0}
 			$game_mode = p2_faceoff ||
 			$game_mode = p2_pro_faceoff ||
 			$game_mode = p2_battle)
-			exclusive_mp_controllers = [0 , 0]
+			exclusive_mp_controllers = [0 0]
 			SetArrayElement ArrayName = exclusive_mp_controllers index = 0 NewValue = ($player1_device)
 			SetArrayElement ArrayName = exclusive_mp_controllers index = 1 NewValue = ($player2_device)
 			exclusive_device = <exclusive_mp_controllers>
@@ -151,40 +517,27 @@ script create_newspaper_menu\{for_practice = 0}
 	FormatText textname = p1_score_text '%s' s = <p1_score>
 	FormatText textname = p2_score_text '%s' s = <p2_score>
 	get_progression_globals game_mode = ($game_mode)use_current_tab = 1
-	GetGlobalTags \{Progression params = current_tier}
 	show_stars = 1
-	if GotParam \{current_tier}
-		if Progression_IsBossSong tier_global = <tier_global> Tier = <current_tier> song = <my_song>
-			show_stars = 0
-		endif
+	if ($boss_battle = 1)
+		show_stars = 0
 	endif
 	get_song_title song = <my_song>
+	get_song_artist song = <my_song>
+	get_song_struct song = <my_song>
 	get_difficulty_text difficulty = ($current_difficulty)
 	if (<stars> < 3)
-		<stars> = 3
+		<stars> = 3 // ???
 	endif
 	offwhite = [223 223 223 255]
 	reddish = [170 70 70 255]
-	switch <current_tier>
-		case 1
-			Change \{g_ss_mag_number = 0}
-		case 2
-			Change \{g_ss_mag_number = 1}
-		case 3
-			Change \{g_ss_mag_number = 2}
-		case 4
-			Change \{g_ss_mag_number = 3}
-		case 5
-			Change \{g_ss_mag_number = 4}
-		case 6
-			Change \{g_ss_mag_number = 5}
-		case 7
-			Change \{g_ss_mag_number = 6}
-		case 8
-			Change \{g_ss_mag_number = 7}
-		default
-			Change \{g_ss_mag_number = 0}
-	endswitch
+	Change \{g_ss_mag_number = 0}
+	create_results_layout parent = newspaper_container layout = base info = {
+		title = <song_title>
+		artist = <song_artist>
+		album = (<song_struct>.album)
+		year = (<song_struct>.year)
+		artist_text = (<song_struct>.artist_text)
+	}
 	if NOT ($game_mode = p1_career || $game_mode = p2_career || $game_mode = p2_coop || $game_mode = p1_quickplay || <for_practice> = 1)
 		<ss_logo> = none
 		<ss_logo_sm> = none
@@ -213,10 +566,10 @@ script create_newspaper_menu\{for_practice = 0}
 				<winner> = 0
 			endif
 		endif
-		if ($is_network_game)
-			do_achievement_check <...>
-			updateatoms \{name = achievement}
-		endif
+		//if ($is_network_game) // :O
+		//	do_achievement_check <...>
+		//	updateatoms \{name = achievement}
+		//endif
 		if (<winner> = 0)
 			rand_status = Random (@ 1 @ 2)
 			FormatText checksumName = player_status 'player%i_status' i = <rand_status>
@@ -224,39 +577,22 @@ script create_newspaper_menu\{for_practice = 0}
 			FormatText checksumName = player_status 'player%i_status' i = <winner>
 		endif
 		if ($game_mode = p2_battle)
-			displayText {
-				parent = newspaper_container
-				text = 'EPIC BATTLE'
-				just = [left top]
-				Pos = (256.0, 264.0)
-				Scale = 0.75
-				font = text_a11
-				rgba = <winner_color>
-				rot = -7.5
-				noshadow
-			}
+			create_results_layout \{parent = newspaper_container layout = battle_2p}
 			FormatText textname = winner_text 'Player %d' d = <winner>
 			if ($is_network_game)
 				if (<winner> = 2)
 					winner_text = $opponent_gamertag
 				else
-					if (NetSessionFunc Obj = match func = get_gamertag)
+					if NetSessionFunc Obj = match func = get_gamertag
 						winner_text = <name>
+					else
+						winner_text = 'FAIL!!!'
 					endif
 				endif
 			endif
 			FormatText textname = who_won_text "%s%t" s = <winner_text> t = ' Rules!'
-			displayText {
-				parent = newspaper_container
-				text = <who_won_text>
-				just = [left top]
-				Pos = (262.0, 302.0)
-				Scale = 0.75
-				font = text_a11
-				rgba = <winner_color>
-				rot = -7.5
-				noshadow
-			}
+			battle_header_text::SetProps rgba = <winner_color>
+			battle_who_won_text::SetProps rgba = <winner_color> text = <who_won_text>
 			<final_blow_powerup> = ($<player_status>.final_blow_powerup)
 			if (<final_blow_powerup> > -1)
 				CreateScreenElement \{Type = TextBlockElement parent = newspaper_container just = [left top] Pos = (320.0, 415.0) rot_angle = -7.5 Scale = 0.45 text = 'FINAL BLOW:' font = fontgrid_title_gh3 rgba = [223 223 223 255] dims = (300.0, 300.0)}
@@ -267,12 +603,12 @@ script create_newspaper_menu\{for_practice = 0}
 					is_lefty_flip = $p1_lefty
 				endif
 				if (<select> = 4 & <is_lefty_flip> = 1)
-					GetUpperCaseString ($battlemode_powerups [<select>].alt_name_text)
+					GetUpperCaseString ($battlemode_powerups[<select>].alt_name_text)
 				else
-					GetUpperCaseString ($battlemode_powerups [<select>].name_text)
+					GetUpperCaseString ($battlemode_powerups[<select>].name_text)
 				endif
 				final_blow_attack_text = <uppercasestring>
-				final_blow_attack_icon = ($battlemode_powerups [<select>].card_texture)
+				final_blow_attack_icon = ($battlemode_powerups[<select>].card_texture)
 				CreateScreenElement {
 					Type = TextBlockElement
 					parent = newspaper_container
@@ -299,6 +635,7 @@ script create_newspaper_menu\{for_practice = 0}
 				}
 			endif
 		else
+			create_results_layout \{parent = newspaper_container layout = tugofwar_2p}
 			winner_text = <winner>
 			FormatText textname = winner_text 'Player %d' d = <winner>
 			if ($is_network_game)
@@ -311,90 +648,65 @@ script create_newspaper_menu\{for_practice = 0}
 					endif
 				endif
 			endif
-			if (<winner> = 0)
-				who_won_text = 'It\'s a TIE!'
-			else
+			if NOT (<winner> = 0)
 				FormatText textname = who_won_text "%d %t" d = <winner_text> t = Random ( @ 'Conquers With Authority!' @ 'Wins the Crowd!' @ )
+				ss_winner_text::SetProps text = <who_won_text> rgba = <winner_color>
 			endif
-			CreateScreenElement {
-				Type = TextBlockElement
-				parent = newspaper_container
-				just = [left bottom]
-				internal_just = [left bottom]
-				Pos = (270.0, 345.0)
-				Scale = 0.7
-				text = <who_won_text>
-				font = text_a11
-				rgba = <winner_color>
-				dims = (350.0, 200.0)
-				line_spacing = 0.85
-				rot_angle = -7.5
-			}
 		endif
-		GetUpperCaseString <song_title>
-		CreateScreenElement {
-			id = ss_song_title_text_block_id
-			Type = TextBlockElement
-			parent = newspaper_container
-			just = [left top]
-			internal_just = [left top]
-			Pos = (270.0, 352.0)
-			Scale = (0.55, 0.55)
-			text = <uppercasestring>
-			font = text_a11
-			rgba = $g_ss_2p_song_title_whiteish
-			dims = (400.0, 134.0)
-			line_spacing = 0.85
-			rot_angle = -7.5
-			noshadow
-		}
-		get_song_artist song = <my_song>
-		GetUpperCaseString <song_artist>
-		<band_name> = <uppercasestring>
-		GetScreenElementChildren \{id = ss_song_title_text_block_id}
-		GetArraySize (<children>)
-		if (<array_Size> = 1)
-			<artist_pos> = (276.0, 386.0)
-		else
-			<artist_pos> = (280.0, 416.0)
-		endif
-		if ($g_ss_mag_number = 0 || $g_ss_mag_number = 1)
-			<band_name_color> = $g_ss_offwhite
-		else
-			<band_name_color> = $g_ss_p1_orangeish
-		endif
-		CreateScreenElement {
-			id = ss_artist_text_block_id
-			Type = TextBlockElement
-			parent = newspaper_container
-			just = [left top]
-			internal_just = [left top]
-			Pos = <artist_pos>
-			Scale = (0.45, 0.45)
-			text = <band_name>
-			font = text_a4
-			rgba = <band_name_color>
-			dims = (400.0, 134.0)
-			line_spacing = 0.85
-			rot_angle = -7.5
-		}
-		mode_text = ''
+		
+		
+		
+		//GetUpperCaseString <song_title>
+		//CreateScreenElement {
+		//	id = ss_song_title_text_block_id
+		//	Type = TextBlockElement
+		//	parent = newspaper_container
+		//	just = [left top]
+		//	internal_just = [left top]
+		//	Pos = (270.0, 352.0)
+		//	Scale = (0.55, 0.55)
+		//	text = <uppercasestring>
+		//	font = text_a11
+		//	rgba = $g_ss_2p_song_title_whiteish
+		//	dims = (400.0, 134.0)
+		//	line_spacing = 0.85
+		//	rot_angle = -7.5
+		//	noshadow
+		//}
+		//GetUpperCaseString <song_artist>
+		//<band_name> = <uppercasestring>
+		//GetScreenElementChildren \{id = ss_song_title_text_block_id}
+		//GetArraySize (<children>)
+		//if (<array_Size> = 1)
+		//	<artist_pos> = (276.0, 386.0)
+		//else
+		//	<artist_pos> = (280.0, 416.0)
+		//endif
+		//if ($g_ss_mag_number = 0 || $g_ss_mag_number = 1)
+		//	<band_name_color> = $g_ss_offwhite
+		//else
+		//	<band_name_color> = $g_ss_p1_orangeish
+		//endif
+		//CreateScreenElement {
+		//	id = ss_artist_text_block_id
+		//	Type = TextBlockElement
+		//	parent = newspaper_container
+		//	just = [left top]
+		//	internal_just = [left top]
+		//	Pos = <artist_pos>
+		//	Scale = (0.45, 0.45)
+		//	text = <band_name>
+		//	font = text_a4
+		//	rgba = <band_name_color>
+		//	dims = (400.0, 134.0)
+		//	line_spacing = 0.85
+		//	rot_angle = -7.5
+		//}
+		create_results_layout \{parent = newspaper_container layout = versus_2p}
+		
+		mode_text = 'UNKNOWN'
 		mode_text = ($mode_text[($mode_index.($game_mode))])
-		CreateScreenElement {
-			id = ss_mode_text_block_id
-			Type = TextBlockElement
-			parent = newspaper_container
-			just = [left top]
-			internal_just = [left top]
-			Pos = (285.0, 450.0)
-			Scale = (0.9, 0.9)
-			text = <mode_text>
-			font = text_a4
-			rgba = $g_ss_2p_song_title_whiteish
-			dims = (400.0, 134.0)
-			line_spacing = 0.85
-			rot_angle = -7.5
-		}
+		ss_mode_text_block_id::SetProps text = <mode_text>
 		get_difficulty_text_upper difficulty = ($current_difficulty)
 		name_text_1 = 'PLAYER 1'
 		if ($is_network_game)
@@ -404,17 +716,7 @@ script create_newspaper_menu\{for_practice = 0}
 			endif
 		endif
 		FormatText textname = p1_difficulty_text "%n, %d" d = <difficulty_text> n = <name_text_1>
-		displayText {
-			parent = newspaper_container
-			text = <p1_difficulty_text>
-			Pos = (298.0, 522.0)
-			Scale = (0.5, 0.55)
-			font = text_a11
-			rgba = $g_ss_p1_orangeish
-			rot = -7.5
-			noshadow
-		}
-		SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 2
+		ss_p1_difficulty::SetProps text = <p1_difficulty_text>
 		get_difficulty_text_upper difficulty = ($current_difficulty2)
 		name_text_2 = 'PLAYER 2'
 		if ($is_network_game)
@@ -422,22 +724,7 @@ script create_newspaper_menu\{for_practice = 0}
 			name_text_2 = $opponent_gamertag
 		endif
 		FormatText textname = p2_difficulty_text "%n, %d" d = <difficulty_text> n = <name_text_2>
-		displayText {
-			parent = newspaper_container
-			text = <p2_difficulty_text>
-			Pos = (302.0, 552.0)
-			Scale = (0.5, 0.55)
-			font = text_a11
-			rgba = $g_ss_p2_violetish
-			rot = -7.5
-			noshadow
-		}
-		SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 2
-		displaySprite {
-			parent = newspaper_container
-			tex = <ss_logo_sm>
-			Pos = (946.0, 86.0)
-		}
+		ss_p2_difficulty::SetProps text = <p2_difficulty_text>
 		<p1_stats_pos> = (668.0, 260.0)
 		<p2_stats_pos> = (864.0, 260.0)
 		displaySprite {
@@ -493,7 +780,7 @@ script create_newspaper_menu\{for_practice = 0}
 			displaySprite {
 				id = np_right_wing
 				parent = newspaper_container
-				tex = Song_Summary_Wing_2p_Flipped
+				tex = Song_Summary_Wing_2p_Flipped // SHOULD BE ABLE TO USE FLIP_H INSTEAD RIGHT?? unless because of angle stuff somehow
 				Pos = <r_wing_pos>
 				z = 7
 			}
@@ -618,39 +905,21 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		GetScreenElementDims id = <id>
 		fit_text_in_rectangle id = ss_p2_note_streak_text dims = ((90.0, 0.0) + (0.0, 1.0) * <height>)Pos = (<p2_stats_pos> + (-2.0, 130.0))start_x_scale = 0.55 start_y_scale = 0.7 only_if_larger_x = 1
-		if NOT ($g_ss_mag_number = 7)
-			displaySprite {
-				id = ss_p1_score_fill
-				parent = newspaper_container
-				tex = Song_Summary_Score_BG_2p
-				Pos = (<p1_stats_pos> + (-12.0, 160.0))
-				rgba = <ss_score_color>
-			}
-			displaySprite {
-				id = ss_p2_score_fill
-				parent = newspaper_container
-				tex = Song_Summary_Score_BG_2p
-				Pos = (<p2_stats_pos> + (54.0, 192.0))
-				rgba = <ss_score_color>
-				rot_angle = 181
-			}
-		else
-			displaySprite {
-				id = ss_p1_score_fill
-				parent = newspaper_container
-				tex = Song_Summary_Score_BG_2p
-				Pos = (<p1_stats_pos> + (-12.0, 160.0))
-				rgba = $g_ss_HELL_darker_reddish
-			}
-			displaySprite {
-				id = ss_p2_score_fill
-				parent = newspaper_container
-				tex = Song_Summary_Score_BG_2p
-				Pos = (<p2_stats_pos> + (54.0, 192.0))
-				rgba = $g_ss_HELL_darker_reddish
-				rot_angle = 181
-			}
-		endif
+		displaySprite {
+			id = ss_p1_score_fill
+			parent = newspaper_container
+			tex = Song_Summary_Score_BG_2p
+			Pos = (<p1_stats_pos> + (-12.0, 160.0))
+			rgba = <ss_score_color>
+		}
+		displaySprite {
+			id = ss_p2_score_fill
+			parent = newspaper_container
+			tex = Song_Summary_Score_BG_2p
+			Pos = (<p2_stats_pos> + (54.0, 192.0))
+			rgba = <ss_score_color>
+			rot_angle = 181
+		}
 		displayText {
 			id = ss_p1_score_text
 			parent = newspaper_container
@@ -886,27 +1155,10 @@ script create_newspaper_menu\{for_practice = 0}
 					z = 1
 				}
 				if (<i> = 1)
-					<id> ::SetProps rgba = <hilite_rgba> alpha = 0.25 dims = (180.0, 180.0)
+					<id>::SetProps rgba = <hilite_rgba> alpha = 0.25 dims = (180.0, 180.0)
 				endif
 				<i> = (<i> + 1)
 			repeat 3
-		endif
-		outfit = ($<player_status>.outfit)
-		style = ($<player_status>.style)
-		if find_profile_by_id id = ($<player_status>.character_id)
-			get_musician_profile_struct index = <index>
-			character_name = (<profile_struct>.name)
-			FormatText checksumName = the_body_id_i_need 'Guitarist_%n_Outfit%o_Style%s' n = <character_name> o = <outfit> s = <style>
-			get_pak_filename desc_id = <the_body_id_i_need> Type = Body
-			if (<found> = 1)
-				get_musician_body_struct index = <pak_index>
-				<asset_context> = (<info_struct>.asset_context)
-				PushAssetContext context = <asset_context>
-			endif
-		endif
-		displaySprite \{parent = newspaper_container tex = #"0xc9c796cb" dims = (640.0, 640.0) Pos = (125.0, 34.0) z = -1}
-		if (<found> = 1)
-			PopAssetContext
 		endif
 		if NOT (<winner> = 0)
 			spawnscriptnow \{np_2p_flap_wings}
@@ -919,71 +1171,62 @@ script create_newspaper_menu\{for_practice = 0}
 			spawnscriptnow \{np_2p_hilites_p2}
 		endif
 	else
-		<ss_logo> = none
-		<ss_sidebar> = none
-		<ss_percent_fill> = none
-		<ss_percent_color> = $g_ss_offwhite
-		<ss_star_good_color> = $g_ss_offwhite
-		<ss_star_bad_color> = [100 100 100 255]
-		<ss_score_fill_L_color> = $g_ss_black
-		<ss_score_color> = $g_ss_offwhite
-		<ss_score_fill_R_color> = $g_ss_offwhite
-		<ss_score_text_color> = $g_ss_black
-		<ss_notestreak_fill_color> = $g_ss_black
-		<ss_notestreak_color> = $g_ss_offwhite
-		<ss_notestreak_text_color> = $g_ss_offwhite
-		get_song_artist song = <my_song>
-		GetUpperCaseString <song_artist>
-		<band_name> = <uppercasestring>
-		song_internal_scale = 1.0
-		StringLength string = <song_title>
-		if (<str_len> >= 19)
-			<song_internal_scale> = 0.75
-		endif
-		mypos = (262.0, 345.0)
-		CreateScreenElement {
-			id = ss_song_title_text_block_id
-			Type = TextBlockElement
-			parent = newspaper_container
-			just = [left bottom]
-			internal_just = [left bottom]
-			Pos = <mypos>
-			Scale = 0.75
-			text = <song_title>
-			font = text_a11
-			rgba = $g_ss_offwhite
-			dims = (300.0, 200.0)
-			line_spacing = 0.85
-			rot_angle = -7.5
-			internal_scale = <song_internal_scale>
-		}
-		<artist_pos> = (<mypos> + (0.0, 5.0))
-		if ($g_ss_mag_number = 0 || $g_ss_mag_number = 1)
-			<band_name_color> = $g_ss_offwhite
-		else
-			<band_name_color> = $g_ss_orangeish
-		endif
-		CreateScreenElement {
-			id = ss_artist_text_block_id
-			Type = TextBlockElement
-			parent = newspaper_container
-			just = [left top]
-			internal_just = [left top]
-			Pos = <artist_pos>
-			Scale = (0.5, 0.55)
-			text = <band_name>
-			font = text_a4
-			rgba = <band_name_color>
-			dims = (400.0, 134.0)
-			line_spacing = 0.85
-			rot_angle = -7.5
-		}
-		displaySprite {
-			parent = newspaper_container
-			tex = <ss_percent_fill>
-			Pos = (267.0, 460.0)
-			dims = (336.0, 168.0)
-		}
+		<ss_percent_color> = $g_ss_percent_color
+		<ss_star_good_color> = $g_ss_star_good_color
+		<ss_star_bad_color> = $g_ss_star_bad_color
+		<ss_score_fill_L_color> = $g_ss_score_fill_L_color
+		<ss_score_color> = $g_ss_score_color
+		<ss_score_fill_R_color> = $g_ss_score_fill_R_color
+		<ss_score_text_color> = $g_ss_score_text_color
+		<ss_notestreak_fill_color> = $g_ss_notestreak_fill_color
+		<ss_notestreak_color> = $g_ss_notestreak_color
+		<ss_notestreak_text_color> = $g_ss_notestreak_text_color
+		create_results_layout parent = newspaper_container layout = quickplay_1p
+		//GetUpperCaseString <song_artist>
+		//<band_name> = <uppercasestring>
+		//song_internal_scale = 1.0
+		//StringLength string = <song_title>
+		//if (<str_len> >= 19)
+		//	<song_internal_scale> = 0.75 // just do fit
+		//endif
+		//mypos = (262.0, 345.0)
+		//CreateScreenElement {
+		//	id = ss_song_title_text_block_id
+		//	Type = TextBlockElement
+		//	parent = newspaper_container
+		//	just = [left bottom]
+		//	internal_just = [left bottom]
+		//	Pos = <mypos>
+		//	Scale = 0.75
+		//	text = <song_title>
+		//	font = text_a11
+		//	rgba = $g_ss_offwhite
+		//	dims = (300.0, 200.0)
+		//	line_spacing = 0.85
+		//	rot_angle = -7.5
+		//	internal_scale = <song_internal_scale>
+		//}
+		//<artist_pos> = (<mypos> + (0.0, 5.0))
+		//if ($g_ss_mag_number = 0 || $g_ss_mag_number = 1)
+		//	<band_name_color> = $g_ss_offwhite
+		//else
+		//	<band_name_color> = $g_ss_orangeish
+		//endif
+		//CreateScreenElement {
+		//	id = ss_artist_text_block_id
+		//	Type = TextBlockElement
+		//	parent = newspaper_container
+		//	just = [left top]
+		//	internal_just = [left top]
+		//	Pos = <artist_pos>
+		//	Scale = (0.5, 0.55)
+		//	text = <band_name>
+		//	font = text_a4
+		//	rgba = <band_name_color>
+		//	dims = (400.0, 134.0)
+		//	line_spacing = 0.85
+		//	rot_angle = -7.5
+		//}
 		FormatText textname = p1_notes_hit '%d' d = <p1_percent_complete>
 		if (<p1_percent_complete> = 100)
 			<ss_percent_pos> = (290.0, 503.0)
@@ -1006,45 +1249,46 @@ script create_newspaper_menu\{for_practice = 0}
 			rot = -10
 			noshadow
 		}
-		displayText {
-			parent = newspaper_container
-			text = '%'
-			Pos = (364.0, 500.0)
-			font = text_a4
-			z = 4
-			rgba = <ss_percent_color>
-			rot = -10
-			noshadow
-		}
-		if NOT ($g_ss_mag_number = 7)
-			<np_notes_hit_color> = $g_ss_black
-		else
-			<np_notes_hit_color> = $g_ss_HELL_lighter_reddish
-		endif
-		displayText {
-			parent = newspaper_container
-			text = '\u0NOTES HIT'
-			Pos = (403.0, 522.0)
-			Scale = (0.44, 0.7)
-			font = text_a3
-			z = 4
-			rgba = <np_notes_hit_color>
-			rot = -10
-			noshadow
-		}
-		SetScreenElementProps id = <id> font_spacing = 6 space_spacing = 1
-		GetScreenElementDims id = <id>
-		if (<width> > 79)
-			SetScreenElementProps id = <id> Scale = 1
-			fit_text_in_rectangle id = <id> dims = (66.0, 35.0) Pos = (403.0, 522.0)
-		endif
-		displaySprite {
-			parent = newspaper_container
-			tex = song_summary_score_fill_l
-			Pos = (674.0, 90.0)
-			rgba = <ss_score_fill_L_color>
-			dims = (268.0, 67.0)
-		}
+		//displayText {
+		//	parent = newspaper_container
+		//	text = '%'
+		//	Pos = (364.0, 500.0)
+		//	font = text_a4
+		//	z = 4
+		//	rgba = <ss_percent_color>
+		//	rot = -10
+		//	noshadow
+		//}
+		//if NOT ($g_ss_mag_number = 7)
+		//	<np_notes_hit_color> = $g_ss_black
+		//else
+		//	<np_notes_hit_color> = $g_ss_HELL_lighter_reddish
+		//endif
+		//displayText {
+		//	parent = newspaper_container
+		//	text = '\u0NOTES HIT'
+		//	Pos = (403.0, 522.0)
+		//	Scale = (0.44, 0.7)
+		//	font = text_a3
+		//	z = 4
+		//	rgba = <np_notes_hit_color>
+		//	rot = -10
+		//	noshadow
+		//}
+		// add code to detect if layout wants to fit stuff within width
+		//SetScreenElementProps id = <id> font_spacing = 6 space_spacing = 1
+		//GetScreenElementDims id = <id>
+		//if (<width> > 79)
+		//	SetScreenElementProps id = <id> Scale = 1
+		//	fit_text_in_rectangle id = <id> dims = (66.0, 35.0) Pos = (403.0, 522.0)
+		//endif
+		//displaySprite {
+		//	parent = newspaper_container
+		//	tex = song_summary_score_fill_l
+		//	Pos = (674.0, 90.0)
+		//	rgba = <ss_score_fill_L_color>
+		//	dims = (268.0, 67.0)
+		//}
 		if (<for_practice> = 0)
 			if (<show_stars> = 1)
 				<star_pos> = (686.0, 120.0)
@@ -1147,19 +1391,19 @@ script create_newspaper_menu\{for_practice = 0}
 			SetScreenElementProps id = <id> Scale = (0.7, 0.6)
 			fit_text_in_rectangle id = <id> dims = ((70.0, 0.0) + <height> * (0.0, 0.6))
 		endif
-		displaySprite {
-			parent = newspaper_container
-			tex = song_summary_score_fill_r
-			Pos = (934.0, 83.0)
-			rgba = <ss_score_fill_R_color>
-			dims = (134.0, 67.0)
-		}
-		displaySprite {
-			parent = newspaper_container
-			tex = song_summary_notestreak_fill
-			Pos = (719.0, 359.0)
-			rgba = <ss_notestreak_fill_color>
-		}
+		//displaySprite {
+		//	parent = newspaper_container
+		//	tex = song_summary_score_fill_r
+		//	Pos = (934.0, 83.0)
+		//	rgba = <ss_score_fill_R_color>
+		//	dims = (134.0, 67.0)
+		//}
+		//displaySprite {
+		//	parent = newspaper_container
+		//	tex = song_summary_notestreak_fill
+		//	Pos = (719.0, 359.0)
+		//	rgba = <ss_notestreak_fill_color>
+		//}
 		if (<p1_note_streak> > 999)
 			<ss_notestreak_pos> = (740.0, 358.0)
 			<ss_notestreak_scale> = (1.12, 1.5)
@@ -1195,23 +1439,6 @@ script create_newspaper_menu\{for_practice = 0}
 		}
 		SetScreenElementProps id = <id> font_spacing = 5 space_spacing = 3 Scale = 1
 		fit_text_in_rectangle id = <id> dims = (80.0, 35.0) Pos = (732.0, 425.0)
-		outfit = ($player1_status.outfit)
-		style = ($player1_status.style)
-		if find_profile_by_id id = ($player1_status.character_id)
-			get_musician_profile_struct index = <index>
-			character_name = (<profile_struct>.name)
-			FormatText checksumName = the_body_id_i_need 'Guitarist_%n_Outfit%o_Style%s' n = <character_name> o = <outfit> s = <style>
-			get_pak_filename desc_id = <the_body_id_i_need> Type = Body
-			if (<found> = 1)
-				get_musician_body_struct index = <pak_index>
-				<asset_context> = (<info_struct>.asset_context)
-				PushAssetContext context = <asset_context>
-			endif
-		endif
-		displaySprite \{parent = newspaper_container tex = #"0xc9c796cb" dims = (640.0, 640.0) Pos = (125.0, 34.0) z = -1}
-		if (<found> = 1)
-			PopAssetContext
-		endif
 	endif
 	if ($is_network_game)
 		np_net_create_options_menu Pos = (770.0, 460.0) rot = <rot> Scale = 1 for_practice = <for_practice> show_replay = <show_replay> replay_flow_params = <replay_flow_params>
@@ -1220,7 +1447,6 @@ script create_newspaper_menu\{for_practice = 0}
 	else
 		np_create_options_menu Pos = (770.0, 360.0) rot = <rot> Scale = 1 for_practice = <for_practice> show_replay = <show_replay> replay_flow_params = <replay_flow_params>
 	endif
-	get_song_struct song = <my_song>
 	if ((StructureContains structure = <song_struct> boss)|| $game_mode = p2_battle)
 		set_current_battle_first_play
 	endif
@@ -1681,8 +1907,8 @@ script np_2p_hilite_sections
 			np_set_section_color p = 1 i = <i> j = <j> Color = <black>
 			np_set_section_color p = 2 i = <i> j = <j> Color = <black>
 			wait <time> seconds
-			np_set_section_color p = 1 i = <i> j = <j> Color = $g_grey
-			np_set_section_color p = 2 i = <i> j = <j> Color = $g_grey
+			np_set_section_color p = 1 i = <i> j = <j> Color = $g_gray
+			np_set_section_color p = 2 i = <i> j = <j> Color = $g_gray
 			<i> = <new_i>
 		repeat 3
 	repeat

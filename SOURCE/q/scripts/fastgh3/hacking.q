@@ -393,6 +393,60 @@ endscript
 	// I DON'T USE THE // FIX FOR IT
 
 
+script create_debug_gem
+	//return
+	Create2DGem {
+		color = <color>
+		marker = <marker>
+		time = <time>
+		song = <song>
+		entry = <entry>
+		gem_count = <gem_count>
+		player = <player>
+		player_text = <player_text>
+		player_status = <player_status>
+	}
+	if (<color> = open) // oh no
+		gem_count = 2
+	endif
+	if ($gem_debug_text = 0)
+		return
+	endif
+	input = ($<song>[<entry>])
+	// useful maybe (probably input_arrayp1):
+	// 0: time
+	// 1-5: G/R/Y/B/O lengths
+	// 6: hammer/tap flags
+	// 7: (input) time end??
+	FormatText textname = gem_text '%g_%e_gem_p%p' e = <entry> g = ($gem_colors_text[<gem_count>]) p = <player>
+	ExtendCrc #"0xFFFFFFFF" <gem_text> out = gem
+	if (<color> = open)
+		gem_count = 7
+	endif
+	printstruct <...>
+	pad (<input>[(<gem_count>+1)]) count = 5 pad = ' '
+	//FormatText textname = gem_text '%l' l = (<input>[(<gem_count>+1)])
+	flag = ''
+	switch (<input>[6])
+		case 1
+			flag = ' H'
+		case 2
+			flag = ' T'
+	endswitch
+	FormatText textname = gem_text '%l%f' l = <pad> f = <flag>
+	//ExtendCrc <gem> '_text' out = gem_debug_id
+	if ScreenElementExists id = <gem>
+		CreateScreenElement {
+			id = <gem_debug_id> parent = <gem>
+			type = textblockelement text = <gem_text>
+			just = [left bottom] pos = (-32.0, 0.0)
+			internal_just = [left bottom]
+			dims = (160.0, 64.0)
+			font = text_a1 scale = 1.2 }
+		//SetScreenElementProps id = <gem> material = sys_Gem2D_Red_sys_Gem2D_Red
+	endif
+endscript
+
 
 
 

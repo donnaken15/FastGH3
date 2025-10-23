@@ -51,7 +51,7 @@ script create_choose_practice_speed_menu
 		<text_params>
 		parent = <id>
 		id = ps_fullspeed
-		text = "Full Speed"
+		text = 'Full Speed'
 	}
 	CreateScreenElement {
 		<text_params>
@@ -67,7 +67,7 @@ script create_choose_practice_speed_menu
 		<text_params>
 		parent = <id>
 		id = ps_slow
-		text = "Slow"
+		text = 'Slow'
 	}
 	CreateScreenElement {
 		<text_params>
@@ -83,7 +83,7 @@ script create_choose_practice_speed_menu
 		<text_params>
 		parent = <id>
 		id = ps_slower
-		text = "Slower"
+		text = 'Slower'
 	}
 	CreateScreenElement {
 		<text_params>
@@ -99,7 +99,7 @@ script create_choose_practice_speed_menu
 		<text_params>
 		parent = <id>
 		id = ps_slowest
-		text = "Slowest"
+		text = 'Slowest'
 	}
 	Change \{menu_choose_practice_destroy_previous_menu = 0}
 endscript
@@ -127,21 +127,21 @@ script practice_choose_speed_hilite
 	SetScreenElementProps id = cps_hilite_be2 Pos = (<Pos> + (<new_dims>.(0.5, 0.0) * (1.0, 0.0))- (4.0, 0.0))
 endscript
 
+practice_speeds = {
+	full = 1.0
+	slow = 0.8
+	slower = 0.666666666
+	slowest = 0.5
+}
+
 script menu_choose_practice_speed_set_speed\{speed = full}
-	switch <speed>
-		case full
-			Change \{current_speedfactor = 1.0}
-			Change \{StructureName = PitchShiftSlow1 pitch = 1.0}
-		case slow
-			Change \{current_speedfactor = 0.8}
-			Change \{StructureName = PitchShiftSlow1 pitch = 1.25}
-		case slower
-			Change \{current_speedfactor = 0.6666667}
-			Change \{StructureName = PitchShiftSlow1 pitch = 1.5}
-		case slowest
-			Change \{current_speedfactor = 0.5}
-			Change \{StructureName = PitchShiftSlow1 pitch = 2.0}
-	endswitch
+	if StructureContains structure=$practice_speeds <speed>
+		frac = ($practice_speeds.<speed>)
+	else
+		frac = 1.0
+	endif
+	Change current_speedfactor = <frac>
+	Change StructureName = PitchShiftSlow1 pitch = (1.0/<frac>)
 	Change \{menu_choose_practice_destroy_previous_menu = 1}
 	ui_flow_manager_respond_to_action action = continue device_num = (<device_num>)
 endscript

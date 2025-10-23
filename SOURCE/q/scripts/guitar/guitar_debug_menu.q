@@ -31,7 +31,7 @@ script create_debugging_menu
 	CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Load Replay' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose create_replay_menu}]}
 	//CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Reload Zones' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose RefreshCurrentZones}]}
 	if ($fastgh3_branch = unpak)
-		CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Reload Scripts' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose reload_scripts}]}
+		CreateScreenElement \{$debug_menu_params parent = debug_vmenu text = 'Reload Scripts (UNSTABLE)' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose reload_scripts}]}
 	endif
 	LaunchEvent \{Type = focus target = debug_vmenu}
 endscript
@@ -260,6 +260,9 @@ script create_settings_menu
 	select_slomo_setprop
 	//CreateScreenElement \{$debug_menu_params parent = settings_vmenu id = toggle_showmeasures_menuitem text = 'Show Measures' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_showmeasures}]}
 	//toggle_showmeasures_setprop
+	toggle_params = {glob=gem_debug_text prop=toggle_showgdt_menuitem label='Gem debug text'}
+	CreateScreenElement $debug_menu_params parent = settings_vmenu id = toggle_showgdt_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_button params=<toggle_params>}]
+	toggle_setprop <toggle_params>
 	toggle_params = {glob=mbt_display prop=toggle_showmbt_menuitem label='M.B Display'}
 	CreateScreenElement $debug_menu_params parent = settings_vmenu id = toggle_showmbt_menuitem text = '' event_handlers = [{focus menu_focus}{unfocus menu_unfocus}{pad_choose toggle_button params=<toggle_params>}]
 	toggle_setprop <toggle_params>
@@ -1154,6 +1157,7 @@ script menu_unfocus \{rgba = [127 127 127 191]}
 	SetScreenElementProps id = <id> rgba = <rgba>
 endscript
 debug_menu_mode = 1
+gem_debug_text = 0
 
 script switch_to_retail_menu
 	destroy_all_debug_menus

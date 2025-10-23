@@ -47,7 +47,7 @@ https://github.com/donnaken15/FastGH3/assets/20864393/01756e3a-45da-49b8-9d02-49
 <br>![clicky](https://i.ibb.co/DPJq9tN/image.png)
 * ROCK OUT!
 <br>![video game](https://i.ibb.co/W6ZL1Wc/s1.jpg)
-* For an extensive list of settings, open settings.bat, or in a command prompt in the game folder, run `fastgh3 -settings`.
+* For an extensive list of settings, open settings.bat, or in a command prompt in the game folder,<br>run `fastgh3 -settings`.
 (Installer adds a shortcut for this)
 
 ### Extra steps
@@ -67,12 +67,15 @@ and then press any button on your keyboard or controller to play.
 * Open notes, taps (by ExileLord)
 * Overlapping starpower
 * Load charts stored in archive files (ZIP, RAR, 7Z)
-* Dynamically loadable [QbScript mods](https://donnaken15.com/fastgh3/mods.html)
+* Dynamically loadable [QbScript mods](https://donnaken15.com/fastgh3/mods.html), which includes
+  * Input viewer and gameplay stats (like two other rhythm games)
+  * QbScript interpreter/executor/console (unstable, WIP)
+  * FPS display
 * Custom themes [available here](https://donnaken15.com/fastgh3/zones.html), createable and pre-existing ones
-* [GH3+ plugin system](https://github.com/donnaken15/GH3-Plus) (by ExileLord)
+* [GH3+ plugin system](https://github.com/donnaken15/GH3-Plus) (originally by ExileLord)
 * Windowed mode (and borderless)
 * Toggleable VSync
-* Dynamic note limit
+* Dynamic note limit (1 million by default)
 * Easy highway and zone swapping for ultimate personalization
 * Background images and videos
 * Easy chart downloads and instant play through fastgh3:// links
@@ -81,7 +84,7 @@ and then press any button on your keyboard or controller to play.
 * Autoplay with automatic starpower activation, and automated battle attacks
 * A multitude of fixes, such as for:
   * Audio calibration slow down
-  * Particle velocity/friction tied to frame rate
+  * Particle velocity/friction tied to frame rate (somehow still a little unstable)
   * Whammy width looking smaller on higher resolutions
   * Leftover starpower FX glitch
   * Holding sustains when unpausing

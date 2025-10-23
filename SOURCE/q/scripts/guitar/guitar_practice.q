@@ -202,11 +202,11 @@ practice_loop_error_fs = {
 }
 script create_loop_menu_3a
 	disable_pause
-	create_popup_warning_menu \{textblock = {text = "A>B loop cannot be less than a second." Pos = (640.0, 380.0)}player_device = $primary_controller menu_pos = (640.0, 465.0) dialog_dims = (275.0, 64.0) options = [{func = generic_respond_back text = 'OKAY'}]}
+	create_popup_warning_menu \{textblock = {text = 'A>B loop cannot be less than a second.' Pos = (640.0, 380.0)}player_device = $primary_controller menu_pos = (640.0, 465.0) dialog_dims = (275.0, 64.0) options = [{func = generic_respond_back text = 'OKAY'}]}
 endscript
 script create_loop_menu_3b
 	disable_pause
-	create_popup_warning_menu \{textblock = {text = "You have now set A>B points. Confirming will restart the song at point A. Do you wish to proceed?" Pos = (640.0, 380.0)}player_device = $primary_controller menu_pos = (640.0, 465.0) dialog_dims = (275.0, 64.0) options = [{func = practice_set_ab_mode text = "CONFIRM"}{func = practice_revert_ab_mode text = "CANCEL"}]}
+	create_popup_warning_menu \{textblock = {text = 'You have now set A>B points. Confirming will restart the song at point A. Do you wish to proceed?' Pos = (640.0, 380.0)} player_device = $primary_controller menu_pos = (640.0, 465.0) dialog_dims = (275.0, 64.0) options = [{func = practice_set_ab_mode text = 'CONFIRM'}{func = practice_revert_ab_mode text = 'CANCEL'}]}
 endscript
 script destroy_loop_menu_3b
 	destroy_popup_warning_menu

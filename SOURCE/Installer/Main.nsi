@@ -81,10 +81,10 @@ Function .onInit
 	CreateFont $HEADLINE_FONT "$(^Font)" "11" "600"
 	
 	InitPluginsDir
-	File /oname=$PLUGINSDIR\intro.wav "Intro.wav"
 	StrCpy $0 "$PLUGINSDIR\intro.wav"
+	File "/oname=$0" "Intro.wav"
 	System::Call 'winmm::PlaySound(t r0, i, i) b'
-	File /oname=$PLUGINSDIR\splash.bmp "InstSplash.bmp"
+	File "/oname=$PLUGINSDIR\splash.bmp" "InstSplash.bmp"
 FunctionEnd
 
 ; need an array for this or something
@@ -149,7 +149,7 @@ Function splashPage
 	nsDialogs::CreateControl STATIC ${WS_VISIBLE}|${WS_CHILD}|${WS_CLIPSIBLINGS}|${SS_BITMAP} 0 0 0 109u 193u ""
 	Pop $IMAGECTL
 
-	StrCpy $0 $PLUGINSDIR\splash.bmp
+	StrCpy $0 "$PLUGINSDIR\splash.bmp"
 	System::Call 'user32::LoadImage(p 0, t r0, i ${IMAGE_BITMAP}, i 0, i 0, i ${LR_LOADFROMFILE})p.s'
 	Pop $IMAGE
 	
@@ -160,7 +160,7 @@ Function splashPage
 
 	SendMessage $HEADLINE ${WM_SETFONT} $HEADLINE_FONT 0
 
-	nsDialogs::CreateControl STATIC ${WS_VISIBLE}|${WS_CHILD}|${WS_CLIPSIBLINGS} 0 120u 24u -130u -32u "This will install FastGH3 1.0 on your computer, a mod built to reduce the hassle of playing customs for Guitar Hero (3), add QOL enhancements and gameplay additions, including ones the later games had, add endless customization and personalization, heavily optimized performance, tons of tweaks to change up the game, a plethra of fixes, portability, instant playability, from the double click in your file browser to rocking out in seconds, all in 12 megabytes!$\r$\n$\r$\nNote: this runs separate of normal GH3.$\r$\n$\r$\nVersion: 1.${APPVER_MAJOR}-99901${APPVER_MAJOR}${APPVER_MINOR}, build date: ${__DATE__} ${__TIME__}$\r$\n"
+	nsDialogs::CreateControl STATIC ${WS_VISIBLE}|${WS_CHILD}|${WS_CLIPSIBLINGS} 0 120u 24u -130u -32u "This will install FastGH3 1.0 on your computer, a mod built to reduce the hassle of playing customs for Guitar Hero (3), add QOL enhancements and gameplay additions, including ones the later games had, add endless customization and personalization, heavily optimized performance, tons of tweaks to change up the game, a plethra of fixes, portability, instant playability, from the double click in your file browser to rocking out in seconds, all in 11 megabytes!$\r$\n$\r$\nNote: this runs separate of normal GH3.$\r$\n$\r$\nVersion: 1.${APPVER_MAJOR}-99901${APPVER_MAJOR}${APPVER_MINOR}, build date: ${__DATE__} ${__TIME__}$\r$\n"
 	Pop $TEXT
 
 	SetCtlColors $DIALOG 0 0xffffff

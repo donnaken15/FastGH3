@@ -140,10 +140,12 @@ gem_scale_orig1 = 0.0
 gem_scale_orig2 = 0.0
 
 // hate me
-part_index = { guitar = 0 rhythm = 1 }
-parts = [ guitar rhythm ]
-part_names = { guitar = 'Guitar' rhythm = 'Rhythm' }
+part_index = { guitar = 0 bass = 1 lead = 2 rhythm = 3 }
+parts = [ guitar bass lead rhythm ]
+part_nl = [ 'guitar' 'bass' 'lead' 'rhythm' ]
+part_names = { guitar = 'Guitar' bass = 'Bass' lead = 'Lead' rhythm = 'Rhythm' }
 diff_index = { easy = 0 medium = 1 hard = 2 expert = 3 }
+// difficulty_list
 modes = [
 	p1_quickplay
 	training
@@ -166,7 +168,7 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [  9  8 2024]
+build_timestamp = [10 22 2025]
 
 random_seed = -1
 // ^ originally 107482099
@@ -286,6 +288,7 @@ script guitar_startup
 				{'NoHUD' out=hudless}
 				{'KillGemsHit' out=kill_gems_on_hit}
 				{'NoStreakDisp' out=disable_notestreak_notif}
+				{'NoStarPowerDisp' out=disable_starpower_notif}
 				{'NoParticles' out=disable_particles}
 				{'Performance' out=Cheat_PerformanceMode}
 				{'NoShake' out=disable_shake}
@@ -530,11 +533,11 @@ script guitar_startup
 				texts = diff_text id = select_diff2
 				cont = { pos_off = (200,-50) just = [center top] }
 			}
-			{ range = 1 param = part
+			{ range = 3 param = part
 				texts = part_text id = select_part
 				cont = { pos_off = ( 60,-50) just = [center top] }
 			}
-			{ range = 1 param = part2
+			{ range = 3 param = part2
 				texts = part_text id = select_part2
 				cont = { pos_off = (200,-100) just = [center top] }
 			}
@@ -837,7 +840,28 @@ script blank_chart
 	repeat 200
 endscript
 
-
+// skip over blank tracks in setup
+// made this way because i can imagine i can't just compare qb arrays directly
+// even if i expect the comparison code to be pointer matching
+script note_array_empty
+	if not GlobalExists <#"0x00000000"> type = array
+		return \{true}
+	endif
+	GetArraySize ($<#"0x00000000">)
+	if (<array_size> = 0)
+		return \{true} // just blank..
+	endif
+	Mod <array_size> 3
+	if not (<mod> = 0)
+		return \{true} // invalid note array
+	endif
+	if (<array_size> = 3)
+		if ($<#"0x00000000">[1] = 0 & $<#"0x00000000">[2] = 0) // no frets!!!!!
+			return \{true}
+		endif
+	endif
+	return \{false}
+endscript
 
 nullStruct = {}
 nullArray = []

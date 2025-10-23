@@ -129,36 +129,40 @@ button_models = {
 	}
 }
 
+part_array_names = ['' 'rhythm' 'guitarcoop' 'rhythmcoop']
 script setup_gemarrays
 	get_song_struct song = <song_name>
-	if (($<player_status>.part)= rhythm)
-		<part> = 'rhythm_'
-	else
-		<part> = ''
+	part = ($part_array_names[($part_index.($<player_status>.part))])
+	if not (<part> = '')
+		part = (<part> + '_')
 	endif
-	if ($game_mode = p2_career || $game_mode = p2_coop ||
-		($game_mode = training & ($<player_status>.part = rhythm)))
-		if StructureContains structure = <song_struct> use_coop_notetracks
-			// make packed struct ? ^
-			if ($coop_tracks = 1)
-				if (($<player_status>.part)= rhythm)
-					<part> = 'rhythmcoop_'
-				else
-					<part> = 'guitarcoop_'
-				endif
-			endif
-		endif
-	endif
+	//if (($<player_status>.part) = rhythm)
+	//	<part> = 'rhythm_'
+	//else
+	//	<part> = ''
+	//endif
+	//if ($game_mode = p2_career || $game_mode = p2_coop ||
+	//	($game_mode = training & ($<player_status>.part = rhythm)))
+	//	if StructureContains structure = <song_struct> use_coop_notetracks
+	//		// make packed struct ? ^
+	//		if ($coop_tracks = 1)
+	//			if (($<player_status>.part)= rhythm)
+	//				<part> = 'rhythmcoop_'
+	//			else
+	//				<part> = 'guitarcoop_'
+	//			endif
+	//		endif
+	//	endif
+	//endif
 	get_song_prefix song = <song_name>
 	get_difficulty_text_nl difficulty = <difficulty>
 	//FormatText checksumName = gem_array '%s_%t_%p%d' s = <song_prefix> t = 'song' p = <part> d = <difficulty_text_nl> AddToStringLookup
 	FastFormatCrc $current_song a = '_song_' b = <part> c = <difficulty_text_nl> out = gem_array
-	//FormatText checksumName = fretbar_array '%s_fretbars' s = <song_prefix> AddToStringLookup
 	ExtendCrc \{$current_song '_fretbars' out = fretbar_array}
 	Change StructureName = <player_status> current_song_gem_array = <gem_array>
 	Change StructureName = <player_status> current_song_fretbar_array = <fretbar_array>
-	Change StructureName = <player_status> current_song_beat_time = ($<fretbar_array> [1])
-	Change StructureName = <player_status> playline_song_beat_time = ($<fretbar_array> [1])
+	Change StructureName = <player_status> current_song_beat_time = ($<fretbar_array>[1])
+	Change StructureName = <player_status> playline_song_beat_time = ($<fretbar_array>[1])
 	reset_star_array song_name = <song_name> difficulty = <difficulty> player_status = <player_status>
 	return gem_array = <gem_array> fretbar_array = <fretbar_array> song_prefix = <song_prefix> part = <part> difficulty_text_nl = <difficulty_text_nl>
 endscript
@@ -193,7 +197,7 @@ endscript
 script create_gem
 	// wont appear but somehow exit game func being
 	// set as gem_function works
-	printstruct <...>
+	//printstruct <...>
 endscript
 
 script gem_scroller\{Player = 1 training_mode = 0}
@@ -250,21 +254,22 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	GetGlobalTags \{user_options} // dont know what else is used here by this
 	get_video_lag
 	<input_offset> = (<input_offset> - <lag_calibration>)
-	if (<training_mode> = 0)
-		if (<Player> = 1)
-			if ($current_num_players = 1)
-				bassist_song_part = 'rhythm_'
-				bassist_part = rhythm
-				get_song_struct song = <song_name>
-				if StructureContains structure = <song_struct> name = BASSIST
-					if ((<song_struct>.BASSIST = 'Morello')|| (<song_struct>.BASSIST = 'slash'))
-						bassist_song_part = ''
-						bassist_part = guitar
-					endif
-				endif
-			endif
-		endif
-	endif
+	// ?? encore??
+	//if (<training_mode> = 0)
+	//	if (<Player> = 1)
+	//		if ($current_num_players = 1)
+	//			bassist_song_part = 'rhythm_'
+	//			bassist_part = rhythm
+	//			get_song_struct song = <song_name>
+	//			if StructureContains structure = <song_struct> name = BASSIST
+	//				if ((<song_struct>.BASSIST = 'Morello')|| (<song_struct>.BASSIST = 'slash'))
+	//					bassist_song_part = ''
+	//					bassist_part = guitar
+	//				endif
+	//			endif
+	//		endif
+	//	endif
+	//endif
 	out_of_bounds = ((($<player_status>.scroll_time - $destroy_time)* 1000.0)+ <gem_offset> + 1000.0)
 	out_of_bounds_1s = (<out_of_bounds> - 1000.0)
 	early_time = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)
@@ -320,46 +325,66 @@ script gem_scroller\{Player = 1 training_mode = 0}
 	SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty> thin_fretbars
 		time_offset = <out_of_bounds_1s> fretbar_function = create_fretbar skipleadin = <scroll_time>
 		Player = <Player> player_status = <player_status> player_text = <player_text>}
-	//if ($gem_debug_text = 1)
-	//	func = create_debug_gem
-	//else
-		func = create_gem
-	//endif
-	SpawnScriptLater gem_iterator params = {iterator_text = 'create_gem' song_name = <song_name> difficulty = <difficulty> part = <part> use_input_array = 'input_array'
-		time_offset = <out_of_bounds_1s> gem_function = <func> skipleadin = <scroll_time>
-		Player = <Player> player_status = <player_status> player_text = <player_text>}
-	if ((<player_status>.is_local_client)|| ($new_net_logic))
-		SpawnScriptLater check_buttons_fast params = {song_name = <song_name> difficulty = <difficulty>
-			time_offset = <early_time> Player = <Player>
-			player_status = <player_status> player_text = <player_text>}
+	if ($gem_debug_text = 1)
+		func = create_debug_gem
 	else
-		SpawnScriptLater net_check_buttons params = {song_name = <song_name> player_status = <player_status>
-			time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <input_offset>)}
+		func = create_gem
 	endif
-	SpawnScriptLater fretbar_update_tempo params = {song_name = <song_name> difficulty = <difficulty>
-		time_offset = ((($<player_status>.check_time_early)* 1000.0)+ <gem_offset>)Player = <Player> skipleadin = <scroll_time>
-		player_status = <player_status> player_text = <player_text>}
-	SpawnScriptLater fretbar_update_hammer_on_tolerance params = {song_name = <song_name> difficulty = <difficulty>
-		time_offset = <out_of_bounds> Player = <Player> skipleadin = <scroll_time>
-		player_status = <player_status> player_text = <player_text>}
+	SpawnScriptLater gem_iterator params = {
+		iterator_text = 'create_gem' song_name = <song_name> difficulty = <difficulty> part = <part>
+		time_offset = <out_of_bounds_1s> gem_function = <func> skipleadin = <scroll_time> use_input_array = 'input_array'
+		Player = <Player> player_status = <player_status> player_text = <player_text>
+	}
+	if ((<player_status>.is_local_client)|| ($new_net_logic))
+		SpawnScriptLater check_buttons_fast params = {
+			song_name = <song_name> difficulty = <difficulty>
+			time_offset = <early_time> Player = <Player>
+			player_status = <player_status> player_text = <player_text>
+		}
+	else
+		SpawnScriptLater net_check_buttons params = {
+			song_name = <song_name> player_status = <player_status>
+			time_offset = ((($<player_status>.check_time_early) * 1000.0)+ <input_offset>)
+		}
+	endif
+	SpawnScriptLater fretbar_update_tempo params = {
+		song_name = <song_name> difficulty = <difficulty>
+		time_offset = ((($<player_status>.check_time_early) * 1000.0)+ <gem_offset>) skipleadin = <scroll_time>
+		Player = <Player> player_status = <player_status> player_text = <player_text>
+	}
+	SpawnScriptLater fretbar_update_hammer_on_tolerance params = {
+		song_name = <song_name> difficulty = <difficulty>
+		time_offset = <out_of_bounds> skipleadin = <scroll_time>
+		Player = <Player> player_status = <player_status> player_text = <player_text>
+	}
 	if (<Player> = 1)
 		if ($is_network_game)
 			SpawnScriptLater dispatch_player_state params = {player_status = <player_status>}
 			SpawnScriptLater \{network_events}
 		endif
-		SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty>
-			time_offset = (($prefretbar_time * 1000.0)+ <gem_offset>)fretbar_function = GuitarEvent_PreFretbar skipleadin = 0
-			Player = <Player> player_status = <player_status> player_text = <player_text>}
-		SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty>
-			time_offset = <gem_offset> fretbar_function = GuitarEvent_Fretbar skipleadin = 0
-			Player = <Player> player_status = <player_status> player_text = <player_text>}
+		SpawnScriptLater fretbar_iterator params = {
+			song_name = <song_name> difficulty = <difficulty> fretbar_function = GuitarEvent_PreFretbar
+			time_offset = (($prefretbar_time * 1000.0) + <gem_offset>) skipleadin = 0
+			Player = <Player> player_status = <player_status> player_text = <player_text>
+		}
+		SpawnScriptLater fretbar_iterator params = {
+			song_name = <song_name> difficulty = <difficulty> fretbar_function = GuitarEvent_Fretbar
+			time_offset = <gem_offset> skipleadin = 0
+			Player = <Player> player_status = <player_status> player_text = <player_text>
+		}
 		if ($Debug_Audible_Downbeat = 1)
-			SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty>
-				time_offset = (<gem_offset> + ($check_time_early * 1000.0))fretbar_function = GuitarEvent_Fretbar_Early skipleadin = 0
-				Player = <Player> player_status = <player_status> player_text = <player_text>}
-			SpawnScriptLater fretbar_iterator params = {song_name = <song_name> difficulty = <difficulty>
-				time_offset = (<gem_offset> - ($check_time_late * 1000.0))fretbar_function = GuitarEvent_Fretbar_Late skipleadin = 0
-				Player = <Player> player_status = <player_status> player_text = <player_text>}
+			SpawnScriptLater fretbar_iterator params = {
+				song_name = <song_name> difficulty = <difficulty>
+				time_offset = (<gem_offset> + ($check_time_early * 1000.0))
+				fretbar_function = GuitarEvent_Fretbar_Early skipleadin = 0
+				Player = <Player> player_status = <player_status> player_text = <player_text>
+			}
+			SpawnScriptLater fretbar_iterator params = {
+				song_name = <song_name> difficulty = <difficulty>
+				time_offset = (<gem_offset> - ($check_time_late * 1000.0))
+				fretbar_function = GuitarEvent_Fretbar_Late skipleadin = 0
+				Player = <Player> player_status = <player_status> player_text = <player_text>
+			}
 		endif
 		//SpawnScriptLater lightshow_iterator params = {song_name = <song_name> time_offset = (<gem_offset> + $lightshow_offset_ms)skipleadin = 0}
 		//SpawnScriptLater cameracuts_iterator params = {song_name = <song_name> time_offset = <gem_offset> skipleadin = 0}
@@ -368,9 +393,12 @@ script gem_scroller\{Player = 1 training_mode = 0}
 		if (<array_size> > 0)
 			begin
 				<lead_ms> = ($scripts_array [<array_count>].lead_ms)
-				SpawnScriptLater event_iterator params = {song_name = <song_name> difficulty = <difficulty>
-					event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
-					Player = <Player> player_status = <player_status> player_text = <player_text>}
+				SpawnScriptLater event_iterator params = {
+					song_name = <song_name> difficulty = <difficulty>
+					event_string = ($scripts_array [<array_count>].name)
+					time_offset = (<gem_offset> + <lead_ms>) skipleadin = 0
+					Player = <Player> player_status = <player_status> player_text = <player_text>
+				}
 				//SpawnScriptLater notemap_startiterator params = {song_name = <song_name> difficulty = <difficulty>
 				//	event_string = ($scripts_array [<array_count>].name)time_offset = (<gem_offset> + <lead_ms>)skipleadin = 0
 				//	Player = <Player> player_status = <player_status> player_text = <player_text>}
@@ -382,7 +410,7 @@ script gem_scroller\{Player = 1 training_mode = 0}
 endscript
 
 script get_song_end_time_for_array
-	if NOT GlobalExists name = <song_array>
+	if NOT note_array_empty <song_array> // uh //GlobalExists name = <song_array>
 		total_end_time2 = 2.0
 	else
 		GetArraySize $<song_array>
@@ -405,21 +433,29 @@ script get_song_end_time_for_array
 	return total_end_time = <total_end_time>
 endscript
 
+
 script get_song_end_time
-	ExtendCrc <song> '_song_expert' out = song_expert
-	ExtendCrc <song> '_song_rhythm_expert' out = rhythm_expert
 	total_end_time = 2.0
-	get_song_end_time_for_array total_end_time = <total_end_time> song_array = <song_expert>
-	get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythm_expert>
-	get_song_struct song = <song>
-	if StructureContains structure = <song_struct> use_coop_notetracks
-		if ($coop_tracks = 1)
-			ExtendCrc <song> '_song_guitarcoop_expert' out = guitarcoop_expert
-			ExtendCrc <song> '_song_rhythmcoop_expert' out = rhythmcoop_expert
-			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <guitarcoop_expert>
-			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <rhythmcoop_expert>
+	i = 0 // turn into its own iterator function thing????
+	begin
+		part = ($part_array_names[<i>])
+		if not (<part> = '')
+			part = (<part> + '_')
 		endif
-	endif
+		d = 0
+		begin
+			difficulty = ($difficulty_list[<d>])
+			get_difficulty_text_nl difficulty = <difficulty>
+			FastFormatCrc $current_song a = '_song_' b = <part> c = <difficulty_text_nl> out = gem_array
+			get_song_end_time_for_array total_end_time = <total_end_time> song_array = <gem_array>
+			//printf {
+			//	'total duration so far: %c (part %a difficulty %b)'
+			//	a = ($part_nl[<i>]) b = <difficulty_text_nl> c = (<total_end_time>/1000.0)
+			//}
+			Increment \{d}
+		repeat 4
+		Increment \{i}
+	repeat 4
 	return total_end_time = <total_end_time>
 endscript
 
@@ -454,6 +490,8 @@ script win_song
 	if NOT (<array_Size> = 0)
 		if NOT check_manual_end
 			get_song_end_time \{song = $current_song}
+			// wtf was i doing here, shouldn't have to check every time,
+			// unless there was a specific glitch that somehow changed it midway through
 		endif
 		total_end_time = (<total_end_time> + ($Song_Win_Delay * 1000.0))
 		printf 'Waiting %s seconds for song end marker.' s = ((<total_end_time> - <startTime>) / 1000.0)

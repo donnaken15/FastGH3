@@ -13,7 +13,7 @@ endscript
 
 script increase_star_power\{amount = 10.0 player_status = player1_status}
 	if ($game_mode = p2_career || $game_mode = p2_coop)
-		printf \{"giving star power to both players"}
+		//printf \{"giving star power to both players"} // annoying
 		increase_star_power_guts amount = <amount> player_status = player1_status
 		increase_star_power_guts amount = <amount> player_status = player2_status
 	else
@@ -141,7 +141,7 @@ script show_coop_raise_axe_for_starpower
 					player_text = ($<p>.text)
 				}
 				player = (<player> + 1)
-			endif		
+			endif
 		repeat $current_num_players
 		return
 	endif

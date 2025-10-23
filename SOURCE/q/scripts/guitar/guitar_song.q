@@ -412,8 +412,8 @@ Waiting_For_Pitching = 0
 script Failed_Song_Pitch_Down
 	SoundBussUnlock \{Guitar_Balance}
 	SoundBussUnlock \{Band_Balance}
-	SetSoundBussParams \{Band_Balance = {vol = -20 pitch = -8}time = 3}
-	SetSoundBussParams \{Guitar_Balance = {vol = -20 pitch = -8}time = 3}
+	SetSoundBussParams \{Band_Balance = {vol = -20 pitch = -8} time = 3}
+	SetSoundBussParams \{Guitar_Balance = {vol = -20 pitch = -8} time = 3}
 	Change \{Waiting_For_Pitching = 1}
 	SoundBussLock \{Band_Balance}
 	SoundBussLock \{Guitar_Balance}
@@ -431,8 +431,8 @@ script end_song\{song_failed_pitch_streams = 0}
 			Change \{Waiting_For_Pitching = 0}
 			SoundBussUnlock \{Guitar_Balance}
 			SoundBussUnlock \{Band_Balance}
-			SetSoundBussParams {Band_Balance = {vol = (($Default_BussSet.Band_Balance.vol)- 2.5)pitch = ($Default_BussSet.Band_Balance.pitch)}}
-			SetSoundBussParams {Guitar_Balance = {vol = (($Default_BussSet.Guitar_Balance.vol)- 2.5)pitch = ($Default_BussSet.Guitar_Balance.pitch)}}
+			SetSoundBussParams {Band_Balance = {vol = (($Default_BussSet.Band_Balance.vol) - 2.5) pitch = ($Default_BussSet.Band_Balance.pitch)}}
+			SetSoundBussParams {Guitar_Balance = {vol = (($Default_BussSet.Guitar_Balance.vol) - 2.5) pitch = ($Default_BussSet.Guitar_Balance.pitch)}}
 			SoundBussLock \{Band_Balance}
 			SoundBussLock \{Guitar_Balance}
 		endif

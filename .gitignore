@@ -63,9 +63,7 @@ launcher.txt
 /DATA/PAK/__highways/*/
 /DATA/MOVIES/BIK/*.bik
 /DATA/MOVIES/BIK/*.bik.xen
-!/DATA/PAK/__highways/black.dds
-/DATA/*.png
-/DATA/*.jpg
+!/DATA/PAK/__highways/_black.dds
 /DATA/replays/*.rep
 /DATA/ZONES/__themes/*.gfx
 /DATA/ZONES/__themes/*.gfx.xen
@@ -110,3 +108,9 @@ stats_*.txt
 /DATA/MUSIC/fastgh3.dat.xen
 /DATA/PAK/song.pak.xen
 /DATA/PAK/song.qb.xen
+*.png
+*.jpg
+*.bmp
+# if you actually have ".jpeg", you are probably a troubled person
+!/SOURCE/Zones/*.png
+!/SOURCE/Zones/*.jpg

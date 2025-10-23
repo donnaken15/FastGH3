@@ -94,7 +94,7 @@ public static partial class Launcher
 		dataf = folder + "DATA\\",
 		pakf = dataf + "PAK\\",
 		music = dataf + "MUSIC\\",
-		vid = dataf + "MOVES\\BIK\\",
+		vid = dataf + "MOVIES\\BIK\\",
 		mt = music + "TOOLS\\",
 		cf = dataf + "CACHE\\",
 		title = "FastGH3";
@@ -1811,9 +1811,7 @@ public static partial class Launcher
 						//print("Generating QB template.", chartConvColor);
 						//vl("Creating new QB files...", chartConvColor);
 						killgame();
-						byte[] __ = new byte[0xB0],
-							pn = (byte[])Launcher.pn,
-							qn = (byte[])Launcher.qn;
+						byte[] __ = new byte[0xB0], pn = Launcher.pn, qn = Launcher.qn;
 						if (File.Exists(songqb))
 							File.Delete(songqb);
 						if (outputPAK)
@@ -1859,14 +1857,13 @@ public static partial class Launcher
 
 						OffsetTransformer OT = new OffsetTransformer(chart);
 						string[] td = { "Easy", "Medium", "Hard", "Expert" };
-						string[] ti = { "Single", "DoubleBass", "DoubleGuitar", "DoubleBass" };
-						// doublebass would exist both on rhythm and rhythmcoop? lol?
-						// depend on enhanced bass for singleplayer rhythm kek
+						string[] ti = { "Single", "DoubleBass", "DoubleGuitar", "DoubleRhythm" };
 
 						vl(T[45], chartConvColor);
 						//vl("Creating note arrays...", chartConvColor);
 						string[] diffs = { "easy", "medium", "hard", "expert" };
 						string[] insts = { "", "_rhythm", "_guitarcoop", "_rhythmcoop" };
+						string[] tracknames = { "guitar", "rhythm", "guitarcoop", "rhythmcoop" };
 						// song.inst[i].diff[d]
 						QbItemBase[][] notes_arr = new QbItemBase[insts.Length][];//[diffs.Length];
 						QbItemInteger[][] notes = new QbItemInteger[insts.Length][];//[diffs.Length];
@@ -1894,8 +1891,7 @@ public static partial class Launcher
 						}
 						catch
 						{
-							// WHY IS THIS STILL NOT WORKING
-							// https://github.com/donnaken15/FastGH3/issues/7#issuecomment-1595513766
+							// guessing this is fixed now???
 						}
 						QbcNoteTrack tmp;
 
@@ -1907,16 +1903,29 @@ public static partial class Launcher
 						List<QbItemStruct> scripts = new List<QbItemStruct>();
 						bool[] hasCoopTracks = { false, false };
 
+
+						QbKey[] global_events = {
+							QbKey.Create(0xFF03CC4E), // end
+							QbKey.Create(0x2DE8C60E), // printf
+							QbKey.Create(0xBE304E86), // printstruct
+							QbKey.Create(0xF0CF92C0) // boss_battle_begin_deathlick
+						};
+						QbKey[] track_events = {
+							QbKey.Create(0xF0FFFBEE), // solo
+							QbKey.Create(0x868BC002), // soloend
+							QbKey.Create(0x2DE8C60E), // printf
+							QbKey.Create(0xBE304E86), // printstruct
+						};
+
 						int dd = 0;
 						int ii = 0;
 						// TODO: use stringpointer for lower difficulties to redirect to
-						// least difficult chart if they aren't authored
+						// least difficult authored note track if lower ones aren't authored
 						//
 						// so like if an easy chart doesn't exist but hard
 						// and expert charts do, easy redirects to the hard chart
-						// and so space is saved from having dupe note tracks
-						//
-						// maybe also for arrays that don't have anything
+						// and so space is saved from having dupe note tracks, and not
+						// have the awkardness of a blank difficulty track
 						foreach (string i in ti)
 						{
 							dd = 0;
@@ -1970,13 +1979,7 @@ public static partial class Launcher
 											//e.EventName == "")
 											// ALSO * IN A QBKEY LOL
 											//continue;
-											if (
-												eventKey != QbKey.Create(0xF0FFFBEE) && // solo
-												eventKey != QbKey.Create(0x868BC002) && // soloend
-												eventKey != QbKey.Create(0x2DE8C60E) && // printf
-												eventKey != QbKey.Create(0xBE304E86) && // printstruct
-												eventKey != QbKey.Create(0xFF03CC4E) // end
-											)
+											if (Array.IndexOf(track_events, eventKey) < 0)
 												continue;
 											vl("Found event: " + e.EventName, chartConvColor);
 											QbItemStruct newScript = new QbItemStruct(mid);
@@ -2006,7 +2009,7 @@ public static partial class Launcher
 													QbItemQbKey pp = new QbItemQbKey(mid);
 													pp.Create(QbItemType.StructItemQbKey);
 													pp.ItemQbKey = QbKey.Create(0xB6F08F39);
-													pp.Values[0] = QbKey.Create(new string[] { "guitar", "rhythm", "guitarcoop", "rhythmcoop" }[ii]);
+													pp.Values[0] = QbKey.Create(tracknames[ii]);
 													p.AddItem(pp);
 												}
 												if (dd != 0)
@@ -2227,6 +2230,7 @@ public static partial class Launcher
 							QbKey.Create(0x69FA8321),
 							QbKey.Create(0x16FB37BA),
 							QbKey.Create(0x3604998C),
+							QbKey.Create(0xFE41960D), // uhhhh
 						};
 
 						QbKey key_boss_props = QbKey.Create("Boss_Props");
@@ -2271,10 +2275,7 @@ public static partial class Launcher
 							QbKey eventKey = QbKey.Create(e.TextValue);
 							if (e.TextValue.ToLower().StartsWith("section "))
 								continue;
-							if (eventKey != QbKey.Create(0xFF03CC4E) && // end
-								eventKey != QbKey.Create(0x2DE8C60E) && // printf
-								eventKey != QbKey.Create(0xBE304E86) && // printstruct
-								eventKey != QbKey.Create(0xF0CF92C0)) // boss_battle_begin_deathlick
+							if (Array.IndexOf(global_events, eventKey) < 0)
 								continue;
 							vl("Found event: " + e.TextValue, chartConvColor);
 							QbItemStruct nS = new QbItemStruct(mid);
@@ -2442,40 +2443,35 @@ public static partial class Launcher
 								QB_bossWrepair = new QbItemInteger[4];
 								QB_bossSrepair = new QbItemInteger[4];
 								QB_bossSTRmiss = new QbItemFloat[4];
+								// MAKE INTO OBJECT[] AND STRUCT TO ITERATE OVER v
 
 								QB_bossRKgain_s.Create(QbItemType.StructItemStruct);
-								QB_bossRKgain_s.ItemQbKey = QbKey.Create("GainPerNote");
+								QB_bossRKgain_s.ItemQbKey = QbKey.Create(0x3FA9FFF5); // GainPerNote
 								QB_bossRKloss_s.Create(QbItemType.StructItemStruct);
-								QB_bossRKloss_s.ItemQbKey = QbKey.Create("LossPerNote");
+								QB_bossRKloss_s.ItemQbKey = QbKey.Create(0xDC11A417); // LossPerNote
 								QB_bossATKmiss_s.Create(QbItemType.StructItemStruct);
-								QB_bossATKmiss_s.ItemQbKey = QbKey.Create("PowerUpMissedNote");
+								QB_bossATKmiss_s.ItemQbKey = QbKey.Create(0x19BBFD30); // PowerUpMissedNote
 								QB_bossWrepair_s.Create(QbItemType.StructItemStruct);
-								QB_bossWrepair_s.ItemQbKey = QbKey.Create("WhammySpeed");
+								QB_bossWrepair_s.ItemQbKey = QbKey.Create(0x8EEF15AD); // WhammySpeed
 								QB_bossSrepair_s.Create(QbItemType.StructItemStruct);
-								QB_bossSrepair_s.ItemQbKey = QbKey.Create("BrokenStringSpeed");
+								QB_bossSrepair_s.ItemQbKey = QbKey.Create(0x400CFB72); // BrokenStringSpeed
 								QB_bossSTRmiss_s.Create(QbItemType.StructItemStruct);
-								QB_bossSTRmiss_s.ItemQbKey = QbKey.Create("BrokenStringMissedNote");
+								QB_bossSTRmiss_s.ItemQbKey = QbKey.Create(0x400CFB72); // BrokenStringMissedNote
 								int ddd = 0;
 								foreach (string d in diffs)
 								{
 									if (ini("rockgain", d, "", bini) != "")
-										boss_rockGain[ddd] = Convert.ToSingle(
-											ini("rockgain", d, "", bini));
+										boss_rockGain[ddd] = Convert.ToSingle(ini("rockgain", d, "", bini));
 									if (ini("rockloss", d, "", bini) != "")
-										boss_rockLoss[ddd] = Convert.ToSingle(
-											ini("rockloss", d, "", bini));
+										boss_rockLoss[ddd] = Convert.ToSingle(ini("rockloss", d, "", bini));
 									if (ini("attackmiss", d, "", bini) != "")
-										boss_atkmiss[ddd] = Convert.ToSingle(
-											ini("attackmiss", d, "", bini));
+										boss_atkmiss[ddd] = Convert.ToSingle(ini("attackmiss", d, "", bini));
 									if (ini("whammyrepair", d, "", bini) != "")
-										boss_Wrepair[ddd] = Convert.ToInt32(
-											ini("whammyrepair", d, "", bini));
+										boss_Wrepair[ddd] = Convert.ToInt32(ini("whammyrepair", d, "", bini));
 									if (ini("stringrepair", d, "", bini) != "")
-										boss_Srepair[ddd] = Convert.ToInt32(
-											ini("stringrepair", d, "", bini));
+										boss_Srepair[ddd] = Convert.ToInt32(ini("stringrepair", d, "", bini));
 									if (ini("stringmiss", d, "", bini) != "")
-										boss_strmiss[ddd] = Convert.ToSingle(
-											ini("stringmiss", d, "", bini));
+										boss_strmiss[ddd] = Convert.ToSingle(ini("stringmiss", d, "", bini));
 
 									QbKey diffCRC = QbKey.Create(d);
 
@@ -2612,10 +2608,11 @@ public static partial class Launcher
 
 						vl(T[58], chartConvColor);
 						//vl("Sorting scripts by time.", chartConvColor);
+						var time = QbKey.Create(0x906B67BA);
 						scripts.Sort(delegate (QbItemStruct c1, QbItemStruct c2)
 						{
-							//     autismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautism
-							return (c1.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0].CompareTo((c2.FindItem(QbKey.Create(0x906B67BA), false) as QbItemInteger).Values[0]);
+							//     autismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautismautism
+							return (c1.FindItem(time, false) as QbItemInteger).Values[0].CompareTo((c2.FindItem(time, false) as QbItemInteger).Values[0]);
 						});
 
 #region FACE-OFF/BATTLE VALUES
@@ -2666,8 +2663,7 @@ public static partial class Launcher
 										(int)Math.Floor(OT.GetTime(a.Offset) * 1000),
 										(int)Math.Floor(OT.GetTime(a.OffsetEnd - a.Offset) * 1000)
 									};
-									vl("Got face-off marker: " + faceoff_bit.Values[0] +
-															"," + faceoff_bit.Values[1]);
+									vl("Got face-off marker: " + faceoff_bit.Values[0] + "," + faceoff_bit.Values[1]);
 									if (a.SpecialFlag == 0)
 										fop1a.AddItem(faceoff_bit);
 									else
@@ -2756,6 +2752,14 @@ public static partial class Launcher
 							tsfault.TimeSignature = 4;
 							ts.Add(tsfault);
 						}
+						{
+							SyncTrackEntry WHY = new SyncTrackEntry();
+							WHY.Type = SyncType.TimeSignature;
+							WHY.TimeSignature = 1;
+							WHY.TimeSignature2 = 4;
+							WHY.Offset = ts[0].Offset;
+							ts.Insert(0,WHY);
+						}
 						int timesigcount = ts.Count;
 						QbItemInteger[] ts_q = new QbItemInteger[timesigcount];
 						for (int i = 0; i < timesigcount; i++)
@@ -2763,18 +2767,17 @@ public static partial class Launcher
 							//verboseline("Creating time signature #" + i.ToString() + "...", chartConvColor);
 							ts_q[i] = new QbItemInteger(mid);
 							ts_q[i].Create(QbItemType.ArrayInteger);
-							ts_q[i].Values = new int[3];
-						}
-						for (int i = 0; i < timesigcount; i++)
-						{
+							ts_q[i].Values = new int[3] {
+								(int)(Math.Floor(OT.GetTime(ts[i].Offset) * 1000) + delay),
+								Convert.ToInt32(ts[i].TimeSignature),
+								Convert.ToInt32(ts[i].TimeSignature2 == -1 ? 4 : ts[i].TimeSignature2)
+							};
 							//verboseline("Setting TS #" + (i).ToString() + " values (1/3) (" + (int)(Math.Floor(OT.GetTime(ts[i].Offset) * 1000) + delay) + ")...", chartConvColor);
-							ts_q[i].Values[0] = (int)(Math.Floor(OT.GetTime(ts[i].Offset) * 1000) + delay);
 							//verboseline("Setting TS #" + (i).ToString() + " values (2/3) (" + Convert.ToInt32(ts[i].TimeSignature) + ")...", chartConvColor);
-							ts_q[i].Values[1] = Convert.ToInt32(ts[i].TimeSignature);
 							//verboseline("Setting TS #" + (i).ToString() + " values (3/3) (" + 4 + ")...", chartConvColor);
-							ts_q[i].Values[2] = Convert.ToInt32(ts[i].TimeSignature2 == -1 ? 4 : ts[i].TimeSignature2); // what this part for
-																														// what does changing # in */# even do in general
+							// what does changing # in */# even do in general
 						}
+						ts_q[1].Values[0] = 2; // existentally aggrevating
 						//vl("Adding time signature arrays to QB...", chartConvColor);
 						mid.AddItem(tsig);
 						tsig.AddItem(tsig_arr);
@@ -2787,9 +2790,20 @@ public static partial class Launcher
 						bars_arr.ItemQbKey = QbKey.Create(0xC3C71E9D);
 						QbItemInteger bars = new QbItemInteger(mid);
 						List<int> msrs = new List<int>();
+						// probably TODO: beat enumerator thing or something that uses callback
+						// to reduce operations from constantly calling GetTime
 						for (int i = 0; OT.GetTime(i - chart.Resolution) < ((float)(et) / 1000); i += chart.Resolution)
 						{
-							msrs.Add(Convert.ToInt32(Math.Floor(OT.GetTime(i) * 1000)));
+							int t = Convert.ToInt32(Math.Floor(OT.GetTime(i) * 1000));
+							// ehhhhhhhhhh
+							//if (msrs.Count > 1)
+							//	if (msrs[msrs.Count - 1] == t)
+							//		continue; // don't place beats on the same millisecond, because integers...
+							msrs.Add(t);
+							if (msrs.Count == 1)
+								msrs.Add(t+(2*(t<0?-1:1))); // TEMP FIX, need a webpage to elaborate on this
+							// refer to firstBeatLength in the IDB
+							// double <2ms beats cause the frets to pop up twice because length calculation appears to go over
 						}
 						{
 							bars.Create(QbItemType.ArrayInteger);

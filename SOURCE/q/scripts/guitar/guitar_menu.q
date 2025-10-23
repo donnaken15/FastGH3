@@ -304,7 +304,7 @@ mode_text = [
 	'Pro Face-off'
 	'Battle'
 ]
-part_text = [ 'Guitar' 'Rhythm' ]
+part_text = [ 'Guitar' 'Bass' 'Lead' 'Rhythm' ]
 diff_text = [ 'Easy' 'Medium' 'Hard' 'Expert' ]
 toggle_text = [ 'OFF' 'ON' ]
 playercount_text = [ '1' '2' ] // uhhhhhhh
@@ -1259,24 +1259,15 @@ script create_pause_menu\{Player = 1 submenu = none}
 					text = 'Back'
 				}
 			case modes
-				params_params = {
-					<params_params> scale=0.8
-				}
-				titles = [
-					'Game Mode: '
-					'Players: '
-					'Controllers: '
-					'Difficulty:'
-					'Instrument(s): '
-					'Autoplay: '
-				]
+				params_params = { <params_params> scale=0.8 }
+				titles = [ 'Game Mode' 'Players' 'Controllers' 'Difficulty' 'Instrument' 'Autoplay' ]
 				getarraysize \{titles}
 				i = 0
 				begin
 					CreateScreenElement {
 						Type = TextElement
 						parent = pause_menu_frame_container
-						text = (<titles>[<i>])
+						text = (<titles>[<i>] + ':')
 						font = <font>
 						just = [right top]
 						Pos = (<menu_pos> + ((230,64) + ((0, 50) * <i>)))

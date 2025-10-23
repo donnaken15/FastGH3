@@ -1,13 +1,8 @@
 # my first powershell script i guess, i hate it already
 function StopWastingMySpace
 {
-	param(
-		[Parameter(Mandatory=$true)]$dir,
-		[array]$filter
-	)
-	
-	if (Test-Path -Path $dir)
-	{
+	param([Parameter(Mandatory=$true)]$dir, [array(string)]$filter)
+	if (Test-Path -Path $dir) {
 		pushd $dir
 		if ($?) {
 			# stop wasting my space
