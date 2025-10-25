@@ -3,114 +3,96 @@ results_screen_layout = {
 		base = [
 			{
 				element = title
-				pos = (135.0, 32.0)
-				scale = 1.0
-				dims = (400.0, 134.0)
+				pos = (145.0, 162.0)
+				dims = (600.0, 114.0)
 				rot = 0
 				z = 999
 				line_spacing = 0.85
-				font = text_a4
-				
-				font = text_a11
+				font = fontgrid_title_gh3
 				just = [left bottom]
-				ijust = [left bottom]
 				iscale = 1.0
-				pos = (279.0, 400.0)
-				Scale = 0.75
-				dims = (300.0, 200.0)
-				line_spacing = 0.85
-				rot = -7.5
 			}
 			{
 				element = artist
-				pos = (135.0, 162.0)
-				scale = 0.8
-				dims = (500.0, 134.0)
+				//uppercase
+				pos = (145.0, 162.0)
+				dims = (600.0, 114.0)
 				rot = 0
 				z = 999
 				line_spacing = 0.85
 				font = text_a4
-				
-				font = text_a4
 				just = [left top]
-				ijust = [left top]
-				pos = (279.0, 405.0)
-				Scale = (0.5, 0.55)
-				dims = (400.0, 134.0)
-				line_spacing = 0.85
-				rot = -7.5
+				iscale = 0.8
 			}
 		]
 		quickplay_1p = [
+			// TODO: CONTAINERS WITH ITEM ARRAYS!!
 			{
+				type = text
 				text = '%'
 				font = text_a4
-				Pos = (364.0, 500.0)
+				just = [ left bottom ]
+				ijust = [ center center ]
+				Pos = (240.0, 320.0)
 				z = 4
 				rgba = $g_ss_percent_color
-				rot = -10
 				dims = (48.0, 48.0)
 			}
 			{
+				type = textblock
 				text = '\u0NOTES HIT'
 				font = text_a3
-				Pos = (403.0, 522.0)
-				Scale = (0.44, 0.7)
+				Pos = (280.0, 330.0)
+				dims = (210.0, 60.0)
+				just = [ left bottom ]
+				ijust = [ left bottom ]
+				Scale = 0.7
 				z = 4
-				rgba = $g_ss_black
-				rot = -10
+				rgba = $g_ss_offwhite
 				font_spacing = 6
 				space_spacing = 1 // <-- wtf????????
 			}
 			{
-				type = sprite
-				texture = song_summary_score_fill_l
-				Pos = (674.0, 90.0)
-				dims = (268.0, 67.0)
-				rgba = $g_ss_score_fill_L_color
-				scale = 1.045 // why, stupid
+				element = notes_hit
+				font = num_a7
+				just = [ right bottom ]
+				Pos = (230.0, 340.0)
+				dims = (80.0, 50.0)
+				Scale = 1.4
+				z = 4
+				rgba = $g_ss_offwhite
+				font_spacing = 5
+				space_spacing = 3
+				//scale = 1 // why immediately override it
+				// followed by fit text
 			}
 			{
-				type = sprite
-				texture = song_summary_score_fill_r
-				Pos = (934.0, 83.0)
-				dims = (134.0, 67.0)
-				rgba = $g_ss_score_fill_R_color
-				scale = 1.045
+				element = streak
+				commas
+				font = text_a3
+				iscale = 0.8
+				just = [ right center ]
+				Pos = (620.0, 310.0)
+				dims = (130.0, 50.0)
+				Scale = 1.5
+				z = 4
+				rgba = $g_ss_offwhite
 			}
 			{
-				type = sprite
-				texture = song_summary_notestreak_fill
-				pos = (719.0, 359.0)
-				rgba = $g_ss_notestreak_fill_color
+				type = text
+				text = 'note streak'
+				//element = streak
+				font = text_a11
+				just = [ left top ]
+				Pos = (625.0, 278.0)
+				Scale = (0.6, 0.7)
+				z = 4
+				rgba = $g_ss_offwhite
+				font_spacing = 5
+				space_spacing = 3
+				//scale = 1 // why immediately override it
+				// followed by fit text
 			}
-			//{
-			//	type = textblock
-			//	text = '3999'
-			//	//element = streak
-			//	font = text_a4
-			//	just = [ center center ]
-			//	ijust = [ center center ]
-			//	Pos = (783.0, 397.0)
-			//	dims = (120.0, 80.0)
-			//	Scale = 1.5
-			//	z = 4
-			//	rgba = $g_ss_offwhite
-			//}
-			//{
-			//	type = text
-			//	text = 'note streak'
-			//	//element = streak
-			//	font = text_a11
-			//	Pos = (732.0, 425.0)
-			//	Scale = (0.44, 0.55)
-			//	z = 4
-			//	rgba = $g_ss_offwhite
-			//	font_spacing = 5
-			//	space_spacing = 3
-			//	//scale = 1 // why immediately override it
-			//	// followed by fit text
-			//}
 			
 			
 			
@@ -118,22 +100,22 @@ results_screen_layout = {
 		]
 		battle_2p = [
 			{
+				type = text
 				text = 'EPIC BATTLE'
-				just = [left top]
+				just = [left bottom]
 				font = text_a11
-				Pos = (256.0, 264.0)
+				Pos = (145.0, 430.0)
 				Scale = 0.75
-				rot = -7.5
 				id = battle_header_text
 				//rgba = <winner_color> // :(
 			}
 			{
+				type = text
 				text = 'WHO WON?!' // WHO'S NEXT?! YOU DECIDE!!
-				just = [left top]
+				just = [left bottom]
 				font = text_a11
-				Pos = (262.0, 302.0)
+				Pos = (145.0, 468.0)
 				Scale = 0.75
-				rot = -7.5
 				id = battle_who_won_text
 			}
 		]
@@ -144,45 +126,44 @@ results_screen_layout = {
 				just = [left bottom]
 				ijust = [left bottom]
 				font = text_a11
-				Pos = (270.0, 345.0)
-				Scale = 0.7
-				dims = (350.0, 200.0)
+				Pos = (145.0, 450.0)
+				Scale = 0.8
+				dims = (660.0, 90.0)
 				line_spacing = 0.85
-				rot = -7.5
 				id = ss_winner_text
 			}
 		]
 		versus_2p = [
 			{
+				type = text
 				just = [left top]
 				ijust = [left top]
 				font = text_a4
 				rgba = $g_ss_2p_song_title_whiteish
-				Pos = (285.0, 450.0)
-				dims = (400.0, 134.0)
-				Scale = 0.9
+				Pos = (145.0, 276.0)
+				dims = (450.0, 80.0)
+				Scale = 1.2
 				line_spacing = 0.85
-				rot = -7.5
 				id = ss_mode_text_block_id
 			}
 			{
-				font = text_a11
+				type = text
+				font = fontgrid_title_gh3
 				rgba = $g_ss_p1_orangeish
-				Pos = (298.0, 522.0)
-				Scale = (0.5, 0.55)
+				Pos = (145.0, 490.0)
+				Scale = 0.83
 				line_spacing = 0.85
-				rot = -7.5
 				id = ss_p1_difficulty
 				font_spacing = 2
 				space_spacing = 2
 			}
 			{
-				font = text_a11
+				type = text
+				font = fontgrid_title_gh3
 				rgba = $g_ss_p2_violetish
-				Pos = (302.0, 552.0)
-				Scale = (0.5, 0.55)
+				Pos = (145.0, 540.0)
+				Scale = 0.83
 				line_spacing = 0.85
-				rot = -7.5
 				id = ss_p2_difficulty
 				font_spacing = 2
 				space_spacing = 2
@@ -199,7 +180,7 @@ results_screen_layout = {
 		]
 	}
 	// make option list separate array here with indications for
-	// which modes these can be accessed from, or always show on all modes
+	// which modes they can be accessed from, or always show on all modes
 }
 
 g_gray = [ 128 128 128 255 ]
@@ -228,8 +209,8 @@ g_ss_notestreak_color = $g_ss_offwhite
 element_type_aliases = {
 	text = TextElement
 	textblock = TextBlockElement
-	sprite = SpriteElement
 	container = ContainerElement
+	sprite = SpriteElement
 }
 element_types_allowed = [ // CreateElement
 	TextElement
@@ -258,7 +239,7 @@ script create_results_layout
 	endif
 	item_count = <array_size>
 	i = 0
-	//bbox_display = 1
+	bbox_display = 0
 	begin
 		<create> = 1
 		item = (<layouts>.<layout>[<i>])
@@ -276,7 +257,6 @@ script create_results_layout
 			internal_scale = 1.0 // ???????
 			flip = [false false]
 			text = ''
-			type = text
 			
 			// whatever you want
 			id = (<item>.id) //not important for static stuff obviously
@@ -287,6 +267,7 @@ script create_results_layout
 			pos = (<item>.pos)
 			rot_angle = (<item>.rot)
 			just = (<item>.just)
+			internal_just = (<item>.just)
 			font = (<item>.font)
 			scale = (<item>.scale)
 			alpha = (<item>.alpha)
@@ -298,49 +279,49 @@ script create_results_layout
 			flip = (<item>.flip)
 			parent = <parent>
 		}
-		//if StructureContains structure=<info> (<item>.element)
-		//endif
-		switch (<item>.element)
-			case title // should be more freeform/ambiguous to accepting whatever info it gets
-			case artist
-			case album
-			case year
-			case artist_text
-				text = (<info>.(<item>.element))
-				if StructureContains structure=<item> uppercase
-					GetUpperCaseString <text>
-					text = <uppercasestring>
-				elseif StructureContains structure=<item> lowercase
-					GetLowerCaseString <text>
-					text = <lowercasestring>
-				endif
-				if StructureContains structure=<item> format
-					FormatText textname = text (<item>.format) s = <text> b = (<info>.artist_text)
-				endif
+		if StructureContains structure=<info> (<item>.element)
+			text = (<info>.(<item>.element))
+			if StructureContains structure=<item> uppercase
+				GetUpperCaseString <text>
+				text = <uppercasestring>
+			elseif StructureContains structure=<item> lowercase
+				GetLowerCaseString <text>
+				text = <lowercasestring>
+			endif
+			params = {}
+			if StructureContains structure=<item> commas
+				params = {usecommas}
+			endif
+			format = '%s'
+			if StructureContains structure=<item> format
+				format = (<item>.format)
+			endif
+			FormatText textname = fmt_text <format> s = <text> b = (<info>.artist_text) <params>
+			send_props = {
+				just = [left top]
+				font = text_a4
+				<send_props>
+				type = TextBlockElement
+				text = <fmt_text>
+				parent = <parent>
+			}
+		else
+			type = (<item>.type)
+			if StructureContains structure=$element_type_aliases <type> // make wiki page for func
+				type = ($element_type_aliases.<type>)
+			endif
+			if not IndexOf delegate = ChecksumEquals array = ($element_types_allowed) <type>
+				printf 'invalid element type = %t' t = <type>
+				<create> = 0
+			else
 				send_props = {
-					just = [left top]
-					font = text_a4
+					type = <type>
 					<send_props>
-					type = TextBlockElement
-					text = <text>
-					parent = <parent>
 				}
-			default
-				type = (<item>.type)
-				if StructureContains structure=$element_type_aliases <type> // make wiki page for func
-					type = ($element_type_aliases.<type>)
-				endif
-				if not IndexOf delegate = ChecksumEquals array = ($element_types_allowed) <type>
-					printf 'invalid element type = %t' t = <type>
-					<create> = 0
-				else
-					send_props = {
-						type = <type>
-						<send_props>
-					}
-				endif
-		endswitch
+			endif
+		endif
 		if (<create> = 1)
+			//printstruct <send_props>
 			if (<bbox_display>)
 				CreateScreenElement {
 					<send_props>
@@ -377,49 +358,49 @@ endscript
 
 g_np_option_props = [
 	{
-		Pos = (680.0, 168.0)
-		rot = 1
-		offset = (-30.0, 5.0)
-	}
-	{
-		Pos = (680.0, 201.0)
-		rot = 1
-		offset = (-30.0, 5.0)
-	}
-	{
-		Pos = (680.0, 234.0)
-		rot = 0.5
-		offset = (-30.0, 5.0)
-	}
-	{
-		Pos = (680.0, 266.0)
+		Pos = (780.0, 168.0)
 		rot = 0
-		offset = (-30.0, 6.0)
+		offset = (-30.0, 11.0)
 	}
 	{
-		Pos = (680.0, 162.0)
+		Pos = (780.0, 201.0)
 		rot = 0
-		offset = (-30.0, 6.0)
+		offset = (-30.0, 11.0)
 	}
 	{
-		Pos = (680.0, 195.0)
+		Pos = (780.0, 234.0)
 		rot = 0
-		offset = (-30.0, 6.0)
+		offset = (-30.0, 11.0)
 	}
 	{
-		Pos = (680.0, 228.0)
+		Pos = (780.0, 266.0)
 		rot = 0
-		offset = (-30.0, 6.0)
+		offset = (-30.0, 11.0)
 	}
 	{
-		Pos = (680.0, 261.0)
+		Pos = (780.0, 162.0)
 		rot = 0
-		offset = (-30.0, 6.0)
+		offset = (-30.0, 11.0)
 	}
 	{
-		Pos = (680.0, 294.0)
+		Pos = (780.0, 195.0)
 		rot = 0
-		offset = (-30.0, 6.0)
+		offset = (-30.0, 11.0)
+	}
+	{
+		Pos = (780.0, 228.0)
+		rot = 0
+		offset = (-30.0, 11.0)
+	}
+	{
+		Pos = (780.0, 261.0)
+		rot = 0
+		offset = (-30.0, 11.0)
+	}
+	{
+		Pos = (780.0, 294.0)
+		rot = 0
+		offset = (-30.0, 11.0)
 	}
 ]
 g_np_menu_icon_offset = (225.0, -22.0)
@@ -430,7 +411,7 @@ old_song = None
 
 script create_newspaper_menu\{for_practice = 0}
 	menu_song_complete_sound
-	create_menu_backdrop \{texture = white rgba = [90 90 90 255]}
+	create_menu_backdrop \{texture = white rgba = [64 64 64 90]}
 	StopSoundsByBuss \{BinkCutScenes}
 	disable_pause
 	my_song = ($current_song)
@@ -509,7 +490,7 @@ script create_newspaper_menu\{for_practice = 0}
 			<p1_percent_complete> = <p2_percent_complete>
 		endif
 	endif
-	casttointeger \{p1_score}
+	casttointeger \{p1_score} // floors, gracefully
 	casttointeger \{p2_score}
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = newspaper_container Pos = (0.0, 0.0)}
 	FormatText textname = p1_note_streak_text '%d' d = <p1_note_streak>
@@ -539,6 +520,7 @@ script create_newspaper_menu\{for_practice = 0}
 		artist_text = (<song_struct>.artist_text)
 	}
 	if NOT ($game_mode = p1_career || $game_mode = p2_career || $game_mode = p2_coop || $game_mode = p1_quickplay || <for_practice> = 1)
+		create_results_layout \{parent = newspaper_container layout = versus_2p}
 		<ss_logo> = none
 		<ss_logo_sm> = none
 		<ss_sidebar> = none
@@ -636,7 +618,6 @@ script create_newspaper_menu\{for_practice = 0}
 			endif
 		else
 			create_results_layout \{parent = newspaper_container layout = tugofwar_2p}
-			winner_text = <winner>
 			FormatText textname = winner_text 'Player %d' d = <winner>
 			if ($is_network_game)
 				if (<winner> = 2)
@@ -648,61 +629,12 @@ script create_newspaper_menu\{for_practice = 0}
 					endif
 				endif
 			endif
+			// FIX: headliner text/winner is determined by matching note hit count?? instead of scores including long note points
 			if NOT (<winner> = 0)
 				FormatText textname = who_won_text "%d %t" d = <winner_text> t = Random ( @ 'Conquers With Authority!' @ 'Wins the Crowd!' @ )
 				ss_winner_text::SetProps text = <who_won_text> rgba = <winner_color>
 			endif
 		endif
-		
-		
-		
-		//GetUpperCaseString <song_title>
-		//CreateScreenElement {
-		//	id = ss_song_title_text_block_id
-		//	Type = TextBlockElement
-		//	parent = newspaper_container
-		//	just = [left top]
-		//	internal_just = [left top]
-		//	Pos = (270.0, 352.0)
-		//	Scale = (0.55, 0.55)
-		//	text = <uppercasestring>
-		//	font = text_a11
-		//	rgba = $g_ss_2p_song_title_whiteish
-		//	dims = (400.0, 134.0)
-		//	line_spacing = 0.85
-		//	rot_angle = -7.5
-		//	noshadow
-		//}
-		//GetUpperCaseString <song_artist>
-		//<band_name> = <uppercasestring>
-		//GetScreenElementChildren \{id = ss_song_title_text_block_id}
-		//GetArraySize (<children>)
-		//if (<array_Size> = 1)
-		//	<artist_pos> = (276.0, 386.0)
-		//else
-		//	<artist_pos> = (280.0, 416.0)
-		//endif
-		//if ($g_ss_mag_number = 0 || $g_ss_mag_number = 1)
-		//	<band_name_color> = $g_ss_offwhite
-		//else
-		//	<band_name_color> = $g_ss_p1_orangeish
-		//endif
-		//CreateScreenElement {
-		//	id = ss_artist_text_block_id
-		//	Type = TextBlockElement
-		//	parent = newspaper_container
-		//	just = [left top]
-		//	internal_just = [left top]
-		//	Pos = <artist_pos>
-		//	Scale = (0.45, 0.45)
-		//	text = <band_name>
-		//	font = text_a4
-		//	rgba = <band_name_color>
-		//	dims = (400.0, 134.0)
-		//	line_spacing = 0.85
-		//	rot_angle = -7.5
-		//}
-		create_results_layout \{parent = newspaper_container layout = versus_2p}
 		
 		mode_text = 'UNKNOWN'
 		mode_text = ($mode_text[($mode_index.($game_mode))])
@@ -1181,114 +1113,15 @@ script create_newspaper_menu\{for_practice = 0}
 		<ss_notestreak_fill_color> = $g_ss_notestreak_fill_color
 		<ss_notestreak_color> = $g_ss_notestreak_color
 		<ss_notestreak_text_color> = $g_ss_notestreak_text_color
-		create_results_layout parent = newspaper_container layout = quickplay_1p
-		//GetUpperCaseString <song_artist>
-		//<band_name> = <uppercasestring>
-		//song_internal_scale = 1.0
-		//StringLength string = <song_title>
-		//if (<str_len> >= 19)
-		//	<song_internal_scale> = 0.75 // just do fit
-		//endif
-		//mypos = (262.0, 345.0)
-		//CreateScreenElement {
-		//	id = ss_song_title_text_block_id
-		//	Type = TextBlockElement
-		//	parent = newspaper_container
-		//	just = [left bottom]
-		//	internal_just = [left bottom]
-		//	Pos = <mypos>
-		//	Scale = 0.75
-		//	text = <song_title>
-		//	font = text_a11
-		//	rgba = $g_ss_offwhite
-		//	dims = (300.0, 200.0)
-		//	line_spacing = 0.85
-		//	rot_angle = -7.5
-		//	internal_scale = <song_internal_scale>
-		//}
-		//<artist_pos> = (<mypos> + (0.0, 5.0))
-		//if ($g_ss_mag_number = 0 || $g_ss_mag_number = 1)
-		//	<band_name_color> = $g_ss_offwhite
-		//else
-		//	<band_name_color> = $g_ss_orangeish
-		//endif
-		//CreateScreenElement {
-		//	id = ss_artist_text_block_id
-		//	Type = TextBlockElement
-		//	parent = newspaper_container
-		//	just = [left top]
-		//	internal_just = [left top]
-		//	Pos = <artist_pos>
-		//	Scale = (0.5, 0.55)
-		//	text = <band_name>
-		//	font = text_a4
-		//	rgba = <band_name_color>
-		//	dims = (400.0, 134.0)
-		//	line_spacing = 0.85
-		//	rot_angle = -7.5
-		//}
-		FormatText textname = p1_notes_hit '%d' d = <p1_percent_complete>
-		if (<p1_percent_complete> = 100)
-			<ss_percent_pos> = (290.0, 503.0)
-			<ss_percent_scale> = (1.3, 1.6)
-		elseif (<p1_percent_complete> < 10)
-			<ss_percent_pos> = (332.0, 496.0)
-			<ss_percent_scale> = 1.6
-		else
-			<ss_percent_pos> = (302.0, 501.0)
-			<ss_percent_scale> = 1.6
-		endif
-		displayText {
-			parent = newspaper_container
-			text = <p1_notes_hit>
-			Pos = <ss_percent_pos>
-			Scale = <ss_percent_scale>
-			font = text_a4
-			z = 4
-			rgba = <ss_percent_color>
-			rot = -10
-			noshadow
+		create_results_layout {
+			parent = newspaper_container layout = quickplay_1p
+			info = {
+				notes_hit = <p1_percent_complete>
+				streak = <p1_note_streak>
+			}
 		}
-		//displayText {
-		//	parent = newspaper_container
-		//	text = '%'
-		//	Pos = (364.0, 500.0)
-		//	font = text_a4
-		//	z = 4
-		//	rgba = <ss_percent_color>
-		//	rot = -10
-		//	noshadow
-		//}
-		//if NOT ($g_ss_mag_number = 7)
-		//	<np_notes_hit_color> = $g_ss_black
-		//else
-		//	<np_notes_hit_color> = $g_ss_HELL_lighter_reddish
-		//endif
-		//displayText {
-		//	parent = newspaper_container
-		//	text = '\u0NOTES HIT'
-		//	Pos = (403.0, 522.0)
-		//	Scale = (0.44, 0.7)
-		//	font = text_a3
-		//	z = 4
-		//	rgba = <np_notes_hit_color>
-		//	rot = -10
-		//	noshadow
-		//}
 		// add code to detect if layout wants to fit stuff within width
-		//SetScreenElementProps id = <id> font_spacing = 6 space_spacing = 1
-		//GetScreenElementDims id = <id>
-		//if (<width> > 79)
-		//	SetScreenElementProps id = <id> Scale = 1
-		//	fit_text_in_rectangle id = <id> dims = (66.0, 35.0) Pos = (403.0, 522.0)
-		//endif
-		//displaySprite {
-		//	parent = newspaper_container
-		//	tex = song_summary_score_fill_l
-		//	Pos = (674.0, 90.0)
-		//	rgba = <ss_score_fill_L_color>
-		//	dims = (268.0, 67.0)
-		//}
+		// UIShortenString & StringLength
 		if (<for_practice> = 0)
 			if (<show_stars> = 1)
 				<star_pos> = (686.0, 120.0)
@@ -1352,7 +1185,7 @@ script create_newspaper_menu\{for_practice = 0}
 				Scale = (0.7, 0.6)
 				font = text_a11
 				z = 4
-				rgba = <ss_score_text_color>
+				rgba = $g_ss_offwhite
 				noshadow
 			}
 			SetScreenElementProps id = <id> font_spacing = 3
@@ -1404,41 +1237,6 @@ script create_newspaper_menu\{for_practice = 0}
 		//	Pos = (719.0, 359.0)
 		//	rgba = <ss_notestreak_fill_color>
 		//}
-		if (<p1_note_streak> > 999)
-			<ss_notestreak_pos> = (740.0, 358.0)
-			<ss_notestreak_scale> = (1.12, 1.5)
-		elseif (<p1_note_streak> > 99)
-			<ss_notestreak_pos> = (739.0, 358.0)
-			<ss_notestreak_scale> = 1.5
-		elseif (<p1_note_streak> < 10)
-			<ss_notestreak_pos> = (766.0, 358.0)
-			<ss_notestreak_scale> = 1.5
-		else
-			<ss_notestreak_pos> = (752.0, 358.0)
-			<ss_notestreak_scale> = 1.5
-		endif
-		displayText {
-			parent = newspaper_container
-			text = <p1_note_streak_text>
-			Pos = <ss_notestreak_pos>
-			Scale = <ss_notestreak_scale>
-			font = text_a4
-			z = 4
-			rgba = <ss_notestreak_color>
-			noshadow
-		}
-		displayText {
-			parent = newspaper_container
-			text = 'note streak'
-			Pos = (732.0, 425.0)
-			Scale = (0.44, 0.55)
-			font = text_a11
-			z = 4
-			rgba = <ss_notestreak_text_color>
-			noshadow
-		}
-		SetScreenElementProps id = <id> font_spacing = 5 space_spacing = 3 Scale = 1
-		fit_text_in_rectangle id = <id> dims = (80.0, 35.0) Pos = (732.0, 425.0)
 	endif
 	if ($is_network_game)
 		np_net_create_options_menu Pos = (770.0, 460.0) rot = <rot> Scale = 1 for_practice = <for_practice> show_replay = <show_replay> replay_flow_params = <replay_flow_params>
@@ -1568,8 +1366,8 @@ endscript
 
 script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_font = text_a11 for_practice = 0}
 	SetScreenElementProps id = newspaper_scroll Pos = <Pos>
-	set_focus_color \{rgba = $g_ss_offwhite}
-	set_unfocus_color \{rgba = $g_ss_black}
+	set_focus_color \{rgba = $g_ss_black}
+	set_unfocus_color \{rgba = $g_ss_offwhite}
 	if (<for_practice> = 1)
 		<menu_offset> = (0.0, -6.0)
 	elseif NOT ($game_mode = p1_career || $game_mode = p2_career || $game_mode = p2_coop || $game_mode = p1_quickplay)
@@ -1586,16 +1384,16 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 		retail_menu_unfocus \{id = np_option_4}
 		<initial_hl_pos> = (($g_np_option_props [4].Pos)+ ($g_np_option_props [4].offset)+ <menu_offset>)
 	else
-		displayText id = np_option_0 parent = newspaper_container text = "EXIT" Pos = (($g_np_option_props [0].Pos)+ <menu_offset>)Scale = (0.85, 0.7) rot = ($g_np_option_props [0].rot)font = <menu_font> noshadow
+		displayText id = np_option_0 parent = newspaper_container text = 'EXIT' Pos = (($g_np_option_props [0].Pos)+ <menu_offset>)Scale = (0.85, 0.7) rot = ($g_np_option_props [0].rot)font = <menu_font> noshadow
 		SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 		if NOT ($end_credits = 1)
 			if (<show_replay> = 1)
-				displayText id = np_option_1 parent = newspaper_container text = "RETRY SONG" Pos = (($g_np_option_props [1].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [1].rot)font = <menu_font> noshadow
+				displayText id = np_option_1 parent = newspaper_container text = 'RETRY SONG' Pos = (($g_np_option_props [1].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [1].rot)font = <menu_font> noshadow
 				SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
-				displayText id = np_option_2 parent = newspaper_container text = "MORE STATS" Pos = (($g_np_option_props [2].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [2].rot)font = <menu_font> noshadow
+				displayText id = np_option_2 parent = newspaper_container text = 'MORE STATS' Pos = (($g_np_option_props [2].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [2].rot)font = <menu_font> noshadow
 				SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 			else
-				displayText id = np_option_1 parent = newspaper_container text = "MORE STATS" Pos = (($g_np_option_props [1].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [2].rot)font = <menu_font> noshadow
+				displayText id = np_option_1 parent = newspaper_container text = 'MORE STATS' Pos = (($g_np_option_props [1].Pos)+ <menu_offset>)Scale = (0.8, 0.7) rot = ($g_np_option_props [2].rot)font = <menu_font> noshadow
 				SetScreenElementProps id = <id> font_spacing = 2 space_spacing = 4
 			endif
 		endif
@@ -1605,16 +1403,16 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 	retail_menu_unfocus \{id = np_option_1}
 	retail_menu_unfocus \{id = np_option_2}
 	retail_menu_unfocus \{id = np_option_3}
-	<ss_hilite_color> = $g_ss_black
+	<ss_hilite_color> = $g_ss_offwhite
 	<ss_menu_icon> = none
 	displaySprite {
 		id = ss_menu_hilite_id
 		parent = newspaper_container
-		tex = song_summary_menu_hilite
+		tex = white
 		Pos = <initial_hl_pos>
 		rgba = <ss_hilite_color>
-		rot_angle = (($g_np_option_props [$g_np_options_index].rot)+ 0.5)
-		dims = (320.0, 40.0)
+		rot_angle = ($g_np_option_props[$g_np_options_index].rot)
+		dims = (320.0, 32.0)
 		z = 1
 	}
 	displaySprite {
@@ -1622,7 +1420,7 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 		parent = newspaper_container
 		tex = <ss_menu_icon>
 		Pos = (<initial_hl_pos> + ($g_np_menu_icon_offset))
-		rot_angle = ($g_np_option_props [$g_np_options_index].rot)
+		rot_angle = ($g_np_option_props[$g_np_options_index].rot)
 		dims = (80.0, 80.0)
 		z = 3
 	}
@@ -1630,18 +1428,18 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 		if ($came_to_practice_from = main_menu)
 			continue_handlers = [
 				{focus retail_menu_focus}
-				{focus SetScreenElementProps params = {id = np_option_0 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+				{focus SetScreenElementProps params = {id = np_option_0}}
 				{unfocus retail_menu_unfocus}
-				{unfocus SetScreenElementProps params = {id = np_option_0 no_shadow}}
+				{unfocus SetScreenElementProps params = {id = np_option_0}}
 				{pad_choose setup_for_change_section}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = new_song}}
 			]
 		else
 			continue_handlers = [
 				{focus retail_menu_focus}
-				{focus SetScreenElementProps params = {id = np_option_0 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+				{focus SetScreenElementProps params = {id = np_option_0}}
 				{unfocus retail_menu_unfocus}
-				{unfocus SetScreenElementProps params = {id = np_option_0 no_shadow}}
+				{unfocus SetScreenElementProps params = {id = np_option_0}}
 				{pad_choose setup_for_change_section}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = back_2_setlist}}
 			]
@@ -1658,9 +1456,9 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 			font = <menu_font>
 			event_handlers = [
 				{focus retail_menu_focus}
-				{focus SetScreenElementProps params = {id = np_option_1 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+				{focus SetScreenElementProps params = {id = np_option_1}}
 				{unfocus retail_menu_unfocus}
-				{unfocus SetScreenElementProps params = {id = np_option_1 no_shadow}}
+				{unfocus SetScreenElementProps params = {id = np_option_1}}
 				{pad_choose setup_for_change_section}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = restart}}
 			]
@@ -1671,9 +1469,9 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 			font = <menu_font>
 			event_handlers = [
 				{focus retail_menu_focus}
-				{focus SetScreenElementProps params = {id = np_option_2 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+				{focus SetScreenElementProps params = {id = np_option_2}}
 				{unfocus retail_menu_unfocus}
-				{unfocus SetScreenElementProps params = {id = np_option_2 no_shadow}}
+				{unfocus SetScreenElementProps params = {id = np_option_2}}
 				{pad_choose setup_for_change_speed}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = change_speed}}
 			]
@@ -1684,9 +1482,9 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 			font = <menu_font>
 			event_handlers = [
 				{focus retail_menu_focus}
-				{focus SetScreenElementProps params = {id = np_option_3 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+				{focus SetScreenElementProps params = {id = np_option_3}}
 				{unfocus retail_menu_unfocus}
-				{unfocus SetScreenElementProps params = {id = np_option_3 no_shadow}}
+				{unfocus SetScreenElementProps params = {id = np_option_3}}
 				{pad_choose setup_for_change_section}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = change_section}}
 			]
@@ -1697,9 +1495,9 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 			font = <menu_font>
 			event_handlers = [
 				{focus retail_menu_focus}
-				{focus SetScreenElementProps params = {id = np_option_4 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+				{focus SetScreenElementProps params = {id = np_option_4}}
 				{unfocus retail_menu_unfocus}
-				{unfocus SetScreenElementProps params = {id = np_option_4 no_shadow}}
+				{unfocus SetScreenElementProps params = {id = np_option_4}}
 				{pad_choose setup_for_change_section}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = exit}}
 			]
@@ -1711,9 +1509,9 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 			font = <menu_font>
 			event_handlers = [
 				{focus retail_menu_focus}
-				{focus SetScreenElementProps params = {id = np_option_0 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+				{focus SetScreenElementProps params = {id = np_option_0}}
 				{unfocus retail_menu_unfocus}
-				{unfocus SetScreenElementProps params = {id = np_option_0 no_shadow}}
+				{unfocus SetScreenElementProps params = {id = np_option_0}}
 				{pad_choose setup_for_change_section}
 				{pad_choose ui_flow_manager_respond_to_action params = {action = continue}}
 			]
@@ -1727,9 +1525,9 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 					font = <menu_font>
 					event_handlers = [
 						{focus retail_menu_focus}
-						{focus SetScreenElementProps params = {id = np_option_1 Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+						{focus SetScreenElementProps params = {id = np_option_1}}
 						{unfocus retail_menu_unfocus}
-						{unfocus SetScreenElementProps params = {id = np_option_1 no_shadow}}
+						{unfocus SetScreenElementProps params = {id = np_option_1}}
 						{pad_choose ui_flow_manager_respond_to_action params = <replay_flow_params>}
 					]
 				}
@@ -1741,9 +1539,9 @@ script np_create_options_menu\{Pos = (600.0, 300.0) rot = 0 Scale = 0.8 menu_fon
 				font = <menu_font>
 				event_handlers = [
 					{focus retail_menu_focus}
-					{focus SetScreenElementProps params = {id = <more_stats_option_id> Shadow shadow_rgba = [0 0 0 255] shadow_offs = (2.0, 2.0)}}
+					{focus SetScreenElementProps params = {id = <more_stats_option_id>}}
 					{unfocus retail_menu_unfocus}
-					{unfocus SetScreenElementProps params = {id = <more_stats_option_id> no_shadow}}
+					{unfocus SetScreenElementProps params = {id = <more_stats_option_id>}}
 					{pad_choose ui_flow_manager_respond_to_action params = {action = select_detailed_stats}}
 				]
 			}

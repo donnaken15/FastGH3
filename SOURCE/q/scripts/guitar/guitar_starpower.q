@@ -51,6 +51,9 @@ script show_star_power_ready
 	endif
 	SoundEvent \{event = Star_Power_Ready_SFX}
 	spawnscriptnow rock_meter_star_power_on params = {player_status = <player_status>}
+	if NOT ($disable_starpower_notif = 0)
+		return
+	endif
 	FormatText checksumName = player_container 'HUD_Note_Streak_Combo%d' d = ($<player_status>.Player)
 	begin
 		if NOT ScreenElementExists id = <player_container>
@@ -58,18 +61,11 @@ script show_star_power_ready
 		endif
 		wait \{1 gameframe}
 	repeat
-	if ($<player_status>.Player = 1)
-		if ($star_power_ready_on_p1 = 1)
-			return
-		else
-			Change \{star_power_ready_on_p1 = 1}
-		endif
+	ExtendCrc star_power_ready_on_ ($<player_status>.text) out = ready
+	if ($<ready> = 1)
+		return
 	else
-		if ($star_power_ready_on_p2 = 1)
-			return
-		else
-			Change \{star_power_ready_on_p2 = 1}
-		endif
+		Change globalname = <ready> newvalue = 1
 	endif
 	if ($<player_status>.star_power_used = 1)
 		return
@@ -77,6 +73,9 @@ script show_star_power_ready
 	ExtendCrc star_power_ready_text ($<player_status>.text) out = id
 	if (($game_mode = p2_faceoff)|| ($game_mode = p2_pro_faceoff))
 		offset = ((1.0, 0.0) * $x_offset_p2)
+		// use: (1 - ($<player_status>.player = 1) * 2)
+		// actively learning i can use conditional expressions like bools in javascript and gamemaker
+		// QUICK MAFFS!
 		if ($<player_status>.Player = 1)
 			original_pos = (($hud_screen_elements [0].Pos) - (0.0, 50.00) - <offset>)
 		else
@@ -96,13 +95,14 @@ script show_star_power_ready
 	if ScreenElementExists id = <id>
 		<id> ::DoMorph Pos = <original_pos> Scale = 4 rgba = $hud_notif_starpower1 alpha = 0 rot_angle = 3
 	endif
-	ExtendCrc hud_destroygroup_window ($<player_status>.text)out = hud_destroygroup
+	// make compatibility thing for missing extra frames found on PS2
+	ExtendCrc hud_destroygroup_window ($<player_status>.text) out = hud_destroygroup
 	spawnscriptnow hud_lightning_alert params = {Player = ($<player_status>.Player) alert_id = <id> player_container = <hud_destroygroup>}
 	if ScreenElementExists id = <id>
 		<id> ::DoMorph Pos = <original_pos> Scale = <base_scale> alpha = 1 time = 0.3 rot_angle = -3 motion = ease_in
 	endif
 	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = <original_pos> Scale = (<base_scale> * <scale_big_mult>)time = 0.3 rot_angle = 4 motion = ease_out
+		<id> ::DoMorph Pos = <original_pos> Scale = (<base_scale> * <scale_big_mult>) time = 0.3 rot_angle = 4 motion = ease_out
 	endif
 	if ScreenElementExists id = <id>
 		<id> ::DoMorph Pos = <original_pos> Scale = <base_scale> time = 0.3 rot_angle = -5 rgba = $hud_notif_starpower2 motion = ease_in

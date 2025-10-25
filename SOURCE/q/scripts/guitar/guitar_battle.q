@@ -208,22 +208,20 @@ endscript
 
 script restore_saved_powerups
 	if ($battle_sudden_death = 1)
-		<array_count> = 0
-		if (($player1_status.save_num_powerups)> 0)
-			begin
-				p1_powerup = ($save_current_powerups_p1 [<array_count>])
-				battlemode_ready battle_gem = <p1_powerup> player_status = player1_status battle_text = 0
-				<array_count> = (<array_count> + 1)
-			repeat ($player1_status.save_num_powerups)
-		endif
-		<array_count> = 0
-		if (($player2_status.save_num_powerups)> 0)
-			begin
-				p2_powerup = ($save_current_powerups_p2 [<array_count>])
-				battlemode_ready battle_gem = <p2_powerup> player_status = player2_status battle_text = 0
-				<array_count> = (<array_count> + 1)
-			repeat ($player2_status.save_num_powerups)
-		endif
+		player = 1
+		begin
+			index = 0
+			FormatText checksumname = player_status 'player%p_status' p = <player>
+			if ($<player_status>.save_num_powerups > 0)
+				begin
+					ExtendCrc save_current_powerups_ ($<player_status>.text) out = scp
+					powerup = (($<scp>)[<index>])
+					battlemode_ready battle_gem = <powerup> player_status = <player_status> battle_text = 0
+					Increment \{index}
+				repeat ($<player_status>.save_num_powerups)
+			endif
+			Increment \{player}
+		repeat $max_num_players
 	endif
 endscript
 
@@ -295,25 +293,25 @@ script battlemode_select\{player_status = player1_status}
 	repeat <array_Size>
 	if ($<player_status>.battlemode_creation_selection = -1)
 		printstruct <...>
-		ScriptAssert \{"Battlemode selection not found"}
+		ScriptAssert \{'Battlemode selection not found'}
 	endif
 endscript
 medium_scale = 0.55
 small_scale = 0.4
 
 script print_powerup_arrays
-	printf "Current powerups p1(%a):" a = ($player1_status.current_num_powerups)
+	printf 'Current powerups p1(%a):' a = ($player1_status.current_num_powerups)
 	GetArraySize \{$current_powerups_p1}
 	array_count = 0
 	begin
-		printf "	%c: %p" c = <array_count> p = ($current_powerups_p1 [<array_count>])
+		printf '	%c: %p' c = <array_count> p = ($current_powerups_p1 [<array_count>])
 		<array_count> = (<array_count> + 1)
 	repeat <array_Size>
-	printf "Current powerups p2(%a):" a = ($player2_status.current_num_powerups)
+	printf 'Current powerups p2(%a):' a = ($player2_status.current_num_powerups)
 	GetArraySize \{$current_powerups_p2}
 	<array_count> = 0
 	begin
-		printf "	%c: %p" c = <array_count> p = ($current_powerups_p2 [<array_count>])
+		printf '	%c: %p' c = <array_count> p = ($current_powerups_p2 [<array_count>])
 		<array_count> = (<array_count> + 1)
 	repeat <array_Size>
 endscript
@@ -327,66 +325,62 @@ script battlemode_ready\{battle_gem = 0 player_status = player1_status steal = 0
 	endif
 	current_num_powerups = ($<player_status>.current_num_powerups)
 	if (<current_num_powerups> >= $max_num_powerups)
-		FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1)s = ($<player_status>.Player)
+		FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1) s = ($<player_status>.text)
 		if ScreenElementExists id = <card_checksum>
 			DestroyScreenElement id = <card_checksum>
 		endif
 		Change StructureName = <player_status> current_num_powerups = ($<player_status>.current_num_powerups - 1)
-		printf "battlemode_ready - decremented p%n's current_num_powerups to %a" n = ($<player_status>.Player)a = ($<player_status>.current_num_powerups)
+		printf 'battlemode_ready - decremented %s\'s current_num_powerups to %a' s = ($<player_status>.text) a = ($<player_status>.current_num_powerups)
 		update_battlecards_remove player_status = <player_status>
 	endif
 	if NOT (ScreenElementExists id = battlemode_container)
 		return
 	endif
 	if (<current_num_powerups> < 0)
-		printf \{"Trying to decrement current_num_powerups below 0"}
-		printf "player%p battle_gem=%b" p = ($<player_status>.Player)b = <battle_gem>
+		printf \{'Trying to decrement current_num_powerups below 0'}
+		printf '%s battle_gem=%b' s = ($<player_status>.text) b = <battle_gem>
 		print_powerup_arrays
 	endif
 	current_num_powerups = ($<player_status>.current_num_powerups)
 	select = <battle_gem>
 	if ($<player_status>.Player = 1)
 		SetArrayElement ArrayName = current_powerups_p1 GlobalArray index = <current_num_powerups> NewValue = <select>
-		card_pos = (($battle_hud_2d_elements.rock_pos_p1)+ ($battle_hud_2d_elements.card_1_off_p1))
+		card_pos = (($battle_hud_2d_elements.rock_pos_p1) + ($battle_hud_2d_elements.card_1_off_p1))
 	else
 		SetArrayElement ArrayName = current_powerups_p2 GlobalArray index = <current_num_powerups> NewValue = <select>
-		card_pos = (($battle_hud_2d_elements.rock_pos_p2)+ ($battle_hud_2d_elements.card_1_off_p2))
+		card_pos = (($battle_hud_2d_elements.rock_pos_p2) + ($battle_hud_2d_elements.card_1_off_p2))
 	endif
 	Change StructureName = <player_status> current_num_powerups = ($<player_status>.current_num_powerups + 1)
-	printf "battlemode_ready - incremented p%n's current_num_powerups to %a" n = ($<player_status>.Player)a = ($<player_status>.current_num_powerups)
+	printf 'battlemode_ready - incremented %s\'s current_num_powerups to %a' s = ($<player_status>.text) a = ($<player_status>.current_num_powerups)
 	Color = ($<player_status>.last_hit_note)
 	if (<Color> = None)
 		<Color> = green
 	endif
 	if ($<player_status>.lefthanded_button_ups = 1)
-		begin_pos = (($button_up_models.<Color>.left_pos_2d)- (0.0, 90.0))
+		begin_pos = (($button_up_models.<Color>.left_pos_2d) - (0.0, 90.0))
 	else
-		begin_pos = (($button_up_models.<Color>.pos_2d)- (0.0, 90.0))
+		begin_pos = (($button_up_models.<Color>.pos_2d) - (0.0, 90.0))
 	endif
-	offset = ((1.0, 0.0) * ($x_offset_p2))
-	if ($<player_status>.Player = 1)
-		<begin_pos> = (<begin_pos> - <offset>)
-	else
-		<begin_pos> = (<begin_pos> + <offset>)
-	endif
-	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = <current_num_powerups> s = ($<player_status>.Player)
+	<begin_pos> = (<begin_pos> + ((225.0, 0.0) * (1 - ($<player_status>.player = 1) * 2)))
+	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = <current_num_powerups> s = ($<player_status>.text)
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <card_checksum>
 		parent = battlemode_container
-		texture = ($battlemode_powerups [<select>].card_texture)
+		texture = ($battlemode_powerups[<select>].card_texture)
 		rgba = [255 255 255 255]
 		Pos = <begin_pos>
 		dims = (64.0, 64.0)
 		just = [center center]
 		alpha = 0.5
-		z_priority = (($battle_hud_2d_elements.z)+ 19)
+		z_priority = (($battle_hud_2d_elements.z) + 19)
 	}
-	if (<steal> > 0)
-		DoScreenElementMorph id = <card_checksum> Pos = <card_pos> alpha = 1 time = 0
-	else
-		DoScreenElementMorph id = <card_checksum> Pos = <card_pos> alpha = 1 time = 0.3
-	endif
+	// would like to mirror the steal powerup for player 1 but card over gem is hardcoded
+	// and dont care right now to run element check loops
+	//if (<select> = 3 & $<player_status>.Player = 1)
+	//	<card_checksum>::SetProps \{flip_v}
+	//endif
+	DoScreenElementMorph id = <card_checksum> Pos = <card_pos> alpha = 1 time = (0.3 * (<steal> <= 0.0))
 	update_battlecards_add current_num_powerups = <current_num_powerups> player_status = <player_status>
 	if ($show_battle_text = 1)
 		if (<battle_text> = 1)
@@ -448,21 +442,25 @@ script attack_ready_text
 		}
 	endif
 	wait \{3 seconds}
-	DoScreenElementMorph id = <text_checksum> alpha = 0 time = 0.3
+	DoScreenElementMorph {
+		id = <text_checksum>
+		alpha = 0
+		time = 0.3
+	}
 endscript
 
 script update_battlecards_add
 	if ($<player_status>.Player = 1)
-		player_pos = (($battle_hud_2d_elements.rock_pos_p1)+ ($battle_hud_2d_elements.card_1_off_p1))
+		player_pos = (($battle_hud_2d_elements.rock_pos_p1) + ($battle_hud_2d_elements.card_1_off_p1))
 		medium_pos = ($battle_hud_2d_elements.card_2_off_p1)
 		small_pos = ($battle_hud_2d_elements.card_3_off_p1)
 	else
-		player_pos = (($battle_hud_2d_elements.rock_pos_p2)+ ($battle_hud_2d_elements.card_1_off_p2))
+		player_pos = (($battle_hud_2d_elements.rock_pos_p2) + ($battle_hud_2d_elements.card_1_off_p2))
 		medium_pos = ($battle_hud_2d_elements.card_2_off_p2)
 		small_pos = ($battle_hud_2d_elements.card_3_off_p2)
 	endif
 	if (<current_num_powerups> > 0)
-		FormatText checksumName = card_checksum 'battlecard_0_%s' s = ($<player_status>.Player)
+		ExtendCrc battlecard_0_ ($<player_status>.text) out = card_checksum
 		DoScreenElementMorph {
 			id = <card_checksum>
 			Pos = (<player_pos> + <medium_pos>)
@@ -470,18 +468,17 @@ script update_battlecards_add
 			time = 0.3
 		}
 		if (<current_num_powerups> > 1)
-			FormatText checksumName = card_checksum 'battlecard_1_%s' s = ($<player_status>.Player)
-			DoScreenElementMorph {
-				id = <card_checksum>
-				Pos = (<player_pos> + <medium_pos>)
-				Scale = $medium_scale
-				time = 0.3
-			}
-			FormatText checksumName = card_checksum 'battlecard_0_%s' s = ($<player_status>.Player)
 			DoScreenElementMorph {
 				id = <card_checksum>
 				Pos = (<player_pos> + <small_pos>)
 				Scale = $small_scale
+				time = 0.3
+			}
+			ExtendCrc battlecard_1_ ($<player_status>.text) out = card_checksum
+			DoScreenElementMorph {
+				id = <card_checksum>
+				Pos = (<player_pos> + <medium_pos>)
+				Scale = $medium_scale
 				time = 0.3
 			}
 		endif
@@ -499,7 +496,7 @@ script update_battlecards_remove
 		small_pos = ($battle_hud_2d_elements.card_3_off_p2)
 	endif
 	if ($<player_status>.current_num_powerups > 0)
-		FormatText checksumName = card_checksum 'battlecard_0_%s' s = ($<player_status>.Player)
+		ExtendCrc battlecard_0_ ($<player_status>.text) out = card_checksum
 		DoScreenElementMorph {
 			id = <card_checksum>
 			Pos = <player_pos>
@@ -507,18 +504,17 @@ script update_battlecards_remove
 			time = 0.3
 		}
 		if ($<player_status>.current_num_powerups > 1)
-			FormatText checksumName = card_checksum 'battlecard_1_%s' s = ($<player_status>.Player)
-			DoScreenElementMorph {
-				id = <card_checksum>
-				Pos = <player_pos>
-				Scale = 1
-				time = 0.3
-			}
-			FormatText checksumName = card_checksum 'battlecard_0_%s' s = ($<player_status>.Player)
 			DoScreenElementMorph {
 				id = <card_checksum>
 				Pos = (<player_pos> + <medium_pos>)
 				Scale = $medium_scale
+				time = 0.3
+			}
+			ExtendCrc battlecard_1_ ($<player_status>.text) out = card_checksum
+			DoScreenElementMorph {
+				id = <card_checksum>
+				Pos = <player_pos>
+				Scale = 1
 				time = 0.3
 			}
 		endif
@@ -536,7 +532,7 @@ script add_battle_text
 				current_id = ($current_battle_text_p2 [<count>])
 			endif
 			if (<current_id> = <id>)
-				printf \{"Text allready on screen, don't add a new screen element"}
+				printf \{'Text already on screen, don\'t add a new screen element'}
 				return
 			endif
 			<count> = (<count> + 1)
@@ -650,17 +646,17 @@ script remove_battle_text
 	endif
 endscript
 
-script test_battle_trigger
-	battlemode_fill
-	wait \{5 seconds}
-	battle_trigger_on \{player_status = player2_status}
-	wait \{1 gameframe}
-	battle_trigger_on \{player_status = player2_status}
-	wait \{1 gameframe}
-	battle_trigger_on \{player_status = player1_status}
-	wait \{1 gameframe}
-	battle_trigger_on \{player_status = player1_status}
-endscript
+//script test_battle_trigger
+//	battlemode_fill
+//	wait \{5 seconds}
+//	battle_trigger_on \{player_status = player2_status}
+//	wait \{1 gameframe}
+//	battle_trigger_on \{player_status = player2_status}
+//	wait \{1 gameframe}
+//	battle_trigger_on \{player_status = player1_status}
+//	wait \{1 gameframe}
+//	battle_trigger_on \{player_status = player1_status}
+//endscript
 
 script battle_trigger_on
 	if ($<player_status>.current_num_powerups = 0)
@@ -689,16 +685,16 @@ script battle_trigger_on
 		select = ($current_powerups_p2 [($<player_status>.current_num_powerups - 1)])
 		GH3_Battle_Play_Crowd_Reaction_SFX receiving_player = 1 receiving_player_current_crowd_level = ($<other_player_status>.current_health)
 	endif
-	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1)s = ($<player_status>.Player)
+	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1) s = ($<player_status>.text)
 	if ScreenElementExists id = <card_checksum>
 		DestroyScreenElement id = <card_checksum>
 	endif
 	Change StructureName = <player_status> current_num_powerups = ($<player_status>.current_num_powerups - 1)
-	printf "battle_trigger_on - decremented p%n's current_num_powerups to %a" n = ($<player_status>.Player)a = ($<player_status>.current_num_powerups)
+	printf 'battle_trigger_on - decremented %s\'s current_num_powerups to %a' s = ($<player_status>.text) a = ($<player_status>.current_num_powerups)
 	if ($<player_status>.current_num_powerups < 0)
-		printf "BAD!  Trying to decrement num_powerups on %s that is already zero." s = ($<player_status>.text)
-		printf "num powerups: %i" i = ($<player_status>.current_num_powerups)
-		printf "Trying to use powerup: %i" i = <select>
+		printf 'BAD!  Trying to decrement num_powerups on %s that is already zero.' s = ($<player_status>.text)
+		printf 'num powerups: %i' i = ($<player_status>.current_num_powerups)
+		printf 'Trying to use powerup: %i' i = <select>
 	endif
 	powerup = ($battlemode_powerups[<select>])
 	update_battlecards_remove player_status = <player_status>
@@ -998,14 +994,14 @@ script death_text
 		<text_params>
 		id = <text_checksum>
 		Pos = (130.0, -53.0)
-		text = "DEATH"
+		text = 'DEATH'
 		Scale = 1
 	}
 	CreateScreenElement {
 		<text_params>
 		id = <text_checksum2>
 		Pos = (130.0, 5.0)
-		text = "DRAIN"
+		text = 'DRAIN'
 		Scale = 1.6
 	}
 	DoScreenElementMorph {
@@ -1408,7 +1404,7 @@ script battle_up_difficulty
 	begin
 		GetSongTimeMs
 		if (<time> > $<other_player_status>.diffup_notes)
-			printf \{"end battle"}
+			printf \{'end battle'}
 			ExtendCrc change_difficulty <player_text> out = Type
 			original_difficulty = <difficulty>
 			switch <original_difficulty>
@@ -1444,7 +1440,7 @@ script battle_double_notes
 	begin
 		GetSongTimeMs
 		if (<time> > $<other_player_status>.double_notes)
-			printf \{"end battle"}
+			printf \{'end battle'}
 			Change StructureName = <other_player_status> double_notes = -1
 			break
 		endif
@@ -1515,15 +1511,15 @@ script animate_steal
 		else
 			select = ($current_powerups_p2 [($<other_player_status>.current_num_powerups - 1)])
 		endif
-		FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<other_player_status>.current_num_powerups - 1)s = ($<other_player_status>.Player)
+		FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<other_player_status>.current_num_powerups - 1) s = ($<other_player_status>.text)
 		if ScreenElementExists id = <card_checksum>
 			DestroyScreenElement id = <card_checksum>
 		endif
 		Change StructureName = <other_player_status> current_num_powerups = ($<other_player_status>.current_num_powerups - 1)
-		printf "animate_steal - decremented p%n's current_num_powerups to %a" n = ($<other_player_status>.Player)a = ($<other_player_status>.current_num_powerups)
+		printf 'animate_steal - decremented p%n\'s current_num_powerups to %a' n = ($<other_player_status>.Player) a = ($<other_player_status>.current_num_powerups)
 		update_battlecards_remove player_status = <other_player_status>
 		GetSongTimeMs
-		FormatText checksumName = held_card_checksum 'held_battlecard_%i_%s_%t' i = ($<other_player_status>.current_num_powerups - 1)s = ($<other_player_status>.Player)t = <time>
+		FormatText checksumName = held_card_checksum 'held_battlecard_%i_%s_%t' i = ($<other_player_status>.current_num_powerups - 1) s = ($<other_player_status>.text) t = <time>
 		CreateScreenElement {
 			Type = SpriteElement
 			id = <held_card_checksum>
@@ -1603,12 +1599,11 @@ script battle_lefty_notes
 			if (<time> > (<start_time> - 500))
 				animate_lefty_flip other_player_status = <other_player_status> player_text = <player_text>
 				Change StructureName = <other_player_status> lefthanded_button_ups = (1 + $<other_player_status>.lefthanded_button_ups * -1)
-				lefty_flip_buttons player_status = <other_player_status>
 				start_time = -1
 			endif
 		endif
 		if (<time> > $<other_player_status>.lefty_notes)
-			printf \{"end battle"}
+			printf \{'end battle'}
 			end_time = (<time> + (($<other_player_status>.scroll_time - $destroy_time)* 1000.0))
 			Change StructureName = <other_player_status> lefthanded_gems = (1 + $<other_player_status>.lefthanded_gems * -1)
 			lefty_flip_buttons player_status = <other_player_status>
@@ -1949,7 +1944,7 @@ script battle_broken_string
 			Change StructureName = <other_player_status> broken_string_orange = ($<other_player_status>.broken_string_orange + <num_hammers>)
 			mask = 1
 	endswitch
-	printf "breaking string %s" s = <X>
+	printf 'breaking string %s' s = <X>
 	spawnscriptnow break_string params = {id = (<X> - 1)other_player_status = <other_player_status>}
 	spawnscriptnow update_broken_button params = {id = (<X> - 1)other_player_status = <other_player_status>}
 	update_broken_string_arrows id = (<X> - 1)other_player_status = <other_player_status>

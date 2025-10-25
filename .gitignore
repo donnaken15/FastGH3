@@ -114,3 +114,5 @@ stats_*.txt
 # if you actually have ".jpeg", you are probably a troubled person
 !/SOURCE/Zones/*.png
 !/SOURCE/Zones/*.jpg
+!/SOURCE/Zones/**/*.png
+!/SOURCE/Zones/**/*.jpg

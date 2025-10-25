@@ -312,6 +312,7 @@ playercount_text = [ '1' '2' ] // uhhhhhhh
 menu_text_color = [ 255 255 255 255 ]
 menu_text_sel = 'Select'
 menu_text_conf = 'Confirm'
+menu_text_cont = 'Continue'
 menu_text_back = 'Back'
 menu_text_nav = 'Up/Down'
 script common_control_helpers
@@ -322,7 +323,7 @@ script common_control_helpers
 		add_user_control_helper \{z = 100 button = green text = $menu_text_conf}
 	endif
 	if GotParam \{continue}
-		add_user_control_helper \{z = 100 button = green text = 'Continue'}
+		add_user_control_helper \{z = 100 button = green text = $menu_text_cont}
 	endif
 	if GotParam \{back}
 		add_user_control_helper \{z = 100 button = red text = $menu_text_back}
@@ -820,6 +821,7 @@ script extra_toggle \{name='Unknown' type=bool sect='Misc' key='' step=1 restart
 	endif
 endscript
 pause_font = fontgrid_title_gh3
+pause_menu_pos = (150.0, 110.0)
 script create_pause_menu\{Player = 1 submenu = none}
 	// I hate big scripts like this
 	player_device = ($last_start_pressed_device)
@@ -843,7 +845,7 @@ script create_pause_menu\{Player = 1 submenu = none}
 		Change \{winport_in_top_pause_menu = 1}
 	endif
 	pause_z = 11000000
-	menu_pos = (130.0, 110.0)
+	menu_pos = ($pause_menu_pos)
 	menu_offset = (0.0, 0.0)
 	spacing = -59
 	text_scale = (0.85, 0.85)
@@ -2083,7 +2085,7 @@ endscript
 winport_confirm_exit_msg = 'Are you sure you want to exit?'
 
 script winport_create_confirm_exit_popup
-	create_popup_warning_menu \{textblock = {text = $winport_confirm_exit_msg}menu_pos = (640.0, 490.0) dialog_dims = (288.0, 64.0) options = [{func = {ui_flow_manager_respond_to_action params = {action = continue}}text = "Yes" Scale = (1.0, 1.0)}{func = {ui_flow_manager_respond_to_action params = {action = go_back}}text = "No" Scale = (1.0, 1.0)}]}
+	create_popup_warning_menu \{textblock = {text = $winport_confirm_exit_msg}menu_pos = (640.0, 490.0) dialog_dims = (288.0, 64.0) options = [{func = {ui_flow_manager_respond_to_action params = {action = continue}} text = 'Yes' Scale = (1.0, 1.0)}{func = {ui_flow_manager_respond_to_action params = {action = go_back}}text = "No" Scale = (1.0, 1.0)}]}
 endscript
 
 script winport_destroy_confirm_exit_popup

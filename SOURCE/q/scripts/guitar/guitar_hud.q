@@ -4,19 +4,15 @@ hudless = 0
 script setup_sprites
 	setup_main_button_event_mappings
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = hud_window Pos = (0.0, 0.0) just = [left top]}
-	CreateScreenElement \{Type = TextElement parent = root_window id = song_failed_text font = text_a10 Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Song Failed" z_priority = 5.0 alpha = 0}
-	CreateScreenElement \{Type = TextElement parent = root_window id = song_won_text font = text_a10 Pos = (640.0, 360.0) just = [center center] Scale = 4.0 rgba = [210 210 210 250] text = "You Rock!" z_priority = 71.0 alpha = 0}
-	CreateScreenElement \{Type = TextElement parent = root_window id = player1wins_text font = text_a10 Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Player 1 Wins!" z_priority = 5.0 alpha = 0}
-	CreateScreenElement \{Type = TextElement parent = root_window id = player2wins_text font = text_a10 Pos = (640.0, 32.0) just = [center top] Scale = 1.0 rgba = [210 210 210 250] text = "Player 2 Wins!" z_priority = 5.0 alpha = 0}
-	CreateScreenElement \{Type = TextElement parent = root_window id = intro_song_info_text font = text_a10 Pos = (480.0, 32.0) just = [left top] Scale = 1.23 rgba = [210 210 210 250] text = "Song Info" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
-	CreateScreenElement \{Type = TextElement parent = root_window id = intro_performed_by_text font = text_a10 Pos = (480.0, 45.0) just = [left top] Scale = (1.0, 0.5) rgba = [230 205 160 255] text = "AS PERFORMED BY" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
-	CreateScreenElement \{Type = TextElement parent = root_window id = intro_artist_info_text font = text_a10 Pos = (640.0, 32.0) just = [left top] Scale = 1.0 rgba = [255 190 70 255] text = "Song Artist" z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
+	CreateScreenElement \{Type = TextElement parent = root_window id = intro_song_info_text font = text_a10 Pos = (480.0, 32.0) just = [left top] Scale = 1.23 rgba = [210 210 210 250] text = 'Song Info' z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
+	CreateScreenElement \{Type = TextElement parent = root_window id = intro_performed_by_text font = text_a10 Pos = (480.0, 45.0) just = [left top] Scale = (1.0, 0.5) rgba = [230 205 160 255] text = 'AS PERFORMED BY' z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
+	CreateScreenElement \{Type = TextElement parent = root_window id = intro_artist_info_text font = text_a10 Pos = (640.0, 32.0) just = [left top] Scale = 1.0 rgba = [255 190 70 255] text = 'Song Artist' z_priority = 5.0 alpha = 0 Shadow shadow_offs = (1.0, 1.0)}
 	setup_pause
 endscript
 hud_screen_elements = [
 	{
 		id = star_power_ready_text
-		text = "Star Power Ready"
+		text = 'Star Power Ready'
 		Pos = (640.0, 230.0)
 		alpha = 0
 		just = [
@@ -35,7 +31,7 @@ hud_screen_elements = [
 	}
 	{
 		id = steal2_text
-		text = "Nothing to steal..."
+		text = 'Nothing to steal...'
 		Pos = (640.0, 300.0)
 		Scale = 0.7
 		just = [
@@ -46,7 +42,7 @@ hud_screen_elements = [
 	}
 	{
 		id = coop_raise_axe
-		text = "Tilt guitar to trigger"
+		text = 'Tilt guitar to trigger'
 		Pos = (640.0, 300.0)
 		Scale = 0.7
 		just = [
@@ -65,7 +61,7 @@ hud_screen_elements = [
 	}
 	{
 		id = coop_raise_axe_cont
-		text = "Star Power"
+		text = 'Star Power'
 		Pos = (640.0, 300.0)
 		Scale = 1.1
 		just = [
@@ -219,23 +215,16 @@ script destroy_hud
 	destroy_menu menu_id = <player_container>
 endscript
 
+script reset_text
+	ExtendCrc <#"0x00000000"> <player_text> out = name
+	DoScreenElementMorph id = <name> alpha = 0
+endscript
+
 script reset_hud_text
-	name = star_power_ready_text
-	ExtendCrc <name> <player_text> out = name
-	DoScreenElementMorph id = <name> alpha = 0
-	name = steal2_text
-	ExtendCrc <name> <player_text> out = name
-	DoScreenElementMorph id = <name> alpha = 0
-	name = coop_raise_axe
-	ExtendCrc <name> <player_text> out = name
-	DoScreenElementMorph id = <name> alpha = 0
-	name = coop_raise_axe_cont
-	ExtendCrc <name> <player_text> out = name
-	DoScreenElementMorph id = <name> alpha = 0
-	DoScreenElementMorph \{id = song_failed_text alpha = 0}
-	DoScreenElementMorph \{id = song_won_text alpha = 0}
-	DoScreenElementMorph \{id = player1wins_text alpha = 0}
-	DoScreenElementMorph \{id = player2wins_text alpha = 0}
+	reset_text <...> star_power_ready_text // smaller, eye roll
+	reset_text <...> steal2_text
+	reset_text <...> coop_raise_axe
+	reset_text <...> coop_raise_axe_cont
 endscript
 
 script reset_hud
@@ -253,6 +242,12 @@ script move_hud_to_default\{time = 0.01}
 	spawnscriptnow move_2d_elements_to_default params = {morph_time = <time>}
 endscript
 
+hud_kick_keyframes = [
+	(50.0, -5.0, 0.1)
+	(-25.0, 5.0, 0.125)
+	(0.0, 0.0, 0.1)
+]
+
 script move_2d_elements_to_default
 	if ($hudless = 1 || $Cheat_PerformanceMode = 1)
 		return
@@ -267,7 +262,7 @@ script move_2d_elements_to_default
 	endif
 	begin
 		GetSongTimeMs
-		delta = ((<time> - <initial_time>)/ (<move_time>))
+		delta = ((<time> - <initial_time>) / (<move_time>))
 		if (<delta> > 1.0)
 			delta = 1.0
 		endif
@@ -277,28 +272,20 @@ script move_2d_elements_to_default
 		endif
 		wait \{1 gameframe}
 	repeat
-	<off_set_drop> = (0.0, 0.0)
-	<off_set> = (50.0, 0.0)
-	if ($game_mode = p2_faceoff)
-		<off_set_drop> = (0.0, 50.0)
-	endif
-	<rot> = -5
-	<time_to_move> = 0.1
-	morph_2d_hud_elements <...>
-	wait \{0.1 seconds}
-	<off_set> = (-25.0, 0.0)
-	if ($game_mode = p2_faceoff)
-		<off_set_drop> = (0.0, -25.0)
-	endif
-	<rot> = 5
-	<time_to_move> = 0.125
-	morph_2d_hud_elements <...>
-	wait \{0.125 seconds}
-	<rot> = 0
-	<off_set_drop> = (0.0, 0.0)
-	<off_set> = (0.0, 0.0)
-	<time_to_move> = 0.1
-	morph_2d_hud_elements <...>
+	array = ($hud_kick_keyframes)
+	GetArraySize \{array}
+	i = 0
+	begin
+		ax = (<array>[<i>])
+		x = (<ax>.(1.0,0.0,0.0))
+		time_to_move = (<ax>.(0.0,0.0,1.0))
+		off_set = ((1.0, 0.0) * <x>)
+		off_set_drop = ((0.0, 1.0) * <x> * ($game_mode = p2_faceoff))
+		rot = (<ax>.(0.0,1.0,0.0))
+		morph_2d_hud_elements <...>
+		Wait <time_to_move> seconds
+		Increment \{i}
+	repeat <array_size>
 endscript
 
 script nointro_hud_move
@@ -369,6 +356,9 @@ script morph_2d_hud_elements\{off_set = (0.0, 0.0) off_set_drop = (0.0, 0.0) tim
 	else
 		move_rock_pos = ((1.0 - <delta>)* (($g_hud_2d_struct_used).<intro_rock_pos>)+ (<delta> * ((($g_hud_2d_struct_used).<new_rock_pos>)- <off_set> - <off_set_drop>)))
 	endif
+	if ($current_speedfactor > 0.0)
+		time_to_move = (<time_to_move> / $current_speedfactor)
+	endif
 	if NOT ($Cheat_PerformanceMode = 1)
 		if NOT ($end_credits = 1)
 			if NOT ($game_mode = training)
@@ -399,7 +389,7 @@ script morph_2d_hud_elements\{off_set = (0.0, 0.0) off_set_drop = (0.0, 0.0) tim
 	morph_gamertags <...>
 endscript
 
-script split_text_into_array_elements\{text = "OOPS" text_pos = (0.0, 0.0) space_between = (0.0, 0.0) Scale = 1.5 flags = {}}
+script split_text_into_array_elements\{text = 'OOPS' text_pos = (0.0, 0.0) space_between = (0.0, 0.0) Scale = 1.5 flags = {}}
 	StringToCharArray string = <text>
 	GetArraySize <char_array>
 	if NOT GotParam \{parent}

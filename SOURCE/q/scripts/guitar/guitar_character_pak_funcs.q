@@ -1,6 +1,6 @@
 
 script UnloadPakAsync
-	//printf "UnloadPakAsync : %s on heap %a async=%i" s = <pak_name> a = <Heap> i = <async>
+	//printf 'UnloadPakAsync : %s on heap %a async=%i' s = <pak_name> a = <Heap> i = <async>
 	UnLoadPak <pak_name> Heap = <Heap>
 	if (<async> = 1)
 		begin
@@ -18,7 +18,7 @@ character_pak_loadpak_done = 0
 character_pak_loadpak_failed = 0
 
 script LoadPakAsync
-	//printf "LoadPakAsync : %s on heap %a async=%i" s = <pak_name> a = <Heap> i = <async>
+	//printf 'LoadPakAsync : %s on heap %a async=%i' s = <pak_name> a = <Heap> i = <async>
 	begin
 		if ($character_pak_loadpak_lock = 0)
 			break
@@ -31,7 +31,7 @@ script LoadPakAsync
 	GetContentFolderIndexFromFile <pak_name>
 	if (<device> = content)
 		if NOT Downloads_OpenContentFolder content_index = <content_index>
-			printf \{"Downloads_OpenContentFolder FAILED"}
+			printf \{'Downloads_OpenContentFolder FAILED'}
 			Change \{character_pak_loadpak_lock = 0}
 			Change \{character_pak_loadpak_done = 0}
 			return \{FALSE}
@@ -75,7 +75,7 @@ script LoadPakAsync
 endscript
 
 script LoadPakAsync_callback
-	printf \{"LoadPakAsync_callback"}
+	printf \{'LoadPakAsync_callback'}
 	//printstruct <...>
 	if NOT (<result> = 0)
 		Change \{character_pak_loadpak_done = 1}

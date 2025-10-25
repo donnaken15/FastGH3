@@ -168,7 +168,7 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [10 22 2025]
+build_timestamp = [10 25 2025]
 
 random_seed = -1
 // ^ originally 107482099
@@ -178,8 +178,8 @@ script guitar_startup
 	bg_path = 'gameplay_BG'
 	if not FileExists (<bg_path>+'.img.xen')
 		bg_path = 'zones/load_scr'
-	else
-		bg_path = <bg_path>
+	//else
+	//	bg_path = <bg_path> // why did i do this
 	endif
 	bg_path = ('../../'+<bg_path>)
 	DisplayLoadingScreen <bg_path> spin_texture = '../../zones/load_disc' spin_x = 554 spin_y = 296
@@ -269,7 +269,7 @@ script guitar_startup
 				{'FCMode' out=FC_MODE}
 				{'EasyExpert' out=Cheat_EasyExpert}
 				{'Precision' out=Cheat_PrecisionMode}
-				{'EarlySustains' out=anytime_sustain_activation}
+				{'EarlySustains' out=anytime_sustain_activation} // requires KillGemsHit=1 obviously
 				{'NoFail' out=Cheat_NoFail}
 				{'CoopTracks' out=coop_tracks} // effective only when chart actually has both co-op parts
 				//{'Speed' out=current_speedfactor #"0x1ca1ff20"=1.0}
@@ -288,7 +288,7 @@ script guitar_startup
 				{'NoHUD' out=hudless}
 				{'KillGemsHit' out=kill_gems_on_hit}
 				{'NoStreakDisp' out=disable_notestreak_notif}
-				{'NoStarPowerDisp' out=disable_starpower_notif}
+				{'NoSPNotif' out=disable_starpower_notif}
 				{'NoParticles' out=disable_particles}
 				{'Performance' out=Cheat_PerformanceMode}
 				{'NoShake' out=disable_shake}
@@ -456,7 +456,7 @@ script guitar_startup
 	// region grafisxs and snoud
 		printf \{'Loading Paks'}
 		ProfilingStart
-		LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile}
+		LoadPak \{'zones/global.pak' Heap = heap_global_pak splitfile} // need to use async loading functions if i can
 		//if NOT ($fastgh3_branch = unpak)
 			SetScenePermanent \{scene = 'zones/global/global_gfx.scn' permanent}
 		//else
@@ -500,7 +500,7 @@ script guitar_startup
 	
 	// region initialize big stuff
 		printf \{'Allocating new big arrays'}
-		// sick of seeing a bunch of zeroes :/
+		// sick of seeing a bunch of prewritten zeroes :/
 		ProfilingStart
 		AllocArray \{size = 500 p1_last_song_detailed_stats}
 		AllocArray \{size = 500 p2_last_song_detailed_stats}
@@ -517,8 +517,15 @@ script guitar_startup
 		ProfilingEnd <...> 'AllocArray x12'
 		
 		ProfilingStart
-		create_loading_strings
+		decompress_height_table // 0.098 ms
+		// i might be totally fooled on this, just realizing
+		// decompressing would have to happen upon loading, not
+		// upon script execution, so bytecode interpreting
+		// might be the only recorded time expense
+		ProfilingEnd <...> 'load height table'
 		
+		ProfilingStart
+		create_loading_strings
 		change mode_buttons = [
 			{ range = 5 param = mode texts = mode_text id = select_gamemode }
 			{ range = 1 param = players texts = playercount_text id = select_playercount
@@ -669,8 +676,8 @@ script guitar_startup
 	ProfilingStart
 	printf \{'Initializing screen element system'}
 	ScreenElementSystemInit
-	CreateScreenElement \{Type = SpriteElement id = gameplay_BG texture = gameplay_BG parent = root_window rgba = $BGCol z_priority = -2147483648 pos = (640, 360) dims = (1280, 720)}
 	SetShadowProjectionTexture \{texture = white}
+	CreateScreenElement \{Type = SpriteElement id = gameplay_BG texture = gameplay_BG parent = root_window rgba = $BGCol z_priority = -2147483648 pos = (640, 360) dims = (1280, 720)}
 	CreateScreenElement \{Type = ContainerElement id = dead_particle_container parent = root_window Pos = (0.0, 0.0)}
 	Init2DParticles \{parent = dead_particle_container}
 	setup_sprites

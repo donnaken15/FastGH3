@@ -483,25 +483,31 @@ script move_highway_2d
 			SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0))* (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))
 			return
 		endif
-		i1000 = (1000.0 / <clamped>)
+		fs = ($gHighwayStartFade)
+		fe = ($gHighwayEndFade)
+		last_time = -1
 		//ProfilingEnd <...> 'move highway start'
 		generate_move_table interval=<clamped> pos_start_orig=<pos_start_orig>
 		GetArraySize \{moveTable}
 		start_time = (<time> - (400.0 * <movetime>)) // instantly appear animating into screen
 		// TODO: adjust offset to go with ^ highway or sidebar height
-		last_time = -1
+		interval = (1000.0 / <clamped>)
 		begin
 			//ProfilingStart
 			GetSongTimeMs
-			time2 = (((<time> - <start_time>) / <i1000>) / <movetime>)
+			time2 = (((<time> - <start_time>) / <interval>) / <movetime>)
 			CastToInteger \{time2}
 			if NOT (<last_time> = <time2>)
 				y = (<moveTable>[<time2>] / 1000.0)
 				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<y> * (0.0, 1.0)))
+				change gHighwayStartFade = (<fs> + (<y>*($current_num_players=1))) // doesnt work on 2p
+				change gHighwayEndFade = (<fe> + (<y>*($current_num_players=1)))
 				last_time = <time2>
 			endif
 			if (<y> <= <pos_start_orig> || <time2> > <array_size>)
 				SetScreenElementProps id = <container_id> Pos = (((<container_pos>.(1.0, 0.0)) * (1.0, 0.0)) + (<pos_start_orig> * (0.0, 1.0)))
+				change gHighwayStartFade = <fs>
+				change gHighwayEndFade = <fe>
 				break
 			endif
 			//ProfilingEnd <...> 'move highway frame'
