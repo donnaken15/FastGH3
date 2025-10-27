@@ -49,12 +49,15 @@ script show_star_power_ready
 	if ($game_mode = p2_career || $game_mode = p2_coop)
 		<player_status> = player1_status
 	endif
+	if ($<player_status>.star_power_used = 1)
+		return
+	endif
 	SoundEvent \{event = Star_Power_Ready_SFX}
 	spawnscriptnow rock_meter_star_power_on params = {player_status = <player_status>}
 	if NOT ($disable_starpower_notif = 0)
 		return
 	endif
-	FormatText checksumName = player_container 'HUD_Note_Streak_Combo%d' d = ($<player_status>.Player)
+	ExtendCrc HUD_Note_Streak_Combo ($<player_status>.text) out = player_container
 	begin
 		if NOT ScreenElementExists id = <player_container>
 			break
@@ -66,9 +69,6 @@ script show_star_power_ready
 		return
 	else
 		Change globalname = <ready> newvalue = 1
-	endif
-	if ($<player_status>.star_power_used = 1)
-		return
 	endif
 	ExtendCrc star_power_ready_text ($<player_status>.text) out = id
 	if (($game_mode = p2_faceoff)|| ($game_mode = p2_pro_faceoff))
@@ -84,47 +84,37 @@ script show_star_power_ready
 		base_scale = 0.8
 		scale_big_mult = 1.2
 	else
-		if ($game_mode = p2_career || $game_mode = p2_coop)
-			original_pos = (($hud_screen_elements [0].Pos) - (0.0, 60.0))
-		else
-			original_pos = (($hud_screen_elements [0].Pos) - (0.0, 20.0))
-		endif
+		original_pos = (($hud_screen_elements [0].Pos) - (0.0, 20.0) - ((0.0, 40.0) * ($game_mode = p2_career || $game_mode = p2_coop)))
+		//if ($game_mode = p2_career || $game_mode = p2_coop)
+		//	original_pos = (($hud_screen_elements [0].Pos) - (0.0, 60.0))
+		//else
+		//	original_pos = (($hud_screen_elements [0].Pos) - (0.0, 20.0))
+		//endif
 		base_scale = 1.2
 		scale_big_mult = 1.5
 	endif
 	if ScreenElementExists id = <id>
 		<id> ::DoMorph Pos = <original_pos> Scale = 4 rgba = $hud_notif_starpower1 alpha = 0 rot_angle = 3
 	endif
-	// make compatibility thing for missing extra frames found on PS2
 	ExtendCrc hud_destroygroup_window ($<player_status>.text) out = hud_destroygroup
 	spawnscriptnow hud_lightning_alert params = {Player = ($<player_status>.Player) alert_id = <id> player_container = <hud_destroygroup>}
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = <original_pos> Scale = <base_scale> alpha = 1 time = 0.3 rot_angle = -3 motion = ease_in
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = <original_pos> Scale = (<base_scale> * <scale_big_mult>) time = 0.3 rot_angle = 4 motion = ease_out
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = <original_pos> Scale = <base_scale> time = 0.3 rot_angle = -5 rgba = $hud_notif_starpower2 motion = ease_in
-	endif
+	do_animation_sequence id = <id> [
+		{ scale = <base_scale> alpha = 1 time = 0.3 rot = -3 motion = ease_in }
+		{ scale = (<base_scale> * <scale_big_mult>) time = 0.3 rot = 4 motion = ease_out }
+		{ scale = <base_scale> time = 0.3 rot = -5 rgba = $hud_notif_starpower2 motion = ease_in }
+	]
 	rotation = 10
 	begin
 		<rotation> = (<rotation> * -0.7)
 		if ScreenElementExists id = <id>
-			<id> ::DoMorph Pos = <original_pos> rot_angle = <rotation> alpha = 1 time = 0.08 motion = ease_out
+			<id>::DoMorph Pos = <original_pos> rot_angle = <rotation> alpha = 1 time = 0.08 motion = ease_out
 		endif
 	repeat 12
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = <original_pos> rot_angle = 0 motion = ease_out
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = (<original_pos> - (0.0, 230.0))Scale = (<base_scale> * 0.5)alpha = 0 time = 0.3 motion = ease_in
-	endif
-	if ($<player_status>.Player = 1)
-		Change \{star_power_ready_on_p1 = 0}
-	else
-		Change \{star_power_ready_on_p2 = 0}
-	endif
+	do_animation_sequence id = <id> [
+		{ rot = 0 motion = ease_out }
+		{ pos = (<original_pos> - (0.0, 230.0)) Scale = (<base_scale> * 0.5) alpha = 0 time = 0.3 motion = ease_in }
+	]
+	change globalname = <ready> newvalue = 0
 endscript
 showing_raise_axe = 0
 
@@ -163,25 +153,11 @@ script show_coop_raise_axe_for_starpower
 	base_scale = 0.7
 	base_scale_cont = 1
 	if ScreenElementExists id = <id>
-		DoScreenElementMorph {
-			id = <id>
-			Pos = <original_pos>
-			Scale = 0
-			alpha = 1
-		}
-	endif
-	if ScreenElementExists id = <id_cont>
-		DoScreenElementMorph {
-			id = <id_cont>
-			Pos = <original_pos_cont>
-			Scale = 0
-			alpha = 1
-		}
-	endif
-	if ScreenElementExists id = <id>
+		DoScreenElementMorph id = <id> Pos = <original_pos> Scale = 0 alpha = 1
 		DoScreenElementMorph id = <id> Scale = <base_scale> time = 0.2
 	endif
 	if ScreenElementExists id = <id_cont>
+		DoScreenElementMorph id = <id_cont> Pos = <original_pos_cont> Scale = 0 alpha = 1
 		DoScreenElementMorph id = <id_cont> Scale = <base_scale_cont> time = 0.2
 	endif
 	wait \{0.2 seconds}
@@ -193,18 +169,10 @@ script show_coop_raise_axe_for_starpower
 	begin
 		<rotation> = (<rotation> * -1)
 		if ScreenElementExists id = <id>
-			DoScreenElementMorph {
-				id = <id>
-				rot_angle = <rotation>
-				time = 0.1
-			}
+			DoScreenElementMorph id = <id> rot_angle = <rotation> time = 0.1
 		endif
 		if ScreenElementExists id = <id_cont>
-			DoScreenElementMorph {
-				id = <id_cont>
-				rot_angle = <rotation>
-				time = 0.1
-			}
+			DoScreenElementMorph id = <id_cont> rot_angle = <rotation> time = 0.1
 		endif
 		wait \{0.13 seconds}
 		if NOT ScreenElementExists id = <id>
@@ -214,25 +182,11 @@ script show_coop_raise_axe_for_starpower
 	repeat 8
 	if ScreenElementExists id = <id>
 		DoScreenElementMorph id = <id> rot_angle = 0
+		DoScreenElementMorph id = <id> Pos = (<original_pos> - (0.0, 400.0)) Scale = (<base_scale> * 0.5) time = 0.35 motion = ease_out
 	endif
 	if ScreenElementExists id = <id_cont>
 		DoScreenElementMorph id = <id_cont> rot_angle = 0
-	endif
-	if ScreenElementExists id = <id>
-		DoScreenElementMorph {
-			id = <id>
-			Pos = (<original_pos> - (0.0, 400.0))
-			Scale = (<base_scale> * 0.5)
-			time = 0.35
-		}
-	endif
-	if ScreenElementExists id = <id_cont>
-		DoScreenElementMorph {
-			id = <id_cont>
-			Pos = (<original_pos_cont> - (0.0, 400.0))
-			Scale = (<base_scale_cont> * 0.5)
-			time = 0.35
-		}
+		DoScreenElementMorph id = <id_cont> Pos = (<original_pos_cont> - (0.0, 400.0)) Scale = (<base_scale_cont> * 0.5) time = 0.35 motion = ease_out
 	endif
 	Change \{showing_raise_axe = 0}
 endscript
@@ -261,8 +215,8 @@ endscript
 
 script star_power_miss_note
 	// WHY ISN'T THIS GETTING CALLED!!!!!!!
-	// THERE'S A GLITCH WHERE YOU CAN STRUM
-	// MISS AND THE SEQUENCE WON'T GO AWAY!!!!!
+	// THERE'S A GLITCH WHERE YOU CAN MISS A BUNCH
+	// OF NOTES AND THE SEQUENCE WON'T GO AWAY!!!!!
 	Change StructureName = <player_status> star_power_sequence = 0
 	LaunchGemEvent event = star_miss_note Player = <Player>
 	ExtendCrc star_miss_note <player_text> out = id

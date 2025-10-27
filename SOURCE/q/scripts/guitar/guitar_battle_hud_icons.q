@@ -390,26 +390,17 @@ script change_battle_alert_back
 endscript
 
 script reset_all_battle_bgs
-	ExtendCrc ba_icon_fill_hard_double <player_text> out = new_id
-	if ScreenElementExists id = <new_id>
-		DoScreenElementMorph id = <new_id> alpha = 0 time = 0.3
-	endif
-	ExtendCrc ba_icon_fill_hard_double <player_text> out = new_id
-	if ScreenElementExists id = <new_id>
-		DoScreenElementMorph id = <new_id> alpha = 0 time = 0.3
-	endif
-	ExtendCrc ba_icon_fill_double_lefty <player_text> out = new_id
-	if ScreenElementExists id = <new_id>
-		DoScreenElementMorph id = <new_id> alpha = 0 time = 0.3
-	endif
-	ExtendCrc ba_icon_fill_hard_lefty <player_text> out = new_id
-	if ScreenElementExists id = <new_id>
-		DoScreenElementMorph id = <new_id> alpha = 0 time = 0.3
-	endif
-	ExtendCrc ba_icon_fill_triple <player_text> out = new_id
-	if ScreenElementExists id = <new_id>
-		DoScreenElementMorph id = <new_id> alpha = 0 time = 0.3
-	endif
+	items = [ 'hard_double' 'double_lefty' 'hard_lefty' 'triple' ]
+	GetArraySize \{items}
+	i = 0
+	begin
+		ExtendCrc ba_icon_fill_ (<items>[<i>]) out = new_id
+		ExtendCrc <new_id> <player_text> out = new_id
+		if ScreenElementExists id = <new_id>
+			DoScreenElementMorph id = <new_id> alpha = 0 time = 0.3
+		endif
+		Increment \{i}
+	repeat <array_size>
 	i = 1
 	begin
 		FormatText checksumName = num 'ba_alert_star_%d' d = <i>

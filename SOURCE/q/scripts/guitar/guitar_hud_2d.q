@@ -508,6 +508,12 @@ script pulsate_all_star_power_bulbs
 	endif
 endscript
 
+starpower_ready_keyframes = [
+	(-50.0, 1.5,  10.0)
+	( 75.0, 0.5, -15.0)
+	(  0.0, 1.0,   0.0)
+]
+
 script rock_back_and_forth_star_meter
 	SetSpawnInstanceLimits \{Max = $current_num_players management = ignore_spawn_request}
 	move_up_and_down = 1
@@ -520,31 +526,22 @@ script rock_back_and_forth_star_meter
 	if ScreenElementExists id = <shake_container>
 		GetScreenElementProps id = <shake_container>
 		time_to_shake = 0.15
-		if (<move_up_and_down> = 1)
+		GetArraySize \{$starpower_ready_keyframes}
+		index = 0
+		begin
+			ax = ($starpower_ready_keyframes[<index>])
 			if ScreenElementExists id = <shake_container>
-				DoScreenElementMorph id = <shake_container> Pos = (<Pos> - (0.0, 50.0))Scale = 1.5 rot_angle = 10 time = <time_to_shake> motion = ease_in
+				begin
+					if not ($current_speedfactor = 0.0)
+						break
+					endif
+					Wait \{1 gameframe}
+				repeat
+				DoScreenElementMorph id = <shake_container> Pos = (<Pos> + ((0,1) * (<ax>.(1,0,0)) * <move_up_and_down>) + ((1,0) * (<ax>.(1,0,0)) * (1 - <move_up_and_down>))) Scale = (<ax>.(0,1,0)) rot_angle = (<ax>.(0,0,1)) time = (<time_to_shake> / $current_speedfactor) motion = ease_in
 				wait <time_to_shake> seconds
 			endif
-			if ScreenElementExists id = <shake_container>
-				DoScreenElementMorph id = <shake_container> Pos = (<Pos> + (0.0, 75.0))Scale = 0.5 rot_angle = -15 time = <time_to_shake> motion = ease_in
-				wait <time_to_shake> seconds
-			endif
-			if ScreenElementExists id = <shake_container>
-				DoScreenElementMorph id = <shake_container> Pos = (<Pos>)Scale = 1.0 rot_angle = 0 time = <time_to_shake>
-			endif
-		else
-			if ScreenElementExists id = <shake_container>
-				DoScreenElementMorph id = <shake_container> Pos = (<Pos> - (50.0, 0.0))Scale = 1.5 rot_angle = 10 time = <time_to_shake> motion = ease_in
-				wait <time_to_shake> seconds
-			endif
-			if ScreenElementExists id = <shake_container>
-				DoScreenElementMorph id = <shake_container> Pos = (<Pos> + (75.0, 0.0))Scale = 0.5 rot_angle = -15 time = <time_to_shake> motion = ease_in
-				wait <time_to_shake> seconds
-			endif
-			if ScreenElementExists id = <shake_container>
-				DoScreenElementMorph id = <shake_container> Pos = (<Pos>)Scale = 1.0 rot_angle = 0 time = <time_to_shake> motion = ease_out
-			endif
-		endif
+			Increment \{index}
+		repeat <array_size>
 	endif
 endscript
 
@@ -699,28 +696,19 @@ script hud_flash_red_bg_p1\{time = 0.2}
 			if ScreenElementExists id = <new_bg>
 				DoScreenElementMorph id = <new_bg> rgba = [0 0 0 255] time = <time>
 				wait <time> seconds
-			endif
-			if ScreenElementExists id = <new_bg>
 				DoScreenElementMorph id = <new_bg> rgba = [225 225 225 255] time = <time>
 			endif
 			wait <time> seconds
 		else
-			if ScreenElementExists id = <new_bg>
-				DoScreenElementMorph id = <new_bg> rgba = [0 0 0 255] time = <time>
-				wait <time> seconds
-			endif
-			if ScreenElementExists id = <new_bg>
-				DoScreenElementMorph id = <new_bg> rgba = [225 225 225 255] time = <time>
-				wait <time> seconds
-			endif
-			if ScreenElementExists id = <new_bg>
-				DoScreenElementMorph id = <new_bg> rgba = [0 0 0 255] time = <time>
-				wait <time> seconds
-			endif
-			if ScreenElementExists id = <new_bg>
-				DoScreenElementMorph id = <new_bg> rgba = [225 225 225 255] time = <time>
-			endif
-			wait (<time> * 2.5)seconds
+			begin
+				if ScreenElementExists id = <new_bg>
+					DoScreenElementMorph id = <new_bg> rgba = [0 0 0 255] time = <time>
+					wait <time> seconds
+					DoScreenElementMorph id = <new_bg> rgba = [225 225 225 255] time = <time>
+					wait <time> seconds
+				endif
+			repeat 2
+			wait (<time> * 2.5) seconds
 		endif
 	repeat
 endscript
@@ -797,18 +785,12 @@ script hud_show_note_streak_combo\{Player = 1 combo = 0}
 	if ($game_mode = p2_career || $game_mode = p2_coop)
 		<Player> = 1
 	endif
-	begin
-		if (<Player> = 1)
-			if ($star_power_ready_on_p1 = 0)
-				break
-			endif
-		else
-			if ($star_power_ready_on_p2 = 0)
-				break
-			endif
-		endif
-		wait \{1 gameframe}
-	repeat
+	ExtendCrc star_power_ready_on_ ($<player_status>.text) out = ready
+	if ($<ready> = 1)
+		return
+	else
+		Change globalname = <ready> newvalue = 1
+	endif
 	FormatText checksumName = player_container 'HUD_Note_Streak_Combo%d' d = <Player>
 	if ScreenElementExists id = <player_container>
 		return
@@ -859,8 +841,8 @@ script hud_show_note_streak_combo\{Player = 1 combo = 0}
 			spawnscriptnow GH_SFX_Note_Streak_P2 params = {combo = <combo>}
 		endif
 	endif
-	FormatText textname = text "%d Note Streak!" d = <combo>
-	FormatText checksumName = note_streak_alert 'note_streak_alert_%d' d = <Player>
+	FormatText textname = text '%d Note Streak!' d = <combo>
+	ExtendCrc note_streak_alert_ ($<player_status>.text) out = note_streak_alert
 	CreateScreenElement {
 		Type = TextElement
 		id = <note_streak_alert>
@@ -885,156 +867,85 @@ script hud_show_note_streak_combo\{Player = 1 combo = 0}
 	spawnscriptnow hud_glowburst_alert params = {player_status = <player_status>}
 	color0 = $hud_notif_streak2
 	color1 = $hud_notif_streak3
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Scale = (<base_scale> + <s>)time = 0.4 rgba = <color1> rot_angle = 3 motion = ease_out
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Scale = <base_scale> time = 0.4 rgba = <color0> rot_angle = 2 motion = ease_in
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Scale = (<base_scale> + (<s> / 1.5))time = 0.3 rgba = <color1> rot_angle = -2 motion = ease_out
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Scale = <base_scale> time = 0.3 rgba = <color0> rot_angle = -1 motion = ease_in
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Scale = (<base_scale> + (<s> / 2.0))time = 0.2 rgba = <color1> rot_angle = 2 motion = ease_out
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Scale = <base_scale> time = 0.2 rgba = <color0> rot_angle = 1 motion = ease_in
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Scale = (<base_scale> + (<s> / 2.5))time = 0.1 rgba = <color1> rot_angle = -1 motion = ease_out
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Scale = <base_scale> time = 0.1 rgba = <color0> rot_angle = 1 motion = ease_in
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph rot_angle = 0 Scale = <base_scale> motion = gentle
-	endif
-	if ScreenElementExists id = <id>
-		<id> ::DoMorph Pos = (<Pos> - (0.0, 230.0))Scale = (<base_scale> * 0.8)time = 0.35 motion = ease_in
-	endif
+	// figure out
+	//rot = [ 3 2 -2 -1 2 1 -1 1 ]
+	//time = 0.4
+	//scale = 1.0
+	//index = 0
+	//begin
+	//	<id>::DoMorph time = <time> rot_angle = (<rot>[<index>]) rgba = <color1> scale = (<base_scale> + (<s>)) motion = ease_out // SOMEHOW PUTTING SCALE DIVISION HERE MAKES IT LOOK WRONG BUT ITS FINE IN THE KEYFRAMES WTF
+	//	Increment \{index}
+	//	<id>::DoMorph time = <time> rot_angle = (<rot>[<index>]) rgba = <color0> scale = (<base_scale> + (<s> / <scale>)) motion = ease_in
+	//	Increment \{index}
+	//	scale = (<scale> + 0.5)
+	//	time = (<time> - 0.1)
+	//repeat 4
+	do_animation_sequence id = <id> [
+		{ time = 0.4 rot =  3 rgba = <color1> motion = ease_out scale = (<base_scale> + (<s>)) }
+		{ time = 0.4 rot =  2 rgba = <color0> motion = ease_in  scale = <base_scale> }
+		{ time = 0.3 rot = -2 rgba = <color1> motion = ease_out scale = (<base_scale> + (<s> / 1.5)) }
+		{ time = 0.3 rot = -1 rgba = <color0> motion = ease_in  scale = <base_scale> }
+		{ time = 0.2 rot =  2 rgba = <color1> motion = ease_out scale = (<base_scale> + (<s> / 2.0)) }
+		{ time = 0.2 rot =  1 rgba = <color0> motion = ease_in  scale = <base_scale> }
+		{ time = 0.1 rot = -1 rgba = <color1> motion = ease_out scale = (<base_scale> + (<s> / 2.5)) }
+		{ time = 0.1 rot =  1 rgba = <color0> motion = ease_in  scale = <base_scale> }
+		{ scale = <base_scale> motion = gentle } // ??
+		{ Pos = (<Pos> - (0.0, 230.0)) Scale = (<base_scale> * 0.8)time = 0.35 motion = ease_in }
+	]
 	destroy_menu menu_id = <player_container>
+	change globalname = <ready> newvalue = 0
 endscript
 
+sp_ready_full_frames = 0
 script hud_lightning_alert
-	// OPTIMIZE, also missing frames compared to PS2
 	if NOT ScreenElementExists id = <alert_id>
 		return
 	endif
-	FormatText checksumName = HUD_lightning_01 'HUD_lightning_01_%d' d = <Player>
-	FormatText checksumName = HUD_lightning_03 'HUD_lightning_03_%d' d = <Player>
-	FormatText checksumName = HUD_lightning_05 'HUD_lightning_05_%d' d = <Player>
-	FormatText checksumName = HUD_lightning_07 'HUD_lightning_07_%d' d = <Player>
+	FormatText checksumName = player_status 'player%p_status' p = <player>
+	// this looks almost like the same animation from project 8 when activating special
+	full_frames = (1 + ($sp_ready_full_frames = 0))
 	GetScreenElementProps id = <alert_id>
-	lightning_pos = (<Pos> - (0.0, 20.0))
-	lightning_dims = (800.0, 100.0)
-	lightning_time = 0.2
-	if ScreenElementExists id = <HUD_lightning_01>
-		DestroyScreenElement id = <HUD_lightning_01>
-	endif
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <HUD_lightning_01>
-		texture = HUD_lightning_01
-		parent = <player_container>
-		Pos = <lightning_pos>
-		dims = <lightning_dims>
-		just = [center top]
-		z_priority = 45
-		alpha = 0
-	}
-	if ScreenElementExists id = <HUD_lightning_03>
-		DestroyScreenElement id = <HUD_lightning_03>
-	endif
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <HUD_lightning_03>
-		texture = HUD_lightning_03
-		parent = <player_container>
-		Pos = <lightning_pos>
-		dims = <lightning_dims>
-		just = [center top]
-		z_priority = 45
-		alpha = 0
-	}
-	if ScreenElementExists id = <HUD_lightning_05>
-		DestroyScreenElement id = <HUD_lightning_05>
-	endif
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <HUD_lightning_05>
-		texture = HUD_lightning_05
-		parent = <player_container>
-		Pos = <lightning_pos>
-		dims = <lightning_dims>
-		just = [center top]
-		z_priority = 45
-		alpha = 0
-	}
-	if ScreenElementExists id = <HUD_lightning_07>
-		DestroyScreenElement id = <HUD_lightning_07>
-	endif
-	CreateScreenElement {
-		Type = SpriteElement
-		id = <HUD_lightning_07>
-		texture = HUD_lightning_07
-		parent = <player_container>
-		Pos = <lightning_pos>
-		dims = <lightning_dims>
-		just = [center top]
-		z_priority = 45
-		alpha = 0
-	}
-	if ScreenElementExists id = <HUD_lightning_01>
-		DoScreenElementMorph id = <HUD_lightning_01> alpha = 1 time = <lightning_time>
-		wait <lightning_time> seconds
-	endif
-	if ScreenElementExists id = <HUD_lightning_01>
-		DoScreenElementMorph id = <HUD_lightning_01> alpha = 0 time = <lightning_time>
-		if ScreenElementExists id = <HUD_lightning_03>
-			DoScreenElementMorph id = <HUD_lightning_03> alpha = 1 time = <lightning_time>
+	lightning_pos = (<Pos> - (0.0, 80.0))
+	lightning_dims = (800.0, 200.0)
+	lightning_time = (0.1 * <full_frames>)
+	frame = 1
+	begin
+		FormatText checksumName = texture 'HUD_lightning_0%i' i = <frame>
+		ExtendCrc <texture> ($<player_status>.text) out = sprite
+		if ScreenElementExists id = <sprite>
+			DestroyScreenElement id = <sprite>
 		endif
+		CreateScreenElement {
+			Type = SpriteElement
+			id = <sprite>
+			texture = <texture>
+			parent = <player_container>
+			Pos = <lightning_pos>
+			dims = <lightning_dims>
+			just = [center top]
+			z_priority = 45
+			alpha = 0
+			blend = add
+		}
+		// hoping deinit scripts kill these and this script so i dont have to waste extra ifs on this
+		DoScreenElementMorph id = <sprite> alpha = 1 time = <lightning_time>
 		wait <lightning_time> seconds
-	endif
-	if ScreenElementExists id = <HUD_lightning_03>
-		DoScreenElementMorph id = <HUD_lightning_03> alpha = 0 time = <lightning_time>
-		if ScreenElementExists id = <HUD_lightning_05>
-			DoScreenElementMorph id = <HUD_lightning_05> alpha = 1 time = <lightning_time>
+		DoScreenElementMorph id = <sprite> alpha = 0 time = (<lightning_time> * 1.5)
+		frame = (<frame> + <full_frames>)
+		if ScreenElementExists id = <sprite2>
+			DestroyScreenElement id = <sprite2>
 		endif
-		wait <lightning_time> seconds
-	endif
-	if ScreenElementExists id = <HUD_lightning_05>
-		DoScreenElementMorph id = <HUD_lightning_05> alpha = 0 time = <lightning_time>
-		if ScreenElementExists id = <HUD_lightning_07>
-			DoScreenElementMorph id = <HUD_lightning_07> alpha = 1 time = <lightning_time>
+		sprite2 = <sprite>
+		FormatText checksumName = sprite 'HUD_lightning_0%i%p' i = <frame> p = ($<player_status>.text)
+		if ScreenElementExists id = <sprite>
+			DoScreenElementMorph id = <sprite> alpha = 1 time = <lightning_time>
 		endif
-		wait <lightning_time> seconds
-	endif
-	if ScreenElementExists id = <HUD_lightning_07>
-		DoScreenElementMorph id = <HUD_lightning_07> alpha = 0 time = <lightning_time>
-		wait <lightning_time> seconds
-	endif
-	if ScreenElementExists id = <HUD_lightning_01>
-		DestroyScreenElement id = <HUD_lightning_01>
-	endif
-	if ScreenElementExists id = <HUD_lightning_03>
-		DestroyScreenElement id = <HUD_lightning_03>
-	endif
-	if ScreenElementExists id = <HUD_lightning_05>
-		DestroyScreenElement id = <HUD_lightning_05>
-	endif
-	if ScreenElementExists id = <HUD_lightning_07>
-		DestroyScreenElement id = <HUD_lightning_07>
-	endif
+	repeat (8 / <full_frames>)
 endscript
 
 disable_starpower_notif = 0
 script hud_glowburst_alert\{player_status = player1_status}
-	if NOT ($disable_starpower_notif = 0)
-		return
-	endif
+	// misleading, this is for note streak flash
 	FormatText checksumName = star_power_ready_glow 'star_power_ready_glow_%d' d = ($<player_status>.Player)
 	ExtendCrc hud_destroygroup_window ($<player_status>.text)out = hud_destroygroup
 	if ScreenElementExists id = <star_power_ready_glow>
@@ -1076,15 +987,11 @@ script hud_glowburst_alert\{player_status = player1_status}
 			z_priority = 50
 		}
 	endif
-	if ScreenElementExists id = <star_power_ready_glow>
-		<star_power_ready_glow> ::DoMorph Scale = <scale2> alpha = 0.5 motion = ease_out time = 0.1
-	endif
-	if ScreenElementExists id = <star_power_ready_glow>
-		<star_power_ready_glow> ::DoMorph Scale = <scale3> alpha = 0.5 rgba = [245 255 160 255] motion = ease_out time = 0.1
-	endif
-	if ScreenElementExists id = <star_power_ready_glow>
-		<star_power_ready_glow> ::DoMorph Scale = <scale4> alpha = 0 motion = ease_in time = 0.8
-	endif
+	do_animation_sequence id = <star_power_ready_glow> [ // WHY NOT WORK
+		{ motion = ease_out time = 0.1 scale = <scale2> alpha = 0.5 }
+		{ motion = ease_out time = 0.1 scale = <scale3> rgba = [245 255 160 255] }
+		{ motion = ease_in  time = 0.8 scale = <scale4> alpha = 0 }
+	]
 	if ScreenElementExists id = <star_power_ready_glow>
 		DestroyScreenElement id = <star_power_ready_glow>
 	endif
@@ -1102,6 +1009,7 @@ script hud_flip_note_streak_num
 	DoScreenElementMorph id = <id> Pos = <intial_pos> alpha = 1 time = 0.1
 endscript
 
+background_darkness = 0.0
 script create_game_backdrop2\{texture = gameplay_BG rgba = [255 255 255 255]}
 	if ScreenElementExists \{id = #"0x6b9ddabb"}
 		DestroyScreenElement \{id = #"0x6b9ddabb"}
@@ -1118,6 +1026,17 @@ script create_game_backdrop2\{texture = gameplay_BG rgba = [255 255 255 255]}
 		just = [center center]
 		z_priority = -2147483648
 	}
+	CreateScreenElement {
+		Type = SpriteElement
+		parent = #"0x6b9ddabb"
+		id = menu_backdrop
+		texture = black
+		alpha = $background_darkness
+		Pos = (640.0, 360.0)
+		dims = (1280.0, 720.0)
+		just = [center center]
+		z_priority = -9999990
+	}
 endscript
 
 script destroy_game_backdrop2
@@ -1131,3 +1050,41 @@ gameplaybg_dims = (0.0, 0.0)
 BGCol = [255 255 255 255]
 Nofailvis = -20
 Nofailvis2 = -21
+
+//hud_animations = {
+//}
+script do_animation_sequence \{timescale = 0.0}
+	if (timescale = 0.0)
+		timescale = 1.0
+	endif
+	GetArraySize \{#"0x00000000"}
+	index = 0
+	begin
+		if not ScreenElementExists id = <id>
+			return
+		endif
+		frame = (<#"0x00000000">[<index>])
+		time = 0.0
+		time = (<frame>.time)
+		begin
+			if not ($current_speedfactor = 0.0)
+				break
+			endif
+			Wait \{1 gameframe}
+		repeat
+		time = (<time> / <timescale>)
+		params = {
+			pos = (<frame>.pos) scale = (<frame>.scale) dims = (<frame>.dims) rgba = (<frame>.rgba)
+			time = (<time> / $current_speedfactor) motion = (<frame>.motion) alpha = (<frame>.alpha)
+			rot_angle = (<frame>.rot) z_priority = (<frame>.z)
+		}
+		if GotParam \{on_element}
+			<id>::DoMorph <params>
+		else
+			DoScreenElementMorph { id = <id> <params> }
+		endif
+		Wait (<time> / $current_speedfactor) seconds ignore_slomo
+		Increment \{index}
+	repeat <array_size>
+endscript
+

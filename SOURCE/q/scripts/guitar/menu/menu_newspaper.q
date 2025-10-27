@@ -140,7 +140,7 @@ results_screen_layout = {
 				ijust = [left top]
 				font = text_a4
 				rgba = $g_ss_2p_song_title_whiteish
-				Pos = (145.0, 276.0)
+				Pos = (145.0, 286.0)
 				dims = (450.0, 80.0)
 				Scale = 1.2
 				line_spacing = 0.85
@@ -411,7 +411,7 @@ old_song = None
 
 script create_newspaper_menu\{for_practice = 0}
 	menu_song_complete_sound
-	create_menu_backdrop \{texture = white rgba = [64 64 64 90]}
+	create_menu_backdrop \{texture = white rgba = [32 32 32 90]}
 	StopSoundsByBuss \{BinkCutScenes}
 	disable_pause
 	my_song = ($current_song)

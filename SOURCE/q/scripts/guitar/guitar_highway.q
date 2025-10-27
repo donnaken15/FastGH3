@@ -557,25 +557,23 @@ script disable_bg_viewport_properties
 	endif*///
 endscript
 
+script hide_element
+	alpha = 0
+	if GotParam \{unhide}
+		alpha = 1
+	endif
+	if ScreenElementExists id = <#"0x00000000">
+		DoScreenElementMorph id = <#"0x00000000"> alpha = <alpha>
+	endif
+endscript
+
 script disable_highway
-	if ScreenElementExists \{id = gem_containerp1}
-		DoScreenElementMorph \{id = gem_containerp1 alpha = 0}
-	endif
-	if ScreenElementExists \{id = gem_containerp2}
-		DoScreenElementMorph \{id = gem_containerp2 alpha = 0}
-	endif
-	if ScreenElementExists \{id = HUD_2D_Containerp1}
-		DoScreenElementMorph \{id = HUD_2D_Containerp1 alpha = 0}
-	endif
-	if ScreenElementExists \{id = HUD_2D_Containerp2}
-		DoScreenElementMorph \{id = HUD_2D_Containerp2 alpha = 0}
-	endif
-	if ScreenElementExists \{id = battle_alert_containerp1}
-		DoScreenElementMorph \{id = battle_alert_containerp1 alpha = 0}
-	endif
-	if ScreenElementExists \{id = battle_alert_containerp2}
-		DoScreenElementMorph \{id = battle_alert_containerp2 alpha = 0}
-	endif
+	hide_element gem_containerp1
+	hide_element gem_containerp2
+	hide_element HUD_2D_Containerp1
+	hide_element HUD_2D_Containerp2
+	hide_element battle_alert_containerp1
+	hide_element battle_alert_containerp2
 endscript
 
 script disable_bg_viewport
@@ -604,24 +602,12 @@ script enable_bg_viewport_properties
 endscript
 
 script enable_highway
-	if ScreenElementExists \{id = gem_containerp1}
-		DoScreenElementMorph \{id = gem_containerp1 alpha = 1}
-	endif
-	if ScreenElementExists \{id = gem_containerp2}
-		DoScreenElementMorph \{id = gem_containerp2 alpha = 1}
-	endif
-	if ScreenElementExists \{id = HUD_2D_Containerp1}
-		DoScreenElementMorph \{id = HUD_2D_Containerp1 alpha = 1}
-	endif
-	if ScreenElementExists \{id = HUD_2D_Containerp2}
-		DoScreenElementMorph \{id = HUD_2D_Containerp2 alpha = 1}
-	endif
-	if ScreenElementExists \{id = battle_alert_containerp1}
-		DoScreenElementMorph \{id = battle_alert_containerp1 alpha = 1}
-	endif
-	if ScreenElementExists \{id = battle_alert_containerp2}
-		DoScreenElementMorph \{id = battle_alert_containerp2 alpha = 1}
-	endif
+	hide_element unhide gem_containerp1
+	hide_element unhide gem_containerp2
+	hide_element unhide HUD_2D_Containerp1
+	hide_element unhide HUD_2D_Containerp2
+	hide_element unhide battle_alert_containerp1
+	hide_element unhide battle_alert_containerp2
 endscript
 
 script enable_bg_viewport

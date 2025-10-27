@@ -168,7 +168,7 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [10 25 2025]
+build_timestamp = [10 26 2025]
 
 random_seed = -1
 // ^ originally 107482099
@@ -285,6 +285,7 @@ script guitar_startup
 				{'BGVideoStartTime' out=video_start_on_time}
 				{'BGVideoLoop' out=video_looping}
 				{'BGVideoHold' out=video_hold_last_frame}
+				{'BGDarkness' out=background_darkness #"0x1ca1ff20"=0.0}
 				{'NoHUD' out=hudless}
 				{'KillGemsHit' out=kill_gems_on_hit}
 				{'NoStreakDisp' out=disable_notestreak_notif}
@@ -470,6 +471,9 @@ script guitar_startup
 		endif
 		if IsTextureInDictionary \{texture = hud_2p_c_rock_shadow}
 			change \{old_2p_shadow = 1}
+		endif
+		if IsTextureInDictionary \{texture = HUD_lightning_02}
+			change \{sp_ready_full_frames = 1}
 		endif
 		
 		ProfilingStart
@@ -678,6 +682,7 @@ script guitar_startup
 	ScreenElementSystemInit
 	SetShadowProjectionTexture \{texture = white}
 	CreateScreenElement \{Type = SpriteElement id = gameplay_BG texture = gameplay_BG parent = root_window rgba = $BGCol z_priority = -2147483648 pos = (640, 360) dims = (1280, 720)}
+	CreateScreenElement \{Type = SpriteElement id = BG_dimmer texture = black parent = root_window z_priority = -9999990 alpha = $background_darkness pos = (640, 360) dims = (1280, 720)}
 	CreateScreenElement \{Type = ContainerElement id = dead_particle_container parent = root_window Pos = (0.0, 0.0)}
 	Init2DParticles \{parent = dead_particle_container}
 	setup_sprites
