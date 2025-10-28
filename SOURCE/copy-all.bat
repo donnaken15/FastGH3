@@ -1,6 +1,7 @@
 @echo off
 pushd "%~dp0.."
-upx -9 --ultra-brute game!.exe -ogame.exe
+upx --best --ultra-brute game!.exe -ogame.exe
+:: --force-overwrite
 echo Creating output directory...
 del /S/Q __FINAL
 mkdir __FINAL

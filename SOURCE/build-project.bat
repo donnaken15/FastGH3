@@ -6,7 +6,7 @@ set CONF=Release
 echo ########## FASTGH3 ##########
 %MSB% "%~dp0FastGH3.sln" /p:Configuration=%CONF% /t:Rebuild || ( pause & exit /b )
 pushd ..\PLUGINS
-upx -9 --ultra-brute *.dll
+upx --best --ultra-brute *.dll
 upx -d core.dll TapHopoChord.dll RichPresence.dll FastGH3.dll
 popd
 ::echo ########## FASTGH3 ##########

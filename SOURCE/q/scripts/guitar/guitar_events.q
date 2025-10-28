@@ -1,84 +1,27 @@
 guitar_events = [
-	{
-		event = missed_note
-		Scr = GuitarEvent_MissedNote
-	}
-	{
-		event = unnecessary_note
-		Scr = GuitarEvent_UnnecessaryNote
-	}
-	{
-		event = hit_notes
-		Scr = GuitarEvent_HitNotes
-	}
-	{
-		event = hit_note
-		Scr = GuitarEvent_HitNote
-	}
-	{
-		event = star_power_on
-		Scr = GuitarEvent_StarPowerOn
-	}
-	{
-		event = star_power_off
-		Scr = GuitarEvent_StarPowerOff
-	}
-	{
-		event = song_failed
-		Scr = GuitarEvent_SongFailed
-	}
-	{
-		event = song_won
-		Scr = GuitarEvent_SongWon
-	}
-	{
-		event = star_hit_note
-		Scr = GuitarEvent_StarHitNote
-	}
-	{
-		event = star_sequence_bonus
-		Scr = GuitarEvent_StarSequenceBonus
-	}
-	{
-		event = star_miss_note
-		Scr = GuitarEvent_StarMissNote
-	}
-	{
-		event = whammy_on
-		Scr = GuitarEvent_WhammyOn
-	}
-	{
-		event = whammy_off
-		Scr = GuitarEvent_WhammyOff
-	}
-	{
-		event = star_whammy_on
-		Scr = GuitarEvent_StarWhammyOn
-	}
-	{
-		event = star_whammy_off
-		Scr = GuitarEvent_StarWhammyOff
-	}
-	{
-		event = note_window_open
-		Scr = GuitarEvent_Note_Window_Open
-	}
-	{
-		event = note_window_close
-		Scr = GuitarEvent_Note_Window_Close
-	}
-	{
-		event = first_gem
-		Scr = GuitarEvent_CreateFirstGem
-	}
-	{
-		event = firstnote_window_open
-		Scr = GuitarEvent_FirstNote_Window_Open
-	}
+	{ event = missed_note				Scr = GuitarEvent_MissedNote }
+	{ event = unnecessary_note			Scr = GuitarEvent_UnnecessaryNote }
+	{ event = hit_notes					Scr = GuitarEvent_HitNotes }
+	{ event = hit_note					Scr = GuitarEvent_HitNote }
+	{ event = star_power_on				Scr = GuitarEvent_StarPowerOn }
+	{ event = star_power_off			Scr = GuitarEvent_StarPowerOff }
+	{ event = song_failed				Scr = GuitarEvent_SongFailed }
+	{ event = song_won					Scr = GuitarEvent_SongWon }
+	{ event = star_hit_note				Scr = GuitarEvent_StarHitNote }
+	{ event = star_sequence_bonus		Scr = GuitarEvent_StarSequenceBonus }
+	{ event = star_miss_note			Scr = GuitarEvent_StarMissNote }
+	{ event = whammy_on					Scr = GuitarEvent_WhammyOn }
+	{ event = whammy_off				Scr = GuitarEvent_WhammyOff }
+	{ event = star_whammy_on			Scr = GuitarEvent_StarWhammyOn }
+	{ event = star_whammy_off			Scr = GuitarEvent_StarWhammyOff }
+	{ event = note_window_open			Scr = GuitarEvent_Note_Window_Open }
+	{ event = note_window_close			Scr = GuitarEvent_Note_Window_Close }
+	{ event = first_gem					Scr = GuitarEvent_CreateFirstGem }
+	{ event = firstnote_window_open		Scr = GuitarEvent_FirstNote_Window_Open }
 ]
 
 script create_guitar_events
-	printf "create_guitar_events %a .........." a = <player_text>
+	printf 'create_guitar_events %a ..........' a = <player_text>
 	GetArraySize \{$guitar_events}
 	i = 0
 	begin
@@ -92,6 +35,7 @@ script create_guitar_events
 	RemoveComponent \{player_text}
 	RemoveComponent \{i}
 	Block
+	// for some reason needs to stay alive
 endscript
 
 script event_spawner
@@ -757,15 +701,15 @@ script GuitarEvent_SongWon\{battle_win = 0}
 				FormatText textname = text 'Base score: %b' b = ($<player_status>.base_score)
 				TextOutput text = <text>
 				if (($<player_status>.base_score) = 0)
-					FormatText \{textname = text "Score Scale: n/a"}
+					FormatText \{textname = text 'Score Scale: n/a'}
 				else
-					FormatText textname = text "Score Scale: %s" s = (($<player_status>.score) / ($<player_status>.base_score))
+					FormatText textname = text 'Score Scale: %s' s = (($<player_status>.score) / ($<player_status>.base_score))
 				endif
 				TextOutput text = <text>
 				if (($<player_status>.total_notes) = 0)
-					FormatText \{textname = text "Notes Hit Percentage: n/a"} // lol
+					FormatText \{textname = text 'Notes Hit Percentage: n/a'} // lol
 				else
-					FormatText textname = text "Notes Hit Percentage: %s" s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
+					FormatText textname = text 'Notes Hit Percentage: %s' s = ((($<player_status>.notes_hit) / ($<player_status>.total_notes))* 100.0)
 				endif
 				/*GetArraySize \{$fastgh3_markers}
 				if (<array_size> > 0)
@@ -1302,18 +1246,6 @@ script GuitarEvent_StarSequenceBonus
 		repeat 5
 	endif
 	spawnscriptnow StarSequenceFX params = <...>
-	if ($disable_particles = 1)
-		i = 0
-		begin
-			FormatText checksumName = fx_id '%x%p%e' e = <i> <redundant>
-			Destroy2DParticleSystem id = <fx_id>
-			FormatText checksumName = fx2_id '%x2%p%e' e = <i> <redundant>
-			Destroy2DParticleSystem id = <fx2_id>
-			FormatText checksumName = fx3_id '%x3%p%e' e = <i> <redundant>
-			Destroy2DParticleSystem id = <fx3_id>
-			Increment \{i}
-		repeat 5
-	endif
 endscript
 
 script StarSequenceFX
@@ -1355,81 +1287,82 @@ script StarSequenceFX
 				just = [center bottom]
 				z_priority = 8
 			}
-			FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
-			Destroy2DParticleSystem id = <fx_id>
-			<particle_pos> = (<pos2d> - (0.0, 32.0))
-			Create2DParticleSystem {
-				id = <fx_id>
-				Pos = <particle_pos>
-				z_priority = 8.0
-				material = sys_Particle_Star01_sys_Particle_Star01
-				parent = <container_id>
-				start_color = $starsequence_particle1_color1
-				end_color = $starsequence_particle1_color2
-				start_scale = (0.55, 0.55)
-				end_scale = (0.25, 0.25)
-				start_angle_spread = 360.0
-				min_rotation = -120.0
-				max_rotation = 240.0
-				emit_start_radius = 0.0
-				emit_radius = 2.0
-				Emit_Rate = 0.04
-				emit_dir = 0.0
-				emit_spread = 44.0
-				velocity = 24.0
-				friction = (0.0, 66.0)
-				time = 2.0
-			}
-			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
-			Destroy2DParticleSystem id = <fx2_id>
-			<particle_pos> = (<pos2d> - (0.0, 32.0))
-			Create2DParticleSystem {
-				id = <fx2_id>
-				Pos = <particle_pos>
-				z_priority = 8.0
-				material = sys_Particle_Star02_sys_Particle_Star02
-				parent = <container_id>
-				start_color = $starsequence_particle2_color1
-				end_color = $starsequence_particle2_color2
-				start_scale = (0.5, 0.5)
-				end_scale = (0.25, 0.25)
-				start_angle_spread = 360.0
-				min_rotation = -120.0
-				max_rotation = 508.0
-				emit_start_radius = 0.0
-				emit_radius = 2.0
-				Emit_Rate = 0.04
-				emit_dir = 0.0
-				emit_spread = 28.0
-				velocity = 22.0
-				friction = (0.0, 55.0)
-				time = 2.0
-			}
-			FormatText checksumName = fx3_id '%x3%p%e' x = <prefix>  p = <player_text> e = <gem_count> AddToStringLookup = true
-			Destroy2DParticleSystem id = <fx3_id>
-			<particle_pos> = (<pos2d> - (0.0, 15.0))
-			Create2DParticleSystem {
-				id = <fx3_id>
-				Pos = <particle_pos>
-				z_priority = 8.0
-				material = sys_Particle_Spark01_sys_Particle_Spark01
-				parent = <container_id>
-				start_color = $starsequence_particle3_color1
-				end_color = $starsequence_particle3_color2
-				start_scale = (1.5, 1.5)
-				end_scale = (0.25, 0.25)
-				start_angle_spread = 360.0
-				min_rotation = -500.0
-				max_rotation = 500.0
-				emit_start_radius = 0.0
-				emit_radius = 2.0
-				Emit_Rate = 0.04
-				emit_dir = 0.0
-				emit_spread = 180.0
-				velocity = 12.0
-				friction = (0.0, 0.0)
-				time = 1.0
-			}
+			if ($disable_particles < 1)
+				FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
+				Destroy2DParticleSystem id = <fx_id>
+				<particle_pos> = (<pos2d> - (0.0, 32.0))
+				Create2DParticleSystem {
+					id = <fx_id>
+					Pos = <particle_pos>
+					z_priority = 8.0
+					material = sys_Particle_Star01_sys_Particle_Star01
+					parent = <container_id>
+					start_color = $starsequence_particle1_color1
+					end_color = $starsequence_particle1_color2
+					start_scale = (0.55, 0.55)
+					end_scale = (0.25, 0.25)
+					start_angle_spread = 360.0
+					min_rotation = -120.0
+					max_rotation = 240.0
+					emit_start_radius = 0.0
+					emit_radius = 2.0
+					Emit_Rate = 0.04
+					emit_dir = 0.0
+					emit_spread = 44.0
+					velocity = 24.0
+					friction = (0.0, 66.0)
+					time = 2.0
+				}
+				FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
+				Destroy2DParticleSystem id = <fx2_id>
+				Create2DParticleSystem {
+					id = <fx2_id>
+					Pos = <particle_pos>
+					z_priority = 8.0
+					material = sys_Particle_Star02_sys_Particle_Star02
+					parent = <container_id>
+					start_color = $starsequence_particle2_color1
+					end_color = $starsequence_particle2_color2
+					start_scale = (0.5, 0.5)
+					end_scale = (0.25, 0.25)
+					start_angle_spread = 360.0
+					min_rotation = -120.0
+					max_rotation = 508.0
+					emit_start_radius = 0.0
+					emit_radius = 2.0
+					Emit_Rate = 0.04
+					emit_dir = 0.0
+					emit_spread = 28.0
+					velocity = 22.0
+					friction = (0.0, 55.0)
+					time = 2.0
+				}
+				FormatText checksumName = fx3_id '%x3%p%e' x = <prefix>  p = <player_text> e = <gem_count> AddToStringLookup = true
+				Destroy2DParticleSystem id = <fx3_id>
+				<particle_pos> = (<pos2d> - (0.0, 15.0))
+				Create2DParticleSystem {
+					id = <fx3_id>
+					Pos = <particle_pos>
+					z_priority = 8.0
+					material = sys_Particle_Spark01_sys_Particle_Spark01
+					parent = <container_id>
+					start_color = $starsequence_particle3_color1
+					end_color = $starsequence_particle3_color2
+					start_scale = (1.5, 1.5)
+					end_scale = (0.25, 0.25)
+					start_angle_spread = 360.0
+					min_rotation = -500.0
+					max_rotation = 500.0
+					emit_start_radius = 0.0
+					emit_radius = 2.0
+					Emit_Rate = 0.04
+					emit_dir = 0.0
+					emit_spread = 180.0
+					velocity = 12.0
+					friction = (0.0, 0.0)
+					time = 1.0
+				}
+			endif
 		endif
 		Increment \{gem_count}
 	repeat <array_Size>
@@ -1447,13 +1380,15 @@ script StarSequenceFX
 			endif
 			FormatText checksumName = name 'big_bolt%p%e' p = <player_text> e = <gem_count> AddToStringLookup = true
 			DestroyScreenElement id = <name>
-			FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
-			Destroy2DParticleSystem id = <fx_id> kill_when_empty
-			FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
-			Destroy2DParticleSystem id = <fx2_id> kill_when_empty
-			FormatText checksumName = fx3_id '%x3%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
-			Destroy2DParticleSystem id = <fx3_id> kill_when_empty
-			wait \{1 gameframe}
+			if ($disable_particles < 1)
+				FormatText checksumName = fx_id '%x%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
+				Destroy2DParticleSystem id = <fx_id> kill_when_empty
+				FormatText checksumName = fx2_id '%x2%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
+				Destroy2DParticleSystem id = <fx2_id> kill_when_empty
+				FormatText checksumName = fx3_id '%x3%p%e' x = <prefix> p = <player_text> e = <gem_count> AddToStringLookup = true
+				Destroy2DParticleSystem id = <fx3_id> kill_when_empty
+			endif
+			//wait \{1 gameframe} // ??
 		endif
 		Increment \{gem_count}
 	repeat <array_Size>
@@ -1698,3 +1633,13 @@ script Open_NoteFX \{Player = 1 player_status = player1_status}
 		DestroyScreenElement id = <fx2_id>
 	endif
 endscript
+
+
+
+script win_now
+	ExtendCrc \{song_won 'p1' out = Type}
+	broadcastevent Type = <Type>
+endscript
+
+
+

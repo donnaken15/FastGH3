@@ -168,12 +168,14 @@ mode_index = {
 fastgh3_build = '1.1-999011043'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [10 26 2025]
+build_timestamp = [10 27 2025]
 
 random_seed = -1
 // ^ originally 107482099
 // @script | guitar_startup | Initialization script
 script guitar_startup
+	printf \{'####### FASTGH3 INITIALIZING... #######'}
+	printf \{'Version %v' v=$fastgh3_build}
 	GetTrueStartTime
 	bg_path = 'gameplay_BG'
 	if not FileExists (<bg_path>+'.img.xen')
@@ -192,8 +194,6 @@ script guitar_startup
 		Wait \{1 gameframe}
 		// just to get loading screen to display
 	repeat
-	printf \{'####### FASTGH3 INITIALIZING... #######'}
-	printf \{'Version %v' v=$fastgh3_build}
 	if ($bleeding_edge = 1)
 		//printf \{'[91mOn developmental build[0m'}
 		printf \{'On developmental build'}
@@ -815,6 +815,7 @@ kill_dummy_bg_camera = $EmptyScript
 restore_dummy_bg_camera = $EmptyScript
 Terrain_Actions = $nullArray
 Terrain_Types = $nullArray
+tilt_default_settings = $nullStruct
 
 script InFrontEnd
 	return \{FALSE}

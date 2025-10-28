@@ -42,7 +42,7 @@ script winport_select_p1_controller
 endscript
 
 script winport_create_p1_controller_popup
-	create_popup_warning_menu \{title = "Select Controller" textblock = {text = "Press any button on the controller to be used in single player mode and in the menus." dims = (800.0, 400.0) Scale = 0.55}no_background menu_pos = (640.0, 520.0) dialog_dims = (600.0, 80.0)}
+	create_popup_warning_menu \{title = 'Select Controller' textblock = {text = 'Press any button on the controller to be used in single player mode and in the menus.' dims = (800.0, 400.0) Scale = 0.55}no_background menu_pos = (640.0, 520.0) dialog_dims = (600.0, 80.0)}
 	common_control_helpers \{back}
 	spawnscriptnow \{winport_wait_for_device_press params = {backScript = winport_p1_controller_back proceedScript = winport_p1_controller_proceed}}
 endscript
@@ -74,7 +74,7 @@ script winport_select_bind_buttons
 endscript
 
 script winport_create_bind_buttons_popup
-	create_popup_warning_menu \{title = "Select Controller" textblock = {text = "Press any button on the controller you want to configure." dims = (800.0, 400.0) Scale = 0.55}no_background menu_pos = (640.0, 520.0) dialog_dims = (600.0, 80.0)}
+	create_popup_warning_menu \{title = 'Select Controller' textblock = {text = 'Press any button on the controller you want to configure.' dims = (800.0, 400.0) Scale = 0.55}no_background menu_pos = (640.0, 520.0) dialog_dims = (600.0, 80.0)}
 	common_control_helpers \{back}
 	spawnscriptnow \{winport_wait_for_device_press params = {bindable backScript = winport_bind_buttons_back proceedScript = winport_bind_buttons_proceed}}
 endscript
@@ -130,7 +130,7 @@ script create_controller_settings_menu\{popup = 0}
 			parent = cs_scroll
 			Pos = (180.0, -30.0)
 			Scale = 1.3
-			text = "CONTROLLER SETTINGS"
+			text = 'CONTROLLER SETTINGS'
 			rgba = ($menu_unfocus_color)
 			z_priority = <z>
 		}
@@ -148,7 +148,7 @@ script create_controller_settings_menu\{popup = 0}
 		CreateScreenElement {
 			Type = TextElement
 			parent = <id>
-			text = "PAUSED"
+			text = 'PAUSED'
 			font = text_a6
 			Pos = (125.0, 53.0)
 			rgba = [170 90 30 255]
@@ -177,7 +177,7 @@ script create_controller_settings_menu\{popup = 0}
 			parent = cs_container
 			Pos = (465.0, 571.0)
 			Scale = (0.65, 0.8)
-			text = "Controller"
+			text = 'Controller'
 			font = text_a6
 			rgba = ($menu_unfocus_color)
 			z_priority = 6
@@ -189,7 +189,7 @@ script create_controller_settings_menu\{popup = 0}
 			parent = cs_container
 			Pos = (460.0, 293.0)
 			Scale = (0.5, 0.4)
-			text = "Options"
+			text = 'Options'
 			font = text_a6
 			rgba = ($menu_unfocus_color)
 			z_priority = 6
@@ -217,11 +217,11 @@ script create_controller_settings_menu\{popup = 0}
 		common_control_helpers \{select back nav}
 	endif
 	if (<popup>)
-		<p1_l_flip_text> = "P1 Lefty Flip: OFF"
-		<p2_l_flip_text> = "P2 Lefty Flip: OFF"
+		<p1_l_flip_text> = 'P1 Lefty Flip: OFF'
+		<p2_l_flip_text> = 'P2 Lefty Flip: OFF'
 	else
-		<p1_l_flip_text> = "P1 Lefty Flip:"
-		<p2_l_flip_text> = "P2 Lefty Flip:"
+		<p1_l_flip_text> = 'P1 Lefty Flip:'
+		<p2_l_flip_text> = 'P2 Lefty Flip:'
 	endif
 	CreateScreenElement {
 		<text_params>
@@ -266,7 +266,7 @@ script create_controller_settings_menu\{popup = 0}
 	CreateScreenElement {
 		id = cs_calibrate_whammy_menu_item
 		<text_params>
-		text = "Calibrate Whammy"
+		text = 'Calibrate Whammy'
 		event_handlers = [
 			{pad_choose controller_settings_menu_choose_whammy_bar params = {popup = <popup>}}
 			{focus retail_menu_focus}
@@ -285,7 +285,7 @@ script create_controller_settings_menu\{popup = 0}
 	CreateScreenElement {
 		id = cs_bind_buttons_menu_item
 		<text_params>
-		text = "Configure Keyboard"
+		text = 'Configure Keyboard'
 		event_handlers = [
 			{pad_choose winport_select_bind_buttons}
 			{focus retail_menu_focus}
@@ -302,7 +302,7 @@ script create_controller_settings_menu\{popup = 0}
 	CreateScreenElement {
 		id = cs_show_default_keyboard_layout_menu_item
 		<text_params>
-		text = "View Defaults"
+		text = 'View Defaults'
 		event_handlers = [
 			{pad_choose controller_settings_show_default_keyboard_layout}
 			{focus retail_menu_focus}
@@ -350,14 +350,14 @@ script controller_settings_menu_update_lefty_flip_p1_value\{lefty_flip_p1 = 0}
 			SetScreenElementProps \{id = cs_check_1 texture = options_controller_check}
 			Change \{pad_event_up_inversion = true}
 		else
-			SetScreenElementProps \{id = lefty_flip_p1_se text = "P1 Lefty Flip: ON"}
+			SetScreenElementProps \{id = lefty_flip_p1_se text = 'P1 Lefty Flip: ON'}
 		endif
 	else
 		if NOT ($cs_is_popup)
 			SetScreenElementProps \{id = cs_check_1 texture = options_controller_x}
 			Change \{pad_event_up_inversion = FALSE}
 		else
-			SetScreenElementProps \{id = lefty_flip_p1_se text = "P1 Lefty Flip: OFF"}
+			SetScreenElementProps \{id = lefty_flip_p1_se text = 'P1 Lefty Flip: OFF'}
 		endif
 	endif
 endscript
@@ -367,13 +367,13 @@ script controller_settings_menu_update_lefty_flip_p2_value\{lefty_flip_p2 = 0}
 		if NOT ($cs_is_popup)
 			SetScreenElementProps \{id = cs_check_2 texture = options_controller_check}
 		else
-			SetScreenElementProps \{id = lefty_flip_p2_se text = "P2 Lefty Flip: ON"}
+			SetScreenElementProps \{id = lefty_flip_p2_se text = 'P2 Lefty Flip: ON'}
 		endif
 	else
 		if NOT ($cs_is_popup)
 			SetScreenElementProps \{id = cs_check_2 texture = options_controller_x}
 		else
-			SetScreenElementProps \{id = lefty_flip_p2_se text = "P2 Lefty Flip: OFF"}
+			SetScreenElementProps \{id = lefty_flip_p2_se text = 'P2 Lefty Flip: OFF'}
 		endif
 	endif
 endscript

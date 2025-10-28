@@ -12,7 +12,7 @@ where 7z /q && set Z7=7z
 
 :: PACKAGE __FINAL TO ZIP
 ::zip -9vrX -ds 1 -S -ic ..\__FINAL.zip * -x settings.ini -x tmp.txt
-%Z7% a -mm=Deflate -mfb=258 -mpass=15 -r %OUT% *
+%Z7% a -mm=Deflate -mx=9 -mfb=258 -mpass=15 -mtm=on -mtc=off -mta=off -r %OUT% *
 where zip  /q || goto nocomment
 where date /q || goto nocomment
 "date" "+FastGH3 1.1-10999011043 | %%B %%d, %%Y" > tmp.txt
@@ -34,7 +34,5 @@ del tmp.txt
 %NSIS% "..\SOURCE\Installer\Main.nsi" /P4 /V3
 %NSIS% "..\SOURCE\Installer\LITE.nsi" /P4 /V3
 :: choco installs it to the same place as normal install
-
-
 
 popd

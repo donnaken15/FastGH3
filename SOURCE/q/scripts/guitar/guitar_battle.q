@@ -667,8 +667,7 @@ script battle_trigger_on
 		<other_player_text> = 'p2'
 		<other_difficulty> = $current_difficulty2
 		<other_player_status> = player2_status
-		select = ($current_powerups_p1 [($<player_status>.current_num_powerups - 1)])
-		GH3_Battle_Play_Crowd_Reaction_SFX receiving_player = 2 receiving_player_current_crowd_level = ($<other_player_status>.current_health)
+		select = ($current_powerups_p1[($<player_status>.current_num_powerups - 1)])
 		if ($is_network_game)
 			if NOT (<select> = 3)
 				SendNetMessage {
@@ -682,8 +681,7 @@ script battle_trigger_on
 		<other_player_text> = 'p1'
 		<other_difficulty> = $current_difficulty
 		<other_player_status> = player1_status
-		select = ($current_powerups_p2 [($<player_status>.current_num_powerups - 1)])
-		GH3_Battle_Play_Crowd_Reaction_SFX receiving_player = 1 receiving_player_current_crowd_level = ($<other_player_status>.current_health)
+		select = ($current_powerups_p2[($<player_status>.current_num_powerups - 1)])
 	endif
 	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1) s = ($<player_status>.text)
 	if ScreenElementExists id = <card_checksum>
@@ -750,14 +748,13 @@ script attack_bolt\{bolt_angle = 60}
 	if ($<player_status>.Player = 1)
 		bolt_angle = (-1 * <bolt_angle>)
 		bolt_scale = (-1.0, 1.0)
-		bolt_just = [middle top]
-		bolt_pos = (<bolt_pos_middle> - <bolt_pos_offset>)
 	else
 		bolt_angle = <bolt_angle>
 		bolt_scale = (1.0, 1.0)
-		bolt_just = [middle top]
-		bolt_pos = (<bolt_pos_middle> + <bolt_pos_offset>)
 	endif
+	invert = (1-(2*($<player_status>.Player = 2)))
+	bolt_just = [middle top]
+	bolt_pos = (<bolt_pos_middle> + (<bolt_pos_offset> * <invert> * -1))
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <attack_bolt>
@@ -772,13 +769,8 @@ script attack_bolt\{bolt_angle = 60}
 	}
 	GetSongTimeMs
 	FormatText checksumName = attack_bolt_particle 'attack_bolt_particle_%s_%t' s = ($<player_status>.text)t = <time> AddToStringLook = true
-	if ($<player_status>.Player = 1)
-		emit_direction = 300
-		bolt_hit_pos = (<bolt_pos> + (455.0, 0.0) + (0.0, 250.0))
-	else
-		emit_direction = -300
-		bolt_hit_pos = (<bolt_pos> - (455.0, 0.0) + (0.0, 250.0))
-	endif
+	bolt_hit_pos = (<bolt_pos> + ((455.0, 0.0) * <invert>) + (0.0, 250.0))
+	emit_direction = (300 * <invert>)
 	Create2DParticleSystem {
 		id = <attack_bolt_particle>
 		Pos = (<bolt_hit_pos>)
@@ -843,11 +835,11 @@ script battle_death_lick\{death_speed = 0.2}
 		DestroyScreenElement id = <death_icon_checksum>
 	endif
 	deth_icon_texture = icon_attack_deth_128
-	if checksumequals \{a = $current_song b = bossslash}
-		<deth_icon_texture> = icon_attack_boss_slash
-	elseif checksumequals \{a = $current_song b = bosstom}
-		<deth_icon_texture> = icon_attack_boss_morello
-	endif
+	//if checksumequals \{a = $current_song b = bossslash}
+	//	<deth_icon_texture> = icon_attack_boss_slash
+	//elseif checksumequals \{a = $current_song b = bosstom}
+	//	<deth_icon_texture> = icon_attack_boss_morello
+	//endif
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <death_icon_checksum>
@@ -882,7 +874,7 @@ script battle_death_lick\{death_speed = 0.2}
 			if ($<other_player_status>.current_health <= 0.0)
 				break
 			endif
-			wait ($<other_player_status>.death_lick_attack)seconds
+			wait ($<other_player_status>.death_lick_attack) seconds
 		repeat
 	else
 		if ScreenElementExists id = <death_icon_checksum>
@@ -912,13 +904,12 @@ script animate_death_icon
 			if ScreenElementExists id = <id>
 				DoScreenElementMorph id = <id> time = 0.1 alpha = 0.1 Scale = 1.1 relative_scale
 			endif
-			<pulse_on> = 1
 		else
 			if ScreenElementExists id = <id>
 				DoScreenElementMorph id = <id> time = 0.1 alpha = 0.95 Scale = 1.2 relative_scale
 			endif
-			<pulse_on> = 0
 		endif
+		pulse_on = (1 - <pulse_on>)
 		wait \{0.15 seconds}
 	repeat
 endscript
@@ -980,36 +971,14 @@ script death_text
 		z_priority = 52
 	}
 	text_params = {
-		Type = TextElement
-		parent = <text_bg_checksum>
-		font = text_a10
-		rgba = [255 255 255 255]
-		just = [center bottom]
-		z_priority = 53
-		Shadow
-		shadow_offs = (3.0, 3.0)
-		shadow_rgba = [0 0 0 255]
+		Type = TextElement parent = <text_bg_checksum>
+		font = text_a10 z_priority = 53 Shadow
+		rgba = [255 255 255 255] just = [center bottom]
+		shadow_offs = (3.0, 3.0) shadow_rgba = [0 0 0 255]
 	}
-	CreateScreenElement {
-		<text_params>
-		id = <text_checksum>
-		Pos = (130.0, -53.0)
-		text = 'DEATH'
-		Scale = 1
-	}
-	CreateScreenElement {
-		<text_params>
-		id = <text_checksum2>
-		Pos = (130.0, 5.0)
-		text = 'DRAIN'
-		Scale = 1.6
-	}
-	DoScreenElementMorph {
-		id = <text_bg_checksum>
-		time = 0.02
-		Scale = 0.9
-		alpha = 1
-	}
+	CreateScreenElement <text_params> id = <text_checksum> Pos = (130.0, -53.0) text = 'DEATH' Scale = 1
+	CreateScreenElement <text_params> id = <text_checksum2> Pos = (130.0, 5.0) text = 'DRAIN' Scale = 1.6
+	DoScreenElementMorph id = <text_bg_checksum> time = 0.02 Scale = 0.9 alpha = 1
 	wait \{0.02 seconds}
 	spawnscriptnow death_text_wing_flap params = {text_start_pos = <text_start_pos> text_bg_checksum = <text_bg_checksum> text_wing_l_checksum = <text_wing_l_checksum> text_wing_r_checksum = <text_wing_r_checksum> other_player_status = <other_player_status>}
 endscript
@@ -1027,38 +996,12 @@ script death_text_wing_flap
 			DoScreenElementMorph {id = <text_bg_checksum> Pos = <new_pos> Scale = <new_scale>}
 		endif
 		if (<wing_count> = 4)
-			GetRandomValue name = random_rot a = (<hover_sim_rot> * -1)b = <hover_sim_rot> integer
-			DoScreenElementMorph {
-				id = <text_bg_checksum>
-				rot_angle = <random_rot>
-				time = 0.02
-			}
+			GetRandomValue name = random_rot a = (0 - <hover_sim_rot>) b = <hover_sim_rot> integer
+			DoScreenElementMorph id = <text_bg_checksum> rot_angle = <random_rot> time = 0.02
 			spawnscriptnow bite_particle params = {other_player_status = <other_player_status> random_rot = <random_rot> text_bg_checksum = <text_bg_checksum>}
-			if (<wing_up> = 0)
-				DoScreenElementMorph {
-					id = <text_wing_r_checksum>
-					rot_angle = -40
-					time = 0.02
-				}
-				DoScreenElementMorph {
-					id = <text_wing_l_checksum>
-					rot_angle = 40
-					time = 0.02
-				}
-				<wing_up> = 1
-			else
-				DoScreenElementMorph {
-					id = <text_wing_r_checksum>
-					rot_angle = -10
-					time = 0.02
-				}
-				DoScreenElementMorph {
-					id = <text_wing_l_checksum>
-					rot_angle = 10
-					time = 0.02
-				}
-				<wing_up> = 0
-			endif
+			wing_up = (1 - <wing_up>)
+			DoScreenElementMorph id = <text_wing_r_checksum> rot_angle = (-40 + (30*<wing_up>)) time = 0.02
+			DoScreenElementMorph id = <text_wing_l_checksum> rot_angle = ( 40 - (30*<wing_up>)) time = 0.02
 			<wing_count> = 0
 		endif
 		Increment \{wing_count}
@@ -1117,21 +1060,13 @@ endscript
 
 script battle_lightning
 	flicker_ammount = 2
-	switch <difficulty>
-		case easy
-			<flicker_ammount> = ($battlemode_powerups [0].easy_flicker)
-		case medium
-			<flicker_ammount> = ($battlemode_powerups [0].medium_flicker)
-		case hard
-			<flicker_ammount> = ($battlemode_powerups [0].hard_flicker)
-		case expert
-			<flicker_ammount> = ($battlemode_powerups [0].expert_flicker)
-	endswitch
+	ExtendCrc <difficulty> '_flicker' out = item
+	ExtendCrc battle_flicker_difficulty_ ($<other_player_status>.text) out = damage
+	<flicker_ammount> = ($battlemode_powerups[0].<item>)
+	Change globalname = <damage> newvalue = <flicker_ammount>
 	if ($<other_player_status>.Player = 1)
-		Change battle_flicker_difficulty_p1 = <flicker_ammount>
 		SpawnScript GH_BattleMode_Player1_SFX_Shake_Start params = {holdtime = (<drain_time> / 1000.0)}id = battlemode
 	else
-		Change battle_flicker_difficulty_p2 = <flicker_ammount>
 		SpawnScript GH_BattleMode_Player2_SFX_Shake_Start params = {holdtime = (<drain_time> / 1000.0)}id = battlemode
 	endif
 	GetSongTimeMs
@@ -1571,6 +1506,103 @@ script animate_steal
 			DestroyScreenElement id = <steal_hand_checksum>
 		endif
 		battlemode_ready player_status = <player_status> battle_gem = <select> steal = 1
+	endif
+endscript
+
+
+script animate_open_hand
+	FormatText checksumName = steal_hand_open_checksum 'steal_hand_open_%i_%p' i = ($<other_player_status>.stealing_powerup)p = ($<other_player_status>.Player)
+	if ScreenElementExists id = <steal_hand_open_checksum>
+		DestroyScreenElement id = <steal_hand_open_checksum>
+	endif
+	FormatText checksumName = steal_hand_checksum 'steal_hand_%i_%p' i = ($<other_player_status>.stealing_powerup)p = ($<other_player_status>.Player)
+	wait \{1 gameframe}
+	if NOT (ScreenElementExists id = battlemode_container)
+		return
+	endif
+	CreateScreenElement {
+		Type = SpriteElement
+		id = <steal_hand_open_checksum>
+		parent = battlemode_container
+		texture = battle_hud_steal_hand_open
+		rgba = [255 255 255 255]
+		Pos = (<morph_to_pos> + <hand_y_offset>)
+		Scale = <hand_scale>
+		alpha = 0
+		just = [center center]
+		z_priority = 25
+	}
+	DoScreenElementMorph {
+		id = <steal_hand_open_checksum>
+		Pos = (<start_pos> + <hand_y_offset> - <hand_x_offset>)
+		alpha = 1
+		time = 0.5
+	}
+	wait \{0.5 seconds}
+	if ScreenElementExists id = <steal_hand_open_checksum>
+		DestroyScreenElement id = <steal_hand_open_checksum>
+	endif
+endscript
+
+script animate_stealing_hand
+	wait \{0.5 seconds}
+	GetSongTimeMs
+	FormatText checksumName = held_card_checksum 'held_battlecard_%i_%s_%t' i = ($<other_player_status>.current_num_powerups - 1)s = ($<other_player_status>.text)t = <time>
+	FormatText checksumName = steal_hand_checksum 'steal_hand_%i_%p' i = ($<other_player_status>.stealing_powerup)p = ($<other_player_status>.Player)
+	if NOT (ScreenElementExists id = battlemode_container)
+		return
+	endif
+	CreateScreenElement {
+		Type = SpriteElement
+		id = <held_card_checksum>
+		parent = battlemode_container
+		texture = ($battlemode_powerups [<select>].card_texture)
+		rgba = [255 255 255 255]
+		Pos = <start_pos>
+		dims = (64.0, 64.0)
+		just = [center center]
+		z_priority = (($battle_hud_2d_elements.z)+ 19)
+	}
+	DoScreenElementMorph {
+		id = <held_card_checksum>
+		Pos = <morph_to_pos>
+		time = 0.5
+	}
+	if ScreenElementExists id = <steal_hand_checksum>
+		DestroyScreenElement id = <steal_hand_checksum>
+	endif
+	CreateScreenElement {
+		Type = SpriteElement
+		id = <steal_hand_checksum>
+		parent = battlemode_container
+		texture = battle_hud_steal_hand
+		rgba = [255 255 255 255]
+		Pos = (<start_pos> + <hand_y_offset> - <hand_x_offset>)
+		Scale = <hand_scale>
+		alpha = 1
+		just = [center center]
+		z_priority = 25
+	}
+	DoScreenElementMorph {
+		id = <steal_hand_checksum>
+		texture = battle_hud_steal_hand
+		Pos = (<morph_to_pos> + <hand_y_offset> - <hand_x_offset>)
+		time = 0.5
+	}
+	wait \{0.4 seconds}
+	if ScreenElementExists
+		DoScreenElementMorph {
+			id = <steal_hand_checksum>
+			alpha = 0
+			time = 0.1
+		}
+	endif
+	wait \{0.1 seconds}
+	if ScreenElementExists id = <held_card_checksum>
+		DestroyScreenElement id = <held_card_checksum>
+	endif
+	if ScreenElementExists id = <steal_hand_checksum>
+		DestroyScreenElement id = <steal_hand_checksum>
 	endif
 endscript
 

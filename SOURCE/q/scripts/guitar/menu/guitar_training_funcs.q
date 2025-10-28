@@ -23,7 +23,7 @@ training_arrow_movement_distance = 30
 training_arrow_movement_speed = 2.75
 training_last_lesson = 1
 
-script training_create_and_hide_headers
+/*script training_create_and_hide_headers
 	training_create_lesson_and_task_headers
 	training_hide_lesson_and_task_headers
 endscript

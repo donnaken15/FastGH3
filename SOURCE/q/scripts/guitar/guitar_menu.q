@@ -2145,3 +2145,52 @@ script displayText\{id = {}just = [left top] rgba = [210 130 0 250] font = fontg
 	endif
 	return id = <id>
 endscript
+
+script scale_element_to_size\{time = 0}
+	if NOT GotParam \{id}
+		printf \{'Did not pass in id to scale_element_to_size! Returning'}
+		return
+	endif
+	GetScreenElementDims id = <id>
+	orig_height = <height>
+	orig_width = <width>
+	if NOT GotParam \{target_width}
+		target_width = <orig_width>
+	endif
+	if NOT GotParam \{target_height}
+		target_height = <orig_height>
+	endif
+	xScale = (<target_width> / (<orig_width> * 1.0))
+	yScale = (<target_height> / (<orig_height> * 1.0))
+	<id> ::DoMorph Scale = (<xScale> * (1.0, 0.0) + <yScale> * (0.0, 1.0))time = <time>
+endscript
+
+script translate_screen_element\{time = 0}
+	if NOT GotParam \{id}
+		printf \{'Did not pass in id to translate_screen_element! Returning'}
+		return
+	endif
+	if NOT GotParam \{Pos}
+		GetScreenElementPosition id = <id>
+		new_position = <ScreenElementPos>
+	else
+		new_position = <Pos>
+	endif
+	<id> ::DoMorph Pos = <new_position> time = <time>
+endscript
+
+script animate_helper_arrows
+	if (<direction> = up)
+		generic_menu_up_or_down_sound \{up}
+		if ScreenElementExists \{id = arrow_up}
+			arrow_up ::DoMorph \{Scale = (1.8, 1.5) time = 0.1}
+			arrow_up ::DoMorph \{Scale = (1.375, 1.0) time = 0.1}
+		endif
+	else
+		generic_menu_up_or_down_sound \{down}
+		if ScreenElementExists \{id = arrow_down}
+			arrow_down ::DoMorph \{Scale = (1.8, 1.5) time = 0.1}
+			arrow_down ::DoMorph \{Scale = (1.375, 1.0) time = 0.1}
+		endif
+	endif
+endscript

@@ -721,22 +721,15 @@ script hud_flash_red_bg_p2\{time = 0.2}
 	endif
 	ExtendCrc \{HUD2D_rock_BG_red 'p2' out = new_bg}
 	begin
-		if ScreenElementExists id = <new_bg>
-			DoScreenElementMorph id = <new_bg> rgba = [0 0 0 255] time = <time>
-			wait <time> seconds
-		endif
-		if ScreenElementExists id = <new_bg>
-			DoScreenElementMorph id = <new_bg> rgba = [225 225 225 255] time = <time>
-			wait <time> seconds
-		endif
-		if ScreenElementExists id = <new_bg>
-			DoScreenElementMorph id = <new_bg> rgba = [0 0 0 255] time = <time>
-			wait <time> seconds
-		endif
-		if ScreenElementExists id = <new_bg>
-			DoScreenElementMorph id = <new_bg> rgba = [225 225 225 255] time = <time>
-		endif
-		wait (<time> * 2.5)seconds
+		begin
+			if ScreenElementExists id = <new_bg>
+				DoScreenElementMorph id = <new_bg> rgba = [0 0 0 255] time = <time>
+				wait <time> seconds
+				DoScreenElementMorph id = <new_bg> rgba = [225 225 225 255] time = <time>
+				wait <time> seconds
+			endif
+		repeat 2
+		wait (<time> * 1.5)seconds
 	repeat
 endscript
 

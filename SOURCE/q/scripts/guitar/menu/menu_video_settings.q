@@ -7,7 +7,7 @@ script create_video_settings_menu\{popup = 0}
 		new_menu \{scrollid = vs_scroll vmenuid = vs_vmenu font = $video_settings_menu_font menu_pos = (300.0, 400.0) spacing = 8 text_left}
 		Change \{menu_focus_color = [240 235 240 255]}
 		Change \{menu_unfocus_color = [235 120 135 255]}
-		displayText \{parent = vom_container Pos = (800.0, 550.0) just = [center center] text = "video options" Scale = 1.5 rgba = [240 235 240 255] font = $video_settings_menu_font noshadow}
+		displayText \{parent = vom_container Pos = (800.0, 550.0) just = [center center] text = 'video options' Scale = 1.5 rgba = [240 235 240 255] font = $video_settings_menu_font noshadow}
 		create_menu_backdrop \{texture = venue_bg}
 		displaySprite \{parent = vom_container tex = options_video_poster Pos = (640.0, 360.0) dims = (1024.0, 512.0) just = [center center] z = 1 font = $video_settings_menu_font}
 		GetGlobalTags \{user_options}
@@ -32,13 +32,13 @@ script create_video_settings_menu\{popup = 0}
 			parent = vs_scroll
 			Pos = (640.0, -90.0)
 			Scale = 1.4
-			text = "VIDEO SETTINGS"
+			text = 'VIDEO SETTINGS'
 			rgba = ($menu_unfocus_color)
 			just = [center top]
 			z_priority = <z>
 		}
 		create_pause_menu_frame z = (<z> - 10)
-		calibrate_text = "CALIBRATE LAG"
+		calibrate_text = 'CALIBRATE LAG'
 		text_params = {parent = vs_vmenu Type = TextElement font = ($audio_settings_menu_font)rgba = ($menu_unfocus_color)Scale = 1 z_priority = <z>}
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
 		CreateScreenElement {
@@ -52,7 +52,7 @@ script create_video_settings_menu\{popup = 0}
 		CreateScreenElement {
 			Type = TextElement
 			parent = <id>
-			text = "PAUSED"
+			text = 'PAUSED'
 			font = text_a6
 			Pos = (125.0, 53.0)
 			rgba = [170 90 30 255]
@@ -61,7 +61,7 @@ script create_video_settings_menu\{popup = 0}
 	endif
 	CreateScreenElement {
 		<text_params>
-		text = "Calibrate Lag"
+		text = 'Calibrate Lag'
 		event_handlers = [
 			{focus vom_focus params = {item = calibrate popup = <popup>}}
 			{unfocus vom_unfocus params = {item = calibrate popup = <popup>}}

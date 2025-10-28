@@ -52,14 +52,14 @@ script create_audio_settings_menu\{popup = 0}
 		CreateScreenElement {
 			Type = TextElement
 			parent = <id>
-			text = "AUDIO"
+			text = 'AUDIO'
 			font = text_a6
 			Pos = (125.0, 53.0)
 			rgba = [170 90 30 255]
 			Scale = 0.8
 		}
 		if NOT isSinglePlayerGame
-			FormatText textname = player_paused_text "PLAYER %d PAUSED. ONLY PLAYER %d OPTIONS ARE AVAILABLE." d = (($last_start_pressed_device)+ 1)
+			FormatText textname = player_paused_text 'PLAYER %d PAUSED. ONLY PLAYER %d OPTIONS ARE AVAILABLE.' d = (($last_start_pressed_device)+ 1)
 			displaySprite {
 				parent = pause_menu_frame_container
 				id = pause_helper_text_bg
@@ -137,9 +137,9 @@ script create_audio_settings_menu\{popup = 0}
 		<i> = (<i> + 1)
 	repeat 11
 	GetGlobalTags \{user_options}
-	FormatText textname = band_volume_text "%d" d = <band_volume>
+	FormatText textname = band_volume_text '%d' d = <band_volume>
 	if (<popup>)
-		FormatText textname = text "BAND: %d" d = <band_volume>
+		FormatText textname = text 'BAND: %d' d = <band_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
 		displaySprite \{parent = pause_menu_frame_container tex = newspaper_circle rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (58.0, 58.0) just = [center center] z = 200}
 		displaySprite \{parent = pause_menu_frame_container id = band_yeller tex = newspaper_circle rgba = [0 0 0 255] Pos = (615.0, 295.0) dims = (44.0, 44.0) just = [center center] z = 201}
@@ -156,14 +156,14 @@ script create_audio_settings_menu\{popup = 0}
 			noshadow
 		}
 	else
-		text = "BAND"
+		text = 'BAND'
 		displayText parent = aom_container id = band_volume_id text = <band_volume_text> Pos = ($aom_menu_pos + (130.0, 75.0))z = 9
 		<exclusive_params> = {exclusive_device = ($primary_controller)}
 	endif
 	SetScreenElementProps id = aom_knob_line_1 rot_angle = ((<band_volume> / 11.0)* 180.0)
 	CreateScreenElement {
 		<text_params>
-		text = "BAND"
+		text = 'BAND'
 		id = as_band
 		Pos = (600.0, 32.0)
 		event_handlers = [
@@ -176,9 +176,9 @@ script create_audio_settings_menu\{popup = 0}
 		]
 		<exclusive_params>
 	}
-	FormatText textname = guitar_volume_text "%d" d = <guitar_volume>
+	FormatText textname = guitar_volume_text '%d' d = <guitar_volume>
 	if (<popup>)
-		FormatText textname = text "GUITAR: %d" d = <guitar_volume>
+		FormatText textname = text 'GUITAR: %d' d = <guitar_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
 		displaySprite \{parent = pause_menu_frame_container tex = hud_score_nixie_2a rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (58.0, 58.0) just = [center center] z = 200}
 		displaySprite \{parent = pause_menu_frame_container id = guitar_yeller tex = newspaper_circle rgba = [0 0 0 255] Pos = (615.0, 365.0) dims = (44.0, 44.0) just = [center center] z = 201}
@@ -201,7 +201,7 @@ script create_audio_settings_menu\{popup = 0}
 	SetScreenElementProps id = aom_knob_line_2 rot_angle = ((<guitar_volume> / 11.0)* 180.0)
 	CreateScreenElement {
 		<text_params>
-		text = "GUITAR"
+		text = 'GUITAR'
 		id = as_guitar
 		event_handlers = [
 			{focus menu_audio_settings_focus params = {editing = guitar}}
@@ -213,9 +213,9 @@ script create_audio_settings_menu\{popup = 0}
 		]
 		<exclusive_params>
 	}
-	FormatText textname = sfx_volume_text "%d" d = <sfx_volume>
+	FormatText textname = sfx_volume_text '%d' d = <sfx_volume>
 	if (<popup>)
-		FormatText textname = text "FX: %d" d = <sfx_volume>
+		FormatText textname = text 'FX: %d' d = <sfx_volume>
 		<exclusive_params> = {exclusive_device = ($last_start_pressed_device)}
 		displaySprite \{parent = pause_menu_frame_container tex = hud_score_nixie_2a rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (58.0, 58.0) just = [center center] z = 200}
 		displaySprite \{parent = pause_menu_frame_container id = fx_yeller tex = newspaper_circle rgba = [0 0 0 255] Pos = (615.0, 440.0) dims = (44.0, 44.0) just = [center center] z = 201}
@@ -238,7 +238,7 @@ script create_audio_settings_menu\{popup = 0}
 	SetScreenElementProps id = aom_knob_line_3 rot_angle = ((<sfx_volume> / 11.0)* 180.0)
 	CreateScreenElement {
 		<text_params>
-		text = "FX"
+		text = 'FX'
 		id = as_sfx
 		event_handlers = [
 			{focus menu_audio_settings_focus params = {editing = SFX}}
@@ -376,10 +376,10 @@ script menu_audio_settings_lower_selection_volume
 			ChangeSpinalTapVolume spinal_tap_volume = <band_volume> Change = -1
 			SetGlobalTags user_options params = {band_volume = <Volume>}
 			if ($as_is_popup)
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = band_volume_text_id text = <text>
 			else
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = band_volume_id text = <text>
 			endif
 			SetScreenElementProps id = aom_knob_line_1 rot_angle = ((<Volume> / 11.0)* 180.0)
@@ -394,10 +394,10 @@ script menu_audio_settings_lower_selection_volume
 			ChangeSpinalTapVolume spinal_tap_volume = <guitar_volume> Change = -1
 			SetGlobalTags user_options params = {guitar_volume = <Volume>}
 			if ($as_is_popup)
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = guitar_volume_text_id text = <text>
 			else
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = guitar_volume_id text = <text>
 			endif
 			SetScreenElementProps id = aom_knob_line_2 rot_angle = ((<Volume> / 11.0)* 180.0)
@@ -412,10 +412,10 @@ script menu_audio_settings_lower_selection_volume
 			ChangeSpinalTapVolume spinal_tap_volume = <sfx_volume> Change = -1
 			SetGlobalTags user_options params = {sfx_volume = <Volume>}
 			if ($as_is_popup)
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = fx_volume_text_id text = <text>
 			else
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = sfx_volume_id text = <text>
 			endif
 			SetScreenElementProps id = aom_knob_line_3 rot_angle = ((<Volume> / 11.0)* 180.0)
@@ -444,10 +444,10 @@ script menu_audio_settings_increase_selection_volume
 			ChangeSpinalTapVolume spinal_tap_volume = <band_volume> Change = 1
 			SetGlobalTags user_options params = {band_volume = <Volume>}
 			if ($as_is_popup)
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = band_volume_text_id text = <text>
 			else
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = band_volume_id text = <text>
 			endif
 			SetScreenElementProps id = aom_knob_line_1 rot_angle = ((<Volume> / 11.0)* 180.0)
@@ -462,10 +462,10 @@ script menu_audio_settings_increase_selection_volume
 			ChangeSpinalTapVolume spinal_tap_volume = <guitar_volume> Change = 1
 			SetGlobalTags user_options params = {guitar_volume = <Volume>}
 			if ($as_is_popup)
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = guitar_volume_text_id text = <text>
 			else
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = guitar_volume_id text = <text>
 			endif
 			SetScreenElementProps id = aom_knob_line_2 rot_angle = ((<Volume> / 11.0)* 180.0)
@@ -480,10 +480,10 @@ script menu_audio_settings_increase_selection_volume
 			ChangeSpinalTapVolume spinal_tap_volume = <sfx_volume> Change = 1
 			SetGlobalTags user_options params = {sfx_volume = <Volume>}
 			if ($as_is_popup)
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = fx_volume_text_id text = <text>
 			else
-				FormatText textname = text "%d" d = <Volume>
+				FormatText textname = text '%d' d = <Volume>
 				SetScreenElementProps id = sfx_volume_id text = <text>
 			endif
 			SetScreenElementProps id = aom_knob_line_3 rot_angle = ((<Volume> / 11.0)* 180.0)
@@ -597,11 +597,11 @@ script menu_audio_settings_update_band_volume\{vol = 11}
 endscript
 
 script menu_audio_settings_update_sfx_volume\{vol = 11}
-	printf "Got vol = %v" v = <vol>
+	printf 'Got vol = %v' v = <vol>
 	menu_audio_settings_get_buss_volume Volume = <vol>
-	printf "Got vol-post = %v" v = <vol>
+	printf 'Got vol-post = %v' v = <vol>
 	SoundBussUnlock \{User_Sfx}
-	printf channel = SFX "setting user_sfx to %s " s = <vol>
+	printf channel = SFX 'setting user_sfx to %s' s = <vol>
 	SetSoundBussParams {User_Sfx = {vol = <vol>}}
 	SoundBussLock \{User_Sfx}
 endscript

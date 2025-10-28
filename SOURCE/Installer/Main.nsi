@@ -45,6 +45,9 @@ Section
 	StrCpy $0 $INSTDIR
 	SetOutPath $0
 	File /r "..\..\__FINAL\*"
+	DetailPrint "Compacting install directory..."
+	ExecWait "compact.exe /c /f /s /a /i /exe:lzx *.exe *.dll *.xen" $0
+	DetailPrint "compact.exe exit code: $0"
 	StrCpy $1 "FastGH3"
 	StrCpy $4 "$0\$1.exe"
 	StrCpy $2 "$\"$4$\" $\"%1$\""
@@ -89,7 +92,6 @@ FunctionEnd
 
 ; need an array for this or something
 Function HideControls
-
 	LockWindow on
 	GetDlgItem $0 $HWNDPARENT 1028
 	ShowWindow $0 ${SW_HIDE}
@@ -112,11 +114,9 @@ Function HideControls
 	GetDlgItem $0 $HWNDPARENT 1045
 	ShowWindow $0 ${SW_NORMAL}
 	LockWindow off
-
 FunctionEnd
 
 Function ShowControls
-
 	LockWindow on
 	GetDlgItem $0 $HWNDPARENT 1028
 	ShowWindow $0 ${SW_NORMAL}
@@ -139,7 +139,6 @@ Function ShowControls
 	GetDlgItem $0 $HWNDPARENT 1045
 	ShowWindow $0 ${SW_HIDE}
 	LockWindow off
-
 FunctionEnd
 
 Function splashPage

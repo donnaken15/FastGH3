@@ -99,7 +99,7 @@ save_lefty_flip_p2 = 0
 
 script bossbattle_init
 	if ($game_mode = p2_battle)
-		ScriptAssert \{"Cannot choose p2_battle and bossbattle"}
+		ScriptAssert \{'Cannot choose p2_battle and bossbattle'}
 	endif
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = battlemode_container Pos = (0.0, 0.0) just = [left top]}
 	Player = 1
@@ -190,7 +190,7 @@ script bossbattle_deinit
 endscript
 
 script bossbattle_select\{player_status = player1_status}
-	printf \{"bossbattle_select"}
+	printf \{'bossbattle_select'}
 	if ($game_mode = tutorial)
 		Change StructureName = <player_status> battlemode_creation_selection = 0
 		return
@@ -265,12 +265,12 @@ script bossbattle_select\{player_status = player1_status}
 	repeat <array_Size>
 	if ($<player_status>.battlemode_creation_selection = -1)
 		printstruct <...>
-		ScriptAssert \{"Battlemode selection not found"}
+		ScriptAssert \{'Battlemode selection not found'}
 	endif
 endscript
 
 script bossbattle_ready\{battle_gem = 0 player_status = player1_status}
-	printf \{"bossbattle_ready"}
+	printf \{'bossbattle_ready'}
 	if ($<player_status>.Player = 1)
 		SoundEvent \{event = Battle_Power_Awarded_SFX_P1}
 	else
@@ -278,7 +278,7 @@ script bossbattle_ready\{battle_gem = 0 player_status = player1_status}
 	endif
 	current_num_powerups = ($<player_status>.current_num_powerups)
 	if (<current_num_powerups> >= $max_num_powerups)
-		FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1)s = ($<player_status>.Player)
+		FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1)s = ($<player_status>.text)
 		if ScreenElementExists id = <card_checksum>
 			DestroyScreenElement id = <card_checksum>
 		endif
@@ -314,7 +314,7 @@ script bossbattle_ready\{battle_gem = 0 player_status = player1_status}
 	if NOT ($show_battle_text = 1)
 		<card_alpha> = 0
 	endif
-	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = <current_num_powerups> s = ($<player_status>.Player)
+	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = <current_num_powerups> s = ($<player_status>.text)
 	CreateScreenElement {
 		Type = SpriteElement
 		id = <card_checksum>
@@ -342,7 +342,7 @@ script bossbattle_ready\{battle_gem = 0 player_status = player1_status}
 endscript
 
 script bossbattle_trigger_on\{Player = 1 player_text = 'p1' player_status = player1_status}
-	printf \{"bossbattle_trigger_on"}
+	printf \{'bossbattle_trigger_on'}
 	if ($<player_status>.current_num_powerups = 0)
 		return
 	endif
@@ -364,32 +364,28 @@ script bossbattle_trigger_on\{Player = 1 player_text = 'p1' player_status = play
 		<other_player_text> = 'p1'
 		<other_difficulty> = $current_difficulty
 		<other_player_status> = player1_status
-		select = ($current_powerups_p2 [($<player_status>.current_num_powerups - 1)])
-		GH3_Battle_Play_Crowd_Reaction_SFX receiving_player = 1 receiving_player_current_crowd_level = ($<other_player_status>.current_health)
+		select = ($current_powerups_p2[($<player_status>.current_num_powerups - 1)])
 	endif
-	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1)s = ($<player_status>.Player)
+	FormatText checksumName = card_checksum 'battlecard_%i_%s' i = ($<player_status>.current_num_powerups - 1)s = ($<player_status>.text)
 	if ScreenElementExists id = <card_checksum>
 		DestroyScreenElement id = <card_checksum>
 	endif
 	Change StructureName = <player_status> current_num_powerups = ($<player_status>.current_num_powerups - 1)
 	update_battlecards_remove player_status = <player_status>
-	drain_time = ($battlemode_powerups [<select>].drain_time)
+	drain_time = ($battlemode_powerups[<select>].drain_time)
 	if ($<player_status>.Player = 1)
 		SpawnScript bossbattle_ai_damage params = {drain_time = <drain_time> player_status = <other_player_status> player_text = <other_player_text> select = <select>}
 	endif
 	Change StructureName = <player_status> final_blow_powerup = <select>
-	spawnscriptnow ($battlemode_powerups [<select>].Scr)id = battlemode params = {drain_time = <drain_time>
-		Player = <other_player>
-		player_text = <other_player_text>
-		other_player_status = <other_player_status>
-		player_status = <player_status>
-		difficulty = <other_difficulty>
-		($battlemode_powerups [<select>].params)}
+	spawnscriptnow ($battlemode_powerups[<select>].Scr) id = battlemode params = {
+		drain_time = <drain_time> Player = <other_player> player_text = <other_player_text>
+		other_player_status = <other_player_status> player_status = <player_status>
+		difficulty = <other_difficulty> ($battlemode_powerups[<select>].params)}
 	Change StructureName = <player_status> battle_num_attacks = ($<player_status>.battle_num_attacks + 1)
-	Band_PlayAttackAnim name = ($<player_status>.band_member)Type = <select>
-	Band_PlayResponseAnim name = ($<other_player_status>.band_member)Type = <select>
-	spawnscriptnow hammer_highway params = {other_player_text = <other_player_text>}
-	if ($battlemode_powerups [<select>].fire_bolt = 1)
+	if ($battlemode_powerups[<select>].dont_push = 0)
+		spawnscriptnow hammer_highway params = {other_player_text = <other_player_text>}
+	endif
+	if ($battlemode_powerups[<select>].fire_bolt = 1)
 		spawnscriptnow attack_bolt params = {player_status = <player_status> other_player_status = <other_player_status>}
 	endif
 endscript
@@ -457,55 +453,70 @@ script check_buttons_boss
 	CheckButtonsBoss Player = <Player> array_entry = <array_entry>
 endscript
 
-script bossbattle_fill
-	bossbattle_ready \{battle_gem = 4 player_status = player1_status}
-	bossbattle_ready \{battle_gem = 4 player_status = player1_status}
-	bossbattle_ready \{battle_gem = 4 player_status = player1_status}
-endscript
-
 script boss_battle_begin_deathlick
 	battle_death_lick \{death_speed = 0.1 player_status = player2_status other_player_status = player1_status drain_time = 5000}
-endscript
-
-script boss_battle_death_icon
-	boss_pos = (900.0, 150.0)
-	player_pos = (300.0, 183.0)
-	displaySprite parent = root_window tex = icon_attack_deth Pos = <boss_pos> just = [center center] z = 500
-	DoScreenElementMorph id = <id> Pos = <player_pos> Scale = 3.1 relative_scale time = 1.0
-	wait \{2.0 seconds}
-	DoScreenElementMorph id = <id> alpha = 0 time = 2.0
-	wait \{2.0 seconds}
-	destroy_menu menu_id = <id>
 endscript
 
 script create_battle_death_meter
 	killspawnedscript \{name = update_battle_death_meter}
 	killspawnedscript \{name = update_battle_death_meter_wings}
-	if ScreenElementExists \{id = battle_death_meter}
-		DestroyScreenElement \{id = battle_death_meter}
-	endif
-	if ScreenElementExists \{id = battle_death_meter_marker}
-		DestroyScreenElement \{id = battle_death_meter_marker}
-	endif
 	if ScreenElementExists \{id = battle_death_meter_text}
 		DestroyScreenElement \{id = battle_death_meter_text}
 	endif
-	if ScreenElementExists \{id = battle_death_meter_wing_r}
-		DestroyScreenElement \{id = battle_death_meter_wing_r}
+	elems = [
+		{
+			id = battle_death_meter
+			parent = battlemode_container
+			Pos = (648.0, 500.0) Scale = 1
+			just = [center center]
+		}
+		{
+			id = battle_death_meter_marker
+			Pos = (29.0, 200.0) Scale = 0.9
+			just = [center center]
+			z_priority = 1
+		}
+		{
+			id = battle_death_meter_wing_r
+			texture = battle_alert_death_wing
+			Pos = (13.0, 7.0) Scale = 0.5
+			rot_angle = 15 just = [left top]
+		}
+		{
+			id = battle_death_meter_wing_l
+			texture = battle_alert_death_wing
+			Pos = (39.0, 7.0) Scale = (-0.5, 0.5)
+			rot_angle = -15 just = [right top]
+		}
+	]
+	GetArraySize \{elems}
+	i = 0
+	begin
+		id = (<elems>[<i>].id)
+		if ScreenElementExists id = <id>
+			DestroyScreenElement id = <id>
+		endif
+		CreateScreenElement {
+			parent = battle_death_meter
+			Type = SpriteElement texture = (<elems>[<i>].id)
+			rgba = [255 255 255 255] Pos = (648.0, 900.0)
+			Scale = 1 just = [center center] z_priority = 0
+			(<elems>[<i>])
+		}
+		Increment \{i}
+	repeat <array_size>
+	// merge, replace keys with structs
+	if ($disable_intro = 0)
+		DoScreenElementMorph \{id = battle_death_meter Pos = (648.0, 900.0)}
+		DoScreenElementMorph \{id = battle_death_meter Pos = (648.0, 500.0) time = 0.3}
+		wait \{0.3 seconds}
 	endif
-	if ScreenElementExists \{id = battle_death_meter_wing_l}
-		DestroyScreenElement \{id = battle_death_meter_wing_l}
-	endif
-	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter parent = battlemode_container texture = battle_death_meter rgba = [255 255 255 255] Pos = (648.0, 900.0) Scale = 1 alpha = 1 just = [center center] z_priority = 0 }
-	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_marker parent = battle_death_meter texture = battle_death_meter_marker rgba = [255 255 255 255] Pos = (29.0, 200.0) Scale = 0.9 alpha = 1 just = [center center] z_priority = 1 }
-	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_wing_r parent = battle_death_meter texture = battle_alert_death_wing rgba = [255 255 255 255] Pos = (13.0, 7.0) Scale = 0.5 rot_angle = 15 just = [left top] z_priority = 0 }
-	CreateScreenElement \{ Type = SpriteElement id = battle_death_meter_wing_l parent = battle_death_meter texture = battle_alert_death_wing rgba = [255 255 255 255] Pos = (39.0, 7.0) Scale = (-0.5, 0.5) rot_angle = -15 just = [right top] z_priority = 0 }
-	DoScreenElementMorph \{id = battle_death_meter Pos = (648.0, 500.0) time = 0.3}
-	wait \{0.3 seconds}
 	spawnscriptnow \{update_battle_death_meter params = {death_meter_marker = battle_death_meter_marker}}
 	spawnscriptnow \{update_battle_death_meter_wings params = {wing_r = battle_death_meter_wing_r wing_l = battle_death_meter_wing_l}}
 endscript
 
+death_meter_marker_color = [ 255 255 255 255 ]
+death_meter_marker_color2 = [ 0 255 100 255 ]
 script update_battle_death_meter
 	GetSongTimeMs
 	startTime = <time>
@@ -522,20 +533,18 @@ script update_battle_death_meter
 	pos_update = 0
 	color_update = 0
 	begin
-		<pos_update> = (<pos_update> + 1)
-		if ScreenElementExists id = <death_meter_marker>
-			if (<color_update> = 0)
-				DoScreenElementMorph id = <death_meter_marker> rgba = [0 255 100 255] time = 1
-				<color_update> = 1
-			else
-				DoScreenElementMorph id = <death_meter_marker> rgba = [255 255 255 255] time = 1
-				<color_update> = 0
-			endif
-			if (<meterStep> > 0)
-				DoScreenElementMorph id = <death_meter_marker> Pos = ((29.0, 200.0) - ((0.0, 1.0) * <pos_update>))time = <meterStep>
-			endif
-		else
+		Increment \{pos_update}
+		if not ScreenElementExists id = <death_meter_marker>
 			break
+		endif
+		color = death_meter_marker_color
+		if (<color_update> = 0)
+			ExtendCrc <color> '2' out = color
+		endif
+		DoScreenElementMorph id = <death_meter_marker> rgba = ($<color>) time = 1
+		<color_update> = (1 - <color_update>)
+		if (<meterStep> > 0)
+			DoScreenElementMorph id = <death_meter_marker> Pos = ((29.0, 200.0) - ((0.0, 1.0) * <pos_update>))time = <meterStep>
 		endif
 		wait <meterStep> Second
 	repeat
@@ -551,25 +560,21 @@ script update_battle_death_meter_wings
 	if (<startTime> > <endtime>)
 		<startTime> = 0
 	endif
-	meterTime = ((<endtime> - <startTime>)/ 1000)
+	meterTime = ((<endtime> - <startTime>) / 1000)
 	meterDistance = 40
 	meterStep = (<meterTime> / <meterDistance>)
 	rot_update = 0
 	begin
 		<rot_update> = (<rot_update> + 1)
-		if ScreenElementExists id = <wing_r>
-			if (<meterTime> > 0)
-				DoScreenElementMorph id = <wing_r> rot_angle = (15 - <rot_update>)time = <meterStep>
+		if (<meterTime> > 0)
+			if not ScreenElementExists id = <wing_l>
+				break
 			endif
-		else
-			break
-		endif
-		if ScreenElementExists id = <wing_l>
-			if (<meterTime> > 0)
-				DoScreenElementMorph id = <wing_l> rot_angle = (-15 + <rot_update>)time = <meterStep>
+			if not ScreenElementExists id = <wing_r>
+				break
 			endif
-		else
-			break
+			DoScreenElementMorph id = <wing_l> rot_angle = (-15 + <rot_update>) time = <meterStep>
+			DoScreenElementMorph id = <wing_r> rot_angle = (15 - <rot_update>) time = <meterStep>
 		endif
 		wait <meterStep> seconds
 	repeat

@@ -55,7 +55,7 @@ script solo\{part = guitar diff = expert}
 		begin
 			// find own script props just for the exact time it was due to spawn
 			scr = (<scripts>[<k>])
-			if ((<Scr>.time + (<delta_time> * 1000) + 10) >= <time> & (<Scr>.time)< <time> & (<Scr>.Scr) = solo)
+			if ((<Scr>.time + (<delta_time> * 1000) + 20) >= <time> & (<Scr>.time)< <time> & (<Scr>.Scr) = solo)
 				// fallback for no param entered
 				part2 = guitar
 				diff2 = expert
@@ -94,7 +94,7 @@ script solo\{part = guitar diff = expert}
 		begin
 			// soloend.params.part == %part then endtime = soloend.time
 			Scr = (<scripts>[<k>])
-			if (<Scr>.time >= <time> & <Scr>.Scr = soloend)
+			if (<Scr>.time >= <time> & (<Scr>.Scr = soloend | <Scr>.Scr = solo))
 				part2 = guitar
 				diff2 = expert
 				if StructureContains \{structure = Scr params}
@@ -111,7 +111,9 @@ script solo\{part = guitar diff = expert}
 				if (<part> = <part2>)
 					if (<diff> = <diff2>)
 						endtime = (<Scr>.time)
-						found_soloend = 1
+						if not (<Scr>.Scr = solo)
+							found_soloend = 1
+						endif
 						break
 					endif
 				endif
@@ -182,7 +184,7 @@ script solo\{part = guitar diff = expert}
 					repeat <array_Size>
 				//}
 				ProfilingEnd <...> 'solo find first note'
-				//			  first solo note, first playable note
+				// first solo note, first playable note
 				note_index = (<note_index> + <current_first_note> + 3)
 				// count notes hit before this executed
 				earlyhits = ((<note_index> - <solo_first_note>) / 3)
@@ -289,7 +291,7 @@ script soloend \{part = guitar diff = expert}
 					Change last_solo_hits_p2 = 0
 					Change last_solo_total_p2 = 0
 				endif
-				solo_reset i = <i>
+				solo_reset player = <i>
 			endif
 		endif
 		ExtendCrc <difficulty> '2' out = difficulty
@@ -362,6 +364,7 @@ script solo_ui_update\{Player = 1}
 endscript
 
 script solo_ui_end\{Player = 1}
+	SetSpawnInstanceLimits \{Max = $current_num_players management = ignore_spawn_request}
 	FormatText checksumName = solotxt 'solotxt%d' d = <Player>
 	FormatText checksumName = lsh_p 'last_solo_hits_p%d' d = <Player>
 	FormatText checksumName = lst_p 'last_solo_total_p%d' d = <Player>
@@ -384,7 +387,7 @@ script solo_ui_end\{Player = 1}
 		elseif (<perf> >= 100)
 			perf_text = 'PERFECT'
 		endif
-		FormatText textname = text '%t SOLO!' t = <perf_text>
+		FormatText textname = text '%d SOLO!' d = <perf_text>
 		if ScreenElementExists id = <solotxt>
 			SetScreenElementProps id = <solotxt> text = <text>
 			DoScreenElementMorph id = <solotxt> Scale = 0

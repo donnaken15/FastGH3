@@ -80,7 +80,7 @@ net_repeat_last_search = $EmptyScript
 check_if_selecting_tie_breaker = $EmptyScript
 connection_lost_end_song = $EmptyScript
 
-script test_events\{passed_in_value = 'test value'}
+/*script test_events\{passed_in_value = 'test value'}
 	printf \{'test_events'}
 	printstruct <...>
 	NetSessionFunc \{Obj = stats func = write_key_value params = {wtf_value = 'test value' key = 'test key'}}
@@ -107,39 +107,6 @@ script xenon_auto_load_progress
 			ui_flow_manager_respond_to_action \{action = online_enabled}
 		endif
 	endif
-endscript
-
-script scale_element_to_size\{time = 0}
-	if NOT GotParam \{id}
-		printf \{'Did not pass in id to scale_element_to_size! Returning'}
-		return
-	endif
-	GetScreenElementDims id = <id>
-	orig_height = <height>
-	orig_width = <width>
-	if NOT GotParam \{target_width}
-		target_width = <orig_width>
-	endif
-	if NOT GotParam \{target_height}
-		target_height = <orig_height>
-	endif
-	xScale = (<target_width> / (<orig_width> * 1.0))
-	yScale = (<target_height> / (<orig_height> * 1.0))
-	<id> ::DoMorph Scale = (<xScale> * (1.0, 0.0) + <yScale> * (0.0, 1.0))time = <time>
-endscript
-
-script translate_screen_element\{time = 0}
-	if NOT GotParam \{id}
-		printf \{'Did not pass in id to translate_screen_element! Returning'}
-		return
-	endif
-	if NOT GotParam \{Pos}
-		GetScreenElementPosition id = <id>
-		new_position = <ScreenElementPos>
-	else
-		new_position = <Pos>
-	endif
-	<id> ::DoMorph Pos = <new_position> time = <time>
 endscript
 
 script get_my_highway_layout
@@ -412,10 +379,6 @@ script new_net_logic_deinit
 	endif
 endscript
 
-script win_now
-	ExtendCrc \{song_won 'p1' out = Type}
-	broadcastevent Type = <Type>
-endscript
 new_message_of_the_day = 0
 
 script splash_callback
