@@ -8,3 +8,5 @@
 *.dbg	text
 *.cs	eol=crlf
 *.Designer.cs linguist-detectable=false
+# god sake
+*.csproj	eol=crlf

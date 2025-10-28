@@ -637,7 +637,6 @@
     <Compile Include="diags\conf\songtxtfmt.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="deps\SubstrExt.cs" />
     <Compile Include="diags\unkname.cs">
       <SubType>Form</SubType>
     </Compile>

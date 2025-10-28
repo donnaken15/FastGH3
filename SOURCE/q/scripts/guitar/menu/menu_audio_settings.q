@@ -552,47 +552,52 @@ script menu_audio_settings_remove_highlight
 	endif
 endscript
 
+volume_scales = [
+	//0 -1.2 -2.4 -3.7 -4.9 -6.2 -8 -10 -13 -17 -21 -100
+	-100.0 -21.0 -17.0 -13.0 -10.0 -8.0 -6.2 -4.9 -3.7 -2.4 -1.2 0.0
+]
 script menu_audio_settings_get_buss_volume
-	switch <Volume>
-		case 11
-			<vol> = 0
-		case 10
-			<vol> = -1.2
-		case 9
-			<vol> = -2.4
-		case 8
-			<vol> = -3.7
-		case 7
-			<vol> = -4.9
-		case 6
-			<vol> = -6.2
-		case 5
-			<vol> = -8
-		case 4
-			<vol> = -10
-		case 3
-			<vol> = -13
-		case 2
-			<vol> = -17
-		case 1
-			<vol> = -21
-		case 0
-			<vol> = -100
-	endswitch
-	return vol = <vol>
+	return vol = ($volume_scales[<volume>])
+	//switch <Volume>
+	//	case 11
+	//		<vol> = 0
+	//	case 10
+	//		<vol> = -1.2
+	//	case 9
+	//		<vol> = -2.4
+	//	case 8
+	//		<vol> = -3.7
+	//	case 7
+	//		<vol> = -4.9
+	//	case 6
+	//		<vol> = -6.2
+	//	case 5
+	//		<vol> = -8
+	//	case 4
+	//		<vol> = -10
+	//	case 3
+	//		<vol> = -13
+	//	case 2
+	//		<vol> = -17
+	//	case 1
+	//		<vol> = -21
+	//	case 0
+	//		<vol> = -100
+	//endswitch
+	//return vol = <vol>
 endscript
 
 script menu_audio_settings_update_guitar_volume\{vol = 11}
 	menu_audio_settings_get_buss_volume Volume = <vol>
 	SoundBussUnlock \{User_Guitar}
-	SetSoundBussParams {User_Guitar = {vol = <vol>}}
+	SetSoundBussParams User_Guitar = {vol = <vol>}
 	SoundBussLock \{User_Guitar}
 endscript
 
 script menu_audio_settings_update_band_volume\{vol = 11}
 	menu_audio_settings_get_buss_volume Volume = <vol>
 	SoundBussUnlock \{User_Band}
-	SetSoundBussParams {User_Band = {vol = <vol>}}
+	SetSoundBussParams User_Band = {vol = <vol>}
 	SoundBussLock \{User_Band}
 endscript
 

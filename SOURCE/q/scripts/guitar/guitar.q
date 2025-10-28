@@ -165,10 +165,10 @@ mode_index = {
 	p2_battle = 5
 }
 
-fastgh3_build = '1.1-999011043'
+fastgh3_build = '1.1-999011111'
 fastgh3_branch = main
 bleeding_edge = 1
-build_timestamp = [10 27 2025]
+build_timestamp = [10 28 2025]
 
 random_seed = -1
 // ^ originally 107482099
@@ -853,7 +853,7 @@ script blank_chart
 	repeat 200
 endscript
 
-// skip over blank tracks in setup
+// use to skip over blank tracks in setup
 // made this way because i can imagine i can't just compare qb arrays directly
 // even if i expect the comparison code to be pointer matching
 script note_array_empty

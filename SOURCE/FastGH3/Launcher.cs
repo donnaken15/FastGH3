@@ -24,9 +24,375 @@ using ICSharpCode.SharpZipLib.GZip;
 #endif
 using FormKV = System.Tuple<object, string>;
 
+// SubstrExt.cs, ancient functions from dotnetperls or csharp-corner
+static class SubstrExt
+{
+	public static string Quotes(this string v) {
+		return '"' + v + '"';
+	}
+	public static string Parentheses(this string v) {
+		return '(' + v + ')';
+	}
+	public static bool Quoted(this string v) {
+		return v.StartsWith("\"") && v.EndsWith("\"");
+	}
+	//public static bool HasParentheses(this string v) {
+	//	return v.StartsWith("(") && v.EndsWith(")");
+	//}
+
+	public static string Between(this string v, string a, string b)
+	{
+		int posA = v.IndexOf(a);
+		int posB = v.LastIndexOf(b);
+		if (posA == -1)
+		{
+			return "";
+		}
+		if (posB == -1)
+		{
+			return "";
+		}
+		int adjustedPosA = posA + a.Length;
+		if (adjustedPosA >= posB)
+		{
+			return "";
+		}
+		return v.Substring(adjustedPosA, posB - adjustedPosA);
+	}
+
+	/// <summary>
+	/// Get string value after [first] a.
+	/// </summary>
+	public static string Before(this string v, string a)
+	{
+		int posA = v.IndexOf(a);
+		if (posA == -1)
+		{
+			return "";
+		}
+		return v.Substring(0, posA);
+	}
+
+	/// <summary>
+	/// Get string value after [last] a.
+	/// </summary>
+	public static string After(this string v, string a)
+	{
+		int posA = v.LastIndexOf(a);
+		if (posA == -1)
+		{
+			return "";
+		}
+		int adjustedPosA = posA + a.Length;
+		if (adjustedPosA >= v.Length)
+		{
+			return "";
+		}
+		return v.Substring(adjustedPosA);
+	}
+
+#if false
+	// new stuff
+	// wrote this entirely before compiling and winged it, gadang yoloswag 420 blaze it
+	// inb4 5 more errors
+	static string filt_flat = "(\"(?<q>[^\"]+)\"|(?<f>[^;]+))($|;)";
+	static Regex filt_whole = new Regex("^("+filt_flat+")+$", RegexOptions.Singleline | RegexOptions.Compiled);
+	static Regex filt_part = new Regex(filt_flat, RegexOptions.Singleline | RegexOptions.Compiled);
+	static char[] inv_chars = Path.GetInvalidPathChars(); // assuming this includes double quote
+	public static bool testPath(string path) {
+		return !(string.IsNullOrWhiteSpace(path) || string.IsNullOrEmpty(path) || path.IndexOfAny(inv_chars) >= 0);
+	}
+	public static string[] xf(string filt) {
+		if (!filt_whole.IsMatch(filt))
+			throw new Exception("Invalid filter list: "+filt);
+		MatchCollection items = filt_part.Matches(filt);
+		string[] filts = new string[items.Count];
+		int i = 0;
+		foreach (Match m in items) {
+			string item = "";
+			if (m.Groups["q"].Success)
+				item = m.Groups["q"].Value;
+			else if (m.Groups["f"].Success)
+				item = m.Groups["f"].Value;
+			else
+				throw new Exception("Failed to get capture from match: " + m.Value);
+			if (!testPath(item))
+				throw new Exception("Invalid filter part: (( "+item+" ))");
+			filts[i++] = item;
+		}
+		return filts;
+	}
+	// this was done afterwards, not in one go :(
+	// since im writing all this convoluted condensed crap
+	// probably took 5 T&E builds, because im dumb
+	public static Regex[] xw(string[] filts) { // array from xf, or plain string with valid chars including asterisk for wildcard
+		return filts.Map(f=>(f.Split('*').Map<string>(p=>Regex.Escape(p)))).Map(ps => { // my god
+			foreach (string part in ps)
+				if (part.IndexOfAny(inv_chars) >= 0)
+					throw new Exception("Invalid character(s) in part of path filter: " + part + ", full: (( " + string.Join(" <|> ", ps) + " ))");
+			return new Regex(string.Join(".*", ps), RegexOptions.Singleline);
+		});
+	}
+	public static Regex[] xw(string filt) {
+		return xw(new string[] { filt });
+	}
+	public static Regex[] xm(string filt) {
+		return xw(xf(filt));
+	}
+	// example text: `*.txt;*.mp3;"why;this*.txt";"test test test"`
+	
+	public static string argify(string[] args) {
+		return string.Join(" ", args.Map<string>(s => (s.Contains(" ") && !s.Quoted()) ? s.Quotes() : s)); // awful
+	}
+
+#region UGH
+	public static T[] ReplaceWith<T>(this Array v, T replace, T with) {
+		T[] n = ((T[])v.Clone());
+		for (var i = 0; i < v.Length; i++)
+		{
+			if (!n[i].Equals(replace))
+				continue;
+			n[i] = with;
+		}
+		return n;
+	}
+	public static T[] Spread<T>(this T[] v, T[] i, int w, bool rplI) {
+		int r = (rplI ? 1 : 0);
+		T[] n = new T[v.Length + i.Length - r];
+		Array.Copy(v, n, w - r);
+		Array.Copy(v, 0, n, w - r, v.Length - w);
+		return n;
+	}
+	public static object[] Map(this object[] v, Func<object, object> tfunc) {
+		return v.Map<object>((e,i,a)=>tfunc(e));
+	}
+	public static object[] Map(this object[] v, Func<object, int, Array, object> tfunc) {
+		return v.Map<object>(tfunc);
+	}
+	public static ST[] Map<ST>(this ST[] v, Func<ST, ST> tfunc) {
+		return v.Map<ST,ST>((e,i,a) => tfunc(e));
+	}
+	public static ST[] Map<ST>(this ST[] v, Func<ST, int, Array, ST> tfunc) {
+		return v.Map<ST,ST>(tfunc);
+	}
+	public static T2[] Map<T1,T2>(this T1[] v, Func<T1, T2> tfunc) {
+		return v.Map<T1,T2>((e,i,a) => tfunc(e));
+	}
+	public static T2[] Map<T1,T2>(this T1[] v, Func<T1, int, Array, T2> tfunc) {
+		T2[] n = new T2[v.Length]; // for T1 --> T1 ((T2[])v.Clone());
+		for (var i = 0; i < v.Length; i++)
+			n[i] = tfunc(v[i], i, v); // absolutely javascript brained
+		return n;
+	}
+#endregion
+#endif
+}
+#if false
+public interface IExtractor {
+	string[] List();
+	string[] List(string filt);
+	void Extract(string outdir, params string[] files);
+	byte[] Extract(string file);
+	// make for SZL/DNZ, SNG, 7z, unrar, unzip, bsdtar, FS
+}
+public class ExtExt : IExtractor {
+	// -------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------
+	// WINTAR ONLY ACCEPTS FORWARD SLASHES, UNRAR ONLY ACCEPTS BACKWARD SLASHES
+	// -------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------
+	string exe; string[] tA, xA, pA; // view/extract args
+	string i; // input
+	public string[] List()
+	{
+		return List("*");
+	}
+	public string[] List(string filt)
+	{
+		//List<string> files = new List<string>();
+		string[] filts = SubstrExt.xf(filt);
+		Process t = new Process() {
+			StartInfo = new ProcessStartInfo() {
+				FileName = exe,
+				RedirectStandardOutput = true,
+				RedirectStandardError = true,
+				Arguments = SubstrExt.argify(insertFilts(tA,filts))
+			}
+		};
+		Launcher.vl(t.StartInfo.FileName);
+		Launcher.vl(t.StartInfo.Arguments);
+		t.Start();
+		t.BeginErrorReadLine();
+		string[] list = t.StandardOutput.ReadToEnd().Replace("\r", "").Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);//.Map<string>(s => s.Substring(53));
+		t.WaitForExit();
+		if (t.HasExited)
+			if (t.ExitCode != 0)
+				return null;
+		return list;
+	}
+	static ProcessStartInfo SITemp(string exe, string args) {
+		return new ProcessStartInfo() {
+			FileName = exe, Arguments = args,
+			RedirectStandardOutput = true,
+			RedirectStandardError = true,
+			UseShellExecute = false,
+			CreateNoWindow = false,
+		};
+	}
+	public void Extract(string outdir, params string[] files)
+	{
+		Process x = new Process() {
+			StartInfo = SITemp(exe, SubstrExt.argify(insertFilts(xA, files)))
+		};
+		Launcher.vl(x.StartInfo.FileName);
+		Launcher.vl(x.StartInfo.Arguments);
+		x.Start();
+		x.BeginErrorReadLine();
+		x.BeginOutputReadLine();
+		x.WaitForExit();
+	}
+	public byte[] Extract(string file) {
+		Process x = new Process() {
+			StartInfo = SITemp(exe, SubstrExt.argify(pA.ReplaceWith("<f>", file.Quotes())))
+		};
+		Launcher.vl(x.StartInfo.FileName);
+		Launcher.vl(x.StartInfo.Arguments);
+		x.Start();
+		x.BeginErrorReadLine();
+		MemoryStream ms = new MemoryStream();
+		x.StandardOutput.BaseStream.CopyTo(ms);
+		x.WaitForExit();
+		if (x.HasExited)
+			if (x.ExitCode != 0)
+				return null;
+		return ms.ToArray();
+	}
+	static string[] insertFilts(string[] a, string[] b) {
+		return a.Spread(b, Array.IndexOf(a, "<f>"), true);
+	}
+	public ExtExt(string input, string exe, string[] tA, string[] xA, string[] pA) {
+		i = Path.GetFullPath(input); this.exe = exe;
+		this.tA = tA.ReplaceWith("<a>", i); this.xA = xA.ReplaceWith("<a>", i); this.pA = pA.ReplaceWith("<a>", i);
+	}
+	public static readonly string[]
+		z7_tA = new string[] { "l", "--", "<a>", "<f>" },
+		z7_xA = new string[] { "x", "-oao", "--", "<a>", "<f>" },
+		z7_pA = new string[] { "x",  "-so", "--", "<a>", "<f>" },
+		bt_tA = new string[] {  "-tf", "<a>", "--", "<f>" },
+		bt_xA = new string[] { "-xvf", "<a>", "--", "<f>" },
+		bt_pA = new string[] { "-xOf", "<a>", "--", "<f>" }, // i was having an aneurysm because cygwin and gnuwin32 are placed in front of system32 where i cant use windows tar, and i was using literal bsdtar.exe, kill me
+		ur_tA = new string[] {   "lb", "--", "<a>", "<f>" },
+		ur_xA = new string[] { "-xvf", "--", "<a>", "<f>" },
+		ur_pA = new string[] {    "p", "-c-", "-ierr", "--", "<a>", "<f>" } // euuuuuughhhhhh //,
+		//uz_tA = new string[] {  }, // zipinfo?, why even // because crazy
+		//uz_xA = new string[] {  },
+		//uz_pA = new string[] {  }
+		;
+}
+public class ZipExt : IExtractor {
+	ZipFile zip = null; // input
+	public string[] List() {
+		return List("*");
+	}
+	public string[] List(string filt)
+	{
+		List<string> files = new List<string>();
+		ForEach(SubstrExt.xf(filt), fn => {
+			files.Add(fn.Name);
+			return 0; // god help // bleeeuuuughgh help me jesus :L
+		});
+		return files.ToArray();
+	}
+	public void ForEach(string[] filt, Func<ZipEntry, int/* cant do void... >:(   dont care to know anymore about delegates right now */> cb)
+	{
+		Regex[] filts = SubstrExt.xw(filt);
+		foreach (ZipEntry f in zip)
+		{
+			foreach (Regex fi in filts)
+				if (fi.IsMatch(f.Name))
+				{
+					cb(f);
+					break;
+				}
+		}
+	}
+	public void Extract(string outdir, string[] files)
+	{
+		ForEach(files, fn => {
+			string isol = Path.Combine(outdir, Path.GetDirectoryName(fn.Name));
+			Directory.CreateDirectory(isol);
+			Stream s = zip.GetInputStream(fn), o = File.Open(Path.Combine(isol, Path.GetFileName(fn.Name)), FileMode.Create);
+			s.CopyTo(o);
+			o.Dispose();
+			s.Dispose();
+			return 0;
+		});
+	}
+	public byte[] Extract(string file)
+	{
+		Stream s = zip.GetInputStream(zip.GetEntry(file.Replace('/', '\\'/*concerned about this*/)));
+		MemoryStream o = new MemoryStream(); s.CopyTo(o); s.Dispose(); return o.ToArray();
+	}
+	static string[] passwords = Launcher.T[208].Split(';');
+	public ZipExt(string input) {
+		zip =
+#if !USE_SZL
+			ZipFile.Read(input)
+#else
+			new ZipFile(input)
+#endif
+		;
+		Launcher.vl("log.zip: "+input);
+		bool unlocked = false;
+		string pass = "";
+#if !USE_SZL
+		// DO LATER, DNZ SOURCE ISN'T LOADING IN RIGHT NOW FOR SOME REASON
+#else
+		bool locked = !(unlocked = !zip[0].IsCrypted);
+		if (locked) {
+			Launcher.vl("Password protected, testing GHTCP passwords");
+			for (int i = 0; i < 4; i++)
+			{
+				try
+				{
+					zip.Password = passwords[i];
+					Stream dummy = zip.GetInputStream(0);
+					// guessing index zero is the first file available :/
+					// and that it throws if password is incorrect
+					dummy.Close();
+					unlocked = true;
+					pass = passwords[i];
+					break; // breaking through try, perturbing... // LOL banger comment - t. future me
+				}
+				catch { }
+			}
+			if (!unlocked)
+			{
+				throw new Exception("Couldn't unlock zip using GHTCP passwords");
+				// TODO: password dialog
+			}
+		}
+		else
+			Launcher.vl("No password");
+		if (unlocked)
+#endif
+		{
+#if !USE_SZL
+#else
+			
+#endif
+		}
+	}
+}
+#endif
+
 public static partial class Launcher
 {
-	#region INI stuff
+#region INI stuff
 	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileInt", CharSet = CharSet.Unicode)]
 	public static extern int GI(string a, string k, int d, string f);
 	[DllImport("kernel32.dll", EntryPoint = "GetPrivateProfileString", CharSet = CharSet.Unicode)]
@@ -88,7 +454,7 @@ public static partial class Launcher
 	{
 		return Path.IsPathRooted(f) ? f : (Directory.GetCurrentDirectory() + '\\' + f);
 	}
-	#endregion
+#endregion
 
 	public static string
 		dataf = folder + "DATA\\",
@@ -113,13 +479,13 @@ public static partial class Launcher
 					.ToUpperInvariant();
 	}
 
-	#region little functions
+#region little functions
 	public static void killgame()	{ cfgW("Temp", ks, 1); }
 	public static void unkillgame()	{ cfgW("Temp", ks, 0); }
 	// copy song video
 	static void cSV(string bik)
 	{
-		#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART
+#region EXTRA: DETECT BINK BACKGROUND VIDEO PACKED WITH CHART
 		// definitely no one will use this
 		if (cfg(l, sv, 0) == 1)
 		{
@@ -175,7 +541,7 @@ public static partial class Launcher
 				vl(e);
 			}
 		}
-		#endregion
+#endregion
 	}
 	static void killEncoders()
 	{
@@ -296,9 +662,9 @@ public static partial class Launcher
 		}
 		return false;
 	}
-	#endregion
+#endregion
 
-	#region process functions, functions for part of conversion, misc
+#region process functions, functions for part of conversion, misc
 	//http://csharptest.net/526/how-to-search-the-environments-path-for-an-exe-or-dll/index.html
 	/// <summary>
 	/// Expands environment variables and, if unqualified, locates the exe in the working directory
@@ -518,9 +884,9 @@ public static partial class Launcher
 	{
 		return Main(args);
 	}
-	#endregion
+#endregion
 
-	#region other helper things
+#region other helper things
 	static DateTime unixstart = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 	static DateTime FromUnixTime(uint seconds)
 	{
@@ -569,7 +935,7 @@ public static partial class Launcher
 		return Regex.Replace(v, Regex.Escape(a), b, RegexOptions.IgnoreCase);
 	}
 	/// <summary>
-	/// Expand compact filter string
+	/// Expand compact file dialog filter string
 	/// </summary>
 	public static string uf(string l, bool ga)
 	{
@@ -688,7 +1054,7 @@ public static partial class Launcher
 		return item;
 	}
 #endif
-	#endregion
+#endregion
 
 	static bool outputPAK = false;
 	static bool newinstance = false;
@@ -703,7 +1069,7 @@ public static partial class Launcher
 		try
 		{
 			inif = folder + "settings.ini";
-			#region NO ARGS ROUTINE
+#region NO ARGS ROUTINE
 			try
 			{
 				isTTY =
@@ -1571,6 +1937,16 @@ public static partial class Launcher
 					{
 						charthash ^= WZK64.Create(File.ReadAllBytes("boss.ini"));
 					}
+
+					// hate me*
+					bool isBoss = false,
+						gotBossScr = false,
+						boss_useSP = true,
+						boss_defProps = true;
+
+					string bini = "boss.ini";
+					isBoss = ini("boss", "enable", 0, bini) == 1; // not letting you off easy with a blank ini lol
+
 					ulong audhash = 0;
 					bool chartCache = false;
 					bool audCache = false;
@@ -1636,12 +2012,10 @@ public static partial class Launcher
 					{
 						ffmpeg = where("ffmpeg.exe");
 						AB_param = (ushort)(cfg("Audio", "AB", 128) >> 1/*thx helix*/);
-						AR_param =
-							Math.Max(
-								Math.Min(
-									(ushort)(cfg("Audio", "SampRate", AB_param)),
-									(ushort)48000),
-								(ushort)32000);
+						AR_param = Math.Max(Math.Min(
+							(ushort)cfg("Audio", "SampRate", AB_param),
+							(ushort)48000
+						), (ushort)32000);
 						{
 							int forcech = (cfg("Audio", "ForceChannels", 0));
 							if (forcech > 0)
@@ -1857,7 +2231,7 @@ public static partial class Launcher
 
 						OffsetTransformer OT = new OffsetTransformer(chart);
 						string[] td = { "Easy", "Medium", "Hard", "Expert" };
-						string[] ti = { "Single", "DoubleBass", "DoubleGuitar", "DoubleRhythm" };
+						string[] ti = { "Single", "DoubleBass", "DoubleGuitar", "Double"+(isBoss?"Bass":"Rhythm") }; // *
 
 						vl(T[45], chartConvColor);
 						//vl("Creating note arrays...", chartConvColor);
@@ -2200,13 +2574,6 @@ public static partial class Launcher
 						vl(T[53], bossColor);
 						//vl("Reading boss props...");
 
-						bool isBoss = false,
-							gotBossScr = false,
-							boss_useSP = true,
-							boss_defProps = true;
-
-						string bini = "boss.ini";
-						isBoss = ini("boss", "enable", 0, bini) == 1; // not letting you off easy with a blank ini lol
 						boss_defProps = ini("boss", "usedefault", 0, bini) == 1;
 						boss_useSP = ini("boss", "usestarphrases", 1, bini) == 1;
 						int boss_death_time = -1;
@@ -2853,7 +3220,7 @@ public static partial class Launcher
 							mrk_t[i].Values[0] = (int)(Math.Floor(OT.GetTime(mrkrs[i].Offset) * 1000) + delay);
 							//verbose(", name = ", chartConvColor);
 							mrk_n[i] = new QbItemString(mid);
-							mrk_n[i].Create(QbItemType.StructItemString);
+							mrk_n[i].Create(QbItemType.StructItemStringW);
 							mrk_n[i].ItemQbKey = QbKey.Create(0x7D30DF01);
 							//verbose(SubstringExtensions.EncloseWithQuoteMarks(mrkrs[i].TextValue) + "\n", chartConvColor);
 							mrk_n[i].Strings[0] = mrkrs[i].TextValue.Substring(8);//markerstr[i * 2 + 1];
@@ -2882,19 +3249,19 @@ public static partial class Launcher
 						songmeta.Create(QbItemType.SectionStruct);
 						songmeta.ItemQbKey = QbKey.Create("fastgh3_meta");
 						QbItemString songtitle = new QbItemString(mid);
-						songtitle.Create(QbItemType.StructItemString);
+						songtitle.Create(QbItemType.StructItemStringW);
 						songtitle.ItemQbKey = QbKey.Create("title");
 						QbItemString songauthr = new QbItemString(mid);
-						songauthr.Create(QbItemType.StructItemString);
+						songauthr.Create(QbItemType.StructItemStringW);
 						songauthr.ItemQbKey = QbKey.Create("author");
 						QbItemString songalbum = new QbItemString(mid);
-						songalbum.Create(QbItemType.StructItemString);
+						songalbum.Create(QbItemType.StructItemStringW);
 						songalbum.ItemQbKey = QbKey.Create("album");
 						QbItemString songyear = new QbItemString(mid);
-						songyear.Create(QbItemType.StructItemString);
+						songyear.Create(QbItemType.StructItemStringW);
 						songyear.ItemQbKey = QbKey.Create("year");
 						QbItemString songchrtr = new QbItemString(mid);
-						songchrtr.Create(QbItemType.StructItemString);
+						songchrtr.Create(QbItemType.StructItemStringW);
 						songchrtr.ItemQbKey = QbKey.Create("charter");
 						songtitle.Strings[0] = ini("song", "name", "Unknown", sini).Trim();
 						songauthr.Strings[0] = ini("song", "artist", "Unknown", sini).Trim();

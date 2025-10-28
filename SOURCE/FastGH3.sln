@@ -91,6 +91,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{13FBDD6F-B8C6-450D-AF3D-47FADB191C40}"
 	ProjectSection(SolutionItems) = preProject
 		..\.github\workflows\build_and_test.yml = ..\.github\workflows\build_and_test.yml
+		..\.github\workflows\testSongs.ps1 = ..\.github\workflows\testSongs.ps1
+		..\.github\workflows\visualDeps.ps1 = ..\.github\workflows\visualDeps.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Obsolete", "Obsolete", "{7CCFCE4F-F043-4A39-9666-82F95D3C203B}"

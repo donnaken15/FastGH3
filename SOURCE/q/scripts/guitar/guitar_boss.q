@@ -517,6 +517,7 @@ endscript
 
 death_meter_marker_color = [ 255 255 255 255 ]
 death_meter_marker_color2 = [ 0 255 100 255 ]
+// redlol death_meter_marker_color2 = [ 255 31 31 255 ]
 script update_battle_death_meter
 	GetSongTimeMs
 	startTime = <time>
