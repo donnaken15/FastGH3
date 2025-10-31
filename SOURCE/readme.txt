@@ -5,15 +5,15 @@
 I don't have much to say here, except give a list
 of things required for building this manually.
 
-The script in this folder configure-repo.bat
+The script in this folder, configure-repo.bat,
 can help to automate the handling of the following:
 
 Required software:
-* Visual Studio 2015 + Visual C#	-	for building projects
+* Visual Studio 2015+Visual C#+C++	-	for building projects
 * Node (>=12.2.0) or Bun (>=1.1.0)	-	for generating a file used for storing resources (hack)
-* Git / Cygwin / MSYS2 / win-bash	-	for version control and/or running build scripts
+* Git / Cygwin / MSYS2 / busybox	-	for version control and/or running build scripts
 Optional software:
-* UPX or mpress
+* UPX, DotNetCompressor
 * NSIS
 * stripreloc
 

@@ -60,12 +60,13 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(ProjectDir)stripversion.bat" "$(TargetPath)"
-
 copy "$(TargetPath)" "$(TargetDir)c128ks.exe" /y
-
 del "$(TargetPath)" /q</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>"C:\Program Files (x86)\Common Files\Microsoft Shared\TextTemplating\14.0\TextTransform.exe" "$(ProjectDir)ucs2res.tt"</PreBuildEvent>
+    <PreBuildEvent>rem so much hate
+set "tt=$(ProjectDir)ucs2res.tt"
+rem "C:\Program Files (x86)\Common Files\Microsoft Shared\TextTemplating\14.0\TextTransform.exe" "%tt%"
+"C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\Common7\IDE\TextTransform.exe" "%tt%"</PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -10,3 +10,4 @@
 *.Designer.cs linguist-detectable=false
 # god sake
 *.csproj	eol=crlf
+*.ps1		eol=crlf

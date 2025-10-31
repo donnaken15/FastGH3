@@ -2025,9 +2025,7 @@ public static partial class Launcher
 						}
 						if (AB_param == 0) AB_param = 64; // i hate myself
 						AB_param = Math.Max(AB_param, (ushort)24); // AB > 48 ? AB : 48
-						bool VBR = false;
-						VBR = (cfg("Audio", "VBR", 0) == 1);
-						string VBR_param = VBR ? "V" : "B";
+						bool VBR = (cfg("Audio", "VBR", 0) != 0);
 						audioConv_start = time;
 						if (caching)
 							print(T[136], cacheColor);

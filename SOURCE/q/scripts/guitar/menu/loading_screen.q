@@ -65,14 +65,14 @@ script create_loading_strings
 		'HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE'
 		'door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123'
 		'uber song fc' 'NAIL THE 540' '58,473 X 4\nStar Power + BS 360 Riff + Kissed the Sustain + FS Solo + FS 1440 GRYBRYBO'
-		'ROCKING OUT IN THE ABYSS!!' 'IN SECONDS...!' '\c4ACCESS GRANTED' '>sudo skate8.exe -gem_array fastgh3_song_expert'
+		'ROCKING OUT IN THE ABYSS!!' 'IN SECONDS...!' '\c4ACCESS GRANTED' '>sudo skate8.exe -gem_array fastgh3_song_expert' 'the low snare frequency is wrong'
 		'It looks like you\'re trying to hit the note. Would you like help with:\n\b3 Strumming\n\b2 Holding down the frets\n\b0 SHUT UP!!!\n\b1 Applying tinfoil'
 		'!!!!!!! Guitarist not found !!!!!!!' '(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)'
-		'LEXER ERROR (5189): Unknown token in array:   ()' 'A.K.A: GH3DE, GH3DX, or GH3++' '__FASTcall void initGH3(int*)'
+		'LEXER ERROR (5488): Unknown token in array:   ()' 'A.K.A: GH3DE, GH3DX, or GH3++' '__FASTcall void initGH3(int*)'
 		'dummy' 'This game is practically a mod of Tony Hawk\'s Project 8' 'Powered by Tony Hawk'
 		'\c6AM: GAIN 3 STARS\n\c3PRO: GAIN 5 STARS\n\c5SICK: FULL COMBO SONG, GAIN 5 GOLDEN STARS'
 		'\c6AM: HIT A HOPO PATTERN WITH YOUR WRIST OVER THE NECK\n\c3PRO: PLAY THE OPPOSITE HANDEDNESS WITH HYPERSPEED 10\n\c5SICK: PLAY THE OPPOSITE HANDEDNESS WITH THE GUITAR BEHIND YOUR BACK\c0' // i wrote this without realizing i already made a similar thing
-		'This is a mod of Project 8 which is an update of American Wasteland which is an update of Underground 2 which is an update of Underground 1 which is an update of Pro Skater 4 which is an update of Pro Skater 3 which is an update of Pro Skater 2 which is an update of Pro Skater 1 which is an update of Apocalypse which is an update of MDK'
+		'This is a mod of Project 8 which is an update of American Wasteland which is an update of Underground 2 which is an update of Underground 1 which is an update of Pro Skater 4 which is an update of Pro Skater 3 which is an update of Pro Skater 2 which is an update of Pro Skater 1 which is an update of Apocalypse which is an update of MDK which is an update of Big Guns'
 		'\c2I WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED'
 	]
 endscript
@@ -85,7 +85,7 @@ script create_loading_screen\{mode = play_song}
 	Change \{is_changing_levels = 1}
 	GetArraySize ($loading_screen_tips)
 	GetRandomValue name = rand_num a = 0 b = (<array_Size> - 1)integer
-	rand_tip = ($loading_screen_tips [<rand_num>])
+	rand_tip = ($loading_screen_tips[<rand_num>])
 	if StringEquals a=<rand_tip> b='%VER%'
 		formattext \{textname=rand_tip 'Current version: %b' b=$fastgh3_build}
 	endif

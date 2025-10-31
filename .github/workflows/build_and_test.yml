@@ -43,6 +43,7 @@ jobs:
     "C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x86\" | Out-File -FilePath $env:GITHUB_PATH -Append
     Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
     pushd "C:\Program Files\Git"
+    echo "Compressing install"
     compact /c /f /s /a /i /exe:lzx *.exe *.dll *.txt *.pm *. | Select-Object -Last 3
     popd
   -
@@ -60,14 +61,14 @@ jobs:
   -
    name: Install DotNetCompressor
    env:
-    condition: ${{vars.NETPACKERS}}
+    condition: ${{vars.NETPACKER}}
    if: ${{env.condition == 'DotNetCompressor'}}
    run: |
     iwr -Uri "https://github.com/donnaken15/DotNetCompressor/releases/latest/download/NetCompressor.exe" -OutFile "C:\Windows\DotNetCompressor.exe"
   -
    name: Install mpress
    env:
-    condition: ${{vars.NETPACKERS}}
+    condition: ${{vars.NETPACKER}}
    if: ${{env.condition != 'DotNetCompressor'}}
    #if: ${{vars.NETPACKER == 'mpress'}}
    run: |
