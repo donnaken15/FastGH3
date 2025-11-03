@@ -1893,10 +1893,7 @@ script repair_string
 	ExtendCrc ($button_up_models.<Color>.name) '_string' out = name_string
 	ExtendCrc <name_string> ($<other_player_status>.text) out = name_string
 	if ScreenElementExists id = <name_string>
-		DoScreenElementMorph {
-			id = <name_string>
-			alpha = 1
-		}
+		DoScreenElementMorph id = <name_string> alpha = 1
 	endif
 endscript
 
@@ -2077,10 +2074,7 @@ script battle_broken_string
 		if ($is_network_game)
 			if NOT (<net_update_flags> = 0)
 				if NOT ($<other_player_status>.highway_layout = solo_highway)
-					SendNetMessage {
-						Type = repair_string
-						flags = <net_update_flags>
-					}
+					SendNetMessage Type = repair_string flags = <net_update_flags>
 				endif
 			endif
 		endif

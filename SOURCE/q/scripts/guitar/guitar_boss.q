@@ -1,51 +1,13 @@
-boss_song = Boss_TomMorello_Props
+boss_song = Boss_Props
 boss_hammer_try_strum = 4
 Boss_Props = {
-	GainPerNote = {
-		easy = 0.8
-		medium = 0.7
-		hard = 0.55
-		expert = 0.4
-	}
-	LossPerNote = {
-		easy = 5.0
-		medium = 2.75
-		hard = 2.5
-		expert = 2.0
-	}
-	PowerUpMissedNote = {
-		easy = 45.0
-		medium = 42.0
-		hard = 35.0
-		expert = 30.0
-	}
-	WhammySpeed = {
-		easy = 1150
-		medium = 900
-		hard = 500
-		expert = 350
-	}
-	BrokenStringSpeed = {
-		easy = 1150
-		medium = 850
-		hard = 650
-		expert = 400
-	}
-	BrokenStringMissedNote = {
-		easy = 24.0
-		medium = 17.0
-		hard = 14.0
-		expert = 11.5
-	}
-	PowerUps = [
-		Lightning
-		DifficultyUp
-		DoubleNotes
-		LeftyNotes
-		BrokenString
-		WhammyAttack
-		PowerUpSteal
-	]
+	GainPerNote = { easy = 0.8 medium = 0.7 hard = 0.55 expert = 0.4 }
+	LossPerNote = { easy = 5.0 medium = 2.75 hard = 2.5 expert = 2.0 }
+	PowerUpMissedNote = { easy = 45.0 medium = 42.0 hard = 35.0 expert = 30.0 }
+	WhammySpeed = { easy = 1150 medium = 900 hard = 500 expert = 350 }
+	BrokenStringSpeed = { easy = 1150 medium = 850 hard = 650 expert = 400 }
+	BrokenStringMissedNote = { easy = 24.0 medium = 17.0 hard = 14.0 expert = 11.5 }
+	PowerUps = [ Lightning DifficultyUp DoubleNotes LeftyNotes BrokenString WhammyAttack PowerUpSteal ]
 	character_profile = axel
 	character_name = $boss_name
 }
@@ -67,13 +29,7 @@ Boss_Slash_Props = {
 	WhammySpeed = { easy = 1150 medium = 900 hard = 500 expert = 350 }
 	BrokenStringSpeed = { easy = 1150 medium = 850 hard = 650 expert = 400 }
 	BrokenStringMissedNote = { easy = 24.0 medium = 17.0 hard = 14.0 expert = 11.5 }
-	PowerUps = [
-		Lightning
-		DifficultyUp
-		DoubleNotes
-		BrokenString
-		WhammyAttack
-	]
+	PowerUps = [ Lightning DifficultyUp DoubleNotes BrokenString WhammyAttack ]
 	character_profile = axel
 	character_name = 'Slash'
 }
@@ -129,7 +85,7 @@ script bossbattle_init
 	if ($boss_battle = 0) // wtf
 		return
 	endif
-	Change \{StructureName = player2_status part = rhythm}
+	Change \{StructureName = player2_status part = bass}
 	Change boss_controller = ($player2_status.controller)
 	Change \{boss_pattern = 0}
 	Change \{boss_strum = 0}
@@ -354,10 +310,7 @@ script bossbattle_trigger_on\{Player = 1 player_text = 'p1' player_status = play
 		select = ($current_powerups_p1 [($<player_status>.current_num_powerups - 1)])
 		GH3_Battle_Play_Crowd_Reaction_SFX receiving_player = 2 receiving_player_current_crowd_level = ($<other_player_status>.current_health)
 		if ($is_network_game)
-			SendNetMessage {
-				Type = bossbattle_trigger_on
-				select = <select>
-			}
+			SendNetMessage Type = bossbattle_trigger_on select = <select> // ??? for leaderboards?
 		endif
 	else
 		<other_player> = 1
@@ -439,7 +392,7 @@ script bossbattle_ai_damage\{player_status = player2_status drain_time = 15000 p
 			end_creation_time = <end_creation_time>
 			gem_fraction = <gem_fraction>}
 		GetSongTimeMs
-		start_creation_time = (<time> + ($<player_status>.scroll_time - $destroy_time)* 1000.0 + 1000)
+		start_creation_time = (<time> + (($<player_status>.scroll_time - $destroy_time)* 1000.0) + 1000)
 		if NOT ($battlemode_powerups [<select>].name = BrokenString)
 			if (<start_creation_time> >= <end_creation_time>)
 				break
@@ -465,28 +418,26 @@ script create_battle_death_meter
 	endif
 	elems = [
 		{
-			id = battle_death_meter
-			parent = battlemode_container
-			Pos = (648.0, 500.0) Scale = 1
-			just = [center center]
+			id = battle_death_meter parent = battlemode_container
+			Pos = (648.0, 500.0) Scale = 1 z_priority = 21
 		}
 		{
 			id = battle_death_meter_marker
-			Pos = (29.0, 200.0) Scale = 0.9
-			just = [center center]
-			z_priority = 1
+			Pos = (29.0, 200.0) Scale = 0.9 z_priority = 22
 		}
 		{
-			id = battle_death_meter_wing_r
-			texture = battle_alert_death_wing
-			Pos = (13.0, 7.0) Scale = 0.5
-			rot_angle = 15 just = [left top]
+			id = battle_death_meter_wing_r texture = battle_alert_death_wing
+			Pos = (13.0, 7.0) Scale = 0.5 just = [left top] rot_angle = 15
+			// wii style // halve wing distance
+			//Pos = (7.0, 25.0) Scale = 0.5
+			//rot_angle = 15 just = [-1.5 0.0]
 		}
 		{
-			id = battle_death_meter_wing_l
-			texture = battle_alert_death_wing
-			Pos = (39.0, 7.0) Scale = (-0.5, 0.5)
-			rot_angle = -15 just = [right top]
+			id = battle_death_meter_wing_l texture = battle_alert_death_wing
+			Pos = (39.0, 7.0) Scale = (-0.5, 0.5) just = [right top] rot_angle = -15
+			// wii style
+			//Pos = (45.0, 25.0) Scale = (-0.5, 0.5)
+			//rot_angle = -15 just = [1.5 0.0]
 		}
 	]
 	GetArraySize \{elems}
@@ -500,12 +451,11 @@ script create_battle_death_meter
 			parent = battle_death_meter
 			Type = SpriteElement texture = (<elems>[<i>].id)
 			rgba = [255 255 255 255] Pos = (648.0, 900.0)
-			Scale = 1 just = [center center] z_priority = 0
+			Scale = 1 just = [center center] z_priority = 20
 			(<elems>[<i>])
 		}
 		Increment \{i}
 	repeat <array_size>
-	// merge, replace keys with structs
 	if ($disable_intro = 0)
 		DoScreenElementMorph \{id = battle_death_meter Pos = (648.0, 900.0)}
 		DoScreenElementMorph \{id = battle_death_meter Pos = (648.0, 500.0) time = 0.3}
@@ -515,26 +465,52 @@ script create_battle_death_meter
 	spawnscriptnow \{update_battle_death_meter_wings params = {wing_r = battle_death_meter_wing_r wing_l = battle_death_meter_wing_l}}
 endscript
 
+script rgba_blend \{a = [255 255 255 255] b = [255 255 255 255] 0.0}
+	Clamp <#"0x00000000"> max = 1.0 min = 0.0
+	// disgusting thing for retail if clamp keeps returning max
+	//if (<#"0x00000000"> < 0.0)
+	//	<clamped> = 0.0
+	//elseif (<#"0x00000000"> > 1.0)
+	//	<clamped> = 1.0
+	//endif
+	i = 0
+	begin
+		MathMin a = 255 b = (<b>[<i>])
+		c = <min>
+		MathMin a = 255 b = (<a>[<i>])
+		c = (<min>+(<clamped>*(<c>-<min>)))
+		CastToInteger \{c}
+		SetArrayElement ArrayName = a index = <i> NewValue = <c>
+		RemoveComponent \{c}
+		RemoveComponent \{c}
+		Increment \{i}
+	repeat 4
+	return rgba = <a>
+endscript
+
+script death_meter_params
+	GetSongTimeMs
+	endtime = $boss_death_time
+	if (<endtime> < 1)
+		Goto \{EmptyScript}
+	endif
+	meterTime = (<endtime> / 1000)
+	return <...> time = (<time> * (<time> <= <endtime>)) meterStep = (<meterTime> / <meterDistance>) update = ((<time> / <endtime>) * <meterDistance>)
+endscript
+
 death_meter_marker_color = [ 255 255 255 255 ]
 death_meter_marker_color2 = [ 0 255 100 255 ]
 // redlol death_meter_marker_color2 = [ 255 31 31 255 ]
 script update_battle_death_meter
-	GetSongTimeMs
-	startTime = <time>
-	endtime = $boss_death_time
-	if (<endtime> < 1)
-		return
-	endif
-	if (<startTime> > <endtime>)
-		<startTime> = 0
-	endif
-	meterTime = ((<endtime> - <startTime>)/ 1000)
-	meterDistance = 150
-	meterStep = (<meterTime> / <meterDistance>)
-	pos_update = 0
-	color_update = 0
+	// USING SCREENELEMENTPOS OFFSETS IT
+	startY = 200
+	death_meter_params <...> meterDistance = 150 color_update = 0 start_pos = ((29.0, 0.0) + ((0.0, 1.0) * <startY>))
+	modulo <update> mod = 1
+	rgba_blend a = ($death_meter_marker_color) b = ($death_meter_marker_color2) <mod>
+	DoScreenElementMorph id = <death_meter_marker> rgba = <rgba>
+	DoScreenElementMorph id = <death_meter_marker> Pos = (<start_pos> - ((0.0, 1.0) * <update>))
 	begin
-		Increment \{pos_update}
+		update = (<update> + 1.0)
 		if not ScreenElementExists id = <death_meter_marker>
 			break
 		endif
@@ -545,28 +521,18 @@ script update_battle_death_meter
 		DoScreenElementMorph id = <death_meter_marker> rgba = ($<color>) time = 1
 		<color_update> = (1 - <color_update>)
 		if (<meterStep> > 0)
-			DoScreenElementMorph id = <death_meter_marker> Pos = ((29.0, 200.0) - ((0.0, 1.0) * <pos_update>))time = <meterStep>
+			DoScreenElementMorph id = <death_meter_marker> Pos = (<start_pos> - ((0.0, 1.0) * <update>)) time = <meterStep>
 		endif
 		wait <meterStep> Second
 	repeat
 endscript
 
 script update_battle_death_meter_wings
-	GetSongTimeMs
-	startTime = <time>
-	endtime = $boss_death_time
-	if (<endtime> < 1)
-		return
-	endif
-	if (<startTime> > <endtime>)
-		<startTime> = 0
-	endif
-	meterTime = ((<endtime> - <startTime>) / 1000)
-	meterDistance = 40
-	meterStep = (<meterTime> / <meterDistance>)
-	rot_update = 0
+	death_meter_params <...> meterDistance = 40
+	DoScreenElementMorph id = <wing_l> rot_angle = (-15 + <update>)
+	DoScreenElementMorph id = <wing_r> rot_angle = (15 - <update>)
 	begin
-		<rot_update> = (<rot_update> + 1)
+		<update> = (<update> + 1.0)
 		if (<meterTime> > 0)
 			if not ScreenElementExists id = <wing_l>
 				break
@@ -574,8 +540,8 @@ script update_battle_death_meter_wings
 			if not ScreenElementExists id = <wing_r>
 				break
 			endif
-			DoScreenElementMorph id = <wing_l> rot_angle = (-15 + <rot_update>) time = <meterStep>
-			DoScreenElementMorph id = <wing_r> rot_angle = (15 - <rot_update>) time = <meterStep>
+			DoScreenElementMorph id = <wing_l> rot_angle = (-15 + <update>) time = <meterStep>
+			DoScreenElementMorph id = <wing_r> rot_angle = (15 - <update>) time = <meterStep>
 		endif
 		wait <meterStep> seconds
 	repeat

@@ -410,7 +410,8 @@ script gem_scroller\{Player = 1 training_mode = 0}
 endscript
 
 script get_song_end_time_for_array
-	if NOT note_array_empty <song_array> // uh //GlobalExists name = <song_array>
+	GetArraySize ($<song_array>)
+	if note_array_empty <song_array> // uh //GlobalExists name = <song_array>
 		total_end_time2 = 2.0
 	else
 		GetArraySize $<song_array>
@@ -418,8 +419,8 @@ script get_song_end_time_for_array
 			total_end_time2 = 2.0
 		else
 			last_entry = (<array_Size> - $num_song_columns)
-			end_time = ($<song_array> [(<last_entry>)])
-			<whammy_time> = ($<song_array> [(<last_entry> + 1)])
+			end_time = ($<song_array>[(<last_entry>)])
+			<whammy_time> = ($<song_array>[(<last_entry> + 1)])
 			total_end_time2 = (<end_time> + <whammy_time>)
 		endif
 	endif
@@ -1000,12 +1001,8 @@ script kill_gem_scroller\{no_render = 0}
 	//endif
 	disable_highway_prepass
 	SongUnLoadFSBIfDownloaded
-	//Kill_StarPower_Camera \{changecamera = 0}
-	//Kill_Walk_Camera \{changecamera = 0}
 	Change \{StructureName = player1_status star_power_amount = 0}
 	Change \{StructureName = player2_status star_power_amount = 0}
-	//Kill_StarPower_StageFX player_text = ($player1_status.text)player_status = $player1_status ifEmpty = 0
-	//Kill_StarPower_StageFX player_text = ($player2_status.text)player_status = $player2_status ifEmpty = 0
 	if ScreenElementExists \{id = starpower_container_leftp1}
 		DoScreenElementMorph \{id = starpower_container_leftp1 alpha = 0}
 	endif
@@ -1279,41 +1276,11 @@ script kill_startup_script
 endscript
 
 script Load_Venue\{block_scripts = 0}
-	//GetPakManCurrentName \{map = zones}
-	//if GotParam \{pakname}
-	//	if (<pakname> = (($LevelZones.$current_level).name))
-	//		Transitions_ResetZone
-	//		return
-	//	else
-	//		ResetWaypoints
-	//		SetPakManCurrentBlock \{map = zones pak = None}
-	//	endif
-	//endif
-	//ResetPulseEvents
-	//FormatText textname = FileName '%s.pak' s = (($LevelZones.$current_level).name)
-	//GetContentFolderIndexFromFile <FileName>
-	//if (<device> = content)
-	//	if NOT Downloads_OpenContentFolder content_index = <content_index>
-	//		DownloadContentLost
-	//		return
-	//	endif
-	//endif
-	//if NOT SetPakManCurrentBlock map = zones pak = (($LevelZones.$current_level).zone) block_scripts = <block_scripts>
-	//	DownloadContentLost
-	//	return
-	//endif
-	//if (<device> = content)
-	//	Downloads_CloseContentFolder content_index = <content_index>
-	//endif
-	//GH3_Change_crowd_reverb_settings_by_Venue
-	
 endscript
 
 script start_song\{device_num = 0 practice_intro = 0 endtime = 999999999}
 	mark_unsafe_for_shutdown
 	set_rich_presence_game_mode
-	//Load_Venue
-	//MassiveInit \{sku = 'atvi_guitar_hero_3_pc_na' startZone = 'GlobalZone'}
 	Transition_SelectTransition practice_intro = <practice_intro>
 	if NOT (($game_mode = p2_faceoff) ||
 			($game_mode = p2_pro_faceoff) ||

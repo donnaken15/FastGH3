@@ -86,7 +86,7 @@ script career_hud_2d_elements_load
 		score_text_scale = 1.1
 		score_text_rgba = [255 255 255 255]
 		score_z = 7
-		streak_text_pos = (222.0, 78.0)
+		streak_text_pos = (225.0, 78.0)
 		streak_num_spacing = 37.0
 		streak_num_color = [
 			[230 230 230 200]
@@ -286,14 +286,14 @@ script career_hud_2d_elements_load
 				element_id = hud_counter_drum
 				element_parent = HUD2D_note_container
 				texture = hud_counter_drum
-				pos_off = (4.0, 40.0)
+				pos_off = (7.0, 40.0)
 				zoff = 8
 			}
 			{
 				element_id = HUD2D_counter_drum_icon
 				element_parent = HUD2D_note_container
 				texture = hud_counter_drum_icon
-				pos_off = (44.0, 40.0)
+				pos_off = (47.0, 40.0)
 				zoff = 26
 			}
 			{

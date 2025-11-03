@@ -16,7 +16,7 @@ crowd_unique_id = NULL
 song_paused = 0
 
 script preload_song\{startTime = 0 fadeintime = 0.0}
-	printf "song %s" s = <song_name>
+	printf 'song %s' s = <song_name>
 	Change \{song_stream_id = NULL}
 	Change \{song_unique_id = NULL}
 	Change \{guitar_player1_stream_id = NULL}
@@ -89,7 +89,7 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 	if PreloadStream <song_stream> buss = Master useForSongTimeSync = 1
 		Change song_unique_id = <unique_id>
 	else
-		ScriptAssert "Could not load song track for %s" s = <song_prefix>
+		ScriptAssert 'Could not load song track for %s' s = <song_prefix>
 	endif
 	extra_stream = NULL
 	if (<stream_config> = gh3)
@@ -105,13 +105,13 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 	if ($current_num_players = 1)
 		if (($player1_status.part)= rhythm & (<stream_config> != gh1))
 			if NOT PreloadStream <extra_stream> buss = Master
-				ScriptAssert "Could not load player1 guitar track for %s" s = <song_prefix>
+				ScriptAssert 'Could not load player1 guitar track for %s' s = <song_prefix>
 			endif
 			Change guitar_player1_unique_id = <unique_id>
 			<extra_stream> = <guitar_stream>
 		else
 			if NOT PreloadStream <guitar_stream> buss = Master
-				ScriptAssert "Could not load player1 guitar track for %s" s = <song_prefix>
+				ScriptAssert 'Could not load player1 guitar track for %s' s = <song_prefix>
 			endif
 			Change guitar_player1_unique_id = <unique_id>
 			<extra_stream> = <rhythm_stream>
@@ -126,24 +126,24 @@ script preload_song\{startTime = 0 fadeintime = 0.0}
 		if (($player1_status.part)= rhythm & (<stream_config> != gh1))
 			Change guitar_player1_stream_id = <extra_stream>
 			if NOT PreloadStream <extra_stream> buss = Master
-				ScriptAssert "Could not load player1 guitar track for %s" s = <song_prefix>
+				ScriptAssert 'Could not load player1 guitar track for %s' s = <song_prefix>
 			endif
 		else
 			Change guitar_player1_stream_id = <guitar_stream>
 			if NOT PreloadStream <guitar_stream> buss = Master
-				ScriptAssert "Could not load player1 guitar track for %s" s = <song_prefix>
+				ScriptAssert 'Could not load player1 guitar track for %s' s = <song_prefix>
 			endif
 		endif
 		Change guitar_player1_unique_id = <unique_id>
 		if (($player2_status.part)= rhythm & (<stream_config> != gh1))
 			Change guitar_player2_stream_id = <extra_stream>
 			if NOT PreloadStream <extra_stream> buss = Master
-				ScriptAssert "Could not load player2 guitar track for %s" s = <song_prefix>
+				ScriptAssert 'Could not load player2 guitar track for %s' s = <song_prefix>
 			endif
 		else
 			Change guitar_player2_stream_id = <guitar_stream>
 			if NOT PreloadStream <guitar_stream> buss = Master
-				ScriptAssert "Could not load player2 guitar track for %s" s = <song_prefix>
+				ScriptAssert 'Could not load player2 guitar track for %s' s = <song_prefix>
 			endif
 		endif
 		Change guitar_player2_unique_id = <unique_id>
@@ -208,7 +208,7 @@ script SongLoadFSB
 	if (<fsb_index> = -1)
 		Change \{song_fsb_id = -1}
 		Change \{song_fsb_name = 'none'}
-		ScriptAssert "could not load FSB for: %s" s = <song_prefix>
+		ScriptAssert 'Could not load FSB for: %s' s = <song_prefix>
 	else
 		Change song_fsb_id = <fsb_index>
 		Change song_fsb_name = <FileName>
@@ -231,7 +231,7 @@ script waitforpreload_stream\{Stream = None}
 				break
 			endif
 			wait \{1 gameframe}
-			printf "Waiting for preload %s" s = <Stream>
+			printf 'Waiting for preload %s' s = <Stream>
 		repeat
 	endif
 endscript
@@ -439,7 +439,7 @@ script end_song\{song_failed_pitch_streams = 0}
 		StopStream \{unique_id = $song_unique_id}
 		StopStream \{unique_id = $guitar_player1_unique_id}
 	else
-		printf \{channel = SFX "We are pitching the stream down because we failed"}
+		printf \{channel = SFX 'We are pitching the stream down because we failed'}
 		spawnscriptnow \{Failed_Song_Pitch_Down}
 	endif
 	if NOT ($extra_unique_id = NULL)

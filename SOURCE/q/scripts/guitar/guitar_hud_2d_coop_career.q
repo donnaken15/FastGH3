@@ -8,7 +8,7 @@ coop_career_hud_2d_elements = {
 }
 script coop_career_hud_2d_elements_load
 	ffs = {}
-	if (<old_2p_shadow> = 0)
+	if not IsTrue \{$old_2p_shadow} // because can't unload global zones (for now...??)
 		ffs = { blend = subtract }
 	endif
 	change coop_career_hud_2d_elements = {

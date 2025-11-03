@@ -58,5 +58,9 @@ for %%I in (
 	TapHopoChord
 ) do copy PLUGINS\%%I.dll __FINAL\PLUGINS\%%I.dll /y
 copy SOURCE\Misc\user.pak.xen __FINAL\DATA\user.pak.xen /y
+pushd __FINAL
+echo Compressing... (for whatever reason)
+compact /c /f /s /a /i /exe:lzx *
+popd
 popd
 

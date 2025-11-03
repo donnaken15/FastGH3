@@ -4762,11 +4762,11 @@ public static partial class Launcher
 									QbItemQbKey QB_bossenable = new QbItemQbKey(renamed_qb);
 									QB_bossenable.Create(QbItemType.StructItemQbKey);
 									QB_bossenable.ItemQbKey = QbKey.Create("boss");
-									QB_bossenable.Values[0] = QbKey.Create("Boss_Props"); // why do i exist
+									QB_bossenable.Values[0] = key_boss_props; // why do i exist
 									fastgh3_extra.AddItem(QB_bossenable);
 
 									QbItemQbKey QB_bossitems = new QbItemQbKey(renamed_qb);
-									QB_bossitems.Create(QbItemType.SectionQbKeyString);
+									QB_bossitems.Create(QbItemType.SectionQbKey);
 									QB_bossitems.ItemQbKey = QbKey.Create("Boss_Props");
 									QB_bossitems.Values[0] = key_boss_props;
 									renamed_qb.AddItem(QB_bossitems);

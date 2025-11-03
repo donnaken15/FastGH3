@@ -20,7 +20,7 @@ script create_loading_strings
 		'PRAISE THE FOSSIL (which is now periodically updated by a third party) THAT IS HELIX'
 		'you need more than debug\n- revup90' '\bf\bf\bc\bc\be\bd\be\bd\b2\b3\ba' 'subscribe for daily \b2ideos'
 		'Switch up the style and get yourself some c00l zonez by going to donnaken15.com/fastgh3/zones.html'
-		'5 MEGABYTE ZONES' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:/windows/fastgh3' '\'\'the clone hero version of gh3\'\''
+		'4.4 MEGABYTE ZONES' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:/windows/fastgh3' '\'\'the clone hero version of gh3\'\''
 		'RUNNING ON APOCALYPSE' 'start_gem_scroller()' 'SALUTE TO THE SUN!!' 'UNIVERSES FC, YES! @#!^ YEAH!!'
 		'Now you can DOWNLOAD CHARTS THROUGH THIS MOD?! WHY DIDN\'T ANYONE THINK OF THIS!?!' 'Murderous Speed'
 		'5atu6w4zaw5atu6w4zaw5atu6w4zaw5atu6w4zaw' 'IT\'S NOT FAST ENOUGH!' 'MASSIVE ADBLOCK!' 'SHE\'S TOO STONED! NINTENDO!'
@@ -38,7 +38,7 @@ script create_loading_strings
 		'I\'M RUNNING OUT OF THINGS TO SAY!' 'YOU RESTARTED JUST TO SEE THIS MESSAGE!'
 		'HAX!' 'BOT!' 'FAAAKE!!' 'EPIC FAIL' 'WHAT ARE YOU DOING' 'WARNING: Requires x0.5 \b3 Presses'
 		'unCHARTed' '\c9INVISIBLE INK\n\nwait, uh oh' 'are you actually reading these?' 'CHARTS ON DEMAND'
-		'FITS 5944 TIMES ON A FLASH DRIVE, DO THE MATH!' 'FROM 4.7 GB TO 11.0 MB! WOW!'
+		'FITS 5944 TIMES ON A FLASH DRIVE, DO THE MATH!' 'FROM 4.7 GB TO 10.8 MB! WOW!'
 		/* formula: 1024/((11561002/1024/1024)/64)
 		64 = usual flash drive GB capacity (<-- stuck in 2011 or something thinking this is common)
 		"DO THE MATH"

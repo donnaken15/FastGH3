@@ -58,15 +58,7 @@ script setup_highway\{Player = 1}
 		<Pos> = (0.0, 0.0)
 		<Scale> = (1.0, 1.0)
 	else
-		if (<Player> = 1)
-			<Pos> = ((0 - $x_offset_p2)* (1.0, 0.0))
-		else
-			if NOT ($devil_finish = 1)
-				<Pos> = ($x_offset_p2 * (1.0, 0.0))
-			else
-				<Pos> = (1000.0, 0.0)
-			endif
-		endif
+		<Pos> = ((((1 - (2 * (<player> = 1))) * $x_offset_p2) * (1.0, 0.0)) + ((1000.0, 0.0) * (<player> = 1 & $devil_finish = 1)))
 		<Scale> = (1.0, 1.0)
 	endif
 	if ($disable_intro = 0)
@@ -375,13 +367,11 @@ script setup_highway\{Player = 1}
 		Increment \{array_count}
 	repeat <array_Size>
 	SpawnScriptLater move_highway_2d params = {<...> }
-	create_highway_prepass <...>
 	SetScreenElementLock \{id = root_window On}
 endscript
 
 script destroy_highway
 	killspawnedscript \{name = MoveGem}
-	destroy_highway_prepass <...>
 	ExtendCrc Highway_2D <player_text> out = name
 	if ScreenElementExists id = <name>
 		DestroyScreenElement id = <name>
@@ -397,67 +387,17 @@ script destroy_highway
 	GetArraySize \{$gem_colors}
 	array_count = 0
 	begin
-		Color = ($gem_colors [<array_count>])
-		if StructureContains structure = ($button_up_models.<Color>)name = name_string
+		Color = ($gem_colors[<array_count>])
+		if StructureContains structure = ($button_up_models.<Color>) name = name_string
 			ExtendCrc ($button_up_models.<Color>.name) <player_text> out = name
 			if ScreenElementExists id = <name>
 				DestroyScreenElement id = <name>
 			endif
 		endif
-		array_count = (<array_count> + 1)
+		Increment \{array_count}
 	repeat <array_Size>
 endscript
-prepass_camera_pos = (0.0, 0.0, 0.0)
-prepass_border = 0
 
-script calculate_prepass_poly_params
-endscript
-
-script calculate_prepass_offset
-endscript
-
-script update_prepass_position
-endscript
-
-script update_highway_prepass
-endscript
-
-script create_highway_prepass_object
-endscript
-
-script create_highway_prepass
-endscript
-
-script destroy_highway_prepass
-endscript
-
-script disable_highway_prepass
-	/*GetDisplaySettings
-	if (<widescreen> = true)
-		if ViewportExists \{id = bg_viewport}
-			if PrepassViewportExists \{viewport = bg_viewport}
-				SetViewportProperties \{viewport = bg_viewport clear_colorbuffer = true}
-				SetViewportProperties \{viewport = bg_viewport clear_depthstencilbuffer = true}
-				SetViewportProperties \{viewport = bg_viewport prepass = 0 Active = FALSE}
-				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = FALSE}
-			endif
-		endif
-	endif*///
-endscript
-
-script enable_highway_prepass
-	/*GetDisplaySettings
-	if (<widescreen> = true)
-		if ViewportExists \{id = bg_viewport}
-			if PrepassViewportExists \{viewport = bg_viewport}
-				SetViewportProperties \{viewport = bg_viewport clear_colorbuffer = FALSE}
-				SetViewportProperties \{viewport = bg_viewport clear_depthstencilbuffer = FALSE}
-				SetViewportProperties \{viewport = bg_viewport prepass = 0 Active = true}
-				SetViewportProperties \{viewport = bg_viewport prepass = 1 Active = true}
-			endif
-		endif
-	endif*///
-endscript
 start_2d_move = 0
 
 //PC_HIGHWAY_ANIM = 0

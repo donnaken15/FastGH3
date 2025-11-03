@@ -850,28 +850,32 @@ script blank_chart
 		if NOT ScreenElementExists id = blank_chart
 			break
 		endif
-	repeat 200
+	repeat 800
 endscript
 
 // use to skip over blank tracks in setup
 // made this way because i can imagine i can't just compare qb arrays directly
 // even if i expect the comparison code to be pointer matching
 script note_array_empty
-	if not GlobalExists <#"0x00000000"> type = array
+	if not GlobalExists <#"0x00000000">
+		//printstruct 'array doesn\'t exist' t = <#"0x00000000">
 		return \{true}
 	endif
 	GetArraySize ($<#"0x00000000">)
-	if (<array_size> = 0)
+	if (<array_size> <= 0)
+		//printstruct 'array is zero length' t = <#"0x00000000">
 		return \{true} // just blank..
 	endif
-	Mod <array_size> 3
-	if not (<mod> = 0)
-		return \{true} // invalid note array
-	endif
-	if (<array_size> = 3)
-		if ($<#"0x00000000">[1] = 0 & $<#"0x00000000">[2] = 0) // no frets!!!!!
+	Mod a = <array_size> b = 3
+	if (<mod> = 0)
+		//printstruct 'even note track' t = <#"0x00000000"> s = <array_size> m = <mod>
+		if (($<#"0x00000000">[1]) = 0 & ($<#"0x00000000">[2]) = 0) // no frets!!!!!
+			//printstruct 'blank frets: %t' t = <#"0x00000000">
 			return \{true}
 		endif
+	else
+		//printstruct 'uneven note track' t = <#"0x00000000">
+		return \{true} // just blank..
 	endif
 	return \{false}
 endscript

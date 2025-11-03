@@ -113,7 +113,7 @@ script muh_arby_bot_star
 		printf \{'bot not turned on!!!!!!!!!!!!!'}
 		return
 	endif
-	if ($game_mode = p2_battle)
+	if ($game_mode = p2_battle | $boss_battle = 1)
 		printf \{'fake battle bot (with self awareness!!!!!!)'}
 		begin
 			wait \{0.1 seconds}
@@ -145,11 +145,16 @@ script muh_arby_bot_star
 							wait \{2 gameframe}
 							// causes display glitch if i don't wait when the bot has 2 star powers
 						endif
-						battle_trigger_on player_status = <player_status>
+						if ($boss_battle)
+							bossbattle_trigger_on player = ($<player_status>.player) player_text = ($<player_status>.text) player_status = <player_status> // brutal
+							// i realize this specific script is what triggers ai damage // "AI" ZOMG
+						else
+							battle_trigger_on player_status = <player_status>
+						endif
 					endif
 				repeat 1
 				Increment \{i}
-			repeat ($current_num_players)
+			repeat ($current_num_players - $boss_battle)
 		repeat
 		return
 	endif

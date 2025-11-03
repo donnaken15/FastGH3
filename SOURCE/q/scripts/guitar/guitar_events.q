@@ -602,18 +602,6 @@ script GuitarEvent_SongFailed_Spawned
 		FormatText textname = winner_text "%s Rocks!" s = ($current_boss.character_name)
 		winner_space_between = (80.0, 0.0)
 		winner_scale = 4.0
-		if ($current_boss.character_profile = Morello)
-			<winner_space_between> = (40.0, 0.0)
-			<winner_scale> = 1.0
-		endif
-		if ($current_boss.character_profile = Slash)
-			<winner_space_between> = (40.0, 0.0)
-			<winner_scale> = 1.0
-		endif
-		if ($current_boss.character_profile = Satan)
-			<winner_space_between> = (40.0, 0.0)
-			<winner_scale> = 1.0
-		endif
 		spawnscriptnow \{wait_and_play_you_rock_movie}
 		wait \{0.2 seconds}
 		destroy_menu \{menu_id = yourock_text}
@@ -1052,18 +1040,15 @@ script GuitarEvent_SongWon_Spawned
 				PauseGame
 			endif
 	else
-		SoundEvent \{event = You_Rock_End_SFX}
+		spawnscriptnow GH_BossDevil_Death_Transition_SFX
 		UnPauseGame
 		Transition_Play \{Type = songwon}
 		spawnscriptnow \{wait_and_play_you_rock_movie}
 		killspawnedscript \{name = jiggle_text_array_elements}
 		spawnscriptnow \{jiggle_text_array_elements params = {id = yourock_text time = 1.0 wait_time = 3000 explode = 1}}
-		devil_finish_anim
 		wait \{0.15 seconds}
 		spawnscriptnow \{waitandkillhighway}
-		wait \{2.5 seconds}
-		SoundEvent \{ Event = Devil_Die_Transition_SFX }
-		wait \{1.0 seconds}
+		wait \{3.5 seconds}
 		Change \{ current_transition = None }
 		PauseGame
 	endif
@@ -1113,7 +1098,6 @@ script GuitarEvent_SongWon_Spawned
 			endif
 		endif
 	endif
-	SoundEvent \{event = Crowd_Med_To_Good_SFX}
 	if ($is_network_game)
 		mark_safe_for_shutdown
 	endif
@@ -1162,18 +1146,41 @@ script Sudden_Death_Helper_Text
 	}
 endscript
 
+script GH_BossDevil_Death_Transition_SFX // COST (size) EFFICIENT SOLUTION
+	SoundEvent \{event = You_Rock_End_SFX}
+	wait \{2.7 seconds}
+	SoundEvent \{event = Song_Intro_Kick_SFX}
+	StartPreLoadedStream \{$extra_unique_id startpaused = 1 buss = Master}
+	Wait \{1 seconds}
+	// almost had an entirely packed struct based script :(
+	GetSongTimeMs
+	Clamp (<time> - 12700) min = 322487 max = 330000 // shrill: 321611
+	CastToInteger \{clamped}
+	SetSoundSeekPosition unique_id = $extra_unique_id position = <clamped>
+	begin
+		if PreloadStreamDone \{$extra_unique_id}
+			break
+		endif
+		wait \{1 gameframe}
+	repeat
+	begin
+		GetSongTimeMs
+		if (<time> >= <clamped>)
+			break
+		endif
+		wait \{1 gameframe}
+	repeat
+	PauseSound \{unique_id = $extra_unique_id Pause = 0}
+endscript
+
 script start_devil_finish
 	Change \{end_credits = 0}
 	marker_count = 37
-	get_song_prefix song = ($current_song)
-	FormatText checksumName = marker_array '%s_markers' s = <song_prefix>
-	startTime = ($<marker_array> [<marker_count>].time)
+	ExtendCrc \{$current_song '_markers' out = marker_array}
+	startTime = ($<marker_array>[<marker_count>].time)
 	startmarker = <marker_count>
-	Change \{CameraCuts_ForceTime = 0}
 	StopRendering
 	restart_gem_scroller song_name = ($current_song)difficulty = ($current_difficulty)difficulty2 = ($current_difficulty2)startTime = <startTime> startmarker = <startmarker> no_render = 1 devil_finish_restart = 1
-	devil_lose_anim
-	wait \{20 frames}
 	StartRendering
 	if ScreenElementExists \{id = yourock_text}
 		DestroyScreenElement \{id = yourock_text}
@@ -1181,23 +1188,6 @@ script start_devil_finish
 	if ScreenElementExists \{id = yourock_text_legend}
 		DestroyScreenElement \{id = yourock_text_legend}
 	endif
-endscript
-
-script devil_finish_anim
-	wait \{1 gameframe}
-	spawnscriptnow \{devil_camera_flash}
-endscript
-
-script devil_camera_flash
-	wait \{2.7 seconds}
-	fadetoblack \{On time = 0.03 alpha = 1.0 z_priority = 1000 texture = white rgba = [255 255 255 255]}
-	wait \{0.04 seconds}
-	SoundEvent \{event = Song_Intro_Kick_SFX}
-	SoundEvent \{event = Practice_Mode_Crash2}
-	fadetoblack \{OFF}
-endscript
-
-script devil_lose_anim
 endscript
 
 script wait_and_play_you_rock_movie

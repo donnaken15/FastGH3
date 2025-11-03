@@ -497,9 +497,6 @@ endscript
 GH_SFX_Intro_WarmUp = $EmptyScript
 PreEncore_Crowd_Build_SFX = $EmptyScript
 PreEncore_Crowd_Build_SFX_STOP = $EmptyScript
-script GH_BossDevil_Death_Transition_SFX
-	SoundEvent \{event = Devil_Die_Transition_SFX}
-endscript
 
 script Battle_SFX_Repair_Broken_String
 	if GotParam \{num_strums}
