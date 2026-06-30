@@ -13,6 +13,7 @@ where 7z /q && set Z7=7z
 :: PACKAGE __FINAL TO ZIP
 ::zip -9vrX -ds 1 -S -ic ..\__FINAL.zip * -x settings.ini -x tmp.txt
 %Z7% a -mm=Deflate -mx=9 -mfb=258 -mpass=15 -mtm=on -mtc=off -mta=off -r %OUT% *
+where advzip /q && echo Recompressing using zopfli && advzip -z -p -4 -i 20 %OUT%
 where zip  /q || goto nocomment
 where date /q || goto nocomment
 "date" "+FastGH3 1.1-10999011043 | %%B %%d, %%Y" > tmp.txt

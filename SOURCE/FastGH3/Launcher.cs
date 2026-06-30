@@ -150,7 +150,7 @@ static class SubstrExt
 		T[] n = ((T[])v.Clone());
 		for (var i = 0; i < v.Length; i++)
 		{
-			if (!n[i].Equals(replace))
+			if (!object.Equals(n[i],replace))
 				continue;
 			n[i] = with;
 		}
@@ -1578,9 +1578,8 @@ public static partial class Launcher
 					bool ischart = false;
 					pt(0); // "\n######### MAIN LAUNCHER PHASE #########\n"
 					vl("File is: " + arg0);
-					string[] m2cA = new string[]
-					{
-						paksongmid, "-k", "-u", "-p", "-m"
+					string[] m2cA = new string[] {
+						paksongmid, "-k", "-u", "-p"
 					};
 					print(T[16], chartConvColor); // "Reading file."
 					if (ext == chartext)
@@ -1842,9 +1841,6 @@ public static partial class Launcher
 							}
 						}
 					}
-					vl(T[29], FSBcolor); //vl("Current selected audio streams are:", FSBcolor);
-					foreach (string a in audiostreams)
-						vl(a, FSBcolor);
 					if (!File.Exists(audiostreams[0]) && !nj3t)
 					{
 						//vl("Failed to get main song file, asking user what the game should do", FSBcolor);
@@ -1926,10 +1922,18 @@ public static partial class Launcher
 						while (playsilent == DialogResult.No);
 					}
 					for (int i = 0; i < 3; i++)
+					{
 						if (!File.Exists(audiostreams[i]))
 						{
 							audiostreams[i] = blankmp3;
 						}
+						if (i == 0) continue;
+						if (NP(audiostreams[i]) == NP(audiostreams[0])) // my chart of metric - help i'm alive, and likely that down with the sick memes chart replayed in 2023
+							audiostreams[i] = blankmp3;
+					}
+					vl(T[29], FSBcolor); //vl("Current selected audio streams are:", FSBcolor);
+					foreach (string a in audiostreams)
+						vl(a, FSBcolor);
 					//im stupid
 					//this cache stuff is a mess
 					ulong charthash = WZK64.Create(File.ReadAllBytes(arg0));
@@ -3157,8 +3161,18 @@ public static partial class Launcher
 						List<int> msrs = new List<int>();
 						// probably TODO: beat enumerator thing or something that uses callback
 						// to reduce operations from constantly calling GetTime
-						for (int i = 0; OT.GetTime(i - chart.Resolution) < ((float)(et) / 1000); i += chart.Resolution)
+						var cTS = 1; // realized what needed to be done for FCPREMIX 3/8
+						for (int i = 0; OT.GetTime(i - chart.Resolution) < ((float)(et) / 1000); i += (int)((float)chart.Resolution * (4.0f / (ts[cTS-1].TimeSignature2))))
 						{
+							//print("(" + (cTS + 1) + "/" + ts.Count + "): " + i + " < " + ts[cTS].Offset + " | " + ts[cTS].TimeSignature + " / " + ts[cTS].TimeSignature2);
+							//print((int)((float)chart.Resolution * (4.0f / (ts[cTS].TimeSignature2))));
+							if (cTS < ts.Count)
+								while (ts[cTS].Offset < i + (chart.Resolution / 2)) // this urks me (A LOT OF THINGS DO)
+								{
+									cTS++;
+									if (cTS >= ts.Count)
+										break;
+								}
 							int t = Convert.ToInt32(Math.Floor(OT.GetTime(i) * 1000));
 							// ehhhhhhhhhh
 							//if (msrs.Count > 1)
@@ -4732,6 +4746,7 @@ public static partial class Launcher
 								int endtime = -1;
 								string bossName = "";
 								bool isBoss = false;
+								// check for deathlick script instead, game crashes if its spawned outside of battle/boss mode...
 								switch (id.ToLower())
 								{
 									case "bosstom":

@@ -88,17 +88,18 @@ script IndexOf \{delegate = IntegerEquals #"0x00000000" = 0 array = []}
 	;endif
 	// implement reverse scanning for multiple occurrences?
 	GetArraySize \{array}
-	if (<array_size> > 0)
-		i = 0
-		begin
-			if <delegate> a = <#"0x00000000"> b = (<array>[<i>])
-				return true indexof = <i>
-			endif
-			Increment \{i}
-		repeat <array_size>
-		// repeat (with 0 explicitly typed out, or in variable) means infinite :/
+	if (<array_size> <= 0)
+		return \{ false indexof = -1 }
 	endif
+	i = 0
+	begin
+		if <delegate> a = <#"0x00000000"> b = (<array>[<i>])
+			return true indexof = <i>
+		endif
+		Increment \{i}
+	repeat <array_size>
 	return \{ false indexof = -1 }
+	// repeat (with 0 explicitly typed out, or in variable) means infinite :/
 endscript
 
 // @script | pad | format a number with leading zeroes (or custom char)

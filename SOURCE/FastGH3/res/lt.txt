@@ -102,7 +102,7 @@ No Bink background video found
 \n___     ___\\\n   \\   /   /\n    \\ /\n     X\n    / \\\n___/   \\___\\\n           /\n
 Set max FPS, if not capped by Vsync.\nIf set to 0, the frame rate limit will not take effect.\nAs of now, it can only cap to 1ms / 1000 FPS.\nWarning: Some frame rates will make the game look\nchoppy depending on the refresh rate your monitor supports,\nor depending on your GPU.
 Override the note limit. Set to -1 to make\nthe program determine how many notes\nthere are in the chart opened.\nRAM usage may vary.
-This allows you to change the window size of the game according to your monitor settings.
+This allows you to change the window size of the game according to your monitor settings.\nSome resolutions fail to work, whether it depends on your specs or if the game refuses a\ncertain resolution, so those may be excluded here.
 Clean files from downloading and extracting Song Packages.\nWarning: Reuse of these files will require downloading and\nextracting them again, some of which can take a bit of time.
 Change the bitrate used for converting songs.\nThe amount is set for each channel that is encoded.\nThis will only take effect for the next songs converted.\nThe default is 128kbps, as decided by the game.\nIf song caching is turned on, the cached songs will\nkeep the bitrate setting they were converted with.\nNote: This will also result in larger or smaller\ncompiled audio files, which effects your song cache as well.
 Change the controller that is selected to play when Keyboard mode is off.\nWARNING: Unplugging or plugging in controllers can affect this setting.

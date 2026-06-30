@@ -1,5 +1,6 @@
 
-SetCompressor /FINAL lzma
+SetCompressor /SOLID /FINAL lzma
+SetCompressorDictSize 128
 !include VersionInfo.nsh
 
 Name "${TITLEVER} LITE"

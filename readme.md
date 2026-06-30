@@ -20,7 +20,7 @@ The days of GHTCP, slow songlist batching, and janky-to-use tools are no longer,
 ![zone size](https://img.shields.io/github/size/donnaken15/FastGH3/DATA/ZONES/global.pab.xen?label=global.pak)
 ![update frequency](https://img.shields.io/badge/update%20frequency-2/year-blue)
 
-PLAY NOW!
+PLAY NOW! <sub>This mod runs independently of if you have retail GH3 installed or not.</sub>
 * [Download (installer)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.1.exe)
 * [Download (portable)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_1.1.zip)
 * [Download (one EXE demo)](https://github.com/donnaken15/FastGH3/releases/latest/download/FastGH3_LITE.EXE)
@@ -34,6 +34,10 @@ PLAY NOW!
 * [Previous Dev Builds](https://donnaken15.com/fastgh3/unstab.html)
 
 [Features/Planned list](https://github.com/users/donnaken15/projects/3)
+
+Keep a watch on upcoming updates!
+* Commits: [![Subscribe to RSS](https://static.addtoany.com/buttons/subscribe_106_16.gif)](https://github.com/donnaken15/FastGH3/commits/main.atom)
+* Releases: [![Subscribe to RSS](https://static.addtoany.com/buttons/subscribe_106_16.gif)](https://github.com/donnaken15/FastGH3/releases.atom)
 
 https://github.com/donnaken15/FastGH3/assets/20864393/01756e3a-45da-49b8-9d02-49f7c08fd877
 

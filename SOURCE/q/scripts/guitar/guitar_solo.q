@@ -42,7 +42,6 @@ script solo\{part = guitar diff = expert}
 	if (<matched_player> = 0)
 		return
 	endif
-	
 	if NOT GotParam \{manual}
 		ProfilingStart
 		//get_song_prefix \{song = $current_song}
@@ -89,7 +88,7 @@ script solo\{part = guitar diff = expert}
 		endif
 		Increment \{k}
 		found_soloend = 0
-		endtime = (<time> + 5000) // why did i even add this // oh right
+		endtime = (<time> + 5000) // why did i even add this // oh right // no i forgot
 		// find matching soloend in fastgh3_scripts
 		begin
 			// soloend.params.part == %part then endtime = soloend.time

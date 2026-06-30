@@ -24,7 +24,7 @@ del load_disc.img.xen /q
 
 
 call :process_imgdir "root"
-for /f "tokens=* delims=" %%D in ('dir root\*. /s /b') do call :process_imgdir "%%D"
+for /f "tokens=* delims=" %%D in ('dir root\*. /s /b') do ( call :process_imgdir "%%D" )
 echo [93m###### moving new generated images ######[0m
 :: uhh
 
@@ -106,12 +106,11 @@ exit /b
 
 :: absurd
 :process_imgdir
-	if exist "%~1" do goto imgdirerr
+	if not exist "%~1" goto imgdirerr
 		imggen "%~1\*.png" "%~1\*.jpg" "%~1\*.dds" >nul %OKNOTOK%
 		move "%~1\*.img.xen" "!cache" >nul %OKNOTOK%
-		goto imgdirnext
+		exit /b
 	:imgdirerr
 		echo [91mInvalid directory: %~1[0m
-	:imgdirnext
-	exit /b
+	
 

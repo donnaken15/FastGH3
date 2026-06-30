@@ -26,7 +26,7 @@ which wslpath 2>$nul >$nul && crc32='crc32' || crc32='crc32.exe'
 			sed -E -e ':a; s%(.*)/\*.*\*/%\1%; ta; /\/\*/ !b; N; ba' "$indir/$f" |
 			sed -e 's/\/\/.*//g' -e "s/\\[\"']//g" -e "s/'.*'//g" -e 's/\".*\"//g' \
 				-e 's/0x[0-9A-Fa-f]//g' | grep -Eio -e '[a-z][a-z0-9_]*?' - |
-			grep -Evi -e '(begin|break|(end)?switch|case|(end)?if|default|return|else(if)?|(end)?script|not)' - |
+			grep -Evi -e '^(begin|break|(end)?switch|case|(end)?if|default|return|else(if)?|(end)?script|not)$' - |
 			/usr/bin/sort -u | uniq -i
 		) | while read -r k; do
 			# >just feed all keys into one call to crc32 and create key for every argument

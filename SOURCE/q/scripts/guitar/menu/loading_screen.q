@@ -7,24 +7,23 @@ script create_loading_strings
 		return
 	endif
 	change loading_screen_tips = [
-		'Loading...' 'LOADING' 'LOADING THE LOADING' '<placeholder message>'
-		'FPS: 999999999999' 'Made by donnaken15' 'Nnnn gdgdga, KHH!'
-		'lol' 'LOL' 'OMFG' 'LMAO' 'LMFAO' 'ROFL' 'OMGWTFBBQ' 'Oh my good!'
-		'As easy as one two three!' 'Loadi- wait it already loaded.' 'avg load time: 0ms'
+		'Loading...' 'LOADING' 'LOADING THE LOADING' '<placeholder message>' 'FPS: 999999999999' 'Made by donnaken15' 'Nnnn gdgdga, KHH!'
+		'lol' 'LOL' 'OMFG' 'LMAO' 'LMFAO' 'ROFL' 'OMGWTFBBQ' 'Oh my good!' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:/windows/fastgh3' 'IMPOSSIBLE!'
+		'As easy as one two three!' 'Loadi- wait it already loaded.' 'avg load time: 0ms' 'GO!' 'NOT FAST ENOUGH!'
 		'\c4Fa\c2st\c5G\c3H\c63' 'FASTER!' 'BEATS POLYBIUS!' 'DANNY DID IT FIRST' 'TOBE DID IT FIRST'
 		'WHY IS IT STILL LOADING?!' '\c2A\c6m\c5a\c4z\c8i\c3n\c7g\c1!' 'harder, better, FASTER, stronger'
-		'NOT FAST ENOUGH!' 'GO!' 'SPEED' 'Follow @FastGH3 on Twitter for more updates.' '1.1 HOYP!!!'
+		'SPEED' 'Follow @FastGH3 on Twitter for more updates.' '1.1 HOYP!!!'
 		'%VER%' 'NOW WITH CACHING!' 'donnaken15.com/fastgh3' 'JURGEN IS HERE' 'ONE CLICK MAGIC!'
-		'IMPOSSIBLE!' 'fastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfast' 'fast'
+		'fastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfast' 'fast'
 		'NO LONGER WREAKING HAVOK' 'PROGRAMMER SOX ARE LAME' 'DIRECTLY CALLING OUT MY EX'
 		'PRAISE THE FOSSIL (which is now periodically updated by a third party) THAT IS HELIX'
 		'you need more than debug\n- revup90' '\bf\bf\bc\bc\be\bd\be\bd\b2\b3\ba' 'subscribe for daily \b2ideos'
 		'Switch up the style and get yourself some c00l zonez by going to donnaken15.com/fastgh3/zones.html'
-		'4.4 MEGABYTE ZONES' 'fastgh3' 'FastGH3' 'FASTGH3' 'C:/windows/fastgh3' '\'\'the clone hero version of gh3\'\''
+		'4.4 MEGABYTE ZONES' '\'\'the clone hero version of gh3\'\''
 		'RUNNING ON APOCALYPSE' 'start_gem_scroller()' 'SALUTE TO THE SUN!!' 'UNIVERSES FC, YES! @#!^ YEAH!!'
 		'Now you can DOWNLOAD CHARTS THROUGH THIS MOD?! WHY DIDN\'T ANYONE THINK OF THIS!?!' 'Murderous Speed'
 		'5atu6w4zaw5atu6w4zaw5atu6w4zaw5atu6w4zaw' 'IT\'S NOT FAST ENOUGH!' 'MASSIVE ADBLOCK!' 'SHE\'S TOO STONED! NINTENDO!'
-		'I\nI\nO\n$\nV' 'ALIGNING POINTERS...' 'ScreenShot Paused\n\b0\nScreen\b1\b2Drop    \n\b3\nViewer'
+		'I\nI\nO\n\c2$\c0\nV' 'ALIGNING POINTERS...' 'ScreenShot Paused\n\b0\nScreen\b1\b2Drop    \n\b3\nViewer'
 		'Frequently updated at github.com/donnaken15/FastGH3!' 'EXECUTING ACTIONS...!'
 		'For more fun with GH3 in general, check out progress on GH3+ at github.com/donnaken15/GH3-Plus'
 		'3 PAK files? WHAT?!?' 'ASPIRING TO REKT ASPYR' 'Hey look, it works now! I think...'
@@ -44,7 +43,7 @@ script create_loading_strings
 		"DO THE MATH"
 		Reverse of original calc: (15*4346)/1024 *///
 		'EVERY COPY OF FASTGH3 IS PERSONALIZED' 'FC OR LOSER!' 'YET ANOTHER DELUXE APPLICATION, YADA YADA YADA...!'
-		//'Dj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones'
+		'Dj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones\nDj Yohan Producciones'
 		'these texts are my version of minecraft splash text at this point' // was going to just make this a comment but this also works :P
 		//
 		// lord squill quotes, just because
@@ -64,7 +63,7 @@ script create_loading_strings
 		'No one will be able to find this text... maybe...'
 		'HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE HI YOUTUBE'
 		'door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123 door giveaway 123'
-		'uber song fc' 'NAIL THE 540' '58,473 X 4\nStar Power + BS 360 Riff + Kissed the Sustain + FS Solo + FS 1440 GRYBRYBO'
+		'uber song fc' 'NAIL THE 540' '\c358,473 X 4\n\c3Star Power\c1 + BS 360 Riff + Kissed the Sustain + FS Solo + \c3FS 1440 GRYBRYBO'
 		'ROCKING OUT IN THE ABYSS!!' 'IN SECONDS...!' '\c4ACCESS GRANTED' '>sudo skate8.exe -gem_array fastgh3_song_expert' 'the low snare frequency is wrong'
 		'It looks like you\'re trying to hit the note. Would you like help with:\n\b3 Strumming\n\b2 Holding down the frets\n\b0 SHUT UP!!!\n\b1 Applying tinfoil'
 		'!!!!!!! Guitarist not found !!!!!!!' '(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)(UNKNOWN OPCODE 0)'
@@ -72,7 +71,7 @@ script create_loading_strings
 		'dummy' 'This game is practically a mod of Tony Hawk\'s Project 8' 'Powered by Tony Hawk'
 		'\c6AM: GAIN 3 STARS\n\c3PRO: GAIN 5 STARS\n\c5SICK: FULL COMBO SONG, GAIN 5 GOLDEN STARS'
 		'\c6AM: HIT A HOPO PATTERN WITH YOUR WRIST OVER THE NECK\n\c3PRO: PLAY THE OPPOSITE HANDEDNESS WITH HYPERSPEED 10\n\c5SICK: PLAY THE OPPOSITE HANDEDNESS WITH THE GUITAR BEHIND YOUR BACK\c0' // i wrote this without realizing i already made a similar thing
-		'This is a mod of Project 8 which is an update of American Wasteland which is an update of Underground 2 which is an update of Underground 1 which is an update of Pro Skater 4 which is an update of Pro Skater 3 which is an update of Pro Skater 2 which is an update of Pro Skater 1 which is an update of Apocalypse which is an update of MDK which is an update of Big Guns'
+		'This is a mod of Project 8 which is an update of American Wasteland which is an update of Underground 2 which is an update of Underground 1 which is an update of Pro Skater 4 which is an update of Pro Skater 3 which is an update of Pro Skater 2 which is an update of Pro Skater 1 which is an update of Apocalypse which is an update of MDK which is an update of Big Guns which builds upon Skeleton Warriors'
 		'\c2I WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED\nI WILL NOT BE CONTAINED'
 	]
 endscript

@@ -27,7 +27,7 @@ namespace ChartEdit
 				{
 					num = int.MaxValue;
 				}
-				syncTrackEntry.TimeSignature2 = -1;
+				syncTrackEntry.TimeSignature2 = 4;
 				syncTrackEntry.Offset = offset;
 				string text2 = text;
 				if (text2 != null)
@@ -39,7 +39,7 @@ namespace ChartEdit
 							syncTrackEntry.TimeSignature = num;
 							var ts2 = match.Groups["ts2"];
 							if (ts2.Success)
-								syncTrackEntry.TimeSignature2 = int.Parse(ts2.Value.Trim());
+								syncTrackEntry.TimeSignature2 = 1 << int.Parse(ts2.Value.Trim()); // APPARENTLY power of 2
 							syncTrackEntry.Type = SyncType.TimeSignature;
 							return syncTrackEntry;
 						}

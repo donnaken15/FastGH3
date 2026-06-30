@@ -1,5 +1,6 @@
-#!/bin/zsh
+#!/bin/sh
 #!/bin/dash
+#!/bin/zsh
 
 #echo "${y}(not as fake) qcomp${rc}"
 # no args

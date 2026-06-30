@@ -286,7 +286,7 @@ public partial class settings : Form
 		Performance,
 		NoShake,
 		//Lefty,
-		BkgdVideo,
+		BGVideo,
 		KillHitGems,
 		EarlySustains,
 		NoStreakDisp
@@ -403,7 +403,7 @@ public partial class settings : Form
 		tLb.SetItemChecked((int)t.Precision, Launcher.cfg("Player", t.Precision.ToString(), 0) == 1);
 		tLb.SetItemChecked((int)t.DebugMenu, Launcher.cfg("Misc", "Debug", 0) == 1);
 		tLb.SetItemChecked((int)t.ExitOnSongEnd, Launcher.cfg("Player", t.ExitOnSongEnd.ToString(), 0) == 1); // exit_on_song_end
-		tLb.SetItemChecked((int)t.BkgdVideo, Launcher.cfg("Player", "BGVideo", 0) == 1); // enable_video
+		tLb.SetItemChecked((int)t.BGVideo, Launcher.cfg("Player", "BGVideo", 0) == 1); // enable_video
 		tLb.SetItemChecked((int)t.KillHitGems, Launcher.cfg("GFX", "KillHitGems", 0) == 1); // kill_gems_on_hit
 		tLb.SetItemChecked((int)t.EarlySustains, Launcher.cfg("Player", t.EarlySustains.ToString(), 0) == 1); // anytime_sustain_activation
 		tLb.SetItemChecked((int)t.DisableVsync, Launcher.cfg("GFX", "VSync", 1) == 0);
@@ -822,7 +822,7 @@ public partial class settings : Form
 				break;
 			case t.Windowed:
 			case t.Borderless:
-			case t.BkgdVideo: // enable_video
+			case t.BGVideo: // enable_video
 			case t.NoHUD: // hudless
 			case t.KillHitGems: // kill_gems_on_hit
 			case t.NoStreakDisp: // disable_notestreak_notif
