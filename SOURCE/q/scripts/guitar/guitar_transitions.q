@@ -273,7 +273,7 @@ script Transition_GetTime\{Type = Intro}
 		type_textnl = ($Transition_Types.<Type>.textnl)
 	else
 		printstruct <...>
-		ScriptAssert \{"Unknown transition type"}
+		ScriptAssert \{'Unknown transition type'}
 	endif
 	GetPakManCurrentName \{map = zones}
 	FastFormatCrc a = <pakname> b = '_' c = <type_textnl> d = '_Transition' out = Transition_Props
@@ -294,7 +294,7 @@ script Transition_Play\{Type = Intro}
 		type_textnl = ($Transition_Types.<Type>.textnl)
 	else
 		printstruct <...>
-		ScriptAssert \{"Unknown transition type"}
+		ScriptAssert \{'Unknown transition type'}
 	endif
 	GetPakManCurrentName \{map = zones}
 	FormatText checksumName = event 'Common_%p_TransitionSetup' p = <type_textnl> s = <pakname>
@@ -320,7 +320,7 @@ script Transition_Play_Spawned
 		FormatText checksumName = Transition_Props 'default_%p_Transition' p = <type_textnl>
 		if NOT GlobalExists name = <Transition_Props>
 			printstruct <...>
-			ScriptAssert \{"Default Transition Struct not found"}
+			ScriptAssert \{'Default Transition Struct not found'}
 		endif
 	endif
 	transition_time = ($<Transition_Props>.time)
@@ -422,12 +422,12 @@ script Transition_CameraCut
 endscript
 
 script Transition_StopRendering
-	printf \{"Transition_StopRendering"}
+	printf \{'Transition_StopRendering'}
 	StopRendering
 endscript
 
 script Transition_StartRendering
-	printf \{"Transition_StartRendering"}
+	printf \{'Transition_StartRendering'}
 	StartRendering
 	enable_pause
 	Change \{is_changing_levels = 0}
@@ -441,7 +441,7 @@ script Transition_Printf
 endscript
 
 script Transitions_ResetZone
-	printf \{"Transitions_ResetZone"}
+	printf \{'Transitions_ResetZone'}
 	GetPakManCurrentName \{map = zones}
 	FormatText checksumName = reset_func '%s_ResetTransition' s = <pakname>
 	if ScriptExists <reset_func>
@@ -470,7 +470,7 @@ script Transitions_ResetZone
 			resetvalid = FALSE
 		endif
 		if (<resetvalid> = true)
-			printf "Resetting %s" s = ($<nodearray_checksum> [<array_count>].name)
+			printf 'Resetting %s' s = ($<nodearray_checksum> [<array_count>].name)
 			kill name = ($<nodearray_checksum> [<array_count>].name)
 			if StructureContains structure = ($<nodearray_checksum> [<array_count>])CreatedAtStart
 				create name = ($<nodearray_checksum> [<array_count>].name)

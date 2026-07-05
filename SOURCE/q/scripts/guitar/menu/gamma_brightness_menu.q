@@ -21,7 +21,7 @@ script create_gamma_brightness_menu\{popup = 0}
 	CreateScreenElement {
 		Type = TextElement
 		parent = gamma_warning_container
-		text = "BRIGHTNESS"
+		text = 'BRIGHTNESS'
 		font = <header_font>
 		Scale = 1.5
 		Pos = (640.0, 280.0)
@@ -29,7 +29,7 @@ script create_gamma_brightness_menu\{popup = 0}
 		rgba = ($menu_unfocus_color)
 		z_priority = <z>
 	}
-	FormatText textname = brightness_text "Brightness: %d" d = ($SE_Brightness)
+	FormatText textname = brightness_text 'Brightness: %d' d = ($SE_Brightness)
 	CreateScreenElement {
 		Type = TextElement
 		parent = vmenu_gamma_warning
@@ -53,7 +53,7 @@ script destroy_gamma_brightness_menu
 endscript
 
 script gamma_brightness_menu_change
-	printf \{"gamma_brightness_menu_change"}
+	printf \{'gamma_brightness_menu_change'}
 	if GotParam \{up}
 		Change SE_Brightness = ($SE_Brightness + 1)
 		if ($SE_Brightness > 10)
@@ -70,7 +70,7 @@ script gamma_brightness_menu_change
 		TOD_Proxim_Update_Global_Brightness \{viewport = bg_viewport}
 	endif
 	if ScreenElementExists \{id = gamma_brightness_text}
-		FormatText textname = brightness_text "Brightness: %d" d = ($SE_Brightness)
+		FormatText textname = brightness_text 'Brightness: %d' d = ($SE_Brightness)
 		printf <brightness_text>
 		SetScreenElementProps id = gamma_brightness_text text = <brightness_text>
 	endif

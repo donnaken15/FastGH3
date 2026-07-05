@@ -27,7 +27,7 @@ GH3_Career_NumSongToProgress = {
 }
 
 script Progression_Init
-	printf \{"Progression_Init"}
+	printf \{'Progression_Init'}
 	Tier = 0
 	get_progression_globals game_mode = ($game_mode)
 	if ($game_mode = p1_career || $game_mode = p2_career)
@@ -51,7 +51,7 @@ script Progression_EndOfFirstUpdate
 endscript
 
 script Progression_TierSongsComplete
-	printf \{"Progression_TierSongsComplete"}
+	printf \{'Progression_TierSongsComplete'}
 endscript
 
 script Progression_TierEncoreUnlock
@@ -91,12 +91,12 @@ script Progression_CheckAllSongsCompleted
 endscript
 
 script Progression_AlwaysBlock
-	printf \{"Progression_AlwaysBlock"}
+	printf \{'Progression_AlwaysBlock'}
 	return \{FALSE}
 endscript
 
 script Progression_CheckDiff
-	printf \{"Progression_CheckDiff"}
+	printf \{'Progression_CheckDiff'}
 	progression_getdifficulty
 	if NOT (<diff> = <difficulty>)
 		return \{FALSE}
@@ -116,7 +116,7 @@ script Progression_SongFailed
 endscript
 
 script Progression_SongWon
-	/*printf \{"Progression_SongWon"}
+	/*printf \{'Progression_SongWon'}
 	additional_cash = 0
 	Change \{progression_beat_game_last_song = 0}
 	Change \{progression_unlock_tier_last_song = 0}
@@ -216,7 +216,7 @@ end_credits = 0
 boss_devil_score = 0
 
 script Progression_EndCredits
-	printf \{"CREDITS BEGIN"}
+	printf \{'CREDITS BEGIN'}
 	//Change boss_devil_score = ($player1_status.score)
 	//Change \{current_level = load_z_credits}
 	ui_flow_manager_respond_to_action \{action = select_retry}

@@ -55,11 +55,11 @@ default_topscores_expert = {
 	score5 = 29001
 }
 default_songtagswithdifficulty = {
-	name1 = "D. Stowater"
-	name2 = "Ginkel"
-	name3 = "Bunny"
-	name4 = "BMarvs"
-	name5 = "CVance"
+	name1 = 'D. Stowater'
+	name2 = 'Ginkel'
+	name3 = 'Bunny'
+	name4 = 'BMarvs'
+	name5 = 'CVance' // Chris?!?!
 	stars1 = 0
 	stars2 = 0
 	stars3 = 0
@@ -288,33 +288,33 @@ endscript
 
 script get_game_mode_ui_string
 	if NOT GotParam \{game_mode}
-		SoftAssert \{"Did not get game_mode!"}
+		SoftAssert \{'Did not get game_mode!'}
 		return
 	endif
 	return ui_string = ($game_mode_ui_strings.<game_mode>)
 endscript
 game_mode_ui_strings = {
-	p1_career = "Career"
-	p2_career = "Career"
-	p1_quickplay = "Quick Play"
-	p2_faceoff = "Face Off"
-	p2_pro_faceoff = "Pro Faceoff"
-	p2_battle = "Battle"
-	p2_coop = "Co-op"
+	p1_career = 'Career'
+	p2_career = 'Career'
+	p1_quickplay = 'Quick Play'
+	p2_faceoff = 'Face Off'
+	p2_pro_faceoff = 'Pro Faceoff'
+	p2_battle = 'Battle'
+	p2_coop = 'Co-op'
 }
 
 script get_difficulty_ui_string
 	if NOT GotParam \{difficulty}
-		SoftAssert \{"Did not get difficulty!"}
+		SoftAssert \{'Did not get difficulty!'}
 		return
 	endif
 	return ui_string = ($game_difficulty_ui_strings.<difficulty>)
 endscript
 game_difficulty_ui_strings = {
-	easy = "Easy"
-	medium = "Medium"
-	hard = "Hard"
-	expert = "Expert"
+	easy = 'Easy'
+	medium = 'Medium'
+	hard = 'Hard'
+	expert = 'Expert'
 }
 game_mode_names = {
 	p1_career = 'p1_career'

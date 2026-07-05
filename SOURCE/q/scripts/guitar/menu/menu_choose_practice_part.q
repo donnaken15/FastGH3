@@ -1,7 +1,7 @@
 menu_choose_practice_part_font = fontgrid_title_gh3
 
 script create_choose_practice_part_menu
-	printf \{"create_choose_practice_part_menu"}
+	printf \{'create_choose_practice_part_menu'}
 	spawnscriptnow \{Menu_Music_On}
 	kill_start_key_binding
 	set_focus_color rgba = ($default_menu_focus_color)
@@ -20,7 +20,7 @@ script create_choose_practice_part_menu
 		Type = TextBlockElement
 		parent = cpp_container
 		id = header
-		text = "PRACTICE PART"
+		text = 'PRACTICE PART'
 		Pos = (360.0, 70.0)
 		dims = (100.0, 300.0)
 		Scale = 1.5
@@ -50,12 +50,12 @@ script create_choose_practice_part_menu
 	displaySprite \{parent = cpp_container tex = dialog_bg flip_h Pos = (680.0, 326.0) dims = (332.0, 70.0) z = 2}
 	displaySprite \{id = cpp_hi_left parent = cpp_container tex = Dialog_Highlight flip_v Pos = (720.0, 325.0) z = 5 just = [right center]}
 	displaySprite \{id = cpp_hi_right parent = cpp_container tex = Dialog_Highlight Pos = (910.0, 325.0) z = 5 just = [left center]}
-	guitar_or_lead_text = "GUITAR"
-	bass_or_rhythm_text = "BASS"
+	guitar_or_lead_text = 'GUITAR'
+	bass_or_rhythm_text = 'BASS'
 	get_song_rhythm_track song = ($current_song)
 	if (<rhythm_track> = 1)
-		<guitar_or_lead_text> = "LEAD"
-		<bass_or_rhythm_text> = "RHYTHM"
+		<guitar_or_lead_text> = 'LEAD'
+		<bass_or_rhythm_text> = 'RHYTHM'
 	endif
 	set_focus_color \{rgba = [130 0 0 250]}
 	set_unfocus_color \{rgba = [0 0 0 255]}

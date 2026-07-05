@@ -7,6 +7,8 @@ assignees: donnaken15
 
 ---
 
+(CHECK IF YOUR BUG IS ALREADY RESOLVED FROM THE WIKI OR SEARCHING CLOSED ISSUES.)
+
 (Terms: FastGH3.exe is the launcher/song converter and settings, and game.exe is Guitar Hero 3 itself)
 
 **Summarize**

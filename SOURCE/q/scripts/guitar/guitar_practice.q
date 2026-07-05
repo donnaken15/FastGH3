@@ -72,7 +72,7 @@
 ]*///
 
 script Practice_DummyFunction
-	printf \{"Practice_DummyFunction"}
+	printf \{'Practice_DummyFunction'}
 endscript
 practice_font = fontgrid_title_gh3
 
@@ -103,7 +103,7 @@ script practicemode_section
 		GetSongTimeMs
 		if (<time> > $current_starttime)
 			practice_sectiontext ::SetProps text = ($current_section_array [($current_section_array_entry)].marker)
-			practice_sectiontext ::DoMorph \{alpha = 1.0 time = 0.3}
+			practice_sectiontext ::DoMorph \{alpha = 1.0 time = 0.1}
 			current_section_index = ($current_section_array_entry)
 			break
 		endif
@@ -112,13 +112,13 @@ script practicemode_section
 	begin
 		GetSongTimeMs
 		if (<time> > $current_endtime)
-			practice_sectiontext ::DoMorph \{alpha = 0.0 time = 0.3}
+			practice_sectiontext ::DoMorph \{alpha = 0.0 time = 0.1}
 			break
 		elseif NOT (<current_section_index> = ($current_section_array_entry))
-			practice_sectiontext ::DoMorph \{alpha = 0.0 time = 0.3}
+			practice_sectiontext ::DoMorph \{alpha = 0.0 time = 0.1}
 			wait \{0.5 Second}
 			practice_sectiontext ::SetProps text = ($current_section_array [($current_section_array_entry)].marker)
-			practice_sectiontext ::DoMorph \{alpha = 1.0 time = 0.3}
+			practice_sectiontext ::DoMorph \{alpha = 1.0 time = 0.1}
 			current_section_index = ($current_section_array_entry)
 		endif
 		wait \{1 gameframe}
@@ -164,6 +164,8 @@ script practice_loop_toggle
 		return
 	endif
 	if ($practice_loop_mode>3)
+		change \{practice_loop_a=0}
+		change \{practice_loop_b=0}
 		change \{practice_loop_mode=0}
 	endif
 	practice_loop_setprop
@@ -222,8 +224,13 @@ script practice_revert_ab_mode
 	generic_respond_back
 endscript
 script practice_set_ab_mode
-	change current_starttime = ($practice_loop_a) // |:|
-	change practice_end_time = ($practice_loop_b)
+	// I HATE THIS // moved to practice_menu_flow.q:215
+	WHYWHYWHYWHYWHYWHYWHY
+	Change current_looppoint = ($practice_loop_b)
+	printstruct {
+		start = ($practice_loop_a)
+		end = ($practice_loop_b)
+	}
 	generic_respond_select
 endscript
 

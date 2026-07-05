@@ -13,7 +13,7 @@ endscript
 
 script increase_star_power\{amount = 10.0 player_status = player1_status}
 	if ($game_mode = p2_career || $game_mode = p2_coop)
-		//printf \{"giving star power to both players"} // annoying
+		//printf \{'giving star power to both players'} // annoying
 		increase_star_power_guts amount = <amount> player_status = player1_status
 		increase_star_power_guts amount = <amount> player_status = player2_status
 	else
@@ -196,11 +196,11 @@ script star_power_hit_note
 	Change StructureName = <player_status> star_power_note_count = ($<player_status>.star_power_note_count + 1)
 	Change StructureName = <player_status> star_power_sequence = ($<player_status>.star_power_sequence + 1)
 	broadcastevent Type = star_hit_note data = {song = <song> array_entry = <array_entry> player_status = <player_status>}
-	printf "star note hit: %s required %r" s = ($<player_status>.star_power_sequence)r = <sequence_count>
+	printf 'star note hit: %s required %r' s = ($<player_status>.star_power_sequence)r = <sequence_count>
 	if (<sequence_count> = $<player_status>.star_power_sequence)
 		if ($<player_status>.star_power_sequence > $star_power_sequence_min)
 			if ($<player_status>.star_power_used = 0)
-				printf \{channel = training "broadcasting star power bonus!!!!!!!!!!!"}
+				printf \{channel = training 'broadcasting star power bonus!!!!!!!!!!!'}
 				broadcastevent Type = star_sequence_bonus data = {song = <song> array_entry = <array_entry>}
 				increase_star_power amount = $star_power_sequence_bonus player_status = <player_status>
 			endif
@@ -215,7 +215,7 @@ endscript
 
 script star_power_miss_note
 	// WHY ISN'T THIS GETTING CALLED!!!!!!!
-	// THERE'S A GLITCH WHERE YOU CAN MISS A BUNCH
+	// THERE'S A GLITCH (HYPERSPEED > 5) WHERE YOU CAN MISS A BUNCH
 	// OF NOTES AND THE SEQUENCE WON'T GO AWAY!!!!!
 	Change StructureName = <player_status> star_power_sequence = 0
 	LaunchGemEvent event = star_miss_note Player = <Player>

@@ -86,16 +86,16 @@ endscript
 
 script check_signin_change_monitor_flag
 	if ($respond_to_signin_changed = 0)
-		ScriptAssert \{"check_signin_change_monitor_flag failed"}
+		ScriptAssert \{'check_signin_change_monitor_flag failed'}
 	endif
 endscript
 
 script start_checking_for_signin_change
-	printf \{"start_checking_for_signin_change"}
-	printscriptinfo \{"start_checking_for_signin_change"}
-	printf \{"start_checking_for_signin_change - killing sysnotifys"}
+	printf \{'start_checking_for_signin_change'}
+	printscriptinfo \{'start_checking_for_signin_change'}
+	printf \{'start_checking_for_signin_change - killing sysnotifys'}
 	killspawnedscript \{name = sysnotify_handle_signin_change}
-	printf \{"start_checking_for_signin_change - begin"}
+	printf \{'start_checking_for_signin_change - begin'}
 	Change \{respond_to_signin_changed = 1}
 	Change \{menu_select_difficulty_first_time = 1}
 endscript
@@ -273,31 +273,31 @@ script wait_for_safe_shutdown
 endscript
 
 script handle_signin_changed
-	printf \{"handle_signin_changed"}
+	printf \{'handle_signin_changed'}
 	Change \{respond_to_signin_changed = 0}
 	wait_for_safe_shutdown
-	printf \{"handle_signin_changed started"}
+	printf \{'handle_signin_changed started'}
 	disable_pause
 	StopRendering
 	shutdown_game_for_signin_change \{signin_change = 1}
 	LaunchEvent \{Type = unfocus target = root_window}
 	create_signin_changed_menu
 	StartRendering
-	printf \{"handle_signin_changed end"}
+	printf \{'handle_signin_changed end'}
 endscript
 
 script signing_change_confirm_reboot
-	printf \{"signing_change_confirm_reboot"}
+	printf \{'signing_change_confirm_reboot'}
 	destroy_signin_changed_menu
 	enable_pause
 	wait \{5 gameframes}
 	start_flow_manager \{flow_state = bootup_press_any_button_fs}
-	printf \{"signing_change_confirm_reboot end"}
+	printf \{'signing_change_confirm_reboot end'}
 endscript
 shutdown_game_for_signin_change_flag = 0
 
 script shutdown_game_for_signin_change\{unloadcontent = 1 signin_change = 0}
-	printf \{"shutdown_game_for_signin_change"}
+	printf \{'shutdown_game_for_signin_change'}
 	Change \{shutdown_game_for_signin_change_flag = 1}
 	StopAllSounds
 	killspawnedscript \{name = online_menu_init}
@@ -349,7 +349,7 @@ script shutdown_game_for_signin_change\{unloadcontent = 1 signin_change = 0}
 	destroy_menu_transition
 	UnPauseGame
 	Change \{shutdown_game_for_signin_change_flag = 0}
-	printf \{"shutdown_game_for_signin_change end"}
+	printf \{'shutdown_game_for_signin_change end'}
 endscript
 
 script cleanup_songwon_event

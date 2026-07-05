@@ -583,7 +583,7 @@ Highway_Fader_Params_2p = {
 }
 
 script setup_bg_viewport
-	printf \{"Setting bg viewport"}
+	printf \{'Setting bg viewport'}
 	destroy_bg_viewport
 	if ($current_num_players = 1)
 		AddParams \{$Highway_Fader_Params}
@@ -638,7 +638,7 @@ script setup_bg_viewport
 		}
 	endif
 	enable_bg_viewport_properties
-	printf \{"Setting bg viewport end"}
+	printf \{'Setting bg viewport end'}
 endscript
 highway_pulse_p1 = 0
 highway_pulse_p2 = 0

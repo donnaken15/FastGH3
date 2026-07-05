@@ -100,7 +100,7 @@ script gh3_start_pressed\{device_num = -1}
 endscript
 
 script gh3_start_pressed_spawned
-	printf \{"gh3_start_pressed_spawned"}
+	printf \{'gh3_start_pressed_spawned'}
 	if NOT ($view_mode = 0)
 		if GameIsPaused
 			UnpauseGh3Sounds <...>

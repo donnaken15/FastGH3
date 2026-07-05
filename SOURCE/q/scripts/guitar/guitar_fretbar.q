@@ -10,7 +10,7 @@ thin_fretbar_timesigs = {
 }
 thin_fretbar_8note_params = {
 	low_bpm = 1
-	high_bpm = 180
+	high_bpm = 179.5 // prevent alternating because of MILLISECOND INTEGERS // particularly for Phantom Wrath
 }
 thin_fretbar_16note_params = {
 	low_bpm = 1

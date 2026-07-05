@@ -27,7 +27,7 @@ script ui_flow_manager_respond_to_action\{device_num = 0 Player = 1 create_param
 		return
 	endif
 	if NOT ((<Player> = 1)|| (<Player> = 2))
-		ScriptAssert \{"Player must be equal to 1 or 2"}
+		ScriptAssert \{'Player must be equal to 1 or 2'}
 	endif
 	ProfilingStart
 	player_index = (<Player> - 1)
@@ -176,7 +176,7 @@ endscript
 
 script start_flow_manager\{flow_state = main_menu_fs Player = 1 create_params = {}}
 	if NOT ((<Player> = 1)|| (<Player> = 2))
-		ScriptAssert \{"Player must be equal to 1 or 2"}
+		ScriptAssert \{'Player must be equal to 1 or 2'}
 	endif
 	player_index = (<Player> - 1)
 	SetArrayElement ArrayName = ui_flow_manager_state GlobalArray index = (<player_index>)NewValue = <flow_state> ResolveGlobals = 0
@@ -190,7 +190,7 @@ endscript
 
 script shut_down_flow_manager\{Player = 1}
 	if NOT ((<Player> = 1)|| (<Player> = 2))
-		ScriptAssert \{"Player must be equal to 1 or 2"}
+		ScriptAssert \{'Player must be equal to 1 or 2'}
 	endif
 	player_index = (<Player> - 1)
 	current_flow_state_name = ($ui_flow_manager_state [<player_index>])

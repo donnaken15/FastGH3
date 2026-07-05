@@ -2,14 +2,14 @@ max_memcard_filename_length = 15
 SavingOrLoading = Saving
 memcard_using_new_save_system = 1
 memcard_default_title = 'Guitar Hero III: Legends of Rock'
-memcard_content_name = "Progress"
-memcard_file_name = "GH3Progress"
+memcard_content_name = 'Progress'
+memcard_file_name = 'GH3Progress'
 memcard_file_types = [
 	{
 		name = Progress
 		version = 48
 		fixed_size = 262144
-		menu_text = "GAME PROGRESS"
+		menu_text = 'GAME PROGRESS'
 		menu_icon = black
 		use_temp_pools = true
 		is_binary_file = FALSE
@@ -37,8 +37,8 @@ MemcardRetryScript = nullscript
 MemcardSavingOrLoading = Saving
 MemcardSuccess = FALSE
 
-script memcard_choose_storage_device\{StorageSelectorForce = 0}
-	printscriptinfo \{"==> memcard_choose_storage_device"}
+/*script memcard_choose_storage_device\{StorageSelectorForce = 0}
+	printscriptinfo \{'==> memcard_choose_storage_device'}
 	if ($memcard_using_new_save_system = 0)
 		if NOT isXenon
 			return
@@ -67,14 +67,14 @@ script memcard_check_for_previously_used_folder
 	MC_WaitAsyncOpsFinished
 	memcard_check_for_card
 	if MC_HasActiveFolder
-		printf \{"Card didn't change, re-using old data!"}
+		printf \{'Card didn\'t change, re-using old data!'}
 		return \{found = 1 corrupt = 0}
 	else
 		memcard_enum_folders
 		MC_LoadTOCInActiveFolder \{ValidatePrev}
 		if (<result> = true)
 			if MemCardFileExists \{FileName = $memcard_file_name filetype = Progress}
-				printf \{"Card re-inserted, re-using old data!"}
+				printf \{'Card re-inserted, re-using old data!'}
 				return \{found = 1 corrupt = 0}
 			else
 				return \{found = 1 corrupt = 1}
@@ -108,7 +108,7 @@ script memcard_check_for_existing_save
 		memcard_choose_storage_device
 		GetMemCardDirectoryListing \{filetype = Progress}
 		if (<totalthps4filesoncard> = 1)
-			printf \{"Found save file"}
+			printf \{'Found save file'}
 			return \{found = 1 corrupt = 0}
 		endif
 	else
@@ -141,13 +141,13 @@ script memcard_wait_for_timer\{time = 3.0}
 endscript
 
 script memcard_save_file\{OverwriteConfirmed = 0}
-	printf \{"==> memcard_save_file"}
+	printf \{'==> memcard_save_file'}
 	Change \{MemcardSavingOrLoading = Saving}
 	if ($memcard_using_new_save_system = 0)
 		if isps3
 			return
 		endif
-		SetSaveFileName \{filetype = Progress name = "GH3Progress"}
+		SetSaveFileName \{filetype = Progress name = 'GH3Progress'}
 		if NOT SaveToMemoryCard \{filetype = Progress}
 			printstruct <...>
 			return \{failed = 1}
@@ -200,13 +200,13 @@ script memcard_save_file\{OverwriteConfirmed = 0}
 		else
 			create_save_success_menu
 		endif
-		wait \{1 seconds}
+		//wait \{1 seconds} // NOPE
 	endif
 	memcard_sequence_quit
 endscript
 
 script memcard_delete_file
-	printf \{"==> memcard_delete_file"}
+	printf \{'==> memcard_delete_file'}
 	if ($memcard_using_new_save_system = 0)
 		if NOT DeleteMemCardFile \{filetype = Progress}
 			destroy_popup_warning_menu
@@ -236,7 +236,7 @@ script memcard_delete_file
 			endif
 			memcard_wait_for_timer
 			create_delete_success_menu
-			wait \{1 seconds}
+			//wait \{1 seconds} // NOPE
 		endif
 	endif
 	memcard_check_for_card
@@ -244,13 +244,13 @@ script memcard_delete_file
 endscript
 
 script memcard_load_file\{LoadConfirmed = 0}
-	printf \{"==> memcard_load_file"}
+	printf \{'==> memcard_load_file'}
 	Change \{MemcardSavingOrLoading = loading}
 	if ($memcard_using_new_save_system = 0)
 		if isps3
 			return
 		endif
-		SetSaveFileName \{filetype = Progress name = "GH3Progress"}
+		SetSaveFileName \{filetype = Progress name = 'GH3Progress'}
 		GetGlobalTags \{globaltag_checksum params = globaltag_checksum}
 		oldglobaltag_checksum = <globaltag_checksum>
 		if NOT LoadFromMemoryCard \{filetype = Progress}
@@ -290,7 +290,7 @@ script memcard_load_file\{LoadConfirmed = 0}
 		create_load_success_menu
 		memcard_post_load_progress
 	endif
-	wait \{1 seconds}
+	//wait \{1 seconds} // NOPE
 	memcard_sequence_quit
 endscript
 
@@ -321,19 +321,19 @@ endscript
 script memcard_sequence_generic_done
 	if ($MemcardSavingOrLoading = Saving)
 		if ($MemcardSuccess = true)
-			printf \{"==> Memcard sequence finished (save success)"}
+			printf \{'==> Memcard sequence finished (save success)'}
 			ui_flow_manager_respond_to_action \{action = memcard_sequence_save_success play_sound = 0}
 		else
-			printf \{"==> Memcard sequence finished (save failed)"}
+			printf \{'==> Memcard sequence finished (save failed)'}
 			MC_SetActiveFolder \{FolderIndex = -1}
 			ui_flow_manager_respond_to_action \{action = memcard_sequence_save_failed}
 		endif
 	else
 		if ($MemcardSuccess = true)
-			printf \{"==> Memcard sequence finished (load success)"}
+			printf \{'==> Memcard sequence finished (load success)'}
 			ui_flow_manager_respond_to_action \{action = memcard_sequence_load_success play_sound = 0}
 		else
-			printf \{"==> Memcard sequence finished (load failed)"}
+			printf \{'==> Memcard sequence finished (load failed)'}
 			MC_SetActiveFolder \{FolderIndex = -1}
 			ui_flow_manager_respond_to_action \{action = memcard_sequence_load_failed}
 		endif
@@ -341,7 +341,7 @@ script memcard_sequence_generic_done
 endscript
 
 script memcard_sequence_retry
-	printf \{"memcard_sequence_retry"}
+	printf \{'memcard_sequence_retry'}
 	Goto MemcardRetryScript params = <...>
 endscript
 
@@ -351,7 +351,7 @@ script memcard_disable_saves_and_quit
 endscript
 
 script memcard_sequence_quit
-	printf \{"memcard_sequence_quit"}
+	printf \{'memcard_sequence_quit'}
 	mark_safe_for_shutdown
 	Goto MemcardDoneScript params = <...>
 endscript
@@ -363,7 +363,7 @@ script memcard_check_for_card
 endscript
 
 script memcard_error
-	printf \{"memcard_error"}
+	printf \{'memcard_error'}
 	RequireParams \{[error] all}
 	memcard_check_for_card
 	Goto <error> params = <params>
@@ -408,7 +408,7 @@ script memcard_sequence_begin_load
 endscript
 
 script memcard_sequence_begin_bootup_logic
-	printf \{"memcard_sequence_begin_bootup"}
+	printf \{'memcard_sequence_begin_bootup'}
 	Change \{MemcardDoneScript = memcard_sequence_generic_done}
 	Change \{MemcardRetryScript = memcard_sequence_begin_bootup_logic}
 	Change \{MemcardSavingOrLoading = Saving}
@@ -439,7 +439,7 @@ script memcard_sequence_begin_autosave_logic
 	Change \{MemcardSuccess = FALSE}
 	GetGlobalTags \{user_options}
 	if (<autosave> = 0)
-		printf \{"Aborting autosave due to option being off"}
+		printf \{'Aborting autosave due to option being off'}
 		Goto \{memcard_sequence_quit}
 	endif
 	if NOT CardIsInSlot

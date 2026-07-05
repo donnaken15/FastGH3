@@ -65,7 +65,7 @@ script setup_ped_speech
 endscript
 
 script script_assert
-	printf \{"ASSERT MESSAGE:"}
+	printf \{'ASSERT MESSAGE:'}
 	ScriptAssert <...>
 endscript
 
@@ -75,7 +75,7 @@ endscript
 script DumpMetrics
 	GetMetrics // crashing
 	printf
-	printf \{"Dumping Metrics Structure"}
+	printf \{'Dumping Metrics Structure'}
 	printstruct <...>
 endscript
 dummy_metrics_struct = {

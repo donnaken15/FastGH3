@@ -57,7 +57,7 @@ script scrolling_list_add_item\{i = 0}
 	endif
 	GetArraySize ($Credits)
 	if (<i> >= <array_Size>)
-		printf \{"** END OF CREDITS **"}
+		printf \{'** END OF CREDITS **'}
 		wait <time> seconds
 		if ScreenElementExists \{id = credits_list_container}
 			DestroyScreenElement \{id = credits_list_container}
@@ -352,7 +352,7 @@ script decompress_credits
 		{ item = 'https://donnaken15.com/FastGH3/dev.html' }
 		{ emptyspace }
 		{ item = 'Thank you for playing!!' heading }
-		{ item = 'Created 2017--2024' title }
+		{ item = 'Created 2017--2026' title }
 	]
 endscript
 Credits = []

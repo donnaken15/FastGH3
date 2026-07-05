@@ -83,9 +83,9 @@ script create_select_controller_menu
 	menu_font = text_a5
 	CreateScreenElement \{Type = ContainerElement parent = root_window id = msc_container Pos = (0.0, 0.0)}
 	create_menu_backdrop \{texture = controller_2p_bg}
-	displayText \{parent = msc_container text = "CONTROLLER SELECT" Pos = (640.0, 160.0) Scale = 1.7 just = [center center] rgba = [255 255 255 255] font = text_a3 z = 100 shadow shadow_rgba = [127 0 0 255] shadow_offs = (4.0, 4.0)}
-	CreateScreenElement \{Type = TextElement parent = msc_container text = "Move the desired controller" Pos = (680.0, 240.0) Scale = 0.9 just = [center center] rgba = [185 180 135 255] font = text_a4 z = 100 Shadow shadow_rgba = [90 25 20 255] shadow_offs = (2.0, 2.0)}
-	CreateScreenElement \{Type = TextElement parent = msc_container text = "to your side of the screen." Pos = (680.0, 290.0) Scale = 0.9 just = [center center] rgba = [185 180 135 255] font = text_a4 z = 100 Shadow shadow_rgba = [90 25 20 255] shadow_offs = (2.0, 2.0)}
+	displayText \{parent = msc_container text = 'CONTROLLER SELECT' Pos = (640.0, 160.0) Scale = 1.7 just = [center center] rgba = [255 255 255 255] font = text_a3 z = 100 shadow shadow_rgba = [127 0 0 255] shadow_offs = (4.0, 4.0)}
+	CreateScreenElement \{Type = TextElement parent = msc_container text = 'Move the desired controller' Pos = (680.0, 240.0) Scale = 0.9 just = [center center] rgba = [185 180 135 255] font = text_a4 z = 100 Shadow shadow_rgba = [90 25 20 255] shadow_offs = (2.0, 2.0)}
+	CreateScreenElement \{Type = TextElement parent = msc_container text = 'to your side of the screen.' Pos = (680.0, 290.0) Scale = 0.9 just = [center center] rgba = [185 180 135 255] font = text_a4 z = 100 Shadow shadow_rgba = [90 25 20 255] shadow_offs = (2.0, 2.0)}
 	if ($old_2p_background) // support original background if available
 		CreateScreenElement \{Type = SpriteElement parent = msc_container id = arrow1 texture = controller_2p_arrow rgba = [240 140 80 255] dims = (64.0, 128.0) Pos = (450.0, 270.0) just = [left top] rot_angle = -20}
 		<id> ::SetTags old_pos = (450.0, 270.0)
@@ -164,31 +164,30 @@ script cs_rotate_rings \{id = ring1}
 	repeat
 endscript
 
-script cs_bounce_arrows
-	begin
-		if ScreenElementExists \{id = arrow1}
-			arrow1 ::GetTags
-			DoScreenElementMorph id = arrow1 Pos = (<old_pos> + (15.0, 25.0))time = 0.5 motion = ease_out
-		endif
-		if ScreenElementExists \{id = arrow2}
-			arrow2 ::GetTags
-			DoScreenElementMorph id = arrow2 Pos = (<old_pos>)time = 0.5 motion = ease_out
-		endif
-		wait \{0.5 seconds}
-		if ScreenElementExists \{id = arrow1}
-			arrow1 ::GetTags
-			DoScreenElementMorph id = arrow1 Pos = (<old_pos>)time = 0.5 motion = ease_in
-		endif
-		if ScreenElementExists \{id = arrow2}
-			arrow2 ::GetTags
-			DoScreenElementMorph id = arrow2 Pos = (<old_pos> + (15.0, 25.0))time = 0.5 motion = ease_in
-		endif
-		wait \{0.5 seconds}
-	repeat
-endscript
-
-script jump_up_and_down_peasants
-endscript
+//script cs_bounce_arrows
+//	begin
+//		if ScreenElementExists \{id = arrow1}
+//			arrow1 ::GetTags
+//			DoScreenElementMorph id = arrow1 Pos = (<old_pos> + (15.0, 25.0))time = 0.5 motion = ease_out
+//		endif
+//		if ScreenElementExists \{id = arrow2}
+//			arrow2 ::GetTags
+//			DoScreenElementMorph id = arrow2 Pos = (<old_pos>)time = 0.5 motion = ease_out
+//		endif
+//		wait \{0.5 seconds}
+//		if ScreenElementExists \{id = arrow1}
+//			arrow1 ::GetTags
+//			DoScreenElementMorph id = arrow1 Pos = (<old_pos>)time = 0.5 motion = ease_in
+//		endif
+//		if ScreenElementExists \{id = arrow2}
+//			arrow2 ::GetTags
+//			DoScreenElementMorph id = arrow2 Pos = (<old_pos> + (15.0, 25.0))time = 0.5 motion = ease_in
+//		endif
+//		wait \{0.5 seconds}
+//	repeat
+//endscript
+//script jump_up_and_down_peasants
+//endscript
 
 script menu_select_controller_poll_for_controllers\{wait_to_drop_controller = 0}
 	begin
@@ -514,7 +513,7 @@ endscript
 
 script light_up_controller
 	FormatText checksumName = controller_icon_id 'controller%d_icon' d = <controller_index>
-	printf \{"Light up controller"}
+	printf \{'Light up controller'}
 	white = [255 255 255 255]
 	if ScreenElementExists id = <controller_icon_id>
 		<controller_icon_id> ::GetTags
@@ -602,7 +601,7 @@ script create_ready_icons\{pos1 = (440.0, 120.0) pos2 = (720.0, 580.0)}
 		}
 		displaySprite \{parent = ready_container_p1 tex = dialog_title_bg flip_v dims = (128.0, 128.0)}
 		displaySprite parent = <id> tex = dialog_title_bg Pos = (128.0, 0.0) dims = (128.0, 128.0)
-		displayText \{parent = ready_container_p1 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.9) font = text_a4 z = 100 rgba = [223 223 223 255]}
+		displayText \{parent = ready_container_p1 text = 'READY!' Pos = (-15.0, -35.0) Scale = (1.25, 0.9) font = text_a4 z = 100 rgba = [223 223 223 255]}
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> dims = (160.0, 42.0)
 	endif
@@ -621,7 +620,7 @@ script create_ready_icons\{pos1 = (440.0, 120.0) pos2 = (720.0, 580.0)}
 		}
 		displaySprite \{parent = ready_container_p2 tex = dialog_title_bg flip_v dims = (128.0, 128.0)}
 		displaySprite parent = <id> tex = dialog_title_bg Pos = (128.0, 0.0) dims = (128.0, 128.0)
-		displayText \{parent = ready_container_p2 text = "READY!" Pos = (-15.0, -35.0) Scale = (1.25, 0.9) font = text_a4 z = 100 rgba = [223 223 223 255]}
+		displayText \{parent = ready_container_p2 text = 'READY!' Pos = (-15.0, -35.0) Scale = (1.25, 0.9) font = text_a4 z = 100 rgba = [223 223 223 255]}
 		SetScreenElementProps id = <id> Scale = 1
 		fit_text_in_rectangle id = <id> dims = (160.0, 42.0)
 	endif

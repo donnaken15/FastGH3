@@ -25,7 +25,7 @@ script create_guitar_events
 	GetArraySize \{$guitar_events}
 	i = 0
 	begin
-		//printf \{"adding..."}
+		//printf \{'adding...'}
 		event = ($guitar_events[<i>].event)
 		ExtendCrc <event> <player_text> out = event
 		SetEventHandler response = call_script event = <event> Scr = event_spawner params = {event_spawned = <i>}
@@ -378,8 +378,8 @@ endscript
 beat_flip = 0
 
 script GuitarEvent_Fretbar
+	Change beat_flip = (1 - $beat_flip) // still need for starpower bot, even though it can't be seen
 	if ($Cheat_PerformanceMode = 1)
-		Change beat_flip = (1 - $beat_flip) // still need for starpower bot, even though it can't be seen
 		return
 	endif
 	if ($current_num_players = 2)
@@ -419,7 +419,6 @@ script GuitarEvent_Fretbar
 		endif
 		set_sidebar_flash <...> player_status = player1_status
 	endif
-	Change beat_flip = (1 - $beat_flip)
 endscript
 
 script set_sidebar_flash

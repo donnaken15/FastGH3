@@ -20,7 +20,7 @@ fake_training_script = [
 ]
 
 script training_waste_time_test
-	printf \{"From waste time test"}
+	printf \{'From waste time test'}
 	print_random_carp
 	wait \{10 seconds}
 endscript

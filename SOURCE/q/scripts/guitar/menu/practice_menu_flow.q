@@ -212,10 +212,24 @@ practice_select_speed_fs = {
 practice_pressed_select_key = 0
 practice_pressed_too_fast = 0
 
-script practice_start_song\{device_num = 0}
+script WHYWHYWHYWHYWHYWHYWHY
 	Change \{game_mode = training}
 	Change \{current_transition = practice}
-	start_song startTime = ($practice_start_time)device_num = <device_num> practice_intro = 1 endtime = ($practice_end_time)
+	if ($practice_loop_mode=2)
+		change\{practice_loop_mode=1}
+	endif
+	if ($practice_loop_mode=3)
+		// WHY WHY WHY WHY WHY WHY WHY WHY WHY WHY
+		change current_starttime = ($practice_loop_a)
+		change current_endtime = ($practice_loop_b)
+		change practice_start_time = ($practice_loop_a)
+		change practice_end_time = ($practice_loop_b)
+	endif
+endscript
+
+script practice_start_song\{device_num = 0}
+	WHYWHYWHYWHYWHYWHYWHY
+	start_song device_num = <device_num> startTime = ($practice_start_time) practice_intro = 1 endtime = ($practice_end_time)
 	//Change \{practice_audio_muted = 0}
 	/*if ($current_speedfactor = 1.0)
 		menu_audio_settings_update_band_volume \{vol = 7}
@@ -223,8 +237,9 @@ script practice_start_song\{device_num = 0}
 		menu_audio_settings_update_band_volume \{vol = 0}
 	endif*///
 	//SetSoundBussParams \{Crowd = {vol = -100.0}}
+	spawnscriptnow \{practice_select_wait}
 	spawnscriptnow \{practice_update}
-	practice_restore_select_key_binding
+	spawnscriptlater \{practice_restore_select_key_binding}
 endscript
 
 script practice_manual_restart
@@ -233,9 +248,8 @@ script practice_manual_restart
 endscript
 
 script practice_restart_song
-	Change \{game_mode = training}
-	Change \{current_transition = practice}
-	restart_song practice_intro = 1 startTime = ($practice_start_time)endtime = ($practice_end_time)
+	WHYWHYWHYWHYWHYWHYWHY
+	restart_song startTime = ($practice_start_time) practice_intro = 1 endtime = ($practice_end_time)
 	//Change \{practice_audio_muted = 0}
 	/*if ($current_speedfactor = 1.0)
 		menu_audio_settings_update_band_volume \{vol = 7}
@@ -250,21 +264,23 @@ endscript
 script practice_select_wait
 	Wait \{5 gameframes}
 	change \{practice_pressed_too_fast = 0}
+	printstruct ($practice_pressed_too_fast)
 endscript
 
 script practice_restore_select_key_binding
-	printf \{"+++RESTORE SELECT KEY"}
+	printf \{'+++RESTORE SELECT KEY'}
 	Change disable_intro_originalsetting = ($disable_intro)
 	SetScreenElementProps \{id = root_window event_handlers = [{pad_select practice_instarestart}] replace_handlers}
 endscript
 
 script practice_kill_select_key_binding
-	printf \{"+++KILL SELECT KEY"}
+	printf \{'+++KILL SELECT KEY'}
 	Change disable_intro = ($disable_intro_originalsetting)
 	SetScreenElementProps \{id = root_window event_handlers = [{pad_select null_script}] replace_handlers}
 endscript
 
 script practice_update
+	WHYWHYWHYWHYWHYWHYWHY
 	begin
 		if ($practice_pressed_too_fast = 0)
 			device_num = ($player1_device)
@@ -285,6 +301,11 @@ script practice_update
 		endif
 		practice_audio_filter
 		GetSongTimeMs
+		printstruct {
+			time = <time>
+			loop = ($practice_loop_mode)
+			end = ($practice_end_time)
+		}
 		if ($practice_loop_mode = 0)
 			if (<time> > ($practice_end_time + ($Song_Win_Delay * 1000 - 100)))
 				spawnscriptnow \{finish_practice_song}
@@ -317,27 +338,26 @@ endscript
 script finish_practice_song
 	killspawnedscript \{name = practice_update}
 	ui_flow_manager_respond_to_action \{action = end_song}
-	practice_kill_select_key_binding
 	gh3_start_pressed
 endscript
 practice_audio_muted = 0
 
 script practice_audio_filter
-	return
-	GetSongTimeMs
-	if ((<time> > ($practice_start_time))& (<time> < ($practice_end_time)))
-		if ($practice_audio_muted = 1)
-			GetGlobalTags \{user_options}
-			menu_audio_settings_update_guitar_volume vol = <guitar_volume>
-			Change \{practice_audio_muted = 0}
-		endif
-	else
-		if ($practice_audio_muted = 0)
-			printf \{"Setting audio supposedly"}
-			menu_audio_settings_update_guitar_volume \{vol = 0}
-			Change \{practice_audio_muted = 1}
-		endif
-	endif
+	//return
+	//GetSongTimeMs
+	//if ((<time> > ($practice_start_time))& (<time> < ($practice_end_time)))
+	//	if ($practice_audio_muted = 1)
+	//		GetGlobalTags \{user_options}
+	//		menu_audio_settings_update_guitar_volume vol = <guitar_volume>
+	//		Change \{practice_audio_muted = 0}
+	//	endif
+	//else
+	//	if ($practice_audio_muted = 0)
+	//		printf \{"Setting audio supposedly"}
+	//		menu_audio_settings_update_guitar_volume \{vol = 0}
+	//		Change \{practice_audio_muted = 1}
+	//	endif
+	//endif
 endscript
 
 script shut_down_practice_mode
@@ -619,7 +639,7 @@ practice_quit_warning_fs = {
 practice_change_speed_quit_warning_fs = {
 	create = create_quit_warning_menu
 	create_params = {
-		option2_text = "CHANGE SPEED"
+		option2_text = 'CHANGE SPEED'
 		menu_pos = (470.0, 475.0)
 		bg_dims = (400.0, 80.0)
 		no_joiners
@@ -639,7 +659,7 @@ practice_change_speed_quit_warning_fs = {
 practice_change_section_quit_warning_fs = {
 	create = create_quit_warning_menu
 	create_params = {
-		option2_text = "CHANGE SECTION"
+		option2_text = 'CHANGE SECTION'
 		menu_pos = (445.0, 475.0)
 		bg_dims = (500.0, 80.0)
 		no_joiners
@@ -660,7 +680,7 @@ practice_change_section_quit_warning_fs = {
 practice_new_song_quit_warning_fs = {
 	create = create_quit_warning_menu
 	create_params = {
-		option2_text = "NEW SONG"
+		option2_text = 'NEW SONG'
 		menu_pos = (520.0, 475.0)
 		bg_dims = (350.0, 80.0)
 		no_joiners
@@ -685,7 +705,7 @@ script end_practice_song_slomo
 endscript
 
 script end_practice_song
-	printf \{"end_practice_song"}
+	printf \{'end_practice_song'}
 	end_practice_song_slomo
 	spawnscriptnow \{xenon_singleplayer_session_complete_uninit}
 	kill_gem_scroller

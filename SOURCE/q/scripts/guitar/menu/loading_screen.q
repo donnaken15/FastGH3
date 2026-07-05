@@ -16,7 +16,7 @@ script create_loading_strings
 		'%VER%' 'NOW WITH CACHING!' 'donnaken15.com/fastgh3' 'JURGEN IS HERE' 'ONE CLICK MAGIC!'
 		'fastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfastfast' 'fast'
 		'NO LONGER WREAKING HAVOK' 'PROGRAMMER SOX ARE LAME' 'DIRECTLY CALLING OUT MY EX'
-		'PRAISE THE FOSSIL (which is now periodically updated by a third party) THAT IS HELIX'
+		'PRAISE THE FOSSIL (which is now periodically updated by a third party) THAT IS HELIX' 'PRAISE HELIX.EXE'
 		'you need more than debug\n- revup90' '\bf\bf\bc\bc\be\bd\be\bd\b2\b3\ba' 'subscribe for daily \b2ideos'
 		'Switch up the style and get yourself some c00l zonez by going to donnaken15.com/fastgh3/zones.html'
 		'4.4 MEGABYTE ZONES' '\'\'the clone hero version of gh3\'\''
@@ -30,15 +30,15 @@ script create_loading_strings
 		'IS THIS WORKING?!?!' 'DON\'T CRASH!!' 'DON\'T BREAK!! PLEASE!! I DON\'T BEG FOR MUCH!!!'
 		'SecuROM tried to kill Exile, but it failed, as HATRED struck it down, to the ground!'
 		'Convenient!' 'I got heX-ray mode on!' 'New loading text for no reason!!'
-		'Check out the FastGH3 settings for extra customization.'
+		'Check out the FastGH3 launcher settings for extra customization.'
 		'Unlock even more fun by enabling Debug Menu in settings!'
 		'\'\'I figured out..... I figured out animated textures. T/N: I did not figure out animated textures\'\' PSPS: I did (4 years later) PSPSPS: Actually, no PSPSPSPS: Actually, yes'
 		'I bet you can\'t read this FAST enough!' 'FC THIS!!!' 'FIXED!' 'BLOODY FAST\n100% No Slow Guaranteed'
 		'I\'M RUNNING OUT OF THINGS TO SAY!' 'YOU RESTARTED JUST TO SEE THIS MESSAGE!'
 		'HAX!' 'BOT!' 'FAAAKE!!' 'EPIC FAIL' 'WHAT ARE YOU DOING' 'WARNING: Requires x0.5 \b3 Presses'
 		'unCHARTed' '\c9INVISIBLE INK\n\nwait, uh oh' 'are you actually reading these?' 'CHARTS ON DEMAND'
-		'FITS 5944 TIMES ON A FLASH DRIVE, DO THE MATH!' 'FROM 4.7 GB TO 10.8 MB! WOW!'
-		/* formula: 1024/((11561002/1024/1024)/64)
+		'FITS 6029 TIMES ON A FLASH DRIVE, DO THE MATH!' 'FROM 4.7 GB TO 10.8 MB! WOW!'
+		/* formula: 1024/((11396677/1024/1024)/64)
 		64 = usual flash drive GB capacity (<-- stuck in 2011 or something thinking this is common)
 		"DO THE MATH"
 		Reverse of original calc: (15*4346)/1024 *///
